@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
 import { site, url } from '../data/site';
+// Het smalle koppenfont vooraf laden: anders verspringt de pagina als het binnenkomt.
+import displayFont from '@fontsource-variable/big-shoulders-display/files/big-shoulders-display-latin-wght-normal.woff2?url';
+import bodyFont from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -12,8 +15,10 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
-    <meta name="theme-color" content="#1c2a22" />
+    <meta name="theme-color" content={site.themeColor} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nl_NL" />
@@ -31,7 +36,7 @@ const { title, description } = Astro.props;
         </p>
       </div>
     )}
-    <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">Naar de inhoud</a>
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-white focus:px-4 focus:py-2">Naar de inhoud</a>
     <slot />
   </body>
 </html>
