@@ -1,0 +1,395 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, delvino, openingstijden, weekmenu, kaart, agenda, najaarsreeks, eenmalig, wijncursusData } from '../data/site';
+import hero from '../assets/hero.jpg';
+import gerecht from '../assets/gerecht.jpg';
+import wijn from '../assets/wijn.jpg';
+import tafel from '../assets/tafel.jpg';
+
+const tijden = ['12.00', '12.30', '13.00', '13.30', '17.30', '18.00', '18.30', '19.00', '19.30', '20.00', '20.30'];
+---
+<Base
+  title="Restaurant 't Ganzengors | Restaurant, wijnbar en delicatessen in Spijkenisse"
+  description="Restaurant, wijnbar en delicatessen- en wijnwinkel aan de Oostkade in Spijkenisse. Elke week een ander menu, een theatermenu voor Theater de Stoep, kook- en wijncursussen en de DelVino wijnclub."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+
+    <!-- Donkere hero: het restaurant bij lamplicht, openingstijden rechts onder zoals op een deurbordje. -->
+    <section class="op-donker relative isolate overflow-hidden bg-ink text-paper">
+      <div class="absolute inset-0 -z-10"><Foto src={hero} alt="Donker restaurantinterieur met houten tafels, groene glazen en brandende tafellampjes" hero sizes="100vw" /></div>
+      <div class="absolute inset-0 -z-10 bg-ink/75 lg:bg-transparent lg:bg-linear-to-r lg:from-ink lg:via-ink/85 lg:to-ink/30"></div>
+      <div class="wrap grid gap-12 py-16 md:py-24 lg:min-h-[40rem] lg:grid-cols-12 lg:items-end lg:py-28">
+        <div class="lg:col-span-7">
+          <p class="kicker text-gold">Restaurant · wijnbar · delicatessen</p>
+          <h1 class="mt-5 text-4xl">Omdat koken een kunst is</h1>
+          <p class="mt-6 max-w-xl text-lg text-paper/85">Ambachtelijk koken met de nieuwsgierigheid van nu, aan de Oostkade in Spijkenisse. Stijlvol maar nooit stijf, en altijd persoonlijk.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href="#reserveren" class="btn btn-wine">Reserveer een tafel</a>
+            <a href={site.telHref} class="num text-lg underline decoration-gold decoration-1 underline-offset-[6px] transition-colors hover:text-gold">of bel {site.tel}</a>
+          </div>
+          <p class="mt-8 text-sm text-paper/80"><strong class="font-medium text-gold">{site.google.score}</strong> uit 5 op Google, {site.google.aantal} reviews</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8 xl:col-span-4 xl:col-start-9">
+          <div class="border-y border-gold/50 bg-ink/60 py-6 backdrop-blur-sm sm:px-6">
+            <h2 class="kicker text-gold">Openingstijden restaurant</h2>
+            <p id="vandaag" class="mt-3 font-display text-xl" hidden></p>
+            <table class="mt-4 w-full text-left text-sm">
+              <thead>
+                <tr class="text-xs text-paper/70"><th scope="col" class="pb-2 font-normal"><span class="sr-only">Dag</span></th><th scope="col" class="pb-2 text-right font-normal">Lunch vanaf</th><th scope="col" class="pb-2 pl-4 text-right font-normal">Diner vanaf</th></tr>
+              </thead>
+              <tbody>
+                {openingstijden.map((o) => (
+                  <tr data-dag={o.dag} data-tijd={o.tijd} class="text-paper/80">
+                    <th scope="row" class="py-1 font-normal">{o.naam}</th>
+                    {o.tijd === 'Gesloten'
+                      ? <td colspan="2" class="py-1 text-right">Gesloten</td>
+                      : <><td class="num py-1 text-right">{o.lunch || ' '}</td><td class="num py-1 pl-4 text-right">{o.diner}</td></>}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-3 text-xs text-paper/70">Maandag en dinsdag open in overleg voor groepen.</p>
+          </div>
+        </div>
+      </div>
+      <script is:inline>
+        (function () {
+          var d = new Date().getDay();
+          var li = document.querySelector('[data-dag="' + d + '"]');
+          if (!li) return;
+          li.classList.remove('text-paper/80');
+          li.classList.add('text-gold', 'font-medium');
+          li.setAttribute('aria-current', 'date');
+          var t = li.getAttribute("data-tijd");
+          var v = document.getElementById('vandaag');
+          v.textContent = 'Vandaag: ' + t.charAt(0).toLowerCase() + t.slice(1);
+          v.hidden = false;
+        })();
+      </script>
+    </section>
+
+    <!-- Weekmenu: een echt menukaartje, met de chef en het theatermenu ernaast. -->
+    <section id="weekmenu" class="scroll-mt-20 py-16 lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <p class="kicker text-wine">Elke week anders</p>
+          <h2 class="mt-4 text-3xl">Het weekmenu en het theatermenu</h2>
+          <div class="mt-6 space-y-4 text-ink-soft">
+            <p>Chef-kok Ronald Kleyburg selecteert en koopt dagelijks verse producten. Zo speelt hij in op het seizoen en de specialiteiten die daarbij horen.</p>
+            <p>Daarom serveren we elke week een ander menu. Moet u om 20.00 uur in Theater de Stoep zijn? Dan raden we het theatermenu aan.</p>
+          </div>
+          <div class="mt-10 hidden aspect-[4/3] overflow-hidden lg:block"><Foto src={gerecht} alt="Verfijnd bord met vlees, wortel en saus" sizes="(min-width: 1024px) 420px, 100vw" /></div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <article class="bg-white p-2 shadow-[0_1px_3px_#16131318]">
+            <div class="border border-wine/40 px-6 py-10 text-center sm:px-12 sm:py-14">
+              <p class="kicker text-wine">Laatste weekmenu</p>
+              <h3 class="mt-3 font-display text-2xl font-medium">Weekmenu</h3>
+              <p class="mt-1 text-ink-soft">van <span class="whitespace-nowrap">{weekmenu.periode}</span></p>
+              <ol class="mt-10 space-y-7 font-display text-xl leading-snug">
+                {weekmenu.gangen.map((g, i) => (
+                  <li>
+                    {i > 0 && <span aria-hidden="true" class="mb-7 block text-sm text-wine">&#10043;</span>}
+                    {g}
+                  </li>
+                ))}
+              </ol>
+              <p class="mt-10 border-t border-line pt-6"><span class="num font-display text-2xl text-wine">{weekmenu.prijs}</span> <span class="text-ink-soft">per persoon</span></p>
+            </div>
+          </article>
+          <div class="mt-6 aspect-[16/9] overflow-hidden lg:hidden"><Foto src={gerecht} alt="Verfijnd bord met vlees, wortel en saus" sizes="100vw" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- De kaart: typografisch, drie gangen naast elkaar op linnen papier. -->
+    <section id="kaart" class="scroll-mt-20 bg-linen py-16 lg:py-28">
+      <div class="wrap">
+        <div class="grid gap-6 border-b border-line pb-10 lg:grid-cols-12 lg:items-end">
+          <h2 class="text-3xl lg:col-span-5">Onze kaart</h2>
+          <p class="text-ink-soft lg:col-span-6 lg:col-start-7">Naast de kaart staat er elke week een ander weekmenu. De gerechten en data van het weekmenu hierboven wisselen dus wekelijks.</p>
+        </div>
+        <div class="mt-12 grid gap-14 lg:grid-cols-3 lg:gap-12">
+          {kaart.map((gang) => (
+            <div>
+              <h3 class="kicker text-wine">{gang.titel}</h3>
+              <ul class="mt-6 space-y-6">
+                {gang.items.map(([naam, bij, prijs]) => (
+                  <li>
+                    <p class="flex items-baseline gap-3 font-display text-xl leading-tight">
+                      <span>{naam}</span>
+                      <span aria-hidden="true" class="min-w-4 flex-1 border-b border-dotted border-ink/40"></span>
+                      <span class="num text-lg">{prijs}</span>
+                    </p>
+                    <p class="mt-1 text-sm text-ink-soft">{bij}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p class="mt-14 text-sm text-ink-soft">Het is niet uitgesloten dat onze gerechten allergenen bevatten.</p>
+      </div>
+    </section>
+
+    <!-- Het restaurant: donker, beeld links, feiten als grote cijfers. -->
+    <section id="restaurant" class="op-donker scroll-mt-20 bg-ink py-16 text-paper lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div class="aspect-[4/3] overflow-hidden lg:col-span-6 lg:aspect-auto">
+          <Foto src={tafel} alt="Gedekt tafeltje met wijnglazen, een fles wijn en een bord met vlees en rood fruit" sizes="(min-width: 1024px) 600px, 100vw" />
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <p class="kicker text-gold">Kwaliteit in ambacht</p>
+          <h2 class="mt-4 text-3xl">Stijlvol maar nooit stijf</h2>
+          <div class="mt-6 space-y-4 text-paper/80">
+            <p>Eigenaars, koks en kelners hebben de ouderwetse ambachtelijke vaardigheden hoog in het vaandel. Tegelijk zijn ze eigentijds en werelds genoeg om vernieuwing een aantrekkelijke uitdaging te vinden.</p>
+            <p>Gastvrijheid is het kernbegrip. U krijgt niets opgedrongen, wel zorgvuldige en hartelijke aandacht, zodat u zich meteen thuis voelt. De sfeer is vertrouwd en de keuken zorgt steeds opnieuw voor prettige verrassingen.</p>
+          </div>
+          <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line-dark pt-8">
+            <div class="flex flex-col"><dt class="text-sm text-paper/80">plaatsen in het restaurant</dt><dd class="order-first font-display text-3xl text-gold">circa 40</dd></div>
+            <div class="flex flex-col"><dt class="text-sm text-paper/80">personen in de aparte ruimte voor groepen</dt><dd class="order-first font-display text-3xl text-gold">tot 30</dd></div>
+          </dl>
+          <ul class="mt-8 space-y-3 text-paper/80">
+            <li class="border-l border-gold pl-4">Een sfeervolle bar voor het aperitief</li>
+            <li class="border-l border-gold pl-4">Een besloten terras voor mooie dagen</li>
+            <li class="border-l border-gold pl-4">Voor groepen kunnen speciale regelingen worden getroffen, van eenvoudig tot luxueus</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Agenda: tijdlijn met grote datums. -->
+    <section id="agenda" class="scroll-mt-20 py-16 lg:py-28">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-4">
+          <p class="kicker text-wine">Agenda</p>
+          <h2 class="mt-4 text-3xl">Binnenkort in het restaurant</h2>
+          <p class="mt-5 text-ink-soft">Meer weten of reserveren? Bel <a href={site.telHref} class="num underline underline-offset-4">{site.tel}</a>.</p>
+        </div>
+        <ol class="border-t border-line lg:col-span-7 lg:col-start-6">
+          {agenda.map((e) => (
+            <li class="grid grid-cols-[4.5rem_1fr] gap-5 border-b border-line py-7 sm:grid-cols-[6rem_1fr] sm:gap-8">
+              <p class="text-center leading-none text-wine" aria-hidden="true">
+                <span class="block font-display text-3xl">{e.dag}</span>
+                <span class="kicker mt-1 block">{e.maand}</span>
+              </p>
+              <div>
+                <p class="text-sm text-ink-soft">{e.wanneer}</p>
+                <h3 class="mt-1 text-xl">{e.titel}</h3>
+                <p class="mt-2 text-ink-soft">{e.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Kookcursussen: echte tabel voor de reeks, lijst met status voor de losse zondagen. -->
+    <section id="cursussen" class="scroll-mt-20 bg-linen py-16 lg:py-28">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <p class="kicker text-wine">Zelf aan het fornuis</p>
+            <h2 class="mt-4 text-3xl">Kookcursussen</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-6 lg:col-start-7 lg:self-end">Op zondagmiddag om 14.00 uur. Per les kookt u een vijfgangendiner met vele kooktechnieken en keukengeheimen, en daarna gaat u samen aan tafel om op te eten wat u zelf heeft bereid. De recepten neemt u mee naar huis.</p>
+        </div>
+
+        <div class="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-8">
+          <div class="lg:col-span-6">
+            <h3 class="text-2xl">Najaarsreeks, 5 lessen</h3>
+            <p class="mt-3 text-ink-soft">Met vlees, vis, najaarsgroenten, wild en gevogelte, paddenstoelen, kruiden en specerijen, de BGE en de producten van Voorne-Putten.</p>
+            <div class="mt-6 overflow-x-auto">
+              <table class="w-full text-left text-sm">
+                <caption class="sr-only">Data najaarsreeks kookcursus per groep</caption>
+                <thead>
+                  <tr class="border-b border-ink/40">
+                    <th scope="col" class="py-2 pr-3 font-medium">Onderwerp</th>
+                    <th scope="col" class="py-2 pr-3 font-medium">Groep 1 <span class="block text-xs font-normal text-wine">volgeboekt</span></th>
+                    <th scope="col" class="py-2 font-medium">Groep 2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {najaarsreeks.map((r) => (
+                    <tr class="border-b border-line">
+                      <th scope="row" class="py-3 pr-3 font-normal">{r.onderwerp}</th>
+                      <td class="num py-3 pr-3 text-ink-soft">{r.g1}</td>
+                      <td class="num py-3">{r.g2}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-6"><span class="num font-display text-2xl text-wine">€ 352,50</span> <span class="text-ink-soft">per persoon voor de hele reeks</span></p>
+            <p class="mt-2 text-sm text-ink-soft">Inclusief 5 kooklessen en 5 keer een vijfgangendiner, exclusief dranken. De eerste keer krijgt u een Ganzengors-kookschort en -kookmap. De cursus start bij een groep van 10 personen.</p>
+          </div>
+
+          <div class="lg:col-span-5 lg:col-start-8">
+            <h3 class="text-2xl">Eenmalige zondagcursussen</h3>
+            <p class="mt-3 text-ink-soft">Per keer in te schrijven, met een vijfgangendiner exclusief dranken. Altijd op zondag om 14.00 uur.</p>
+            <ul class="mt-6 border-t border-ink/40 text-sm">
+              {eenmalig.map((c) => (
+                <li class:list={['grid grid-cols-[5.5rem_1fr] gap-3 border-b border-line py-3 sm:grid-cols-[6.5rem_1fr_auto]', c.vol && 'text-ink-soft']}>
+                  <span class="num">{c.datum}</span>
+                  <span>{c.onderwerp}{c.vol && <span class="ml-2 inline-block border border-wine/50 px-1.5 text-xs uppercase tracking-wider text-wine">volgeboekt</span>}</span>
+                  <span class="num col-start-2 sm:col-start-auto sm:text-right">{c.prijs} p.p.</span>
+                </li>
+              ))}
+            </ul>
+            <p class="mt-6">Aanmelden via <a href={`mailto:${site.mail}`} class="underline underline-offset-4">{site.mail}</a> of <a href={site.telHref} class="num underline underline-offset-4">{site.tel}</a>.</p>
+
+            <div class="mt-10 border-l-2 border-wine bg-paper p-6">
+              <h3 class="text-xl">Kookclinics voor groepen</h3>
+              <p class="mt-2 text-ink-soft">Met een aparte groep of afdeling van uw bedrijf een kookclinic doen kan vanaf 10 personen. Bel voor informatie met Yvonne Kleyburg, <a href={site.telHref} class="num underline underline-offset-4">{site.tel}</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wijncursus: donker, flessen als beeld, data als lijst. -->
+    <section id="wijncursus" class="op-donker scroll-mt-20 bg-ink text-paper">
+      <div class="grid lg:grid-cols-2">
+        <div class="aspect-[16/10] overflow-hidden lg:order-2 lg:aspect-auto"><Foto src={wijn} alt="Close-up van een rij wijnflessen in een rek" sizes="(min-width: 1024px) 50vw, 100vw" /></div>
+        <div class="px-5 py-16 md:px-8 lg:py-24 lg:pl-[max(2rem,calc((100vw-76rem)/2+2rem))] lg:pr-12">
+          <p class="kicker text-gold">Wijncursus SDEN-2 · Ik weet meer van wijn</p>
+          <h2 class="mt-4 text-3xl">Leren proeven in onze wijnbar</h2>
+          <p class="mt-6 text-paper/80">Een serieuze basiscursus voor beginnende wijnliefhebbers, onder leiding van Register-Vinoloog Yvonne Kleyburg. In 5 avonden leert u de belangrijkste wijngebieden en druivenrassen kennen en de basistechnieken van het proeven. U proeft ongeveer 40 wijnen van € 7 tot € 27. Aan het eind kunt u een landelijk erkend examen doen, niveau SDEN-2.</p>
+          <ul class="mt-8 space-y-2 border-t border-line-dark pt-6 text-paper/90">
+            {wijncursusData.map((d) => <li class="num">{d}</li>)}
+          </ul>
+          <p class="mt-3 text-sm text-paper/80">Alle avonden van <span class="num">19.30</span> tot <span class="num">22.30</span> uur.</p>
+          <p class="mt-8"><span class="num font-display text-2xl text-gold">€ 355,00</span> <span class="text-paper/80">per persoon</span></p>
+          <p class="mt-2 text-sm text-paper/80">Inclusief cursusmaterialen, cursusboek en 3 kleine gerechtjes van chef-kok Ronald Kleyburg voor wijn en spijs. De cursus start bij minimaal 8 aanmeldingen. Yvonne geeft ook de vervolgcursus SDEN-3.</p>
+          <a href={site.telHref} class="btn btn-wine mt-8">Aanmelden: bel {site.tel}</a>
+          <p class="mt-3 text-sm text-paper/80">of mail <a href={`mailto:${site.mail}`} class="underline underline-offset-4">{site.mail}</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DelVino: wijnclub als twee prijskaartjes, afhaal als lijst. -->
+    <section id="delvino" class="scroll-mt-20 py-16 lg:py-28">
+      <div class="wrap">
+        <p class="kicker text-wine">DelVino, delicatessen en wijn</p>
+        <h2 class="mt-4 max-w-2xl text-3xl">De wijnclub en afhalen bij DelVino</h2>
+        <div class="mt-12 grid gap-14 lg:grid-cols-12 lg:gap-8">
+          <div class="lg:col-span-7">
+            <h3 class="text-2xl">DelVino wijnclub</h3>
+            <p class="mt-3 text-ink-soft">Elke maand een wijnbox met een selectie afgestemd op het seizoen, van klassiek tot biologisch en biodynamisch, uit de oude en de nieuwe wereld. Bij elke wijn een beschrijving met achtergrond, schenktemperatuur, houdbaarheid en tips voor wijn en spijs.</p>
+            <div class="mt-8 grid gap-4 sm:grid-cols-2">
+              <div class="border border-line bg-white p-6 shadow-[0_1px_2px_#16131314]">
+                <p class="kicker text-wine">3 wijnen</p>
+                <p class="mt-3"><span class="num font-display text-3xl">€ 37,50</span></p>
+                <p class="text-sm text-ink-soft">per maand</p>
+              </div>
+              <div class="border border-line bg-white p-6 shadow-[0_1px_2px_#16131314]">
+                <p class="kicker text-wine">6 wijnen</p>
+                <p class="mt-3"><span class="num font-display text-3xl">€ 71,00</span></p>
+                <p class="text-sm text-ink-soft">per maand</p>
+              </div>
+            </div>
+            <ul class="mt-8 space-y-2 text-ink-soft">
+              <li>Looptijd een half jaar of een jaar, daarna niet automatisch verlengd.</li>
+              <li>De wijnen liggen rond de 15e van de maand klaar in de winkel, of we bezorgen binnen Spijkenisse (tegen verzendkosten).</li>
+              <li>Leden zijn gratis welkom op de grote overzichtsproeverijen, twee keer per jaar in de bar van het restaurant.</li>
+              <li>Gratis wijn-spijstips, en u bent op de hoogte van alle wijnaanbiedingen en vernieuwingen.</li>
+            </ul>
+            <p class="mt-6">Lid worden via Yvonne Kleyburg, <a href={`mailto:${site.mail}`} class="underline underline-offset-4">{site.mail}</a>. U krijgt een bevestiging met de betalingscondities.</p>
+          </div>
+
+          <div class="lg:col-span-4 lg:col-start-9">
+            <h3 class="text-2xl">Afhalen bij DelVino</h3>
+            <dl class="mt-5 divide-y divide-line border-y border-line">
+              <div class="py-4"><dt class="font-display text-lg font-semibold">Dinerbox</dt><dd class="text-sm text-ink-soft">Een tweegangenmenu, zo ver voorbereid dat u thuis alleen hoeft op te warmen.</dd></div>
+              <div class="py-4"><dt class="font-display text-lg font-semibold">Kerstdinerbox</dt><dd class="text-sm text-ink-soft">Een kant-en-klaar viergangen-kerstmenu voor 24, 25, 26 en 27 december.</dd></div>
+              <div class="py-4"><dt class="font-display text-lg font-semibold">Hapjesbox</dt><dd class="text-sm text-ink-soft">Een plateau met 15 kant-en-klare hapjes, in 8 varianten.</dd></div>
+              <div class="py-4"><dt class="font-display text-lg font-semibold">Take-a-Bowl</dt><dd class="text-sm text-ink-soft">In diverse smaken, zoals gerookte kalkoen voor <span class="num">€ 12,25</span>.</dd></div>
+              <div class="py-4"><dt class="font-display text-lg font-semibold">Catering</dt><dd class="text-sm text-ink-soft">Schalen met salades en hors-d'oeuvres, zoals een Italiaanse salade voor <span class="num">€ 19,95</span> per persoon.</dd></div>
+            </dl>
+            <address class="mt-6 text-sm not-italic text-ink-soft">
+              <strong class="font-medium text-ink">DelVino</strong>, {delvino.straat}, {delvino.postcode} {delvino.plaats}<br />
+              <a href={delvino.telHref} class="num underline underline-offset-4">{delvino.tel}</a> · <a href={`mailto:${delvino.mail}`} class="underline underline-offset-4">{delvino.mail}</a><br />
+              <a href={delvino.web} rel="noopener" class="underline underline-offset-4">delvino.eu</a>
+            </address>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reserveren: formulier naast de telefoon. -->
+    <section id="reserveren" class="scroll-mt-20 border-t border-line bg-linen py-16 lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-4">
+          <p class="kicker text-wine">Reserveren</p>
+          <h2 class="mt-4 text-3xl">Een tafel voor u vrijhouden</h2>
+          <p class="mt-5 text-ink-soft">Laat hier weten wanneer u komt. Liever direct contact? Bel ons.</p>
+          <a href={site.telHref} class="btn btn-wine mt-7">Bel {site.tel}</a>
+          <p class="mt-8 text-sm text-ink-soft">Met een groep tot 30 personen kunt u dineren in een aparte ruimte. Op maandag en dinsdag zijn we open in overleg voor groepen.</p>
+        </div>
+        <form class="bg-white p-6 shadow-[0_1px_3px_#16131318] sm:p-10 lg:col-span-7 lg:col-start-6" onsubmit="return false">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class="block text-sm font-medium">Naam<input class="veld" type="text" name="naam" autocomplete="name" required /></label>
+            <label class="block text-sm font-medium">Telefoon<input class="veld" type="tel" name="telefoon" autocomplete="tel" required /></label>
+            <label class="block text-sm font-medium sm:col-span-2">E-mail<input class="veld" type="email" name="email" autocomplete="email" required /></label>
+            <label class="block text-sm font-medium">Datum<input class="veld" type="date" name="datum" required /></label>
+            <label class="block text-sm font-medium">Tijd
+              <select class="veld" name="tijd" required>
+                {tijden.map((t) => <option>{t}</option>)}
+              </select>
+            </label>
+            <label class="block text-sm font-medium">Aantal personen<input class="veld" type="number" name="personen" min="1" max="40" value="2" required /></label>
+            <fieldset class="text-sm">
+              <legend class="font-medium">Lunch of diner</legend>
+              <div class="mt-3 flex gap-6">
+                <label class="flex items-center gap-2"><input type="radio" name="moment" value="lunch" class="size-4 accent-wine" /> Lunch</label>
+                <label class="flex items-center gap-2"><input type="radio" name="moment" value="diner" class="size-4 accent-wine" checked /> Diner</label>
+              </div>
+            </fieldset>
+            <label class="block text-sm font-medium sm:col-span-2">Opmerking <span class="font-normal text-ink-soft">(bijvoorbeeld theatermenu, dieetwensen of een groep)</span><textarea class="veld min-h-28" name="opmerking" rows="4"></textarea></label>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-8 border-l-2 border-wine bg-paper p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="num underline underline-offset-4">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="underline underline-offset-4">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-wine mt-8">Reservering versturen</button>
+          )}
+        </form>
+      </div>
+    </section>
+
+    <!-- Route, parkeren en contact: donker, als slot van de avond. -->
+    <section id="route" class="op-donker scroll-mt-20 bg-ink py-16 text-paper lg:py-28">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-8">
+        <div class="lg:col-span-5">
+          <p class="kicker text-gold">Contact</p>
+          <h2 class="mt-4 text-3xl">Aan de Oostkade</h2>
+          <address class="mt-6 text-lg not-italic text-paper/90">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <dl class="mt-8 space-y-4">
+            <div><dt class="text-sm text-paper/80">Telefoon</dt><dd><a href={site.telHref} class="num font-display text-2xl underline decoration-gold decoration-1 underline-offset-[6px]">{site.tel}</a></dd></div>
+            <div><dt class="text-sm text-paper/80">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="underline decoration-gold decoration-1 underline-offset-4 [overflow-wrap:anywhere]">{site.mail}</a></dd></div>
+          </dl>
+          <a href={site.maps} rel="noopener" class="btn btn-line mt-8">Route plannen</a>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h3 class="text-2xl">Vanaf de Spijkenissebrug</h3>
+          <ol class="mt-5 space-y-3 text-paper/80">
+            <li class="grid grid-cols-[2rem_1fr]"><span class="font-display text-gold">1</span>Bij de eerste stoplichten links de Schenkelweg op.</li>
+            <li class="grid grid-cols-[2rem_1fr]"><span class="font-display text-gold">2</span>Bij de tweede stoplichten rechts de J.P. den Uylstraat in.</li>
+            <li class="grid grid-cols-[2rem_1fr]"><span class="font-display text-gold">3</span>Eerste straat rechts, de Gorsstraat in.</li>
+            <li class="grid grid-cols-[2rem_1fr]"><span class="font-display text-gold">4</span>Met de weg mee naar rechts de Noordkade op, en met de bocht mee naar links de Oostkade op.</li>
+          </ol>
+          <h3 class="mt-12 text-2xl">Parkeren</h3>
+          <ul class="mt-5 space-y-3 text-paper/80">
+            <li class="border-l border-gold pl-4">Achter het restaurant zijn een aantal eigen parkeerplaatsen.</li>
+            <li class="border-l border-gold pl-4">In de Theatergarage aan de Gorsstraat: neem uitgang P5, dan loopt u in 2 minuten naar het restaurant.</li>
+            <li class="border-l border-gold pl-4">Bij de grote kerk aan de Stationsstraat, op 200 meter lopen.</li>
+          </ul>
+          <p class="mt-8 text-sm text-paper/80">Weet u het even niet meer? Bel ons gerust op <a href={site.telHref} class="num underline underline-offset-4">{site.tel}</a>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
