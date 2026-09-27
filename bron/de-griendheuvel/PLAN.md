@@ -18,3 +18,6 @@ degriendheuvel.nl (alle pagina's), Google-profiel (4,5 uit 371), boerenvandordt.
 - Geen foto's van de oude site: die site verbiedt hergebruik zonder toestemming (fotograaf Marco Vink). Vlakken met [[AANLEVEREN]].
 - Menukaart niet gedownload van Google Drive; als [[AANLEVEREN]] opgenomen.
 - Geen Google Maps-embed: dan geen cookies en geen banner nodig. Knop naar Maps in plaats daarvan.
+
+## Sfeerfoto's (27-09-2026)
+Op verzoek van Michael sfeerfoto's van Unsplash (gratis licentie, ook commercieel, geen naamsvermelding verplicht). Bronnen per bestand: src/assets/BRONNEN.txt. Bij oplevering vervangen door eigen foto's van de klant.
