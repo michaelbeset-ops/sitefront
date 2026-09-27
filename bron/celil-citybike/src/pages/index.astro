@@ -1,0 +1,260 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reparaties } from '../data/site';
+import hero from '../assets/hero.jpg';
+import reparatie from '../assets/reparatie.jpg';
+import handen from '../assets/handen.jpg';
+import fietsen from '../assets/fietsen.jpg';
+import gracht from '../assets/gracht.jpg';
+import straat from '../assets/straat.jpg';
+
+// Compacte vorm voor het script: [getDay, open, dicht] in minuten.
+const minuten = (t: string) => { const [u, m] = t.split('.').map(Number); return u * 60 + m; };
+const rooster = tijden.map((t) => [t.dag, minuten(t.open), minuten(t.dicht), t.open, t.dicht]);
+---
+<Base
+  title="Celil CityBike | Fietsenwinkel en fietsenmaker in hartje Utrecht"
+  description="Fiets kopen, nieuw of tweedehands, en reparaties op dezelfde dag. Zonder afspraak binnenlopen op de Voorstraat 24 in Utrecht. Fietssleutel kwijt? Wij maken uw slot open."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: op mobiel de monteur achter een egale laag, op desktop tekst op grachtengroen met de foto tot de rand. -->
+    <section class="op-donker relative isolate overflow-hidden bg-ink text-white lg:bg-gracht">
+      <div class="absolute inset-0 -z-10 lg:left-auto lg:w-[50%]">
+        <Foto src={hero} alt="Monteur met muts en bril draait met een steeksleutel aan de trapas van een mountainbike in een werkplaats" hero sizes="(min-width: 1024px) 50vw, 100vw" class="object-[20%_center]" />
+        <div aria-hidden="true" class="absolute inset-0 bg-ink/75 lg:hidden"></div>
+      </div>
+      <div class="wrap grid pt-14 pb-12 sm:pt-20 lg:min-h-[36rem] lg:grid-cols-12 lg:items-center lg:py-20">
+        <div class="lg:col-span-6 lg:pr-6">
+          <p class="label text-mint">Reparatie op dezelfde dag</p>
+          <h1 class="mt-4 text-4xl">Fietsspecialist in hartje Utrecht</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/90">Een fiets kopen tegen een scherpe prijs, nieuw of tweedehands, en al uw reparaties en onderhoud. Wij verkopen en repareren alle merken fietsen.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-steen"><Icoon naam="whatsapp" />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-lijn"><Icoon naam="tel" /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strook: vandaag open tot (live), Google-score, adres. Drie feiten die iemand in WhatsApp als eerste zoekt. -->
+    <div class="border-b border-line bg-paper-deep">
+      <ul class="wrap grid divide-y divide-line sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+        <li class="flex items-center gap-3 py-4 sm:pr-6">
+          <span aria-hidden="true" id="nu-stip" class="size-2.5 flex-none rounded-full bg-gracht"></span>
+          <p id="nu" class="font-display text-lg leading-tight font-bold">Open ma t/m za vanaf <span class="whitespace-nowrap tabular-nums">9.00</span>, zondag <span class="whitespace-nowrap tabular-nums">13.00 tot 18.00</span></p>
+        </li>
+        <li class="py-4 sm:px-6">
+          <p class="font-display text-lg leading-tight font-bold"><span class="tabular-nums">{site.google.score}</span> op Google <span class="font-body text-sm font-normal text-ink-soft">({site.google.aantal} reviews)</span></p>
+        </li>
+        <li class="py-4 sm:pl-6">
+          <p class="font-display text-lg leading-tight font-bold">{site.straat} <span class="font-body text-sm font-normal text-ink-soft">zonder afspraak binnenlopen</span></p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Reparatie: kop en intro als krant, daaronder de lijst groot naast twee werkplaatsfoto's. -->
+    <section id="reparatie" class="wrap scroll-mt-20 py-16 lg:py-28">
+      <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-6">
+          <p class="label text-steen">Reparatie en onderhoud</p>
+          <h2 class="mt-3 text-3xl">Loop gewoon binnen, zonder afspraak</h2>
+        </div>
+        <div class="space-y-3 text-lg text-ink-soft lg:col-span-5 lg:col-start-8">
+          <p>Door onze snelle service zorgen wij dat reparaties op dezelfde dag worden uitgevoerd.</p>
+          <p class="text-base">Duurt een reparatie iets langer dan gepland, dan zorgen wij direct voor een passende oplossing.</p>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-8">
+        <div class="grid grid-cols-5 items-end gap-3 lg:col-span-5 lg:items-stretch">
+          <div class="col-span-3 aspect-[3/4] overflow-hidden rounded-xl lg:aspect-auto lg:h-full"><Foto src={reparatie} alt="Hand met een schroevendraaier stelt de velgrem van een racefiets af, in een werkplaats met gereedschap aan de wand" sizes="(min-width: 1024px) 270px, 60vw" class="object-[35%_center]" /></div>
+          <div class="col-span-2 aspect-[3/4] overflow-hidden rounded-xl lg:aspect-auto lg:h-3/5 lg:self-end"><Foto src={handen} alt="Twee handen draaien met een ratel een trapas uit een zwart fietsframe" sizes="(min-width: 1024px) 180px, 40vw" class="object-[55%_center]" /></div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pl-6">
+          <h3 class="text-xl">Waarvoor u bij ons terechtkunt</h3>
+          <ul class="mt-4 border-t-2 border-ink">
+            {reparaties.map((r) => (
+              <li class="flex items-baseline justify-between gap-4 border-b border-line py-3.5 font-display text-2xl font-semibold tracking-[-0.02em]">
+                {r}
+              </li>
+            ))}
+          </ul>
+          <p class="mt-4 font-display text-lg font-bold">Geen nood: wij repareren klein en groot.</p>
+          <div class="mt-8 rounded-xl bg-white p-5 shadow-sm ring-1 ring-line sm:flex sm:items-center sm:justify-between sm:gap-6">
+            <p><strong>Liever een afspraak?</strong> Geen punt. Stuur een bericht of bel even.</p>
+            <a href={site.whatsapp} class="btn btn-gracht mt-4 !py-2.5 whitespace-nowrap sm:mt-0"><Icoon naam="whatsapp" />WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fietsen kopen: donker grachtengroen, foto tot de rechterrand, nieuw en tweedehands als twee kolommen. -->
+    <section id="fietsen" class="op-donker relative scroll-mt-16 overflow-hidden bg-gracht text-white">
+      <div class="aspect-[16/10] sm:aspect-[21/9] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[42%]">
+        <Foto src={fietsen} alt="Drie zwarte stadsfietsen tegen een brugleuning boven een gracht, naast een gietijzeren lantaarnpaal" sizes="(min-width: 1024px) 42vw, 100vw" />
+      </div>
+      <div class="wrap grid py-16 lg:grid-cols-12 lg:py-28">
+        <div class="lg:col-span-7">
+          <p class="label text-mint">Fietsen kopen</p>
+          <h2 class="mt-3 text-3xl">Een fiets tegen een scherpe prijs</h2>
+          <p class="mt-5 max-w-lg text-lg text-white/90">Wij hebben voldoende voorraad fietsen in de winkel staan, en we verkopen alle merken.</p>
+          <div class="mt-12 grid gap-10 sm:grid-cols-2 sm:gap-8">
+            <div class="border-t-2 border-mint pt-5">
+              <h3 class="text-2xl">Nieuw</h3>
+              <p class="mt-3 text-white/85">Nieuwe fietsen van alle merken. Kom kijken in de winkel wat er op voorraad staat.</p>
+            </div>
+            <div class="border-t-2 border-mint pt-5">
+              <h3 class="text-2xl">Tweedehands</h3>
+              <p class="mt-3 text-white/85">Onze gebruikte fietsen worden vóór de verkoop technisch onder handen genomen. Zoekt u een betaalbare gebruikte fiets? Kom langs op de {site.straat}.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fietssleutel kwijt: het opvallendste blok, in baksteenrood. Een echte dienst die op de oude site diep verstopt zat. -->
+    <section id="sleutel" class="op-donker scroll-mt-16 bg-steen py-16 text-white lg:py-24">
+      <div class="wrap">
+        <h2 class="text-5xl">Fietssleutel kwijt?</h2>
+        <p class="mt-6 max-w-2xl font-display text-xl leading-snug font-semibold sm:text-2xl">Sleutel kwijt, een geforceerd fietsslot of een afgebroken sleutel? Geen zorgen.</p>
+
+        <div class="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-8">
+          <div class="aspect-[3/2] overflow-hidden rounded-xl lg:col-span-5 lg:aspect-auto">
+            <Foto src={gracht} alt="Zwarte damesfiets met een kettingslot vast aan een brugleuning boven een Utrechtse gracht" sizes="(min-width: 1024px) 440px, 100vw" />
+          </div>
+          <div class="lg:col-span-7 lg:pl-8">
+            <ol class="grid gap-8 sm:grid-cols-2">
+              <li class="border-t-2 border-white/80 pt-4">
+                <p class="label text-white/90">In de zaak</p>
+                <h3 class="mt-2 text-xl">Breng uw fiets langs</h3>
+                <p class="mt-2">Breng uw fiets naar ons op de {site.straat}, dan maken wij uw slot of sloten open.</p>
+              </li>
+              <li class="border-t-2 border-white/80 pt-4">
+                <p class="label text-white/90">Op straat</p>
+                <h3 class="mt-2 text-xl">Wij komen langs</h3>
+                <p class="mt-2">Staat uw fiets vast aan een paal, dan komen wij langs om het slot te openen. Op de openbare weg vragen wij om uw legitimatie: u moet kunnen aantonen dat de fiets van u is.</p>
+              </li>
+            </ol>
+            <div class="mt-10 space-y-3 border-l-2 border-white/80 pl-5 text-white/95">
+              <p>Wij raden u aan om bij de politie aangifte te doen van het zoekraken van uw sleutel of sleutels.</p>
+              <p>Ook voor nieuwe, goedgekeurde sloten kunt u bij ons terecht.</p>
+            </div>
+            <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={site.whatsapp} class="btn btn-papier"><Icoon naam="whatsapp" />Stuur een WhatsApp</a>
+              <a href={site.telHref} class="btn btn-lijn"><Icoon naam="tel" /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verhaal: tijdlijn in drie stappen, met het citaat van Celil ernaast. Alleen wat op zijn eigen Over ons-pagina staat. -->
+    <section id="verhaal" class="wrap scroll-mt-20 py-16 lg:py-28">
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="label text-steen">Over ons</p>
+          <h2 class="mt-3 text-3xl">Het verhaal van Celil</h2>
+          <figure class="mt-10">
+            <blockquote class="font-display text-2xl leading-tight font-semibold tracking-[-0.02em]">
+              <p>&ldquo;Voor mij is Nederland een mooi fietsland, waar je tegenwoordig met de fiets alles kunt bereiken.&rdquo;</p>
+            </blockquote>
+            <figcaption class="mt-4 text-sm text-ink-soft">Celil, eigenaar</figcaption>
+          </figure>
+        </div>
+        <ol class="relative border-l-2 border-gracht pl-8 lg:col-span-6 lg:col-start-7">
+          <li class="relative pb-10">
+            <span aria-hidden="true" class="absolute top-1.5 -left-[2.45rem] size-4 rounded-full border-2 border-gracht bg-paper"></span>
+            <h3 class="text-xl">Een technisch verleden</h3>
+            <p class="mt-2 text-ink-soft">Celil zag al vroeg dat er in Nederland veel gefietst werd. Met een technische achtergrond deed hij zijn ervaring op bij een fietsenzaak in Utrecht.</p>
+          </li>
+          <li class="relative pb-10">
+            <span aria-hidden="true" class="absolute top-1.5 -left-[2.45rem] size-4 rounded-full bg-steen"></span>
+            <p class="font-display text-2xl font-extrabold tracking-[-0.02em] whitespace-nowrap tabular-nums text-steen">11 april 2011</p>
+            <h3 class="mt-1 text-xl">Een eigen zaak op de Voorstraat</h3>
+            <p class="mt-2 text-ink-soft">In een drukke studentenstad als Utrecht koos hij voor een fietsenwinkel in het centrum. Samen met een goede vriend vestigde hij de zaak op de {site.straat}.</p>
+          </li>
+          <li class="relative">
+            <span aria-hidden="true" class="absolute top-1.5 -left-[2.45rem] size-4 rounded-full bg-gracht"></span>
+            <h3 class="text-xl">Snel en vriendelijk</h3>
+            <p class="mt-2 text-ink-soft">De zaak staat bij klanten bekend om de snelle service en de vriendelijkheid.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Openingstijden groot, vandaag gemarkeerd door het script. Route ernaast met de straatfoto. -->
+    <section id="open" class="scroll-mt-16 bg-paper-deep py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <h2 class="text-3xl">Openingstijden</h2>
+          <p class="mt-3 text-ink-soft">Iedere dag open, ook op zondag. Op donderdag is er koopavond tot <span class="whitespace-nowrap tabular-nums">20.00 uur</span>.</p>
+          <table class="mt-8 w-full border-t-2 border-ink">
+            <caption class="sr-only">Openingstijden per dag</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr data-dag={t.dag} class="group border-b border-line data-vandaag:bg-white">
+                  <th scope="row" class="py-3.5 pl-3 text-left align-baseline font-display text-lg font-bold sm:text-xl group-data-vandaag:border-l-4 group-data-vandaag:border-steen">
+                    {t.naam}
+                    <span class="hidden text-sm font-semibold text-steen group-data-vandaag:block sm:ml-1 sm:group-data-vandaag:inline">vandaag</span>
+                    {t.noot && <span class={`mt-1 block w-fit rounded-md px-2 py-0.5 whitespace-nowrap font-body text-xs font-medium text-white sm:ml-2 sm:inline-block sm:mt-0 ${t.dag === 0 ? 'bg-gracht' : 'bg-steen'}`}>{t.noot}</span>}
+                  </th>
+                  <td class="py-3.5 pr-3 text-right align-baseline font-display text-lg font-semibold whitespace-nowrap tabular-nums sm:text-xl">{t.open} tot {t.dicht}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="mt-4 text-sm text-ink-soft">Op feestdagen zijn wij gesloten.</p>
+        </div>
+        <div class="lg:col-span-4 lg:col-start-9">
+          <h2 class="text-2xl">Route</h2>
+          <address class="mt-4 font-display text-xl leading-snug font-semibold not-italic">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <a href={site.maps} rel="noopener" class="btn btn-gracht mt-6">Route plannen</a>
+          <div class="mt-8 aspect-[4/3] overflow-hidden rounded-xl"><Foto src={straat} alt="Zonnige straat met bakstenen gevels, een roze pand en een lange rij geparkeerde fietsen, met kerktorens op de achtergrond" sizes="(min-width: 1024px) 360px, 100vw" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact: geen formulier, de zaak is alleen telefonisch bereikbaar. -->
+    <section id="contact" class="op-donker scroll-mt-16 bg-ink py-16 text-white lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-6">
+          <h2 class="text-3xl">Een vraag? App of bel ons</h2>
+          <p class="mt-5 max-w-md text-lg text-white/85">Wij zijn alleen telefonisch bereikbaar. Voor een reparatie hoeft u niet te bellen: u loopt gewoon binnen.</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <a href={site.telHref} class="font-display text-3xl font-extrabold whitespace-nowrap tabular-nums underline decoration-mint decoration-2 underline-offset-8">{site.tel}</a>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-steen"><Icoon naam="whatsapp" />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-lijn"><Icoon naam="tel" />Bellen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+
+  <script is:inline define:vars={{ rooster }}>
+    // Vandaag open tot ...: berekend in Nederlandse tijd. Zonder script blijft de vaste tekst staan.
+    try {
+      const delen = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date());
+      const deel = (t) => delen.find((p) => p.type === t).value;
+      const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel('weekday'));
+      const nu = Number(deel('hour')) * 60 + Number(deel('minute'));
+      const r = rooster.find((x) => x[0] === dag);
+      const morgen = rooster.find((x) => x[0] === (dag + 1) % 7);
+      const tijd = (t) => `<span class="whitespace-nowrap tabular-nums">${t}</span>`;
+      let tekst, open = false;
+      if (nu < r[1]) tekst = `Vandaag open van ${tijd(r[3])} tot ${tijd(r[4])}`;
+      else if (nu < r[2]) { tekst = `Nu open, vandaag tot ${tijd(r[4])}`; open = true; }
+      else tekst = `Nu gesloten, morgen open vanaf ${tijd(morgen[3])}`;
+      document.getElementById('nu').innerHTML = tekst;
+      if (!open) document.getElementById('nu-stip').className = 'size-2.5 flex-none rounded-full bg-steen';
+      const rij = document.querySelector(`[data-dag="${dag}"]`);
+      if (rij) rij.setAttribute('data-vandaag', '');
+    } catch (e) {}
+  </script>
+</Base>

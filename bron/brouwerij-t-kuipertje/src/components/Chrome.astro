@@ -1,0 +1,37 @@
+---
+import { site, url } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const menu = [
+  ['tap', 'Op tap'],
+  ['brouwen', 'Brouwen'],
+  ['bieren', 'Bieren'],
+  ['feesten', 'Feesten'],
+  ['route', 'Route'],
+];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-schuim/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-baseline gap-2 no-underline">
+        <span class="font-display text-[1.6rem] leading-none font-extrabold tracking-[-0.02em]">'t Kuipertje</span>
+        <span class="hidden text-xs font-semibold text-ink-soft sm:inline">brouwerij en proeflokaal</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-6 text-sm font-semibold">
+          {menu.map(([id, naam]) => <li><a href={`${url('')}#${id}`} class="no-underline transition-colors hover:text-koper">{naam}</a></li>)}
+        </ul>
+      </nav>
+      <a href={site.telHref} class="btn btn-koper !px-4 !py-2 text-sm"><Icoon naam="tel" class="size-4" /><span>Bel<span class="hidden sm:inline"> Henk</span></span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-stout pb-10 text-grijs-licht">
+    <div class="wrap"><div class="flex flex-col gap-6 border-t border-line-licht pt-8 text-sm md:flex-row md:justify-between">
+      <p><strong class="font-display text-lg text-schuim">{site.naam}</strong><br />{site.straat}, {site.postcode} {site.plaats}<br />KvK <span class="text-grijs-licht">[[AANLEVEREN: KvK-nummer]]</span></p>
+      <p class="md:text-right">Wij schenken en verkopen alcohol alleen aan mensen van 18 jaar en ouder.<br /><a href={url('privacy/')} class="underline underline-offset-2 hover:text-schuim">Privacyverklaring</a></p></div>
+    </div>
+    {site.voorstel && <p class="wrap mt-6 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}
