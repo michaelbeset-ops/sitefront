@@ -1,0 +1,37 @@
+---
+import { site, url } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { deel: 'kop' | 'voet'; thuis?: boolean }
+const { deel, thuis = true } = Astro.props;
+const h = (a: string) => (thuis ? a : url('') + a);
+---
+{deel === 'kop' ? (
+  <header class="op-donker sticky top-0 z-40 border-b border-line-dark bg-ink text-white">
+    <div class="wrap flex h-16 items-center justify-between gap-3">
+      <a href={url('')} class="flex items-baseline gap-2 text-white no-underline">
+        <span class="font-display text-2xl font-black italic tracking-[0.02em]">SAS</span>
+        <span class="label hidden text-lime min-[360px]:inline">Autobedrijf</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-6 text-sm font-semibold">
+          <li><a href={h('#diensten')} class="no-underline transition-colors hover:text-lime">Diensten</a></li>
+          <li><a href={h('#afspraak')} class="no-underline transition-colors hover:text-lime">Afspraak</a></li>
+          <li><a href={h('#tijden')} class="no-underline transition-colors hover:text-lime">Openingstijden</a></li>
+          <li><a href={h('#contact')} class="no-underline transition-colors hover:text-lime">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-line hidden !px-3 !py-2 text-sm sm:inline-flex" aria-label={`Bel ${site.tel}`}><Icoon naam="tel" /><span class="hidden lg:inline">{site.tel}</span></a>
+        <a href={site.wa} class="btn btn-signal !px-3.5 !py-2 text-sm"><Icoon naam="app" />WhatsApp</a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker border-t border-line-dark bg-ink py-10 text-white/80">
+    <div class="wrap flex flex-col gap-6 text-sm md:flex-row md:justify-between">
+      <p><strong class="font-display text-lg text-white">{site.naam}</strong><br />{site.straat}, {site.postcode} {site.plaats}<br />KvK <span class="aanleveren">[[AANLEVEREN: KvK-nummer]]</span></p>
+      <p class="md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-6 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}
