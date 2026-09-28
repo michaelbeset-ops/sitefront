@@ -1,0 +1,32 @@
+---
+import { site, url } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const nav = [['#diensten', 'Diensten'], ['#leenauto', 'Leenauto'], ['#open', 'Openingstijden'], ['#contact', 'Contact']];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-3">
+      <a href={url('')} class="flex items-baseline gap-2 font-display text-xl font-bold tracking-[-0.04em] text-ink no-underline sm:text-2xl">
+        <span>De Schadegarage</span><span class="hidden text-sm font-semibold tracking-normal text-vuur min-[360px]:inline">Houten</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-medium">
+          {nav.map(([h, t]) => <li><a href={h} class="no-underline transition-colors hover:text-vuur">{t}</a></li>)}
+        </ul>
+      </nav>
+      <a href={site.telHref} class="btn btn-vuur shrink-0 !px-3.5 !py-2 text-sm" aria-label={`Bel ${site.tel}`}>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+        <span class="sm:hidden">Bel</span><span class="hidden whitespace-nowrap tabular-nums sm:inline">{site.tel}</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-ink py-10 text-white/80">
+    <div class="wrap flex flex-col gap-6 text-sm md:flex-row md:justify-between">
+      <p><strong class="font-display text-lg text-white">{site.naam}</strong><br />{site.straat}, {site.postcode} {site.plaats}<br />KvK [[AANLEVEREN: KvK-nummer]]</p>
+      <p class="md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-6 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}

@@ -48,3 +48,8 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autocorner Zuid-Beijerland | https://michaelbeset-ops.github.io/sitefront/autocorner-zuid-beijerland/ | 8/10: 5,0 uit 11, review 3 wkn; geen website. | 2026-09-28 | demo, bellen |
 | Autobedrijf Rob Poot, Vlaardingen | https://michaelbeset-ops.github.io/sitefront/autobedrijf-rob-poot/ | 8/10: 06, 4,4 uit 45, review 4 mnd; site schuift op mobiel. | 2026-09-28 | demo, WhatsApp |
 | Autobedrijf De Linge, Geldermalsen | https://michaelbeset-ops.github.io/sitefront/autobedrijf-de-linge/ | 8/10: Saab-specialist 40+ jaar, 4,5 uit 34, recent actief; site zonder viewport. | 2026-09-28 | demo, bellen/mail |
+| Garage E&M, Tiel | https://michaelbeset-ops.github.io/sitefront/garage-em/ | 8/10: 4,8 uit 61, review 3 mnd; site zonder viewport, geen diensten, occasions leeg. | 2026-09-28 | demo, bellen/mail |
+| Autobedrijf Heemskerk, Alphen a/d Rijn | https://michaelbeset-ops.github.io/sitefront/autobedrijf-heemskerk/ | 9/10: sinds 1969, 4,9 uit 23; site uit 2018, vaste breedte, kaart stuk. | 2026-09-28 | demo, bellen/mail |
+| De Schadegarage, Houten | https://michaelbeset-ops.github.io/sitefront/de-schadegarage-houten/ | 8/10: 4,6 uit 23, review 10 wkn; site is 1 tabelpagina zonder viewport. | 2026-09-28 | demo, bellen/mail |
+| De Chinese Muur, Alphen a/d Rijn | https://michaelbeset-ops.github.io/sitefront/de-chinese-muur-alphen/ | 8/10: familie Hu, 4,0 uit 305, actief; site zonder viewport, 12px tekst. | 2026-09-28 | demo, bellen/06 |
+| De Mandarijn, Voorburg | https://michaelbeset-ops.github.io/sitefront/de-mandarijn-voorburg/ | 8/10: 30+ jaar, 4,0 uit 209, actief; site zonder viewport, verouderde tapaspagina's. | 2026-09-28 | demo, bellen/mail |
