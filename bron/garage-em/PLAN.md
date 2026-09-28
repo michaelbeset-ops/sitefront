@@ -17,3 +17,13 @@ Route als routekiezer ("Waar komt u vandaan?": Maurik/Zoelen of A15/Tiel), met h
 - Stockfoto's hero/wiel/gereedschap weggehaald (andere merken zichtbaar, generiek); alleen banden.jpg (Unsplash) blijft.
 - Routekiezer: zonder JS staan beide routes onder elkaar.
 - Geen reviewcitaten (pas na akkoord).
+
+## Ronde 3 (28-09-2026): naar Heemskerk-niveau
+- Hero: sfeer.jpg (motorruimte onder werklicht, Unsplash) groot rechts achter een grafiet-verloop; hun E&M-logo als kop;
+  rechts een glazen kaart met Google 4,8 / 61 reviews, "nu open" en de tijden.
+- Eigen pandfoto valt als ingelijste kaart over de onderrand van de hero, met drie snelkoppelingen (01-03) naar de diensten.
+- In- en verkoop: verkoop.jpg groot (bijgesneden, merkbord weg, kenteken en raamsticker vervaagd).
+- APK en reparatie op grafiet: twee grote beeldkaarten (gereedschap.jpg, werk.jpg) met hun werkplaatsfoto als klein inzetje.
+- Nieuw: "Wat klanten noemen" (samenvatting Google-reviews, geen citaten). Offerte als stevige grafiet kaart.
+- Route: routekiezer blijft, rechts een adreskaart met tweede nu-open-indicatie en Google Maps.
+- banden.jpg eruit. Radius- en shadow-tokens (rounded-xl, shadow-sm) toegevoegd aan global.css.

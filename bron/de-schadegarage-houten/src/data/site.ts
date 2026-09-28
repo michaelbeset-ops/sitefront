@@ -1,5 +1,5 @@
 // Feiten van deschadegaragehouten.nl (enige pagina: diensten, gratis leenauto, openingstijden, adres, telefoon, e-mail)
-// en het Google-profiel "De Schadegarage" (4,6 uit 5, 23 reviews; opgehaald 28-09-2026). Verder niets bekend.
+// en het Google-profiel (plus de rode draad uit de reviews, zie noemen) "De Schadegarage" (4,6 uit 5, 23 reviews; opgehaald 28-09-2026). Verder niets bekend.
 export const site = {
   naam: 'De Schadegarage',
   naamSite: 'Schade Garage Houten',
@@ -20,7 +20,13 @@ export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/$
 // Precies de vier diensten van hun site. De omschrijving zegt alleen wat de dienst is, zonder beloftes.
 export const diensten = [
   { naam: 'Schadeherstel', tekst: 'Herstel van schade aan de carrosserie van uw auto.' },
-  { naam: 'Bumperreparaties', tekst: 'Reparatie van een beschadigde bumper.' },
+  { naam: 'Bumperreparaties', tekst: 'Reparatie van een beschadigde bumper, ook met spotrepair.' },
   { naam: 'Uitdeuken zonder spuiten', tekst: 'Een deuk uit de carrosserie halen, zonder dat er gespoten hoeft te worden.' },
   { naam: 'Onderhoud / APK', tekst: 'Onderhoud aan uw auto en de APK.' },
+];
+// Wat klanten in hun Google-reviews noemen (samenvatting, geen citaten, 28-09-2026).
+export const noemen = [
+  { kop: 'Snelle hulp', tekst: 'Klanten noemen dat ze snel geholpen werden.' },
+  { kop: 'Een vriendelijke, behulpzame eigenaar', tekst: 'De eigenaar wordt vriendelijk en behulpzaam genoemd.' },
+  { kop: 'Spotrepair voor een bumper', tekst: 'Klanten noemen bumperherstel met spotrepair, netjes en betaalbaar.' },
 ];

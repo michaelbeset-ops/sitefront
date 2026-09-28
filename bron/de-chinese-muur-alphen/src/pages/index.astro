@@ -5,10 +5,16 @@ import Foto from '../components/Foto.astro';
 import AfhaalMenu from '../components/AfhaalMenu.astro';
 import { Image } from 'astro:assets';
 import { site, tijden, catering, cateringBasis } from '../data/site';
-import hero from '../assets/hero.jpg';
+import wok from '../assets/wok.jpg';
+import bakje from '../assets/bakje.jpg';
+import spread from '../assets/spread.jpg';
+import afhalen from '../assets/afhalen.jpg';
 import interieur from '../assets/interieur.jpg';
 
 const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z';
+
+// Samenvatting van wat terugkomt in de Google-reviews (geen citaten, geen namen).
+const gasten = ['Verse groenten', 'Veel smaak', 'Attente bediening', 'Gezellige ambiance', 'Bezorging op tijd en goed warm', 'Gasten die al jaren terugkomen'];
 ---
 <Base
   title="De Chinese Muur | Chinees-Indisch restaurant in Alphen aan den Rijn"
@@ -16,17 +22,19 @@ const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4
 >
   <Chrome deel="kop" />
   <main id="inhoud">
-    <!-- Hero: bordeaux vlak met de tekst, de gedekte tafel loopt rechts tot de rand. Op mobiel eerst de foto, dan de tekst. -->
-    <section class="bg-wijn text-paper">
-      <div class="lg:grid lg:grid-cols-12">
-        <div class="h-56 overflow-hidden sm:h-72 lg:order-2 lg:col-span-5 lg:h-auto lg:min-h-[34rem]">
-          <Foto src={hero} alt="Tafel met schalen Aziatische gerechten: gebakken rijst met kroepoek en ei, saté in saus, soep en witte rijst" hero sizes="(min-width: 1024px) 50vw, 100vw" />
-        </div>
-        <div class="relative px-5 py-10 sm:px-8 lg:col-span-7 lg:flex lg:flex-col lg:justify-center lg:py-20 lg:pr-36 lg:pl-[max(2rem,calc((100vw-74rem)/2+2rem))]">
-          <p lang="zh-Hant" aria-hidden="true" class="cjk absolute top-1/2 right-12 hidden -translate-y-1/2 text-[3.4rem] text-oker [writing-mode:vertical-rl] lg:block">長城酒樓</p>
-          <p class="kicker text-oker">Chinees Indisch Restaurant in Alphen aan den Rijn</p>
-          <h1 class="mt-4 text-4xl">Chinees-Indisch en Chinese specialiteiten, van de familie Hu</h1>
-          <p class="mt-5 max-w-xl text-lg text-paper/85">Al tientallen jaren in Alphen aan den Rijn. Eet bij ons in het restaurant, haal af of laat bezorgen.</p>
+    <!-- Hero: diep wijnrood, rechts de wok boven het vuur die in het vlak overloopt; eigen restaurantfoto als kaart over de onderrand. -->
+    <section class="relative bg-wijn-deep text-paper">
+      <div class="relative h-60 overflow-hidden sm:h-80 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[62%]">
+        <Foto src={wok} alt="Kok die in een wok roert boven hoge vlammen, in een restaurantkeuken (sfeerfoto)" hero sizes="(min-width: 1024px) 62vw, 100vw" class="object-[40%_30%]" />
+        <div aria-hidden="true" class="absolute inset-0 bg-linear-to-t from-wijn-deep via-wijn-deep/10 to-transparent lg:bg-linear-to-r lg:from-wijn-deep lg:via-wijn-deep/55 lg:to-wijn-deep/5"></div>
+      </div>
+
+      <div class="wrap relative pb-0 lg:grid lg:min-h-[40rem] lg:grid-cols-12 lg:items-center lg:pt-16 lg:pb-28">
+        <div class="relative -mt-10 lg:col-span-7 lg:mt-0">
+          <p lang="zh-Hant" aria-hidden="true" class="cjk absolute top-2 -right-24 hidden text-[3.4rem] text-oker [writing-mode:vertical-rl] lg:block">長城酒樓</p>
+          <p class="kicker text-oker">Familie Hu · Alphen aan den Rijn</p>
+          <h1 class="mt-4 text-5xl">Chinees-Indisch en Chinese specialiteiten</h1>
+          <p class="mt-6 max-w-xl text-lg text-paper/85">Al tientallen jaren in Alphen aan den Rijn. Eet bij ons in het restaurant, haal af of laat bezorgen.</p>
           <div class="mt-8 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap">
             <a href={site.bestellen} rel="noopener" class="btn btn-oker">Online bestellen</a>
             <a href={site.telHref} class="btn btn-line text-paper">
@@ -34,42 +42,103 @@ const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4
               Bel <span class="num">{site.tel}</span>
             </a>
           </div>
-          <dl class="mt-9 grid grid-cols-2 gap-4 border-t border-paper/20 pt-6 text-sm sm:max-w-md">
-            <div><dt class="text-paper/75">Google</dt><dd class="mt-1 text-paper"><strong class="font-display text-2xl font-semibold text-oker">4,0</strong> <span class="num">(305 reviews)</span></dd></div>
-            <div><dt class="text-paper/75">Elke dag open</dt><dd class="mt-1 text-paper">vanaf <strong class="num font-display text-2xl font-semibold text-oker">16:00</strong></dd></div>
+          <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-paper/20 pt-6 text-sm sm:grid-cols-3 sm:max-w-xl">
+            <div><dt class="text-paper/75">Google</dt><dd class="mt-1"><strong class="font-display text-2xl font-semibold text-oker">4,0</strong> <span class="num">(305 reviews)</span></dd></div>
+            <div><dt class="text-paper/75">Elke dag open</dt><dd class="mt-1">vanaf <strong class="num font-display text-2xl font-semibold text-oker">16:00</strong></dd></div>
+            <div class="col-span-2 sm:col-span-1"><dt class="text-paper/75">Gratis kroepoek bij afhalen</dt><dd class="mt-1">vanaf <strong class="num font-display text-2xl font-semibold text-oker">€ 35</strong></dd></div>
           </dl>
+        </div>
+      </div>
+
+      <!-- Eigen foto (640 px) als kaart: niet groter dan de eigen breedte. -->
+      <figure class="wrap relative z-10 mt-10 -mb-24 lg:absolute lg:right-[max(2rem,calc((100vw-74rem)/2+2rem))] lg:bottom-0 lg:mt-0 lg:mb-0 lg:w-[25rem] lg:translate-y-[38%] lg:px-0">
+        <div class="max-w-sm rounded-xl bg-paper p-2.5 text-ink shadow-[0_18px_40px_-12px_#2a081180] lg:max-w-none">
+          <Image src={interieur} alt="Ons restaurant: gedekte tafels, glazen scheidingswand met vogels en een schildering van bloesem aan de muur" widths={[400, 640]} sizes="(min-width: 1024px) 400px, 384px" format="webp" quality={78} loading="eager" class="block aspect-[4/3] h-auto w-full rounded-lg object-cover" />
+          <figcaption class="flex items-baseline justify-between gap-3 px-1.5 pt-3 pb-1">
+            <span><span class="block text-sm font-bold">Ons restaurant</span><span class="block text-xs text-ink-soft">{site.straat}, {site.plaats}</span></span>
+            <span lang="zh-Hant" aria-hidden="true" class="cjk text-base text-bordeaux">長城酒樓</span>
+          </figcaption>
+        </div>
+      </figure>
+    </section>
+
+    <!-- Wat gasten noemen: samenvatting van de Google-reviews, links; rechts valt de kaart uit de hero in dit vlak. -->
+    <section aria-labelledby="gasten-kop" class="licht pt-36 pb-14 lg:pt-20 lg:pb-24">
+      <div class="wrap grid lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="kicker text-bordeaux">Wat gasten noemen</p>
+          <h2 id="gasten-kop" class="mt-3 text-3xl">Waar gasten ons om waarderen</h2>
+          <ol class="mt-8 grid border-t border-line sm:grid-cols-2 sm:gap-x-10">
+            {gasten.map((g, i) => (
+              <li class="flex items-baseline gap-4 border-b border-line py-4">
+                <span class="num font-display text-sm font-bold text-bordeaux">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-lg font-semibold leading-snug">{g}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-5 text-sm text-ink-soft">Samengevat uit de 305 Google-reviews, gemiddeld <span class="num">4,0</span> uit 5.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Afhalen en bezorgen: groot beeld links tot de rand, voorwaarden rechts op donker. -->
+    <section aria-labelledby="bezorg-kop" class="bg-wijn text-paper">
+      <div class="lg:grid lg:grid-cols-12">
+        <div class="h-72 sm:h-96 lg:col-span-6 lg:h-auto lg:min-h-[36rem]">
+          <Foto src={bakje} alt="Noedels met groente in een wit afhaalbakje, met stokjes erop (sfeerfoto)" sizes="(min-width: 1024px) 50vw, 100vw" class="object-[50%_60%]" />
+        </div>
+        <div class="px-5 py-12 sm:px-8 lg:col-span-6 lg:py-20 lg:pr-[max(2rem,calc((100vw-74rem)/2+2rem))] lg:pl-14">
+          <p class="kicker text-oker">Afhalen en bezorgen</p>
+          <h2 id="bezorg-kop" class="mt-3 text-3xl">Zelf ophalen, of wij brengen het</h2>
+          <ul class="mt-8 divide-y divide-paper/20 border-y border-paper/20">
+            <li class="grid gap-1 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
+              <h3 class="text-xl">Afhalen</h3>
+              <p class="text-paper/85">Gratis kroepoek boven <span class="num">€ 35</span>. Boven <span class="num">€ 65</span> ook 10 miniloempia’s, boven <span class="num">€ 100</span> 20 miniloempia’s.</p>
+            </li>
+            <li class="grid gap-1 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
+              <h3 class="text-xl">In Alphen</h3>
+              <p class="text-paper/85">Bezorgen bij bestellingen boven <span class="num">€ 15</span>, bezorgkosten <span class="num">€ 3,00</span>.</p>
+            </li>
+            <li class="grid gap-1 py-5 sm:grid-cols-[10rem_1fr] sm:gap-6">
+              <h3 class="text-xl">Buiten Alphen</h3>
+              <p class="text-paper/85">Bezorgen vanaf <span class="num">€ 30</span>, bezorgkosten <span class="num">€ 4,50</span>. U vindt ons ook op Thuisbezorgd.nl.</p>
+            </li>
+          </ul>
+          <div class="mt-8 flex flex-col gap-3 min-[400px]:flex-row min-[400px]:flex-wrap">
+            <a href={site.bestellen} rel="noopener" class="btn btn-oker">Online bestellen</a>
+            <a href="#afhalen" class="btn btn-line text-paper">Bekijk het afhaalmenu</a>
+          </div>
+          <p class="mt-5 text-sm text-paper/80">Het voordeel geldt alleen bij afhalen, niet bij bezorgen.</p>
         </div>
       </div>
     </section>
 
     <AfhaalMenu />
 
-    <!-- Restaurant: eigen foto van de zaal links, tekst en twee prijsregels rechts, op een tweede licht vlak. -->
-    <section id="restaurant" class="licht scroll-mt-16 bg-schelp py-14 lg:py-20">
-      <div class="wrap grid gap-10 lg:grid-cols-12 lg:items-center">
-        <figure class="lg:col-span-6">
-          <div class="max-w-[640px] overflow-hidden rounded-xl shadow-[0_1px_2px_#24151a33]">
-            <Image src={interieur} alt="Het restaurant van De Chinese Muur" widths={[480, 640]} sizes="(min-width: 700px) 640px, 100vw" format="webp" quality={78} loading="lazy" class="block h-auto w-full" />
-          </div>
-        </figure>
-        <div class="lg:col-span-6">
+    <!-- Restaurant: grote tafelfoto tot de linkerrand, tekst en prijzen rechts op het tweede lichte vlak. -->
+    <section id="restaurant" class="licht scroll-mt-16 bg-schelp">
+      <div class="lg:grid lg:grid-cols-12">
+        <div class="h-72 sm:h-[26rem] lg:col-span-6 lg:h-auto lg:min-h-[40rem]">
+          <Foto src={spread} alt="Tafel met schalen Indische gerechten: gebakken rijst met kroepoek en ei, saté in saus, soep en witte rijst (sfeerfoto)" sizes="(min-width: 1024px) 50vw, 100vw" />
+        </div>
+        <div class="px-5 py-12 sm:px-8 lg:col-span-6 lg:flex lg:flex-col lg:justify-center lg:py-20 lg:pr-[max(2rem,calc((100vw-74rem)/2+2rem))] lg:pl-14">
           <p class="kicker text-bordeaux">Restaurant</p>
           <h2 class="mt-3 text-3xl">Aan tafel, à la carte of met het keuzemenu</h2>
           <p class="mt-5 text-lg text-ink-soft">Wordt de keuze u te moeilijk, of houdt u van een verrassing? Ons personeel en onze koks bevelen graag een gerecht aan dat bij uw smaak past, en maken het voor u klaar.</p>
-          <ul class="mt-8 divide-y divide-line border-y border-line">
-            <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-5">
+          <ul class="mt-8 space-y-3">
+            <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 rounded-xl bg-paper p-5 shadow-sm">
               <h3 class="text-xl">5-gangen keuzemenu</h3>
-              <p class="num font-display text-xl font-bold text-bordeaux">€33 p.p.</p>
+              <p class="num font-display text-2xl font-bold text-bordeaux">€33 p.p.</p>
             </li>
-            <li class="py-5">
+            <li class="rounded-xl bg-paper p-5 shadow-sm">
               <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
                 <h3 class="text-xl">Lopend buffet</h3>
-                <p class="num font-display text-xl font-bold text-bordeaux">€20 p.p.</p>
+                <p class="num font-display text-2xl font-bold text-bordeaux">€20 p.p.</p>
               </div>
               <p class="mt-2 text-ink-soft">Op aanvraag, voor groepen vanaf 10 personen en alleen op reservering. Samen met onze chef bepaalt u welke en hoeveel gerechten erin komen. Vraag gerust een vrijblijvende offerte; we stellen het zeer op prijs als u even langskomt om de mogelijkheden te bespreken.</p>
             </li>
           </ul>
-          <a href={site.telHref} class="btn btn-bordeaux mt-8">
+          <a href={site.telHref} class="btn btn-bordeaux mt-8 self-start">
             <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0" fill="currentColor"><path d={belIcoon} /></svg>
             Reserveren: <span class="num">{site.tel}</span>
           </a>
@@ -77,33 +146,40 @@ const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4
       </div>
     </section>
 
-    <!-- Catering: donker vlak. Wat in elk menu zit staat één keer, per menu alleen wat erbij komt. -->
-    <section id="catering" class="scroll-mt-16 bg-wijn py-14 text-paper lg:py-20">
-      <div class="wrap grid gap-10 lg:grid-cols-12">
-        <div class="lg:col-span-4">
-          <p class="kicker text-oker">Catering</p>
-          <h2 class="mt-3 text-3xl">Voor uw personeels- of familiefeest</h2>
-          <p class="mt-5 text-paper/85">Drie cateringmenu’s om u op weg te helpen, vanaf 10 personen. Gerechten wijzigen of toevoegen kan, net als een menu op maat. Op aanvraag leent u ook servies en bestek, of huurt u personeel in.</p>
-          <a href={site.telHref} class="btn btn-oker mt-7">Bel <span class="num">{site.tel}</span></a>
-        </div>
-        <div class="lg:col-span-8">
-          <p class="rounded-xl bg-wijn-deep px-5 py-4"><span class="kicker text-oker-soft">In elk menu</span><br />{cateringBasis.join(', ').replace(/^./, (c) => c.toUpperCase())}.</p>
-          <div class="mt-px grid gap-px overflow-hidden rounded-xl bg-paper/15 md:grid-cols-3">
-            {catering.map((m) => (
-              <article class="bg-wijn p-5 md:p-6">
-                <h3 class="text-xl">{m.naam}</h3>
-                <p class="mt-1"><span class="num font-display text-3xl font-bold text-oker">{m.prijs}</span> <span class="text-sm text-paper/85">per persoon</span></p>
-                <p class="kicker mt-4 text-xs text-oker-soft">Plus</p>
-                <ul class="mt-1.5 space-y-1">{m.extra.map((g) => <li>{g}</li>)}</ul>
-              </article>
-            ))}
+    <!-- Catering: donker vlak, tekst naast een brede foto, daaronder de drie menu's. -->
+    <section id="catering" class="scroll-mt-16 bg-wijn py-14 text-paper lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div class="lg:col-span-5">
+            <p class="kicker text-oker">Catering</p>
+            <h2 class="mt-3 text-3xl">Voor uw personeels- of familiefeest</h2>
+            <p class="mt-5 text-lg text-paper/85">Drie cateringmenu’s om u op weg te helpen, vanaf 10 personen. Gerechten wijzigen of toevoegen kan, net als een menu op maat. Op aanvraag leent u ook servies en bestek, of huurt u personeel in.</p>
+            <a href={site.telHref} class="btn btn-oker mt-7">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0" fill="currentColor"><path d={belIcoon} /></svg>
+              Bel <span class="num">{site.tel}</span>
+            </a>
           </div>
+          <div class="h-64 overflow-hidden rounded-xl sm:h-96 lg:col-span-7 lg:h-[28rem]">
+            <Foto src={afhalen} alt="Bovenaanzicht van een tafel vol bakjes en schalen eten waar meerdere mensen van eten (sfeerfoto)" sizes="(min-width: 1024px) 700px, 100vw" />
+          </div>
+        </div>
+
+        <p class="mt-12 rounded-t-xl bg-wijn-deep px-5 py-4"><span class="kicker text-oker-soft">In elk menu</span><br />{cateringBasis.join(', ').replace(/^./, (c) => c.toUpperCase())}.</p>
+        <div class="grid gap-px overflow-hidden rounded-b-xl bg-paper/15 md:grid-cols-3">
+          {catering.map((m) => (
+            <article class="bg-wijn-deep/60 p-5 md:p-7">
+              <h3 class="text-xl">{m.naam}</h3>
+              <p class="mt-1"><span class="num font-display text-4xl font-bold text-oker">{m.prijs}</span> <span class="text-sm text-paper/85">per persoon</span></p>
+              <p class="kicker mt-5 text-xs text-oker-soft">Plus</p>
+              <ul class="mt-1.5 space-y-1">{m.extra.map((g) => <li>{g}</li>)}</ul>
+            </article>
+          ))}
         </div>
       </div>
     </section>
 
     <!-- Contact: tijden als tabel, adres en bereikbaarheid ernaast. -->
-    <section id="contact" class="licht scroll-mt-16 py-14 lg:py-20">
+    <section id="contact" class="licht scroll-mt-16 py-14 lg:py-24">
       <div class="wrap grid gap-12 lg:grid-cols-12">
         <div class="lg:col-span-5">
           <p class="kicker text-bordeaux">Contact</p>
@@ -122,24 +198,24 @@ const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4
           <p class="mt-5 text-sm text-ink-soft">Voor een reservering of vraag op korte termijn kunt u het beste bellen.</p>
         </div>
 
-        <div class="grid gap-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
-          <div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+          <div class="rounded-xl bg-schelp p-6">
             <h3 class="text-xl">Adres</h3>
             <address class="mt-3 not-italic">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
             <a href={site.maps} rel="noopener" class="btn btn-line-donker mt-5 px-4 py-2 text-sm">Route plannen</a>
           </div>
-          <div>
+          <div class="rounded-xl bg-schelp p-6">
             <h3 class="text-xl">Telefoon</h3>
             <p class="mt-3"><a href={site.telHref} class="num font-display text-2xl font-bold text-bordeaux underline decoration-2 underline-offset-4">{site.tel}</a></p>
             <p class="mt-2 text-ink-soft">Mobiel: <a href={site.mobielHref} class="num text-ink underline underline-offset-2">{site.mobiel}</a></p>
           </div>
-          <div>
+          <div class="rounded-xl bg-schelp p-6">
             <h3 class="text-xl">Parkeren en OV</h3>
             <p class="mt-3 text-ink-soft">Gratis parkeren voor de deur en rondom het restaurant. Met het openbaar vervoer bent u er makkelijk vanaf het station.</p>
           </div>
-          <div>
-            <h3 class="text-xl">Bezorgen</h3>
-            <p class="mt-3 text-ink-soft">Binnen Alphen boven <span class="num">€ 15</span> (kosten <span class="num">€ 3,00</span>), buiten Alphen vanaf <span class="num">€ 30</span> (kosten <span class="num">€ 4,50</span>). U vindt ons ook op Thuisbezorgd.nl.</p>
+          <div class="rounded-xl bg-schelp p-6">
+            <h3 class="text-xl">Online</h3>
+            <p class="mt-3 text-ink-soft">Bestel via onze eigen bestelpagina of via Thuisbezorgd.nl.</p>
             <p class="mt-3"><a href={site.bestellen} rel="noopener" class="font-semibold text-bordeaux underline underline-offset-2">Online bestellen</a> · <a href={site.facebook} rel="noopener" class="underline underline-offset-2">Facebook</a></p>
           </div>
         </div>

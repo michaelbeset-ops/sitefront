@@ -7,10 +7,26 @@ import { Image } from 'astro:assets';
 import interieur from '../assets/interieur.jpg';
 import logo from '../assets/logo.png';
 import Kaart from '../components/Kaart.astro';
-import { rijstNoot, toeslagen } from '../data/menu';
-import wok from '../assets/wok.jpg';
+import { rijstNoot, toeslagen, specialiteiten } from '../data/menu';
+import lampionnen from '../assets/lampionnen.jpg';
+import wokGroente from '../assets/wok-groente.jpg';
+import kok from '../assets/kok.jpg';
+import rijstVlees from '../assets/rijst-vlees.jpg';
 import indisch from '../assets/indisch.jpg';
 const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>';
+const tel = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4 shrink-0" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>';
+const eendGerecht = specialiteiten.find((g) => g.nr === '13')!;
+const monKoeAp = specialiteiten.find((g) => g.nr === '5')!;
+const troeven = [
+  { t: 'À la carte in het restaurant', b: 'Op alle dagen van de week behalve dinsdag, met Chinese, Kantonese en Indische gerechten.' },
+  { t: 'Een eigen afhaalruimte', b: 'Naast het restaurant. Alle gerechten kunt u ook meenemen en thuis eten.' },
+  { t: 'Gratis parkeren', b: 'Voldoende gratis parkeergelegenheid, aan de Klaverweide naast de Hoogvliet.' },
+];
+const klanten = [
+  { t: 'Afhalen op tijd klaar', b: 'Wie een bestelling ophaalt, noemt dat die altijd precies op tijd klaar staat.' },
+  { t: 'Lekker eten', b: 'Het eten zelf wordt in de reviews lekker genoemd.' },
+  { t: 'Vriendelijke mensen', b: 'Klanten noemen de mensen achter de zaak erg aardig.' },
+];
 ---
 <Base
   title="De Mandarijn | Chinees Indisch restaurant in Voorburg"
@@ -18,43 +34,91 @@ const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-
 >
   <Chrome deel="kop" />
   <main id="inhoud">
-    <!-- Hun eigen zaal als hero: de eigenaar herkent de lampionnen en het bloemstuk direct. Logo als beeldmerk erop. -->
-    <section class="wrap grid gap-8 pb-14 pt-5 lg:grid-cols-12 lg:items-center lg:gap-12 lg:pb-24 lg:pt-14">
-      <div class="relative lg:order-2 lg:col-span-7">
-        <div class="aspect-[4/3] overflow-hidden rounded-[1.5rem] shadow-[0_1px_2px_#13201c1f]">
-          <Foto src={interieur} alt="Het restaurant van binnen: rode lampionnen, een groot bloemstuk en gedekte ronde tafels met draaiplateau" hero sizes="(min-width: 1024px) 680px, 100vw" />
-        </div>
-        <Image src={logo} alt="" width={96} height={96} densities={[1, 1.5]} class="absolute -bottom-6 left-4 h-20 w-20 rounded-full ring-4 ring-paper sm:h-24 sm:w-24 lg:-left-8 lg:bottom-8 lg:h-24 lg:w-24" loading="eager" />
+    <!-- Hero: diep jade met de gloed van lampionnen (stock). Hun eigen zaal valt er onderaan overheen. -->
+    <section class="op-jade relative isolate overflow-hidden bg-jade text-paper">
+      <div class="absolute inset-0 -z-10 lg:left-auto lg:w-[60%]">
+        <Foto src={lampionnen} alt="" hero sizes="(min-width: 1024px) 60vw, 100vw" class="object-[30%_center]" />
+        <div class="absolute inset-0 bg-jade/85 lg:bg-transparent lg:bg-linear-to-r lg:from-jade lg:via-jade/55 lg:to-jade/5"></div>
+        <div class="absolute inset-x-0 bottom-0 hidden h-40 bg-linear-to-t from-jade to-transparent lg:block"></div>
       </div>
-      <div class="pt-4 lg:order-1 lg:col-span-5 lg:pt-0">
-        <p class="text-sm font-semibold uppercase tracking-[0.14em] text-schil-diep">Chinees Indisch restaurant in Voorburg</p>
-        <h1 class="mt-4 text-4xl text-jade">Chinees en Indisch eten, al meer dan 30 jaar in Voorburg</h1>
-        <p class="mt-6 max-w-xl text-lg text-ink-soft">De Mandarijn staat voor genieten in een gezellige en informele sfeer, van Chinese en Kantonese gerechten tot Indische specialiteiten. U vindt ons naast de Hoogvliet.</p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href={site.telHref} class="btn btn-jade justify-center">Reserveer: <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
-          <a href="#kaart" class="btn btn-line justify-center text-jade">Bekijk de kaart</a>
+      <div class="wrap grid gap-10 pb-28 pt-10 sm:pt-14 lg:grid-cols-12 lg:pb-64 lg:pt-20">
+        <div class="lg:col-span-8">
+          <div class="flex items-center gap-4">
+            <Image src={logo} alt="Logo van De Mandarijn" width={64} height={64} densities={[1, 2]} class="h-14 w-14 rounded-full ring-2 ring-paper/40 sm:h-16 sm:w-16" loading="eager" />
+            <p class="kicker text-schil">Chinees Indisch restaurant<br class="sm:hidden" /> in Voorburg</p>
+          </div>
+          <h1 class="mt-7 text-[clamp(2.5rem,4.4vw+0.8rem,4.6rem)] leading-[1] text-white">Chinees en Indisch eten, al meer dan 30 jaar in Voorburg</h1>
+          <p class="mt-7 max-w-xl text-lg text-paper/90">De Mandarijn staat voor genieten in een gezellige en informele sfeer, van Chinese en Kantonese gerechten tot Indische specialiteiten.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-schil justify-center"><Fragment set:html={tel} /><span>Reserveer: <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href="#kaart" class="btn btn-line justify-center">Bekijk de kaart</a>
+          </div>
         </div>
-        <p class="mt-6 text-sm text-ink-soft"><strong class="text-ink">4,0</strong> op Google (209 reviews) · open vanaf <span class="whitespace-nowrap tabular-nums">16:00</span> · dinsdag gesloten</p>
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 self-end rounded-xl bg-nacht/80 p-6 text-sm shadow-sm ring-1 ring-paper/15 backdrop-blur-sm lg:col-span-4 lg:col-start-9 lg:grid-cols-1 lg:p-7 lg:mb-2">
+          <div><dt class="text-paper/80">Google</dt><dd class="mt-0.5"><strong class="font-display text-3xl font-semibold text-white">4,0</strong> <span class="text-paper/85">(209 reviews)</span></dd></div>
+          <div><dt class="text-paper/80">Elke dag open, behalve dinsdag</dt><dd class="mt-0.5 font-display text-2xl font-semibold whitespace-nowrap text-white tabular-nums">16:00 tot 21:00</dd></div>
+          <div class="border-t border-paper/20 pt-5 sm:col-span-2 lg:col-span-1"><dt class="text-paper/80">Adres</dt><dd class="mt-0.5 text-base text-white">{site.straat}, naast de Hoogvliet</dd></div>
+        </dl>
       </div>
+    </section>
+
+    <!-- Hun eigen zaal groot over de rand; logo als zegel. Links hun eigen zin over de kaart. -->
+    <section class="wrap grid gap-10 pb-16 lg:grid-cols-12 lg:gap-12 lg:pb-24">
+      <figure class="relative -mt-20 lg:order-2 lg:col-span-8 lg:-mt-48">
+        <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-[0_24px_60px_-20px_#0c171499] sm:aspect-[16/10]">
+          <Foto src={interieur} alt="Ons restaurant van binnen: rode lampionnen, een groot bloemstuk en gedekte ronde tafels met draaiplateau" sizes="(min-width: 1024px) 760px, 100vw" />
+        </div>
+        <Image src={logo} alt="" width={112} height={112} densities={[1, 1.35]} class="absolute -bottom-7 right-5 h-20 w-20 rounded-full shadow-sm ring-4 ring-paper sm:h-28 sm:w-28 lg:-left-10 lg:right-auto lg:bottom-10" />
+        <figcaption class="absolute left-4 top-4 rounded-full bg-nacht/85 px-3.5 py-1.5 text-sm font-medium text-white backdrop-blur-sm">Het restaurant, Klaverweide 64-66</figcaption>
+      </figure>
+      <div class="flex flex-col justify-end lg:order-1 lg:col-span-4 lg:pt-16">
+        <h2 class="kicker text-schil-diep" style="font-family:var(--font-body);letter-spacing:0.14em;line-height:1.4">Over De Mandarijn</h2>
+        <p class="mt-4 font-display text-[clamp(1.6rem,2.2vw+0.8rem,2.2rem)] italic leading-tight text-jade">"Op onze kaart staan alleen gerechten die we zelf ook lekker vinden."</p>
+        <p class="mt-5 text-ink-soft">Laat u er niet van weerhouden om bij deze "Chinees" ook een Indische specialiteit te proberen.</p>
+      </div>
+      <ol class="grid gap-px overflow-hidden rounded-xl bg-line ring-1 ring-line sm:grid-cols-3 lg:order-3 lg:col-span-12 lg:mt-4">
+        {troeven.map((x, i) => (
+          <li class="bg-paper p-6 lg:p-8">
+            <span class="font-display text-lg font-semibold text-schil-diep tabular-nums">0{i + 1}</span>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight text-jade">{x.t}</h3>
+            <p class="mt-2 text-ink-soft">{x.b}</p>
+          </li>
+        ))}
+      </ol>
     </section>
 
     <section id="kaart" class="scroll-mt-20 bg-rijst py-16 lg:py-24">
       <div class="wrap">
-        <div class="grid gap-8 lg:grid-cols-12">
-          <div class="lg:col-span-6">
-            <p class="text-sm font-semibold uppercase tracking-[0.14em] text-schil-diep">Uit de afhaalkaart van december 2025</p>
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-schil-diep">Uit de afhaalkaart van december 2025</p>
             <h2 class="mt-4 text-3xl text-jade">Specialiteiten en favorieten van de kaart</h2>
           </div>
-          <p class="border-l-4 border-schil-diep pl-5 font-display text-2xl italic leading-snug text-jade lg:col-span-5 lg:col-start-8 lg:self-end">Op onze kaart staan alleen gerechten die we zelf ook lekker vinden.</p>
+          <p class="text-ink-soft lg:col-span-4 lg:col-start-9">Zoek op naam, ingrediënt of nummer, en zet de glutenvrij-info aan als u daarop let.</p>
         </div>
 
-        <div class="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12">
+        <!-- Uitgelicht: de eend van het huis -->
+        <article class="mt-10 grid lg:mt-14 lg:grid-cols-12 lg:items-center">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl lg:col-span-8 lg:col-start-1 lg:row-start-1 lg:aspect-[3/2]">
+            <Foto src={rijstVlees} alt="Bord met witte rijst en plakken geroosterd vlees (sfeerfoto)" sizes="(min-width: 1024px) 680px, 100vw" />
+          </div>
+          <div class="relative z-10 mx-4 -mt-16 rounded-xl bg-white p-6 shadow-sm ring-1 ring-line sm:mx-8 sm:p-8 lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:mx-0 lg:mt-0 lg:p-10">
+            <p class="kicker text-schil-diep">Specialiteit van het huis <span class="tabular-nums">nr. {eendGerecht.nr}</span></p>
+            <h3 class="mt-3 text-2xl text-jade">Geroosterde eend à la "De Mandarijn"</h3>
+            <p class="mt-3 text-lg text-ink-soft">{eendGerecht.omschrijving[0].toUpperCase() + eendGerecht.omschrijving!.slice(1)}.</p>
+            <p class="mt-5 flex items-baseline gap-3 border-t border-line pt-5"><span class="font-display text-3xl font-semibold whitespace-nowrap text-jade tabular-nums">€ {eendGerecht.prijs}</span><span class="text-sm text-ink-soft">inclusief witte rijst</span></p>
+            <p class="mt-4 text-sm text-ink-soft">Liever in een zoete saus? <strong class="font-semibold text-ink">{monKoeAp.naam}</strong> ({monKoeAp.nr}): {monKoeAp.omschrijving}, <span class="whitespace-nowrap tabular-nums">€ {monKoeAp.prijs}</span>.</p>
+            <a href="#kaartapp" data-kaartzoek="eend" class="btn btn-jade mt-6">Alle eendgerechten op de kaart</a>
+          </div>
+        </article>
+
+        <div class="mt-14 grid gap-10 lg:mt-20 lg:grid-cols-12">
           <div class="lg:col-span-8 lg:order-2">
             <Kaart />
           </div>
           <aside class="lg:col-span-4 lg:order-1" aria-label="Goed om te weten">
             <div class="grid gap-6 sm:grid-cols-2 lg:sticky lg:top-24 lg:grid-cols-1">
-              <div class="rounded-[1.25rem] bg-white p-6 shadow-[0_1px_2px_#13201c1f] ring-1 ring-line">
+              <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-line">
                 <p class="font-display text-xl font-semibold text-jade">{rijstNoot.replace('Bovenstaande gerechten', 'De gerechten')}</p>
                 <ul class="mt-4 grid gap-2 text-sm text-ink-soft">
                   {toeslagen.map((t) => (
@@ -65,8 +129,8 @@ const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-
                 <a href={site.afhaalkaart} rel="noopener" class="btn btn-jade mt-5 w-full justify-center"><Fragment set:html={pijl} />Volledige kaart (PDF)</a>
               </div>
               <figure>
-                <div class="aspect-[4/3] overflow-hidden rounded-[1.25rem] lg:aspect-[5/4]"><Foto src={indisch} alt="Bord met rijst, gegrilde kip, groente met taugé, komkommer en een bakje sambal" sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw" /></div>
-                <figcaption class="mt-3 text-sm text-ink-soft">Laat u er niet van weerhouden om bij deze "Chinees" ook een Indische specialiteit te proberen.</figcaption>
+                <div class="aspect-[4/3] overflow-hidden rounded-xl lg:aspect-[5/4]"><Foto src={indisch} alt="Bord met rijst, gegrilde kip, groente met taugé, komkommer en een bakje sambal (sfeerfoto)" sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw" /></div>
+                <figcaption class="mt-3 text-sm text-ink-soft">Ook Indische gerechten staan op de kaart.</figcaption>
               </figure>
             </div>
           </aside>
@@ -74,75 +138,104 @@ const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-
       </div>
     </section>
 
-    <section id="afhalen" class="op-jade scroll-mt-20 bg-jade py-16 text-paper lg:py-24">
-      <div class="wrap grid gap-10 lg:grid-cols-12 lg:items-center">
-        <div class="aspect-[3/2] overflow-hidden rounded-[1.25rem] lg:col-span-7"><Foto src={wok} alt="Bord met gewokte reepjes vlees, ui en witte rijst, eetstokjes ernaast en een afhaalbakje op de achtergrond" sizes="(min-width: 1024px) 640px, 100vw" /></div>
-        <div class="lg:col-span-5">
-          <h2 class="text-3xl">Afhalen uit de eigen afhaalruimte</h2>
-          <p class="mt-5 text-lg text-paper/85">Naast het restaurant is er een aparte afhaalruimte. Daar kunt u al onze gerechten meenemen en er thuis van genieten. Parkeren is gratis, en er is plek genoeg.</p>
+    <section id="afhalen" class="op-jade scroll-mt-20 overflow-hidden bg-jade py-16 text-paper lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div class="relative pb-24 sm:pb-32 lg:order-2 lg:col-span-7 lg:pb-28">
+          <div class="aspect-[4/3] w-[88%] overflow-hidden rounded-xl sm:aspect-[5/4] sm:w-[78%]"><Foto src={kok} alt="Een kok schudt een wok boven hoge vlammen (sfeerfoto)" sizes="(min-width: 1024px) 560px, 90vw" /></div>
+          <div class="absolute bottom-0 right-0 aspect-[4/3] w-[62%] overflow-hidden rounded-xl shadow-sm ring-8 ring-jade sm:w-[56%]"><Foto src={wokGroente} alt="Wok met roergebakken groente en vlees op het vuur (sfeerfoto)" sizes="(min-width: 1024px) 400px, 60vw" /></div>
+        </div>
+        <div class="lg:order-1 lg:col-span-5">
+          <p class="kicker text-schil">Afhalen</p>
+          <h2 class="mt-4 text-3xl">Afhalen uit de eigen afhaalruimte</h2>
+          <p class="mt-5 text-lg text-paper/90">Naast het restaurant is er een aparte afhaalruimte. Daar kunt u al onze gerechten meenemen en er thuis van genieten. Parkeren is gratis, en er is plek genoeg.</p>
           <ul class="mt-8 border-t border-paper/20">
             <li class="border-b border-paper/20">
-              <a href={site.afhaalkaart} rel="noopener" class="flex items-center justify-between gap-4 py-4 no-underline hover:text-schil">
-                <span><span class="block font-display text-xl font-semibold">Afhaalkaart</span><span class="text-sm text-paper/75">PDF, december 2025</span></span><Fragment set:html={pijl} />
+              <a href={site.afhaalkaart} rel="noopener" class="group flex items-center justify-between gap-4 py-4 no-underline transition-colors hover:text-schil">
+                <span><span class="block font-display text-xl font-semibold">Afhaalkaart</span><span class="text-sm text-paper/80">PDF, december 2025</span></span><Fragment set:html={pijl} />
               </a>
             </li>
             <li class="border-b border-paper/20">
-              <a href={site.glutenvrij} rel="noopener" class="flex items-center justify-between gap-4 py-4 no-underline hover:text-schil">
-                <span><span class="block font-display text-xl font-semibold">Glutenvrije gerechten</span><span class="text-sm text-paper/75">PDF, afhaalmenu</span></span><Fragment set:html={pijl} />
+              <a href={site.glutenvrij} rel="noopener" class="group flex items-center justify-between gap-4 py-4 no-underline transition-colors hover:text-schil">
+                <span><span class="block font-display text-xl font-semibold">Glutenvrije gerechten</span><span class="text-sm text-paper/80">PDF, afhaalmenu</span></span><Fragment set:html={pijl} />
               </a>
             </li>
           </ul>
-          <a href={site.telHref} class="btn btn-schil mt-8">Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+          <a href={site.telHref} class="btn btn-schil mt-8"><Fragment set:html={tel} /><span>Bestel: <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
         </div>
       </div>
     </section>
 
-    <section id="reserveren" class="wrap scroll-mt-20 grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
-      <div class="lg:col-span-6">
-        <h2 class="text-3xl text-jade">Reserveren</h2>
-        <p class="mt-5 max-w-lg text-lg text-ink-soft">Reserveren is aan te raden. Zonder reservering bent u bij ons ook van harte welkom.</p>
-        <a href={site.telHref} class="mt-8 inline-block whitespace-nowrap border-b-2 border-schil-diep pb-1 font-display text-[clamp(2rem,7vw,3.25rem)] font-semibold leading-none tracking-[-0.02em] text-jade no-underline tabular-nums hover:text-schil-diep">{site.tel}</a>
-        <p class="mt-4 text-ink-soft">Telefonisch van <span class="whitespace-nowrap tabular-nums">16:00 tot 21:00</span> uur, dinsdag gesloten.</p>
-        <p class="mt-2 text-ink-soft">Of mail naar <a href={`mailto:${site.mail}`} class="break-all text-ink underline underline-offset-2">{site.mail}</a></p>
+    <section class="wrap grid gap-10 py-16 lg:grid-cols-12 lg:py-24" aria-labelledby="klanten-kop">
+      <div class="lg:col-span-4">
+        <p class="kicker text-schil-diep">Op Google</p>
+        <p class="mt-3 flex items-baseline gap-3"><span class="font-display text-[clamp(4rem,8vw,6.5rem)] font-semibold leading-none text-jade tabular-nums">4,0</span><span class="text-ink-soft">uit 5</span></p>
+        <p class="mt-2 text-ink-soft">op basis van 209 reviews</p>
       </div>
-      <div class="rounded-[1.25rem] bg-white p-6 shadow-[0_1px_2px_#13201c1f] ring-1 ring-line md:p-8 lg:col-span-5 lg:col-start-8">
-        <h2 class="text-2xl text-jade">Openingstijden</h2>
-        <table class="mt-4 w-full">
-          <caption class="sr-only">Openingstijden restaurant en afhaal</caption>
-          <tbody>
-            {tijden.map(([d, t]) => (
-              <tr class="border-b border-line last:border-0">
-                <th scope="row" class="py-2.5 text-left font-medium">{d}</th>
-                <td class={`py-2.5 text-right whitespace-nowrap tabular-nums ${t ? '' : 'font-semibold text-schil-diep'}`}>{t ?? 'Gesloten'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div class="lg:col-span-8">
+        <h2 id="klanten-kop" class="text-3xl text-jade">Wat klanten noemen</h2>
+        <ol class="mt-8 border-t border-line">
+          {klanten.map((k, i) => (
+            <li class="grid gap-2 border-b border-line py-5 sm:grid-cols-[3rem_15rem_1fr] sm:gap-6">
+              <span class="font-display font-semibold text-schil-diep tabular-nums">0{i + 1}</span>
+              <h3 class="font-display text-xl font-semibold leading-tight text-jade">{k.t}</h3>
+              <p class="text-ink-soft">{k.b}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-4 text-sm text-ink-soft">Samengevat uit de Google-reviews, september 2026.</p>
+      </div>
+    </section>
+
+    <section id="reserveren" class="scroll-mt-20 bg-rijst py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-schil-diep">Reserveren</p>
+          <h2 class="mt-4 text-3xl text-jade">Bel om een tafel te reserveren</h2>
+          <p class="mt-5 max-w-lg text-lg text-ink-soft">Reserveren is aan te raden. Zonder reservering bent u bij ons ook van harte welkom.</p>
+          <a href={site.telHref} class="mt-8 inline-block whitespace-nowrap border-b-2 border-schil-diep pb-1 font-display text-[clamp(2rem,7vw,3.25rem)] font-semibold leading-none tracking-[-0.02em] text-jade no-underline tabular-nums transition-colors hover:text-schil-diep">{site.tel}</a>
+          <p class="mt-4 text-ink-soft">Telefonisch van <span class="whitespace-nowrap tabular-nums">16:00 tot 21:00</span> uur, dinsdag gesloten.</p>
+          <p class="mt-2 text-ink-soft">Of mail naar <a href={`mailto:${site.mail}`} class="break-all text-ink underline underline-offset-2">{site.mail}</a></p>
+        </div>
+        <div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-line md:p-8 lg:col-span-5 lg:col-start-8">
+          <h2 class="text-2xl text-jade">Openingstijden</h2>
+          <table class="mt-4 w-full">
+            <caption class="sr-only">Openingstijden restaurant en afhaal</caption>
+            <tbody>
+              {tijden.map(([d, t]) => (
+                <tr class="border-b border-line last:border-0">
+                  <th scope="row" class="py-2.5 text-left font-medium">{d}</th>
+                  <td class={`py-2.5 text-right whitespace-nowrap tabular-nums ${t ? '' : 'font-semibold text-schil-diep'}`}>{t ?? 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
     <section id="route" class="op-jade scroll-mt-20 bg-jade py-16 text-paper lg:py-20">
       <div class="wrap grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
-          <h2 class="text-3xl">Aan de Klaverweide, naast de Hoogvliet</h2>
+          <p class="kicker text-schil">Route</p>
+          <h2 class="mt-4 text-3xl">Aan de Klaverweide, naast de Hoogvliet</h2>
           <a href={site.maps} rel="noopener" class="btn btn-schil mt-8">Route plannen</a>
         </div>
         <dl class="grid content-start gap-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
           <div class="border-t-2 border-schil pt-4">
-            <dt class="text-sm text-paper/75">Adres</dt>
+            <dt class="text-sm text-paper/80">Adres</dt>
             <dd class="mt-1 text-lg">{site.straat}<br />{site.postcode} {site.plaats}</dd>
           </div>
           <div class="border-t-2 border-paper/30 pt-4">
-            <dt class="text-sm text-paper/75">Parkeren</dt>
+            <dt class="text-sm text-paper/80">Parkeren</dt>
             <dd class="mt-1 text-lg">Voldoende gratis parkeergelegenheid</dd>
           </div>
           <div class="border-t-2 border-paper/30 pt-4">
-            <dt class="text-sm text-paper/75">Telefoon</dt>
+            <dt class="text-sm text-paper/80">Telefoon</dt>
             <dd class="mt-1 text-lg"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-schil decoration-2 underline-offset-4">{site.tel}</a></dd>
           </div>
           <div class="border-t-2 border-paper/30 pt-4">
-            <dt class="text-sm text-paper/75">Google</dt>
-            <dd class="mt-1 text-lg">4,0 uit 5, 209 reviews</dd>
+            <dt class="text-sm text-paper/80">E-mail</dt>
+            <dd class="mt-1 text-lg"><a href={`mailto:${site.mail}`} class="break-all underline decoration-schil decoration-2 underline-offset-4">{site.mail}</a></dd>
           </div>
         </dl>
       </div>

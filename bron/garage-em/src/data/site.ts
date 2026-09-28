@@ -17,7 +17,13 @@ export const site = {
 };
 export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
 
-export const diensten = ['In- en verkoop', 'APK', 'Reparatie'];
+
+// Samenvatting van de Google-reviews (61 reviews, 4,8; 28-09-2026): wat klanten vooral noemen. Geen citaten, geen namen.
+export const klanten = [
+  { t: 'Reële, nette prijzen', bij: 'Prijs wordt in 6 reviews genoemd.' },
+  { t: 'Snelle en goede service', bij: '' },
+  { t: 'Kundig en vriendelijk', bij: '' },
+];
 
 export const tijden = [
   { dag: 'Maandag t/m vrijdag', tijd: '08:00 - 18:00' },

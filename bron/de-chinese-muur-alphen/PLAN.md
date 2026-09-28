@@ -22,3 +22,10 @@ Secties: hero (foto + bordeaux vlak), afhalen (voordeelstaffel als trap, hapmenu
 - Compacter: staffel, hapmenu en rijsttafels zitten nu in het menu; catering toont wat in elk menu zit één keer; bezorgen verhuisd naar contact; Boskoop-melding klein bij de belknop.
 - Stockfoto's sate/nasi/zoetzuur/bami weg; alleen de hero-foto blijft.
 - Weggelaten: maandmenu, kerstmenu, Tjiun Ka Fuk en Szechuan/Wen Zhou/Seafood-rijsttafels (pagina's bestaan niet meer).
+
+## Ronde 3 (28-09-2026): naar het niveau van Heemskerk
+- Hero opnieuw: diep wijnrood vlak met wok.jpg (wok boven hoge vlammen) die rechts via een verloop in het vlak overloopt; grotere kop (text-5xl), 長城酒樓 verticaal in oker, drie bewijzen (Google 4,0, elke dag vanaf 16:00, gratis kroepoek vanaf € 35). Eigen interieurfoto als papieren kaart (max 400 px) over de onderrand.
+- Nieuw blok "Wat gasten noemen": samenvatting van de Google-reviews (zes punten, geen citaten/namen).
+- Nieuw beeldblok "Afhalen en bezorgen" (bakje.jpg groot tot de rand) met staffel en bezorgvoorwaarden; bezorgen uit contact gehaald.
+- Restaurant: spread.jpg groot tot de linkerrand, prijzen als kaarten (shadow-sm, rounded-xl). Catering: afhalen.jpg breed naast de tekst, menu's A/B/C eronder.
+- Contact in vier kaarten. og.jpg opnieuw gemaakt met wok.jpg. hero.jpg vervangen (zelfde Unsplash-foto heet nu spread.jpg).

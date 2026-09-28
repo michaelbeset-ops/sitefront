@@ -13,7 +13,7 @@ const glutenTekst = (nr: string) => {
   return `Niet 100% glutenvrij: ${r.join('; ')}.`;
 };
 ---
-<div id="kaartapp" class="gv-uit">
+<div id="kaartapp" class="gv-uit scroll-mt-24">
   <div data-js-only hidden class="mb-6 grid gap-4">
     <div role="tablist" aria-label="Kies een deel van de kaart" class="flex flex-wrap gap-2">
       {lijsten.map((l, i) => (
@@ -126,6 +126,15 @@ const glutenTekst = (nr: string) => {
   schakel.addEventListener('change', () => {
     app.classList.toggle('gv-uit', !schakel.checked);
     tip.hidden = !schakel.checked;
+  });
+  document.querySelectorAll<HTMLAnchorElement>('[data-kaartzoek]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      zoek.value = a.dataset.kaartzoek!;
+      kies(0);
+      app.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      zoek.focus({ preventScroll: true });
+    });
   });
   toon();
 </script>

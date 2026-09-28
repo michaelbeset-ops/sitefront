@@ -27,3 +27,14 @@ donker leenauto-vlak als blikvanger, tijden+route op staalgrijs, oranjerood cont
 - auto.jpg (262 px) als kleine inzet bij route, op ware grootte, alt zonder leenauto-claim.
 - Stockfoto's hero.jpg, poetsen.jpg (merknamen zichtbaar) en wiel.jpg weg; alleen schade.jpg bij de diensten.
 - og.jpg opnieuw gemaakt met het eigen pand. Privacy: alinea over het schadeformulier toegevoegd.
+
+## Ronde 3 (28-09-2026): naar het niveau van Heemskerk
+- Hero donker (ink) met sfeer.jpg (Unsplash, bovenste deel uitgesneden zodat het merkembleem wegvalt), grote kop,
+  bel- en schadeknop, bewijzen op een rij: Google 4,6 (23 reviews), ma t/m vr 8:00 tot 17:00, leenauto.
+- Eigen pand (pand.jpg) als kaart die over de onderrand van de hero valt, label "Ons pand / Peppelkade 13A".
+- Nieuw: "Wat klanten noemen" (samenvatting Google-reviews: snelle hulp, vriendelijke/behulpzame eigenaar,
+  bumper met spotrepair voor een lager bedrag dan elders). Geen citaten, namen of sterren.
+- Leenauto overal "als er een beschikbaar is" (volgens reviews niet altijd beschikbaar).
+- Bumperreparaties: "ook met spotrepair" (uit review).
+- Diensten: grote werkplaatsfoto (werkplaats.jpg) met de schadefoto (deuk.jpg, was schade.jpg) als overlappende inzet.
+- wassen.jpg niet gebruikt: autowassen is geen dienst van hen, merk en kenteken zichtbaar.
