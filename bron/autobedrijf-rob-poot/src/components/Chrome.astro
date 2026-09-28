@@ -1,0 +1,41 @@
+---
+import { site, url } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="op-donker sticky top-0 z-40 border-b border-white/10 bg-ink text-white">
+    <div class="wrap flex h-16 items-center justify-between gap-3">
+      <a href={url('')} class="flex items-center gap-2 font-display leading-none text-white no-underline">
+        <span class="whitespace-nowrap rounded-[6px] bg-geel px-2 py-1 text-lg font-bold sm:text-xl uppercase tracking-[0.04em] text-ink">Rob Poot</span>
+        <span class="hidden text-sm font-semibold uppercase tracking-[0.18em] text-white/80 min-[400px]:inline">Jr.</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href="#prijzen" class="no-underline transition-colors hover:text-geel">Prijzen</a></li>
+          <li><a href="#pech" class="no-underline transition-colors hover:text-geel">Pech en ophalen</a></li>
+          <li><a href="#bedrijf" class="no-underline transition-colors hover:text-geel">Het bedrijf</a></li>
+          <li><a href="#afspraak" class="no-underline transition-colors hover:text-geel">Afspraak en contact</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.whatsapp} class="btn btn-geel !px-3 !py-2 !text-base">
+          <Icoon naam="whatsapp" size={18} /><span class="sr-only min-[360px]:not-sr-only">WhatsApp</span>
+        </a>
+        <a href={site.mobielHref} class="btn btn-line !px-3 !py-2 !text-base" aria-label={`Bel ${site.mobiel}`}>
+          <Icoon naam="tel" size={18} /><span class="hidden whitespace-nowrap tabular-nums sm:inline">{site.mobiel}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-ink py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <p class="md:col-span-5"><strong class="font-display text-xl text-white">{site.naam}</strong><br />{site.straat}, {site.postcode} {site.plaats}<br /><a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a> · <a href={site.mobielHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.mobiel}</a><br /><a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.mail}</a></p>
+      <p class="md:col-span-4">Ophaaldienst dag en nacht<br /><a href={site.ophaalHref} class="whitespace-nowrap font-display text-lg font-bold tabular-nums text-geel underline underline-offset-2">{site.ophaal}</a><br /><span class="text-xs">KvK [[AANLEVEREN: KvK-nummer]]</span></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 border-t border-white/10 pt-6 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}

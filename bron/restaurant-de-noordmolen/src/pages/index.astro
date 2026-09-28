@@ -1,0 +1,316 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden, menu, keuzemenu, lunch, wijnen, geschiedenis } from '../data/site';
+import hero from '../assets/hero.jpg';
+import interieur from '../assets/interieur.jpg';
+import vis from '../assets/vis.jpg';
+import water from '../assets/water.jpg';
+
+const kolommen = [menu.slice(0, 2), menu.slice(2)];
+const verdiepingen = [
+  { waar: 'Tweede verdieping', getal: 'tot 40', tekst: 'Een aparte zaal, uitstekend geschikt voor een besloten lunch, receptie of diner tot 40 personen.' },
+  { waar: 'Eerste verdieping en begane grond', getal: 'ca. 90', tekst: 'Zitplaatsen in het restaurant, verdeeld over twee verdiepingen, met een semi-open keuken.' },
+  { waar: 'Buiten', getal: 'terras', tekst: 'Vanaf midden mei bij mooi weer dineren of lunchen op het terras. Of gezellig van uw aperitief genieten.' },
+];
+const gezelschap = [
+  { titel: 'Samenstelling van het menu', tekst: 'In overleg kunnen gerechten van verschillende menu’s gewisseld worden, en kunnen seizoensspecialiteiten in het menu worden verwerkt. De prijs van het menu wordt zo nodig aangepast.' },
+  { titel: 'Wijnen', tekst: 'De wijnkeuze stellen we in overleg vast, afhankelijk van het menu dat u kiest.' },
+  { titel: 'Kinderen', tekst: 'Het gekozen menu kan voor kinderen worden aangepast. Een speciaal kindermenu is ook mogelijk.' },
+  { titel: 'Diëten en vegetarisch', tekst: 'Voor gasten met een dieet en voor vegetariërs serveren we aangepaste menu’s, samengesteld in onderling overleg.' },
+  { titel: 'Menukaartjes', tekst: 'Voor groepen verzorgen we menukaartjes met de tekst die u wenst, tegen kostprijs.' },
+];
+---
+<Base
+  title="Restaurant De Noordmolen | Dineren in een historische molen in Schiedam"
+  description="Restaurant De Noordmolen aan de Noordvest in Schiedam: lunch en diner in molen De Noord. Menukaart, lunchkaart, wijnkaart, gezelschappen tot 40 personen en reserveren."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Donkere hero: molenzwart met de foto rechts, op mobiel een egale overlay over de foto. -->
+    <section class="relative isolate overflow-hidden bg-ink text-meel">
+      <div class="absolute inset-0 -z-10 lg:left-[42%]"><Foto src={hero} alt="Gedekte restauranttafel met wijnglazen en servetten in warm, gedempt licht" hero sizes="(min-width: 1024px) 58vw, 100vw" /></div>
+      <div class="absolute inset-0 -z-10 bg-ink/80 lg:bg-transparent lg:bg-linear-to-r lg:from-ink lg:from-43% lg:via-ink/55 lg:via-62% lg:to-ink/0 lg:to-85%"></div>
+      <div class="wrap py-16 sm:py-24 lg:py-32">
+        <div class="max-w-xl">
+          <p class="kicker text-koper-light">Noordvest 38 · Schiedam</p>
+          <h1 class="mt-5 text-4xl">Dineren in de hoogste historische molen van de wereld</h1>
+          <p class="mt-6 text-lg text-meel/90">Restaurant De Noordmolen is zo’n 40 jaar een begrip in Schiedam en omstreken, en geniet faam tot ver buiten onze grenzen. Makkelijk bereikbaar vanuit Rotterdam, met de auto of het openbaar vervoer.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={site.telHref} class="btn btn-koper">Reserveer: <span class="prijs">{site.tel}</span></a>
+            <a href="#menu" class="font-semibold text-meel underline decoration-koper decoration-2 underline-offset-[6px] transition-colors hover:text-koper-light">Bekijk de menukaart</a>
+          </div>
+          <dl class="mt-12 grid max-w-md grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-t border-line-light pt-5 text-sm">
+            {tijden.map((t) => (<><dt class="text-meel/75">{t.dag}</dt><dd class="prijs font-semibold">{t.tijd}</dd></>))}
+          </dl>
+          <p class="mt-4 text-sm text-meel/80"><strong class="text-meel">{site.google.score}</strong> uit 5 op Google, {site.google.aantal} reviews</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het restaurant als doorsnede van de molen: verdieping voor verdieping. -->
+    <section id="restaurant" class="wrap scroll-mt-20 py-20 lg:py-28">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="kicker text-fles">Het restaurant</p>
+          <h2 class="mt-4 text-3xl">Rustiek, met de sfeer van een oude molen</h2>
+          <p class="mt-6 text-lg text-ink-soft">Het restaurant is rustiek ingericht om de sfeer van een oude molen te behouden, en heeft een semi-open keuken.</p>
+          <div class="mt-10 aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={interieur} alt="Donkere houten dakspanten met een brandende kristallen kroonluchter" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+        </div>
+        <ol class="self-end lg:col-span-7">
+          {verdiepingen.map((v) => (
+            <li class="grid gap-2 border-t border-line py-7 sm:grid-cols-[9rem_1fr] sm:gap-8 last:border-b">
+              <p class="font-display text-2xl leading-none text-fles">{v.getal}</p>
+              <div>
+                <h3 class="text-lg">{v.waar}</h3>
+                <p class="mt-2 text-ink-soft">{v.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Menukaart: foto en keuzemenu links (sticky op desktop), de kaart zelf in twee kolommen. -->
+    <section id="menu" class="scroll-mt-16 bg-meel-deep py-20 lg:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p class="kicker text-fles">À la carte</p>
+            <h2 class="mt-4 text-3xl">Menukaart</h2>
+          </div>
+          <p class="max-w-sm text-sm text-ink-soft">Prijzen in euro.</p>
+        </div>
+        <div class="mt-12 grid gap-12 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <div class="grid gap-6 lg:sticky lg:top-24">
+              <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-[4/5]"><Foto src={vis} alt="Gebakken witte visfilet met schelpdieren in een gele saus op een wit bord, met wijnglazen op een donkere tafel" sizes="(min-width: 1024px) 360px, 100vw" /></div>
+              <div class="rounded-xl bg-fles p-6 text-meel shadow-sm">
+                <div class="flex items-baseline justify-between gap-4">
+                  <h3 class="text-xl">Menu De Noordmolen</h3>
+                  <p class="prijs font-display text-xl">{keuzemenu.prijs}</p>
+                </div>
+                <p class="mt-1 text-sm text-meel/80">Driegangen-keuzemenu</p>
+                <dl class="mt-5 grid gap-4 text-sm">
+                  {keuzemenu.gangen.map((g) => (
+                    <div class="border-t border-line-light pt-3">
+                      <dt class="kicker text-koper-light">{g.titel}</dt>
+                      <dd class="mt-1 grid gap-1">{g.keuzes.map(([n, b], i) => (<>{i > 0 && <span class="text-xs italic text-meel/75">of</span>}<p><strong class="font-semibold">{n}</strong><br /><span class="text-meel/80">{b}</span></p></>))}</dd>
+                    </div>
+                  ))}
+                </dl>
+                <p class="mt-5 text-sm text-meel/80">De gerechten kunnen ook apart besteld worden.</p>
+              </div>
+            </div>
+          </div>
+          <div class="grid gap-x-12 gap-y-12 md:grid-cols-2 lg:col-span-8">
+            {kolommen.map((kolom) => (
+              <div class="grid content-start gap-12">
+                {kolom.map((cat) => (
+                  <div>
+                    <h3 class="border-b border-ink pb-3 text-xl">{cat.titel}</h3>
+                    <ul class="mt-2 divide-y divide-line">
+                      {cat.gerechten.map((g) => (
+                        <li class="py-3">
+                          <div class="flex items-baseline justify-between gap-4"><span class="font-semibold">{g.naam}</span><span class="prijs text-sm font-semibold">{g.prijs}</span></div>
+                          {g.bij && <p class="mt-0.5 text-sm text-ink-soft">{g.bij}</p>}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lunchkaart: compacte kaart in krantenkolommen. -->
+    <section id="lunch" class="wrap scroll-mt-16 py-20 lg:py-28">
+      <div class="grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-fles">Overdag</p>
+          <h2 class="mt-4 text-3xl">Lunchkaart</h2>
+          <p class="mt-5 text-ink-soft">Maandag t/m vrijdag open vanaf <span class="prijs">12.00 uur</span>.</p>
+        </div>
+        <ul class="gap-12 sm:columns-2 lg:col-span-8">
+          {lunch.map((g) => (
+            <li class="break-inside-avoid border-b border-line py-3">
+              <div class="flex items-baseline justify-between gap-4"><span class="font-semibold">{g.naam}</span><span class="prijs text-sm font-semibold">{g.prijs}</span></div>
+              {g.bij && <p class="mt-0.5 text-sm text-ink-soft">{g.bij}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Wijnkaart op molenzwart, per soort uitklapbaar. -->
+    <section id="wijn" class="scroll-mt-16 bg-ink py-20 text-meel lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-koper-light">In het glas</p>
+          <h2 class="mt-4 text-3xl">Wijnkaart</h2>
+          <p class="mt-6 text-meel/85">Van de huiswijnen in wit, rosé en rood bestelt u een glas, een karaf of een fles. Voor gezelschappen stellen we de wijnkeuze in overleg vast, passend bij het menu.</p>
+          <dl class="mt-8 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-t border-line-light pt-5 text-sm">
+            <dt class="text-meel/75">Huiswijn per glas</dt><dd class="prijs font-semibold">5,95</dd>
+            <dt class="text-meel/75">Per karaf</dt><dd class="prijs font-semibold">21,50</dd>
+            <dt class="text-meel/75">Per fles</dt><dd class="prijs font-semibold">28,50</dd>
+          </dl>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6">
+          {wijnen.map((w) => (
+            <details class="group border-t border-line-light last:border-b">
+              <summary class="flex items-center justify-between gap-4 py-5">
+                <h3 class="text-xl">{w.titel} <span class="ml-2 font-body text-sm font-normal text-meel/70">{w.wijnen.length} {w.wijnen.length === 1 ? 'wijn' : 'wijnen'}</span></h3>
+                <span class="plus grid size-8 shrink-0 place-items-center rounded-full border border-line-light text-lg text-koper-light" aria-hidden="true">+</span>
+              </summary>
+              <ul class="pb-6">
+                {w.wijnen.map((x) => (
+                  <li class="grid gap-1 border-t border-line-light py-3 sm:grid-cols-[1fr_auto] sm:gap-6">
+                    <div><p class="font-semibold">{x.naam}</p><p class="text-sm text-meel/75">{x.herkomst}</p></div>
+                    <p class="text-sm sm:text-right">{x.prijzen.map(([s, p], j) => (<>{j > 0 && <span class="text-meel/70"> · </span>}<span class="prijs"><span class="text-meel/75">{s}</span> {p}</span></>))}</p>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Gezelschappen: de zaal op de tweede verdieping en wat er in overleg kan. -->
+    <section id="gezelschappen" class="scroll-mt-16 bg-meel-deep py-20 lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-fles">Gezelschappen</p>
+          <h2 class="mt-4 text-3xl">Een eigen zaal voor uw gezelschap</h2>
+          <p class="mt-6 text-lg text-ink-soft">Op de tweede verdieping ligt een zaal die uitstekend geschikt is voor een besloten lunch, receptie of diner tot 40 personen.</p>
+          <a href={site.telHref} class="btn btn-fles mt-8">Overleg via <span class="prijs">{site.tel}</span></a>
+        </div>
+        <dl class="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:col-span-7">
+          {gezelschap.map((g) => (
+            <div class="border-l-2 border-fles pl-5">
+              <dt class="font-display text-lg font-semibold">{g.titel}</dt>
+              <dd class="mt-2 text-ink-soft">{g.tekst}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- Geschiedenis als tijdlijn, met het verhaal van het glas zonder voet. -->
+    <section id="molen" class="wrap scroll-mt-16 py-20 lg:py-28">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-24">
+            <p class="kicker text-fles">Molen De Noord</p>
+            <h2 class="mt-4 text-3xl">Van standermolen tot restaurant</h2>
+            <p class="mt-6 text-lg text-ink-soft">De huidige molen De Noord is gebouwd in 1803. Al aan het begin van de 15e eeuw wordt op deze plaats een molen genoemd.</p>
+            <div class="mt-10 hidden aspect-[10/11] overflow-hidden rounded-xl shadow-sm lg:block"><Foto src={water} alt="Gebakken visfilet op een bord met saus en groene kruiden" sizes="460px" /></div>
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <ol class="border-l border-line">
+            {geschiedenis.map((g) => (
+              <li class="relative pb-9 pl-7 last:pb-0">
+                <span class="absolute -left-[5px] top-2 size-[9px] rounded-full bg-fles" aria-hidden="true"></span>
+                <h3 class="font-display text-xl text-fles">{g.wanneer}</h3>
+                <p class="mt-2 text-ink-soft">{g.wat}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-10 aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:hidden"><Foto src={water} alt="Gebakken visfilet op een bord met saus en groene kruiden" sizes="100vw" /></div>
+          <aside class="mt-12 rounded-xl bg-fles p-7 text-meel shadow-sm md:p-9">
+            <h3 class="text-2xl">Het glas zonder voet</h3>
+            <p class="mt-4 text-meel/90">In de branderij, waar de jenever gestookt werd, had de meesterknecht zijn eigen kastje. Op geregelde tijden haalde hij er een glas zonder voet uit en liet dat gevuld de ronde doen. Sommige meesterknechten bewaarden het glas in de klep van hun pet. In De Noordmolen is dit glas in ere hersteld.</p>
+            <p class="mt-4 text-sm text-koper-light">Een geschenk om mee te nemen als herinnering aan Schiedam, zolang de voorraad strekt.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Route en Schiedam. -->
+    <section id="route" class="scroll-mt-16 bg-fles py-20 text-meel lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-koper-light">Route</p>
+          <h2 class="mt-4 text-3xl">Aan de Noordvest in Schiedam</h2>
+          <address class="mt-6 text-lg not-italic">{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <a href={site.maps} rel="noopener" class="btn btn-line mt-7">Plan uw route</a>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <dl class="divide-y divide-line-light border-y border-line-light">
+            <div class="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]"><dt class="font-semibold">Metro</dt><dd class="text-meel/85">3 minuten lopen vanaf metrostation Parkweg</dd></div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]"><dt class="font-semibold">Centrum</dt><dd class="text-meel/85">4 à 5 minuten lopen vanaf de Grote Markt</dd></div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[10rem_1fr]"><dt class="font-semibold">Vanuit Rotterdam</dt><dd class="text-meel/85">Enkele minuten met de auto, metro of tram</dd></div>
+          </dl>
+          <h3 class="mt-10 text-xl">Schiedam, een bezoek waard</h3>
+          <p class="mt-3 text-meel/85">De oude stad met haar vele molens is een soort Kinderdijk in de stad, en in de grachten liggen historische schepen aangemeerd. Dicht bij de molen vertrekt de fluisterboot door de grachten, waarbij u een jeneverproeverij kunt meemaken. Daarna een aperitief? Dat verzorgen we graag, bij mooi weer op het terras.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reserveren: bellen heeft de voorkeur, mailen of het verzoekformulier kan ook. -->
+    <section id="reserveren" class="scroll-mt-16 bg-ink py-20 text-meel lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-koper-light">Reserveren</p>
+          <h2 class="mt-4 text-3xl">Reserveer uw tafel</h2>
+          <p class="mt-6 text-meel/85">Het liefst telefonisch: dan kunnen we uw reservering meteen bevestigen.</p>
+          <a href={site.telHref} class="mt-5 inline-block font-display text-3xl text-meel underline decoration-koper decoration-2 underline-offset-[6px] transition-colors hover:text-koper-light"><span class="prijs">{site.tel}</span></a>
+          <p class="mt-8 text-meel/85">Of mail naar <a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] font-semibold underline decoration-koper underline-offset-4">{site.mail}</a>. Geef de datum, de tijd, het aantal personen en uw telefoonnummer, en wacht op onze bevestiging.</p>
+          <dl class="mt-10 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-t border-line-light pt-5 text-sm">
+            {tijden.map((t) => (<><dt class="text-meel/75">{t.dag}</dt><dd class="prijs font-semibold">{t.tijd}</dd></>))}
+          </dl>
+        </div>
+        <form class="rounded-xl bg-meel p-6 text-ink shadow-sm md:p-9 lg:col-span-7" action={site.voorstel ? undefined : `mailto:${site.mail}`} method="post" enctype="text/plain">
+          <h3 class="text-2xl">Reservering aanvragen</h3>
+          <p class="mt-2 text-sm text-ink-soft">Wij nemen contact met u op: u ontvangt van ons een bevestiging.</p>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="text-sm font-semibold sm:col-span-2">Naam<input class="veld" type="text" name="naam" autocomplete="name" required /></label>
+            <label class="text-sm font-semibold">Telefoonnummer<input class="veld" type="tel" name="telefoon" autocomplete="tel" required /></label>
+            <label class="text-sm font-semibold">E-mailadres<input class="veld" type="email" name="email" autocomplete="email" /></label>
+            <label class="text-sm font-semibold">Datum<input class="veld" type="date" name="datum" required /></label>
+            <label class="text-sm font-semibold">Tijd<input class="veld" type="time" name="tijd" required /></label>
+            <label class="text-sm font-semibold">Aantal personen<input class="veld" type="number" name="personen" min="1" inputmode="numeric" required /></label>
+            <fieldset class="text-sm">
+              <legend class="font-semibold">Lunch of diner</legend>
+              <div class="mt-3 flex gap-6">
+                <label class="flex items-center gap-2"><input type="radio" name="soort" value="lunch" class="size-4 accent-fles" /> Lunch</label>
+                <label class="flex items-center gap-2"><input type="radio" name="soort" value="diner" class="size-4 accent-fles" /> Diner</label>
+              </div>
+            </fieldset>
+            <label class="text-sm font-semibold sm:col-span-2">Opmerking <span class="font-normal text-ink-soft">(bijvoorbeeld een dieet of vegetarisch)</span><textarea class="veld min-h-28" name="opmerking" rows="3"></textarea></label>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-7 rounded-lg bg-meel-deep p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="prijs font-semibold underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] font-semibold underline">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-fles mt-7">Verstuur reserveringsverzoek</button>
+          )}
+        </form>
+      </div>
+    </section>
+
+    <!-- Engelse samenvatting en vacatures, klein en rustig. -->
+    <section class="wrap grid gap-12 py-16 md:grid-cols-12 lg:py-20">
+      <div lang="en" class="md:col-span-7">
+        <h2 class="text-2xl">About De Noordmolen</h2>
+        <p class="mt-4 text-ink-soft">For about 40 years, Restaurant De Noordmolen has been well known in Schiedam and far beyond. The restaurant is located in the highest historic windmill in the world, just minutes from Rotterdam by car or public transport.</p>
+        <p class="mt-4 text-ink-soft">Reservations: call <a href={site.telHref} class="prijs font-semibold text-ink underline">{site.telIntl}</a> or email <a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] font-semibold text-ink underline">{site.mail}</a>. Please give date, time, number of persons and your telephone number, and wait for confirmation.</p>
+      </div>
+      <div class="rounded-xl border border-line p-6 md:col-span-5 md:p-8">
+        <h2 class="text-2xl">Werken bij De Noordmolen</h2>
+        <p class="mt-3 text-ink-soft">Wij zijn op zoek naar:</p>
+        <ul class="mt-2 grid gap-1 font-semibold">
+          <li>Koks</li>
+          <li>Keukenhulp en afwas</li>
+          <li>Bediening (parttime)</li>
+        </ul>
+        <p class="mt-4 text-sm text-ink-soft">Interesse? Bel <a href={site.telHref} class="prijs font-semibold text-ink underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] font-semibold text-ink underline">{site.mail}</a>.</p>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

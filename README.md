@@ -43,3 +43,8 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autobedrijf Lievaart, Rozenburg | https://michaelbeset-ops.github.io/sitefront/autobedrijf-lievaart/ | 8/10: 4,7 uit 30, review 3 mnd, 80+ jaar BOVAG, MG/Rover-specialist; site zeer oud zonder viewport. | 2026-09-28 | demo, bellen/mail |
 | Garage Kranenburg, Klaaswaal | https://michaelbeset-ops.github.io/sitefront/garage-kranenburg/ | 8/10: 4,6 uit 49, review 3 mnd; site één oude pagina zonder viewport. | 2026-09-28 | demo, bellen/mail |
 | Garage Delta, Middelharnis | https://michaelbeset-ops.github.io/sitefront/garage-delta/ | 7/10: 4,8 uit 18 maar reviews ouder (±2 jaar); geen website. | 2026-09-28 | demo, bellen |
+| Restaurant De Noordmolen, Schiedam | https://michaelbeset-ops.github.io/sitefront/restaurant-de-noordmolen/ | 9/10: 4,3 uit 411, profiel 11 wkn geleden bijgewerkt; site oud zonder viewport. | 2026-09-28 | demo, bellen/mail |
+| Yue Lang Japans Restaurant, Culemborg | https://michaelbeset-ops.github.io/sitefront/yue-lang-culemborg/ | 9/10: 4,3 uit 387, actief; site zonder viewport, review klaagt dat concept op site onduidelijk is. | 2026-09-28 | demo, bellen |
+| Autocorner Zuid-Beijerland | https://michaelbeset-ops.github.io/sitefront/autocorner-zuid-beijerland/ | 8/10: 5,0 uit 11, review 3 wkn; geen website. | 2026-09-28 | demo, bellen |
+| Autobedrijf Rob Poot, Vlaardingen | https://michaelbeset-ops.github.io/sitefront/autobedrijf-rob-poot/ | 8/10: 06, 4,4 uit 45, review 4 mnd; site schuift op mobiel. | 2026-09-28 | demo, WhatsApp |
+| Autobedrijf De Linge, Geldermalsen | https://michaelbeset-ops.github.io/sitefront/autobedrijf-de-linge/ | 8/10: Saab-specialist 40+ jaar, 4,5 uit 34, recent actief; site zonder viewport. | 2026-09-28 | demo, bellen/mail |

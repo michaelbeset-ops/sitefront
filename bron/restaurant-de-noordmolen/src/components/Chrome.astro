@@ -1,0 +1,35 @@
+---
+import { site, url, tijden } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const home = url('');
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-meel/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-3">
+      <a href={home} class="whitespace-nowrap font-display text-lg font-semibold tracking-[-0.01em] text-ink no-underline sm:text-2xl">De Noordmolen</a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={`${home}#menu`} class="no-underline transition-colors hover:text-fles">Menukaart</a></li>
+          <li><a href={`${home}#lunch`} class="no-underline transition-colors hover:text-fles">Lunch</a></li>
+          <li><a href={`${home}#wijn`} class="no-underline transition-colors hover:text-fles">Wijn</a></li>
+          <li><a href={`${home}#gezelschappen`} class="no-underline transition-colors hover:text-fles">Gezelschappen</a></li>
+          <li><a href={`${home}#molen`} class="no-underline transition-colors hover:text-fles">De molen</a></li>
+          <li><a href={`${home}#route`} class="no-underline transition-colors hover:text-fles">Route</a></li>
+        </ul>
+      </nav>
+      <a href={`${home}#reserveren`} class="btn btn-fles !px-4 !py-2 text-sm">Reserveren</a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-ink py-12 text-meel/85">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <p class="md:col-span-5"><strong class="font-display text-xl font-medium text-meel">{site.naam}</strong><br />{site.straat}, {site.postcode} {site.plaats}<br /><a href={site.telHref} class="underline underline-offset-2">{site.tel}</a> · <a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.mail}</a><br />KvK <span class="text-meel/70">[[AANLEVEREN: KvK-nummer]]</span></p>
+      <dl class="grid max-w-xs content-start gap-1 md:col-span-4">
+        {tijden.map((t) => (<div class="flex flex-wrap justify-between gap-x-4"><dt>{t.dag}</dt><dd class="prijs">{t.tijd}</dd></div>))}
+      </dl>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs text-meel/75">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's.</p>}
+  </footer>
+)}
