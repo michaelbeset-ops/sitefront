@@ -1,0 +1,140 @@
+---
+// Schade doorgeven in drie stapjes. Zonder JS staan alle drie de stappen onder elkaar (gewoon formulier).
+// Met JS: een stap tegelijk, met Vorige/Volgende en een aria-live-regel. Bij site.voorstel verstuurt het niets.
+import { site } from '../data/site';
+const soorten = ['Bumper', 'Deuk', 'Lak', 'Anders'];
+const stappen = ['Wat is er beschadigd', 'Kenteken en foto', 'Uw naam en telefoon'];
+---
+<section id="schade" class="scroll-mt-16 border-t border-line bg-steel py-16 lg:py-24">
+  <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-14">
+    <div class="lg:col-span-4">
+      <h2 class="text-3xl">Schade doorgeven</h2>
+      <p class="mt-4 max-w-md text-ink-soft">In drie stappen: wat er beschadigd is, uw kenteken met een foto, en hoe we u kunnen bereiken.</p>
+      <ol class="mt-8 grid gap-2" data-voortgang>
+        {stappen.map((s, i) => (
+          <li class="flex items-center gap-3 font-display font-semibold text-ink-soft transition-colors data-[actief]:text-ink" data-stapnr={i + 1}>
+            <span class="grid size-8 place-items-center rounded-full bg-white text-sm tabular-nums shadow-sm transition-colors" aria-hidden="true">{i + 1}</span>{s}
+          </li>
+        ))}
+      </ol>
+      <p class="mt-8 text-sm text-ink-soft">Liever bellen? <a href={site.telHref} class="whitespace-nowrap font-semibold text-ink tabular-nums underline underline-offset-2">{site.tel}</a></p>
+    </div>
+
+    <form class="rounded-xl bg-paper p-5 shadow-sm sm:p-8 lg:col-span-8" data-schade novalidate onsubmit="return false">
+      <fieldset class="stap" data-stap="1" tabindex="-1">
+        <legend class="font-display text-xl font-semibold leading-tight">1. Wat is er beschadigd?</legend>
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          {soorten.map((s) => (
+            <label class="tegel"><input type="radio" name="soort" value={s} /><span>{s}</span></label>
+          ))}
+        </div>
+        <label for="toelichting" class="mt-6 block font-semibold">Toelichting <span class="font-normal text-ink-soft">(mag leeg blijven)</span></label>
+        <textarea id="toelichting" name="toelichting" rows="3" class="veld mt-2"></textarea>
+      </fieldset>
+
+      <fieldset class="stap mt-10 border-t border-line pt-8" data-stap="2" tabindex="-1">
+        <legend class="font-display text-xl font-semibold leading-tight">2. Kenteken en foto</legend>
+        <label for="kenteken" class="mt-5 block font-semibold">Kenteken</label>
+        <div class="plaat mt-2"><b aria-hidden="true">NL</b><input id="kenteken" name="kenteken" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="10" placeholder="AB-123-C" /></div>
+        <label for="foto" class="mt-6 block font-semibold">Foto van de schade</label>
+        <input id="foto" name="foto" type="file" accept="image/*" multiple class="veld mt-2 text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-ink file:px-3 file:py-2 file:font-display file:font-semibold file:text-white" />
+        <div class="mt-3 flex flex-wrap gap-2" data-voorbeeld></div>
+      </fieldset>
+
+      <fieldset class="stap mt-10 border-t border-line pt-8" data-stap="3" tabindex="-1">
+        <legend class="font-display text-xl font-semibold leading-tight">3. Uw naam en telefoon</legend>
+        <div class="mt-5 grid gap-5 sm:grid-cols-2">
+          <div><label for="naam" class="block font-semibold">Naam</label><input id="naam" name="naam" autocomplete="name" class="veld mt-2" /></div>
+          <div><label for="tel" class="block font-semibold">Telefoon</label><input id="tel" name="tel" type="tel" autocomplete="tel" class="veld mt-2" /></div>
+        </div>
+        <p class="mt-6 hidden rounded-lg bg-white p-4 text-sm shadow-sm" data-overzicht></p>
+        {site.voorstel ? (
+          <p class="mt-6 rounded-lg border-l-4 border-vuur bg-white p-4">
+            Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="whitespace-nowrap font-semibold tabular-nums underline underline-offset-2">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold underline underline-offset-2 [overflow-wrap:anywhere]">{site.mail}</a>.
+          </p>
+        ) : (
+          <button type="submit" class="btn btn-vuur mt-6">Schade versturen</button>
+        )}
+      </fieldset>
+
+      <p class="mt-6 text-sm font-semibold text-ink-soft empty:hidden" data-status aria-live="polite"></p>
+      <div class="mt-6 hidden items-center justify-between gap-3 border-t border-line pt-6" data-nav>
+        <button type="button" class="btn btn-line" data-vorige>Vorige</button>
+        <button type="button" class="btn btn-vuur ml-auto" data-volgende>Volgende</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-schade]');
+  if (form) {
+    const stappen = [...form.querySelectorAll<HTMLFieldSetElement>('.stap')];
+    const punten = [...document.querySelectorAll<HTMLElement>('[data-stapnr]')];
+    const nav = form.querySelector<HTMLElement>('[data-nav]')!;
+    const vorige = form.querySelector<HTMLButtonElement>('[data-vorige]')!;
+    const volgende = form.querySelector<HTMLButtonElement>('[data-volgende]')!;
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const overzicht = form.querySelector<HTMLElement>('[data-overzicht]')!;
+    const foto = form.querySelector<HTMLInputElement>('#foto')!;
+    const voorbeeld = form.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const titels = ['Wat is er beschadigd?', 'Kenteken en foto', 'Uw naam en telefoon'];
+    let nu = 0;
+
+    form.classList.add('js');
+    nav.classList.replace('hidden', 'flex');
+    stappen.forEach((s) => s.classList.remove('mt-10', 'border-t', 'pt-8'));
+
+    const toon = (i: number, focus = true) => {
+      nu = i;
+      stappen.forEach((s, j) => (s.hidden = j !== i));
+      punten.forEach((p, j) => {
+        const actief = j === i;
+        p.toggleAttribute('data-actief', actief);
+        if (actief) p.setAttribute('aria-current', 'step'); else p.removeAttribute('aria-current');
+        const bol = p.querySelector('span')!;
+        bol.classList.toggle('bg-vuur', j <= i);
+        bol.classList.toggle('text-white', j <= i);
+        bol.classList.toggle('bg-white', j > i);
+      });
+      vorige.hidden = i === 0;
+      volgende.hidden = i === stappen.length - 1;
+      status.textContent = `Stap ${i + 1} van 3: ${titels[i]}`;
+      if (i === 2) vulOverzicht();
+      if (focus) stappen[i].focus();
+    };
+
+    const vulOverzicht = () => {
+      const soort = form.querySelector<HTMLInputElement>('input[name=soort]:checked')?.value;
+      const kenteken = (form.querySelector<HTMLInputElement>('#kenteken')!.value || '').trim().toUpperCase();
+      const n = foto.files?.length ?? 0;
+      const delen = [soort, kenteken && `kenteken ${kenteken.replaceAll('-', '‑')}`, n ? `${n} foto${n > 1 ? "'s" : ''}` : ''].filter(Boolean);
+      overzicht.textContent = delen.length ? `Uw melding: ${delen.join(', ')}.` : '';
+      overzicht.classList.toggle('hidden', !delen.length);
+    };
+
+    volgende.addEventListener('click', () => {
+      if (nu === 0 && !form.querySelector('input[name=soort]:checked')) {
+        status.textContent = 'Kies eerst wat er beschadigd is.';
+        form.querySelector<HTMLInputElement>('input[name=soort]')!.focus();
+        return;
+      }
+      toon(nu + 1);
+    });
+    vorige.addEventListener('click', () => toon(nu - 1));
+
+    foto.addEventListener('change', () => {
+      voorbeeld.replaceChildren();
+      [...(foto.files ?? [])].slice(0, 4).forEach((f, j) => {
+        if (!f.type.startsWith('image/')) return;
+        const img = new Image();
+        img.src = URL.createObjectURL(f);
+        img.alt = `Gekozen foto ${j + 1}`;
+        img.className = 'size-20 rounded-lg object-cover shadow-sm';
+        voorbeeld.append(img);
+      });
+    });
+
+    toon(0, false);
+  }
+</script>

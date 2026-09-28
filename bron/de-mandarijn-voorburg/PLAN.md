@@ -12,6 +12,13 @@ met een mandarijncirkel erachter. Bewust anders dan demos/de-mandarijn (Zwijndre
 ## Zelf gekozen
 - Geen WhatsApp (vast 070-nummer); hoofdacties: bellen om te reserveren en de afhaalkaart (PDF).
 - Tapas/all you can eat, vacatures en "het beste restaurant van Voorburg" weggelaten.
-- Geen gerechtnamen: die staan alleen in de PDF's.
-- Sfeerfoto's van Unsplash (license=free), bronnen in src/assets/BRONNEN.txt. Bij oplevering eigen foto's.
+- Sfeerfoto's van Unsplash (license=free) voor wok/indisch, bronnen in src/assets/BRONNEN.txt.
 - Geen reviewcitaten (pas na akkoord).
+
+## Verbeterronde 28-09-2026
+- Hero: hun eigen zaal (interieur.jpg, lampionnen en bloemstuk) met hun logo als beeldmerk; logo.png ook in de header (40px).
+  Stockfoto's hero.jpg en groente.jpg verwijderd.
+- Kaartsectie: echte kaart uit de afhaal-PDF (dec 2025), data in src/data/menu.ts. Doorzoekbare kaart (Kaart.astro):
+  tabs "Specialiteiten van het huis" / "Meest populair", zoekveld, schakelaar "Glutenvrij-info" met reden per gerecht uit
+  hun glutenvrij-lijst en de algemene tip. Zonder JS staan beide lijsten gewoon onder elkaar.
+- Lege plek op desktop opgelost: links een sticky kolom met rijst/toeslagen, link naar de volledige PDF en de Indische foto.

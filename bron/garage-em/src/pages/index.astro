@@ -1,133 +1,172 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Chrome from '../components/Chrome.astro';
 import Foto from '../components/Foto.astro';
-import { site, tijden, routes } from '../data/site';
-import hero from '../assets/hero.jpg';
-import wiel from '../assets/wiel.jpg';
+import Logo from '../components/Logo.astro';
+import { site, tijden, routes, diensten } from '../data/site';
 import banden from '../assets/banden.jpg';
-import gereedschap from '../assets/gereedschap.jpg';
+import pand from '../assets/pand.png';
+import werkplaats from '../assets/werkplaats.png';
 const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const tel = '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>';
 ---
 <Base
   title="Garage E&M in Tiel | De betaalbare garage"
-  description="Garage E&M, Faradaystraat 13 in Tiel. Open maandag t/m vrijdag 08:00 - 18:00 en zaterdag 09:00 - 13:00. Bel 0344 627 621 of vraag online een offerte aan."
+  description="Garage E&M, Faradaystraat 13 in Tiel: in- en verkoop, APK en reparatie. Open maandag t/m vrijdag 08:00 - 18:00 en zaterdag 09:00 - 13:00. Bel 0344 627 621."
 >
   <Chrome deel="kop" />
   <main id="inhoud">
-    <!-- Werkplaatsfoto over de volle breedte, tekst links onderin. Op mobiel een egale petrol-laag, op desktop een verloop. -->
-    <section class="relative isolate overflow-hidden bg-petrol text-white">
-      <div class="absolute inset-0 -z-10"><Foto src={hero} alt="Werkplaats met een hefbrug met gele oprijplaten, stellingen vol onderdelen en een gereedschapswand" hero class="object-[50%_85%]" sizes="100vw" /></div>
-      <div class="absolute inset-0 -z-10 bg-petrol-diep/80 lg:bg-transparent lg:bg-[linear-gradient(90deg,#082a2ff2_0%,#082a2fd9_42%,#082a2f40_100%)]"></div>
-      <div class="wrap flex min-h-[34rem] flex-col justify-end pb-10 pt-16 lg:min-h-[40rem] lg:pb-14">
-        <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-geel">{site.naam} · {site.straat}, {site.plaats}</p>
-        <h1 class="mt-4 max-w-3xl text-4xl">De betaalbare garage in Tiel</h1>
-        <p class="mt-5 max-w-xl text-lg text-white/90">Bel ons, stuur een mail of vraag online een offerte aan. Zes dagen per week open.</p>
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a href={site.telHref} class="btn btn-geel text-lg"><Fragment set:html={tel} />Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
-          <a href={site.offerte} class="btn btn-line">Online offerte aanvragen <Fragment set:html={pijl} /></a>
+    <!-- Hero op grafiet: hun eigen logo groot links, rechts het openingsbord met live 'nu open'. -->
+    <section class="bg-grafiet-diep text-white">
+      <div class="wrap grid gap-12 py-14 lg:grid-cols-12 lg:items-center lg:gap-10 lg:py-20">
+        <div class="lg:col-span-7">
+          <h1>
+            <span class="sr-only">Garage E&amp;M in Tiel. In- en verkoop, APK, reparatie. De betaalbare garage.</span>
+            <Logo variant="donker" class="block h-auto w-full max-w-[26rem]" />
+          </h1>
+          <p class="mt-8 max-w-xl text-lg text-white/90">Aan de {site.straat} in {site.plaats}. Bel ons, stuur een mail of vraag online een offerte aan.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-geel text-lg"><Fragment set:html={tel} />Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+            <a href={site.offerte} class="btn btn-line">Online offerte aanvragen <Fragment set:html={pijl} /></a>
+          </div>
         </div>
-        <dl class="mt-10 grid max-w-3xl grid-cols-1 gap-px min-[360px]:grid-cols-2 overflow-hidden rounded-md bg-white/15 text-sm sm:grid-cols-3">
-          <div class="bg-petrol-diep/90 px-4 py-3"><dt class="text-white/75">Google</dt><dd class="font-display text-lg font-bold"><span class="text-geel">{site.google.score}</span> uit 5 <span class="text-sm font-normal text-white/75">({site.google.reviews} reviews)</span></dd></div>
-          <div class="bg-petrol-diep/90 px-4 py-3"><dt class="text-white/75">Ma t/m vr</dt><dd class="whitespace-nowrap font-display text-lg font-bold tabular-nums">08:00 - 18:00</dd></div>
-          <div class="bg-petrol-diep/90 px-4 py-3 min-[360px]:col-span-2 sm:col-span-1"><dt class="text-white/75">Zaterdag</dt><dd class="whitespace-nowrap font-display text-lg font-bold tabular-nums">09:00 - 13:00</dd></div>
-        </dl>
-      </div>
-    </section>
 
-    <!-- Openingstijden als bord naast de foto, met een live 'nu open'-regel. -->
-    <section id="open" class="wrap scroll-mt-20 py-16 lg:py-24">
-      <div class="grid gap-10 lg:grid-cols-12 lg:items-center">
-        <div class="lg:col-span-5">
-          <h2 class="text-3xl">Openingstijden</h2>
-          <p id="nu-open" class="invisible mt-4 flex items-center gap-2 font-semibold" aria-live="polite"><span class="inline-block size-2.5 rounded-full"></span><span></span></p>
-          <table class="mt-8 w-full border-t-2 border-ink text-lg">
+        <div id="open" class="scroll-mt-20 rounded-md bg-grafiet p-6 ring-1 ring-white/10 sm:p-8 lg:col-span-5">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+            <h2 class="text-xl">Openingstijden</h2>
+            <p id="nu-open" class="invisible flex items-center gap-2 text-sm font-semibold" aria-live="polite"><span class="inline-block size-2.5 rounded-full"></span><span></span></p>
+          </div>
+          <table class="mt-5 w-full border-t-2 border-geel">
             <caption class="sr-only">Openingstijden {site.naam}</caption>
             <tbody>
               {tijden.map((t) => (
-                <tr class="border-b border-line">
-                  <th scope="row" class="py-4 pr-4 text-left font-normal">{t.dag}</th>
-                  <td class="whitespace-nowrap py-4 text-right font-display font-bold tabular-nums">{t.tijd}</td>
+                <tr class="border-b border-white/15">
+                  <th scope="row" class="py-3.5 pr-4 text-left font-normal text-white/90">{t.dag}</th>
+                  <td class="whitespace-nowrap py-3.5 text-right font-display text-lg font-bold tabular-nums">{t.tijd}</td>
                 </tr>
               ))}
+
             </tbody>
           </table>
-          <p class="mt-6 text-ink-soft">Vragen? Bel <a href={site.telHref} class="whitespace-nowrap font-semibold text-ink underline decoration-geel decoration-2 underline-offset-4 tabular-nums">{site.tel}</a>.</p>
+          <p class="mt-5 flex flex-wrap items-baseline gap-x-2 text-sm text-white/90">
+            <span class="font-display text-2xl font-extrabold text-geel">{site.google.score}</span>
+            <span>uit 5 op Google, <span class="whitespace-nowrap">{site.google.reviews} reviews</span></span>
+          </p>
         </div>
-        <div class="lg:col-span-6 lg:col-start-7">
-          <div class="aspect-[4/3] overflow-hidden rounded-md shadow-sm"><Foto src={wiel} alt="Monteur zit gehurkt bij het achterwiel van een blauwe auto" sizes="(min-width: 1024px) 560px, 100vw" /></div>
+      </div>
+    </section>
+
+    <!-- Diensten: de drie die op hun eigen logo staan, groot en genummerd, met de werkplaatsfoto als ingelijst inzetje. -->
+    <section id="diensten" class="wrap scroll-mt-20 py-16 lg:py-24">
+      <div class="grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-7">
+          <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink-soft">Wat we doen</p>
+          <h2 class="mt-3 text-3xl">Waarvoor u bij ons terechtkunt</h2>
+          <ol class="mt-10 border-t-2 border-ink">
+            {diensten.map((d, i) => (
+              <li class="flex items-baseline gap-5 border-b border-line py-5 sm:gap-8">
+                <span aria-hidden="true" class="font-display text-sm font-bold tabular-nums text-ink-soft">0{i + 1}</span>
+                <span class="font-display text-2xl font-extrabold tracking-[-0.02em] sm:text-3xl">{d}</span>
+              </li>
+            ))}
+          </ol>
         </div>
+        <figure class="lg:col-span-4 lg:col-start-9">
+          <div class="w-fit max-w-full rounded-md bg-white p-2 shadow-sm ring-1 ring-line">
+            <Image src={werkplaats} alt="Onze werkplaats: een auto op een brug, een tweede brug met een zwarte auto en rode oprijplaten op de vloer" width={296} format="webp" quality={82} loading="eager" decoding="async" class="block h-auto w-[296px] max-w-full rounded-sm" />
+          </div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Onze werkplaats aan de {site.straat}.</figcaption>
+        </figure>
       </div>
     </section>
 
     <!-- Offerte: foto links, tekst rechts, op een kalkkleurig vlak. -->
-    <section id="offerte" class="scroll-mt-20 bg-kalk py-16 lg:py-24">
+    <section id="offerte" class="scroll-mt-20 bg-kalk py-16 lg:py-20">
       <div class="wrap grid gap-10 lg:grid-cols-12 lg:items-center">
         <div class="order-2 lg:order-1 lg:col-span-5">
           <div class="aspect-[5/4] overflow-hidden rounded-md shadow-sm"><Foto src={banden} alt="Handen in werkhandschoenen aan de band van een opgetilde auto" sizes="(min-width: 1024px) 460px, 100vw" /></div>
         </div>
         <div class="order-1 lg:order-2 lg:col-span-6 lg:col-start-7">
-          <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-petrol">{site.slogan}</p>
+          <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink-soft">{site.slogan}</p>
           <h2 class="mt-3 text-3xl">Eerst weten wat het kost</h2>
           <p class="mt-5 text-lg text-ink-soft">Via onze offertemodule vraagt u online een prijsopgave aan. Liever eerst overleggen? Bel of mail ons gerust.</p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a href={site.offerte} class="btn btn-petrol">Online offerte aanvragen <Fragment set:html={pijl} /></a>
+            <a href={site.offerte} class="btn btn-grafiet">Online offerte aanvragen <Fragment set:html={pijl} /></a>
             <a href={`mailto:${site.mail}`} class="btn btn-line-donker">Mail ons</a>
           </div>
-          <p class="mt-6 text-sm text-ink-soft">[[AANLEVEREN: overzicht van de werkzaamheden]]</p>
         </div>
       </div>
     </section>
 
-    <!-- Route: twee genummerde stappenlijsten naast elkaar, zoals op de oude site maar leesbaar op de telefoon. -->
+    <!-- Route: kies waar u vandaan komt, dan ziet u alleen de stappen die u nodig hebt. Zonder JS staan beide routes er. -->
     <section id="route" class="wrap scroll-mt-20 py-16 lg:py-24">
-      <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-        <h2 class="text-3xl lg:col-span-6">Zo rijdt u naar de Faradaystraat</h2>
-        <p class="text-lg text-ink-soft lg:col-span-5 lg:col-start-8">Komt u over de Industrieweg (N835), volg dan een van deze twee routes. Of open het adres direct in uw navigatie.</p>
-      </div>
-      <div class="mt-12 grid gap-8 md:grid-cols-2 lg:gap-12">
-        {routes.map((r) => (
-          <div class="rounded-md bg-white p-6 shadow-sm ring-1 ring-line md:p-8">
-            <h3 class="text-xl">{r.van}</h3>
-            <p class="mt-1 text-sm text-ink-soft">{r.via}</p>
-            <ol class="mt-6">
-              {r.stappen.map((s, i) => (
-                <li class="relative flex gap-4 pb-5 last:pb-0">
-                  {i < r.stappen.length - 1 && <span aria-hidden="true" class="absolute bottom-1 left-[0.9375rem] top-9 w-0.5 bg-line"></span>}
-                  <span aria-hidden="true" class={`relative flex size-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold ${i === r.stappen.length - 1 ? 'bg-petrol text-white' : 'bg-geel text-ink'}`}>{i + 1}</span>
-                  <span class="pt-0.5">{s}</span>
-                </li>
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <h2 class="text-3xl">Zo rijdt u naar de Faradaystraat</h2>
+          <p class="mt-5 text-lg text-ink-soft">U komt over de Industrieweg (N835). Kies waar u vandaan komt.</p>
+
+          <div id="routekiezer" class="mt-8">
+            <p id="waar" class="hidden font-display font-bold" data-alleen-js>Waar komt u vandaan?</p>
+            <div role="group" aria-labelledby="waar" class="mt-3 hidden grid-cols-1 gap-2 min-[360px]:grid-cols-2 sm:max-w-md" data-alleen-js>
+              {routes.map((r, i) => (
+                <button type="button" data-kies={r.id} aria-pressed={i === 0 ? 'true' : 'false'} aria-controls={`route-${r.id}`} class="kies rounded-sm px-4 py-3 text-left font-display font-bold ring-2 ring-ink transition-colors">
+                  <span class="block text-xs font-semibold uppercase tracking-[0.12em] opacity-80">Vanaf</span>{r.knop}
+                </button>
               ))}
-            </ol>
+            </div>
+            <div aria-live="polite" class="mt-6 grid gap-6">
+              {routes.map((r) => (
+                <div id={`route-${r.id}`} data-route={r.id} class="rounded-md bg-white p-6 shadow-sm ring-1 ring-line md:p-8">
+                  <h3 class="text-xl">{r.van}</h3>
+                  <p class="mt-1 text-sm text-ink-soft">{r.via}</p>
+                  <ol class="mt-6">
+                    {r.stappen.map((s, i) => (
+                      <li class="relative flex gap-4 pb-5 last:pb-0">
+                        {i < r.stappen.length - 1 && <span aria-hidden="true" class="absolute bottom-1 left-[0.9375rem] top-9 w-0.5 bg-line"></span>}
+                        <span aria-hidden="true" class={`relative flex size-8 shrink-0 items-center justify-center rounded-full font-display text-sm font-bold ${i === r.stappen.length - 1 ? 'bg-grafiet text-white' : 'bg-geel text-ink'}`}>{i + 1}</span>
+                        <span class="pt-0.5">{s}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
-      </div>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-        <a href={site.maps} rel="noopener" class="btn btn-petrol">Open in Google Maps <Fragment set:html={pijl} /></a>
-        <p class="text-ink-soft">{site.straat}, {site.postcode} {site.plaats}</p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+            <a href={site.maps} rel="noopener" class="btn btn-grafiet">Open in Google Maps <Fragment set:html={pijl} /></a>
+            <p class="text-ink-soft">{site.straat}, {site.postcode} {site.plaats}</p>
+          </div>
+        </div>
+
+        <figure class="lg:col-span-4 lg:col-start-9 lg:pt-2">
+          <p class="font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink-soft">Zo herkent u ons</p>
+          <div class="mt-3 w-fit max-w-full rounded-md bg-white p-2 shadow-sm ring-1 ring-line">
+            <Image src={pand} alt="Ons pand aan de Faradaystraat, met onze witte bedrijfsbus met het E&M-logo ervoor" width={296} format="webp" quality={82} loading="eager" decoding="async" class="block h-auto w-[296px] max-w-full rounded-sm" />
+          </div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Ons pand aan de {site.straat}, met onze bedrijfsbus ervoor.</figcaption>
+        </figure>
       </div>
     </section>
 
-    <!-- Contact op petrol: nummer groot, gereedschapswand ernaast. -->
-    <section id="contact" class="scroll-mt-20 bg-petrol text-white">
-      <div class="wrap grid gap-10 py-16 lg:grid-cols-12 lg:py-24">
+    <!-- Contact op grafiet: nummer groot links, gegevens rechts. -->
+    <section id="contact" class="scroll-mt-20 bg-grafiet text-white">
+      <div class="wrap grid gap-10 py-16 lg:grid-cols-12 lg:py-20">
         <div class="lg:col-span-6">
           <h2 class="text-3xl">Bel, mail of kom langs</h2>
-          <dl class="mt-8 grid gap-6 text-lg">
-            <div><dt class="text-sm text-white/75">Telefoon</dt><dd><a href={site.telHref} class="whitespace-nowrap font-display text-3xl font-extrabold tabular-nums underline decoration-geel decoration-2 underline-offset-[6px]">{site.tel}</a></dd></div>
-            <div><dt class="text-sm text-white/75">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="break-all underline decoration-geel decoration-2 underline-offset-4">{site.mail}</a></dd></div>
-            <div><dt class="text-sm text-white/75">Adres</dt><dd><address class="not-italic">{site.straat}<br />{site.postcode} {site.plaats}</address></dd></div>
-            <div><dt class="text-sm text-white/75">Open</dt><dd>Ma t/m vr <span class="whitespace-nowrap tabular-nums">08:00 - 18:00</span>, za <span class="whitespace-nowrap tabular-nums">09:00 - 13:00</span></dd></div>
-          </dl>
+          <p class="mt-8 text-sm text-white/80">Telefoon</p>
+          <a href={site.telHref} class="whitespace-nowrap font-display text-3xl font-extrabold tabular-nums underline decoration-geel decoration-2 underline-offset-[6px]">{site.tel}</a>
           <div class="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a href={site.telHref} class="btn btn-geel"><Fragment set:html={tel} />Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
             <a href={site.offerte} class="btn btn-line">Online offerte</a>
           </div>
         </div>
-        <div class="lg:col-span-5 lg:col-start-8">
-          <div class="aspect-[16/10] overflow-hidden rounded-md lg:aspect-[4/5]"><Foto src={gereedschap} alt="Steeksleutels en ringsleutels aan een gereedschapswand, met een slijpmachine op de voorgrond" sizes="(min-width: 1024px) 420px, 100vw" /></div>
-        </div>
+        <dl class="grid gap-6 text-lg lg:col-span-5 lg:col-start-8 lg:border-l lg:border-white/15 lg:pl-10">
+          <div><dt class="text-sm text-white/80">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="break-all underline decoration-geel decoration-2 underline-offset-4">{site.mail}</a></dd></div>
+          <div><dt class="text-sm text-white/80">Adres</dt><dd><address class="not-italic">{site.straat}<br />{site.postcode} {site.plaats}</address></dd></div>
+          <div><dt class="text-sm text-white/80">Open</dt><dd>Ma t/m vr <span class="whitespace-nowrap tabular-nums">08:00 - 18:00</span><br />Za <span class="whitespace-nowrap tabular-nums">09:00 - 13:00</span></dd></div>
+        </dl>
       </div>
     </section>
   </main>
@@ -142,10 +181,30 @@ const tel = '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" 
       const min = Number(get('hour')) * 60 + Number(get('minute'));
       const doordeweeks = ['ma', 'di', 'wo', 'do', 'vr'].includes(dag);
       const open = (doordeweeks && min >= 480 && min < 1080) || (dag === 'za' && min >= 540 && min < 780);
-      const [stip, tekst] = el.querySelectorAll<HTMLElement>("span");
-      stip.style.background = open ? '#1f7a4d' : '#9a3b2a';
+      const [stip, tekst] = el.querySelectorAll<HTMLElement>('span');
+      stip.style.background = open ? '#3ecf7a' : '#ff8a70';
       tekst.textContent = open ? 'Nu open' : 'Nu gesloten';
-      el.classList.remove("invisible");
+      el.classList.remove('invisible');
+    }
+
+    // Routekiezer: toont alleen de gekozen route. Zonder JS blijven beide routes zichtbaar.
+    const kiezer = document.getElementById('routekiezer');
+    if (kiezer) {
+      kiezer.querySelectorAll<HTMLElement>('[data-alleen-js]').forEach((n) => n.classList.remove('hidden'));
+      kiezer.querySelector<HTMLElement>('[role="group"]')?.classList.add('grid');
+      const knoppen = kiezer.querySelectorAll<HTMLButtonElement>('[data-kies]');
+      const kies = (id: string) => {
+        knoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.kies === id)));
+        kiezer.querySelectorAll<HTMLElement>('[data-route]').forEach((r) => { r.hidden = r.dataset.route !== id; });
+      };
+      knoppen.forEach((k) => k.addEventListener('click', () => kies(k.dataset.kies!)));
+      kies(knoppen[0].dataset.kies!);
     }
   </script>
 </Base>
+
+<style>
+  .kies[aria-pressed='true'] { background: var(--color-ink); color: var(--color-white); }
+  .kies[aria-pressed='false'] { background: var(--color-white); color: var(--color-ink); }
+  .kies[aria-pressed='false']:hover { background: var(--color-geel); }
+</style>

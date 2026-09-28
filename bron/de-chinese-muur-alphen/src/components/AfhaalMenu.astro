@@ -1,0 +1,247 @@
+---
+// Doorzoekbaar afhaalmenu met voordeelmeter. Zonder JS: gewone menulijst per categorie plus de voordeelstaffel.
+// Met JS: filterknoppen, zoekveld, +/- per gerecht, lopend totaal en hoeveel er nog nodig is voor de volgende gratis extra.
+import { site } from '../data/site';
+import { menu, euro, stappen } from '../data/menu';
+const belIcoon = 'M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1z';
+const hap = menu.find((c) => c.id === 'menus')!.gerechten[0];
+---
+<section id="afhalen" data-menu class="licht scroll-mt-16 py-14 lg:py-20">
+  <div class="wrap">
+    <div class="grid gap-4 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <p class="kicker text-bordeaux">Afhaalmenu</p>
+        <h2 class="mt-3 text-3xl">Stel uw afhaalbestelling samen</h2>
+      </div>
+      <p class="text-ink-soft lg:col-span-5">Tik gerechten aan en zie meteen wat u betaalt, en of u bij afhalen gratis kroepoek of miniloempia’s krijgt.</p>
+    </div>
+
+    <div class="mt-10 grid gap-8 lg:grid-cols-12 lg:gap-10">
+      <!-- Menulijst -->
+      <div class="lg:col-span-8">
+        <div hidden data-js class="rounded-xl bg-schelp p-4 sm:p-5">
+          <label for="zoek" class="text-sm font-semibold">Zoek een gerecht</label>
+          <input id="zoek" type="search" autocomplete="off" placeholder="bijv. babi pangang, saté, vegetarisch" class="mt-2 w-full rounded-lg border border-ink/30 bg-white px-4 py-3 text-base text-ink placeholder:text-ink-soft focus-visible:outline-bordeaux" />
+          <div class="mt-4 flex flex-wrap gap-2" role="group" aria-label="Kies een categorie">
+            {menu.map((c, i) => (
+              <button type="button" data-tab={c.id} aria-pressed={i === 0 ? 'true' : 'false'} class="tab rounded-full px-3.5 py-2 text-sm font-semibold transition-colors">{c.kort}</button>
+            ))}
+          </div>
+          <p data-status aria-live="polite" class="sr-only"></p>
+        </div>
+
+        <div class="mt-6 space-y-10">
+          {menu.map((c) => (
+            <div data-cat={c.id}>
+              <h3 class="text-2xl">{c.naam}</h3>
+              <ul class="mt-3 divide-y divide-line border-y border-line">
+                {c.gerechten.map((g, i) => {
+                  const id = `${c.id}-${i}`;
+                  const label = `${g.nr ? g.nr + ' ' : ''}${g.naam}`;
+                  return (
+                    <li data-rij data-zoek={`${label} ${g.info ?? ''} ${c.naam}`} class="flex items-start gap-3 py-3.5">
+                      <div class="min-w-0 flex-1">
+                        <p class="font-semibold leading-snug">{g.nr && <span class="num mr-1.5 text-bordeaux">{g.nr}</span>}{g.naam}</p>
+                        {g.info && <p class="mt-0.5 text-sm leading-snug text-ink-soft">{g.info}</p>}
+                      </div>
+                      <p class="num pt-0.5 font-semibold">{euro(g.prijs)}</p>
+                      <div hidden data-js class="flex shrink-0 items-center gap-1.5">
+                        <button type="button" hidden data-min={id} class="stap-knop" aria-label={`Eén ${label} minder`}>&minus;</button>
+                        <span hidden data-aantal={id} class="num w-5 text-center font-bold text-bordeaux"></span>
+                        <button type="button" data-plus={id} data-prijs={g.prijs} data-naam={label} class="stap-knop stap-plus" aria-label={`${label} toevoegen, ${euro(g.prijs)}`}>+</button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+          <p hidden data-leeg class="rounded-xl bg-schelp p-5 text-ink-soft">Geen gerecht gevonden in deze selectie. <a href={site.bestellen} rel="noopener" class="font-semibold text-bordeaux underline underline-offset-2">Bestel online</a> of bel ons.</p>
+        </div>
+
+        <div class="mt-8 grid gap-6 rounded-xl border border-line bg-white p-5 text-sm sm:grid-cols-2 sm:p-6">
+          <div>
+            <h3 class="text-lg">Dit is een selectie</h3>
+            <p class="mt-1.5 text-ink-soft">Hier ziet u een deel van onze afhaalkaart, met de prijzen van de kaart. Het totaal is een rekenhulp: u bestelt online of telefonisch.</p>
+          </div>
+          <div>
+            <h3 class="text-lg">Rijst erbij</h3>
+            <p class="mt-1.5 text-ink-soft">Al onze gerechten zijn inclusief een klein bakje witte rijst. (Vegetarische) nasi of bami <span class="num">€ 1,50</span> extra, mihoen of Chinese bami <span class="num">€ 4,00</span> extra, Indische nasi <span class="num">€ 3,50</span> extra, grote nasi of grote bami <span class="num">€ 3,50</span>. Bij bepaalde gecombineerde gerechten zit nasi of bami al in de prijs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voordeelmeter -->
+      <aside id="voordeel" aria-labelledby="voordeel-kop" class="scroll-mt-20 lg:col-span-4">
+        <div class="rounded-xl bg-wijn p-6 text-paper shadow-[0_1px_2px_#24151a33] lg:sticky lg:top-20">
+          <h3 id="voordeel-kop" class="text-2xl">Voordeel bij afhalen</h3>
+
+          <div hidden data-js class="mt-4">
+            <p class="text-sm text-paper/85">Uw afhaaltotaal</p>
+            <p data-totaal class="num font-display text-4xl leading-none font-bold text-oker">€ 0,00</p>
+            <div aria-hidden="true" class="relative mt-5 h-2.5 rounded-full bg-paper/15">
+              <div data-balk class="h-full w-0 rounded-full bg-oker transition-[width] duration-300"></div>
+              <span class="absolute top-[-3px] left-[35%] h-4 w-0.5 bg-paper/70"></span>
+              <span class="absolute top-[-3px] left-[65%] h-4 w-0.5 bg-paper/70"></span>
+            </div>
+            <p data-bericht aria-live="polite" class="mt-4 min-h-[3lh] font-semibold">Tik op + bij een gerecht. Boven <span class="num">€ 35</span> krijgt u gratis kroepoek.</p>
+          </div>
+
+          <ol class="mt-5 space-y-2 text-sm">
+            {stappen.map((s) => (
+              <li data-stap={s.vanaf} class="stap flex items-baseline gap-3 rounded-lg px-3 py-2 ring-1 ring-paper/20">
+                <span class="w-[5.5rem] shrink-0"><span class="text-xs">boven </span><span class="num font-display text-lg font-bold text-oker">€{s.vanaf / 100}</span></span>
+                <span>{s.krijgt}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-3 text-sm text-paper/85">Alleen bij afhalen, niet bij bezorgen.</p>
+
+          <div hidden data-lijst-blok class="mt-5 border-t border-paper/20 pt-4">
+            <div class="flex items-baseline justify-between gap-3">
+              <p class="kicker text-oker-soft">Uw lijstje</p>
+              <button type="button" data-wis class="text-sm text-paper underline underline-offset-2">Wis alles</button>
+            </div>
+            <ul data-lijst class="mt-2 space-y-1 text-sm"></ul>
+          </div>
+
+          <div class="mt-6 grid gap-2.5">
+            <a href={site.bestellen} rel="noopener" class="btn btn-oker">Bestel online</a>
+            <a href={site.telHref} class="btn btn-line text-paper">
+              <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 shrink-0" fill="currentColor"><path d={belIcoon} /></svg>
+              Bel <span class="num">{site.tel}</span>
+            </a>
+          </div>
+          <p class="mt-4 text-xs leading-snug text-paper/85">Let op: wij zijn De Chinese Muur in Alphen aan den Rijn, niet die in Boskoop.</p>
+        </div>
+
+        <div class="mt-5 rounded-xl bg-schelp p-5">
+          <div class="flex items-baseline justify-between gap-3">
+            <h3 class="text-xl">{hap.naam}</h3>
+            <p class="num font-display text-xl font-bold text-bordeaux">{euro(hap.prijs)}</p>
+          </div>
+          <p class="mt-1.5 text-sm text-ink-soft">{hap.info}.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Mobiel: vaste balk met het totaal zolang de meter buiten beeld is -->
+  <a hidden data-mobiel href="#voordeel" class="fixed inset-x-3 bottom-3 z-30 flex items-center justify-between gap-3 rounded-xl bg-wijn-deep px-4 py-3 text-paper no-underline shadow-[0_4px_16px_#2a081166] lg:!hidden">
+    <span class="min-w-0"><span data-m-totaal class="num font-display text-xl font-bold text-oker">€ 0,00</span> <span data-m-tekst class="block truncate text-xs text-paper"></span></span>
+    <span class="shrink-0 text-sm font-bold underline underline-offset-2">Bekijk</span>
+  </a>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-menu]');
+  if (root) {
+    const $ = <T extends Element = HTMLElement>(s: string) => root.querySelector<T>(s)!;
+    const $$ = <T extends Element = HTMLElement>(s: string) => [...root.querySelectorAll<T>(s)];
+    root.querySelectorAll('[data-js]').forEach((el) => el.removeAttribute('hidden'));
+
+    const fmt = (c: number) => '€ ' + (c / 100).toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const stappen = $$('[data-stap]').map((li) => ({ li, vanaf: Number(li.dataset.stap), krijgt: li.children[1].textContent!.trim() }));
+    const aantal = new Map<string, number>();
+    const info = new Map<string, { naam: string; prijs: number }>();
+    $$<HTMLButtonElement>('[data-plus]').forEach((b) => info.set(b.dataset.plus!, { naam: b.dataset.naam!, prijs: Number(b.dataset.prijs) }));
+
+    // Filteren: categorie-knoppen, of zoeken over alle categorieën.
+    const tabs = $$<HTMLButtonElement>('[data-tab]');
+    const cats = $$('[data-cat]');
+    const zoek = $<HTMLInputElement>('#zoek');
+    let actief = tabs[0].dataset.tab!;
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    function filter() {
+      const q = norm(zoek.value.trim());
+      let n = 0;
+      tabs.forEach((t) => t.setAttribute('aria-pressed', String(!q && t.dataset.tab === actief)));
+      cats.forEach((c) => {
+        let zicht = 0;
+        c.querySelectorAll<HTMLElement>('[data-rij]').forEach((r) => {
+          const ok = q ? norm(r.dataset.zoek!).includes(q) : c.dataset.cat === actief;
+          r.hidden = !ok; if (ok) zicht++;
+        });
+        c.hidden = zicht === 0; n += zicht;
+      });
+      $('[data-leeg]').hidden = n > 0;
+      $('[data-status]').textContent = q ? `${n} ${n === 1 ? 'gerecht' : 'gerechten'} gevonden` : '';
+    }
+    tabs.forEach((t) => t.addEventListener('click', () => { actief = t.dataset.tab!; zoek.value = ''; filter(); }));
+    zoek.addEventListener('input', filter);
+    filter();
+
+    // Tellen en de voordeelmeter bijwerken.
+    function update() {
+      let totaal = 0;
+      const lijst = $('[data-lijst]');
+      lijst.replaceChildren();
+      aantal.forEach((n, id) => {
+        const g = info.get(id)!;
+        totaal += n * g.prijs;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between gap-3';
+        const a = document.createElement('span'); a.textContent = `${n}× ${g.naam}`;
+        const b = document.createElement('span'); b.className = 'num'; b.textContent = fmt(n * g.prijs);
+        li.append(a, b); lijst.append(li);
+      });
+      $$('[data-aantal]').forEach((s) => {
+        const n = aantal.get(s.dataset.aantal!) ?? 0;
+        s.textContent = String(n); s.hidden = n === 0;
+        root.querySelector<HTMLElement>(`[data-min="${s.dataset.aantal}"]`)!.hidden = n === 0;
+      });
+      $('[data-lijst-blok]').hidden = aantal.size === 0;
+      $('[data-totaal]').textContent = fmt(totaal);
+      $('[data-balk]').style.width = Math.min(totaal / 100, 100) + '%';
+
+      const bereikt = stappen.filter((s) => totaal > s.vanaf).pop();
+      const volgende = stappen.find((s) => totaal <= s.vanaf);
+      stappen.forEach((s) => s.li.toggleAttribute('data-bereikt', totaal > s.vanaf));
+      let tekst = '';
+      let kort = '';
+      if (totaal === 0) tekst = 'Tik op + bij een gerecht. Boven € 35 krijgt u gratis kroepoek.';
+      else {
+        if (bereikt) tekst = `U krijgt ${bereikt.krijgt}. `;
+        if (volgende) {
+          const rest = volgende.vanaf - totaal;
+          const nog = rest === 0 ? 'Nog iets meer' : `Nog meer dan ${fmt(rest)}`;
+          tekst += `${nog} en u krijgt ${volgende.krijgt}.`;
+          kort = rest === 0 ? `nog iets meer voor ${volgende.krijgt}` : `nog meer dan ${fmt(rest)} voor ${volgende.krijgt}`;
+        } else kort = `u krijgt ${bereikt!.krijgt}`;
+      }
+      $('[data-bericht]').textContent = tekst;
+      $('[data-m-totaal]').textContent = fmt(totaal);
+      $('[data-m-tekst]').textContent = kort;
+      toonBalk();
+    }
+
+    root.addEventListener('click', (e) => {
+      const t = (e.target as HTMLElement).closest<HTMLElement>('[data-plus],[data-min],[data-wis]');
+      if (!t) return;
+      if (t.dataset.wis !== undefined) aantal.clear();
+      else if (t.dataset.plus) aantal.set(t.dataset.plus, (aantal.get(t.dataset.plus) ?? 0) + 1);
+      else if (t.dataset.min) {
+        const id = t.dataset.min; const n = (aantal.get(id) ?? 0) - 1;
+        if (n > 0) aantal.set(id, n); else { aantal.delete(id); root.querySelector<HTMLElement>(`[data-plus="${id}"]`)?.focus(); }
+      }
+      update();
+    });
+
+    // Mobiele balk alleen tonen als er iets gekozen is en de meter niet in beeld is.
+    const balk = $('[data-mobiel]');
+    let meterInBeeld = false;
+    function toonBalk() { balk.hidden = aantal.size === 0 || meterInBeeld; }
+    new IntersectionObserver(([e]) => { meterInBeeld = e.isIntersecting; toonBalk(); }).observe($('#voordeel'));
+  }
+</script>
+
+<style>
+  .tab { background: var(--color-white); color: var(--color-ink); box-shadow: inset 0 0 0 1px #24151a40; }
+  .tab:hover { box-shadow: inset 0 0 0 2px var(--color-bordeaux); }
+  .tab[aria-pressed='true'] { background: var(--color-bordeaux); color: var(--color-white); box-shadow: none; }
+  .stap-knop { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 999px; font-size: 1.35rem; font-weight: 700; line-height: 1; color: var(--color-bordeaux); box-shadow: inset 0 0 0 2px var(--color-bordeaux); transition: background-color .15s ease, color .15s ease; }
+  .stap-knop:hover, .stap-plus { background: var(--color-bordeaux); color: var(--color-white); }
+  .stap-plus:hover { background: var(--color-wijn); }
+  .stap[data-bereikt] { background: var(--color-oker); color: var(--color-wijn-deep); box-shadow: none; }
+  .stap[data-bereikt] span { color: var(--color-wijn-deep); }
+</style>

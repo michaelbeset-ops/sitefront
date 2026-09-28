@@ -1,0 +1,131 @@
+---
+// Doorzoekbare kaart. Zonder JS: beide lijsten onder elkaar, gewoon leesbaar.
+// Met JS: tabs, zoekveld en de schakelaar "Glutenvrij-info".
+import { specialiteiten, populair, glutenvrij, glutenTip } from '../data/menu';
+const lijsten = [
+  { id: 'huis', titel: 'Specialiteiten van het huis', items: specialiteiten },
+  { id: 'populair', titel: 'Meest populair', items: populair },
+];
+const glutenTekst = (nr: string) => {
+  const r = glutenvrij[nr];
+  if (!r) return 'Staat niet op de glutenvrij-lijst.';
+  if (!r.length) return 'Staat op de glutenvrij-lijst, zonder opmerking.';
+  return `Niet 100% glutenvrij: ${r.join('; ')}.`;
+};
+---
+<div id="kaartapp" class="gv-uit">
+  <div data-js-only hidden class="mb-6 grid gap-4">
+    <div role="tablist" aria-label="Kies een deel van de kaart" class="flex flex-wrap gap-2">
+      {lijsten.map((l, i) => (
+        <button type="button" role="tab" id={`tab-${l.id}`} aria-controls={`paneel-${l.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="tab">
+          {l.titel} <span class="tabular-nums opacity-80">({l.items.length})</span>
+        </button>
+      ))}
+    </div>
+    <div class="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
+      <label class="relative block">
+        <span class="sr-only">Zoek een gerecht op naam, ingrediënt of nummer</span>
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-soft" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="kaartzoek" type="search" autocomplete="off" placeholder="Zoek: garnalen, eend, 52b..." class="w-full rounded-full border border-line bg-white py-3 pl-12 pr-4 text-ink shadow-[0_1px_2px_#13201c14] placeholder:text-ink-soft" />
+      </label>
+      <label class="flex cursor-pointer items-center gap-3 rounded-full bg-white px-4 py-3 ring-1 ring-line">
+        <input id="gvschakel" type="checkbox" role="switch" class="peer sr-only" />
+        <span aria-hidden="true" class="schakel"></span>
+        <span class="font-medium">Glutenvrij-info</span>
+      </label>
+    </div>
+    <p id="gvtip" hidden class="rounded-xl border-l-4 border-jade bg-white px-4 py-3 text-sm text-ink"><strong>Uit onze glutenvrij-lijst:</strong> {glutenTip}</p>
+    <p id="kaartstatus" aria-live="polite" class="text-sm text-ink-soft"></p>
+  </div>
+
+  {lijsten.map((l, i) => (
+    <section id={`paneel-${l.id}`} role="tabpanel" aria-labelledby={`tab-${l.id}`} class={i > 0 ? 'mt-10 [&.js-actief]:mt-0' : ''} data-paneel>
+      <h3 class="paneelkop mb-3 text-xl text-jade">{l.titel}</h3>
+      <ul class="border-t border-line">
+        {l.items.map((g) => (
+          <li class="gerecht grid grid-cols-[2.75rem_1fr_auto] gap-x-3 border-b border-line py-3.5" data-zoek={`${g.nr} ${g.naam} ${g.omschrijving ?? ''}`.toLowerCase()}>
+            <span class="pt-0.5 text-sm font-semibold text-schil-diep tabular-nums">{g.nr}</span>
+            <span>
+              <span class="block font-semibold text-ink">{g.naam}</span>
+              {g.omschrijving && <span class="block text-sm text-ink-soft">{g.omschrijving}</span>}
+              <span class={`gv mt-1.5 block text-sm ${glutenvrij[g.nr] ? 'text-jade' : 'text-ink-soft'}`}>{glutenTekst(g.nr)}</span>
+            </span>
+            <span class="whitespace-nowrap pt-0.5 font-semibold text-ink tabular-nums">€ {g.prijs}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="leeg mt-4 text-ink-soft" hidden>Geen gerecht gevonden in deze lijst.</p>
+    </section>
+  ))}
+</div>
+
+<style>
+  .tab { border-radius: 999px; padding: .6rem 1.1rem; font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--color-jade); color: var(--color-jade); transition: background-color .2s ease, color .2s ease; }
+  .tab:hover { background: var(--color-white); }
+  .tab[aria-selected='true'] { background: var(--color-jade); color: var(--color-white); }
+  .schakel { position: relative; width: 2.6rem; height: 1.5rem; flex-shrink: 0; border-radius: 999px; background: var(--color-ink-soft); transition: background-color .2s ease; }
+  .schakel::after { content: ''; position: absolute; top: .2rem; left: .2rem; width: 1.1rem; height: 1.1rem; border-radius: 999px; background: var(--color-white); transition: transform .2s ease; }
+  :global(.peer:checked) + .schakel { background: var(--color-jade); }
+  :global(.peer:checked) + .schakel::after { transform: translateX(1.1rem); }
+  :global(.peer:focus-visible) + .schakel { outline: 3px solid var(--color-schil-diep); outline-offset: 3px; }
+  .gv-uit .gv { display: none; }
+</style>
+
+<script>
+  const app = document.getElementById('kaartapp')!;
+  const tabs = [...app.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const panelen = [...app.querySelectorAll<HTMLElement>('[data-paneel]')];
+  const zoek = app.querySelector<HTMLInputElement>('#kaartzoek')!;
+  const schakel = app.querySelector<HTMLInputElement>('#gvschakel')!;
+  const tip = app.querySelector<HTMLElement>('#gvtip')!;
+  const status = app.querySelector<HTMLElement>('#kaartstatus')!;
+  app.querySelector<HTMLElement>('[data-js-only]')!.hidden = false;
+  app.querySelectorAll('.paneelkop').forEach((h) => h.classList.add('sr-only'));
+  let actief = 0;
+
+  const telTreffers = (p: HTMLElement, q: string) =>
+    [...p.querySelectorAll<HTMLElement>('.gerecht')].filter((li) => li.dataset.zoek!.includes(q)).length;
+
+  function toon() {
+    const q = zoek.value.trim().toLowerCase();
+    panelen.forEach((p, i) => {
+      const aan = i === actief;
+      p.hidden = !aan;
+      p.classList.toggle('js-actief', aan);
+      let n = 0;
+      p.querySelectorAll<HTMLElement>('.gerecht').forEach((li) => {
+        const past = !q || li.dataset.zoek!.includes(q);
+        li.hidden = !past;
+        if (past) n++;
+      });
+      p.querySelector<HTMLElement>('.leeg')!.hidden = n > 0;
+    });
+    if (!q) { status.textContent = ''; return; }
+    const hier = telTreffers(panelen[actief], q);
+    const ander = 1 - actief;
+    const daar = telTreffers(panelen[ander], q);
+    let t = `${hier} ${hier === 1 ? 'gerecht' : 'gerechten'} gevonden in ${tabs[actief].textContent!.replace(/\s*\(\d+\)/, '')}.`;
+    if (!hier && daar) t += ` Wel ${daar} in ${tabs[ander].textContent!.replace(/\s*\(\d+\)/, '')}.`;
+    status.textContent = t;
+  }
+
+  function kies(i: number, focus = false) {
+    actief = i;
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; });
+    if (focus) tabs[i].focus();
+    toon();
+  }
+
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => kies(i));
+    t.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); kies((i + 1) % tabs.length, true); }
+    });
+  });
+  zoek.addEventListener('input', toon);
+  schakel.addEventListener('change', () => {
+    app.classList.toggle('gv-uit', !schakel.checked);
+    tip.hidden = !schakel.checked;
+  });
+  toon();
+</script>

@@ -3,8 +3,11 @@ import Base from '../layouts/Base.astro';
 import Chrome from '../components/Chrome.astro';
 import Foto from '../components/Foto.astro';
 import { site, tijden } from '../data/site';
-import hero from '../assets/hero.jpg';
-import groente from '../assets/groente.jpg';
+import { Image } from 'astro:assets';
+import interieur from '../assets/interieur.jpg';
+import logo from '../assets/logo.png';
+import Kaart from '../components/Kaart.astro';
+import { rijstNoot, toeslagen } from '../data/menu';
 import wok from '../assets/wok.jpg';
 import indisch from '../assets/indisch.jpg';
 const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12m0 0-5-5m5 5 5-5M5 20h14"/></svg>';
@@ -15,21 +18,21 @@ const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-
 >
   <Chrome deel="kop" />
   <main id="inhoud">
-    <!-- Tekst op papier, het gerecht in een boog ernaast: rustig en warm, geen foto met tekst eroverheen. -->
-    <section class="wrap grid gap-8 pb-14 pt-6 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-24 lg:pt-14">
-      <div class="relative lg:order-2 lg:col-span-6 lg:col-start-7">
-        <div aria-hidden="true" class="absolute -right-10 -top-8 hidden h-40 w-40 rounded-full bg-schil lg:block"></div>
-        <div class="relative aspect-[16/10] overflow-hidden rounded-[1.5rem] lg:aspect-[4/5] lg:rounded-t-[999px] lg:rounded-b-[1.5rem]">
-          <Foto src={hero} alt="Bord met gebakken reepjes vlees, rode peper en lente-ui" hero sizes="(min-width: 1024px) 560px, 100vw" />
+    <!-- Hun eigen zaal als hero: de eigenaar herkent de lampionnen en het bloemstuk direct. Logo als beeldmerk erop. -->
+    <section class="wrap grid gap-8 pb-14 pt-5 lg:grid-cols-12 lg:items-center lg:gap-12 lg:pb-24 lg:pt-14">
+      <div class="relative lg:order-2 lg:col-span-7">
+        <div class="aspect-[4/3] overflow-hidden rounded-[1.5rem] shadow-[0_1px_2px_#13201c1f]">
+          <Foto src={interieur} alt="Het restaurant van binnen: rode lampionnen, een groot bloemstuk en gedekte ronde tafels met draaiplateau" hero sizes="(min-width: 1024px) 680px, 100vw" />
         </div>
+        <Image src={logo} alt="" width={96} height={96} densities={[1, 1.5]} class="absolute -bottom-6 left-4 h-20 w-20 rounded-full ring-4 ring-paper sm:h-24 sm:w-24 lg:-left-8 lg:bottom-8 lg:h-24 lg:w-24" loading="eager" />
       </div>
-      <div class="lg:order-1 lg:col-span-6">
+      <div class="pt-4 lg:order-1 lg:col-span-5 lg:pt-0">
         <p class="text-sm font-semibold uppercase tracking-[0.14em] text-schil-diep">Chinees Indisch restaurant in Voorburg</p>
         <h1 class="mt-4 text-4xl text-jade">Chinees en Indisch eten, al meer dan 30 jaar in Voorburg</h1>
         <p class="mt-6 max-w-xl text-lg text-ink-soft">De Mandarijn staat voor genieten in een gezellige en informele sfeer, van Chinese en Kantonese gerechten tot Indische specialiteiten. U vindt ons naast de Hoogvliet.</p>
         <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <a href={site.telHref} class="btn btn-jade justify-center">Reserveer: <span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
-          <a href={site.afhaalkaart} rel="noopener" class="btn btn-line justify-center text-jade"><Fragment set:html={pijl} />Afhaalkaart (PDF)</a>
+          <a href="#kaart" class="btn btn-line justify-center text-jade">Bekijk de kaart</a>
         </div>
         <p class="mt-6 text-sm text-ink-soft"><strong class="text-ink">4,0</strong> op Google (209 reviews) · open vanaf <span class="whitespace-nowrap tabular-nums">16:00</span> · dinsdag gesloten</p>
       </div>
@@ -38,26 +41,36 @@ const pijl = '<svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 shrink-
     <section id="kaart" class="scroll-mt-20 bg-rijst py-16 lg:py-24">
       <div class="wrap">
         <div class="grid gap-8 lg:grid-cols-12">
-          <div class="lg:col-span-5">
-            <p class="text-sm font-semibold uppercase tracking-[0.14em] text-schil-diep">À la carte, alle dagen behalve dinsdag</p>
-            <h2 class="mt-4 text-3xl text-jade">Chinees, Kantonees en Indisch op één kaart</h2>
+          <div class="lg:col-span-6">
+            <p class="text-sm font-semibold uppercase tracking-[0.14em] text-schil-diep">Uit de afhaalkaart van december 2025</p>
+            <h2 class="mt-4 text-3xl text-jade">Specialiteiten en favorieten van de kaart</h2>
           </div>
-          <p class="border-l-4 border-schil-diep pl-5 font-display text-2xl italic leading-snug text-jade lg:col-span-6 lg:col-start-7 lg:self-end">Op onze kaart staan alleen gerechten die we zelf ook lekker vinden.</p>
+          <p class="border-l-4 border-schil-diep pl-5 font-display text-2xl italic leading-snug text-jade lg:col-span-5 lg:col-start-8 lg:self-end">Op onze kaart staan alleen gerechten die we zelf ook lekker vinden.</p>
         </div>
 
-        <div class="mt-12 grid gap-10 md:grid-cols-12 lg:mt-16">
-          <article class="md:col-span-7">
-            <div class="aspect-[3/2] overflow-hidden rounded-[1.25rem]"><Foto src={groente} alt="Chinese bladgroente in bruine saus op een wit bord, met dunne reepjes lente-ui erop" sizes="(min-width: 768px) 640px, 100vw" /></div>
-            <h3 class="mt-6 text-2xl text-jade">Chinees en Kantonees</h3>
-            <p class="mt-2 max-w-lg text-ink-soft">Het à la carte menu staat vol met Chinese gerechten. Echt de moeite waard om een keer te proberen.</p>
-          </article>
-          <article class="md:col-span-5 md:mt-28">
-            <div class="aspect-[4/5] overflow-hidden rounded-[1.25rem]"><Foto src={indisch} alt="Bord met rijst, gegrilde kip, groente met taugé, komkommer en een bakje sambal" sizes="(min-width: 768px) 440px, 100vw" /></div>
-            <h3 class="mt-6 text-2xl text-jade">Indisch</h3>
-            <p class="mt-2 text-ink-soft">Laat u er niet van weerhouden om bij deze "Chinees" ook een Indische specialiteit te proberen.</p>
-          </article>
+        <div class="mt-10 grid gap-10 lg:mt-14 lg:grid-cols-12">
+          <div class="lg:col-span-8 lg:order-2">
+            <Kaart />
+          </div>
+          <aside class="lg:col-span-4 lg:order-1" aria-label="Goed om te weten">
+            <div class="grid gap-6 sm:grid-cols-2 lg:sticky lg:top-24 lg:grid-cols-1">
+              <div class="rounded-[1.25rem] bg-white p-6 shadow-[0_1px_2px_#13201c1f] ring-1 ring-line">
+                <p class="font-display text-xl font-semibold text-jade">{rijstNoot.replace('Bovenstaande gerechten', 'De gerechten')}</p>
+                <ul class="mt-4 grid gap-2 text-sm text-ink-soft">
+                  {toeslagen.map((t) => (
+                    <li class="border-t border-line pt-2">{t.wat}: <span class="whitespace-nowrap font-semibold text-ink tabular-nums">€ {t.prijs}</span>{t.per}</li>
+                  ))}
+                </ul>
+                <p class="mt-5 text-sm text-ink-soft">Dit is een deel van de kaart. Soepen, voorgerechten, Kantonese en Szechuan specialiteiten en meer staan in de volledige afhaalkaart.</p>
+                <a href={site.afhaalkaart} rel="noopener" class="btn btn-jade mt-5 w-full justify-center"><Fragment set:html={pijl} />Volledige kaart (PDF)</a>
+              </div>
+              <figure>
+                <div class="aspect-[4/3] overflow-hidden rounded-[1.25rem] lg:aspect-[5/4]"><Foto src={indisch} alt="Bord met rijst, gegrilde kip, groente met taugé, komkommer en een bakje sambal" sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw" /></div>
+                <figcaption class="mt-3 text-sm text-ink-soft">Laat u er niet van weerhouden om bij deze "Chinees" ook een Indische specialiteit te proberen.</figcaption>
+              </figure>
+            </div>
+          </aside>
         </div>
-        <p class="mt-10 text-sm text-ink-soft">[[AANLEVEREN: restaurantkaart met gerechten en prijzen]]</p>
       </div>
     </section>
 

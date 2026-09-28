@@ -14,3 +14,11 @@ Secties: diensten als genummerde lijst, kleine vs grote beurt naast elkaar, donk
 - Zondag niet genoemd bij openingstijden (staat niet in de bron).
 - Sfeerfoto's van Unsplash (license=free), bronnen in src/assets/BRONNEN.txt. Bij oplevering eigen foto's.
 - Geen reviewcitaten (pas na akkoord).
+
+## Verbeterronde 28-09-2026
+- Eigen pand (pand.jpg, 1000x387) in de hero: mobiel bovenaan, desktop als strook op de overgang donker/licht, max 1000px.
+- Wordmark als SVG naar hun logo: groene pijl-H die de H van EEMSKERK vormt, schuine letters in marine (component Logo.astro), ook in favicon en footer.
+- Wow: keuzehulp "Kleine of grote beurt?" (checkboxes, vanilla JS, aria-live). Grote beurt als een groot-item wordt aangetikt (APK, airco, hele auto, remblokken/dynamo), anders kleine. Aangetikte onderdelen lichten op in de kaarten. Zonder JS: gewoon beide beurten.
+- Eigen werkplaatsfoto's op eigen formaat (283px): strook "Uit onze werkplaats", twee afgeplakte-auto-foto's bij schade, balie bij "Over ons".
+- Stock weg: monteur (hero), wielmoer, folie-spuiten. Oldtimer-sfeerfoto blijft bij lakschade/restauratie.
+- og.jpg opnieuw gemaakt met het pand.

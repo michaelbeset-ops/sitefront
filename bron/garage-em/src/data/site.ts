@@ -1,5 +1,5 @@
 // Feiten van garage-em.nl (home, informatie, contact, online offerte) en het Google-profiel (4,8 uit 5, 61 reviews, 28-09-2026).
-// Diensten staan niet op de oude site, dus die noemen we niet. Occasions-pagina had 0 voertuigen: niet getoond.
+// Diensten: alleen de drie die op hun eigen logo staan ("In & verkoop - APK - reparatie"), zonder verdere invulling. Occasions-pagina had 0 voertuigen: niet getoond.
 export const site = {
   naam: 'Garage E&M',
   slogan: 'De betaalbare garage',
@@ -12,10 +12,12 @@ export const site = {
   offerte: 'http://www.garage-em.nl/kostdat',
   maps: 'https://www.google.com/maps/search/?api=1&query=Garage+E%26M+Faradaystraat+13+Tiel',
   google: { score: '4,8', reviews: 61 },
-  themeColor: '#0d3d44',
+  themeColor: '#23282a',
   voorstel: import.meta.env.PUBLIC_VOORSTEL === '1',
 };
 export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
+
+export const diensten = ['In- en verkoop', 'APK', 'Reparatie'];
 
 export const tijden = [
   { dag: 'Maandag t/m vrijdag', tijd: '08:00 - 18:00' },
@@ -25,6 +27,8 @@ export const tijden = [
 // Letterlijk van garage-em.nl/informatie, alleen de spelling licht bijgewerkt.
 export const routes = [
   {
+    id: 'maurik',
+    knop: 'Maurik / Zoelen',
     van: 'Vanaf Maurik of Zoelen',
     via: 'Over de Industrieweg (N835) in zuidelijke richting',
     stappen: [
@@ -35,6 +39,8 @@ export const routes = [
     ],
   },
   {
+    id: 'a15',
+    knop: 'A15 / Tiel',
     van: 'Vanaf de A15 of Tiel',
     via: 'Over de Industrieweg (N835) in noordelijke richting',
     stappen: [

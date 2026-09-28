@@ -22,30 +22,10 @@ export const tijden = [
   { dag: 'Zaterdag, zondag en feestdagen', open: '16:00', dicht: '22:00' },
 ];
 
-export const staffel = [
-  { grens: '€35', krijgt: 'gratis kroepoek' },
-  { grens: '€65', krijgt: 'gratis 10 miniloempia’s en kroepoek' },
-  { grens: '€100', krijgt: 'gratis 20 miniloempia’s en kroepoek' },
-];
-
-export const hapmenu = {
-  prijs: '€27,50',
-  voor: ['Tomatensoep', 'Mini loempia’s (8 stuks)'],
-  hoofd: ['Foe Yong Hai kip', 'Babi pangang', 'Saté ajam', 'Indisch rundvlees met kerriesaus'],
-};
-
-export const rijsttafels = [
-  'Chinese rijsttafel “De Chinese Muur”',
-  'Chinese rijsttafel',
-  'Indische rijsttafel',
-  'Rijsttafel Wen Zhou',
-  'Chinees-Indisch speciale rijsttafel',
-  'Szechuan rijsttafel',
-  'Seafood rijsttafel',
-];
-
+// Catering: wat in alle drie de menu's zit apart, per menu alleen wat erbij komt (zelfde gerechten als op /catering/).
+export const cateringBasis = ['mini loempia’s', 'kroepoek', 'saté ajam', 'babi pangang', 'foe yong hai', 'nasi, bami en witte rijst'];
 export const catering = [
-  { naam: 'Menu A', prijs: '€13', voor: ['Mini loempia’s', 'Saté ajam', 'Kerry tosti’s', 'Kroepoek'], hoofd: ['Babi pangang', 'Tjap tjoy kip', 'Foe yong hai', 'Kipfilet met pikante saus'] },
-  { naam: 'Menu B', prijs: '€16', voor: ['Mini loempia’s', 'Kroepoek', 'Saté ajam', 'Kerry tosti’s'], hoofd: ['Babi pangang', 'Foe yong hai', 'Babi ketjap', 'Kong po kai (kip met noten en licht pikante saus)', 'Ossenhaas met oestersaus'] },
-  { naam: 'Menu C', prijs: '€18', voor: ['Mini loempia’s', 'Kerry driehoekjes', 'Kroepoek', 'Chinese pangsit', 'Saté ajam'], hoofd: ['Kip in kingduo-saus (zoet-pikant)', 'Babi pangang', 'Foe yong hai', 'Indisch rundvlees', 'Visfilet in gongbao-saus'] },
+  { naam: 'Menu A', prijs: '€13', extra: ['Kerry tosti’s', 'Tjap tjoy kip', 'Kipfilet met pikante saus'] },
+  { naam: 'Menu B', prijs: '€16', extra: ['Kerry tosti’s', 'Babi ketjap', 'Kong po kai (kip met noten en licht pikante saus)', 'Ossenhaas met oestersaus'] },
+  { naam: 'Menu C', prijs: '€18', extra: ['Kerry driehoekjes', 'Chinese pangsit', 'Kip in kingduo-saus (zoet-pikant)', 'Indisch rundvlees', 'Visfilet in gongbao-saus'] },
 ];

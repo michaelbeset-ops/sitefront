@@ -8,13 +8,15 @@
   --radius-*: initial;
   --shadow-*: initial;
 
-  /* Koel werkplaatsgrijs met een diep oranjerood als signaalkleur, zoals tape en achterlicht. */
+  /* Koel werkplaatsgrijs met een het rood van hun eigen logo als signaalkleur. */
   --color-ink: #16191d;
   --color-ink-soft: #525a63;   /* op paper 6,6:1 */
   --color-paper: #f4f5f6;
   --color-steel: #e2e5e8;
-  --color-vuur: #b3300c;       /* witte tekst erop: 6,2:1 */
-  --color-vuur-light: #ff9a70; /* alleen op ink */
+  --color-vuur: #c8101c;       /* rood van hun logo, iets dieper; witte tekst erop 5,9:1, op paper 5,4:1 */
+  --color-vuur-light: #ff8a80; /* alleen op ink, 7,7:1 */
+  --color-kenteken: #f5c400;   /* geel kentekenveld, ink erop 10,7:1 */
+  --color-eu: #003399;         /* blauwe NL-strook, wit erop 10,9:1 */
   --color-line: #16191d24;
   --color-white: #ffffff;
 
@@ -57,3 +59,25 @@
   .btn-wit:hover { background: var(--color-ink); color: var(--color-white); }
   .eyebrow { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 }
+
+/* Schade doorgeven: keuzetegels, kentekenveld en stappen. */
+@layer components {
+  .tegel { position: relative; display: block; }
+  .tegel input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  .tegel span { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .9rem .85rem; border-radius: 12px; background: var(--color-white); box-shadow: inset 0 0 0 1.5px var(--color-line); font-family: var(--font-display); font-weight: 600; font-size: var(--text-lg); transition: box-shadow .15s ease, background-color .15s ease; }
+  .tegel span::after { content: ""; width: 1.15rem; height: 1.15rem; border-radius: 999px; box-shadow: inset 0 0 0 2px var(--color-ink-soft); flex: none; }
+  .tegel input:hover + span { box-shadow: inset 0 0 0 2px var(--color-ink); }
+  .tegel input:checked + span { box-shadow: inset 0 0 0 2.5px var(--color-vuur); }
+  .tegel input:checked + span::after { box-shadow: inset 0 0 0 5px var(--color-vuur); }
+  .tegel input:focus-visible + span { outline: 3px solid var(--color-vuur); outline-offset: 3px; }
+  .veld { display: block; width: 100%; padding: .8rem 1rem; border-radius: 10px; background: var(--color-white); box-shadow: inset 0 0 0 1.5px #16191d59; font-size: var(--text-base); }
+  .veld:focus-visible { outline-offset: 2px; }
+  .plaat { display: flex; align-items: stretch; max-width: 19rem; border-radius: 10px; overflow: hidden; box-shadow: inset 0 0 0 2px var(--color-ink); background: var(--color-kenteken); }
+  .plaat b { display: grid; place-items: end center; width: 2.4rem; padding-bottom: .45rem; background: var(--color-eu); color: var(--color-white); font-family: var(--font-display); font-size: var(--text-xs); letter-spacing: .04em; }
+  .plaat input { flex: 1; min-width: 0; background: transparent; border: 0; padding: .7rem .9rem; font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink); }
+  .plaat input::placeholder { color: #16191d99; }
+  .plaat:focus-within { outline: 3px solid var(--color-vuur); outline-offset: 3px; }
+  .plaat input:focus-visible { outline: none; }
+  .js .stap[hidden] { display: none; }
+}
+@media (min-width: 640px) { .tegel span { padding: 1rem 1.1rem; } }
