@@ -1,0 +1,40 @@
+---
+import { site, url, icoon } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const home = url('');
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-zand/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={home} class="text-ink no-underline"><Logo /><span class="sr-only"> (naar de homepage)</span></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={`${home}#kamers`} class="no-underline transition-colors hover:text-koraal">Kamers</a></li>
+          <li><a href={`${home}#ontbijt`} class="no-underline transition-colors hover:text-koraal">Ontbijt</a></li>
+          <li><a href={`${home}#vakantiewoningen`} class="no-underline transition-colors hover:text-koraal">Vakantiewoningen</a></li>
+          <li><a href={`${home}#keuzehulp`} class="no-underline transition-colors hover:text-koraal">Kamer of woning?</a></li>
+          <li><a href={`${home}#contact`} class="no-underline transition-colors hover:text-koraal">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-line-licht !px-3 !py-2.5 text-ink sm:hidden"><Fragment set:html={icoon.tel} /><span class="sr-only">Bel {site.tel}</span></a>
+        <a href={site.telHref} class="btn btn-line-licht hidden !py-2.5 text-ink sm:inline-flex lg:hidden xl:inline-flex"><Fragment set:html={icoon.tel} /><span class="num">{site.tel}</span></a>
+        <a href={`${home}#aanvraag`} class="btn btn-zee !px-4 !py-2.5 whitespace-nowrap">Aanvragen</a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-zee py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <span class="text-white"><Logo licht /></span>
+        <p class="mt-5">{site.straat}, {site.postcode} {site.plaats}</p>
+      </div>
+      <p class="md:col-span-4"><a href={site.telHref} class="num underline underline-offset-2">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a><br />KvK <span class="text-xs text-white/75">[[AANLEVEREN: KvK-nummer]]</span></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a><br /><span>RECRON-voorwaarden <span class="text-xs text-white/75">[[AANLEVEREN: link NL/DE]]</span></span></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs text-white/75">Foto's van de vorige website, ter illustratie. Bij oplevering vervangen we ze door nieuwe eigen foto's.</p>}
+  </footer>
+)}
