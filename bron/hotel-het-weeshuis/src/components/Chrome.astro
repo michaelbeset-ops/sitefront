@@ -1,0 +1,40 @@
+---
+import { site, url } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const home = url('');
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-3">
+      <a href={home} class="text-ink no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={`${home}#suites`} class="no-underline transition-colors hover:text-koper">Suites</a></li>
+          <li><a href={`${home}#eetlokaal`} class="no-underline transition-colors hover:text-koper">Eetlokaal</a></li>
+          <li><a href={`${home}#sinds-1553`} class="no-underline transition-colors hover:text-koper">Sinds 1553</a></li>
+          <li><a href={`${home}#vieren`} class="no-underline transition-colors hover:text-koper">Vieren</a></li>
+          <li><a href={`${home}#ligging`} class="no-underline transition-colors hover:text-koper">Ligging</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-line-licht !hidden !px-3 !py-2.5 sm:!inline-flex"><Fragment set:html={tel} /><span class="sr-only">Bel {site.tel}</span></a>
+        <a href={`${home}#boeken`} class="btn btn-donker !px-3.5 !py-2.5 whitespace-nowrap sm:!px-4">Boek direct</a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-gracht-3 py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <span class="text-white"><Logo licht /></span>
+        <p class="mt-5">{site.straat}, {site.postcode} {site.plaats}<br />{site.provincie}</p>
+      </div>
+      <p class="md:col-span-4"><a href={site.telHref} class="num underline underline-offset-2">{site.tel}</a><br /><a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.mail}</a><br />KvK [[AANLEVEREN: KvK-nummer]]</p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a><br /><a href={site.facebook} rel="noopener" class="underline underline-offset-2">Facebook</a><br /><a href={site.instagram} rel="noopener" class="underline underline-offset-2">Instagram</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs text-white/75">Foto's van de vorige website van Het Weeshuis en een sfeerfoto via Unsplash, ter illustratie. Bij oplevering vervangen we ze waar nodig door nieuwe eigen foto's.</p>}
+  </footer>
+)}

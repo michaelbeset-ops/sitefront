@@ -1,0 +1,39 @@
+---
+import { site, url, icoon } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const home = url('');
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-creme/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={home} class="text-ink no-underline"><Logo /><span class="sr-only"> (naar de homepage)</span></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={`${home}#kamers`} class="no-underline transition-colors hover:text-oker">Kamers</a></li>
+          <li><a href={`${home}#arrangementen`} class="no-underline transition-colors hover:text-oker">Arrangementen</a></li>
+          <li><a href={`${home}#omgeving`} class="no-underline transition-colors hover:text-oker">Omgeving</a></li>
+          <li><a href={`${home}#informatie`} class="no-underline transition-colors hover:text-oker">Goed om te weten</a></li>
+          <li><a href={`${home}#contact`} class="no-underline transition-colors hover:text-oker">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.wa} class="btn btn-line !px-3 !py-2.5 text-ink hover:!bg-cacao hover:!text-white hover:!shadow-none sm:hidden"><Fragment set:html={icoon.wa} /><span class="sr-only">Stuur een WhatsApp</span></a>
+        <a href={`${home}#verblijf`} class="btn btn-cacao !gap-0 !px-3.5 !py-2.5 whitespace-nowrap sm:!px-4">Boek<span class="hidden sm:inline">&nbsp;een kamer</span></a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-cacao py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <span class="text-white"><Logo licht /></span>
+        <p class="mt-5">{site.straat}, {site.postcode} {site.plaats}</p>
+      </div>
+      <p class="md:col-span-4">KvK <span class="num">{site.kvk}</span><br />BTW <span class="num">{site.btw}</span><br /><a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a><br /><a href={site.facebook} rel="noopener" class="underline underline-offset-2">Facebook</a><br /><a href={site.instagram} rel="noopener" class="underline underline-offset-2">Instagram</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs text-white/75">Foto's van de vorige website en sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door nieuwe eigen foto's.</p>}
+  </footer>
+)}

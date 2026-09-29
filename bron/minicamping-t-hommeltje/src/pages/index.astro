@@ -1,0 +1,626 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site } from '../data/site';
+import hero from '../assets/hero-strandhuisjes.jpg';
+import voortuin from '../assets/voortuin.jpg';
+import boerChris from '../assets/boer-chris.jpg';
+import entree from '../assets/entree.jpg';
+import kampeerveld from '../assets/kampeerveld.jpg';
+import stacaravans from '../assets/stacaravans.jpg';
+import woonkamer from '../assets/woonkamer-2p.jpg';
+import kamerKeuken from '../assets/kamer-keuken.jpg';
+import tent from '../assets/tent.jpg';
+import luchtfoto from '../assets/luchtfoto.jpg';
+import receptie from '../assets/receptie.jpg';
+import schuur from '../assets/schuur.jpg';
+import recreatiezaal from '../assets/recreatiezaal.jpg';
+import speeltuin from '../assets/speeltuin.jpg';
+import jeuDeBoules from '../assets/jeu-de-boules.jpg';
+import paardCamping from '../assets/paard-camping.jpg';
+import paardKind from '../assets/paard-kind.jpg';
+import buitenrit from '../assets/buitenrit.jpg';
+import samenEten from '../assets/samen-eten.jpg';
+import bunker from '../assets/bunker.jpg';
+import parasols from '../assets/parasols.jpg';
+import paalhoofden from '../assets/paalhoofden.jpg';
+import strand from '../assets/strand.jpg';
+import duinZee from '../assets/duin-zee.jpg';
+import fietspad from '../assets/fietspad-duinen.jpg';
+import klederdracht from '../assets/klederdracht.jpg';
+import sjees from '../assets/sjees.jpg';
+import wandelnetwerk from '../assets/wandelnetwerk.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const vink = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true" class="mt-1 h-4 w-4 flex-none"><path d="m4 10.5 4 4 8-9"/></svg>`;
+
+const historie = [
+  { jaar: '1991', tekst: 'Start van de eerste minicamping, de Hooghkamer, met 7 kampeerplaatsen en 3 stacaravans.' },
+  { jaar: '1999', tekst: "Overname van minicamping 't Hommeltje." },
+  { jaar: '2009', tekst: 'Drie nieuwe kampeerveldjes en een extra toiletunit.' },
+  { jaar: '2010', tekst: 'De beeldbepalende landbouwschuur gerenoveerd.' },
+  { jaar: '2013', tekst: 'Een nieuwe speeltuin met een supergrote zandbak als ondergrond.' },
+  { jaar: '2015', tekst: 'Het toiletgebouw gerenoveerd, met vloerverwarming via het zonneboilersysteem.' },
+  { jaar: '2018', tekst: '3 nieuwe stacaravans voor de verhuur.' },
+  { jaar: '2019', tekst: 'Breedband internet voor de gasten.' },
+];
+
+// De drie verblijven, alleen met wat de oude site er zelf over zegt. Prijzen tonen we bewust niet (die waren van 2022/2024).
+const verblijven = [
+  {
+    id: 'kampeerplaats', titel: 'Kampeerplaats', sub: 'Met uw eigen tent, caravan of camper', foto: kampeerveld, fotoW: 574,
+    alt: 'Een kampeerveldje op de camping met caravans en tenten tussen groene hagen',
+    wie: 'Voor wie zelf zijn kampeermiddel meeneemt. Campers staan op verhard groen terrein, midden tussen de andere gasten.',
+    pers: '2 personen, extra personen mogelijk',
+    punten: ['Kampeervelden met elk 6 plaatsen', '6 ampère stroom', 'Gratis houten vlonder', 'Gratis wifi', 'Recreatieruimte en wasmachine/droger', 'Hoogseizoen: van zaterdag tot zaterdag'],
+  },
+  {
+    id: 'stacaravan', titel: 'Stacaravan', sub: 'Volledig ingericht chalet voor 4/5 personen', foto: stacaravans, fotoW: 407,
+    alt: 'Twee witte stacaravans met terras op een grasveld achter een groene haag',
+    wie: 'Op een van de zes kampeerveldjes staan drie dezelfde stacaravans, elk met een eigen tuintje en ingericht terras.',
+    pers: '4 of 5 personen',
+    punten: ['Eigen tuintje en ingericht terras', 'Badkamer', 'Terrasmeubilair en parasol', 'Gratis wifi', 'Wasmachine/droger', 'Hoogseizoen: van zaterdag tot zaterdag'],
+  },
+  {
+    id: 'vakantiewoning', titel: 'Vakantiewoning', sub: 'Iets meer comfort, voor 2 of 4 personen', foto: woonkamer, fotoW: 407,
+    alt: 'Woonkamer van de 2-persoons vakantiewoning, met bank, eettafel en openslaande deuren naar de tuin',
+    wie: 'Aan het begin van het terrein. Volledig ingericht, met een eigen tuintje en parkeerplaats.',
+    pers: 'Woning voor 2 of voor 4 personen',
+    punten: ['Eigen tuintje en parkeerplaats', 'Douche en toilet', 'Zonnescherm', 'Gratis wifi', 'Linnengoed- en handdoekenpakket te huur', 'Van vrijdag tot vrijdag'],
+  },
+];
+
+const sanitair = [
+  ['2', 'toiletgebouwen, waarvan 1 luxe verwarmd gebouw en 1 unit'],
+  ['4', 'toiletten'],
+  ['2', 'urinoirs'],
+  ['1', 'chemisch toilet'],
+  ['5', 'afgesloten wascabines'],
+  ['4', 'ruime douches'],
+  ['2', 'buiten spoel- en afwasplaatsen'],
+];
+const gratis = ['Warm water', 'Houten vlonders', 'Wifi'];
+
+const activiteiten = [
+  { titel: 'BBQ', tekst: 'Het beschutte sportveld leent zich uitstekend voor een gezamenlijke barbecue. Alleen als u zin heeft om aan te schuiven: vakantie is voor wat u graag zelf wilt doen.' },
+  { titel: 'IJscofiets', tekst: 'De dames van de ijsfiets komen langs alle veldjes op de camping om u hun overheerlijke ijs aan te bieden.' },
+  { titel: 'Bunkerfietstocht', tekst: 'Eenmaal in de zomer fietsen we langs een paar bunkers van de Atlantikwal, met uitleg van vrijwilligers van de bunkerstichting.' },
+  { titel: 'Boerenrondje', tekst: 'Boer Chris neemt u mee langs de gewassen die op het akkerbouwbedrijf worden geteeld, en vertelt er met passie over.' },
+  { titel: 'Volleybal', tekst: 'Een partijtje volleybal op het sportveld: altijd leuk voor jong en oud.' },
+  { titel: 'Amerikaanse avond', tekst: 'Iedereen maakt een gerecht klaar, en samen eten we het in buffetvorm op.' },
+];
+
+const gastenNoemen = ['Super schoon sanitair', 'Gastvrije, gezellige mensen', 'De barbecue', 'Dicht bij de zee', 'Fietsen door Zeeland', 'Kinderen die zich uitleven in de zandbak', 'Elk jaar weer "thuiskomen"'];
+---
+<Base
+  title="Minicamping 't Hommeltje | Kamperen bij de boer in Koudekerke, Walcheren"
+  description="VeKaBo-minicamping achter de boerderij in Koudekerke, midden op Walcheren. Zes knusse veldjes, stacaravans en vakantiewoningen voor 2 en 4 personen. Zee en stad binnen 5 km."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: hommelbruin vlak, grote zomerse strandfoto rechts, eigen bord als inzet, bewijzen als kaart over de rand. -->
+    <section class="donker relative bg-hommel text-white">
+      <div class="relative aspect-[4/3] overflow-hidden sm:aspect-[16/8] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[58%]">
+        <Foto src={hero} alt="Witte strandhuisjes met gele en blauwe deuren aan de voet van een duin" hero sizes="(min-width: 1024px) 58vw, 100vw" class="object-[35%_center]" />
+        <div class="absolute inset-0 hidden bg-[linear-gradient(90deg,var(--color-hommel)_0%,#221a12cc_12%,#221a1200_42%)] lg:block"></div>
+        <div class="absolute right-3 bottom-3 w-36 rotate-2 rounded-lg bg-paper p-1 shadow-lg sm:right-6 sm:bottom-6 sm:w-48 xl:hidden"><div class="aspect-[407/275] overflow-hidden rounded-md"><Foto src={voortuin} alt="Het bord van 't Hommeltje met het gele VeKaBo-bordje in de voortuin" widths={[407]} sizes="192px" /></div></div>
+      </div>
+      <div class="wrap relative grid pt-9 pb-24 sm:pt-12 lg:min-h-[660px] lg:grid-cols-12 lg:items-center lg:pt-16 lg:pb-36">
+        <div class="lg:col-span-6">
+          <p class="kicker text-honing">Koudekerke, midden op Walcheren</p>
+          <h1 class="mt-4 text-4xl">Landelijke rust tussen stad en kust</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Een fijne gezinscamping in Zeeland, gelegen achter de boerderij. Kamperen op een van de zes knusse veldjes, of logeren in een stacaravan of vakantiewoning. Zee en stad liggen binnen een straal van 5 km.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#verblijven" class="btn btn-honing">Welk verblijf past bij u?</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="num">{site.tel}</span></span></a>
+          </div>
+        </div>
+        <figure class="absolute top-12 right-8 hidden w-[288px] -rotate-2 rounded-xl bg-paper p-2 text-ink shadow-lg xl:block">
+          <div class="aspect-[407/275] overflow-hidden rounded-lg"><Foto src={voortuin} alt="Het bord van 't Hommeltje met het gele VeKaBo-bordje in de voortuin, tussen blauwe bloemen" widths={[407]} sizes="272px" /></div>
+          <figcaption class="px-1.5 pt-2 pb-1 font-display text-xs font-bold">Het bord in onze voortuin</figcaption>
+        </figure>
+      </div>
+      <div class="relative bg-[linear-gradient(to_bottom,var(--color-hommel)_50%,var(--color-paper)_50%)]">
+        <div class="wrap">
+          <dl class="-mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-line text-ink shadow-lg lg:grid-cols-4">
+            <div class="bg-paper p-5 sm:p-6"><dt class="kicker text-ink-soft">Google</dt><dd class="mt-2"><span class="num font-display text-2xl font-extrabold">{site.google}</span> <span class="block text-sm text-ink-soft sm:inline">uit {site.reviews} reviews</span></dd></div>
+            <div class="bg-paper p-5 sm:p-6"><dt class="kicker text-ink-soft">Het terrein</dt><dd class="mt-2 font-display text-lg leading-tight font-bold">Zes knusse veldjes</dd></div>
+            <div class="bg-paper p-5 sm:p-6"><dt class="kicker text-ink-soft">Zee en stad</dt><dd class="mt-2"><span class="text-sm text-ink-soft">binnen</span> <span class="num font-display text-2xl font-extrabold">5 km</span></dd></div>
+            <div class="bg-honing p-5 sm:p-6"><dt class="kicker">VeKaBo-camping</dt><dd class="mt-2 font-display text-lg leading-tight font-bold">Aandacht, Ambiance, Ambassadeurs</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over ons: Chris en Marian, eigen foto's als collage, historie als tijdbalk. -->
+    <section id="over" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6 lg:pt-4">
+          <p class="kicker text-groen">Wie zijn wij</p>
+          <h2 class="mt-3 text-3xl">Chris en Marian: kamperen bij de boer</h2>
+          <p class="mt-6 text-lg">Wij, {site.eigenaren}, hebben drie kinderen en exploiteren sinds 1991 onze minicamping. Samen met de teelt van diverse akkerbouwproducten is het een bedrijf dat volop in beweging is.</p>
+          <p class="mt-4 text-ink-soft">We houden allemaal van lekker actief buiten bezig zijn. Door de landelijke ligging en de verschillende veldjes geeft de camping een rustige indruk. We verhuren maar een paar vaste seizoenplaatsen en houden alle andere plaatsen voor de vrije kampeerders: alles wat er staat is "bewoond", zodat er altijd leven in de brouwerij is.</p>
+          <blockquote class="mt-8 rounded-xl bg-honing-licht p-6">
+            <p class="font-display text-xl leading-snug font-bold">"Landelijke rust tussen stad en kust"</p>
+            <footer class="mt-2 text-sm text-ink-soft">De slogan die een verslaggeefster van de PZC in 2016 aan onze camping gaf. Typerend voor de ligging, midden op het schiereiland Walcheren.</footer>
+          </blockquote>
+        </div>
+        <div class="relative lg:col-span-6">
+          <figure class="max-w-[574px] lg:ml-auto">
+            <div class="aspect-[574/522] overflow-hidden rounded-xl shadow-sm"><Foto src={boerChris} alt="Boer Chris met strohoed vertelt buiten, met zijn handen in beweging" widths={[574]} sizes="(min-width: 640px) 574px, 100vw" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Boer Chris op excursie</figcaption>
+          </figure>
+          <figure class="relative mt-4 max-w-[330px] sm:-mt-24 sm:ml-0 lg:-ml-10">
+            <div class="aspect-[574/385] overflow-hidden rounded-xl border-4 border-paper shadow-lg"><Foto src={entree} alt="De entree van de camping: twee kinderen op skelters tussen de schuren en een haag" widths={[574]} sizes="330px" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">De entree van de camping</figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="wrap mt-16 lg:mt-20">
+        <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-t border-line pt-10">
+          <h3 class="text-2xl">Van vroeger naar nu</h3>
+          <p class="text-sm text-ink-soft">Een stukje historie van de camping.</p>
+        </div>
+        <ol class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-4">
+          {historie.map((h) => (
+            <li class="bg-paper p-4 transition-colors hover:bg-honing-licht sm:p-5">
+              <p class="num font-display text-2xl leading-none font-extrabold text-groen">{h.jaar}</p>
+              <p class="mt-3 text-sm text-ink-soft">{h.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- WOW: verblijfsvergelijker met filter, daarna de reserveringsaanvraag. Zonder JS: drie kaarten en het formulier. -->
+    <section id="verblijven" class="donker scroll-mt-16 bg-hommel py-16 text-white lg:py-24" data-vergelijker>
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-center">
+          <div class="lg:col-span-7">
+            <p class="kicker text-honing">Kamperen of logeren</p>
+            <h2 class="mt-3 text-3xl">Welk verblijf past bij u?</h2>
+            <p class="mt-5 max-w-2xl text-white/85">Naast diverse staanplaatsen voor caravans en tenten zijn er volledig ingerichte chalets voor 4/5 personen en vakantiewoningen voor 2 en 4 personen. Vertel hoe u komt, en u ziet meteen wat er past.</p>
+          </div>
+          <figure class="hidden lg:col-span-5 lg:block">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg"><Foto src={kamerKeuken} alt="Woonkamer met open keuken, een okergele bank en een witte ronde eettafel met tulpen" widths={[480, 800, 1024]} sizes="440px" /></div>
+            <figcaption class="mt-2 text-sm text-white/75">Binnen in een van onze verhuurverblijven</figcaption>
+          </figure>
+        </div>
+
+        <form class="mt-10 rounded-xl bg-hommel-2 p-5 sm:p-7" hidden data-filter aria-labelledby="filter-kop">
+          <h3 class="text-lg" id="filter-kop">Zo komen wij</h3>
+          <div class="mt-4 grid gap-6 lg:grid-cols-12">
+            <fieldset class="min-w-0 lg:col-span-6">
+              <legend class="text-sm text-white/75">Waarmee komt u?</legend>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <label class="chip"><input type="radio" class="sr-only" name="mee" value="alles" checked />Maakt niet uit</label>
+                <label class="chip"><input type="radio" class="sr-only" name="mee" value="tent" />Tent of caravan</label>
+                <label class="chip"><input type="radio" class="sr-only" name="mee" value="camper" />Camper</label>
+                <label class="chip"><input type="radio" class="sr-only" name="mee" value="bed" />Liever een bed</label>
+              </div>
+            </fieldset>
+            <div class="flex items-center justify-between gap-4 lg:col-span-2 lg:flex-col lg:items-start">
+              <p class="text-sm text-white/75" id="pers-label">Personen</p>
+              <div class="flex items-center gap-3" role="group" aria-labelledby="pers-label">
+                <button type="button" class="stap" data-stap="-1" aria-label="Eén persoon minder">−</button>
+                <output class="num w-7 text-center font-display text-2xl font-extrabold" data-pers aria-live="polite">2</output>
+                <button type="button" class="stap" data-stap="1" aria-label="Eén persoon meer">+</button>
+              </div>
+            </div>
+            <fieldset class="min-w-0 lg:col-span-4">
+              <legend class="text-sm text-white/75">Wie gaan er mee?</legend>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <label class="chip"><input type="checkbox" class="sr-only" name="kinderen" />Kinderen</label>
+                <label class="chip"><input type="checkbox" class="sr-only" name="hond" />Hond</label>
+                <label class="chip"><input type="checkbox" class="sr-only" name="paard" />Paard</label>
+              </div>
+            </fieldset>
+          </div>
+          <p class="mt-5 border-t border-white/15 pt-4 font-display text-lg font-bold text-honing" data-uitkomst aria-live="polite">Alle drie de verblijven passen.</p>
+        </form>
+
+        <ol class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {verblijven.map((v, i) => (
+            <li class="verblijf flex flex-col overflow-hidden rounded-xl bg-paper text-ink shadow-sm" data-verblijf={v.id}>
+              <div class="relative aspect-[3/2] overflow-hidden"><Foto src={v.foto} alt={v.alt} widths={[v.fotoW]} sizes={`(min-width: 1024px) ${Math.min(v.fotoW, 380)}px, (min-width: 768px) 50vw, 100vw`} />
+                <span class="absolute top-3 left-3 rounded-full bg-hommel px-3 py-1 font-display text-xs font-bold text-honing" hidden data-label>Past bij u</span>
+              </div>
+              <div class="flex flex-1 flex-col p-6">
+                <p class="num text-sm font-bold text-ink-soft">0{i + 1}</p>
+                <h3 class="mt-1 text-2xl">{v.titel}</h3>
+                <p class="mt-1 font-display text-sm font-bold text-groen">{v.sub}</p>
+                <p class="mt-3 text-ink-soft">{v.wie}</p>
+                <p class="mt-4 rounded-lg bg-honing-licht px-3 py-2 text-sm"><span class="font-bold">Personen:</span> {v.pers}</p>
+                <ul class="mt-4 space-y-1.5 text-sm">
+                  {v.punten.map((p) => <li class="flex gap-2"><Fragment set:html={vink} /><span>{p}</span></li>)}
+                </ul>
+                <ul class="mt-4 space-y-1.5 border-t border-line pt-4 text-sm text-ink-soft empty:hidden" data-notities></ul>
+                <a href="#aanvraag" class="btn btn-zee mt-auto self-start !mt-6" data-kies={v.id}>Vraag {v.titel.toLowerCase()} aan</a>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-6 text-sm text-white/75">Huisdieren in overleg. Een eigen paard kunt u op de boerderij stallen zolang u op de camping verblijft.</p>
+
+        <!-- Reserveringsaanvraag: zelfde velden als het formulier op de oude site. Bij het voorstel verstuurt het niets. -->
+        <div id="aanvraag" class="mt-14 scroll-mt-24 grid gap-8 rounded-xl bg-paper p-6 text-ink shadow-lg sm:p-8 lg:grid-cols-12 lg:p-10">
+          <div class="lg:col-span-4">
+            <p class="kicker text-groen">Reserveren</p>
+            <h3 class="mt-2 text-2xl">Reserveer uw verblijf</h3>
+            <p class="mt-3 text-ink-soft">Geef uw type verblijf en uw gewenste aankomst- en vertrekdatum door.</p>
+            <ul class="mt-5 space-y-2 border-t border-line pt-5 text-sm text-ink-soft">
+              <li><span class="font-bold text-ink">Kampeerplaats en stacaravan:</span> in het hoogseizoen van zaterdag tot zaterdag.</li>
+              <li><span class="font-bold text-ink">Vakantiewoning:</span> van vrijdag tot vrijdag.</li>
+            </ul>
+            <div class="mt-6 rounded-xl bg-honing-licht p-5" data-samenvatting hidden>
+              <p class="kicker text-groen">Uw aanvraag</p>
+              <p class="mt-2 font-display text-lg leading-snug font-bold" data-sam-kop aria-live="polite"></p>
+              <p class="mt-1 text-sm text-ink-soft" data-sam-tekst></p>
+            </div>
+          </div>
+          <form class="grid min-w-0 gap-4 sm:grid-cols-2 lg:col-span-8" data-aanvraag>
+            <label class="grid gap-1.5 text-sm font-bold">Type verblijf
+              <select name="type" class="veld border border-line font-normal" data-type>
+                <option value="kampeerplaats">Kampeerplaats</option>
+                <option value="stacaravan">Stacaravan</option>
+                <option value="vakantiewoning">Vakantiewoning</option>
+              </select>
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold">Aantal personen
+              <input type="number" name="personen" min="1" max="12" value="2" class="veld border border-line font-normal" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold">Gewenste aankomstdatum
+              <input type="date" name="aankomst" class="veld border border-line font-normal" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold">Gewenste vertrekdatum
+              <input type="date" name="vertrek" class="veld border border-line font-normal" />
+            </label>
+            <fieldset class="sm:col-span-2">
+              <legend class="text-sm font-bold">Neemt u mee?</legend>
+              <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <label class="flex items-center gap-2"><input type="checkbox" name="hond" class="h-5 w-5 accent-[#1c4d72]" />Hond of ander huisdier (in overleg)</label>
+                <label class="flex items-center gap-2"><input type="checkbox" name="paard" class="h-5 w-5 accent-[#1c4d72]" />Eigen paard</label>
+              </div>
+            </fieldset>
+            <label class="grid gap-1.5 text-sm font-bold">Uw volledige naam
+              <input type="text" name="naam" autocomplete="name" class="veld border border-line font-normal" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold">E-mailadres
+              <input type="email" name="email" autocomplete="email" class="veld border border-line font-normal" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold sm:col-span-2">Telefoonnummer
+              <input type="tel" name="telefoon" autocomplete="tel" class="veld border border-line font-normal" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-bold sm:col-span-2">Heeft u vragen? Stel ze gerust.
+              <textarea name="vraag" rows="3" class="veld border border-line font-normal"></textarea>
+            </label>
+            {site.voorstel ? (
+              <p class="rounded-xl bg-duin p-4 text-sm sm:col-span-2" role="note">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="num font-bold underline underline-offset-2">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-bold break-all underline underline-offset-2">{site.mail}</a>.</p>
+            ) : (
+              <button type="submit" class="btn btn-zee sm:col-span-2 sm:justify-self-start">Aanvraag versturen</button>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Verblijfsvergelijker en aanvraag-samenvatting. Alles gebeurt in de browser; er wordt niets verstuurd.
+      const sectie = document.querySelector<HTMLElement>('[data-vergelijker]');
+      if (sectie) {
+        const filter = sectie.querySelector<HTMLFormElement>('[data-filter]')!;
+        const persOut = sectie.querySelector<HTMLElement>('[data-pers]')!;
+        const uitkomst = sectie.querySelector<HTMLElement>('[data-uitkomst]')!;
+        const namen: Record<string, string> = { kampeerplaats: 'Kampeerplaats', stacaravan: 'Stacaravan', vakantiewoning: 'Vakantiewoning' };
+        let pers = 2;
+        filter.hidden = false;
+        filter.addEventListener('submit', (e) => e.preventDefault());
+
+        const notitie = (ul: HTMLElement, t: string) => { const li = document.createElement('li'); li.textContent = t; ul.append(li); };
+
+        const bijwerken = () => {
+          const mee = filter.querySelector<HTMLInputElement>('input[name=mee]:checked')!.value;
+          const kind = filter.querySelector<HTMLInputElement>('input[name=kinderen]')!.checked;
+          const hond = filter.querySelector<HTMLInputElement>('input[name=hond]')!.checked;
+          const paard = filter.querySelector<HTMLInputElement>('input[name=paard]')!.checked;
+          persOut.textContent = String(pers);
+          sectie.querySelectorAll<HTMLButtonElement>('[data-stap]').forEach((b) => { b.disabled = +b.dataset.stap! < 0 ? pers <= 1 : pers >= 10; });
+          const past: string[] = [];
+          sectie.querySelectorAll<HTMLElement>('[data-verblijf]').forEach((kaart) => {
+            const id = kaart.dataset.verblijf!;
+            const ul = kaart.querySelector<HTMLElement>('[data-notities]')!;
+            ul.replaceChildren();
+            let ok = true;
+            if (id === 'kampeerplaats') {
+              if (mee === 'bed') { ok = false; notitie(ul, 'Hier neemt u uw eigen tent, caravan of camper mee.'); }
+              if (mee === 'camper') notitie(ul, 'Campers staan op verhard groen terrein tussen de andere gasten.');
+            } else {
+              if (mee === 'tent' || mee === 'camper') { ok = false; notitie(ul, 'Dit is een verblijf zonder eigen kampeermiddel.'); }
+              const max = id === 'stacaravan' ? 5 : 4;
+              if (pers > max) { ok = false; notitie(ul, `Geschikt voor maximaal ${max} personen.`); }
+              if (id === 'vakantiewoning' && pers <= max) notitie(ul, pers <= 2 ? 'Voor u: de woning voor 2 personen.' : 'Voor u: de woning voor 4 personen.');
+            }
+            if (kind) notitie(ul, id === 'vakantiewoning' ? 'Op de camping erachter zijn genoeg speelfaciliteiten voor jong en oud.' : 'Speeltuin met zandbak, skelters en recreatieruimte op de camping.');
+            if (hond) notitie(ul, 'Huisdieren in overleg.');
+            if (paard) notitie(ul, 'Uw paard kunt u op de boerderij stallen: wei in overleg, of box.');
+            kaart.dataset.past = ok ? 'ja' : 'nee';
+            kaart.querySelector<HTMLElement>('[data-label]')!.hidden = !ok;
+            if (ok) past.push(namen[id]);
+          });
+          uitkomst.textContent = past.length === 3 ? 'Alle drie de verblijven passen.'
+            : past.length === 0 ? 'Geen verblijf past precies. Bel of mail ons gerust met uw vraag.'
+            : `Past bij u: ${past.join(' en ')}.`;
+        };
+        sectie.addEventListener('click', (e) => {
+          const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-stap]');
+          if (!b || b.disabled) return;
+          pers = Math.min(10, Math.max(1, pers + +b.dataset.stap!));
+          aanvraag.personen.value = String(pers);
+          bijwerken(); samenvatten();
+        });
+        filter.addEventListener('change', () => {
+          const mee = filter.querySelector<HTMLInputElement>('input[name=mee]:checked')!.value;
+          if (mee === 'tent' || mee === 'camper') aanvraag.type.value = 'kampeerplaats';
+          aanvraag.hond.checked = filter.querySelector<HTMLInputElement>('input[name=hond]')!.checked;
+          aanvraag.paard.checked = filter.querySelector<HTMLInputElement>('input[name=paard]')!.checked;
+          bijwerken(); samenvatten();
+        });
+
+        // Aanvraag
+        const aanvraag = sectie.querySelector<HTMLFormElement>('[data-aanvraag]')!;
+        const sam = sectie.querySelector<HTMLElement>('[data-samenvatting]')!;
+        const samKop = sectie.querySelector<HTMLElement>('[data-sam-kop]')!;
+        const samTekst = sectie.querySelector<HTMLElement>('[data-sam-tekst]')!;
+        const dag = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
+        aanvraag.addEventListener('submit', (e) => e.preventDefault());
+        const samenvatten = () => {
+          const type = aanvraag.type.value as string;
+          const p = Math.max(1, +aanvraag.personen.value || 1);
+          const a = aanvraag.aankomst.value ? new Date(aanvraag.aankomst.value + 'T12:00') : null;
+          const v = aanvraag.vertrek.value ? new Date(aanvraag.vertrek.value + 'T12:00') : null;
+          const n = a && v ? Math.round((+v - +a) / 864e5) : 0;
+          samKop.textContent = `${namen[type]}, ${p} ${p === 1 ? 'persoon' : 'personen'}${n > 0 ? `, ${n} ${n === 1 ? 'nacht' : 'nachten'}` : ''}`;
+          const delen: string[] = [];
+          if (a) delen.push(`Aankomst ${dag.format(a)}`);
+          if (v) delen.push(`vertrek ${dag.format(v)}`);
+          if (a && v && n <= 0) delen.push('let op: de vertrekdatum ligt niet na de aankomst');
+          if (aanvraag.hond.checked) delen.push('met huisdier');
+          if (aanvraag.paard.checked) delen.push('met eigen paard');
+          samTekst.textContent = delen.length ? delen.join(', ') + '.' : 'Kies uw data om de aanvraag compleet te maken.';
+          sam.hidden = false;
+        };
+        aanvraag.addEventListener('input', samenvatten);
+        aanvraag.addEventListener('change', samenvatten);
+        sectie.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((k) => k.addEventListener('click', () => { aanvraag.type.value = k.dataset.kies!; samenvatten(); }));
+        bijwerken(); samenvatten();
+      }
+    </script>
+
+    <!-- Het terrein: eigen luchtfoto met klikbare punten, ernaast de indeling. -->
+    <section id="terrein" class="scroll-mt-20 bg-duin py-16 lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-6" data-kaart>
+          <figure>
+            <div class="relative mx-auto max-w-[574px] overflow-hidden rounded-xl shadow-lg">
+              <div class="aspect-[574/418]"><Foto src={luchtfoto} alt="Luchtfoto van de camping: de boerderij met schuren in het midden, daaromheen kampeerveldjes met caravans tussen hagen, en akkers rondom" widths={[574]} sizes="(min-width: 640px) 574px, 100vw" /></div>
+              <button type="button" class="pin" style="left:52%;top:36%" data-pin="1" aria-pressed="false" hidden><span class="sr-only">Toon: </span>1</button>
+              <button type="button" class="pin" style="left:62%;top:71%" data-pin="2" aria-pressed="false" hidden><span class="sr-only">Toon: </span>2</button>
+              <button type="button" class="pin" style="left:16%;top:62%" data-pin="3" aria-pressed="false" hidden><span class="sr-only">Toon: </span>3</button>
+            </div>
+            <figcaption class="mx-auto mt-2 max-w-[574px] text-sm text-ink-soft">Luchtfoto van de vorige website (2011). Klik op de cijfers.</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="kicker text-groen">Het terrein</p>
+          <h2 class="mt-3 text-3xl">Zes knusse veldjes achter de boerderij</h2>
+          <p class="mt-5 text-ink-soft">Gelegen achter de boerderij en voorzien van alle gemakken biedt de ruim opgezette camping veel privacy en goede voorzieningen.</p>
+          <ol class="mt-6 space-y-2" data-legenda>
+            <li class="rounded-xl bg-paper p-4 shadow-sm transition-shadow" data-uitleg="1"><p class="flex items-baseline gap-3"><span class="num font-display font-extrabold text-groen">1</span><span class="font-display font-bold">De boerderij en de schuren</span></p><p class="mt-1 pl-6 text-sm text-ink-soft">Hier kunt u uw eigen paard stallen. De beeldbepalende landbouwschuur is in 2010 gerenoveerd: zulke historische schuren mogen niet verdwijnen uit het Zeeuwse landschap.</p></li>
+            <li class="rounded-xl bg-paper p-4 shadow-sm transition-shadow" data-uitleg="2"><p class="flex items-baseline gap-3"><span class="num font-display font-extrabold text-groen">2</span><span class="font-display font-bold">De kampeerveldjes</span></p><p class="mt-1 pl-6 text-sm text-ink-soft">Kampeervelden met elk 6 plaatsen en 6 ampère stroom. Op een van de veldjes staan de drie stacaravans; onder de grasmat van verschillende veldjes ligt verharding voor campers. Eén veldje is een voetbalveldje met uitkijkpost: op die unieke plek kijk je over het landschap.</p></li>
+            <li class="rounded-xl bg-paper p-4 shadow-sm transition-shadow" data-uitleg="3"><p class="flex items-baseline gap-3"><span class="num font-display font-extrabold text-groen">3</span><span class="font-display font-bold">Akkers rondom</span></p><p class="mt-1 pl-6 text-sm text-ink-soft">Naast de camping telen Chris en Marian diverse akkerbouwproducten, zoals uien en aardappelen. Tijdens het boerenrondje vertelt Chris erover.</p></li>
+          </ol>
+          <p class="mt-5 text-sm text-ink-soft">De vakantiewoningen liggen aan het begin van het terrein, elk met een eigen tuintje en parkeerplaats.</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Luchtfoto: klik op een cijfer en de bijbehorende uitleg licht op.
+      const kaart = document.querySelector<HTMLElement>('[data-kaart]');
+      if (kaart) {
+        const pins = [...kaart.querySelectorAll<HTMLButtonElement>('[data-pin]')];
+        const items = [...document.querySelectorAll<HTMLElement>('[data-uitleg]')];
+        const kies = (n: string) => {
+          pins.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.pin === n)));
+          items.forEach((i) => { const aan = i.dataset.uitleg === n; i.classList.toggle('ring-3', aan); i.classList.toggle('ring-groen', aan); });
+        };
+        pins.forEach((p) => { p.hidden = false; p.addEventListener('click', () => kies(p.dataset.pin!)); });
+      }
+    </script>
+
+    <!-- Voorzieningen: sanitair als getallenlijst, gratis-items in honing, eigen foto's als strook. -->
+    <section id="voorzieningen" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-groen">Voorzieningen</p>
+            <h2 class="mt-3 text-3xl">Alle ingrediënten voor een zorgeloze vakantie</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Het toiletgebouw heeft vloerverwarming via het zonneboilersysteem, en de Tadelakt-muurbepleistering met marmereffect geeft een warme uitstraling.</p>
+        </div>
+
+        <div class="mt-12 grid gap-8 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <h3 class="text-xl">Sanitair</h3>
+            <ul class="mt-4 border-t border-line">
+              {sanitair.map(([n, t]) => <li class="flex items-baseline gap-4 border-b border-line py-3"><span class="num w-8 flex-none font-display text-2xl font-extrabold text-zee">{n}</span><span>{t}</span></li>)}
+            </ul>
+            <p class="mt-4 text-sm text-ink-soft">Toiletpapier en handdoekjes zijn aanwezig.</p>
+          </div>
+          <div class="grid content-start gap-6 lg:col-span-6 lg:col-start-7">
+            <div class="rounded-xl bg-honing p-6 sm:p-7">
+              <p class="kicker">Gratis voor alle gasten</p>
+              <ul class="mt-3 flex flex-wrap gap-2">
+                {gratis.map((g) => <li class="rounded-full bg-paper px-4 py-2 font-display font-bold shadow-sm">{g}</li>)}
+              </ul>
+            </div>
+            <div class="rounded-xl bg-kalk p-6 shadow-sm sm:p-7">
+              <h3 class="text-xl">Recreatieruimte</h3>
+              <p class="mt-2 text-ink-soft">Koel-vriescombinaties, een magnetron, een Senseo-apparaat en een tv, vrij te gebruiken voor alle gasten. Elke morgen ligt er een krant.</p>
+              <h3 class="mt-6 text-xl">Wassen en fietsen</h3>
+              <p class="mt-2 text-ink-soft">Een wasmachine, centrifuge en droger. U kunt bij ons fietsen huren, en uw fietsen droog wegzetten in de overdekte fietsenstalling met een oplaadpunt voor e-bikes.</p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={receptie} alt="De houten receptie met een krijtbord ervoor, waar een medewerker binnenloopt" widths={[480, 574]} sizes="(min-width: 1024px) 280px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">De receptie</figcaption></figure></li>
+          <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={recreatiezaal} alt="De recreatiezaal met gedekte tafels en een prikbord vol folders" widths={[480, 574]} sizes="(min-width: 1024px) 280px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">De recreatiezaal</figcaption></figure></li>
+          <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={schuur} alt="De open schuur met skelters en ander rijdend speelgoed, versierd met vlaggetjes" widths={[480, 574]} sizes="(min-width: 1024px) 280px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">De schuur met de skelters</figcaption></figure></li>
+          <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={tent} alt="Een blauwe tent met een klapstoel en een tafeltje met plantjes op het gras" widths={[407]} sizes="(min-width: 1024px) 280px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Op een van de veldjes</figcaption></figure></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Kinderen en paarden: twee kolommen op honinglicht, eigen foto's op eigen formaat. -->
+    <section class="bg-honing-licht py-16 lg:py-24">
+      <div class="wrap grid gap-14 lg:grid-cols-2 lg:gap-12">
+        <div>
+          <p class="kicker text-groen">Voor jong en oud</p>
+          <h2 class="mt-3 text-3xl">Kinderen moeten kunnen spelen</h2>
+          <p class="mt-5 text-ink-soft">'t Hommeltje is genieten voor jong en oud. Terwijl u een boek leest of simpelweg geniet van het weidse uitzicht, kunnen uw kinderen zich prima vermaken.</p>
+          <ul class="mt-6 grid gap-2 sm:grid-cols-2">
+            {['Speeltuin met een supergrote zandbak', 'Recreatieruimte met spelletjes', 'Overdekte ruimte met tafeltennistafels', 'Een voetbaltafel', 'Skelters, waar iedereen zo op weg mag', 'Rijdend speelgoed voor de kleintjes'].map((s) => <li class="flex items-start gap-2.5 rounded-lg bg-paper px-3.5 py-2.5 text-sm shadow-sm"><span class="mt-1.5 h-2.5 w-2.5 flex-none rounded-full bg-honing ring-2 ring-hommel" aria-hidden="true"></span>{s}</li>)}
+          </ul>
+          <div class="mt-8 grid grid-cols-2 gap-3 sm:gap-4">
+            <figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={speeltuin} alt="De speeltuin met klimtoestel en zandbak, met bankjes aan de rand" widths={[480, 574]} sizes="(min-width: 1024px) 290px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Speeltuin en zandbak</figcaption></figure>
+            <figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={jeuDeBoules} alt="Gasten spelen jeu de boules op de baan naast de speeltuin" widths={[480, 574]} sizes="(min-width: 1024px) 290px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Jeu de boules</figcaption></figure>
+          </div>
+        </div>
+        <div>
+          <p class="kicker text-groen">Neem uw paard mee</p>
+          <h2 class="mt-3 text-3xl">Ideaal voor paardenliefhebbers</h2>
+          <p class="mt-5 text-ink-soft">U kunt uw eigen paard meebrengen en het op de boerderij stallen zolang u op de camping verblijft. De camping staat vermeld in het boekje "Ruiter- en menroutes op Walcheren", en de nodige voorzieningen zijn aanwezig.</p>
+          <p class="mt-3 text-ink-soft">Wie niet zelf met een tent of caravan komt, kan terecht in een vakantiewoning of chalet. Huisdieren in overleg.</p>
+          <div class="mt-8 grid grid-cols-[1.25fr_1fr] gap-3 sm:gap-4">
+            <figure><div class="aspect-[530/398] overflow-hidden rounded-xl shadow-sm"><Foto src={paardCamping} alt="Een paard in de wei vlak achter twee klapstoelen met vlaggenprint op de camping" widths={[480, 530]} sizes="(min-width: 1024px) 320px, 55vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Kamperen bij de boer</figcaption></figure>
+            <figure><div class="aspect-[464/572] overflow-hidden rounded-xl shadow-sm"><Foto src={paardKind} alt="Een meisje geeft een bruin paard een kus op de neus" widths={[464]} sizes="(min-width: 1024px) 250px, 45vw" /></div></figure>
+          </div>
+          <figure class="mt-4 max-w-[432px]"><div class="aspect-[16/9] overflow-hidden rounded-xl shadow-sm"><Foto src={buitenrit} alt="Uitzicht tussen de oren van een paard over een fietspad langs een sloot en weilanden" widths={[432]} sizes="432px" class="object-[center_70%]" /></div><figcaption class="mt-2 text-sm text-ink-soft">Een buitenrit</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activiteiten: donker, genummerde lijst, eigen foto's ernaast, en wat gasten noemen. -->
+    <section id="activiteiten" class="donker scroll-mt-16 bg-hommel py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-honing">Activiteiten</p>
+          <h2 class="mt-3 text-3xl">Vakantie is voor wat u graag zelf wilt doen</h2>
+          <p class="mt-5 text-white/85">Heeft u zin om aan te schuiven, dan bent u van harte welkom. Voelt u zich niet verplicht: in het dagelijkse leven moeten er al zoveel dingen.</p>
+          <div class="mt-8 grid grid-cols-2 gap-3">
+            <figure class="col-span-2"><div class="aspect-[574/385] overflow-hidden rounded-xl"><Foto src={samenEten} alt="Gasten eten samen aan lange tafels buiten bij de schuur" widths={[480, 574]} sizes="(min-width: 1024px) 440px, 100vw" /></div><figcaption class="mt-2 text-sm text-white/75">Samen aan lange tafels</figcaption></figure>
+            <figure><div class="aspect-[4/3] overflow-hidden rounded-xl"><Foto src={bunker} alt="Een bunker in het groen langs een akker" widths={[480, 574]} sizes="(min-width: 1024px) 215px, 50vw" /></div><figcaption class="mt-2 text-sm text-white/75">Een van de bunkers</figcaption></figure>
+            <div class="grid place-content-center rounded-xl bg-honing p-4 text-hommel"><p class="font-display text-lg leading-tight font-extrabold">Gratis op de camping: de kleurrijke folder van de bunkerroute</p></div>
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <ol class="border-t border-white/15">
+            {activiteiten.map((a, i) => (
+              <li class="grid gap-2 border-b border-white/15 py-5 sm:grid-cols-[2.5rem_12.5rem_1fr] sm:gap-4">
+                <span class="num font-display text-sm font-bold text-honing">0{i + 1}</span>
+                <h3 class="text-lg sm:text-xl">{a.titel}</h3>
+                <p class="text-white/80">{a.tekst}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-10 rounded-xl bg-hommel-2 p-6">
+            <h3 class="text-lg">Wat gasten noemen</h3>
+            <p class="mt-1 text-sm text-white/75">Samengevat uit de klantervaringen op de vorige website.</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {gastenNoemen.map((g) => <li class="rounded-full bg-white/10 px-3.5 py-1.5 font-display text-sm font-bold">{g}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Walcheren: grote strandfoto met overlappende feitenkaart, dan een strook eigen foto's. -->
+    <section id="omgeving" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-groen">Omgeving</p>
+            <h2 class="mt-3 text-3xl">Heel Walcheren binnen 20 km</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Walcheren wordt omsloten door de Noordzee, de Westerschelde en het Veerse Meer. De camping ligt middenin dit landelijke gebied: lopend of met de fiets bent u zo aan de kust, of in Middelburg, Vlissingen en Veere.</p>
+        </div>
+
+        <div class="relative mt-12">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm sm:aspect-[21/9]"><Foto src={parasols} alt="Twee blauw-wit gestreepte parasols met strandstoelen op het strand aan zee" sizes="(min-width: 1216px) 1152px, 100vw" /></div>
+          <div class="relative -mt-16 mx-4 rounded-xl bg-paper p-6 shadow-lg sm:mx-8 lg:absolute lg:right-8 lg:bottom-8 lg:m-0 lg:w-[420px]">
+            <dl class="grid grid-cols-2 gap-5">
+              <div><dt class="text-sm text-ink-soft">Zee en stad</dt><dd class="num font-display text-2xl font-extrabold">5 km</dd></div>
+              <div><dt class="text-sm text-ink-soft">Heel Walcheren</dt><dd class="num font-display text-2xl font-extrabold">20 km</dd></div>
+              <div class="col-span-2 border-t border-line pt-4"><dt class="text-sm text-ink-soft">Wandelnetwerk Zeeland</dt><dd class="font-display text-lg font-bold"><span class="num">400 km</span> wandelpaden, soms met een trekvlot</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="mt-14 grid gap-10 lg:grid-cols-12">
+          <div class="space-y-6 lg:col-span-5">
+            <div>
+              <h3 class="text-xl">Fietseiland bij uitstek</h3>
+              <p class="mt-2 text-ink-soft">Nergens zoveel beschutte fietspaden als op Walcheren. Samen met 5 andere campings realiseerden we een nieuw stukje bunkerpad: vanaf 't Hommeltje volgt u per fiets of lopend het pad langs de verdedigingslinie richting Vlissingen.</p>
+            </div>
+            <div>
+              <h3 class="text-xl">Stad en traditie</h3>
+              <p class="mt-2 text-ink-soft">Middelburg en Veere leveren fraaie plaatjes op van historische gebouwen in smalle straatjes. Maritiem Vlissingen heeft een prachtige haven en de boulevard, waar de vrachtschepen vlak langs de kust varen. Traditionele volkssport is het ringrijden te paard; de Zeeuwse klederdracht ziet u tijdens het sjezenrijden op folkloristische dagen in de zomer.</p>
+            </div>
+            <div class="overflow-hidden rounded-xl shadow-sm"><div class="aspect-[3/2]"><Foto src={paalhoofden} alt="Rijen paalhoofden met groen wier op het strand bij eb" sizes="(min-width: 1024px) 460px, 100vw" /></div></div>
+          </div>
+          <ul class="grid grid-cols-2 content-start gap-3 sm:gap-4 lg:col-span-7">
+            <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={duinZee} alt="Helmgras op het duin langs een breed strand met aanrollende golven" widths={[480, 800]} sizes="(min-width: 1024px) 330px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Duin en zee (sfeerfoto)</figcaption></figure></li>
+            <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={fietspad} alt="Een fietspad door de duinen langs zee" widths={[480, 574]} sizes="(min-width: 1024px) 330px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Door de duinen, tussen Vlissingen en Dishoek</figcaption></figure></li>
+            <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={sjees} alt="Een versierde sjees met paard en mensen in boerenklederdracht" widths={[480, 530]} sizes="(min-width: 1024px) 330px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Versierde sjees en klederdracht</figcaption></figure></li>
+            <li><figure><div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={wandelnetwerk} alt="Een wit hekje bij een watergang met riet, en een hond op het pad" widths={[480, 574]} sizes="(min-width: 1024px) 330px, 50vw" /></div><figcaption class="mt-2 text-sm text-ink-soft">Wandelnetwerk</figcaption></figure></li>
+            <li class="col-span-2 grid grid-cols-[auto_1fr] items-center gap-4 rounded-xl bg-duin p-3 sm:gap-6">
+              <div class="aspect-[407/541] w-28 overflow-hidden rounded-lg sm:w-36"><Foto src={klederdracht} alt="Twee vrouwen in Zeeuwse klederdracht" widths={[407]} sizes="144px" /></div>
+              <p class="font-display text-lg leading-snug font-bold sm:text-xl">Kom, ontdek, ervaar en geniet op ons mooie eiland.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="donker relative isolate scroll-mt-16 overflow-hidden bg-hommel text-white">
+      <div class="absolute inset-0 -z-10 hidden lg:block lg:left-[55%]"><Foto src={strand} alt="" sizes="45vw" /></div>
+      <div class="absolute inset-0 -z-10 hidden bg-[linear-gradient(90deg,var(--color-hommel)_55%,#221a12b3_70%,#221a1200_100%)] lg:block"></div>
+      <div class="wrap grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
+        <div class="lg:col-span-6">
+          <p class="kicker text-honing">Contact</p>
+          <h2 class="mt-3 text-3xl">Neem contact met ons op</h2>
+          <p class="mt-5 text-white/85">U kunt ons ook een vraag stellen. Heeft u vragen? Stel ze gerust.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-honing"><Fragment set:html={tel} /><span>Bel <span class="num">{site.tel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+          <dl class="mt-10 grid gap-6 border-t border-white/20 pt-8 sm:grid-cols-2">
+            <div><dt class="text-sm text-white/75">Telefoon</dt><dd><a href={site.telHref} class="num font-display text-xl font-bold underline decoration-honing decoration-2 underline-offset-4">{site.tel}</a></dd></div>
+            <div><dt class="text-sm text-white/75">Adres</dt><dd class="font-display text-xl font-bold">{site.straat}<br />{site.postcode} {site.plaats}</dd></div>
+            <div class="sm:col-span-2"><dt class="text-sm text-white/75">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="font-display text-xl font-bold break-all underline decoration-honing decoration-2 underline-offset-4">{site.mail}</a></dd></div>
+          </dl>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.maps} rel="noopener" class="btn btn-line">Route plannen</a>
+            <a href="#aanvraag" class="btn btn-line">Reserveringsaanvraag</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

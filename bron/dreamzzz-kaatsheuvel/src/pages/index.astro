@@ -1,0 +1,670 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, icoon } from '../data/site';
+import kamer from '../assets/kamer.jpg';
+import pand from '../assets/pand.jpg';
+import tuin from '../assets/tuin.jpg';
+import terras from '../assets/terras.jpg';
+import molen from '../assets/molen.jpg';
+import ontbijtEigen from '../assets/ontbijt-eigen.jpg';
+import ontbijt from '../assets/ontbijt.jpg';
+import duinen from '../assets/duinen.jpg';
+
+const ligging = [
+  { kop: 'Aan de rand van het Nationaal Park', tekst: 'Direct gelegen aan de rand van het prachtige Nationaal Park Loonse en Drunense Duinen. U fietst of wandelt zó de natuur in.' },
+  { kop: 'Tegenover Molen de Couwenberg', tekst: "Direct tegenover en mét uitzicht op Rijksmonument 'Molen de Couwenberg'." },
+  { kop: 'Op loopafstand van de Efteling', tekst: 'Dichtbij genoeg om er naartoe te wandelen, maar net ver genoeg om in alle rust te ontspannen.' },
+];
+
+// Kamervergelijker: letterlijk uit /kamers. "gelijk" = in beide kamers hetzelfde.
+const vergelijk = [
+  { wat: 'Sfeer', e: 'Moderne styling met een warme uitstraling', n: 'Rust en ontspanning: olijfgroen, warm roze en veel natuurlijke materialen' },
+  { wat: 'Bed', e: 'Luxe boxspring van 2.10 mtr lang', n: 'Luxe boxspring van 2.10 mtr lang', gelijk: true },
+  { wat: 'Badkamer', e: 'Privé en-suite badkamer met inloopdouche', n: 'Privé en-suite badkamer met inloopdouche', gelijk: true },
+  { wat: 'Terras', e: 'Ruim privé terras van ruim 20 m²', n: 'Eigen ruim privé terras, met het mooiste uitzicht op de (verlichte) Molen' },
+  { wat: 'Voor kinderen', e: 'Twee extra bedden: een luxe stapelbed (2.00 mtr.)', n: 'Een luxe stapelbed met goede matrassen en kussens' },
+  { wat: 'Tv', e: 'Full HD Led TV', n: 'Full HD Led TV met internet (o.a. Netflix)' },
+  { wat: 'Koffie en thee', e: 'Koffiemachine met verse bonen en diverse theesoorten', n: 'Koffiemachine met verse bonen en diverse theesoorten', gelijk: true },
+  { wat: 'Zitten', e: 'Relax fauteuils', n: 'Luxe fauteuils', gelijk: true },
+];
+
+const faciliteiten = ['Luxe Swiss Sense boxspring', 'Airconditioning', 'Vloerverwarming', 'Inloopdouche', 'Haardroger', 'Shampoo en douchegel', 'Koffie verse bonenmachine', 'Thee faciliteiten', 'Minibar', 'Gratis Wi-Fi', 'Flatscreen tv', 'Fauteuils', 'Terras', 'Rookmelders'];
+const inbegrepen = ['De kamer', 'Ontbijt', 'BTW en toeristenbelasting', 'Gebruik shampoo en douchegel', 'Bedlinnen en handdoeken', 'Eindschoonmaak', 'Gebruik van Wi-Fi', 'Fiets- en wandelkaarten', 'Fietsenstalling (eigen fietsen)'];
+
+const arrangementen = [
+  { kop: 'Surprise, surprise', tekst: 'Heeft u iets te vieren? Een verjaardag, een jubileum of een andere gelegenheid met taart, slingers en iets lekkers te drinken? Wij maken van uw kamer een feestelijke kamer vol gezelligheid.', incl: ['1 drankje p.p.', 'Taart of gebak van Bakker Pieck', 'Kamer feestelijk versierd'] },
+  { kop: 'Love', tekst: 'Wilt u uw geliefde verrassen? Wij toveren uw kamer om tot een romantische suite met kaarsjes, rozenblaadjes, aardbeien, slagroom, chocola en een lekkere fles champagne.', incl: ['Champagne', 'Rozenblaadjes', 'Kaarsjes', 'Aardbeien', 'Slagroom', 'Chocola'] },
+  { kop: 'Fietsverhuur', tekst: 'Ontdek met de fiets de schitterende natuur van de Loonse en Drunense Duinen, een pareltje tussen Den Bosch en Tilburg. Of ga mountainbiken op de vele uitgezette paden.', incl: ['Standaard fiets met versnellingen', 'Elektrische fiets', 'Kinderzitje'] },
+];
+
+const natuur = [
+  { kop: 'Loonse en Drunense Duinen', tekst: 'Struin door het gevarieerde landschap van gras, uitgestrekte bossen, moeras, heide en Sahara zand.' },
+  { kop: 'De Biesbosch', tekst: "Het zoetwatergetijdengebied van De Biesbosch is een zeldzaam fenomeen: 'op en neer gaand' zoet water is op wereldschaal uniek." },
+  { kop: 'De Kampina', tekst: 'Brabant zoals het ooit was: natte heide met vennen, geurende gagelstruwelen, beemden, loofbossen en blauwgraslanden.' },
+];
+const uitjes = [
+  { kop: 'Cultuur', items: ['Textielmuseum in Tilburg', "Noord Brabants Museum 's-Hertogenbosch", 'Het Witte Kasteel in Loon op Zand', 'Natuurmuseum in Tilburg, erg leuk met kinderen', 'Van Abbemuseum Eindhoven', 'Het Begijnhof in Breda'] },
+  { kop: 'Actief', items: ['Wandelen, mountainbiken, paardrijden en mennen', "Experience Island 't Blauwe Meer in Loon op Zand"] },
+  { kop: 'Steden', items: ['Den Bosch en Breda', 'Tilburg en Eindhoven', 'Het vestingstadje Heusden, een echte aanrader'] },
+  { kop: 'Wellness', items: ['Sauna Devarana', 'Spa Puur en Mist City Spa in Tilburg', 'Thermen Goirle'] },
+];
+
+const info = [
+  { kop: 'Annuleren', tekst: 'Tot 48 uur voor de afgesproken aankomst kunt u gratis annuleren. Daarna bent u 50% van de boeking verschuldigd. Annuleert u binnen 48 uur voor aankomst, dan wordt het gehele boekingsbedrag in rekening gebracht.' },
+  { kop: 'Betalen', tekst: 'Contant, via pin, Tikkie of overboeking (vooruit).' },
+  { kop: 'Eerder komen', tekst: 'In overleg kunt u uw spullen eerder bij ons achterlaten, of uw auto alvast gratis parkeren. Laat het ons vooraf even weten.' },
+  { kop: 'Ontbijt', tekst: 'Wij overleggen graag met u hoe laat u wilt ontbijten. Heeft u een voedingsallergie, dan houden wij daar rekening mee. Een allergenenlijst is desgewenst beschikbaar.' },
+  { kop: 'Kinderen', tekst: 'Kinderen t/m 1 jaar zijn gratis, ook het bijplaatsen van een kinderbed. Kinderen van 2 tot 18 jaar die bij de ouders op de kamer slapen, rekent u als extra persoon. Per kamer slapen maximaal vier personen.' },
+  { kop: 'Huisdieren en roken', tekst: 'Huisdieren zijn helaas niet toegestaan; wij adviseren u graag over goede dierenpensions in de buurt. In de hele B&B is roken niet toegestaan.' },
+  { kop: 'Registreren', tekst: 'Wij houden als gevolg van regelgeving een gastenregister bij. De gegevens nemen wij over van uw legitimatiebewijs.' },
+  { kop: 'Openbaar vervoer', tekst: 'Op slechts 50 meter stapt u op bij bushalte Vaartstraat, en bent u met snelbussen in no time in Den Bosch, Waalwijk of Tilburg.' },
+];
+
+const strook = [
+  { src: pand, alt: 'Het vrijstaande guesthouse van DreamZzz: een wit huis met zwart dak en houten deuren', tekst: 'Ons guesthouse', w: 225 },
+  { src: tuin, alt: 'De tuin van DreamZzz: een groot gazon met stapstenen naar het guesthouse', tekst: 'De tuin', w: 313 },
+  { src: terras, alt: 'Een eigen terras met loungebank, tussen houten schuttingen', tekst: 'Eigen terras', w: 225 },
+  { src: molen, alt: 'Molen de Couwenberg, aan de overkant van de weg', tekst: 'Molen de Couwenberg', w: 225 },
+];
+---
+<Base
+  title="DreamZzz Bed & Breakfast Kaatsheuvel | Luxe kamers bij de Efteling en de Loonse en Drunense Duinen"
+  description="Vrijstaand guesthouse aan de rand van de Loonse en Drunense Duinen, op loopafstand van de Efteling. Twee luxe kamers van ruim 30 m² met eigen badkamer, airco en vers ontbijt."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: chocoladevlak dat overloopt in de bruine wand van hun eigen kamer, bewijzenbalk met het pand over de rand. -->
+    <section class="donker relative bg-cacao text-white">
+      <div class="relative aspect-[4/3] overflow-hidden sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[58%]">
+        <Foto src={kamer} alt="Een van de kamers van DreamZzz: zwarte boxspring voor een bruine wand, twee leren fauteuils met een houten bijzettafel, en een deur naar het terras" hero sizes="(min-width: 1024px) 58vw, 100vw" class="object-[60%_50%]" />
+        <div class="absolute inset-0 hidden bg-[linear-gradient(90deg,var(--color-cacao)_0%,#1f1713cc_12%,#1f171300_45%)] lg:block"></div>
+        <p class="absolute top-4 right-4 rounded-md bg-cacao/90 px-2.5 py-1 text-xs font-bold text-white">Een van onze twee kamers</p>
+      </div>
+      <div class="wrap relative grid pt-9 pb-28 sm:pt-12 lg:min-h-[700px] lg:grid-cols-12 lg:items-center lg:pt-14 lg:pb-40">
+        <div class="lg:col-span-5">
+          <p class="kicker text-goud">Bed &amp; Breakfast Kaatsheuvel</p>
+          <h1 class="mt-5 text-4xl">Kom tot rust en geniet van alle luxe</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Aan de rand van de Loonse en Drunense Duinen en zeer dichtbij de Efteling. U overnacht in ons vrijstaande guesthouse, in een van de twee luxe ruime kamers met privé badkamer en airconditioning.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#verblijf" class="btn btn-goud">Stel uw verblijf samen</a>
+            <a href={site.wa} class="btn btn-line"><Fragment set:html={icoon.wa} />Stuur een WhatsApp</a>
+          </div>
+        </div>
+      </div>
+      <div class="relative bg-[linear-gradient(to_bottom,var(--color-cacao)_50%,var(--color-creme)_50%)]">
+        <div class="wrap">
+          <dl class="-mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-line text-ink shadow-lg lg:grid-cols-[auto_1fr_1fr_1fr]">
+            <div class="col-span-2 grid grid-cols-[auto_1fr] content-center items-center gap-x-4 bg-creme p-3 pr-6 lg:col-span-1">
+              <dt class="col-start-2 row-start-1 self-end kicker text-oker">Horst 3</dt>
+              <dd class="col-start-2 row-start-2 mt-1 self-start font-display text-xl leading-tight font-medium">Vrijstaand guesthouse, tegenover de molen</dd>
+              <dd class="col-start-1 row-span-2 row-start-1 aspect-[3/2] w-[150px] overflow-hidden rounded-lg sm:w-[180px]"><Foto src={pand} alt="Het vrijstaande guesthouse van DreamZzz: een wit huis met zwart dak en houten deuren" widths={[225]} sizes="180px" /></dd>
+            </div>
+            <div class="bg-creme p-5 sm:p-6"><dt class="kicker text-ink-soft">Google</dt><dd class="mt-1"><span class="num font-display text-[2.75rem] leading-none font-medium">{site.google}</span> <span class="block text-sm text-ink-soft">uit {site.reviews} reviews</span></dd></div>
+            <div class="bg-creme p-5 sm:p-6"><dt class="kicker text-ink-soft">2 kamers, ruim</dt><dd class="mt-1"><span class="num font-display text-[2.75rem] leading-none font-medium">30 m²</span> <span class="block text-sm text-ink-soft">elk met eigen badkamer</span></dd></div>
+            <div class="col-span-2 bg-goud p-5 sm:p-6 lg:col-span-1"><dt class="kicker">Inchecken</dt><dd class="mt-1"><span class="text-sm">vanaf</span> <span class="num font-display text-[2.75rem] leading-none font-medium">{site.inchecken}</span> <span class="block text-sm">uitchecken {site.uitchecken}</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ligging: drie redenen, groot genummerd, met de eigen molenfoto. -->
+    <section id="ligging" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-oker">Een bijzonder plekje</p>
+          <h2 class="mt-3 text-3xl">Het beste van twee werelden</h2>
+          <p class="mt-6 text-lg">Vanuit uw kamer betreedt u uw eigen terras, waar u bij lekker weer kunt genieten van de gratis koffie- en theefaciliteiten.</p>
+          <p class="mt-4 text-ink-soft">In de ochtend geniet u van een heerlijk vers bereid ontbijt in de sfeervolle ontbijtruimte, of bij mooi weer op uw eigen terras.</p>
+          <figure class="mt-8 w-[225px] max-w-full">
+            <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm"><Foto src={molen} alt="Molen de Couwenberg, gezien vanaf de weg" widths={[225]} sizes="225px" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Molen de Couwenberg, recht tegenover de B&amp;B</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-7 lg:pt-2">
+          {ligging.map((l, i) => (
+            <li class="grid grid-cols-[3.5rem_1fr] gap-4 border-t border-line py-7 last:border-b sm:grid-cols-[5.5rem_1fr] sm:gap-6">
+              <span class="num font-display text-getal leading-[0.8] text-oker" aria-hidden="true">0{i + 1}</span>
+              <div>
+                <h3 class="text-2xl">{l.kop}</h3>
+                <p class="mt-2 text-ink-soft">{l.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Kamers: twee kaarten, vergelijker, faciliteiten. -->
+    <section id="kamers" class="scroll-mt-16 bg-zand py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-oker">Onze kamers, incl. ontbijt</p>
+            <h2 class="mt-3 text-3xl">Élégance of Nature</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Twee luxe moderne ruime kamers van ruim 30 m², met ieder een eigen stijl, airconditioning en eigen badkamer. Volledig gelijkvloers.</p>
+        </div>
+
+        <div class="mt-12 grid gap-5 md:grid-cols-2">
+          <article class="flex flex-col overflow-hidden rounded-xl bg-creme shadow-sm">
+            <div class="donker flex items-end justify-between gap-4 bg-cacao px-6 pt-10 pb-6 text-white sm:px-8">
+              <div>
+                <p class="kicker text-goud">Moderne &amp; warme uitstraling</p>
+                <h3 class="mt-2 text-[2.75rem] font-medium">Élégance</h3>
+              </div>
+              <span class="mb-2 flex gap-1.5" aria-hidden="true"><span class="h-4 w-4 rounded-full bg-goud"></span><span class="h-4 w-4 rounded-full bg-creme"></span></span>
+            </div>
+            <div class="flex flex-1 flex-col p-6 sm:p-8">
+              <p>Deze prachtige kamer heeft een moderne styling met een warme uitstraling. U geniet van een luxe boxspring van 2.10 mtr lang, een inloopdouche in de privé en-suite badkamer, een Full HD Led TV en relax fauteuils.</p>
+              <p class="mt-3 text-ink-soft">Élégance heeft een ruim privé terras van ruim 20 m², en twee extra bedden in de vorm van een luxe stapelbed.</p>
+              <a href="#verblijf" data-kies="elegance" class="btn btn-cacao mt-6 self-start">Boek Élégance</a>
+            </div>
+          </article>
+          <article class="flex flex-col overflow-hidden rounded-xl bg-creme shadow-sm">
+            <div class="donker flex items-end justify-between gap-4 bg-olijf px-6 pt-10 pb-6 text-white sm:px-8">
+              <div>
+                <p class="kicker text-white">Rust &amp; ontspanning</p>
+                <h3 class="mt-2 text-[2.75rem] font-medium">Nature</h3>
+              </div>
+              <span class="mb-2 flex gap-1.5" aria-hidden="true"><span class="h-4 w-4 rounded-full bg-roze"></span><span class="h-4 w-4 rounded-full bg-zand"></span></span>
+            </div>
+            <div class="flex flex-1 flex-col p-6 sm:p-8">
+              <p>De sfeer van Nature straalt rust en ontspanning uit. De basiskleuren zijn olijfgroen en warm roze, met veel natuurlijke materialen. U slaapt in een luxe boxspring van 2.10 mtr lang.</p>
+              <p class="mt-3 text-ink-soft">Vanuit uw kamer en uw eigen ruime privé terras heeft u het mooiste uitzicht op de (verlichte) Molen. Voor uw kinderen staat er een luxe stapelbed.</p>
+              <a href="#verblijf" data-kies="nature" class="btn btn-cacao mt-6 self-start">Boek Nature</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Kamervergelijker -->
+        <div class="mt-14" data-vergelijk>
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <h3 class="text-2xl" id="vergelijk-kop">Vergelijk de kamers</h3>
+            <button type="button" class="btn btn-line !py-2.5 text-ink hover:!bg-cacao hover:!text-white hover:!shadow-none" aria-pressed="false" data-verschil hidden>Toon alleen de verschillen</button>
+          </div>
+          <table class="mt-5 w-full overflow-hidden rounded-xl bg-creme text-sm shadow-sm" aria-labelledby="vergelijk-kop">
+            <thead>
+              <tr class="grid grid-cols-2 bg-cacao text-white sm:table-row">
+                <td class="hidden sm:table-cell"></td>
+                <th scope="col" class="px-4 py-3 text-left font-display text-xl font-semibold sm:px-5">Élégance</th>
+                <th scope="col" class="px-4 py-3 text-left font-display text-xl font-semibold sm:px-5">Nature</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vergelijk.map((r) => (
+                <tr class="grid grid-cols-2 border-t border-line sm:table-row" data-gelijk={r.gelijk ? '' : undefined}>
+                  <th scope="row" class="col-span-2 px-4 pt-3 text-left text-xs font-bold tracking-[0.12em] text-oker uppercase sm:w-44 sm:py-3.5 sm:pl-5 sm:align-top">{r.wat}</th>
+                  <td class="px-4 pt-1 pb-3 sm:py-3.5 sm:align-top">{r.e}</td>
+                  <td class="px-4 pt-1 pb-3 sm:py-3.5 sm:align-top">{r.n}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-14 grid gap-8 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <h3 class="text-2xl">In beide kamers</h3>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {faciliteiten.map((f) => <li class="rounded-lg bg-creme px-3.5 py-2 text-sm font-semibold shadow-sm">{f}</li>)}
+            </ul>
+            <p class="mt-6 rounded-xl border-l-4 border-oker bg-creme p-5 font-display text-xl font-medium shadow-sm">Als u twee kamers reserveert, beschikt u over de gehele B&amp;B.</p>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-xl bg-creme p-6 shadow-sm sm:p-8">
+              <p class="kicker text-oker">In de prijs inbegrepen</p>
+              <ul class="mt-4 grid gap-x-6 sm:grid-cols-2 lg:grid-cols-1">
+                {inbegrepen.map((i) => <li class="flex gap-2.5 border-b border-line py-2 text-sm"><span class="mt-[0.55rem] h-1.5 w-1.5 flex-none rounded-full bg-oker" aria-hidden="true"></span>{i}</li>)}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ontbijt: grote sfeerfoto met eigen ontbijtfoto als inzet. -->
+    <section class="py-16 lg:py-24">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12">
+        <div class="relative lg:col-span-7">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-[7/5]"><Foto src={ontbijt} alt="Sfeerfoto: een houten dienblad met brood, omelet, tomaat, komkommer, banaan en een mok, op een wit dekbed" sizes="(min-width: 1216px) 680px, (min-width: 1024px) 56vw, 100vw" /></div>
+          <figure class="absolute -bottom-8 right-4 w-[165px] rounded-xl bg-creme p-1 shadow-lg sm:right-6 sm:w-[233px]">
+            <div class="aspect-[3/2] overflow-hidden rounded-lg"><Foto src={ontbijtEigen} alt="Ontbijt bij DreamZzz: croissant, broodjes, jus d'orange, een eitje en aardbeien" widths={[225]} sizes="(min-width: 640px) 225px, 157px" /></div>
+            <figcaption class="px-1.5 pt-1.5 pb-1 text-xs font-bold">Ontbijt bij DreamZzz</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-5">
+          <p class="kicker text-oker">Ontbijt</p>
+          <h2 class="mt-3 text-3xl">Een heerlijk vers en uitgebreid ontbijt</h2>
+          <p class="mt-6 text-lg">Bij mooi weer nodigen wij u graag uit om uw ontbijt op uw eigen ruime terras te nuttigen. Het uitzicht op de prachtige Molen maakt het plaatje compleet.</p>
+          <ul class="mt-6 border-t border-line">
+            {['Verse jus d\'orange', 'Diverse versbereide producten', 'Vers fruit', 'Een eitje naar wens bereid'].map((o) => <li class="border-b border-line py-3 font-display text-xl font-medium">{o}</li>)}
+          </ul>
+          <p class="mt-5 text-sm text-ink-soft">Hoe laat u ontbijt, overleggen we graag met u. Heeft u een voedingsallergie, laat het ons weten.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WOW: stel uw verblijf samen. Zonder JS: alleen de uitleg en contactknoppen. -->
+    <section id="verblijf" class="donker scroll-mt-16 bg-cacao py-16 text-white lg:py-24" data-verblijf data-voorstel={site.voorstel ? '1' : '0'}>
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-goud">Reserveren</p>
+            <h2 class="mt-3 text-3xl">Stel uw verblijf samen</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5">Kies uw kamer, uw data en met hoeveel u komt. U ziet direct uw aanvraag, klaar om te versturen via WhatsApp of e-mail. Wij bevestigen de beschikbaarheid en uw prijs.</p>
+        </div>
+
+        <noscript>
+          <p class="mt-8 max-w-2xl text-lg">Reserveren kan via WhatsApp of telefoon: <a href={site.telHref} class="num underline">{site.tel}</a>, of per e-mail: <a href={`mailto:${site.mail}`} class="break-all underline">{site.mail}</a>.</p>
+        </noscript>
+
+        <div class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-12" hidden data-ui>
+          <form class="min-w-0 space-y-8 lg:col-span-7" data-form>
+            <fieldset class="min-w-0">
+              <legend class="font-display text-2xl font-medium">1. Kamer</legend>
+              <div class="mt-3 grid gap-2 sm:grid-cols-3">
+                <label class="keuze"><input type="radio" class="sr-only" name="kamer" value="elegance" checked />Élégance<small>Moderne &amp; warme uitstraling</small></label>
+                <label class="keuze"><input type="radio" class="sr-only" name="kamer" value="nature" />Nature<small>Rust &amp; ontspanning</small></label>
+                <label class="keuze"><input type="radio" class="sr-only" name="kamer" value="beide" />Hele B&amp;B<small>Beide kamers</small></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="min-w-0">
+              <legend class="font-display text-2xl font-medium">2. Data</legend>
+              <div class="mt-3 grid gap-3 sm:grid-cols-2">
+                <label class="block text-sm font-bold">Aankomst <span class="font-normal text-white/75">(vanaf {site.inchecken})</span><input type="date" name="aankomst" class="veld" required /></label>
+                <label class="block text-sm font-bold">Vertrek <span class="font-normal text-white/75">(tot {site.uitchecken})</span><input type="date" name="vertrek" class="veld" required /></label>
+              </div>
+              <p class="mt-2 text-sm text-goud" data-datumfout aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset class="min-w-0">
+              <legend class="font-display text-2xl font-medium">3. Personen</legend>
+              <p class="mt-1 text-sm text-white/75" data-max>Per kamer maximaal vier personen.</p>
+              <ul class="mt-3 grid gap-2">
+                {[
+                  { id: 'volw', naam: 'Volwassenen', uitleg: '' },
+                  { id: 'kind', naam: 'Kinderen 2 t/m 18 jaar', uitleg: 'Rekent u als extra persoon' },
+                  { id: 'baby', naam: 'Kinderen t/m 1 jaar', uitleg: 'Gratis, ook een kinderbed' },
+                ].map((p) => (
+                  <li class="flex items-center justify-between gap-3 rounded-xl bg-cacao-2 py-2.5 pr-2.5 pl-4">
+                    <span class="min-w-0"><span class="block font-bold" id={`p-${p.id}`}>{p.naam}</span>{p.uitleg && <span class="text-sm text-white/75">{p.uitleg}</span>}</span>
+                    <span class="flex items-center gap-2" role="group" aria-labelledby={`p-${p.id}`}>
+                      <button type="button" class="stap" data-stap={p.id} data-d="-1" aria-label={`${p.naam}: één minder`}>−</button>
+                      <output class="num w-6 text-center font-display text-2xl font-semibold" data-waarde={p.id} aria-live="polite">{p.id === 'volw' ? 2 : 0}</output>
+                      <button type="button" class="stap" data-stap={p.id} data-d="1" aria-label={`${p.naam}: één meer`}>+</button>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </fieldset>
+
+            <fieldset class="min-w-0">
+              <legend class="font-display text-2xl font-medium">4. Extra's <span class="text-base font-normal text-white/75">(optioneel)</span></legend>
+              <div class="mt-3 grid gap-2 sm:grid-cols-3">
+                <label class="vink"><input type="checkbox" name="extra" value="Arrangement Surprise" /><span><span class="block font-bold">Surprise</span><span class="text-sm text-white/75">Feestelijke kamer met taart</span></span></label>
+                <label class="vink"><input type="checkbox" name="extra" value="Arrangement Love" /><span><span class="block font-bold">Love</span><span class="text-sm text-white/75">Romantische suite met champagne</span></span></label>
+                <label class="vink"><input type="checkbox" name="extra" value="Fietsen huren via Post Fietsen" /><span><span class="block font-bold">Fietsen</span><span class="text-sm text-white/75">Huren via Post Fietsen</span></span></label>
+              </div>
+            </fieldset>
+
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="block text-sm font-bold">Uw naam<input type="text" name="naam" class="veld" autocomplete="name" /></label>
+              <label class="block text-sm font-bold">Opmerking <span class="font-normal text-white/75">(bijv. allergie)</span><input type="text" name="opmerking" class="veld" /></label>
+            </div>
+          </form>
+
+          <div class="lg:col-span-5">
+            <div class="rounded-xl bg-creme p-6 text-ink shadow-lg sm:p-7 lg:sticky lg:top-24">
+              <p class="kicker text-oker">Uw boekingsaanvraag</p>
+              <p class="mt-2 font-display text-3xl font-medium" data-kop>Kamer Élégance</p>
+              <div class="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-3 border-y border-line py-4">
+                <div><p class="text-xs font-bold tracking-[0.12em] text-ink-soft uppercase">Aankomst</p><p class="font-bold" data-aankomst>-</p><p class="num text-sm text-ink-soft">vanaf {site.inchecken}</p></div>
+                <div class="rounded-lg bg-cacao px-3 py-2 text-center text-white"><p class="num font-display text-3xl leading-none font-semibold text-goud" data-nachten aria-live="polite">2</p><p class="text-xs" data-nachten-woord>nachten</p></div>
+                <div class="text-right"><p class="text-xs font-bold tracking-[0.12em] text-ink-soft uppercase">Vertrek</p><p class="font-bold" data-vertrek>-</p><p class="num text-sm text-ink-soft">tot {site.uitchecken}</p></div>
+              </div>
+              <ul class="mt-4 space-y-2 text-sm" data-regels></ul>
+              <p class="mt-5 rounded-lg bg-zand p-3 text-sm">Uw prijs, inclusief uitgebreid ontbijt, BTW en toeristenbelasting, krijgt u van ons bij de bevestiging.</p>
+              <div class="mt-5 flex flex-col gap-2">
+                {site.voorstel ? (
+                  <>
+                    <button type="button" class="btn btn-cacao flex-1" data-verstuur><Fragment set:html={icoon.wa} />Verstuur via WhatsApp</button>
+                    <button type="button" class="btn btn-line flex-1 text-ink hover:!bg-cacao hover:!text-white hover:!shadow-none" data-verstuur><Fragment set:html={icoon.mail} />Per e-mail</button>
+                  </>
+                ) : (
+                  <>
+                    <a href={site.wa} class="btn btn-cacao flex-1" data-wa><Fragment set:html={icoon.wa} />Verstuur via WhatsApp</a>
+                    <a href={`mailto:${site.mail}`} class="btn btn-line flex-1 text-ink hover:!bg-cacao hover:!text-white hover:!shadow-none" data-mail><Fragment set:html={icoon.mail} />Per e-mail</a>
+                  </>
+                )}
+              </div>
+              <p class="mt-3 text-sm text-ink-soft" data-melding aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Verblijf samenstellen: bouwt een boekingsaanvraag, rekent niets en verstuurt niets zelf.
+      const s = document.querySelector<HTMLElement>('[data-verblijf]');
+      if (s) {
+        const voorstel = s.dataset.voorstel === '1';
+        const TEL = '06 518 370 76', MAIL = 'info@dreamzzzkaatsheuvel.nl';
+        const form = s.querySelector<HTMLFormElement>('[data-form]')!;
+        const q = <T extends HTMLElement>(sel: string) => s.querySelector<T>(sel)!;
+        const aank = form.elements.namedItem('aankomst') as HTMLInputElement;
+        const vertr = form.elements.namedItem('vertrek') as HTMLInputElement;
+        const tel: Record<string, number> = { volw: 2, kind: 0, baby: 0 };
+        const KAMER: Record<string, string> = { elegance: 'Kamer Élégance', nature: 'Kamer Nature', beide: 'Hele B&B (beide kamers)' };
+        const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const parse = (v: string) => { const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d); };
+        const mooi = (v: string) => parse(v).toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+
+        // Standaard: komende vrijdag t/m zondag.
+        const nu = new Date(); nu.setHours(0, 0, 0, 0);
+        const vr = new Date(nu); vr.setDate(nu.getDate() + (((5 - nu.getDay()) + 7) % 7 || 7));
+        const zo = new Date(vr); zo.setDate(vr.getDate() + 2);
+        aank.min = iso(nu); aank.value = iso(vr); vertr.value = iso(zo);
+
+        q<HTMLElement>('[data-ui]').hidden = false;
+        form.addEventListener('submit', (e) => e.preventDefault());
+
+        let tekst = '';
+        const regel = (a: string, b: string) => {
+          const li = document.createElement('li'); li.className = 'flex justify-between gap-4';
+          const x = document.createElement('span'); x.className = 'text-ink-soft'; x.textContent = a;
+          const y = document.createElement('span'); y.className = 'text-right font-bold'; y.textContent = b;
+          li.append(x, y); return li;
+        };
+
+        const bijwerken = () => {
+          const kamer = (form.querySelector<HTMLInputElement>('input[name=kamer]:checked')!).value;
+          const max = kamer === 'beide' ? 8 : 4;
+          q('[data-max]').textContent = kamer === 'beide' ? 'Twee kamers, samen maximaal acht personen.' : 'Per kamer maximaal vier personen.';
+          while (tel.volw + tel.kind + tel.baby > max) { if (tel.kind) tel.kind--; else if (tel.baby) tel.baby--; else tel.volw--; }
+          const totaal = tel.volw + tel.kind + tel.baby;
+          s.querySelectorAll<HTMLButtonElement>('[data-stap]').forEach((b) => {
+            const id = b.dataset.stap!; const d = +b.dataset.d!;
+            b.disabled = d < 0 ? tel[id] <= (id === 'volw' ? 1 : 0) : totaal >= max;
+          });
+          s.querySelectorAll<HTMLElement>('[data-waarde]').forEach((o) => { o.textContent = String(tel[o.dataset.waarde!]); });
+
+          if (aank.value) vertr.min = aank.value;
+          const fout = q('[data-datumfout]');
+          let nachten = 0;
+          if (aank.value && vertr.value) nachten = Math.round((parse(vertr.value).getTime() - parse(aank.value).getTime()) / 864e5);
+          const geldig = nachten >= 1 && !!aank.value && parse(aank.value) >= nu;
+          fout.textContent = !aank.value || !vertr.value ? 'Kies een aankomst- en vertrekdatum.' : parse(aank.value) < nu ? 'De aankomstdatum ligt in het verleden.' : nachten < 1 ? 'De vertrekdatum moet na de aankomstdatum liggen.' : '';
+
+          q('[data-kop]').textContent = KAMER[kamer];
+          q('[data-aankomst]').textContent = aank.value ? mooi(aank.value) : '-';
+          q('[data-vertrek]').textContent = vertr.value ? mooi(vertr.value) : '-';
+          q('[data-nachten]').textContent = geldig ? String(nachten) : '-';
+          q('[data-nachten-woord]').textContent = nachten === 1 ? 'nacht' : 'nachten';
+
+          const pers = [`${tel.volw} ${tel.volw === 1 ? 'volwassene' : 'volwassenen'}`];
+          if (tel.kind) pers.push(`${tel.kind} ${tel.kind === 1 ? 'kind' : 'kinderen'} (2-18 jaar)`);
+          if (tel.baby) pers.push(`${tel.baby} t/m 1 jaar`);
+          const extras = [...form.querySelectorAll<HTMLInputElement>('input[name=extra]:checked')].map((i) => i.value);
+          const naam = (form.elements.namedItem('naam') as HTMLInputElement).value.trim();
+          const opm = (form.elements.namedItem('opmerking') as HTMLInputElement).value.trim();
+
+          const lijst = q('[data-regels]'); lijst.replaceChildren();
+          lijst.append(regel('Personen', `${totaal}: ${pers.join(', ')}`));
+          if (tel.baby) lijst.append(regel('Kinderbed', 'Gratis bijgeplaatst'));
+          lijst.append(regel("Extra's", extras.length ? extras.join(', ') : 'Geen'));
+          if (opm) lijst.append(regel('Opmerking', opm));
+
+          tekst = [
+            'Beste Ron en Sandra,', '',
+            'Graag vraag ik een verblijf aan bij DreamZzz:',
+            `${KAMER[kamer]}`,
+            `Aankomst: ${aank.value ? mooi(aank.value) : '-'} (vanaf 15.30)`,
+            `Vertrek: ${vertr.value ? mooi(vertr.value) : '-'} (tot 11.00)`,
+            `Aantal nachten: ${geldig ? nachten : '-'}`,
+            `Personen: ${pers.join(', ')}`,
+            `Extra's: ${extras.length ? extras.join(', ') : 'geen'}`,
+            ...(opm ? [`Opmerking: ${opm}`] : []), '',
+            'Is dit beschikbaar?', naam ? `Groet, ${naam}` : 'Groet,',
+          ].join('\n');
+          const wa = s.querySelector<HTMLAnchorElement>('[data-wa]');
+          const ml = s.querySelector<HTMLAnchorElement>('[data-mail]');
+          if (wa) wa.href = `https://wa.me/31651837076?text=${encodeURIComponent(tekst)}`;
+          if (ml) ml.href = `mailto:${MAIL}?subject=${encodeURIComponent('Boekingsaanvraag ' + KAMER[kamer])}&body=${encodeURIComponent(tekst)}`;
+        };
+
+        s.addEventListener('click', (e) => {
+          const t = e.target as HTMLElement;
+          const b = t.closest<HTMLButtonElement>('[data-stap]');
+          if (b && !b.disabled) { const id = b.dataset.stap!; tel[id] = Math.max(0, tel[id] + +b.dataset.d!); bijwerken(); }
+          if (t.closest('[data-verstuur]') && voorstel) {
+            q('[data-melding]').textContent = `Dit is een ontwerpvoorstel: deze aanvraag wordt nog niet verstuurd. App of bel ${TEL} of mail naar ${MAIL}.`;
+          }
+        });
+        form.addEventListener('input', bijwerken);
+        form.addEventListener('change', bijwerken);
+
+        // "Boek Élégance/Nature" bij de kamers kiest de kamer alvast.
+        document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+          const r = form.querySelector<HTMLInputElement>(`input[name=kamer][value=${a.dataset.kies}]`);
+          if (r) { r.checked = true; bijwerken(); }
+        }));
+        bijwerken();
+      }
+
+      // Kamervergelijker: alleen de verschillen tonen.
+      const v = document.querySelector<HTMLElement>('[data-vergelijk]');
+      const knop = v?.querySelector<HTMLButtonElement>('[data-verschil]');
+      if (v && knop) {
+        knop.hidden = false;
+        knop.addEventListener('click', () => {
+          const aan = v.classList.toggle('alleen-verschil');
+          knop.setAttribute('aria-pressed', String(aan));
+          knop.textContent = aan ? 'Toon alles' : 'Toon alleen de verschillen';
+        });
+      }
+    </script>
+
+    <!-- Arrangementen: drie kaarten, geen prijzen (die waren van 2024). -->
+    <section id="arrangementen" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-oker">Exclusief voor onze gasten</p>
+            <h2 class="mt-3 text-3xl">Arrangementen</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Arrangementen en services kunt u tegen betaling direct reserveren bij uw boeking.</p>
+        </div>
+        <div class="mt-12 grid gap-5 lg:grid-cols-3">
+          {arrangementen.map((a, i) => (
+            <article class={`flex flex-col rounded-xl p-6 shadow-sm transition-transform duration-200 hover:-translate-y-0.5 sm:p-8 ${i === 1 ? 'donker bg-cacao text-white' : 'bg-zand'}`}>
+              <p class={`num font-display text-xl ${i === 1 ? 'text-goud' : 'text-oker'}`}>0{i + 1}</p>
+              <h3 class="mt-3 text-[2.25rem] font-medium">{a.kop}</h3>
+              <p class={`mt-4 ${i === 1 ? 'text-white/85' : 'text-ink-soft'}`}>{a.tekst}</p>
+              <p class={`mt-6 border-t pt-4 kicker ${i === 1 ? 'border-white/15 text-goud' : 'border-line text-oker'}`}>{i === 2 ? 'Te huur' : 'Inbegrepen'}</p>
+              <ul class="mt-3 flex flex-wrap gap-1.5">
+                {a.incl.map((x) => <li class={`rounded-md px-2.5 py-1 text-sm font-semibold ${i === 1 ? 'bg-cacao-2' : 'bg-creme'}`}>{x}</li>)}
+              </ul>
+              {i === 2 && <p class="mt-5 text-sm text-ink-soft">Via onze partner <a href="https://www.postfietsen.nl/diensten/fietsen-huren/" rel="noopener" class="font-bold text-ink underline underline-offset-2">Post Fietsen</a> reserveert u eenvoudig uw fietsen. Tegen betaling worden ze bij de B&amp;B afgeleverd en weer opgehaald.</p>}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Omgeving: sfeerfoto van stuifzand, dan natuur, Efteling en tips. -->
+    <section id="omgeving" class="donker relative isolate scroll-mt-16 overflow-hidden bg-cacao text-white">
+      <div class="absolute inset-0 -z-10"><Foto src={duinen} alt="" sizes="100vw" /></div>
+      <div class="absolute inset-0 -z-10 bg-cacao/55 lg:bg-transparent lg:bg-[linear-gradient(90deg,#1f1713e6_0%,#1f1713b3_55%,#1f171326_100%)]"></div>
+      <div class="wrap grid py-24 lg:grid-cols-12 lg:py-36">
+        <div class="lg:col-span-6">
+          <p class="kicker text-goud">In de omgeving</p>
+          <h2 class="mt-3 text-3xl">Van cultuur tot avontuur</h2>
+          <p class="mt-6 text-lg text-white/90">Kaatsheuvel... dan zeg je De Efteling. Maar er is nog zoveel meer te ontdekken, in het Hart van Brabant.</p>
+          <p class="mt-3 text-sm text-white/75">Sfeerfoto van stuifzand en dennen.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-5 lg:grid-cols-12">
+          <article class="flex flex-col rounded-xl bg-goud p-6 text-cacao shadow-sm sm:p-8 lg:col-span-5">
+            <p class="kicker">Op een paar minuten loopafstand</p>
+            <h3 class="mt-3 text-[2.5rem] font-medium">Attractiepark De Efteling</h3>
+            <p class="mt-4">Spannende achtbanen, betoverende attracties of spectaculaire parkshows: in de Efteling is voor iedereen wat te vinden. Nederlands grootste attractiepark, midden in de natuur.</p>
+            <p class="mt-6 border-t border-cacao/20 pt-5 font-display text-2xl leading-snug font-medium lg:mt-auto">Wat ons betreft het mooiste en leukste park van Europa.</p>
+            <a href="https://www.efteling.com/nl" rel="noopener" class="mt-3 self-start text-sm font-bold underline underline-offset-2">efteling.com</a>
+          </article>
+          <div class="grid gap-3 lg:col-span-7">
+            {natuur.map((n) => (
+              <article class="rounded-xl bg-zand p-5 shadow-sm sm:grid sm:grid-cols-[13rem_1fr] sm:gap-6 sm:p-6">
+                <div><p class="kicker text-oker">Natuur</p><h3 class="mt-2 text-2xl">{n.kop}</h3></div>
+                <p class="mt-2 text-sm text-ink-soft sm:mt-0">{n.tekst}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <div class="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {uitjes.map((u) => (
+            <div>
+              <h3 class="border-b-2 border-ink pb-2 text-2xl">{u.kop}</h3>
+              <ul class="mt-1">
+                {u.items.map((t) => <li class="border-b border-line py-2.5 text-sm text-ink-soft">{t}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <p class="mt-12 max-w-3xl rounded-xl border-l-4 border-oker bg-zand p-5 shadow-sm"><strong class="font-bold">Tip:</strong> als extra service bieden wij onze gasten de wandel- en fietsroutes aan die wij zelf als meest bijzonder ervaren.</p>
+      </div>
+    </section>
+
+    <!-- Over ons en zakelijk, met de eigen foto's als strook op hun eigen formaat. -->
+    <section id="over" class="scroll-mt-16 bg-zand py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="kicker text-oker">Over ons</p>
+          <h2 class="mt-3 text-3xl">Genieten, gastvrij en bourgondisch</h2>
+          <p class="mt-6 text-lg">Met vijfentwintig jaar ervaring in 'eten en drinken', een passie voor reizen en een leven vol ondernemen, hebben Sandra en Ron in 2019 hun DreamZzz gerealiseerd.</p>
+          <p class="mt-4 text-ink-soft">Op hun reizen bezochten ze de mooiste plekjes, altijd op zoek naar iets bijzonders en altijd met een schuin oog kijkend naar de opzet van hotels en bed and breakfasts. Ook Ron's vader, die in Stellenbosch in Zuid-Afrika een hotel realiseerde, was een inspiratiebron.</p>
+          <blockquote class="mt-8 border-l-4 border-oker pl-5">
+            <p class="font-display text-2xl leading-snug font-medium">Wij ontvangen u graag met een lekker vers kopje koffie en zullen ervoor zorgen dat het u aan niets ontbreekt.</p>
+            <footer class="mt-3 text-sm text-ink-soft">{site.gastheer}, uw gastheer</footer>
+          </blockquote>
+        </div>
+        <aside class="lg:col-span-5">
+          <div class="donker rounded-xl bg-cacao p-6 text-white shadow-lg sm:p-8">
+            <p class="kicker text-goud">Zakelijk</p>
+            <h3 class="mt-3 text-[2.25rem] font-medium">Ideaal verblijf voor de zakelijke gast</h3>
+            <ul class="mt-5 border-t border-white/15">
+              {['Sterke, professionele gratis WiFi', 'Een eigen werkplek', 'Rust, ontspanning en een heel goed bed', 'Een vers bereid ontbijt met échte koffie', 'Op verzoek een avondmaaltijd'].map((z) => <li class="border-b border-white/15 py-2.5">{z}</li>)}
+            </ul>
+            <p class="mt-5 text-white/85">Vraag naar onze scherpe tarieven voor u of uw zakelijke gast.</p>
+            <a href={`mailto:${site.mail}?subject=${encodeURIComponent('Zakelijk verblijf')}`} class="btn btn-goud mt-6"><Fragment set:html={icoon.mail} />Vraag een tarief aan</a>
+          </div>
+        </aside>
+      </div>
+      <div class="wrap mt-14">
+        <ul class="flex flex-wrap gap-4">
+          {strook.map((f) => (
+            <li style={`width:${f.w}px`} class="max-w-full">
+              <figure>
+                <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm" style={f.w > 225 ? 'aspect-ratio:313/150' : ''}><Foto src={f.src} alt={f.alt} widths={[f.w]} sizes={`${f.w}px`} /></div>
+                <figcaption class="mt-2 text-sm text-ink-soft">{f.tekst}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Goed om te weten -->
+    <section id="informatie" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-oker">Goed om te weten</p>
+          <h2 class="mt-3 text-3xl">Algemene informatie</h2>
+          <dl class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-line shadow-sm">
+            <div class="bg-zand p-5"><dt class="text-sm text-ink-soft">Inchecken vanaf</dt><dd class="num mt-1 font-display text-getal leading-none">{site.inchecken}</dd></div>
+            <div class="bg-zand p-5"><dt class="text-sm text-ink-soft">Uitchecken om</dt><dd class="num mt-1 font-display text-getal leading-none">{site.uitchecken}</dd></div>
+          </dl>
+          <p class="mt-8 text-ink-soft">Nog een vraag over uw verblijf?</p>
+          <a href={site.wa} class="btn btn-cacao mt-3"><Fragment set:html={icoon.wa} />Stuur een WhatsApp</a>
+        </div>
+        <dl class="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
+          {info.map((i) => (
+            <div class="border-t border-line py-5">
+              <dt class="font-display text-2xl font-medium">{i.kop}</dt>
+              <dd class="mt-2 text-sm text-ink-soft">{i.tekst}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- Contact en route -->
+    <section id="contact" class="donker scroll-mt-16 bg-cacao py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-goud">Contact</p>
+          <h2 class="mt-3 text-3xl">Wij ontmoeten u graag bij DreamZzz</h2>
+          <p class="mt-6 text-lg text-white/85">Heeft u vragen of wilt u meer informatie over onze B&amp;B of onze arrangementen? Dan horen wij dat graag.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.wa} class="btn btn-goud"><Fragment set:html={icoon.wa} />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={icoon.tel} /><span>Bel <span class="num">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-10 grid gap-6 border-t border-white/15 pt-8 sm:grid-cols-2">
+            <div><dt class="text-sm text-white/75">Telefoon en WhatsApp</dt><dd><a href={site.telHref} class="num font-display text-2xl font-medium underline decoration-goud decoration-2 underline-offset-4">{site.tel}</a></dd></div>
+            <div><dt class="text-sm text-white/75">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="text-lg font-bold break-all underline decoration-goud decoration-2 underline-offset-4">{site.mail}</a></dd></div>
+            <div class="sm:col-span-2"><dt class="text-sm text-white/75">Volg ons</dt><dd class="mt-1 flex gap-5 font-bold"><a href={site.facebook} rel="noopener" class="underline underline-offset-4">Facebook</a><a href={site.instagram} rel="noopener" class="underline underline-offset-4">Instagram</a></dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rounded-xl bg-cacao-2 p-6 sm:p-8">
+            <h3 class="text-2xl">Adres</h3>
+            <address class="mt-3 text-lg not-italic">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+            <p class="mt-3 text-white/85">Ons witte huis ligt direct tegenover de molen.</p>
+            <a href={site.maps} rel="noopener" class="btn btn-line mt-6">Route plannen</a>
+            <div class="mt-8 space-y-2 border-t border-white/15 pt-6">
+              <details class="group rounded-lg bg-cacao p-4">
+                <summary class="cursor-pointer font-bold">Met de auto vanuit het noorden</summary>
+                <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-white/85">
+                  <li>A2 richting Maastricht, 's-Hertogenbosch</li>
+                  <li>A27 (E311) richting Breda, Gorinchem</li>
+                  <li>Afslag A59 richting Waalwijk, Efteling</li>
+                  <li>Afslag 37 richting Waalwijk, Sprang-Capelle</li>
+                  <li>Na 3,4 km afslag NH Hotel, boven bij het stoplicht linksaf</li>
+                  <li>Rotonde 3/4, linksaf de Tilburgseweg op</li>
+                  <li>Kruispunt rechtdoor: 40 meter verder ziet u links ons witte huis, tegenover de molen</li>
+                </ol>
+              </details>
+              <details class="group rounded-lg bg-cacao p-4">
+                <summary class="cursor-pointer font-bold">Met de auto vanuit het zuiden</summary>
+                <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-white/85">
+                  <li>Vanuit Maastricht de A2 richting Eindhoven</li>
+                  <li>Bij Eindhoven Airport links aanhouden, A58 richting Breda, Tilburg</li>
+                  <li>Na 20 km invoegen op de A65 richting Waalwijk, Efteling</li>
+                  <li>Afslag 3 naar de N261 richting Waalwijk, Ring Noord</li>
+                  <li>Na 7,2 km rechtsaf richting Kaatsheuvel, Waalwijk</li>
+                  <li>1e afslag Efteling, boven rechts aanhouden en bij het stoplicht links</li>
+                  <li>Op de N261 de 1e afslag rechts; na 150 meter in de scherpe bocht naar links rechtsaf</li>
+                  <li>Na 600 meter ziet u rechts ons witte huis, tegenover de molen</li>
+                </ol>
+              </details>
+              <details class="group rounded-lg bg-cacao p-4">
+                <summary class="cursor-pointer font-bold">Met het openbaar vervoer</summary>
+                <p class="mt-3 text-sm text-white/85">Op 50 meter van onze B&amp;B ligt bushalte Vaartstraat. Plan uw reis via <a href={site.ov} rel="noopener" class="underline underline-offset-2">9292.nl</a>.</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
