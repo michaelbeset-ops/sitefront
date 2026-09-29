@@ -62,3 +62,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Camping De Stellop Hoeve, Moergestel | https://michaelbeset-ops.github.io/sitefront/camping-stellop-hoeve/ | 8/10: 4,7 uit 56, recent, 06; site met knoppen-navigatie, geen viewport. | 2026-09-29 | demo, WhatsApp/mail |
 | Landschapscamping De Zonnehoeve, Zonnemaire | https://michaelbeset-ops.github.io/sitefront/camping-de-zonnehoeve/ | 8/10: 4,6 uit 82, recent, prijswinnaar; WordPress 2012 zonder viewport. | 2026-09-29 | demo, mail |
 | Verswinkel Marlou Segers, Hulst | https://michaelbeset-ops.github.io/sitefront/verswinkel-marlou-segers/ | 8/10: 4,8 uit 44; bestellen per mail, site zonder viewport. | 2026-09-29 | demo, mail |
+| IJs & Spijssalon Baks, Woudrichem | https://michaelbeset-ops.github.io/sitefront/ijssalon-baks/ | 9/10: 4,5 uit 632, 06, twee locaties; WordPress-site zonder viewport. | 2026-09-29 | demo, WhatsApp/mail |

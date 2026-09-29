@@ -1,0 +1,47 @@
+---
+import { site, url, locaties } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2-.2-.2-.4-.3z"/></svg>`;
+const w = locaties.woudrichem, r = locaties.raamsdonksveer;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-cream/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-bold">
+          <li><a href="#smaken" class="no-underline transition-colors hover:text-berry">Smaken</a></li>
+          <li><a href="#high-ice" class="no-underline transition-colors hover:text-berry">High Ice</a></li>
+          <li><a href="#ijskar" class="no-underline transition-colors hover:text-berry">IJskar</a></li>
+          <li><a href="#locaties" class="no-underline transition-colors hover:text-berry">Locaties en tijden</a></li>
+          <li><a href="#oliebollen" class="no-underline transition-colors hover:text-berry">Oliebollen</a></li>
+        </ul>
+      </nav>
+      <a href={site.wa} class="btn btn-leaf !px-4 !py-2 !text-base"><Fragment set:html={wa} /><span>WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-forest-deep pt-14 pb-10 text-white/85">
+    <div class="wrap grid gap-10 text-sm md:grid-cols-12">
+      <div class="md:col-span-4">
+        <Logo licht groot />
+        <p class="mt-6">{site.naam}<br />KvK [[AANLEVEREN: KvK-nummer]]</p>
+      </div>
+      <div class="md:col-span-3">
+        <p class="kicker text-pistache">Woudrichem</p>
+        <p class="mt-2">{w.straat}<br />{w.postcode} {w.plaats}<br /><a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a></p>
+      </div>
+      <div class="md:col-span-3">
+        <p class="kicker text-pistache">Raamsdonksveer</p>
+        <p class="mt-2">{r.straat}<br />{r.postcode} {r.plaats}</p>
+      </div>
+      <div class="md:col-span-2 md:text-right">
+        <p><a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.mail}</a></p>
+        <p class="mt-2"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+      </div>
+    </div>
+    {site.voorstel && <div class="wrap"><p class="mt-10 border-t border-white/15 pt-6 text-xs text-white/80">Sfeerfoto's via Unsplash en foto's van de huidige website, ter illustratie. Bij oplevering vervangen we ze door nieuwe eigen foto's.</p></div>}
+  </footer>
+)}
