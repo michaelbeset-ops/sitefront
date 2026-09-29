@@ -1,0 +1,363 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden, winkels, elders, icoon } from '../data/site';
+import keukenPan from '../assets/keuken-pan.jpg';
+import messenblok from '../assets/messenblok.jpg';
+import gasvlam from '../assets/gasvlam.jpg';
+import keukenAvond from '../assets/keuken-avond.jpg';
+import fornuis from '../assets/fornuis.jpg';
+import trolley from '../assets/trolley.jpg';
+import espresso1 from '../assets/espresso-1.jpg';
+import espresso2 from '../assets/espresso-2.jpg';
+import koffiemolen from '../assets/koffiemolen.jpg';
+
+// Fornuizen en kookapparatuur: categorieën en merken precies zoals op hun pagina fornuizen.php (2025).
+const apparatuur = [
+  { cat: 'Fornuizen', merken: ['M-System', 'Viking', 'Lacanche', 'Steel', 'Bertazzoni', 'Wolf', 'Fulgor Milano'] },
+  { cat: 'Inbouw', merken: ['Bertazzoni', 'Steel', 'Viking', 'Kuppersbusch', 'KitchenAid', 'Gutmann', 'Wolf'] },
+  { cat: 'Afzuiging', merken: ['Prosolo', 'Gutmann', 'Berbel', 'ABK-Innovent', 'Viking', 'Steel'] },
+  { cat: 'Koeling', merken: ['Viking', 'Fhiaba', 'Sub-Zero', 'KitchenAid'] },
+  { cat: 'Outdoor', merken: ['Cobb', 'Boretti', 'Viking', "Kamado BBQ's", 'Diversen'] },
+  { cat: 'Wassen', merken: ['Asko'] },
+  { cat: 'Keukenunits', merken: ['Modules', 'Hakblokken', 'Trolleys'] },
+];
+const porselein = ['Pillivuyt', 'Saturnia', 'Pordamsa', 'Arzberg', 'Schott-Zwiesel glas', 'Weck', 'Zalto', "Denk'Art glas"];
+const theedoeken = ['Knit-tet', 'Van den Acker', 'Busatti', 'Textielmuseum', 'Leitner', 'H. Skjalm P'];
+
+// Bruidstaartstandaards: diameters van de plateaus in cm (bron: pagina bruidstaart- en cijferbakvormen).
+const standaard5 = [20, 26, 32, 40, 45];
+const standaard7 = [16, 20, 26, 32, 40, 45, 50];
+const cijfers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+
+const koffie = [
+  { src: espresso1, alt: 'Een roestvrijstalen espressomachine met manometer en één zetgroep', bij: 'Espressomachine' },
+  { src: espresso2, alt: 'Een espressomachine met zwarte zijpanelen en één zetgroep', bij: 'Espressomachine' },
+  { src: koffiemolen, alt: 'Een koffiemolen met getinte bonenbak', bij: 'Koffiemolen' },
+];
+const [kg, forn, esp, boek] = winkels;
+---
+<Base
+  title="Duikelman | Professioneel keukengereedschap in De Pijp, Amsterdam"
+  description="Duikelman Kookgereedschap, Ferdinand Bolstraat 66-68 in Amsterdam. Met op de Gerard Doustraat Fornuizen & Viking Studio, Espressomachines & koffie en Kookboeken & porselein."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- HERO -->
+    <section class="donker relative bg-antraciet text-white">
+      <div class="wrap grid gap-10 pt-12 pb-10 sm:pt-16 lg:grid-cols-12 lg:gap-y-8 lg:pt-16 lg:pb-14">
+        <div class="lg:col-span-12">
+          <p class="kicker text-koperlicht">Ferdinand Bolstraat · De Pijp, Amsterdam</p>
+          <h1 class="mt-5 text-4xl">Professioneel keuken&shy;gereedschap</h1>
+        </div>
+        <div class="lg:col-span-8">
+          <p class="max-w-2xl text-lg text-zilver">Duikelman Kookgereedschap aan de Ferdinand Bolstraat. En om de hoek, op de Gerard Doustraat: Fornuizen &amp; Viking Studio, Espressomachines &amp; koffie en Kookboeken &amp; porselein.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#winkelwijzer" class="btn btn-koper"><Fragment set:html={icoon.route} />Welke winkel zoekt u?</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={icoon.tel} /><span>Bel <span class="num">{site.tel}</span></span></a>
+          </div>
+        </div>
+        <dl class="grid grid-cols-1 min-[360px]:grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-antraciet-3 pt-6 lg:col-span-4 lg:grid-cols-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+          <div class="min-[360px]:col-span-2 lg:col-span-1">
+            <dt class="kicker text-zilver">Google</dt>
+            <dd class="mt-1 flex items-baseline gap-2"><strong class="font-display text-getal leading-none font-semibold">{site.google}</strong><span class="text-zilver">uit <span class="num">{site.reviews}</span> reviews</span></dd>
+          </div>
+          <div><dt class="kicker text-zilver">Ma t/m vr</dt><dd class="mt-1 font-display text-xl font-semibold num">09:30 - 18:00</dd></div>
+          <div><dt class="kicker text-zilver">Zaterdag</dt><dd class="mt-1 font-display text-xl font-semibold num">09:30 - 17:00</dd></div>
+        </dl>
+      </div>
+      <div class="relative bg-[linear-gradient(to_bottom,var(--color-antraciet)_62%,var(--color-papier)_62%)]">
+        <div class="wrap">
+          <figure class="relative overflow-hidden rounded-xl shadow-lg">
+            <div class="aspect-[4/3] sm:aspect-[16/9] lg:aspect-[21/9]">
+              <Foto src={keukenPan} alt="Een roestvrijstalen pan op een professionele gasbrander, met pannen op de achtergrond" hero sizes="(min-width: 1216px) 1152px, 100vw" widths={[640, 960, 1400, 1800]} class="object-[center_55%]" />
+            </div>
+            <ol class="absolute right-3 bottom-3 left-3 hidden gap-px overflow-hidden rounded-lg bg-antraciet-3 text-sm md:grid md:grid-cols-4 lg:right-5 lg:bottom-5 lg:left-auto lg:w-[46rem]">
+              {winkels.map((w) => (
+                <li class="bg-antraciet/95 px-4 py-3 text-white">
+                  <span class="font-display text-koperlicht">{w.nr}</span>
+                  <span class="mt-1 block font-bold leading-tight">{w.wat}</span>
+                  <span class="block text-zilver">{w.straat}</span>
+                </li>
+              ))}
+            </ol>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- DE VIER WINKELS -->
+    <section id="assortiment" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-roest">Assortiment</p>
+            <h2 class="mt-3 text-3xl">Vier winkels, twee straten</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5 lg:col-start-8">Het hoofdadres is Duikelman Kookgereedschap, Ferdinand Bolstraat 66-68. Fornuizen, espresso en kookboeken hebben ieder een eigen winkel op de Gerard Doustraat.</p>
+        </div>
+
+        <ol class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <li class="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="aspect-[4/3] overflow-hidden"><Foto src={messenblok} alt="Een houten messenblok vol messen met roestvrijstalen heften" sizes="(min-width: 1024px) 280px, (min-width: 768px) 50vw, 100vw" widths={[400, 700]} class="transition-transform duration-500 group-hover:scale-[1.03]" /></div>
+            <div class="flex flex-1 flex-col p-5">
+              <p class="font-display text-koper text-lg">01</p>
+              <h3 class="mt-1 text-xl">Professioneel keuken&shy;gereedschap</h3>
+              <p class="mt-2 text-ink-soft">Duikelman Kookgereedschap</p>
+              <p class="mt-auto pt-4 text-sm font-semibold">{kg.straat}</p>
+            </div>
+          </li>
+          <li class="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="grid aspect-[4/3] place-items-center overflow-hidden bg-white"><Image src={fornuis} alt="Een wit fornuis met vijf gaspitten en een brede oven" widths={[280, 500]} sizes="280px" format="webp" quality={75} loading="lazy" class="h-full w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]" /></div>
+            <div class="flex flex-1 flex-col border-t border-line p-5">
+              <p class="font-display text-koper text-lg">02</p>
+              <h3 class="mt-1 text-xl">Fornuizen en kookapparatuur</h3>
+              <p class="mt-2 text-ink-soft">Fornuizen &amp; Viking Studio</p>
+              <p class="mt-auto pt-4 text-sm font-semibold">{forn.straat}</p>
+            </div>
+          </li>
+          <li class="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="grid aspect-[4/3] place-items-center overflow-hidden bg-white"><Image src={espresso1} alt="Een roestvrijstalen espressomachine met manometer" widths={[280, 500]} sizes="280px" format="webp" quality={75} loading="lazy" class="h-full w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]" /></div>
+            <div class="flex flex-1 flex-col border-t border-line p-5">
+              <p class="font-display text-koper text-lg">03</p>
+              <h3 class="mt-1 text-xl">Espressomachines en koffie</h3>
+              <p class="mt-2 text-ink-soft">Espressomachines &amp; koffie</p>
+              <p class="mt-auto pt-4 text-sm font-semibold">{esp.straat}</p>
+            </div>
+          </li>
+          <li class="flex flex-col overflow-hidden rounded-xl bg-antraciet text-white shadow-sm">
+            <div class="donker flex aspect-[4/3] flex-col justify-center gap-1 px-6">
+              {['Kookboeken', 'Porselein', 'Theedoeken'].map((w) => <span class="font-display text-2xl leading-tight">{w}</span>)}
+            </div>
+            <div class="flex flex-1 flex-col border-t border-antraciet-3 p-5">
+              <p class="font-display text-koperlicht text-lg">04</p>
+              <h3 class="mt-1 text-xl">Kookboeken, porselein en theedoeken</h3>
+              <p class="mt-2 text-zilver">Duikelman Kookboeken &amp; porselein</p>
+              <p class="mt-auto pt-4 text-sm font-semibold">{boek.straat}</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- FORNUIZEN & KOOKAPPARATUUR -->
+    <section id="fornuizen" class="donker scroll-mt-16 bg-antraciet text-white">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[18rem] lg:col-span-5">
+          <div class="absolute inset-0"><Foto src={gasvlam} alt="Close-up van een brandende gaspit met blauwe vlam onder een gietijzeren rooster" sizes="(min-width: 1024px) 42vw, 100vw" /></div>
+          <div class="absolute inset-x-0 bottom-0 bg-linear-to-t from-antraciet/90 to-transparent p-6 pt-16 lg:p-10">
+            <p class="kicker text-koperlicht">Gerard Doustraat 48-50</p>
+            <p class="mt-2 font-display text-2xl">Fornuizen &amp; Viking Studio</p>
+            <a href={`mailto:${forn.mail}`} class="mt-2 inline-block break-all text-zilver underline underline-offset-2 transition-colors hover:text-white">{forn.mail}</a>
+          </div>
+        </div>
+        <div class="px-5 py-14 sm:px-8 lg:col-span-7 lg:px-14 lg:py-20">
+          <p class="kicker text-koperlicht">Fornuizen en kookapparatuur</p>
+          <h2 class="mt-3 text-3xl">De merken per categorie</h2>
+          <p class="mt-4 max-w-xl text-lg text-zilver">Van fornuis tot afzuiging, van koeling tot de buitenkeuken: dit zijn de merken en categorieën die de Fornuizen &amp; Viking Studio voert.</p>
+          <dl class="mt-10 divide-y divide-antraciet-3 border-y border-antraciet-3">
+            {apparatuur.map((a) => (
+              <div class="grid gap-3 py-4 sm:grid-cols-[9rem_1fr] sm:items-baseline">
+                <dt class="font-display text-lg">{a.cat}</dt>
+                <dd class="flex flex-wrap gap-1.5">
+                  {a.merken.map((m) => <span class="merk bg-antraciet-2 text-white">{m}</span>)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div class="mt-10 grid grid-cols-2 gap-4 sm:max-w-md">
+            <figure class="overflow-hidden rounded-xl bg-white">
+              <Image src={fornuis} alt="Een wit fornuis met vijf gaspitten en een brede oven" widths={[240, 480]} sizes="220px" format="webp" quality={75} loading="lazy" class="aspect-square h-auto w-full object-contain" />
+              <figcaption class="border-t border-line px-3 py-2 text-sm font-semibold text-ink">Fornuis</figcaption>
+            </figure>
+            <figure class="overflow-hidden rounded-xl bg-white">
+              <Image src={trolley} alt="Een roestvrijstalen trolley op wielen met wit werkblad en pannen op de schappen" widths={[240, 480]} sizes="220px" format="webp" quality={75} loading="lazy" class="aspect-square h-auto w-full object-contain" />
+              <figcaption class="border-t border-line px-3 py-2 text-sm font-semibold text-ink">Trolley</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESPRESSO & KOFFIE + KOOKBOEKEN -->
+    <section class="py-16 lg:py-24">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-7">
+          <p class="kicker text-roest">Gerard Doustraat 52</p>
+          <h2 class="mt-3 text-3xl">Espresso&shy;machines &amp; koffie</h2>
+          <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {koffie.map((k) => (
+              <li class="group overflow-hidden rounded-xl bg-white shadow-sm">
+                <Image src={k.src} alt={k.alt} widths={[240, 480]} sizes="(min-width: 640px) 240px, 100vw" format="webp" quality={75} loading="lazy" class="mx-auto aspect-square h-auto w-full max-w-[20rem] object-contain transition-transform duration-500 group-hover:scale-[1.03]" />
+                <p class="border-t border-line px-4 py-3 text-sm font-semibold">{k.bij}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-6 text-ink-soft">Mail de espressowinkel: <a href={`mailto:${esp.mail}`} class="break-all font-semibold text-ink underline underline-offset-2 transition-colors hover:text-roest">{esp.mail}</a></p>
+        </div>
+        <div class="rounded-xl bg-linnen p-6 sm:p-8 lg:col-span-5">
+          <p class="kicker text-roest">Gerard Doustraat 54</p>
+          <h2 class="mt-3 text-2xl sm:text-[2.25rem]">Kookboeken, porselein &amp;&nbsp;theedoeken</h2>
+          <h3 class="mt-8 kicker font-body text-ink-soft">Porselein en glas</h3>
+          <ul class="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-display text-xl leading-snug">{porselein.map((m, i) => <li class="whitespace-nowrap">{m}{i < porselein.length - 1 && <span class="ml-3 text-roest" aria-hidden="true">·</span>}</li>)}</ul>
+          <h3 class="mt-7 kicker font-body text-ink-soft">Theedoeken</h3>
+          <ul class="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-display text-xl leading-snug">{theedoeken.map((m, i) => <li class="whitespace-nowrap">{m}{i < theedoeken.length - 1 && <span class="ml-3 text-roest" aria-hidden="true">·</span>}</li>)}</ul>
+          <h3 class="mt-7 kicker font-body text-ink-soft">Kookboeken</h3>
+          <p class="mt-3 text-ink-soft">[[AANLEVEREN: korte omschrijving van de kookboekenafdeling]]</p>
+          <div class="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-5 text-sm">
+            <a href={boek.telHref} class="num font-semibold underline underline-offset-2 transition-colors hover:text-roest">T {boek.tel}</a>
+            <a href={`mailto:${boek.mail}`} class="break-all font-semibold underline underline-offset-2 transition-colors hover:text-roest">{boek.mail}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WOW: WINKELWIJZER DE PIJP -->
+    <section id="winkelwijzer" class="donker scroll-mt-16 bg-antraciet py-16 text-white lg:py-24">
+      <div class="wrap" data-wijzer>
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <p class="kicker text-koperlicht">Winkelwijzer De Pijp</p>
+            <h2 class="mt-3 text-3xl">Wat zoekt u?</h2>
+            <p class="mt-4 max-w-md text-lg text-zilver">Kies wat u zoekt en zie meteen naar welk adres u moet, met telefoon, e-mail en route.</p>
+            <fieldset class="mt-8">
+              <legend class="text-zilver">Kies wat u zoekt:</legend>
+              <div class="mt-4 grid gap-2.5">
+                {winkels.map((w, i) => (
+                  <label class="kies">
+                    <input type="radio" name="zoek" value={w.id} class="sr-only" checked={i === 0} />
+                    <span class="nr">{w.nr}</span>
+                    <span>{w.zoek}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="lg:col-span-7" aria-live="polite">
+            <div class="grid gap-4">
+              {winkels.map((w, i) => (
+                <article data-winkel={w.id} class={`grid overflow-hidden rounded-xl bg-papier text-ink shadow-lg sm:grid-cols-[1fr_auto] ${i === 0 ? 'actief' : ''}`}>
+                  <div class="p-6 sm:p-8">
+                    <p class="kicker text-roest">Winkel {w.nr} van 4 · {w.wat}</p>
+                    <h3 class="mt-3 text-xl sm:text-2xl">{w.naam}</h3>
+                    <p class="mt-3 text-lg">{w.straat}<br />{w.postcode} Amsterdam</p>
+                    <dl class="mt-5 grid gap-1.5 text-base">
+                      <div class="flex gap-3"><dt class="w-16 flex-none text-ink-soft">Telefoon</dt><dd><a href={w.telHref} class="num font-semibold underline underline-offset-2 transition-colors hover:text-roest">{w.tel}</a></dd></div>
+                      <div class="flex gap-3"><dt class="w-16 flex-none text-ink-soft">E-mail</dt><dd class="min-w-0"><a href={`mailto:${w.mail}`} class="break-all font-semibold underline underline-offset-2 transition-colors hover:text-roest">{w.mail}</a></dd></div>
+                    </dl>
+                    <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                      <a href={w.route} rel="noopener" class="btn btn-koper"><Fragment set:html={icoon.route} />Route plannen<span class="sr-only"> naar {w.straat}</span></a>
+                      <a href={`mailto:${w.mail}`} class="btn btn-line text-ink hover:!bg-antraciet hover:!text-white hover:!shadow-none"><Fragment set:html={icoon.mail} />Mail deze winkel</a>
+                    </div>
+                  </div>
+                  <div class="border-t border-line bg-linnen p-6 sm:w-56 sm:border-t-0 sm:border-l sm:p-8">
+                    <p class="kicker text-ink-soft">Open</p>
+                    <dl class="mt-3 grid gap-2 text-sm">
+                      {tijden.map((t) => <div><dt class="text-ink-soft">{t.kort}</dt><dd class="num font-semibold">{t.tijd}</dd></div>)}
+                    </dl>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <p class="mt-5 text-sm text-zilver">Alle vier de winkels liggen in De Pijp en hebben dezelfde openingstijden.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VERHUUR -->
+    <section id="verhuur" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="max-w-3xl">
+          <p class="kicker text-roest">Verhuur</p>
+          <h2 class="mt-3 text-3xl">Bruidstaart&shy;standaards en cijfer&shy;bakvormen</h2>
+          <p class="mt-4 text-lg text-ink-soft">Duikelman verhuurt bruidstaartstandaards en cijferbakvormen. De huurperiode is 3 dagen; de dagen dat de winkel gesloten is, tellen niet mee.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-12">
+          <article class="rounded-xl bg-white p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <h3 class="text-2xl">Bruidstaart&shy;standaards</h3>
+            <p class="mt-3 text-ink-soft">Zelf de mooiste bruidstaart maken? Duikelman verhuurt aluminium bruidstaartstandaards van professionele kwaliteit, met 5 of 7 lagen. De lagen worden op elkaar geschroefd, zodat u de indeling zelf bepaalt. U kunt ook plateaus weglaten en een standaard met 2, 3 of 4 niveaus samenstellen.</p>
+            <div class="mt-8 grid gap-8 sm:grid-cols-2">
+              {[{ n: 5, d: standaard5 }, { n: 7, d: standaard7 }].map((s) => (
+                <figure>
+                  <div class="flex flex-col items-center gap-1.5" aria-hidden="true">
+                    {s.d.map((cm) => (
+                      <div class="flex h-6 items-center justify-center rounded-sm bg-linnen text-xs font-bold text-ink-soft shadow-[inset_0_-2px_0_#1b1c1e1a] num" style={`width:${(cm / 50) * 100}%`}>{cm}</div>
+                    ))}
+                  </div>
+                  <figcaption class="mt-4 text-center text-sm"><strong class="font-display text-lg">{s.n} lagen</strong><br /><span class="text-ink-soft">plateaus van <span class="num">{s.d.join(' - ')}</span> cm</span></figcaption>
+                </figure>
+              ))}
+            </div>
+          </article>
+          <article class="flex flex-col rounded-xl bg-antraciet p-6 text-white shadow-sm sm:p-8 lg:col-span-5">
+            <h3 class="text-2xl">Cijfer&shy;bakvormen</h3>
+            <p class="mt-3 text-zilver">Een verjaardagstaart maken? Of bent u 25 jaar getrouwd? Maak zelf een originele cijfertaart. Te huur: de cijfers 1 tot en met 9 en natuurlijk de 0.</p>
+            <ul class="mt-6 grid grid-cols-5 gap-2" aria-label="Te huur: de cijfers 1 tot en met 9 en 0">
+              {cijfers.map((c) => <li class="grid aspect-square place-items-center rounded-md bg-antraciet-2 font-display text-2xl font-bold text-koperlicht shadow-[inset_0_0_0_1.5px_var(--color-antraciet-3)]" aria-hidden="true">{c}</li>)}
+            </ul>
+            <dl class="mt-auto grid grid-cols-2 gap-4 border-t border-antraciet-3 pt-6 text-sm">
+              <div><dt class="text-zilver">Klein</dt><dd class="font-display text-xl num">500 gr.</dd></div>
+              <div><dt class="text-zilver">Groot</dt><dd class="font-display text-xl num">1 kg</dd></div>
+            </dl>
+          </article>
+        </div>
+        <p class="mt-6 text-ink-soft">Huren of een bakvorm reserveren? Kom langs aan de Ferdinand Bolstraat of bel <a href={site.telHref} class="num font-semibold text-ink underline underline-offset-2 transition-colors hover:text-roest">{site.tel}</a>. <span class="text-sm">[[AANLEVEREN: huurprijzen en borg, actueel]]</span></p>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="donker relative scroll-mt-16 overflow-hidden bg-antraciet text-white">
+      <div class="absolute inset-0 opacity-35"><Foto src={keukenAvond} alt="" sizes="100vw" widths={[800, 1400, 1800]} /></div>
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,var(--color-antraciet)_35%,#1b1c1ecc)]"></div>
+      <div class="wrap relative grid gap-12 py-16 lg:grid-cols-12 lg:py-24">
+        <div class="lg:col-span-5">
+          <p class="kicker text-koperlicht">Contact en route</p>
+          <h2 class="mt-3 text-3xl">Langskomen in De Pijp</h2>
+          <p class="mt-5 text-lg text-zilver">{site.vol}<br />{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-koper"><Fragment set:html={icoon.tel} /><span>Bel <span class="num">{site.tel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={icoon.mail} />{site.mail}</a>
+          </div>
+          <p class="mt-8 max-w-md text-zilver">Producten en cadeaubonnen kunnen ook verstuurd worden. Mail uw gegevens, dan ontvangt u de factuur met een iDEAL-betaallink.</p>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-2 lg:col-span-6 lg:col-start-7">
+          <div class="rounded-xl bg-antraciet-2/90 p-6 shadow-sm">
+            <h3 class="kicker font-body text-koperlicht">Openingstijden</h3>
+            <dl class="mt-4 grid gap-3">
+              {tijden.map((t) => <div class="flex items-baseline justify-between gap-3 border-b border-antraciet-3 pb-3 last:border-0 last:pb-0"><dt class="text-zilver">{t.kort}</dt><dd class="num font-display text-lg">{t.tijd}</dd></div>)}
+            </dl>
+            <p class="mt-4 text-sm text-zilver">Voor alle vier de winkels in Amsterdam.</p>
+          </div>
+          <div class="rounded-xl bg-antraciet-2/90 p-6 shadow-sm">
+            <h3 class="kicker font-body text-koperlicht">Gerard Doustraat</h3>
+            <ul class="mt-4 grid gap-3 text-sm">
+              {winkels.slice(1).map((w) => <li><span class="block font-semibold text-white">{w.naam}</span><span class="text-zilver">{w.straat}</span></li>)}
+            </ul>
+          </div>
+          <div class="rounded-xl bg-antraciet-2/90 p-6 shadow-sm sm:col-span-2">
+            <h3 class="kicker font-body text-koperlicht">Buiten Amsterdam</h3>
+            <ul class="mt-4 grid gap-4 text-sm sm:grid-cols-3">
+              {elders.map((e) => <li><span class="block font-semibold text-white">{e.naam}</span><span class="block text-zilver">{e.adres}</span><a href={e.web} rel="noopener" class="break-all text-zilver underline underline-offset-2 transition-colors hover:text-white">{e.webKort}</a></li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+
+  <script>
+    const w = document.querySelector<HTMLElement>('[data-wijzer]');
+    if (w) {
+      w.classList.add('js');
+      const kaarten = w.querySelectorAll<HTMLElement>('[data-winkel]');
+      const toon = (id: string) => kaarten.forEach((k) => k.classList.toggle('actief', k.dataset.winkel === id));
+      w.querySelectorAll<HTMLInputElement>('input[name="zoek"]').forEach((r) => r.addEventListener('change', () => r.checked && toon(r.value)));
+    }
+  </script>
+</Base>

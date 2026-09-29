@@ -1,0 +1,89 @@
+@import "tailwindcss";
+@import "@fontsource-variable/oxanium";
+@import "@fontsource-variable/geologica";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Hun bord aan de gevel: zwart "SB" met geel. Rubberzwart als basis, signaalgeel als enige accent. */
+  --color-rubber: #0f1011;     /* hero, bandenmaat, contact, footer */
+  --color-roet: #1a1c1e;       /* kaarten op rubber */
+  --color-asfalt: #2a2d31;     /* lijnen en vlakken op donker */
+  --color-geel: #f5c518;       /* signaal: knoppen met rubber-tekst, accenten op donker */
+  --color-oker: #7a5a00;       /* geel als tekst op licht (7:1 op wit) */
+  --color-ink: #121314;
+  --color-ink-soft: #4e5358;
+  --color-paper: #f4f3ef;
+  --color-kalk: #e6e4dd;
+  --color-line: #1213141f;
+  --color-white: #ffffff;
+
+  --font-display: "Oxanium Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Geologica Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #0f101114, 0 2px 8px -2px #0f101117;
+  --shadow-lg: 0 30px 70px -28px #000000b3;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.9rem;
+  --text-3xl: clamp(2rem, 3.4vw + 0.9rem, 3.3rem);
+  --text-4xl: clamp(2.5rem, 5.6vw + 0.7rem, 5rem);
+  --text-prijs: clamp(2.8rem, 4.4vw + 1rem, 4.4rem);
+  --text-maat: clamp(1.1rem, 3.4vw + 0.45rem, 3.4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6; font-weight: 350; }
+  strong, b { font-weight: 600; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.02; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.005em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-ink); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-geel); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; font-family: var(--font-display); font-weight: 700; letter-spacing: .01em; padding: .9rem 1.35rem; border-radius: var(--radius-lg); text-decoration: none; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+  .btn-geel { background: var(--color-geel); color: var(--color-rubber); }
+  .btn-geel:hover { background: var(--color-white); }
+  .btn-zwart { background: var(--color-rubber); color: var(--color-white); }
+  .btn-zwart:hover { background: var(--color-asfalt); }
+  .btn-line { box-shadow: inset 0 0 0 2px currentColor; }
+  .btn-line:hover { background: var(--color-white); color: var(--color-rubber); box-shadow: none; }
+  .kicker { font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+
+  /* Bandenmaat: de delen van de maat als knoppen, in reliëf zoals op de zijwand. */
+  .deel { font-family: var(--font-display); font-weight: 700; line-height: 1; padding: .35em .28em .3em; border-radius: var(--radius-md); color: #ffffffd9; background: transparent; cursor: pointer; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; box-shadow: inset 0 -2px 0 #ffffff26; }
+  .deel:hover { color: var(--color-white); box-shadow: inset 0 -3px 0 var(--color-geel); }
+  .deel[aria-pressed="true"] { background: var(--color-geel); color: var(--color-rubber); box-shadow: none; }
+  .deel:focus-visible { outline: 3px solid var(--color-white); outline-offset: 2px; }
+
+  .keuze { position: relative; display: flex; align-items: center; justify-content: center; text-align: center; cursor: pointer; border-radius: var(--radius-md); padding: .65rem .75rem; font-weight: 500; background: var(--color-white); box-shadow: inset 0 0 0 1.5px #1213144d; transition: background-color .15s ease, box-shadow .15s ease, color .15s ease; }
+  .keuze:hover { box-shadow: inset 0 0 0 2px var(--color-ink); }
+  .keuze:has(input:checked) { background: var(--color-rubber); color: var(--color-white); box-shadow: none; }
+  .keuze:has(input:focus-visible) { outline: 3px solid var(--color-ink); outline-offset: 2px; }
+
+  .veld label, .veld legend { display: block; font-weight: 600; font-size: var(--text-sm); }
+  .veld input, .veld select { margin-top: .35rem; width: 100%; border-radius: var(--radius-md); border: 1.5px solid #1213144d; background: var(--color-white); padding: .7rem .85rem; font: inherit; color: var(--color-ink); }
+  .veld input:focus-visible, .veld select:focus-visible { outline: 3px solid var(--color-ink); outline-offset: 1px; border-color: var(--color-ink); }
+}

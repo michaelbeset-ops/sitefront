@@ -67,3 +67,8 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Hotel Het Weeshuis, Bolsward | https://michaelbeset-ops.github.io/sitefront/hotel-het-weeshuis/ | 8/10: boutique hotel, 4,6 uit 268, recent; eigen site (RoomRaccoon, geen https) was 29-09 tweemaal onbereikbaar (502), werkt verder. Reserve. | 2026-09-29 | demo, mail |
 | Minicamping 't Hommeltje, Koudekerke | https://michaelbeset-ops.github.io/sitefront/minicamping-t-hommeltje/ | 10/10: 4,7 uit 132, recent; eigen site geeft NU een kritieke fout. | 2026-09-29 | demo, mail |
 | Bed & Breakfast Slapen & Zo, Zoutelande | https://michaelbeset-ops.github.io/sitefront/slapen-en-zo-zoutelande/ | 10/10: 4,9 uit 28, 150 m van zee; eigen site geeft NU een serverfout. | 2026-09-29 | demo, mail |
+| Duikelman, Amsterdam (De Pijp) | https://michaelbeset-ops.github.io/sitefront/duikelman/ | 9/10: 4 winkels + zusterzaken, 4,6 uit 270; site uit ~2010, zonder viewport, 29-09 onbereikbaar. | 2026-09-29 | demo, mail |
+| Eussen Aanhangwagens, Voerendaal | https://michaelbeset-ops.github.io/sitefront/eussen-aanhangwagens/ | 9/10: BOVAG, koelvoertuigen/speciaalbouw, 4,6 uit 73, recent; site zonder viewport. | 2026-09-29 | demo, mail |
+| Gebr. Heemskerk, Nieuw-Vennep | https://michaelbeset-ops.github.io/sitefront/gebr-heemskerk/ | 9/10: mechanisatie + constructie sinds 1960, 4,6 uit 33; site © 2017 zonder viewport. | 2026-09-29 | demo, WhatsApp |
+| SB Tyres, Putten | https://michaelbeset-ops.github.io/sitefront/sb-tyres/ | 8/10: 4,8 uit 63, tel/WhatsApp Steven; site zonder viewport. | 2026-09-29 | demo, WhatsApp |
+| Automobielbedrijf Aalbers, Ruurlo | https://michaelbeset-ops.github.io/sitefront/auto-aalbers/ | 8/10: 4,9 uit 46; site zonder viewport, lege team/occasions. | 2026-09-29 | demo, mail |

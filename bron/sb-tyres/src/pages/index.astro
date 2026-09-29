@@ -1,0 +1,476 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden, prijzen, prijsDatum, prijsNoot, aMerken, huisMerken, categorieen, loadIndex, speedIndex } from '../data/site';
+import maatFoto from '../assets/maat.jpg';
+import pand from '../assets/eigen01.jpg';
+import label from '../assets/eigen02.jpg';
+import msFoto from '../assets/eigen03.jpg';
+import montage from '../assets/montage.jpg';
+import velg from '../assets/velg.jpg';
+import stapel from '../assets/stapel.jpg';
+import profiel from '../assets/profiel.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// Bandenmaat: de uitleg komt uit hun pagina's "Banden technische info" en "Load/Speed index info".
+const voorbeeld = { breedte: '205', serie: '55', bouw: 'R', velg: '16', li: '91', si: 'V' };
+const delen = [
+  { id: 'breedte', naam: 'Bandbreedte', nr: 3, waarde: `${voorbeeld.breedte} mm`, tekst: 'De breedte van de band wordt in millimeters aangegeven. Bij de doorsnee personenautoband varieert de breedte van nominaal 125 mm tot ongeveer 335 mm, in stappen van 10 millimeter.' },
+  { id: 'serie', naam: 'Hoogte/breedte-verhouding', nr: 4, waarde: `${voorbeeld.serie}%`, tekst: 'De verhouding tussen de hoogte en de breedte van de banddoorsnee, in procenten. Een /50 betekent dat de bandhoogte half zo groot is als de bandbreedte. Hoe kleiner het getal, hoe kleiner de zijkant van de band en hoe sportiever hij lijkt.' },
+  { id: 'bouw', naam: 'Radiaalband', nr: 5, waarde: 'R', tekst: 'R betekent radiaal: de karkasdraden zijn radiaal geordend, de bouwwijze die tegenwoordig veel wordt toegepast. Bij een diagonaalband, bijvoorbeeld voor oldtimers, staat er een D of een streepje. Diagonaal- en radiaalbanden samen op één auto is wettelijk niet toegestaan.' },
+  { id: 'velg', naam: 'Velgdoorsnee', nr: 6, waarde: `${voorbeeld.velg} inch`, tekst: 'De doorsnee van de velg, diagonaal gemeten van velgrand naar velgrand, meestal in inches. De meest gangbare maten variëren tussen de 10 en 20 inch.' },
+  { id: 'li', naam: 'Load index (draagkracht)', nr: 7, waarde: `${loadIndex[91]} kg per band`, tekst: 'Elke LI-waarde staat voor een bepaalde belasting van de band bij een bepaalde bandenspanning. Uw banden moeten minimaal de LI-waarde uit het instructieboekje hebben. Een hogere waarde is uiteraard toegestaan. Staat er "Versterkt" of "Re-inforced" op, dan heeft de band extra draagvermogen.' },
+  { id: 'si', naam: 'Speed index (snelheidscategorie)', nr: 8, waarde: `max. ${speedIndex.V} km/u`, tekst: 'De categorie die de maximaal toelaatbare snelheid van de band aangeeft. Bij winter- en all-yearbanden moet de snelheidscategorie voldoen aan de eisen in het instructieboekje.' },
+];
+const voorbeelden = ['205/55 R16 91V', '195/70 R15C 104R', '215/45 R17 87W'];
+
+// "Banden technische info": de overige markeringen op de zijwand.
+const zijwand = [
+  { kop: 'EU-bandenlabel', tekst: 'Sinds 1 november 2012 hebben alle banden een bandenlabel met 3 indicaties: rolweerstand (dus brandstofverbruik en CO2-uitstoot), remweg op natte weg en afrolgeluid in decibel. Bandenlabel E/C/72 betekent rolweerstand E, remweg C en afrolgeluid 72 dB.' },
+  { kop: 'Productiedatum', tekst: 'De 4 cijfers van het DOT-nummer: de eerste twee zijn de productieweek, de laatste twee het productiejaar. 4013 is dus de 40e week van 2013. Bestaat het uit 3 cijfers, dan is de band ouder dan productiejaar 2000.' },
+  { kop: 'Slijtage-index (TWI)', tekst: 'Volg de pijl bij "TWI" op de zijkant: daar gaat het profiel niet tot op de basis. Is de band tot op de wettelijke 1,6 mm afgesleten, dan liggen deze plekken aan de oppervlakte. Zover zou u het niet moeten laten komen: onder de 3 mm neemt de grip duidelijk af, vooral bij natheid.' },
+  { kop: 'Looprichting', tekst: 'Staat er "Rotation", "Draairichting" of "Direction" op de zijkant, met een pijl? Houd bij de montage rekening met die loop- of draairichting.' },
+];
+---
+<Base
+  title="SB Tyres | Banden- en velgenspecialist in Putten"
+  description="Bandenservice SB Tyres, Hoge Eng Oost 9a in Putten (Gld). Zomer-, winter- en allseasonbanden, A-merken en complete velgensets. Wielenwissel vanaf € 40,- per 4. Werkplaats op afspraak."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: rubberzwart, grote kop, bewijzen als rustige rij. Rechts de bandenmaat groot in beeld, over de rand, met ons pand als inzet. -->
+    <section class="donker relative bg-rubber text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-14 lg:grid-cols-12 lg:gap-12 lg:pt-16 lg:pb-12">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-5 lg:col-start-8 lg:self-start lg:-mb-44">
+          <figure class="relative">
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[760px] lg:shadow-lg">
+              <Foto src={maatFoto} alt="Close-up van de zijwand van een band met de maat 205/55 R16 H en het sneeuwvloksymbool" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 460px, 100vw" class="object-[56%_50%]" />
+            </div>
+            <p class="absolute top-4 right-4 rounded-lg bg-geel px-4 py-3 text-rubber shadow-lg sm:top-6 sm:right-6">
+              <span class="kicker block">Wielenwissel vanaf</span>
+              <span class="mt-1 block font-display text-2xl leading-none font-extrabold whitespace-nowrap tabular-nums">€ 40,- <span class="text-base font-bold">per 4</span></span>
+            </p>
+          </figure>
+          <figure class="absolute -bottom-12 left-4 z-10 w-44 overflow-hidden rounded-xl bg-white p-1.5 shadow-lg sm:left-6 sm:w-56 lg:bottom-36 lg:-left-10 lg:w-[272px]">
+            <div class="aspect-[444/250] overflow-hidden rounded-lg"><Foto src={pand} alt="Ons pand aan de Hoge Eng Oost, met het SB Tyres-bord op de gevel en een auto voor de roldeur" widths={[444]} sizes="(min-width: 1024px) 260px, 212px" /></div>
+            <figcaption class="px-1.5 pt-1.5 pb-0.5 text-xs font-medium text-ink">{site.straat}, {site.plaats}</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-8 lg:order-1 lg:col-span-7 lg:pt-6">
+          <p class="kicker text-geel">{site.juridisch}, {site.plaatsLang}</p>
+          <h1 class="mt-4 text-4xl">Banden- en velgen&shy;specialist in Putten</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Al meer dan 25 jaar ervaring. Zomer-, winter- en allseasonbanden voor personenauto en lichte bestelwagens: alle bekende A-merken en complete velgensets, tegen een zeer scherpe prijs.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.wa} class="btn btn-geel"><Fragment set:html={wa} />Stuur Steven een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 text-sm sm:grid-cols-4">
+            <div><dt class="text-white/75">Google</dt><dd><strong class="font-display text-2xl font-bold">{site.google}</strong> <span class="whitespace-nowrap text-white/80">({site.reviews} reviews)</span></dd></div>
+            {tijden.map((t) => (
+              <div><dt class="text-white/75">{t.kort}</dt><dd class="font-display text-lg font-bold whitespace-nowrap tabular-nums">{t.tijd}</dd></div>
+            ))}
+          </dl>
+          <p class="mt-5 inline-flex items-center gap-2 text-sm text-white/85"><span class="h-2 w-2 flex-none rounded-full bg-geel" aria-hidden="true"></span>Werkplaats op afspraak.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wisselen: de prijzen van hun homepage, groot, met datum en voorbehoud. -->
+    <section id="wisselen" class="scroll-mt-20 pt-24 pb-16 lg:pt-44 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-oker">Werkplaats, op afspraak</p>
+          <h2 class="mt-3 text-3xl">Wielen of banden wisselen</h2>
+          <p class="mt-5 max-w-lg text-lg text-ink-soft">De werkplaats werkt op afspraak. Stuur Steven een WhatsApp of bel, dan plannen we uw wissel in.</p>
+          <ul class="mt-10 grid gap-4 sm:grid-cols-2">
+            {prijzen.map((p) => (
+              <li class="rounded-xl border border-line bg-white p-6 shadow-sm">
+                <h3 class="text-xl">{p.naam}</h3>
+                <p class="mt-4 text-sm text-ink-soft">vanaf</p>
+                <p class="font-display text-prijs leading-none font-extrabold tracking-[-0.03em] whitespace-nowrap tabular-nums">{p.bedrag}</p>
+                <p class="mt-2 font-display font-bold text-oker">{p.per}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-5 text-sm text-ink-soft">{prijsNoot} Stand <span class="whitespace-nowrap">{prijsDatum}</span>.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.wa} class="btn btn-zwart"><Fragment set:html={wa} />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+        </div>
+        <figure class="lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-full lg:min-h-[520px]"><Foto src={montage} alt="Twee handen in werkhandschoenen aan een band op een lichtmetalen velg, met de auto op de brug" sizes="(min-width: 1024px) 560px, 100vw" class="object-[60%_50%]" /></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Assortiment: soorten, merken, voorraad. -->
+    <section id="assortiment" class="scroll-mt-20 bg-kalk py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-oker">Banden</p>
+            <h2 class="mt-3 text-3xl">Zomer, winter of allseason</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5 lg:self-end">Voor personenauto en lichte bestelwagens. Alle bekende A-merken, onze huismerken en uiteraard andere merken, alles tegen een zeer scherpe prijs.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="flex flex-col rounded-xl bg-white p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <h3 class="text-lg">A-merken, onder andere</h3>
+            <ul class="mt-4 grid grid-cols-2 border-t border-line sm:grid-cols-3">
+              {aMerken.map((m) => <li class="border-b border-line py-3.5 pr-3 font-display text-xl font-bold tracking-[0.02em] uppercase">{m}</li>)}
+            </ul>
+            <h3 class="mt-8 text-lg">Onze huismerken</h3>
+            <ul class="mt-4 flex flex-wrap gap-3">
+              {huisMerken.map((m) => <li class="rounded-lg bg-rubber px-5 py-3 font-display text-xl font-bold tracking-[0.04em] text-geel uppercase">{m}</li>)}
+            </ul>
+            <div class="mt-8 border-t border-line pt-6 lg:mt-auto">
+              <h3 class="text-lg">In ons aanbod</h3>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {categorieen.map((c) => <li class="rounded-full border border-line bg-paper px-4 py-1.5 text-sm font-medium">{c}</li>)}
+              </ul>
+            </div>
+          </div>
+          <div class="grid gap-6 lg:col-span-5">
+            <figure class="overflow-hidden rounded-xl shadow-sm">
+              <div class="aspect-[16/9]"><Foto src={stapel} alt="Een grote stapel gebruikte autobanden, zwart-wit" sizes="(min-width: 1024px) 440px, 100vw" /></div>
+            </figure>
+            <div class="donker rounded-xl bg-rubber p-6 text-white sm:p-8">
+              <p class="kicker text-geel">Voorraad</p>
+              <p class="mt-3 font-display text-xl leading-snug font-bold">Bijna alle velgen en minimaal 2 banden per maat hebben wij op voorraad.</p>
+              <p class="mt-3 text-white/85">Staat uw velg of band er niet bij, dan kunnen wij deze binnen 24 uur bestellen.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Velgensets: groot beeld links, belofte rechts. -->
+    <section class="py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
+        <figure class="lg:col-span-7">
+          <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm"><Foto src={velg} alt="Een lichtmetalen velg met dunne spaken en een lage band, onder een glimmende zwarte auto" sizes="(min-width: 1024px) 660px, 100vw" class="object-[50%_50%]" /></div>
+        </figure>
+        <div class="lg:col-span-5">
+          <p class="kicker text-oker">Velgen</p>
+          <h2 class="mt-3 text-3xl">Complete velgensets, met banden naar keuze</h2>
+          <p class="mt-5 text-lg text-ink-soft">Tegen een concurrerende internetprijs, maar met de service en kennis van de professionele bandenservice.</p>
+          <ul class="mt-8 space-y-3 border-t border-line pt-6">
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-geel ring-2 ring-rubber" aria-hidden="true"></span><span>Compleet geleverd: met bouten of moeren en centreerringen voor uw auto.</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-geel ring-2 ring-rubber" aria-hidden="true"></span><span>Sportvelgen, reservewielen en banden voor de aanhangwagen.</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-geel ring-2 ring-rubber" aria-hidden="true"></span><span>Niet op voorraad? Binnen 24 uur besteld.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow: lees uw bandenmaat. Zonder JS: de zes delen als lijst, en het formulier als gewone velden. -->
+    <section id="bandenmaat" class="donker scroll-mt-20 bg-rubber py-16 text-white lg:py-24" data-maat>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-geel">Aflezen bandenmaat</p>
+            <h2 class="mt-3 text-3xl">Zo leest u uw bandenmaat</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5 lg:self-end">De opschriften op de zijkant van de band zijn wettelijk vastgelegd, in de Europese norm ECE-R 30. <span data-js hidden>Tik op een deel van de maat, of vul uw eigen maat in.</span></p>
+        </div>
+
+        <!-- De zijwand: decoratief; de knoppen eronder zijn de bediening. -->
+        <div class="relative mt-10 overflow-hidden rounded-xl bg-roet">
+          <svg viewBox="0 0 1000 430" preserveAspectRatio="xMidYMid slice" class="block h-44 w-full sm:h-auto" aria-hidden="true" data-band>
+            <defs>
+              <radialGradient id="velg" cx="50%" cy="100%" r="70%"><stop offset="0" stop-color="#8d949b" /><stop offset=".7" stop-color="#5d6268" /><stop offset="1" stop-color="#3a3e42" /></radialGradient>
+              <path id="boog" d="M 20 383 A 830 830 0 0 1 980 383" />
+              <path id="boog-klein" d="M 60 470 A 760 760 0 0 1 940 470" />
+            </defs>
+            <circle cx="500" cy="1060" r="1000" fill="#070808" />
+            <circle cx="500" cy="1060" r="992" fill="none" stroke="#1e2124" stroke-width="44" stroke-dasharray="22 16" />
+            <circle cx="500" cy="1060" r="962" fill="#141517" />
+            <circle cx="500" cy="1060" r="930" fill="none" stroke="#ffffff12" stroke-width="2" />
+            <circle cx="500" cy="1060" r="712" fill="none" stroke="#ffffff12" stroke-width="2" />
+            <circle cx="500" cy="1060" r="690" fill="url(#velg)" />
+            <circle cx="500" cy="1060" r="640" fill="none" stroke="#2b2e31" stroke-width="10" />
+            <text font-family="Oxanium Variable, sans-serif" font-weight="700" font-size="92" letter-spacing="2" text-anchor="middle" fill="#3a3d41" stroke="#000" stroke-width="1">
+              <textPath href="#boog" startOffset="50%"><tspan data-svg="breedte">205</tspan><tspan>/</tspan><tspan data-svg="serie">55</tspan><tspan dx="26" data-svg="bouw">R</tspan><tspan data-svg="velg">16</tspan><tspan dx="26" data-svg="li">91</tspan><tspan data-svg="si">V</tspan></textPath>
+            </text>
+            <text font-family="Oxanium Variable, sans-serif" font-weight="600" font-size="30" letter-spacing="6" text-anchor="middle" fill="#2c2f33">
+              <textPath href="#boog-klein" startOffset="50%">TUBELESS · DOT 4013 · TWI</textPath>
+            </text>
+          </svg>
+          <!-- De maat als knoppen, midden op de band. -->
+          <div class="relative -mt-6 flex justify-center px-3 pb-6 sm:-mt-16 sm:pb-8">
+          <div class="flex flex-wrap items-baseline justify-center gap-x-1 rounded-xl bg-rubber px-2 py-2 font-display text-maat tabular-nums shadow-lg ring-1 ring-white/10 sm:px-4" role="group" aria-label="Delen van de bandenmaat" data-knoppen>
+            <button type="button" class="deel" data-deel="breedte" aria-pressed="true">205</button><span class="text-white/60" aria-hidden="true">/</span><button type="button" class="deel" data-deel="serie" aria-pressed="false">55</button>
+            <span class="w-1 sm:w-4" aria-hidden="true"></span>
+            <button type="button" class="deel" data-deel="bouw" aria-pressed="false">R</button><button type="button" class="deel" data-deel="velg" aria-pressed="false">16</button>
+            <span class="w-1 sm:w-4" aria-hidden="true"></span>
+            <button type="button" class="deel" data-deel="li" aria-pressed="false">91</button><button type="button" class="deel" data-deel="si" aria-pressed="false">V</button>
+          </div>
+          </div>
+        </div>
+
+        <div class="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-12">
+          <!-- Uitleg van het gekozen deel. -->
+          <div class="lg:col-span-7" data-js hidden>
+            <div class="h-full rounded-xl bg-asfalt p-6 shadow-lg sm:p-8" aria-live="polite" data-uitleg>
+              <p class="kicker text-geel" data-u-naam>{delen[0].naam}</p>
+              <p class="mt-3 font-display text-3xl leading-none font-extrabold tabular-nums" data-u-waarde>{delen[0].waarde}</p>
+              <p class="mt-5 text-white/85" data-u-tekst>{delen[0].tekst}</p>
+              <p class="mt-3 text-white/85" data-u-extra></p>
+            </div>
+          </div>
+          <div class="lg:col-span-5" data-js hidden>
+            <form class="rounded-xl border border-white/15 p-6 sm:p-8" data-eigen>
+              <label for="m-eigen" class="font-display text-lg font-bold">Uw eigen maat</label>
+              <p class="mt-1 text-sm text-white/80" id="m-hint">Staat op de zijkant van uw band, bijvoorbeeld 205/55 R16 91V.</p>
+              <input id="m-eigen" name="maat" inputmode="text" autocomplete="off" spellcheck="false" aria-describedby="m-hint m-fout" value="205/55 R16 91V" class="mt-4 w-full rounded-lg border-2 border-white/30 bg-rubber px-4 py-3 font-display text-xl font-bold tracking-[0.04em] text-white uppercase tabular-nums focus-visible:border-geel" />
+              <p id="m-fout" class="mt-2 min-h-[1.5em] text-sm text-geel" aria-live="polite"></p>
+              <p class="mt-2 text-sm text-white/80">Voorbeelden van onze site:</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                {voorbeelden.map((v) => <button type="button" class="rounded-full border border-white/25 px-3.5 py-1.5 text-sm font-medium tabular-nums transition-colors hover:border-geel hover:text-geel" data-vb={v}>{v}</button>)}
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Zonder JavaScript: alle zes delen onder elkaar. -->
+        <ol class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-lijst>
+          {delen.map((d) => (
+            <li class="rounded-xl border border-white/15 p-5">
+              <p class="kicker text-geel">{d.naam}</p>
+              <p class="mt-2 font-display text-xl font-bold tabular-nums">{d.waarde}</p>
+              <p class="mt-2 text-sm text-white/80">{d.tekst}</p>
+            </li>
+          ))}
+        </ol>
+
+        <!-- Aanvraag via WhatsApp: bij het voorstel verstuurt dit niets. -->
+        <form class="mt-12 grid grid-cols-1 gap-8 rounded-xl bg-paper p-6 text-ink shadow-lg sm:p-8 lg:grid-cols-12" action="#" onsubmit="return false" data-aanvraag>
+          <div class="lg:col-span-7">
+            <h3 class="text-2xl">Stuur uw bandenmaat via WhatsApp</h3>
+            <p class="mt-2 text-ink-soft">Dan hoort u van Steven wat hij voor u heeft.</p>
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <div class="veld"><label for="a-maat">Bandenmaat</label><input id="a-maat" name="bandenmaat" value="205/55 R16 91V" autocomplete="off" class="tabular-nums uppercase" /></div>
+              <div class="veld"><label for="a-aantal">Aantal</label>
+                <select id="a-aantal" name="aantal"><option>1</option><option>2</option><option>3</option><option selected>4</option></select>
+              </div>
+              <fieldset class="veld sm:col-span-2">
+                <legend>Soort band</legend>
+                <div class="mt-2 grid grid-cols-3 gap-2">
+                  <label class="keuze"><input type="radio" class="sr-only" name="soort" value="zomerbanden" checked />Zomer</label>
+                  <label class="keuze"><input type="radio" class="sr-only" name="soort" value="winterbanden" />Winter</label>
+                  <label class="keuze"><input type="radio" class="sr-only" name="soort" value="allseasonbanden" />All-season</label>
+                </div>
+              </fieldset>
+              <fieldset class="veld sm:col-span-2">
+                <legend>Wat wilt u?</legend>
+                <div class="mt-2 grid grid-cols-2 gap-2">
+                  <label class="keuze"><input type="radio" class="sr-only" name="wat" value="wisselen" />Wisselen</label>
+                  <label class="keuze"><input type="radio" class="sr-only" name="wat" value="nieuw" checked />Nieuwe banden</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="flex flex-col lg:col-span-5">
+            <p class="kicker text-ink-soft">Uw bericht</p>
+            <div class="mt-3 rounded-xl rounded-tl-sm bg-white p-5 shadow-sm">
+              <p class="whitespace-pre-line" data-bericht aria-live="polite">Hallo Steven, ik zoek 4 zomerbanden in de maat 205/55 R16 91V.</p>
+            </div>
+            {site.voorstel ? (
+              <p class="mt-5 rounded-lg bg-kalk p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel of app <a href={site.telHref} class="font-semibold whitespace-nowrap tabular-nums underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold whitespace-nowrap underline">{site.mail}</a>.</p>
+            ) : (
+              <a href={site.wa} class="btn btn-zwart mt-5 self-start" data-verstuur><Fragment set:html={wa} />Verstuur via WhatsApp</a>
+            )}
+          </div>
+        </form>
+      </div>
+      <script type="application/json" id="maatdata" set:html={JSON.stringify({ delen, loadIndex, speedIndex, wa: site.wa })} />
+    </section>
+
+    <script>
+      // Bandenmaat: toont per deel de uitleg van hun eigen technische pagina's. Rekent alleen de tabellen na.
+      const sectie = document.querySelector<HTMLElement>('[data-maat]');
+      const data = JSON.parse(document.getElementById('maatdata')?.textContent || '{}');
+      if (sectie && data.delen) {
+        const $ = <T extends HTMLElement>(s: string) => sectie.querySelector<T>(s)!;
+        sectie.querySelectorAll<HTMLElement>('[data-js]').forEach((el) => (el.hidden = false));
+        $('[data-lijst]').hidden = true;
+        const knoppen = [...sectie.querySelectorAll<HTMLButtonElement>('[data-deel]')];
+        const svgDelen = [...sectie.querySelectorAll<SVGTSpanElement>('[data-svg]')];
+        const uNaam = $('[data-u-naam]'), uWaarde = $('[data-u-waarde]'), uTekst = $('[data-u-tekst]'), uExtra = $('[data-u-extra]');
+        const invoer = $<HTMLInputElement>('#m-eigen'), fout = $('#m-fout');
+        const aMaat = $<HTMLInputElement>('#a-maat');
+        const form = $<HTMLFormElement>('[data-aanvraag]');
+        const bericht = $('[data-bericht]');
+        const verstuur = sectie.querySelector<HTMLAnchorElement>('[data-verstuur]');
+
+        let maat = { breedte: '205', serie: '55', bouw: 'R', velg: '16', li: '91', si: 'V' } as Record<string, string>;
+        let actief = 'breedte';
+
+        const waarde = (id: string) => {
+          if (id === 'breedte') return `${maat.breedte} mm`;
+          if (id === 'serie') return `${maat.serie}%`;
+          if (id === 'bouw') return maat.bouw === 'ZR' ? 'ZR' : maat.bouw;
+          if (id === 'velg') return `${maat.velg.replace(/C$/i, '')} inch`;
+          if (id === 'li') { const kg = data.loadIndex[maat.li]; return maat.li ? (kg ? `${kg} kg per band` : `LI ${maat.li}`) : 'Niet ingevuld'; }
+          if (id === 'si') { const k = maat.bouw === 'ZR' && !maat.si ? data.speedIndex.ZR : data.speedIndex[maat.si]; return k ? `max. ${k} km/u` : (maat.si ? maat.si : 'Niet ingevuld'); }
+          return '';
+        };
+        const extra = (id: string) => {
+          if (id === 'serie') return `Bij ${maat.breedte}/${maat.serie} is de zijkant dus ongeveer ${Math.round((+maat.breedte * +maat.serie) / 100)} mm hoog.`;
+          if (id === 'li' && maat.li && !data.loadIndex[maat.li]) return 'Deze waarde staat niet in onze tabel (63 tot 112). Vraag het ons gerust.';
+          if (id === 'li' && maat.li) return `Load index ${maat.li} = ${data.loadIndex[maat.li]} kg.`;
+          if (id === 'si' && maat.bouw === 'ZR') return `ZR staat voor meer dan 240 km/u.${maat.si && data.speedIndex[maat.si] ? ` Speed index ${maat.si} = ${data.speedIndex[maat.si]} km/u.` : ''}`;
+          if (id === 'si' && maat.si && data.speedIndex[maat.si]) return `Speed index ${maat.si} = ${data.speedIndex[maat.si]} km/u.`;
+          return '';
+        };
+        const toon = () => {
+          const d = data.delen.find((x: { id: string }) => x.id === actief);
+          uNaam.textContent = d.naam;
+          uWaarde.textContent = waarde(actief);
+          uTekst.textContent = d.tekst;
+          uExtra.textContent = extra(actief);
+          knoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.deel === actief)));
+          svgDelen.forEach((t) => t.setAttribute('fill', t.dataset.svg === actief ? '#f5c518' : '#3a3d41'));
+        };
+        const zetMaat = () => {
+          const tekst: Record<string, string> = { ...maat, li: maat.li || '', si: maat.si || '' };
+          knoppen.forEach((k) => { const v = tekst[k.dataset.deel!]; k.textContent = v || '..'; });
+          svgDelen.forEach((t) => { t.textContent = tekst[t.dataset.svg!] || ''; });
+          toon();
+        };
+        knoppen.forEach((k) => k.addEventListener('click', () => { actief = k.dataset.deel!; toon(); }));
+        svgDelen.forEach((t) => t.addEventListener('click', () => { actief = t.dataset.svg!; toon(); }));
+        svgDelen.forEach((t) => ((t as unknown as HTMLElement).style.cursor = 'pointer'));
+
+        const lees = (s: string) => {
+          const m = s.toUpperCase().replace(/\s+/g, ' ').trim().match(/^(\d{3})\s?\/\s?(\d{2})\s?(ZR|R|D|-)\s?(\d{2}C?)\s*(?:-\s*)?(?:(\d{2,3})\s?([A-Z]{1,2})?)?$/);
+          if (!m) return null;
+          return { breedte: m[1], serie: m[2], bouw: m[3], velg: m[4], li: m[5] || '', si: m[6] || '' };
+        };
+        const verwerk = (s: string, bron: 'eigen' | 'aanvraag') => {
+          const r = lees(s);
+          if (!r) { if (bron === 'eigen') fout.textContent = s.trim() ? 'Deze maat herken ik niet. Schrijf hem zoals 205/55 R16 91V.' : ''; return; }
+          fout.textContent = '';
+          maat = r;
+          zetMaat();
+          const netjes = `${r.breedte}/${r.serie} ${r.bouw}${r.velg}${r.li ? ' ' + r.li : ''}${r.si}`;
+          if (bron === 'eigen') { aMaat.value = netjes; schrijf(); }
+        };
+        invoer.addEventListener('input', () => verwerk(invoer.value, 'eigen'));
+        $<HTMLFormElement>('[data-eigen]').addEventListener('submit', (e) => e.preventDefault());
+        sectie.querySelectorAll<HTMLButtonElement>('[data-vb]').forEach((b) => b.addEventListener('click', () => { invoer.value = b.dataset.vb!; verwerk(invoer.value, 'eigen'); }));
+
+        const schrijf = () => {
+          const f = new FormData(form);
+          const aantal = f.get('aantal'), soort = f.get('soort') as string, wat = f.get('wat');
+          const m = (f.get('bandenmaat') as string).trim().toUpperCase() || '(maat)';
+          const enkel = aantal === '1' ? soort.replace(/en$/, '') : soort;
+          const t = wat === 'wisselen'
+            ? `Hallo Steven, ik wil graag een afspraak om ${aantal === '1' ? 'mijn' : 'mijn ' + aantal} ${enkel} te laten wisselen. Maat ${m}.`
+            : `Hallo Steven, ik zoek ${aantal} ${enkel} in de maat ${m}.`;
+          bericht.textContent = t;
+          if (verstuur) verstuur.href = `${data.wa}?text=${encodeURIComponent(t)}`;
+        };
+        form.addEventListener('input', () => { schrijf(); if (document.activeElement === aMaat) verwerk(aMaat.value, 'aanvraag'); });
+        form.addEventListener('change', schrijf);
+        schrijf();
+        toon();
+      }
+    </script>
+
+    <!-- Meer op de zijwand: de rest van hun technische pagina. -->
+    <section class="py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-oker">Banden technische info</p>
+          <h2 class="mt-3 text-3xl">Wat er nog meer op uw band staat</h2>
+          <figure class="mt-8 w-full max-w-[300px]">
+            <div class="overflow-hidden rounded-xl border border-line bg-white p-3 shadow-sm"><Foto src={label} alt="Het EU-bandenlabel met de schalen voor rolweerstand en remweg op nat wegdek, en 72 dB afrolgeluid" widths={[300]} sizes="280px" class="!h-auto" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Het EU-bandenlabel.</figcaption>
+          </figure>
+        </div>
+        <ol class="grid gap-x-10 border-t border-line sm:grid-cols-2 lg:col-span-8">
+          {zijwand.map((z, i) => (
+            <li class="border-b border-line py-7">
+              <p class="font-display text-sm font-bold text-oker tabular-nums">0{i + 1}</p>
+              <h3 class="mt-2 text-xl">{z.kop}</h3>
+              <p class="mt-3 text-ink-soft">{z.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Winterbanden: donker, met profiel als achtergrond en hun eigen M+S-foto. -->
+    <section id="winter" class="donker relative scroll-mt-20 overflow-hidden bg-rubber py-16 text-white lg:py-24">
+      <div class="absolute inset-y-0 right-0 hidden w-1/2 opacity-60 lg:block" aria-hidden="true">
+        <Foto src={profiel} alt="" widths={[800, 1150]} sizes="50vw" class="object-left" />
+        <div class="absolute inset-0 bg-linear-to-r from-rubber to-transparent"></div>
+      </div>
+      <div class="wrap relative grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-geel">Winterbanden info</p>
+          <h2 class="mt-3 text-3xl">Winterbanden verplicht?</h2>
+          <p class="mt-6 text-lg text-white/85">In Duitsland moet uw auto bij winterse omstandigheden een winteruitrusting hebben. Dat geldt niet alleen voor Duitsers, maar ook voor buitenlanders. Daaronder vallen onder andere winterbanden of allseasonbanden.</p>
+          <p class="mt-4 text-white/85">Wie met zomerbanden bij sneeuw of ijs rijdt, kan in Duitsland beboet worden. Bovendien kan het leiden tot aansprakelijkheid bij ongevallen.</p>
+          <dl class="mt-10 grid gap-4 sm:grid-cols-2">
+            <div class="rounded-xl bg-roet p-5">
+              <dt class="kicker text-geel">Symbool</dt>
+              <dd class="mt-2 font-display text-xl font-bold">M+S én three peak</dd>
+              <dd class="mt-1 text-sm text-white/80">Verplicht op winter- en allseasonbanden.</dd>
+            </div>
+            <div class="rounded-xl bg-roet p-5">
+              <dt class="kicker text-geel">Profiel</dt>
+              <dd class="mt-2 font-display text-xl font-bold">Minimaal 4 mm</dd>
+              <dd class="mt-1 text-sm text-white/80">Anders gelden ze als zomerbanden.</dd>
+            </div>
+          </dl>
+          <a href={site.wa} class="btn btn-geel mt-10"><Fragment set:html={wa} />Winterbanden aanvragen</a>
+        </div>
+        <figure class="self-end lg:col-span-5 lg:col-start-8">
+          <div class="max-w-[560px] overflow-hidden rounded-xl shadow-lg"><Foto src={msFoto} alt="Het three peak-symbool met sneeuwvlok en de letters M+S in reliëf op de zijwand van een winterband" widths={[560]} sizes="(min-width: 1024px) 460px, 100vw" class="!h-auto" /></div>
+          <figcaption class="mt-3 text-sm text-white/80">Three peak-symbool en M+S op de zijwand.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Contact: signaalgeel, zoals hun gevelbord. -->
+    <section id="contact" class="scroll-mt-20 bg-geel py-16 text-rubber lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker">Contact</p>
+          <h2 class="mt-3 text-3xl">Werkplaats op afspraak. App of bel Steven.</h2>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.wa} class="btn btn-zwart"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <p class="mt-6"><a href={`mailto:${site.mail}`} class="inline-flex items-center gap-2 font-semibold underline decoration-2 underline-offset-4"><span class="h-5 w-5 flex-none"><Fragment set:html={mail} /></span><span class="break-all">{site.mail}</span></a></p>
+          <address class="mt-8 text-lg not-italic">{site.juridisch}<br />{site.straat}<br />{site.postcode} {site.plaatsLang}</address>
+          <a href={site.maps} rel="noopener" class="mt-4 inline-flex items-center gap-2 font-semibold underline decoration-2 underline-offset-4">Route plannen <span class="h-5 w-5 flex-none"><Fragment set:html={pijl} /></span></a>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rounded-xl bg-rubber p-6 text-white shadow-lg sm:p-8">
+            <h3 class="text-xl">Openingstijden</h3>
+            <dl class="mt-4 border-t border-white/20">
+              {tijden.map((t) => (
+                <div class="flex justify-between gap-4 border-b border-white/20 py-3"><dt>{t.dag}</dt><dd class="font-semibold whitespace-nowrap tabular-nums">{t.tijd}</dd></div>
+              ))}
+            </dl>
+            <p class="mt-6 flex items-center gap-2 text-sm text-white/85"><span class="h-2 w-2 flex-none rounded-full bg-geel" aria-hidden="true"></span>Werkplaats op afspraak.</p>
+          </div>
+          <p class="mt-5 text-sm">{prijsNoot} Stand <span class="whitespace-nowrap">{prijsDatum}</span>.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
