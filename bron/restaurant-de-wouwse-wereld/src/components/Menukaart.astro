@@ -1,0 +1,73 @@
+---
+// Menukaart met tabs per gang. Zonder JS: alle gangen onder elkaar, gewoon leesbaar.
+import { kaart } from '../data/site';
+---
+<div id="kaartapp" class="min-w-0">
+  <div role="tablist" aria-label="Kies een gang" class="tabs -mx-1 hidden gap-2 overflow-x-auto px-1 py-1 sm:flex-wrap sm:overflow-visible" data-js-only>
+    {kaart.map((g, i) => (
+      <button type="button" role="tab" id={`tab-${g.id}`} aria-controls={`gang-${g.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="tab">
+        {g.titel}
+      </button>
+    ))}
+  </div>
+
+  <div class="mt-5 grid gap-5">
+    {kaart.map((g) => (
+      <section id={`gang-${g.id}`} role="tabpanel" aria-labelledby={`tab-${g.id}`} class="paneel rounded-xl bg-white p-5 shadow-sm ring-1 ring-lijn sm:p-8" data-paneel>
+        <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-lijn pb-4">
+          <h3 class="text-xl sm:text-2xl">{g.titel}</h3>
+          <span class="eyebrow shrink-0 text-inkt-zacht">{g.items.length} {g.id === 'daghap' ? 'keuzes' : 'gerechten'}</span>
+        </div>
+        <ul>
+          {g.items.map((it) => (
+            <li class="grid grid-cols-[1fr_auto] items-baseline gap-x-4 border-b border-dashed border-lijn py-4 last:border-b-0">
+              <span>
+                <span class="block text-lg font-semibold leading-snug text-inkt">{it.naam}</span>
+                {it.noot && <span class="mt-1 block text-sm text-inkt-zacht">{it.noot}</span>}
+              </span>
+              <span class="whitespace-nowrap text-right font-display text-xl font-semibold tabular-nums text-koper">
+                {it.pp === 'voor' && <span class="mr-1 font-body text-sm font-semibold text-inkt-zacht">p.p.</span>}€ {it.prijs}{it.pp === 'na' && <span class="ml-1 font-body text-sm font-semibold text-inkt-zacht">p.p.</span>}
+              </span>
+            </li>
+          ))}
+        </ul>
+        {g.id === 'daghap' && (
+          <p class="mt-4 rounded-lg bg-creme px-4 py-3 text-sm text-inkt">Voor groepen vanaf 9 personen is het alleen mogelijk om à la carte te dineren, met een maximum van 5 verschillende gerechten per gang.</p>
+        )}
+      </section>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tab { border-radius: var(--radius-full); padding: .6rem 1.05rem; font-weight: 700; font-size: var(--text-sm); color: var(--color-inkt); background: var(--color-white); box-shadow: inset 0 0 0 1.5px var(--color-lijn); transition: background-color .25s ease, color .25s ease, box-shadow .25s ease; white-space: nowrap; }
+  .tab:hover { box-shadow: inset 0 0 0 1.5px var(--color-koper); color: var(--color-koper); }
+  .tab[aria-selected='true'] { background: var(--color-nacht); color: var(--color-creme); box-shadow: none; }
+  .tab:focus-visible { outline-color: var(--color-koper); }
+</style>
+
+<script>
+  const app = document.getElementById('kaartapp')!;
+  const lijst = app.querySelector<HTMLElement>('[data-js-only]')!;
+  const tabs = [...app.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const panelen = [...app.querySelectorAll<HTMLElement>('[data-paneel]')];
+  lijst.classList.remove('hidden');
+  lijst.classList.add('flex');
+  function kies(i: number, focus = false) {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(j === i)); t.tabIndex = j === i ? 0 : -1; });
+    panelen.forEach((p, j) => { p.hidden = j !== i; });
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => kies(i));
+    t.addEventListener('keydown', (e) => {
+      const n = tabs.length;
+      if (e.key === 'ArrowRight') { e.preventDefault(); kies((i + 1) % n, true); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); kies((i - 1 + n) % n, true); }
+      if (e.key === 'Home') { e.preventDefault(); kies(0, true); }
+      if (e.key === 'End') { e.preventDefault(); kies(n - 1, true); }
+    });
+  });
+  document.querySelectorAll<HTMLAnchorElement>('[data-gang]').forEach((a) => a.addEventListener('click', () => kies(Number(a.dataset.gang))));
+  kies(0);
+</script>

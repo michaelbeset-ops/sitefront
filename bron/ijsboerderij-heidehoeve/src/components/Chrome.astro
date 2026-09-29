@@ -1,0 +1,47 @@
+---
+import { site, url } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const thuis = Astro.url.pathname.replace(/\/$/, '') === url('').replace(/\/$/, '');
+const anker = (id: string) => (thuis ? `#${id}` : `${url('')}#${id}`);
+const menu = [
+  ['smaken', 'Smaken'],
+  ['zakelijk', 'Zakelijk'],
+  ['ijscokar', 'IJscokar'],
+  ['boerderij', 'Boerderij'],
+  ['contact', 'Openingstijden'],
+];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-melk/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          {menu.map(([id, naam]) => <li><a href={anker(id)} class="no-underline underline-offset-4 transition-colors hover:text-stal hover:underline">{naam}</a></li>)}
+        </ul>
+      </nav>
+      <a href={site.telHref} class="btn btn-gras !px-4 !py-2 text-sm">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>
+        <span class="sm:hidden">Bel</span><span class="hidden whitespace-nowrap tabular-nums sm:inline">{site.tel}</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-weide-diep py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo licht />
+        <p class="mt-5">Fam. Pijs<br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK {site.kvk}</p>
+      </div>
+      <p class="md:col-span-4">
+        <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a><br />
+        <a href={site.facebook} rel="noopener" class="underline underline-offset-2">Facebook</a>
+      </p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Bij oplevering vervangen we ze door eigen foto's. Het logo is nagemaakt naar het logo op de huidige website.</p>}
+  </footer>
+)}

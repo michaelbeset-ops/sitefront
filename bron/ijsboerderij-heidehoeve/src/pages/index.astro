@@ -1,0 +1,545 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, soorten, verpakkingen, tijdenSeptember, tijdenWinter } from '../data/site';
+import hero from '../assets/hero.jpg';
+import koeien from '../assets/koeien.jpg';
+import hoorntje from '../assets/hoorntje.jpg';
+import bakjes from '../assets/bakjes.jpg';
+import bolletjes from '../assets/bolletjes.jpg';
+
+const totaal = soorten.reduce((n, s) => n + s.smaken.length, 0);
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const bak = [22, 34, 46, 62, 80]; // hoogte van de getekende verpakkingen, klein naar groot
+const kinderen = ['Boerderijdieren', 'Skelterbaan', 'Schommel', 'Trampoline', 'Speelhuisje'];
+const tijdlijn = [
+  { jaar: 'Het begin', kop: 'De boerderij van Anja’s ouders', tekst: 'Wij hebben onze boerderij overgenomen van de ouders van Anja.' },
+  { jaar: '1999', kop: 'Een eigen ijsbereidingsruimte', tekst: 'Op ons bedrijf is een hygiënische ijsbereidingsruimte gebouwd, waarna wij zijn gestart met het bereiden van ijs.' },
+  { jaar: 'Ruim 35 jaar', kop: 'Zorgen voor de koeien', tekst: 'Met veel plezier hebben wij ruim 35 jaar voor onze koeien gezorgd. Van het grootbrengen van kalfjes tot en met het melken van de koeien.' },
+  { jaar: 'Eind 2025', kop: 'De koeien verhuizen', tekst: 'Wij hebben de keuze gemaakt om te stoppen met het melken van koeien. Onze koeien zijn verhuisd naar de andere kant van Etten-Leur, naar een broer en neef van Kees. Daar lopen ze in de zomer lekker buiten en in de winter hebben zij een comfortabele stal.' },
+  { jaar: 'Nu', kop: 'Melk van dichtbij', tekst: 'Wij halen bij hen de melk waarvan wij ons roomijs bereiden. Hierdoor kunt u nog steeds genieten van een heerlijk ambachtelijk ijsje.' },
+];
+---
+<Base
+  title="IJsboerderij Heidehoeve | Ambachtelijk boerderij-ijs in Etten-Leur"
+  description="Ambachtelijk boerderij-ijs, door ons zelf gemaakt. Roomijs, sorbet-ijs, yoghurt-ijs en diabetes-ijs, levering aan horeca, winkels en particulieren, en ijscokarren te huur. Hoge Bremberg 33, Etten-Leur."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: weiland op volle breedte, groene laag, kop links, "Nu open?"-kaart rechts die over de rand valt. -->
+    <section class="donker relative isolate bg-weide text-white">
+      <div class="absolute inset-0 -z-10 overflow-hidden">
+        <Foto src={hero} alt="Drie zwartbonte koeien lopen door een groen weiland onder een Hollandse lucht" hero sizes="100vw" widths={[640, 1000, 1400, 2000]} class="object-[60%_center]" />
+        <div class="absolute inset-0 bg-weide/75 lg:bg-transparent lg:bg-[linear-gradient(90deg,#1d3a24f2_0%,#1d3a24d9_42%,#1d3a2459_72%,#1d3a2426_100%)]"></div>
+      </div>
+      <div class="wrap grid gap-10 pt-14 pb-12 sm:pt-20 lg:grid-cols-12 lg:pt-24 lg:pb-28">
+        <div class="lg:col-span-7">
+          <p class="kicker text-hooi">Etten-Leur, vlakbij de Vloeiweide</p>
+          <h1 class="mt-5 text-4xl">Ambachtelijk boerderij-ijs. Door ons zelf gemaakt.</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/90">IJs dat staat voor kwaliteit en ambachtelijk is gemaakt. Roomijs van verse melk, sorbet van vers fruit, in ongeveer 30 smaken.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#smaken" class="btn btn-stal">Bekijk de smaken <Fragment set:html={pijl} /></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <p class="mt-8 flex items-center gap-3 text-sm text-white/90">
+            <span class="font-display text-2xl font-bold text-white">{site.google}</span>
+            <span aria-hidden="true" class="flex gap-0.5 text-hooi">{[1, 2, 3, 4, 5].map(() => <svg viewBox="0 0 20 20" class="h-4 w-4" fill="currentColor"><path d="m10 1.8 2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.7l-5.1 2.8L6 11.8l-4.3-4 5.8-.7z"/></svg>)}</span>
+            <span>op Google, {site.reviews} reviews</span>
+          </p>
+        </div>
+
+        <!-- Wow 3: live "Nu open?" op hun echte openingstijden. Zonder JS: gewoon de tijden. -->
+        <aside aria-labelledby="open-kop" class="self-end rounded-xl bg-melk p-6 text-ink shadow-lg sm:p-7 lg:col-span-5 lg:col-start-8 lg:-mb-52 lg:max-w-[26rem] lg:justify-self-end" data-open>
+          <div class="flex items-center justify-between gap-4">
+            <h2 id="open-kop" class="font-display text-xl">Nu open?</h2>
+            <span class="kicker text-ink-soft" data-open-klok></span>
+          </div>
+          <p class="mt-3 flex items-start gap-3 font-display text-lg font-bold leading-snug" aria-live="polite">
+            <span data-open-stip class="mt-2 h-3 w-3 flex-none rounded-full bg-logo-grijs" aria-hidden="true"></span>
+            <span data-open-tekst>Wij zijn geopend op woensdag, vrijdag, zaterdag en zondag.</span>
+          </p>
+          <p data-open-sub class="mt-1 pl-6 text-sm text-ink-soft"></p>
+          <div class="mt-5 border-t border-line pt-4" data-periode="sep">
+            <p class="kicker text-ink-soft">September 2026</p>
+            <dl class="mt-2 text-sm">
+              {tijdenSeptember.map((t) => <div class="flex justify-between gap-4 rounded-md px-2 py-1" data-dag={t.d}><dt>{t.dag}</dt><dd class="whitespace-nowrap tabular-nums font-semibold">{t.tijd}</dd></div>)}
+            </dl>
+          </div>
+          <div class="mt-4 border-t border-line pt-4" data-periode="winter">
+            <p class="kicker text-ink-soft">Oktober t/m maart</p>
+            <dl class="mt-2 text-sm">
+              {tijdenWinter.map((t) => <div class="flex justify-between gap-4 rounded-md px-2 py-1" data-dag={t.d}><dt>{t.dag}</dt><dd class="whitespace-nowrap tabular-nums font-semibold">{t.tijd}</dd></div>)}
+            </dl>
+          </div>
+          <a href="#contact" class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gras underline decoration-2 underline-offset-4 transition-colors hover:text-stal">Alle openingstijden en route <Fragment set:html={pijl.replace('aria-hidden', 'class="h-4 w-4" aria-hidden')} /></a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- Welkom: het briefje van Kees en Anja naast de feiten. -->
+    <section class="bg-room py-14 lg:py-20">
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-stal">Welkom op de ijsboerderij</p>
+          <p class="mt-4 font-display text-xl leading-snug sm:text-2xl">U vindt ons bedrijf tegen de rand van Etten-Leur, vlakbij de Vloeiweide. Wij produceren volgens de HACCP en leveren aan horeca, winkels en particulieren.</p>
+          <p class="mt-5 text-ink-soft">Wij nodigen u uit om een keer een kijkje te komen nemen op ons (rolstoeltoegankelijk) bedrijf.</p>
+          <p class="mt-5 font-display text-lg italic">Groetjes, Kees en Anja Pijs</p>
+        </div>
+        <dl class="grid grid-cols-2 gap-px self-end overflow-hidden rounded-xl bg-line shadow-sm lg:col-span-6 lg:mt-40">
+          <div class="bg-melk p-5"><dt class="text-sm text-ink-soft">Eigen ijsbereiding sinds</dt><dd class="mt-1 font-display text-3xl font-bold tabular-nums">1999</dd></div>
+          <div class="bg-melk p-5"><dt class="text-sm text-ink-soft">Verschillende smaken</dt><dd class="mt-1 font-display text-3xl font-bold">± 30</dd></div>
+          <div class="bg-melk p-5"><dt class="text-sm text-ink-soft">Wij produceren volgens</dt><dd class="mt-1 font-display text-3xl font-bold">HACCP</dd></div>
+          <div class="bg-melk p-5"><dt class="text-sm text-ink-soft">Ons bedrijf is</dt><dd class="mt-1 font-display text-xl font-bold leading-tight [overflow-wrap:anywhere]">rolstoel&shy;toegankelijk</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- IJsbereiding: foto links, de vier soorten als genummerde lijst, verpakkingen als getekende reeks. -->
+    <section id="ijs" class="scroll-mt-20 pt-16 lg:pt-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <figure class="relative lg:col-span-5">
+          <div class="aspect-[4/5] overflow-hidden rounded-xl shadow-sm"><Foto src={hoorntje} alt="Een hand houdt een wafelhoorntje met een bolletje lichtbruin roomijs vast" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+          <figcaption class="absolute bottom-4 left-4 rounded-lg bg-weide/90 px-3 py-1.5 text-sm text-white">Hoorntje, bakje of ijscoupe</figcaption>
+        </figure>
+        <div class="lg:col-span-7">
+          <p class="kicker text-stal">IJsbereiding</p>
+          <h2 class="mt-3 text-3xl">Wij maken diverse soorten ijs</h2>
+          <p class="mt-5 text-lg text-ink-soft">U vindt bij ons een keuze uit roomijs, sorbetijs, yoghurt ijs en suikervrij ijs.</p>
+          <ol class="mt-8 border-t border-line">
+            {soorten.map((s, i) => (
+              <li class="grid gap-1 border-b border-line py-5 sm:grid-cols-[2.5rem_11rem_1fr] sm:gap-5">
+                <span class="font-display text-sm font-bold tabular-nums text-stal">0{i + 1}</span>
+                <h3 class="text-xl">{s.naam}</h3>
+                <p class="text-ink-soft">{s.tekst || `Drie smaken: yoghurt, yoghurt-aardbeien en yoghurt-amarenen.`}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      <div class="wrap mt-16">
+        <div class="grid gap-8 rounded-xl bg-room p-6 shadow-sm sm:p-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-4">
+            <h3 class="text-2xl">Van ijsbeker tot 5 literbak</h3>
+            <p class="mt-3 text-ink-soft">Er zijn ongeveer 30 verschillende smaken verkrijgbaar. De ijsverpakking varieert van 1 persoonsijsbekers tot 5&nbsp;literbakken.</p>
+          </div>
+          <ul class="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-5 lg:col-span-8">
+            {verpakkingen.map((v, i) => (
+              <li class="flex flex-col items-center justify-end gap-2 text-center">
+                <svg viewBox="0 0 60 84" class="w-12 sm:w-14" aria-hidden="true"><rect x={30 - (14 + i * 3.5)} y={84 - bak[i]} width={28 + i * 7} height={bak[i]} rx="4" class={i === 4 ? 'fill-stal' : 'fill-gras'} /><rect x={30 - (15 + i * 3.5)} y={84 - bak[i] - 5} width={30 + i * 7} height="7" rx="3" class="fill-weide" /></svg>
+                <span class="text-sm font-semibold leading-tight [overflow-wrap:anywhere]">{v}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bolletjes-strook: valt over de rand van het donkere smakenvlak. -->
+      <div class="relative z-10 mt-16 lg:mt-20">
+        <div class="wrap">
+          <figure class="relative -mb-24 overflow-hidden rounded-xl shadow-lg sm:-mb-32">
+            <div class="aspect-[16/7] sm:aspect-[16/5]"><Foto src={bolletjes} alt="Vijf bekertjes met elk een bolletje ijs in een andere kleur, van boven gefotografeerd" sizes="(min-width: 1216px) 1152px, 100vw" class="object-[center_45%]" /></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow 1: doorzoekbaar smakenassortiment met filters. Zonder JS: alle smaken per soort. -->
+    <section id="smaken" class="donker scroll-mt-20 bg-weide pt-40 pb-16 text-white sm:pt-48 lg:pb-24" data-smaken>
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-hooi">IJssmaken</p>
+          <h2 class="mt-3 text-3xl">Een kleine greep uit ons assortiment</h2>
+          <p class="mt-5 text-white/85">Uiteraard kunnen wij voor u op verzoek ook een speciale smaak ijs maken. Het ijs is leverbaar in verschillende verpakkingen.</p>
+
+          <form hidden data-zoek class="mt-8 space-y-6" role="search" aria-label="Smaken zoeken">
+            <div>
+              <label for="zoek" class="text-sm font-semibold">Zoek een smaak</label>
+              <input id="zoek" type="search" autocomplete="off" placeholder="Bijvoorbeeld mango of stroopwafel" class="mt-2 w-full rounded-lg bg-melk px-4 py-3 text-ink placeholder:text-ink-soft focus-visible:outline-hooi" />
+            </div>
+            <fieldset>
+              <legend class="text-sm font-semibold">Soort ijs</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <label class="chip"><input type="radio" name="soort" value="alle" class="sr-only" checked />Alle <span class="n">{totaal}</span></label>
+                {soorten.map((s) => <label class="chip"><input type="radio" name="soort" value={s.id} class="sr-only" />{s.naam.replace('-ijs', '')} {s.smaken.length > 0 && <span class="n">{s.smaken.length}</span>}</label>)}
+              </div>
+            </fieldset>
+            <p data-telling aria-live="polite" class="text-sm text-white/85"></p>
+          </form>
+
+          <div hidden data-lijstje class="mt-8 rounded-xl bg-melk p-5 text-ink shadow-sm">
+            <p class="kicker text-stal">Mijn lijstje</p>
+            <p data-lijstje-tekst aria-live="polite" class="mt-2 font-semibold">Tik op een smaak om hem op uw lijstje te zetten.</p>
+            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <a href="#zakelijk" class="font-semibold text-stal underline decoration-2 underline-offset-4">Vraag aan voor uw zaak</a>
+              <button type="button" data-wis class="cursor-pointer font-semibold text-ink-soft underline underline-offset-4 transition-colors hover:text-ink">Lijstje wissen</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:col-span-8">
+          {soorten.map((s) => (
+            <div data-groep={s.id} class={s.id === 'room' ? 'sm:row-span-3' : ''}>
+              <div class="flex items-baseline justify-between gap-4 border-b-2 border-hooi pb-2">
+                <h3 class="text-xl">{s.naam}</h3>
+                {s.smaken.length > 0 && <span class="text-sm tabular-nums text-white/80">{s.smaken.length} smaken</span>}
+              </div>
+              {s.smaken.length > 0 ? (
+                <ul class="mt-1">
+                  {s.smaken.map((m) => <li data-smaak={m.toLowerCase()}><span class="smaak">{m}</span></li>)}
+                </ul>
+              ) : (
+                <p class="mt-3 text-white/85">{s.tekst} Vraag ons naar de smaken.</p>
+              )}
+            </div>
+          ))}
+          <p data-niets hidden class="rounded-xl border border-white/25 p-5 text-white/90 sm:col-span-2">Staat uw smaak er niet bij? Op verzoek kunnen wij ook een speciale smaak ijs voor u maken. Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Smakenfilter: zoeken + soort, en een lijstje dat meegaat naar het aanvraagformulier.
+      const sectie = document.querySelector<HTMLElement>('[data-smaken]');
+      if (sectie) {
+        const form = sectie.querySelector<HTMLFormElement>('[data-zoek]')!;
+        const zoek = form.querySelector<HTMLInputElement>('#zoek')!;
+        const telling = sectie.querySelector<HTMLElement>('[data-telling]')!;
+        const niets = sectie.querySelector<HTMLElement>('[data-niets]')!;
+        const lijstje = sectie.querySelector<HTMLElement>('[data-lijstje]')!;
+        const lijstjeTekst = sectie.querySelector<HTMLElement>('[data-lijstje-tekst]')!;
+        const groepen = [...sectie.querySelectorAll<HTMLElement>('[data-groep]')];
+        const gekozen: string[] = [];
+        form.hidden = false;
+        lijstje.hidden = false;
+        form.addEventListener('submit', (e) => e.preventDefault());
+
+        // Elke smaak wordt een knop (zonder JS blijft het gewone tekst).
+        sectie.querySelectorAll<HTMLElement>('li[data-smaak] > .smaak').forEach((span) => {
+          const knop = document.createElement('button');
+          knop.type = 'button';
+          knop.className = 'smaak';
+          knop.setAttribute('aria-pressed', 'false');
+          knop.innerHTML = `<span>${span.textContent}</span><span class="plus" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 1.5v9M1.5 6h9"/></svg></span>`;
+          knop.addEventListener('click', () => {
+            const naam = span.textContent!;
+            const aan = knop.getAttribute('aria-pressed') !== 'true';
+            knop.setAttribute('aria-pressed', String(aan));
+            if (aan) gekozen.push(naam); else gekozen.splice(gekozen.indexOf(naam), 1);
+            bijwerkenLijstje();
+          });
+          span.replaceWith(knop);
+        });
+
+        const bijwerkenLijstje = () => {
+          lijstjeTekst.textContent = gekozen.length
+            ? `${gekozen.length} ${gekozen.length === 1 ? 'smaak' : 'smaken'}: ${gekozen.join(', ')}`
+            : 'Tik op een smaak om hem op uw lijstje te zetten.';
+          document.dispatchEvent(new CustomEvent('lijstje', { detail: [...gekozen] }));
+        };
+        sectie.querySelector('[data-wis]')!.addEventListener('click', () => {
+          gekozen.length = 0;
+          sectie.querySelectorAll('button.smaak').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          bijwerkenLijstje();
+        });
+
+        const filter = () => {
+          const q = zoek.value.trim().toLowerCase();
+          const soort = form.querySelector<HTMLInputElement>('input[name=soort]:checked')!.value;
+          let n = 0;
+          groepen.forEach((g) => {
+            const passendeSoort = soort === 'alle' || g.dataset.groep === soort;
+            const items = [...g.querySelectorAll<HTMLElement>('li[data-smaak]')];
+            let zicht = 0;
+            items.forEach((li) => {
+              const ok = passendeSoort && (!q || li.dataset.smaak!.includes(q));
+              li.hidden = !ok;
+              if (ok) zicht++;
+            });
+            n += zicht;
+            g.hidden = !passendeSoort || (items.length > 0 && zicht === 0) || (items.length === 0 && !!q);
+            g.classList.toggle('sm:row-span-3', !g.hidden && soort === 'alle' && g.dataset.groep === 'room');
+          });
+          niets.hidden = !(q && n === 0);
+          telling.textContent = soort === 'diabetes' && !q ? 'Diabetes-ijs wordt gezoet met stevia.' : `${n} ${n === 1 ? 'smaak' : 'smaken'} gevonden.`;
+        };
+        form.addEventListener('input', filter);
+        form.addEventListener('change', filter);
+        filter();
+      }
+    </script>
+
+    <!-- Terras en kinderen: grote foto met kaart erover, lijst speelmogelijkheden. -->
+    <section id="terras" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12">
+        <div class="relative lg:col-span-7">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={bakjes} alt="Bolletjes ijs in schaaltjes met lepeltjes op een donkere houten tafel" sizes="(min-width: 1024px) 660px, 100vw" /></div>
+          <div class="relative -mt-12 ml-4 max-w-sm rounded-xl bg-stal p-5 text-white shadow-md sm:absolute sm:right-4 sm:-bottom-8 sm:mt-0 sm:ml-0 lg:-right-8">
+            <p class="kicker text-white/90">In de zomermaanden</p>
+            <p class="mt-2 font-display text-lg leading-snug">Een schepvitrine met een ruime keuze aan smaken ijs.</p>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:pl-6">
+          <p class="kicker text-stal">Terras</p>
+          <h2 class="mt-3 text-3xl">Een ijsje op ons terras</h2>
+          <p class="mt-5 text-lg">Ook is het mogelijk om op ons terras te genieten van een lekker ijsje. U kunt kiezen uit een hoorntje, bakje of een lekkere ijscoupe.</p>
+          <p class="mt-4 text-ink-soft">Uiteraard is er ook koffie/thee en fris verkrijgbaar op ons terras.</p>
+
+          <div class="mt-10 border-t border-line pt-8">
+            <h3 class="text-xl">Voor de kinderen</h3>
+            <p class="mt-3 text-ink-soft">Op ons bedrijf kunnen kinderen lekker buiten spelen op de boerderij. Kortom, er is genoeg om een tijd lang plezier te hebben.</p>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {kinderen.map((k) => <li class="rounded-full bg-room px-4 py-2 text-sm font-semibold">{k}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow 2: zakelijk leveren met aanvraagformulier. Bij het voorstel verstuurt het niets. -->
+    <section id="zakelijk" class="donker scroll-mt-20 bg-stal py-16 text-white lg:py-24" data-aanvraag>
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-white/90">Zakelijk leveren</p>
+          <h2 class="mt-3 text-3xl">Boerderij-ijs voor horeca en winkels</h2>
+          <p class="mt-5 text-lg text-white/90">Wij leveren ons ijs ook aan horeca in de omgeving, en aan winkels en particulieren.</p>
+          <ul class="mt-8 border-t border-white/25">
+            <li class="flex gap-4 border-b border-white/25 py-4"><span class="font-display font-bold tabular-nums text-hooi">01</span><span>Wij produceren volgens de HACCP, in onze eigen hygiënische ijsbereidingsruimte.</span></li>
+            <li class="flex gap-4 border-b border-white/25 py-4"><span class="font-display font-bold tabular-nums text-hooi">02</span><span>Roomijs, sorbet-ijs, yoghurt-ijs en diabetes-ijs, in ongeveer 30 smaken.</span></li>
+            <li class="flex gap-4 border-b border-white/25 py-4"><span class="font-display font-bold tabular-nums text-hooi">03</span><span>Verpakkingen van 1 persoonsijsbekers tot 5&nbsp;literbakken.</span></li>
+            <li class="flex gap-4 border-b border-white/25 py-4"><span class="font-display font-bold tabular-nums text-hooi">04</span><span>Op verzoek maken wij ook een speciale smaak ijs.</span></li>
+          </ul>
+          <p class="mt-8 text-white/90">Liever direct overleggen? Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold underline decoration-2 underline-offset-4">{site.tel}</a>.</p>
+        </div>
+
+        <form class="rounded-xl bg-stal-diep p-5 shadow-lg sm:p-8 lg:col-span-7" data-aanvraag-form>
+          <h3 class="text-2xl">Aanvraag voor uw zaak</h3>
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            <fieldset class="veld sm:col-span-2">
+              <legend>Soort zaak</legend>
+              <div class="mt-1 flex flex-wrap gap-2">
+                {['Horeca', 'Winkel', 'Evenement', 'Anders'].map((z, i) => <label class="vak"><input type="radio" name="zaak" value={z} class="sr-only" checked={i === 0} />{z}</label>)}
+              </div>
+            </fieldset>
+            <div class="veld"><label for="f-naam">Naam van uw zaak</label><input id="f-naam" name="bedrijf" autocomplete="organization" class="invoer" /></div>
+            <div class="veld"><label for="f-contact">Contactpersoon</label><input id="f-contact" name="naam" autocomplete="name" class="invoer" /></div>
+            <div class="veld"><label for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" class="invoer" /></div>
+            <div class="veld"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" autocomplete="email" class="invoer" /></div>
+            <fieldset class="veld sm:col-span-2">
+              <legend>Verpakking</legend>
+              <div class="mt-1 flex flex-wrap gap-2">
+                {verpakkingen.map((v) => <label class="vak"><input type="checkbox" name="verpakking" value={v} class="sr-only" />{v}</label>)}
+              </div>
+            </fieldset>
+            <div class="veld sm:col-span-2">
+              <label for="f-smaken">Smaken en wensen</label>
+              <textarea id="f-smaken" name="smaken" rows="3" class="invoer" data-smaken-veld></textarea>
+              <p class="text-sm text-white/85">Tip: zet bij de smaken hierboven een lijstje klaar, dan komt het hier vanzelf te staan.</p>
+            </div>
+          </div>
+          <p data-samenvatting aria-live="polite" class="mt-6 rounded-lg bg-white/10 p-4 text-sm text-white/90" hidden></p>
+          {site.voorstel ? (
+            <p class="mt-6 rounded-lg bg-melk p-4 text-sm text-ink">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="break-all font-semibold underline">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-melk mt-6">Aanvraag versturen</button>
+          )}
+        </form>
+      </div>
+    </section>
+
+    <script>
+      // Aanvraag: vult de smaken uit het lijstje in en toont een korte samenvatting. Verstuurt niets.
+      const form = document.querySelector<HTMLFormElement>('[data-aanvraag-form]');
+      if (form) {
+        const veld = form.querySelector<HTMLTextAreaElement>('[data-smaken-veld]')!;
+        const samen = form.querySelector<HTMLElement>('[data-samenvatting]')!;
+        let vorige = '';
+        document.addEventListener('lijstje', (e) => {
+          const lijst = (e as CustomEvent<string[]>).detail.join(', ');
+          if (!veld.value.trim() || veld.value === vorige) veld.value = lijst;
+          vorige = lijst;
+          bijwerken();
+        });
+        const bijwerken = () => {
+          const d = new FormData(form);
+          const delen = [
+            `${d.get('zaak')}${d.get('bedrijf') ? `: ${d.get('bedrijf')}` : ''}`,
+            (d.getAll('verpakking') as string[]).join(', '),
+            String(d.get('smaken') || '').trim(),
+          ].filter(Boolean);
+          samen.hidden = false;
+          samen.textContent = `Uw aanvraag: ${delen.join(' | ')}`;
+        };
+        form.addEventListener('input', bijwerken);
+        form.addEventListener('change', bijwerken);
+        form.addEventListener('submit', (e) => e.preventDefault());
+      }
+    </script>
+
+    <!-- IJscokar en ijscobox: twee kaarten met de stappen uit hun eigen uitleg. -->
+    <section id="ijscokar" class="scroll-mt-20 bg-room py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-stal">Feesten, markten en evenementen</p>
+            <h2 class="mt-3 text-3xl">Een ijscokar op uw feest</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Heeft u een feest of organiseert u een markt of evenement, denkt u dan eens aan een ijscokar. Wij hebben meerdere ijscokarren te huur.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-12">
+          <article class="rounded-xl bg-melk p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl">IJscokar</h3>
+              <span class="rounded-full bg-gras px-3 py-1 text-xs font-bold text-white">Wij brengen en halen</span>
+            </div>
+            <ol class="mt-6 grid gap-6 sm:grid-cols-3">
+              <li><span class="font-display text-groot font-bold leading-none text-stal">1</span><p class="mt-3">U kiest welke smaken ijs u in de ijscokar wilt hebben.</p></li>
+              <li><span class="font-display text-groot font-bold leading-none text-stal">2</span><p class="mt-3">In overleg spreken we af hoeveel ijsbakken u nodig heeft.</p></li>
+              <li><span class="font-display text-groot font-bold leading-none text-stal">3</span><p class="mt-3">Wij leveren de ijscokar en halen hem ook weer op.</p></li>
+            </ol>
+            <p class="mt-8 border-t border-line pt-5 text-sm text-ink-soft">Bij de ijscokar worden ijskoekjes en schepmateriaal geleverd. Afhankelijk van afstand en tijd rekenen wij hiervoor een vergoeding.</p>
+          </article>
+          <article class="donker rounded-xl bg-weide p-6 text-white shadow-sm sm:p-8 lg:col-span-5">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl">IJscobox</h3>
+              <span class="rounded-full bg-hooi px-3 py-1 text-xs font-bold text-weide">Kleinere gezelschappen</span>
+            </div>
+            <ul class="mt-6 border-t border-white/20">
+              <li class="border-b border-white/20 py-3">U reserveert de ijscobox bij ons.</li>
+              <li class="border-b border-white/20 py-3">We spreken af welke smaken ijs en hoeveel ijs u nodig heeft voor het gezelschap.</li>
+              <li class="border-b border-white/20 py-3">U haalt de ijscobox zelf bij ons op en brengt hem schoon terug. Hiervoor wordt borg gerekend.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a href={site.telHref} class="btn btn-stal"><Fragment set:html={tel} /><span>Reserveer via <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          <a href={`mailto:${site.mail}?subject=IJscokar`} class="btn btn-line text-weide"><Fragment set:html={mail} />Mail ons</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Boerderij: grote foto en het verhaal als tijdlijn. -->
+    <section id="boerderij" class="donker scroll-mt-20 bg-weide py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-hooi">Boerderij</p>
+          <h2 class="mt-3 text-3xl">Van de koe tot het bolletje</h2>
+          <figure class="relative mt-8">
+            <div class="aspect-[4/5] overflow-hidden rounded-xl shadow-lg lg:aspect-[4/5]"><Foto src={koeien} alt="Zwartbonte koeien in een groen weiland, met een boerderij op de achtergrond" sizes="(min-width: 1024px) 440px, 100vw" class="object-[42%_center]" /></div>
+            <figcaption class="absolute bottom-4 left-4 rounded-lg bg-melk/95 px-3 py-1.5 text-sm text-ink">Sfeerbeeld</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-6 lg:col-start-7 lg:pt-16">
+          {tijdlijn.map((t, i) => (
+            <li class={`relative grid gap-2 border-l-2 border-klaver/60 pl-6 sm:grid-cols-[8.5rem_1fr] sm:gap-6 ${i < tijdlijn.length - 1 ? 'pb-10' : ''}`}>
+              <span class="absolute top-1.5 -left-[7px] h-3 w-3 rounded-full bg-hooi" aria-hidden="true"></span>
+              <p class={`font-display text-xl font-bold leading-tight tabular-nums ${i === tijdlijn.length - 1 ? 'text-hooi' : 'text-klaver'}`}>{t.jaar}</p>
+              <div><h3 class="text-xl">{t.kop}</h3><p class="mt-2 text-white/85">{t.tekst}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact: adres en nummers links, openingstijden als kaart rechts. -->
+    <section id="contact" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-stal">Contact en route</p>
+          <h2 class="mt-3 text-3xl">Kom een kijkje nemen</h2>
+          <address class="mt-8 text-xl not-italic leading-snug">Fam. Pijs<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <p class="mt-2 text-ink-soft">Tegen de rand van Etten-Leur, vlakbij de Vloeiweide. Ons bedrijf is rolstoeltoegankelijk.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-gras"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href={site.maps} rel="noopener" class="btn btn-line text-weide">Route plannen <Fragment set:html={pijl} /></a>
+          </div>
+          <dl class="mt-10 border-t border-line">
+            <div class="flex flex-wrap justify-between gap-x-4 border-b border-line py-3"><dt class="text-ink-soft">Telefoon</dt><dd><a href={site.telHref} class="whitespace-nowrap tabular-nums font-semibold underline decoration-gras underline-offset-4">{site.tel}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-4 border-b border-line py-3"><dt class="text-ink-soft">Kees</dt><dd><a href={site.keesHref} class="whitespace-nowrap tabular-nums font-semibold underline decoration-gras underline-offset-4">{site.kees}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-4 border-b border-line py-3"><dt class="text-ink-soft">Anja</dt><dd><a href={site.anjaHref} class="whitespace-nowrap tabular-nums font-semibold underline decoration-gras underline-offset-4">{site.anja}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-4 border-b border-line py-3"><dt class="text-ink-soft">E-mail</dt><dd class="min-w-0"><a href={`mailto:${site.mail}`} class="break-all font-semibold underline decoration-gras underline-offset-4">{site.mail}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-4 border-b border-line py-3"><dt class="text-ink-soft">Facebook</dt><dd><a href={site.facebook} rel="noopener" class="font-semibold underline decoration-gras underline-offset-4">ijsboerderijheidehoeve</a></dd></div>
+          </dl>
+        </div>
+
+        <div class="donker self-start rounded-xl bg-weide p-6 text-white shadow-sm sm:p-8 lg:col-span-5 lg:col-start-8" data-tijden>
+          <h3 class="text-2xl">Openingstijden</h3>
+          <p class="mt-3 text-white/85">Heeft u hier vragen over of wilt u op een ander moment langskomen, dan kunt u altijd contact met ons opnemen.</p>
+          <p class="kicker mt-8 text-hooi">September 2026</p>
+          <dl class="mt-2 border-t border-white/20">
+            {tijdenSeptember.map((t) => <div class="flex justify-between gap-4 border-b border-white/20 px-2 py-3" data-dag={t.d} data-periode-rij="sep"><dt>{t.dag}</dt><dd class="whitespace-nowrap tabular-nums font-semibold">{t.tijd}</dd></div>)}
+          </dl>
+          <p class="kicker mt-8 text-hooi">Oktober t/m maart</p>
+          <dl class="mt-2 border-t border-white/20">
+            {tijdenWinter.map((t) => <div class="flex justify-between gap-4 border-b border-white/20 px-2 py-3" data-dag={t.d} data-periode-rij="winter"><dt>{t.dag}</dt><dd class="whitespace-nowrap tabular-nums font-semibold">{t.tijd}</dd></div>)}
+          </dl>
+          <p class="mt-8 text-sm text-white/85">Van april t/m augustus hanteren wij ruimere openingstijden. Deze vermelden wij ter zijner tijd op de website.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  // "Nu open?": rekent in Nederlandse tijd met de openingstijden van hun eigen site.
+  type Blok = { d: number; van: number; tot: number };
+  const SEP: Blok[] = [ { d: 3, van: 780, tot: 1020 }, { d: 5, van: 780, tot: 1020 }, { d: 6, van: 660, tot: 1020 }, { d: 0, van: 780, tot: 1020 } ];
+  const WINTER: Blok[] = [ { d: 6, van: 780, tot: 1020 } ];
+  const dagen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+  const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+  const periode = (jaar: number, maand: number): 'sep' | 'winter' | null =>
+    maand === 9 && jaar === 2026 ? 'sep' : maand >= 10 || maand <= 3 ? 'winter' : null;
+  const uur = (m: number) => `${Math.floor(m / 60)}.${String(m % 60).padStart(2, '0')}`;
+
+  const kaart = document.querySelector<HTMLElement>('[data-open]');
+  if (kaart) {
+    const delen = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date()).map((p) => [p.type, p.value]));
+    const nu = new Date(Date.UTC(+delen.year, +delen.month - 1, +delen.day));
+    const min = +delen.hour * 60 + +delen.minute;
+    const tekst = kaart.querySelector<HTMLElement>('[data-open-tekst]')!;
+    const sub = kaart.querySelector<HTMLElement>('[data-open-sub]')!;
+    const stip = kaart.querySelector<HTMLElement>('[data-open-stip]')!;
+    kaart.querySelector<HTMLElement>('[data-open-klok]')!.textContent = `${dagen[nu.getUTCDay()]} ${uur(min)}`;
+
+    const blokOp = (d: Date) => {
+      const p = periode(d.getUTCFullYear(), d.getUTCMonth() + 1);
+      return { p, b: p ? (p === 'sep' ? SEP : WINTER).find((x) => x.d === d.getUTCDay()) : undefined };
+    };
+    const vandaag = blokOp(nu);
+
+    // Huidige periode en dag markeren, in de kaart en in het contactblok.
+    if (vandaag.p) {
+      document.querySelectorAll<HTMLElement>(`[data-periode="${vandaag.p === 'sep' ? 'winter' : 'sep'}"]`).forEach((el) => el.classList.add('text-ink-soft'));
+      document.querySelectorAll<HTMLElement>(`[data-periode="${vandaag.p}"] [data-dag="${nu.getUTCDay()}"], [data-periode-rij="${vandaag.p}"][data-dag="${nu.getUTCDay()}"]`).forEach((el) => el.classList.add('vandaag', 'font-bold'));
+    }
+
+    if (!vandaag.p) {
+      tekst.textContent = 'Van april t/m augustus zijn we ruimer open.';
+      sub.textContent = 'Bel even voor de actuele tijden.';
+    } else if (vandaag.b && min >= vandaag.b.van && min < vandaag.b.tot) {
+      stip.className = stip.className.replace('bg-logo-grijs', 'bg-logo-groen');
+      tekst.textContent = `Nu open, tot ${uur(vandaag.b.tot)} uur`;
+      sub.textContent = 'Kom gerust langs.';
+    } else if (vandaag.b && min < vandaag.b.van) {
+      stip.className = stip.className.replace('bg-logo-grijs', 'bg-hooi');
+      tekst.textContent = `Vandaag open vanaf ${uur(vandaag.b.van)} uur`;
+      sub.textContent = `Tot ${uur(vandaag.b.tot)} uur.`;
+    } else {
+      stip.className = stip.className.replace('bg-logo-grijs', 'bg-logo-rood');
+      tekst.textContent = 'Nu gesloten';
+      let gevonden = '';
+      for (let i = 1; i <= 21 && !gevonden; i++) {
+        const d = new Date(nu.getTime() + i * 864e5);
+        const v = blokOp(d);
+        if (!v.p) { gevonden = 'Vanaf april ruimere tijden, die volgen op de website.'; break; }
+        if (v.b) gevonden = `Weer open ${i === 1 ? 'morgen' : `op ${dagen[d.getUTCDay()]} ${d.getUTCDate()} ${maanden[d.getUTCMonth()]}`}, vanaf ${uur(v.b.van)} uur.`;
+      }
+      sub.textContent = gevonden;
+    }
+  }
+</script>

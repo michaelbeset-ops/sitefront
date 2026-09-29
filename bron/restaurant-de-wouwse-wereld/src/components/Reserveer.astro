@@ -1,0 +1,84 @@
+---
+// Reserveringsverzoek. De Wouwse Wereld reserveert alleen telefonisch of per mail, dus dit formulier
+// controleert de datum en tijd en zet het verzoek klaar als e-mail. Bij het voorstel wordt niets verstuurd.
+import { site } from '../data/site';
+const veld = 'mt-1.5 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 text-inkt shadow-sm transition-colors focus:border-koper';
+---
+<form id="reserveer" class="licht rounded-2xl bg-creme p-5 text-inkt shadow-xl sm:p-8" novalidate>
+  <p class="eyebrow text-koper">Reserveringsverzoek</p>
+  <h3 class="mt-2 text-2xl">Wanneer wilt u komen?</h3>
+  <div class="mt-6 grid gap-4 sm:grid-cols-2">
+    <label class="block text-sm font-semibold">Datum
+      <input type="date" name="datum" required class={veld} />
+    </label>
+    <label class="block text-sm font-semibold">Tijd <span class="font-normal text-inkt-zacht">(vanaf 18.00 uur)</span>
+      <input type="time" name="tijd" min="18:00" step="900" value="18:00" required class={veld} />
+    </label>
+    <label class="block text-sm font-semibold">Aantal personen
+      <input type="number" name="personen" min="1" max="60" value="2" inputmode="numeric" required class={veld} />
+    </label>
+    <label class="block text-sm font-semibold">Uw naam
+      <input type="text" name="naam" autocomplete="name" class={veld} />
+    </label>
+    <label class="flex items-start gap-3 rounded-lg bg-white px-3.5 py-3 text-sm shadow-sm ring-1 ring-lijn sm:col-span-2">
+      <input type="checkbox" name="tapas" class="mt-1 h-4 w-4 accent-koper" />
+      <span><strong>Tapas Grande</strong> (€ 45,00 p.p.). Serveren wij alleen op reservering vooraf en per tafel.</span>
+    </label>
+  </div>
+
+  <div aria-live="polite" class="mt-5 min-h-[3rem] rounded-lg border-l-4 border-koper bg-papier px-4 py-3 text-sm" data-uitkomst>
+    Kies een datum. Maandag en dinsdag gesloten, woensdag t/m zondag geopend vanaf 18.00 uur.
+  </div>
+
+  {site.voorstel && (
+    <p class="mt-5 text-sm text-inkt-zacht">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="whitespace-nowrap font-semibold text-koper underline underline-offset-2">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="break-all font-semibold text-koper underline underline-offset-2">{site.mail}</a>.</p>
+  )}
+  <div class="mt-5 flex flex-wrap gap-3">
+    <a href={site.telHref} class="btn btn-koper"><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+    <a href={`mailto:${site.mail}?subject=Reservering`} class="btn btn-lijn text-inkt hover:!bg-nacht hover:!text-creme hover:!shadow-none" data-mail>Zet klaar als e-mail</a>
+  </div>
+</form>
+
+<script>
+  import { vanYmd, isOpen, opVakantie, dagNaam, nuInWouw, OPEN_DAGEN } from '../scripts/open';
+  const f = document.getElementById('reserveer') as HTMLFormElement;
+  const uit = f.querySelector<HTMLElement>('[data-uitkomst]')!;
+  const mail = f.querySelector<HTMLAnchorElement>('[data-mail]')!;
+  const adres = mail.href.split('?')[0];
+  const vandaag = nuInWouw().dag.ymd;
+  const datum = f.elements.namedItem('datum') as HTMLInputElement;
+  datum.min = vandaag;
+
+  function check() {
+    const d = datum.value;
+    const tijd = (f.elements.namedItem('tijd') as HTMLInputElement).value;
+    const pers = Number((f.elements.namedItem('personen') as HTMLInputElement).value) || 0;
+    const naam = (f.elements.namedItem('naam') as HTMLInputElement).value.trim();
+    const tapas = (f.elements.namedItem('tapas') as HTMLInputElement).checked;
+    const regels: string[] = [];
+    let goed = false;
+    if (!d) regels.push('Kies een datum. Maandag en dinsdag gesloten, woensdag t/m zondag geopend vanaf 18.00 uur.');
+    else if (d < vandaag) regels.push('Die datum is al voorbij.');
+    else {
+      const dag = vanYmd(d);
+      if (opVakantie(d)) regels.push(`Op ${dagNaam(dag)} zijn wij met vakantie (vakantiesluiting 12 september t/m 4 oktober).`);
+      else if (!OPEN_DAGEN.includes(dag.wd)) regels.push(`Op ${dagNaam(dag)} zijn wij gesloten. Maandag en dinsdag gesloten.`);
+      else if (tijd && tijd < '18:00') regels.push(`Op ${dagNaam(dag)} zijn wij geopend vanaf 18.00 uur. Kies een tijd vanaf 18.00.`);
+      else { goed = isOpen(dag); regels.push(`${dagNaam(dag).replace(/^./, (c) => c.toUpperCase())} om ${tijd.replace(':', '.')} uur, ${pers} ${pers === 1 ? 'persoon' : 'personen'}: wij zijn dan geopend. Bel of mail om te reserveren.`); }
+    }
+    if (pers >= 9) regels.push('Voor groepen vanaf 9 personen is het alleen mogelijk om à la carte te dineren, met een maximum van 5 verschillende gerechten per gang.');
+    uit.textContent = regels.join(' ');
+    uit.dataset.goed = String(goed);
+    const body = [
+      'Graag reserveer ik een tafel.',
+      d ? `Datum: ${dagNaam(vanYmd(d))}` : '',
+      `Tijd: ${tijd.replace(':', '.')} uur`,
+      `Aantal personen: ${pers}`,
+      tapas ? 'Graag met Tapas Grande.' : '',
+      naam ? `Naam: ${naam}` : '',
+    ].filter(Boolean).join('\n');
+    mail.href = `${adres}?subject=${encodeURIComponent('Reservering')}&body=${encodeURIComponent(body)}`;
+  }
+  f.addEventListener('input', check);
+  f.addEventListener('submit', (e) => e.preventDefault());
+</script>

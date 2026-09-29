@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "@fontsource-variable/recursive";
+@import "@fontsource-variable/heebo";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Bos en mos rond Oisterwijk, het warme eikenhout van hun welkomstbord, en licht linnen. */
+  --color-bos: #1d3527;       /* hero, faciliteiten, contact: wit 13:1 */
+  --color-mos: #2f5234;       /* knoppen met witte tekst: 8.8:1 */
+  --color-ink: #1b2418;
+  --color-ink-soft: #4f5a49;  /* op linnen 6.4:1 */
+  --color-linnen: #f5f0e4;
+  --color-linnen-2: #ebe3d1;
+  --color-hout: #8a5a1c;      /* donker hout: tekst op linnen 5.2:1, wit erop 5.9:1 */
+  --color-oker: #e0b066;      /* alleen op bos: 6.6:1 */
+  --color-varen: #c9d6a8;     /* lichtgroen, alleen op bos */
+  --color-line: #1b241822;
+  --color-white: #ffffff;
+
+  --font-display: "Recursive Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Heebo Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.4rem;
+  --text-2xl: 1.9rem;
+  --text-3xl: clamp(2rem, 4vw + 0.6rem, 3.25rem);
+  --text-4xl: clamp(2.35rem, 5.6vw + 0.4rem, 4.6rem);
+  --text-getal: clamp(2.6rem, 5vw + 0.6rem, 4.25rem);
+
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #1b24181f, 0 1px 1px #1b241812;
+  --shadow-lg: 0 18px 44px -16px #0f1f1566;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: var(--color-linnen); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.65; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 780; letter-spacing: -0.03em; line-height: 1.03; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-mos); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-oker); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; font-family: var(--font-display); font-weight: 700; padding: .9rem 1.35rem; border-radius: var(--radius-xl); text-decoration: none; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 1.15em; height: 1.15em; flex: none; }
+  .btn-mos { background: var(--color-mos); color: var(--color-white); }
+  .btn-mos:hover { background: var(--color-bos); }
+  .btn-oker { background: var(--color-oker); color: var(--color-bos); }
+  .btn-oker:hover { background: var(--color-white); }
+  .btn-line { box-shadow: inset 0 0 0 2px currentColor; }
+  .btn-line:hover { background: var(--color-white); color: var(--color-bos); box-shadow: none; }
+  .btn-line-licht { box-shadow: inset 0 0 0 2px var(--color-mos); color: var(--color-mos); }
+  .btn-line-licht:hover { background: var(--color-mos); color: var(--color-white); box-shadow: none; }
+  .kicker { font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+
+  /* Prijscalculator */
+  .keuze { display: inline-flex; align-items: center; gap: .5rem; cursor: pointer; border-radius: var(--radius-full); background: var(--color-linnen); padding: .6rem 1rem; font-weight: 600; font-size: var(--text-sm); line-height: 1.3; box-shadow: inset 0 0 0 1.5px #1b241840; transition: background-color .15s ease, color .15s ease, box-shadow .15s ease; }
+  .keuze:hover { box-shadow: inset 0 0 0 2px var(--color-mos); }
+  .keuze:has(input:checked) { background: var(--color-mos); color: var(--color-white); box-shadow: none; }
+  .keuze:has(input:focus-visible) { outline: 3px solid var(--color-mos); outline-offset: 3px; }
+  .keuze .bol { width: 1.1rem; height: 1.1rem; flex: none; border-radius: 999px; box-shadow: inset 0 0 0 1.5px currentColor; display: grid; place-items: center; }
+  .keuze .bol svg { width: .7rem; height: .7rem; opacity: 0; }
+  .keuze:has(input:checked) .bol { background: var(--color-oker); color: var(--color-bos); box-shadow: none; }
+  .keuze:has(input:checked) .bol svg { opacity: 1; }
+  .teller { display: inline-flex; align-items: center; border-radius: var(--radius-xl); background: var(--color-linnen); box-shadow: inset 0 0 0 1.5px #1b241840; }
+  .teller button { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; color: var(--color-mos); border-radius: var(--radius-xl); transition: background-color .15s ease; cursor: pointer; }
+  .teller button:hover { background: var(--color-linnen-2); }
+  .teller button:disabled { color: #1b241866; cursor: not-allowed; background: transparent; }
+  .teller output { min-width: 2.5rem; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: var(--text-lg); font-variant-numeric: tabular-nums; }
+}

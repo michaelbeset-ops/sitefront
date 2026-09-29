@@ -1,0 +1,40 @@
+---
+// Live "Vandaag open?"-status. Zonder JS: de vaste openingstijden.
+---
+<style>
+  .status[data-status='open'] .stip { animation: gloed 2.4s ease-in-out infinite; }
+  .status[data-status='dicht'] .stip, .status[data-status='vakantie'] .stip { background: var(--color-creme); opacity: .55; }
+  @keyframes gloed { 50% { box-shadow: 0 0 0 5px #e9b25c33; } }
+</style>
+<div class="status rounded-xl border border-lijn-licht bg-nacht-2 p-5 shadow-sm" data-status="basis">
+  <p class="eyebrow flex items-center gap-2 text-kaars-zacht"><span class="stip h-2 w-2 rounded-full bg-kaars" aria-hidden="true"></span><span data-kort>Openingstijden</span></p>
+  <div aria-live="polite">
+    <p class="mt-2 font-display text-xl font-semibold leading-snug text-creme" data-tekst>Woensdag t/m zondag geopend vanaf 18.00 uur.</p>
+    <p class="mt-1 text-sm text-creme/80" data-verder>Maandag en dinsdag gesloten.</p>
+  </div>
+</div>
+
+<script is:inline>
+  // Direct na de status uitgevoerd (geen verspringing). Zelfde regels als src/scripts/open.ts.
+  (function () {
+    var OPEN = [3, 4, 5, 6, 0], VAN = '2026-09-12', TOT = '2026-10-04';
+    var DAG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    var MND = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var ymd = p.year + '-' + p.month + '-' + p.day;
+    function dt(s) { var a = s.split('-').map(Number); return new Date(Date.UTC(a[0], a[1] - 1, a[2])); }
+    function iso(d) { return d.toISOString().slice(0, 10); }
+    function open(s) { return OPEN.indexOf(dt(s).getUTCDay()) > -1 && !(s >= VAN && s <= TOT); }
+    function volgende(s) { var d = dt(s); for (var i = 0; i < 60; i++) { d.setUTCDate(d.getUTCDate() + 1); if (open(iso(d))) break; } return DAG[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MND[d.getUTCMonth()]; }
+    var wd = dt(ymd).getUTCDay(), r;
+    if (ymd >= VAN && ymd <= TOT) { var v = volgende(TOT); r = ['vakantie', 'Met vakantie', 'Wij zijn met vakantie tot en met 4 oktober.', v.charAt(0).toUpperCase() + v.slice(1) + ' weer geopend vanaf 18.00 uur.']; }
+    else if (OPEN.indexOf(wd) < 0) r = ['dicht', 'Vandaag gesloten', 'Maandag en dinsdag gesloten.', 'Weer geopend op ' + volgende(ymd) + ', vanaf 18.00 uur.'];
+    else r = ['open', 'Vandaag geopend', 'Vandaag geopend vanaf 18.00 uur.', 'Reserveren kan telefonisch of per mail.'];
+    var el = document.querySelector('.status');
+    el.dataset.status = r[0];
+    el.querySelector('[data-kort]').textContent = r[1];
+    el.querySelector('[data-tekst]').textContent = r[2];
+    el.querySelector('[data-verder]').textContent = r[3];
+  })();
+</script>

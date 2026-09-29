@@ -1,0 +1,470 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden, verzekeraars } from '../data/site';
+import heroFoto from '../assets/hero-spuiten.jpg';
+import pand from '../assets/eigen02.jpg';
+import uitdeuken from '../assets/uitdeuken.jpg';
+import lak from '../assets/lak.jpg';
+import spuitcabine from '../assets/eigen04.jpg';
+import schuren from '../assets/eigen09.jpg';
+import bumper from '../assets/eigen07.jpg';
+import monteur from '../assets/eigen05.jpg';
+import bus from '../assets/eigen06.jpg';
+import kantoor from '../assets/eigen01.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// Schadeherstel: alles uit hun pagina's schadeherstel, spotrepair, ruitschade, uitdeuken en home.
+const herstel = [
+  { naam: 'Spotrepair', tekst: 'Kleine beschadiging? Uw deukje wordt op de plaats zelf hersteld, zonder dat er een compleet deel gespoten hoeft te worden. Dat kost aanzienlijk minder tijd en dus minder geld.' },
+  { naam: 'Kunststofherstel', tekst: 'Bumper beschadigd? Met een kunststofreparatie hoeft er geen dure, nieuwe bumper op. Dat scheelt in de kosten en is beter voor het milieu. Ook kunststoflassen en koplampreparatie.' },
+  { naam: 'Uitdeuken zonder spuiten', tekst: 'Voor kleine deukjes door parkeer-, transport- of hagelschade, ter grootte van een 2 euromuntstuk. Vaak kunnen ook grotere deuken succesvol hersteld worden.' },
+  { naam: 'Ruitschade', tekst: 'Sterretje niet groter dan een euro? Onze ruitenspecialist vult het op met hars, zodat het niet verder scheurt. Dat duurt ongeveer 30 minuten, maak vooraf een afspraak. Bij een grote barst vervangen we de ruit: dat kost 1 dag.' },
+  { naam: 'Grote schade', tekst: 'Ook als uw auto grotere schade heeft, kunnen wij u van dienst zijn. Kom eens langs met uw auto, dan kijken we op welke manier wij u kunnen helpen.' },
+  { naam: 'Ruit-, airco- en bandenservice', tekst: 'Verder leveren wij ook ruit-, airco- en bandenservice.' },
+];
+
+const werkplaats = [
+  { src: spuitcabine, alt: 'Een spuiter in beschermend pak en met kap spuit een bumper in onze spuitcabine', bij: 'In de spuitcabine' },
+  { src: schuren, alt: 'Een medewerker schuurt een zwart gespoten onderdeel met een schuurmachine', bij: 'Schuren, voor het spuiten' },
+  { src: bumper, alt: 'Twee handen in werkhandschoenen op een ongespoten bumper', bij: 'Een bumper onder handen' },
+  { src: monteur, alt: 'Een monteur bij de koplamp van een lichtgroene auto met open motorkap', bij: 'Onder de motorkap' },
+];
+
+// Verzekeringshulp: elke uitkomst komt uit hun pagina's verzekering, WA, beperkt casco, all risk en waarborgfonds.
+const verzekeringen = [
+  { id: 'wa', naam: 'WA', uitleg: 'Wettelijke aansprakelijkheid, het verplichte minimum' },
+  { id: 'bc', naam: 'Beperkt casco', uitleg: 'Ook wel WA+ genoemd' },
+  { id: 'ar', naam: 'All risk', uitleg: 'Volledig casco' },
+];
+const situaties = [
+  { id: 'zelf', naam: 'Ik ben schuldig', uitleg: 'Aanrijding door eigen schuld' },
+  { id: 'tegen', naam: 'De tegenpartij is schuldig', uitleg: 'Iemand anders heeft de schade veroorzaakt' },
+  { id: 'onbekend', naam: 'Dader onbekend', uitleg: 'Bijvoorbeeld beschadigd teruggevonden op een parkeerplaats' },
+  { id: 'anders', naam: 'Geen aanrijding', uitleg: 'Ruit, hagel, storm, brand, diefstal of dieren' },
+];
+
+const verhaal = [
+  'Als een tegenpartij schade aan uw auto veroorzaakt, kunt u contact opnemen met de verzekering van de tegenpartij. Waar mogelijk zijn wij u hierbij van dienst.',
+  'Met onze WA-verhaalservice regelen wij alles: van het aanmelden van de schade tot en met de reparatie. U zet de auto bij ons neer en haalt hem op als hij klaar is. Kan dat niet, dan is er onze gratis haal- en brengservice.',
+  'Heeft u rechtsbijstand afgesloten bij uw verzekering, dan stelt uw verzekeringsmaatschappij de tegenpartij aansprakelijk. Uw schade wordt pas uitgekeerd nadat het verhaald is op de tegenpartij.',
+  'U kunt bij ons een expertiseafspraak maken, zodat de schade-expert van uw verzekering of van de tegenpartij de schade officieel kan vastleggen.',
+];
+const waarborg = [
+  'Het Waarborgfonds Motorverkeer komt onder meer in actie als niet bekend is wie de schade heeft veroorzaakt, of als het motorrijtuig van de veroorzaker niet verzekerd of gestolen is.',
+  'Auto beschadigd teruggevonden, bijvoorbeeld op een parkeerplaats? Vul dan een schadeformulier in met vermelding van 2 getuigen. Dat mogen ook personen zijn die zagen dat u de auto onbeschadigd neerzette.',
+  'Doe daarna binnen 24 uur aangifte bij de politie in de gemeente waar de auto stond.',
+];
+const ruit = 'Sterretje in de voorruit, niet groter dan een euro? Dat repareren wij met hars in ongeveer 30 minuten. Een grote barst betekent een nieuwe ruit: dat kost 1 dag.';
+const uitkomsten: Record<string, { kop: string; punten: string[] }> = {
+  'wa-zelf': { kop: 'Alleen WA: uw eigen schade valt er niet onder.', punten: [
+    'Bent u alleen verzekerd voor de wettelijke aansprakelijkheid, dan vergoedt uw verzekeringsmaatschappij uitsluitend de schade die u aan het voertuig van een tegenpartij veroorzaakt.',
+    'Laat uw eigen schade bij ons herstellen met nieuwe en/of tweedehands onderdelen, naar uw keuze. Van parkeerkrasje tot forse schade.',
+  ] },
+  'wa-tegen': { kop: 'De tegenpartij is schuldig: haar verzekering is aan zet.', punten: verhaal },
+  'wa-onbekend': { kop: 'Dader onbekend? Het Waarborgfonds kan uitkomst bieden.', punten: [...waarborg, 'Met alleen WA vergoedt uw eigen verzekering uitsluitend de schade die u aan een ander veroorzaakt.'] },
+  'wa-anders': { kop: 'Ruit, storm, brand of diefstal: dat dekt alleen WA niet.', punten: [
+    'Met alleen WA vergoedt uw verzekeringsmaatschappij uitsluitend de schade die u aan het voertuig van een tegenpartij veroorzaakt.',
+    'Brand, joyriding, diefstal, beschadiging van ruiten, natuurkrachten zoals hagel en storm, relletjes en loslopende dieren vallen onder beperkt casco.',
+    ruit,
+  ] },
+  'bc-zelf': { kop: 'Beperkt casco dekt geen aanrijding door eigen schuld.', punten: [
+    'Schade als gevolg van een aanrijding wordt niet gedekt door de WA+-polis. Deze schade is alleen verzekerd als er een andere partij schuldig is, waarop de schade verhaald kan worden.',
+    'De schade die u aan het voertuig van een tegenpartij veroorzaakt, valt onder de WA-dekking in uw polis.',
+    'Laat uw eigen schade bij ons herstellen met nieuwe en/of tweedehands onderdelen, naar uw keuze.',
+  ] },
+  'bc-tegen': { kop: 'Verzekerd, want de schade is te verhalen op de tegenpartij.', punten: [
+    'Bij beperkt casco is schade door een aanrijding alleen verzekerd als er een andere partij schuldig is, waarop de schade verhaald kan worden.',
+    ...verhaal,
+  ] },
+  'bc-onbekend': { kop: 'Dader onbekend? Het Waarborgfonds kan uitkomst bieden.', punten: waarborg },
+  'bc-anders': { kop: 'Dit valt onder uw beperkt casco.', punten: [
+    'Beperkt casco vergoedt naast de verplichte WA-dekking ook schade door brand, joyriding, diefstal, beschadiging van ruiten, natuurkrachten zoals hagel en storm, relletjes en loslopende dieren.',
+    ruit,
+    'Het schadeformulier vullen we graag samen met u in en sturen het voor u op naar uw verzekeringsmaatschappij.',
+  ] },
+  'ar-zelf': { kop: 'All risk: ook de schade aan uw eigen auto wordt uitgekeerd.', punten: [
+    'Bent u all risk verzekerd, dan wordt alle schade aan uw auto en die van de tegenpartij uitgekeerd.',
+    'Vraag wel na of u bij eigen schuld terugvalt in no-claimkorting. Als u lange tijd schadevrij rijdt, heeft het meestal niet zulke grote gevolgen.',
+    'Vaak kunt u een schade binnen een jaar eventueel toch nog zelf betalen, mocht u in dat jaar nog een grotere schade rijden. Laat uw schade bij ons taxeren, dan kunt u overwegen wat het beste is.',
+    'Bij veel maatschappijen krijgt u korting op uw eigen risico als u de auto bij ons brengt.',
+  ] },
+  'ar-tegen': { kop: 'De tegenpartij is schuldig: u hoeft niets te doen.', punten: [
+    'Uw verzekeringsmaatschappij verhaalt het schadebedrag op de tegenpartij. U hoeft hier niets voor te doen en u kunt uw auto zonder kosten laten repareren.',
+    'Wij zorgen dat het schadebedrag rechtstreeks aan ons uitgekeerd wordt, zodat u ook daar geen zorgen over heeft.',
+  ] },
+  'ar-onbekend': { kop: 'All risk dekt ook schade zonder bekende dader.', punten: [
+    'Een volledige cascoverzekering vergoedt ook de schade aan de eigen auto door aanrijding of enig ander plotseling van buiten komend onheil.',
+    'Vraag wel na of u daarmee terugvalt in no-claimkorting. Laat uw schade bij ons taxeren, dan kunt u overwegen wat het beste is.',
+    'Kan de schade niet op iemand verhaald worden, dan kan ook het Waarborgfonds uitkomst bieden. Vul een schadeformulier in met 2 getuigen en doe binnen 24 uur aangifte bij de politie.',
+  ] },
+  'ar-anders': { kop: 'Dit valt onder uw all risk.', punten: [
+    'Een volledige cascoverzekering vergoedt naast de WA-dekking ook de risico\'s van beperkt casco: brand, joyriding, diefstal, beschadiging van ruiten, natuurkrachten zoals hagel en storm, relletjes en loslopende dieren.',
+    ruit,
+    'Bij veel maatschappijen krijgt u korting op uw eigen risico als u de auto bij ons brengt.',
+  ] },
+};
+
+// Zonder JavaScript: de vier vormen gewoon naast elkaar, zoals op hun verzekeringspagina.
+const vormen = [
+  { id: 'wa', naam: 'Wettelijke aansprakelijkheid', kort: 'WA', tekst: 'Verplicht voor elk motorvoertuig in Nederland. Uw verzekeraar vergoedt uitsluitend de schade die u aan het voertuig van een tegenpartij veroorzaakt.' },
+  { id: 'bc', naam: 'Beperkt casco', kort: 'WA+', tekst: 'Naast WA ook brand, joyriding, diefstal, ruitschade, hagel en storm, relletjes en loslopende dieren. Aanrijdingsschade alleen als een andere partij schuldig is.' },
+  { id: 'ar', naam: 'All risk / casco', kort: 'Volledig', tekst: 'Alles van beperkt casco, plus schade aan of verlies van de eigen auto door aanrijding of enig ander plotseling van buiten komend onheil.' },
+  { id: 'wf', naam: 'Waarborgfonds', kort: 'Dader onbekend', tekst: 'Voor als niet bekend is wie de schade veroorzaakte, of het voertuig onverzekerd of gestolen is. Schadeformulier met 2 getuigen, binnen 24 uur aangifte.' },
+];
+
+// Schademelding: de stappen van hun pagina "Autoschade? Wat te doen".
+const stappen = [
+  { kop: 'Kom langs, als de auto nog rijdt', tekst: `Rijdt uw auto nog, dan kunt u meteen langskomen aan het ${site.straat} in ${site.plaats}.` },
+  { kop: 'Neem uw papieren mee', tekst: 'Kentekenbewijs 1 en 2, en uw groene kaart.' },
+  { kop: 'Het Europees schadeformulier', tekst: 'Bij elke autoschade moet het ingevuld en getekend worden door de betrokken partijen. Wij helpen u graag met invullen en sturen het naar uw verzekeringsmaatschappij.' },
+  { kop: 'Afspraak en aanmelding', tekst: 'We maken meteen een afspraak voor de reparatie en melden uw schade aan bij uw verzekeringsmaatschappij of assurantietussenpersoon.' },
+  { kop: 'Geen zorgen over de betaling', tekst: 'Eventuele kosten van het eigen risico of bonus-malusgevolgen geven wij aan u door. In bijna alle gevallen betaalt de verzekeraar rechtstreeks aan ons.' },
+];
+---
+<Base
+  title="Autoschade Gerritsma | Schadeherstel in Roosendaal, voor vrijwel alle verzekeraars"
+  description="Autoschade Gerritsma aan het Keulsveld 6 in Roosendaal: spotrepair, uitdeuken, kunststofherstel en ruitschade. WA-verhaalservice, vervangend vervoer en 4 jaar FOCWA-garantie."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: diep staalblauw, grote kop, bewijzen als rustige rij. Rechts een grote foto die over de rand valt, met ons pand als inzet. -->
+    <section class="donker relative bg-nacht text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-12 lg:grid-cols-12 lg:gap-12 lg:pt-16 lg:pb-10">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-5 lg:col-start-8 lg:self-start lg:-mb-40">
+          <figure class="relative">
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[780px] lg:shadow-lg">
+              <Foto src={heroFoto} alt="Twee handen in zwarte handschoenen trekken afplakfolie over een glanzend gespoten, donkerpaarse carrosseriedeel" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 1170px, 100vw" class="object-[35%_50%]" />
+            </div>
+          </figure>
+          <figure class="absolute -bottom-10 left-4 z-10 w-40 overflow-hidden rounded-xl bg-white p-1.5 shadow-lg sm:left-6 sm:w-52 lg:bottom-32 lg:-left-8 lg:w-[260px]">
+            <div class="aspect-[303/225] overflow-hidden rounded-lg"><Foto src={pand} alt="Ons pand aan het Keulsveld, met het Gerritsma-logo op de gevel en twee mannen voor de ingang" widths={[303]} sizes="(min-width: 1024px) 248px, 200px" /></div>
+            <figcaption class="px-1.5 pt-1.5 pb-0.5 text-xs font-semibold text-ink">{site.straat}, {site.plaats}</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-8 lg:order-1 lg:col-span-7 lg:pt-6">
+          <p class="kicker text-oranje">Roosendaal, sinds 1984</p>
+          <h1 class="mt-4 text-4xl">Van parkeer&shy;krasje tot forse schade</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Sinds 1991 aan het Keulsveld, geheel gespecialiseerd in autoschade. Wij werken voor vrijwel alle verzekeringsmaatschappijen en geven 4 jaar garantie op onze reparaties.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-oranje"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href="#verzekering" class="btn btn-line">Wat doet mijn verzekering?</a>
+          </div>
+          <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 text-sm sm:grid-cols-4">
+            <div><dt class="text-white/75">Google</dt><dd><strong class="font-display text-2xl">{site.google}</strong> <span class="whitespace-nowrap text-white/80">({site.reviews} reviews)</span></dd></div>
+            <div><dt class="text-white/75">Univé</dt><dd><strong class="font-display text-2xl">4</strong> <span class="text-white/80">van 5 sterren</span></dd></div>
+            <div><dt class="text-white/75">Ma t/m do</dt><dd class="font-display text-lg font-bold whitespace-nowrap tabular-nums">08.00 - 17.00</dd></div>
+            <div><dt class="text-white/75">Vrijdag</dt><dd class="font-display text-lg font-bold whitespace-nowrap tabular-nums">08.00 - 15.30</dd></div>
+          </dl>
+          <p class="mt-4 text-sm text-white/75">Op zaterdag gesloten.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schadeherstel: kop links, genummerde lijst rechts. -->
+    <section id="herstel" class="scroll-mt-20 pt-20 pb-16 lg:pt-40 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-roest">Schadeherstel</p>
+          <h2 class="mt-3 text-3xl lg:max-w-md">Snel en perfect herstel van elke autoschade</h2>
+          <p class="mt-6 text-lg">Een modern, universeel autoschadeherstelbedrijf. Vakmanschap, gecombineerd met moderne technieken als spotrepair, uitdeuken zonder spuiten, kunststofherstel en kunststoflassen én koplampreparatie.</p>
+          <ul class="mt-8 space-y-3 border-t border-line pt-6">
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje" aria-hidden="true"></span><span>Tijdens de reparatie een vervangende auto. Alleen de benzinekosten zijn voor u.</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje" aria-hidden="true"></span><span>Gratis haal- en brengservice.</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje" aria-hidden="true"></span><span>Keuze voor nieuwe en/of tweedehands onderdelen.</span></li>
+            <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje" aria-hidden="true"></span><span>4 jaar FOCWA-garantie, en uw merkgarantie blijft geldig.</span></li>
+          </ul>
+        </div>
+        <ol class="border-t border-line lg:col-span-7">
+          {herstel.map((d, i) => (
+            <li class="grid gap-1 border-b border-line py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-6">
+              <span class="font-display text-sm font-bold tabular-nums text-roest">0{i + 1}</span>
+              <h3 class="text-xl">{d.naam}</h3>
+              <p class="text-ink-soft">{d.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <!-- Twee grote sfeerbeelden, versprongen. -->
+      <div class="wrap mt-16 grid grid-cols-1 gap-6 lg:mt-20 lg:grid-cols-12 lg:items-end">
+        <figure class="lg:col-span-7">
+          <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm"><Foto src={lak} alt="Glanzende donkerrode lak op de achterzijde van een klassieke auto, met weerspiegelingen" sizes="(min-width: 1024px) 680px, 100vw" /></div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Spotrepair: alleen de plek zelf, niet het hele deel.</figcaption>
+        </figure>
+        <figure class="lg:col-span-5 lg:mb-16">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={uitdeuken} alt="Close-up van een zilvergrijze auto bij de koplamp, met een trekstift op het plaatwerk" sizes="(min-width: 1024px) 480px, 100vw" /></div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Uitdeuken zonder spuiten, ook bij hagelschade.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Uit onze werkplaats: hun eigen headerfoto's (900 breed), nooit groter dan dat. -->
+    <section class="bg-mist py-16 lg:py-20">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+          <div>
+            <p class="kicker text-roest">Uit onze werkplaats</p>
+            <h2 class="mt-3 text-2xl">Monteurs, plaatwerkers, voorbewerkers en spuiters</h2>
+          </div>
+          <p class="max-w-md text-ink-soft">Betrokkenheid, samenwerking, overleg en collegialiteit tussen onze specialisten levert kwaliteit.</p>
+        </div>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {werkplaats.map((w) => (
+            <li>
+              <figure class="max-w-[900px]">
+                <div class="aspect-[900/264] overflow-hidden rounded-xl bg-paper shadow-sm"><Foto src={w.src} alt={w.alt} widths={[600, 900]} sizes="(min-width: 640px) 50vw, 100vw" /></div>
+                <figcaption class="mt-2 text-sm text-ink-soft">{w.bij}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Wow: wat doet mijn verzekering? Zonder JS: de vier vormen als kaarten. -->
+    <section id="verzekering" class="donker scroll-mt-20 bg-nacht py-16 text-white lg:py-24" data-hulp>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-oranje">Hulp bij schade</p>
+            <h2 class="mt-3 text-3xl">Wat doet mijn verzekering?</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5 lg:self-end">In Nederland is een autoverzekering verplicht, vanaf het moment dat het kenteken op uw naam staat. Maar wat wordt er vergoed? Kies uw verzekering en wat er gebeurd is.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12" hidden data-hulp-blok>
+          <form class="lg:col-span-5" data-keuzes>
+            <fieldset>
+              <legend class="font-display text-lg font-bold">1. Hoe bent u verzekerd?</legend>
+              <div class="mt-4 grid gap-2 sm:grid-cols-3 lg:grid-cols-1 xl:grid-cols-3">
+                {verzekeringen.map((v) => (
+                  <label class="keuze"><input type="radio" class="sr-only" name="verzekering" value={v.id} /><strong>{v.naam}</strong><small>{v.uitleg}</small></label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset class="mt-8">
+              <legend class="font-display text-lg font-bold">2. Wat is er gebeurd?</legend>
+              <div class="mt-4 grid gap-2 sm:grid-cols-2">
+                {situaties.map((s) => (
+                  <label class="keuze"><input type="radio" class="sr-only" name="situatie" value={s.id} /><strong>{s.naam}</strong><small>{s.uitleg}</small></label>
+                ))}
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="lg:col-span-7">
+            <div class="scroll-mt-20 rounded-xl bg-staal p-6 shadow-lg sm:p-8" aria-live="polite" data-uitkomst>
+              <p class="kicker text-ijs" data-label>Uw situatie</p>
+              <p class="mt-3 font-display text-2xl leading-tight font-bold" data-kop>Kies hiernaast uw verzekering en wat er gebeurd is.</p>
+              <ul class="mt-6 space-y-3" data-punten>
+                <li class="flex gap-3 text-white/85"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje" aria-hidden="true"></span><span>U ziet dan in gewone taal wat van toepassing is, en wat wij voor u kunnen regelen.</span></li>
+              </ul>
+              <div class="mt-8 flex flex-col gap-3 border-t border-white/20 pt-6 sm:flex-row sm:flex-wrap">
+                <a href="#melden" class="btn btn-oranje">Schade melden <Fragment set:html={pijl} /></a>
+                <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+              </div>
+            </div>
+            <p class="mt-4 text-sm text-white/75">Samengevat van onze verzekeringspagina's. Neem voor een persoonlijk advies contact met ons op.</p>
+          </div>
+        </div>
+
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-vormen>
+          {vormen.map((v) => (
+            <li data-vorm={v.id} class="rounded-xl border border-white/15 p-5 transition-colors">
+              <p class="kicker text-ijs">{v.kort}</p>
+              <h3 class="mt-2 text-lg">{v.naam}</h3>
+              <p class="mt-3 text-sm text-white/80">{v.tekst}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <script type="application/json" id="uitkomsten" set:html={JSON.stringify(uitkomsten)} />
+    </section>
+
+    <script>
+      // Verzekeringshulp: toont per combinatie de tekst uit hun eigen verzekeringspagina's. Rekent niets uit.
+      const sectie = document.querySelector<HTMLElement>('[data-hulp]');
+      const data = JSON.parse(document.getElementById('uitkomsten')?.textContent || '{}');
+      if (sectie) {
+        const blok = sectie.querySelector<HTMLElement>('[data-hulp-blok]')!;
+        const form = sectie.querySelector<HTMLFormElement>('[data-keuzes]')!;
+        const label = sectie.querySelector<HTMLElement>('[data-label]')!;
+        const kop = sectie.querySelector<HTMLElement>('[data-kop]')!;
+        const punten = sectie.querySelector<HTMLElement>('[data-punten]')!;
+        const namen: Record<string, string> = { wa: 'WA', bc: 'Beperkt casco', ar: 'All risk' };
+        const sitNamen: Record<string, string> = { zelf: 'eigen schuld', tegen: 'tegenpartij schuldig', onbekend: 'dader onbekend', anders: 'geen aanrijding' };
+        blok.hidden = false;
+        form.addEventListener('submit', (e) => e.preventDefault());
+        const punt = (t: string) => {
+          const li = document.createElement('li');
+          li.className = 'flex gap-3 text-white/90';
+          const bol = document.createElement('span');
+          bol.className = 'mt-2.5 h-2 w-2 flex-none rounded-full bg-oranje';
+          bol.setAttribute('aria-hidden', 'true');
+          const s = document.createElement('span');
+          s.textContent = t;
+          li.append(bol, s);
+          return li;
+        };
+        const uitkomst = sectie.querySelector<HTMLElement>('[data-uitkomst]')!;
+        form.addEventListener('change', (e) => {
+          const v = (form.querySelector('input[name=verzekering]:checked') as HTMLInputElement | null)?.value;
+          const s = (form.querySelector('input[name=situatie]:checked') as HTMLInputElement | null)?.value;
+          sectie.querySelectorAll<HTMLElement>('[data-vorm]').forEach((k) => {
+            const aan = k.dataset.vorm === v || (k.dataset.vorm === 'wf' && s === 'onbekend');
+            k.classList.toggle('bg-white/10', aan);
+            k.classList.toggle('ring-2', aan);
+            k.classList.toggle('ring-oranje', aan);
+          });
+          const select = document.querySelector<HTMLSelectElement>('#f-verzekering');
+          if (select && v) select.value = v;
+          if (!v || !s) {
+            label.textContent = v ? namen[v] : 'Uw situatie';
+            kop.textContent = v ? 'En wat is er gebeurd?' : 'Kies eerst hoe u verzekerd bent.';
+            return;
+          }
+          const u = data[`${v}-${s}`];
+          label.textContent = `${namen[v]}, ${sitNamen[s]}`;
+          kop.textContent = u.kop;
+          punten.replaceChildren(...u.punten.map(punt));
+          // Op de telefoon staat de uitkomst onder de keuzes: schuif hem in beeld.
+          if (innerWidth < 1024 && (e.target as HTMLInputElement).name === 'situatie') {
+            const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            uitkomst.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: 'start' });
+          }
+        });
+      }
+    </script>
+
+    <!-- Schade melden: de stappen van hun schademeldingspagina, met een formulier dat bij het voorstel niets verstuurt. -->
+    <section id="melden" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-roest">Schade melden</p>
+          <h2 class="mt-3 text-3xl">Autoschade? Wat te doen</h2>
+          <p class="mt-5 text-lg">Wij helpen u zo snel en veilig mogelijk weer op de weg.</p>
+          <ol class="mt-10">
+            {stappen.map((s, i) => (
+              <li class="relative grid grid-cols-[2.75rem_1fr] gap-4 pb-8 last:pb-0">
+                {i < stappen.length - 1 && <span class="absolute top-11 bottom-1 left-[1.3rem] w-px bg-line" aria-hidden="true"></span>}
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-staal font-display font-bold text-white tabular-nums">{i + 1}</span>
+                <div class="pt-2"><h3 class="text-lg">{s.kop}</h3><p class="mt-1 text-ink-soft">{s.tekst}</p></div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="lg:col-span-6">
+          <figure class="max-w-[900px]">
+            <div class="aspect-[900/264] overflow-hidden rounded-xl shadow-sm"><Foto src={kantoor} alt="Een medewerker belt aan haar bureau op ons kantoor" widths={[600, 900]} sizes="(min-width: 1024px) 560px, 100vw" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Het schadeformulier vullen we graag samen met u in.</figcaption>
+          </figure>
+          <form class="mt-8 rounded-xl bg-white p-6 shadow-sm sm:p-8" action="#" onsubmit="return false">
+            <h3 class="text-xl">Schade doorgeven</h3>
+            <p class="mt-1 text-sm text-ink-soft">Laat uw gegevens achter, dan nemen wij contact met u op.</p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="veld"><label for="f-naam">Naam</label><input id="f-naam" name="naam" autocomplete="name" /></div>
+              <div class="veld"><label for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" /></div>
+              <div class="veld sm:col-span-2"><label for="f-mail">E-mail</label><input id="f-mail" name="email" type="email" autocomplete="email" /></div>
+              <div class="veld sm:col-span-2"><label for="f-verzekering">Verzekering</label>
+                <select id="f-verzekering" name="verzekering">
+                  <option value="">Weet ik niet</option>
+                  <option value="wa">WA</option>
+                  <option value="bc">Beperkt casco (WA+)</option>
+                  <option value="ar">All risk</option>
+                </select>
+              </div>
+              <div class="veld sm:col-span-2"><label for="f-wat">Wat is er gebeurd?</label><textarea id="f-wat" name="omschrijving" rows="3"></textarea></div>
+            </div>
+            {site.voorstel ? (
+              <p class="mt-6 rounded-lg bg-mist p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="font-semibold whitespace-nowrap tabular-nums underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold break-all underline">{site.mail}</a>.</p>
+            ) : (
+              <button type="submit" class="btn btn-staal mt-6">Versturen</button>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Verzekeraars: typografisch, geen logo's. -->
+    <section class="bg-mist py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-roest">Verzekering</p>
+          <h2 class="mt-3 text-3xl">Wij regelen het met uw verzekeraar</h2>
+          <p class="mt-6">Een jarenlange samenwerking met de meeste grote verzekeringsmaatschappijen. Het schadeformulier vullen we graag samen met u in en sturen het voor u op. Bij veel maatschappijen krijgt u korting op uw eigen risico als u de auto bij ons brengt, en het schadebedrag wordt rechtstreeks aan ons uitgekeerd.</p>
+          <p class="mt-8 flex flex-col gap-2 border-t border-line pt-6 sm:flex-row sm:items-baseline sm:gap-3"><strong class="font-display text-jaar leading-none font-bold text-staal">4/5</strong><span class="min-w-0 text-ink-soft">sterren bij Univé. Ook bij klanttevredenheidsonderzoek van andere verzekeraars scoren we hoog.</span></p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h3 class="text-lg">Wij zijn onder andere aangesloten bij</h3>
+          <ul class="mt-5 grid grid-cols-2 border-t border-line sm:grid-cols-3">
+            {verzekeraars.map((v) => <li class="border-b border-line py-3 pr-3 font-display font-bold">{v}</li>)}
+          </ul>
+          <p class="mt-5 text-sm text-ink-soft">Kijkt u maar eens op uw groene kaart.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over ons: tijdlijn 1984, 1991, nu. -->
+    <section id="over" class="wrap scroll-mt-20 py-16 lg:py-24">
+      <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-roest">Over ons</p>
+          <h2 class="mt-3 text-3xl">Iets extra: teamwork</h2>
+          <p class="mt-5 text-ink-soft">Er zijn veel autoschadebedrijven. Als middelgroot bedrijf hechten wij veel waarde aan teamwork. Alles wordt met betrokkenheid en in overleg met u geregeld, met milieuvriendelijke materialen en de nieuwste apparatuur en technieken.</p>
+          <figure class="mt-8">
+            <div class="aspect-[3/1] overflow-hidden rounded-xl shadow-sm"><Foto src={bus} alt="Onze zilvergrijze bus met het Gerritsma-logo voor ons pand" widths={[600, 900]} sizes="(min-width: 1024px) 440px, 100vw" class="object-left" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Gratis haal- en brengservice.</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-6 lg:col-start-7">
+          <li class="grid gap-2 border-l-2 border-blauw pb-10 pl-6 sm:grid-cols-[9rem_1fr] sm:gap-6">
+            <p class="font-display text-jaar leading-none font-bold tracking-[-0.04em] tabular-nums">1984</p>
+            <div class="sm:pt-2"><h3 class="text-xl">Garage in de binnenstad</h3><p class="mt-2 text-ink-soft">Opgericht als garage in de binnenstad van Roosendaal.</p></div>
+          </li>
+          <li class="grid gap-2 border-l-2 border-blauw pb-10 pl-6 sm:grid-cols-[9rem_1fr] sm:gap-6">
+            <p class="font-display text-jaar leading-none font-bold tracking-[-0.04em] tabular-nums">1991</p>
+            <div class="sm:pt-2"><h3 class="text-xl">Naar het Keulsveld</h3><p class="mt-2 text-ink-soft">Verhuisd naar de nieuwbouw aan het Keulsveld en geheel gespecialiseerd in autoschade.</p></div>
+          </li>
+          <li class="grid gap-2 border-l-2 border-blauw pl-6 sm:grid-cols-[9rem_1fr] sm:gap-6">
+            <p class="font-display text-jaar leading-none font-bold tracking-[-0.04em] text-staal">Nu</p>
+            <div class="sm:pt-2"><h3 class="text-xl">Van 3 naar 12 medewerkers</h3><p class="mt-2 text-ink-soft">In enkele jaren gegroeid naar 12 productieve medewerkers. FOCWA-eurogarantbedrijf, met vervangend vervoer.</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="donker scroll-mt-20 bg-staal py-16 text-white lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-oranje">Contact</p>
+          <h2 class="mt-3 text-3xl">Langskomen of bellen</h2>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-oranje"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+          <p class="mt-6 break-all text-white/85"><a href={`mailto:${site.mail}`} class="underline decoration-oranje decoration-2 underline-offset-4">{site.mail}</a></p>
+          <address class="mt-8 text-lg not-italic">{site.juridisch}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <a href={site.maps} rel="noopener" class="mt-4 inline-block font-semibold underline decoration-oranje decoration-2 underline-offset-4">Route plannen</a>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <h3 class="text-xl">Openingstijden</h3>
+          <dl class="mt-4 border-t border-white/20">
+            {tijden.map((t) => (
+              <div class="flex justify-between gap-4 border-b border-white/20 py-3"><dt>{t.dag}</dt><dd class="font-semibold whitespace-nowrap tabular-nums">{t.tijd}</dd></div>
+            ))}
+          </dl>
+          <p class="mt-8 text-sm text-white/80">Rijdt uw auto nog? Kom dan gewoon langs met uw kentekenbewijs en groene kaart.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

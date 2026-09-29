@@ -1,0 +1,556 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden, assortiment, verder, tapas, sausjes } from '../data/site';
+import kaaswielen from '../assets/kaaswielen.jpg';
+import borrelplank from '../assets/borrelplank.jpg';
+import vleesplank from '../assets/vleesplank.jpg';
+import winkelKaas from '../assets/winkel-kaas.jpg';
+import toonbank from '../assets/winkel-toonbank.jpg';
+import team from '../assets/winkel-team.jpg';
+import ham from '../assets/winkel-ham.jpg';
+import noten from '../assets/winkel-noten.jpg';
+import pate from '../assets/winkel-pate.jpg';
+import kaasschotel from '../assets/kaasschotel.jpg';
+import kaasschotel2 from '../assets/kaasschotel-2.jpg';
+import tapasschotel from '../assets/tapasschotel.jpg';
+import vleeswarenschotel from '../assets/vleeswarenschotel.jpg';
+import borrelEigen from '../assets/borrelplank-eigen.jpg';
+import certificaat from '../assets/certificaat.jpg';
+
+// Bestelhulp: alleen het echte aanbod. Prijzen alleen waar hun site ze noemt (kaasschotels).
+const producten = [
+  { id: 'kaas-hapje', naam: 'Kaasschotel als hapje', info: '150 à 200 gram per persoon', prijs: 12.5, eenheid: 'personen' },
+  { id: 'kaas-maaltijd', naam: 'Kaasschotel als volledige maaltijd', info: '250 à 300 gram per persoon', prijs: 15, eenheid: 'personen' },
+  { id: 'tapas', naam: 'Tapasschotel', info: 'Gewogen, plus arbeidsloon voor de opmaak', prijs: 0, eenheid: 'personen' },
+  { id: 'vlees', naam: 'Vleeswarenschotel', info: 'Totale gewicht, plus arbeidsloon', prijs: 0, eenheid: 'personen' },
+  { id: 'borrel', naam: 'Borrelplank naar wens', info: 'Samengesteld naar uw wens', prijs: 0, eenheid: 'planken' },
+];
+const eur = (n: number) => `€ ${n.toFixed(2).replace('.', ',')}`;
+
+const winkel = [
+  { src: ham, alt: 'Hammen en vleeswaren in onze winkel, met een bordje Reclame', bij: 'Van ham tot pata negra' },
+  { src: noten, alt: 'Een wand vol zakjes noten en zuidvruchten in onze winkel', bij: 'Noten en zuidvruchten' },
+  { src: pate, alt: 'Patés met garnering in de koeling', bij: 'Patés uit België' },
+];
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>`;
+---
+<Base
+  title="Verswinkel Marlou Segers | Kaas, noten, vleeswaren en schotels in Hulst"
+  description="Verswinkel in de Gentsestraat in Hulst. Wel 80 soorten Hollandse en zeker 200 buitenlandse kazen, versgebrande noten, vleeswaren, tapas en schotels op bestelling. Ook op zondag open."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: diep olijf, grote kop, bewijzen. Rechts een grote sfeerfoto die over de rand valt, met hun eigen kaaswand als inzet. -->
+    <section class="donker relative bg-olijf text-white">
+      <div class="wrap grid gap-10 pt-6 pb-12 sm:pt-10 lg:grid-cols-12 lg:gap-12 lg:pt-16 lg:pb-16">
+        <div class="order-2 lg:order-1 lg:col-span-6 lg:pt-4">
+          <p class="kicker text-kaas">Verswinkel aan de Gentsestraat, Hulst</p>
+          <h1 class="mt-4 text-4xl">Kaas, noten en vleeswaren uit binnen- en buitenland</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Wel 80 soorten Hollandse kaas en zeker 200 buitenlandse, dagelijks in huis. Noten versgebrand en vers geschept. En kaas-, tapas- en vleeswarenschotels op bestelling.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#bestellen" class="btn btn-kaas">Stel uw bestelling samen<Fragment set:html={pijl} /></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 border-t border-white/20 pt-6 text-sm sm:grid-cols-3">
+            <div><dt class="text-white/75">Google</dt><dd><strong class="font-display text-2xl">{site.google}</strong> <span class="text-white/80">({site.reviews} reviews)</span></dd></div>
+            <div><dt class="text-white/75">Ook op zondag</dt><dd class="font-display text-xl font-bold whitespace-nowrap tabular-nums">13.00 - 18.00</dd></div>
+            <div class="col-span-2 sm:col-span-1"><dt class="text-white/75">Weer gecertificeerd</dt><dd class="font-semibold leading-snug text-kaas [overflow-wrap:anywhere]">Gecertificeerde Foodspecialiteiten&shy;winkel</dd></div>
+          </dl>
+        </div>
+        <div class="relative order-1 lg:order-2 lg:col-span-6">
+          <figure class="relative">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg sm:aspect-[5/4] lg:aspect-[4/5]">
+              <Foto src={kaaswielen} alt="Gestapelde hele kazen met natuurkorst op houten planken" hero sizes="(min-width: 1024px) 560px, 100vw" />
+            </div>
+            <figcaption class="sr-only">Sfeerfoto</figcaption>
+          </figure>
+          <figure class="absolute -bottom-6 left-3 w-[44%] max-w-[300px] rotate-[-2deg] rounded-xl bg-room p-2 shadow-lg sm:left-6 lg:-left-10 lg:bottom-16">
+            <div class="aspect-[3/2] overflow-hidden rounded-lg"><Foto src={winkelKaas} alt="De kaaswand in onze winkel, met Hollandse kazen op planken en prijsbordjes" widths={[300, 600]} sizes="(min-width: 1024px) 284px, 42vw" /></div>
+            <figcaption class="px-1 pt-1.5 pb-0.5 text-xs font-semibold text-ink">Onze kaaswand</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Assortiment: kop links, genummerde lijst rechts, daaronder de extra's. -->
+    <section id="assortiment" class="scroll-mt-20 pt-20 pb-16 lg:pt-28 lg:pb-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <div class="self-start lg:sticky lg:top-24 lg:col-span-4">
+          <p class="kicker text-terra">Assortiment</p>
+          <h2 class="mt-3 text-3xl">Van Brie tot truffelkaas</h2>
+          <p class="mt-5 text-ink-soft">Ons assortiment bestaat uit vele honderden soorten. En na alle beursbezoeken in binnen- en buitenland ontdekken we steeds weer nieuwe producten.</p>
+          <div class="mt-8 rounded-xl bg-zand p-6 shadow-sm">
+            <p class="kicker text-terra">Nieuw</p>
+            <h3 class="mt-2 text-xl">Lactosevrije kazen</h3>
+            <p class="mt-2 text-sm text-ink-soft">100% lactosevrij, zoals Oudendijck jong en Ensor belegen. Ook een lactosevrije kaasschotel kunt u bij ons bestellen, met diverse soorten.</p>
+          </div>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6">
+          <ol class="border-t border-line">
+            {assortiment.map((a, i) => (
+              <li class="grid gap-1 border-b border-line py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-6">
+                <span class="font-display text-sm font-bold tabular-nums text-terra">0{i + 1}</span>
+                <h3 class="text-xl">{a.naam}</h3>
+                <p class="text-ink-soft">{a.tekst}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-6 text-sm font-semibold">Verder</p>
+          <ul class="mt-3 flex flex-wrap gap-2 text-sm">
+            {verder.map((v) => <li class="rounded-full bg-white px-3.5 py-1.5 shadow-sm">{v}</li>)}
+          </ul>
+          <div class="mt-10 grid gap-6 rounded-xl border border-line p-6 sm:grid-cols-[auto_1fr] sm:items-start">
+            <span class="font-display text-3xl font-extrabold leading-none text-terra" aria-hidden="true">?</span>
+            <div>
+              <h3 class="text-lg">Een kaas niet in huis?</h3>
+              <p class="mt-2 text-ink-soft">Dan bestellen wij deze voor u mee, ook uw speciale wensen. We proberen hem binnen 2 weken in huis te hebben. Bestelt u op maandag voor 12.00 uur, dan kunnen wij hem woensdagochtend in huis hebben (niet alle producten, afhankelijk van de leverancier).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- In de winkel: eigen foto's op (bijna) eigen formaat. -->
+    <section class="bg-zand py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-terra">In de winkel</p>
+            <h2 class="mt-3 text-3xl">10½ meter koeling vol lekkere producten</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5 lg:col-start-8">Bij de laatste verbouwing, in oktober 2006, is echt alles vernieuwd. De koeling ging van 3½ naar 10½ meter. Keuze genoeg, zou ik zo zeggen.</p>
+        </div>
+        <div class="mt-10 grid gap-4 md:grid-cols-12">
+          <figure class="md:col-span-7">
+            <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm"><Foto src={toonbank} alt="De lange toonbank met vleeswaren en kaas in onze winkel, met klanten aan de toonbank" widths={[480, 640]} sizes="(min-width: 768px) 640px, 100vw" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">De toonbank, met kaas aan de wand en de worsten erboven.</figcaption>
+          </figure>
+          <figure class="md:col-span-5">
+            <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm md:aspect-auto md:h-[calc(100%-2rem)]"><Foto src={team} alt="Twee medewerkers in shirts met Marlou Segers, Kaas & Noten, Vleeswaren, voor de kaasplanken" widths={[480, 640]} sizes="(min-width: 768px) 460px, 100vw" /></div>
+            <figcaption class="mt-2 text-sm text-ink-soft">Achter de toonbank.</figcaption>
+          </figure>
+        </div>
+        <ul class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+          {winkel.map((w, i) => (
+            <li class={i === 2 ? 'col-span-2 md:col-span-1' : ''}>
+              <figure>
+                <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-sm"><Foto src={w.src} alt={w.alt} widths={[400, 640]} sizes="(min-width: 768px) 380px, 50vw" /></div>
+                <figcaption class="mt-2 text-sm text-ink-soft">{w.bij}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Schotels: donker vlak, de kaasschotel als hoofdkaart met prijzen, de rest eromheen. -->
+    <section id="schotels" class="donker scroll-mt-20 bg-olijf py-16 text-white lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-kaas">Op bestelling</p>
+            <h2 class="mt-3 text-3xl">Verzorgde schotels en borrelplanken</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5">Bestel minimaal 1 dag van tevoren voor de ophaaldatum. Kaasschotels en vleeswarenschotels zijn ook mogelijk met lactosevrije kazen.</p>
+        </div>
+
+        <article class="mt-12 grid overflow-hidden rounded-xl bg-room text-ink shadow-lg lg:grid-cols-12">
+          <div class="aspect-[4/3] lg:col-span-6 lg:aspect-auto">
+            <Foto src={kaasschotel} alt="Een van onze kaasschotels: blauwader, witschimmel en harde kazen in punten, met gedroogde abrikozen, pruimen en dadels" widths={[480, 640]} sizes="(min-width: 1024px) 600px, 100vw" />
+          </div>
+          <div class="p-6 sm:p-8 lg:col-span-6 lg:p-10">
+            <p class="kicker text-terra">01 · Kaasschotel</p>
+            <h3 class="mt-2 text-2xl">7 à 8 soorten kaas, voorgesneden en met de namen erop</h3>
+            <p class="mt-4 text-ink-soft">Met gedroogde zuidvruchtenschijfjes en 2 verschillende potjes notenmelange. Geheel naar uw smaak en wensen, ook lactosevrij.</p>
+            <dl class="mt-6 border-t border-line">
+              <div class="flex items-baseline justify-between gap-4 border-b border-line py-3">
+                <dt><strong>Als hapje</strong><span class="block text-sm text-ink-soft">150 à 200 gram per persoon</span></dt>
+                <dd class="font-display text-xl font-extrabold whitespace-nowrap tabular-nums">{eur(12.5)}</dd>
+              </div>
+              <div class="flex items-baseline justify-between gap-4 border-b border-line py-3">
+                <dt><strong>Als volledige maaltijd</strong><span class="block text-sm text-ink-soft">250 à 300 gram per persoon</span></dt>
+                <dd class="font-display text-xl font-extrabold whitespace-nowrap tabular-nums">{eur(15)}</dd>
+              </div>
+            </dl>
+            <p class="mt-4 text-sm text-ink-soft">Prijzen per persoon. Vers fruit en stokbrood zijn niet inbegrepen. Crackers en onze huiswijn, die uitermate geschikt is bij de schotels, kunt u er apart bij bestellen.</p>
+          </div>
+        </article>
+
+        <div class="mt-6 grid gap-6 lg:grid-cols-12">
+          <article class="min-w-0 rounded-xl bg-mos p-6 shadow-sm sm:p-8 lg:col-span-7">
+            <div class="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto]">
+              <div>
+                <p class="kicker text-kaas">02 · Tapasschotel</p>
+                <h3 class="mt-2 text-2xl">U kiest, wij wegen en maken op</h3>
+                <p class="mt-3 text-sm text-white/85">De gekozen producten worden gewogen, en we rekenen arbeidsloon voor de opmaak.</p>
+              </div>
+              <div class="aspect-[4/3] w-full max-w-[300px] overflow-hidden rounded-lg sm:w-[220px]"><Foto src={tapasschotel} alt="Een tapasschotel van ons met spiesjes, gevulde peppadews, ham en kaaspuntjes" widths={[300]} sizes="(min-width: 640px) 220px, 300px" /></div>
+            </div>
+            <ul class="mt-6 grid gap-x-6 text-sm sm:grid-cols-2">
+              {tapas.map((t) => <li class="flex gap-2.5 border-b border-white/15 py-2"><span class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-kaas" aria-hidden="true"></span><span class="min-w-0 [overflow-wrap:anywhere]">{t}</span></li>)}
+            </ul>
+          </article>
+          <div class="grid min-w-0 gap-6 lg:col-span-5">
+            <article class="rounded-xl border border-white/20 p-6 sm:p-8">
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  <p class="kicker text-kaas">03 · Vleeswaren</p>
+                  <h3 class="mt-2 text-xl">Vleeswaren, patés en salades</h3>
+                </div>
+                <div class="aspect-square w-24 flex-none overflow-hidden rounded-lg sm:w-28"><Foto src={vleeswarenschotel} alt="Een ronde schotel met ham, vleeswaren en kaas" widths={[225]} sizes="112px" /></div>
+              </div>
+              <p class="mt-3 text-sm text-white/85">Alle soorten uit ons assortiment. Met sausjes en confijten voor bij de paté:</p>
+              <p class="mt-2 text-sm font-semibold text-kaas">{sausjes.map((s, i) => (i ? s.toLowerCase() : s)).join(", ")}</p>
+              <p class="mt-3 text-sm text-white/75">U betaalt het totale gewicht van de gekozen producten en arbeidsloon. Voor brood zorgt u zelf.</p>
+            </article>
+            <article class="relative overflow-hidden rounded-xl">
+              <div class="aspect-[16/10]"><Foto src={borrelplank} alt="Sfeerfoto: een ronde borrelplank met ham, worst, kaas, olijven, noten en fruit" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+              <div class="absolute inset-x-0 bottom-0 bg-olijf/90 p-5">
+                <p class="kicker text-kaas">04 · Borrelplanken</p>
+                <p class="mt-1 font-display text-lg font-bold">Borrelplanken naar wens</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="mt-6 grid gap-6 rounded-xl border border-white/20 p-6 sm:p-8 md:grid-cols-[auto_1fr_auto] md:items-center">
+          <div class="aspect-[4/3] w-full max-w-[300px] overflow-hidden rounded-lg md:w-44"><Foto src={borrelEigen} alt="Een borrelplank van ons met kaas, ham, worst en hapjes, met naamkaartjes" widths={[300]} sizes="(min-width: 768px) 176px, 300px" /></div>
+          <div>
+            <p class="kicker text-kaas">05 · Voor bedrijven</p>
+            <h3 class="mt-2 text-xl">Buffetten en hapjes voor bedrijven</h3>
+            <p class="mt-2 text-sm text-white/85">Wij verzorgen ook hapjes en dergelijke voor bedrijven. Neem hiervoor even contact met ons op.</p>
+          </div>
+          <a href={site.telHref} class="btn btn-kaas"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow: bestelling samenstellen. Zonder JS: de uitleg hoe u bestelt. -->
+    <section id="bestellen" class="scroll-mt-20 py-16 lg:py-24" data-bestel>
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-terra">Bestellen en afhalen</p>
+            <h2 class="mt-3 text-3xl">Stel uw bestelling samen</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5">Kies uw schotels, het aantal personen en wanneer u het komt afhalen. In uw overzicht ziet u meteen de prijs, waar die vaststaat.</p>
+        </div>
+
+        <div data-geenjs class="mt-10 rounded-xl bg-zand p-6 shadow-sm">
+          <p>Bestellen kan per mail naar <strong class="[overflow-wrap:anywhere]">{site.bestelMail}</strong> of telefonisch op <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a>. Vermeld erbij op welke datum en tijd u het afhaalt.</p>
+        </div>
+
+        <div class="mt-10 grid gap-8 lg:grid-cols-12" hidden data-app>
+          <form class="rounded-xl bg-white p-5 shadow-sm sm:p-8 lg:col-span-7" data-form novalidate>
+            <fieldset>
+              <legend class="font-display text-lg font-bold">1. Wat wilt u bestellen?</legend>
+              <ul class="mt-4 divide-y divide-line border-y border-line">
+                {producten.map((p) => (
+                  <li class="py-4" data-rij={p.id}>
+                    <div class="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-2">
+                      <div class="min-w-0">
+                        <p class="font-semibold" id={`n-${p.id}`}>{p.naam}</p>
+                        <p class="text-sm text-ink-soft">{p.info}{p.prijs > 0 && <>{' · '}<span class="whitespace-nowrap tabular-nums font-semibold text-ink">{eur(p.prijs)} p.p.</span></>}</p>
+                      </div>
+                      <div class="w-[8.5rem]">
+                        <div class="stap">
+                          <button type="button" data-min={p.id} aria-label={`Minder ${p.eenheid}: ${p.naam}`}>−</button>
+                          <input type="number" inputmode="numeric" min="0" max="200" value="0" name={p.id} data-aantal data-prijs={p.prijs} data-naam={p.naam} data-eenheid={p.eenheid} aria-labelledby={`n-${p.id} e-${p.id}`} />
+                          <button type="button" data-plus={p.id} aria-label={`Meer ${p.eenheid}: ${p.naam}`}>+</button>
+                        </div>
+                        <p class="mt-1 text-center text-xs text-ink-soft" id={`e-${p.id}`}>{p.eenheid}</p>
+                      </div>
+                    </div>
+                    {p.id === 'tapas' && (
+                      <fieldset class="mt-4 rounded-lg bg-room p-4" hidden data-sub="tapas">
+                        <legend class="sr-only">Uw keuze voor de tapasschotel</legend>
+                        <p class="text-sm font-semibold" aria-hidden="true">Uw keuze voor de tapasschotel</p>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                          {tapas.map((t) => <label class="keuze"><input type="checkbox" class="sr-only" name="tapas-keuze" value={t} /><span class="bol" aria-hidden="true"></span>{t}</label>)}
+                        </div>
+                      </fieldset>
+                    )}
+                    {p.id === 'vlees' && (
+                      <fieldset class="mt-4 rounded-lg bg-room p-4" hidden data-sub="vlees">
+                        <legend class="sr-only">Sausjes en confijten bij de paté</legend>
+                        <p class="text-sm font-semibold" aria-hidden="true">Sausjes en confijten bij de paté</p>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                          {sausjes.map((t) => <label class="keuze"><input type="checkbox" class="sr-only" name="saus-keuze" value={t} /><span class="bol" aria-hidden="true"></span>{t}</label>)}
+                        </div>
+                      </fieldset>
+                    )}
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-4 flex flex-wrap gap-2">
+                <label class="keuze"><input type="checkbox" class="sr-only" name="extra" value="Lactosevrije kazen" /><span class="bol" aria-hidden="true"></span>Lactosevrije kazen</label>
+                <label class="keuze"><input type="checkbox" class="sr-only" name="extra" value="Crackers erbij" /><span class="bol" aria-hidden="true"></span>Crackers erbij</label>
+                <label class="keuze"><input type="checkbox" class="sr-only" name="extra" value="Onze huiswijn erbij" /><span class="bol" aria-hidden="true"></span>Onze huiswijn erbij</label>
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-8">
+              <legend class="font-display text-lg font-bold">2. Wanneer haalt u het af?</legend>
+              <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label for="datum" class="text-sm font-semibold">Ophaaldatum</label>
+                  <input id="datum" name="datum" type="date" class="veld mt-1.5" aria-describedby="datum-uitleg" />
+                  <p id="datum-uitleg" class="mt-1.5 text-xs text-ink-soft">Minimaal 1 dag van tevoren bestellen.</p>
+                </div>
+                <div>
+                  <label for="tijd" class="text-sm font-semibold">Tijdstip</label>
+                  <select id="tijd" name="tijd" class="veld mt-1.5" aria-describedby="tijd-uitleg"><option value="">Kies eerst een datum</option></select>
+                  <p id="tijd-uitleg" class="mt-1.5 text-xs text-ink-soft" data-tijd-uitleg>Binnen onze openingstijden.</p>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-8">
+              <legend class="font-display text-lg font-bold">3. Waar moeten we rekening mee houden?</legend>
+              <label for="wensen" class="mt-3 block text-sm text-ink-soft">Voorkeuren of allergieën (niet verplicht)</label>
+              <textarea id="wensen" name="wensen" rows="3" class="veld mt-1.5"></textarea>
+            </fieldset>
+
+            <button type="submit" class="btn btn-terra mt-8 w-full sm:w-auto">Bestelling klaarzetten<Fragment set:html={pijl} /></button>
+          </form>
+
+          <aside class="lg:col-span-5" aria-label="Uw overzicht">
+            <div class="donker rounded-xl bg-olijf p-6 text-white shadow-lg sm:p-8 lg:sticky lg:top-24">
+              <p class="kicker text-kaas">Uw overzicht</p>
+              <div aria-live="polite" data-overzicht>
+                <p class="mt-3 font-display text-xl font-bold leading-snug" data-leeg>Kies hiernaast uw schotels. Dan ziet u hier uw bestelling.</p>
+                <ul class="mt-4 border-t border-white/20 text-sm" data-lijst></ul>
+                <div class="mt-4 flex items-baseline justify-between gap-4" hidden data-totaal-rij>
+                  <span class="text-white/85">Kaasschotels samen</span>
+                  <strong class="font-display text-2xl whitespace-nowrap tabular-nums" data-totaal></strong>
+                </div>
+                <p class="mt-2 text-xs text-white/75" hidden data-opweging>Tapas- en vleeswarenschotels rekenen we af op gewicht, plus arbeidsloon voor de opmaak.</p>
+                <p class="mt-4 border-t border-white/20 pt-4 text-sm" data-ophalen>Ophalen: nog geen datum gekozen.</p>
+                <p class="mt-2 text-sm font-semibold text-terra-licht" data-fout></p>
+              </div>
+              <div class="mt-6 rounded-lg bg-white/10 p-4 text-sm" hidden data-melding role="status">
+                {site.voorstel ? (
+                  <p>Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a> of mail naar <strong class="[overflow-wrap:anywhere]">{site.bestelMail}</strong>.</p>
+                ) : (
+                  <p>Kopieer uw overzicht en mail het naar <strong class="[overflow-wrap:anywhere]">{site.bestelMail}</strong>, of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a>.</p>
+                )}
+                <button type="button" class="btn btn-kaas mt-4 !py-2.5 text-sm" data-kopieer>Kopieer overzicht</button>
+                <p class="mt-2 text-xs text-white/80" data-gekopieerd aria-live="polite"></p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Bestelhulp: rekent alleen met de prijzen die op hun eigen site staan (kaasschotels p.p.). Verstuurt niets.
+      const sectie = document.querySelector<HTMLElement>('[data-bestel]');
+      if (sectie) {
+        const app = sectie.querySelector<HTMLElement>('[data-app]')!;
+        const form = sectie.querySelector<HTMLFormElement>('[data-form]')!;
+        sectie.querySelector<HTMLElement>('[data-geenjs]')!.hidden = true;
+        app.hidden = false;
+        const $ = <T extends HTMLElement>(s: string) => sectie.querySelector<T>(s)!;
+        const lijst = $('[data-lijst]');
+        const leeg = $('[data-leeg]');
+        const totaalRij = $('[data-totaal-rij]');
+        const totaal = $('[data-totaal]');
+        const opWeging = $('[data-opweging]');
+        const ophalen = $('[data-ophalen]');
+        const fout = $('[data-fout]');
+        const melding = $('[data-melding]');
+        const datum = $<HTMLInputElement>('#datum');
+        const tijd = $<HTMLSelectElement>('#tijd');
+        const tijdUitleg = $('[data-tijd-uitleg]');
+        const eur = (n: number) => '€ ' + n.toFixed(2).replace('.', ',');
+        const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const morgen = new Date(); morgen.setDate(morgen.getDate() + 1);
+        datum.min = iso(morgen);
+        // Openingstijden van hun site, in minuten: zo 13.00-18.00, ma-vr 08.30-17.30, za 08.00-17.30.
+        const open: Record<number, [number, number]> = { 0: [780, 1080], 1: [510, 1050], 2: [510, 1050], 3: [510, 1050], 4: [510, 1050], 5: [510, 1050], 6: [480, 1050] };
+        const hm = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}.${String(m % 60).padStart(2, '0')}`;
+        const dagen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+        const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+        const leesDatum = () => { if (!datum.value) return null; const [y, m, d] = datum.value.split('-').map(Number); return new Date(y, m - 1, d); };
+
+        const vulTijden = () => {
+          const d = leesDatum();
+          const oud = tijd.value;
+          tijd.innerHTML = '';
+          if (!d) { tijd.add(new Option('Kies eerst een datum', '')); tijdUitleg.textContent = 'Binnen onze openingstijden.'; return; }
+          const [van, tot] = open[d.getDay()];
+          tijd.add(new Option('Kies een tijd', ''));
+          for (let m = van; m < tot; m += 30) tijd.add(new Option(`${hm(m)} uur`, hm(m)));
+          if ([...tijd.options].some((o) => o.value === oud)) tijd.value = oud;
+          tijdUitleg.textContent = `Op ${dagen[d.getDay()]} zijn we open van ${hm(van)} tot ${hm(tot)} uur.`;
+        };
+
+        const tekstOverzicht: string[] = [];
+        const bijwerken = () => {
+          lijst.innerHTML = '';
+          tekstOverzicht.length = 0;
+          let som = 0; let weging = false; let iets = false;
+          form.querySelectorAll<HTMLInputElement>('[data-aantal]').forEach((inp) => {
+            let n = Math.max(0, Math.min(200, Math.floor(Number(inp.value) || 0)));
+            if (String(n) !== inp.value) inp.value = String(n);
+            const id = inp.name;
+            const sub = form.querySelector<HTMLElement>(`[data-sub="${id}"]`);
+            if (sub) sub.hidden = n === 0;
+            if (!n) return;
+            iets = true;
+            const prijs = Number(inp.dataset.prijs);
+            const li = document.createElement('li');
+            li.className = 'flex items-baseline justify-between gap-4 border-b border-white/20 py-2.5';
+            const links = document.createElement('span');
+            links.className = 'min-w-0';
+            links.textContent = `${inp.dataset.naam}, ${n} ${n === 1 && inp.dataset.eenheid === 'personen' ? 'persoon' : n === 1 ? 'plank' : inp.dataset.eenheid}`;
+            let extraRegel = '';
+            if (id === 'tapas' || id === 'vlees') {
+              const keuzes = [...form.querySelectorAll<HTMLInputElement>(`input[name="${id === 'tapas' ? 'tapas-keuze' : 'saus-keuze'}"]:checked`)].map((c) => c.value);
+              if (keuzes.length) {
+                extraRegel = keuzes.join(', ');
+                const k = document.createElement('span');
+                k.className = 'mt-0.5 block text-xs text-white/75';
+                k.textContent = extraRegel;
+                links.append(k);
+              }
+            }
+            const rechts = document.createElement('span');
+            rechts.className = 'whitespace-nowrap tabular-nums font-semibold';
+            if (prijs > 0) { som += prijs * n; rechts.textContent = eur(prijs * n); }
+            else if (id === 'borrel') { rechts.textContent = 'naar wens'; }
+            else { weging = true; rechts.textContent = 'op gewicht'; }
+            li.append(links, rechts);
+            lijst.append(li);
+            tekstOverzicht.push(`- ${links.firstChild!.textContent}${extraRegel ? ' (' + extraRegel + ')' : ''}: ${rechts.textContent}`);
+          });
+          const extras = [...form.querySelectorAll<HTMLInputElement>('input[name=extra]:checked')].map((c) => c.value);
+          if (extras.length && iets) {
+            const li = document.createElement('li');
+            li.className = 'border-b border-white/20 py-2.5 text-white/85';
+            li.textContent = `Ook: ${extras.join(', ').toLowerCase()}`;
+            lijst.append(li);
+            tekstOverzicht.push(`- Ook: ${extras.join(', ').toLowerCase()}`);
+          }
+          leeg.hidden = iets;
+          lijst.hidden = !iets;
+          totaalRij.hidden = som === 0;
+          totaal.textContent = eur(som);
+          if (som) tekstOverzicht.push(`Kaasschotels samen: ${eur(som)}`);
+          opWeging.hidden = !weging;
+
+          const d = leesDatum();
+          fout.textContent = '';
+          if (d) {
+            const dagTekst = `${dagen[d.getDay()]} ${d.getDate()} ${maanden[d.getMonth()]}`;
+            ophalen.textContent = `Ophalen: ${dagTekst}${tijd.value ? ', ' + tijd.value + ' uur' : ', kies nog een tijd'}.`;
+            if (datum.value < datum.min) fout.textContent = 'Bestel minimaal 1 dag van tevoren: kies een latere datum.';
+          } else ophalen.textContent = 'Ophalen: nog geen datum gekozen.';
+          tekstOverzicht.push(ophalen.textContent);
+          const wensen = (form.elements.namedItem('wensen') as HTMLTextAreaElement).value.trim();
+          if (wensen) tekstOverzicht.push(`Voorkeuren/allergieën: ${wensen}`);
+        };
+
+        form.addEventListener('click', (e) => {
+          const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-min], button[data-plus]');
+          if (!b) return;
+          const id = b.dataset.min || b.dataset.plus!;
+          const inp = form.querySelector<HTMLInputElement>(`input[name="${id}"]`)!;
+          inp.value = String(Math.max(0, (Number(inp.value) || 0) + (b.dataset.plus ? 1 : -1)));
+          bijwerken();
+        });
+        datum.addEventListener('change', () => { vulTijden(); bijwerken(); });
+        form.addEventListener('input', bijwerken);
+        form.addEventListener('change', bijwerken);
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          bijwerken();
+          const ietsGekozen = [...form.querySelectorAll<HTMLInputElement>('[data-aantal]')].some((i) => Number(i.value) > 0);
+          if (!ietsGekozen) { fout.textContent = 'Kies eerst minimaal één schotel of plank.'; return; }
+          if (!datum.value) { fout.textContent = 'Kies nog een ophaaldatum.'; datum.focus(); return; }
+          if (datum.value < datum.min) { datum.focus(); return; }
+          if (!tijd.value) { fout.textContent = 'Kies nog een tijdstip.'; tijd.focus(); return; }
+          melding.hidden = false;
+          melding.querySelector<HTMLButtonElement>('[data-kopieer]')!.focus();
+        });
+        $('[data-kopieer]').addEventListener('click', async () => {
+          const tekst = ['Bestelling Verswinkel Marlou Segers', ...tekstOverzicht].join('\n');
+          const uit = $('[data-gekopieerd]');
+          try { await navigator.clipboard.writeText(tekst); uit.textContent = 'Gekopieerd. Plak het in uw mail.'; }
+          catch { uit.textContent = 'Kopiëren lukt niet in deze browser. Neem het overzicht hierboven over.'; }
+        });
+        bijwerken();
+      }
+    </script>
+
+    <!-- Historie en prijzen: verhaal links, tijdlijn rechts. -->
+    <section id="historie" class="scroll-mt-20 bg-zand py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-terra">Historie</p>
+          <h2 class="mt-3 text-3xl">Twee keer verbouwd, en toch weer plaats tekort</h2>
+          <p class="mt-5 text-ink-soft">Sinds de overname is de winkel al 2 keer verbouwd en uitgebreid. En eigenlijk komen we weer plaats tekort, want na al die beursbezoeken ontdek je weer zoveel nieuwe producten. Zo hebben we altijd het nieuwste van het nieuwste in huis.</p>
+          <figure class="mt-8 grid grid-cols-[minmax(0,130px)_1fr] items-end gap-5 sm:grid-cols-[minmax(0,180px)_1fr]">
+            <div class="aspect-[300/534] overflow-hidden rounded-xl shadow-sm"><Foto src={certificaat} alt="In onze winkel wordt het certificaat Gecertificeerde Foodspecialiteitenwinkel omhoog gehouden" widths={[300]} sizes="(min-width: 640px) 180px, 130px" /></div>
+            <figcaption class="text-sm text-ink-soft">Het certificaat van de Stichting Kaas- en Delicatessenwinkels Nederland. De sticker met het kroontje zit op de winkeldeur.</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-7">
+          {[
+            { jaar: '2006', kop: 'Totaal vernieuwd', tekst: 'In oktober is echt alles vernieuwd, en de koeling is uitgebreid van 3½ naar 10½ meter.' },
+            { jaar: '2008', kop: 'Beste noten- en zuidvruchtenspecialist', tekst: 'Nederlands beste, in 2008, 2009 en 2010. In 2008 en 2009 ook 2e beste vleeswaren-, salades-, tapas- en patéspecialist van Nederland.' },
+            { jaar: '2010', kop: 'Beste vleeswarenspecialist van Nederland', tekst: 'Voor de buitenlandse kaas bij de beste 5 (in 2009 bij de beste 9). Met de totale winkel foodspecialiteiten op de 4e plaats van Nederland.' },
+            { jaar: '2012', kop: 'In 3 halve finales', tekst: 'Beste foodspecialiteitenwinkel, buitenlandse kaas en beste noten- en zuidvruchtenspecialist. Met als resultaat 4e van Nederland.' },
+            { jaar: '2016', kop: 'Weer gecertificeerd', tekst: 'Onderscheiden als Gecertificeerde Foodspecialiteitenwinkel. Bewezen te voldoen aan meer dan 100 kwaliteitseisen, gecontroleerd in de winkel door een onafhankelijke controleur.' },
+          ].map((s, i, a) => (
+            <li class={`grid gap-2 border-l-2 border-terra pl-6 sm:grid-cols-[9rem_1fr] sm:gap-6 ${i < a.length - 1 ? 'pb-9' : ''}`}>
+              <p class="font-display text-groot font-extrabold leading-none tracking-[-0.03em] tabular-nums text-terra">{s.jaar}</p>
+              <div class="sm:pt-1.5"><h3 class="text-xl">{s.kop}</h3><p class="mt-1.5 text-ink-soft">{s.tekst}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact en route: tijden, bestellen, parkeren, België. -->
+    <section id="contact" class="donker scroll-mt-20 bg-mos py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-kaas">Route en contact</p>
+          <h2 class="mt-3 text-3xl">Kom gerust proeven</h2>
+          <address class="mt-6 text-lg not-italic">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-kaas"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href={site.maps} rel="noopener" class="btn btn-line">Route plannen</a>
+          </div>
+          <dl class="mt-10 grid gap-6 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-kaas">Bestellingen</dt><dd class="mt-1 text-white/85"><a href={`mailto:${site.bestelMail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.bestelMail}</a><br />Vermeld de datum en tijd waarop u het afhaalt.</dd></div>
+            <div><dt class="font-semibold text-kaas">Informatie</dt><dd class="mt-1 text-white/85"><a href={`mailto:${site.mail}`} class="[overflow-wrap:anywhere] underline underline-offset-2">{site.mail}</a></dd></div>
+            <div><dt class="font-semibold text-kaas">Gratis parkeren</dt><dd class="mt-1 text-white/85">Altijd buiten de wallen, het hele jaar door. Op de markt gratis tot 10.00 uur 's ochtends.</dd></div>
+            <div><dt class="font-semibold text-kaas">Klanten uit België</dt><dd class="mt-1 text-white/85">We kunnen ook noten, thee en kaas opsturen. Er komen dan verzendkosten bij. Bellen vanuit België: <span class="whitespace-nowrap tabular-nums">{site.telBelgie}</span></dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rounded-xl bg-olijf p-6 shadow-lg sm:p-8">
+            <h3 class="text-xl">Openingstijden</h3>
+            <dl class="mt-4 border-t border-white/20">
+              {tijden.map((t) => (
+                <div class="flex justify-between gap-4 border-b border-white/20 py-3"><dt>{t.dag}</dt><dd class="whitespace-nowrap tabular-nums font-semibold">{t.tijd}</dd></div>
+              ))}
+            </dl>
+            <p class="mt-4 text-sm text-white/75">* Behalve 2e Kerstdag.</p>
+          </div>
+          <figure class="mt-6 overflow-hidden rounded-xl">
+            <div class="aspect-[16/9]"><Foto src={vleesplank} alt="Sfeerfoto: een plank met ham, salami, kaas, olijven, stokbrood en een kruidenkaasje" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

@@ -1,0 +1,315 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, tijden } from '../data/site';
+import gereedschap from '../assets/gereedschap.jpg';
+import gevel from '../assets/gevel.jpg';
+import doppenset from '../assets/doppenset.jpg';
+import sleutel from '../assets/steeksleutel.jpg';
+import banden from '../assets/banden.jpg';
+
+// Diensten: de volgorde en woorden van hun gevelbord ("Voor al uw: Reparatie - Onderhoud, APK, In-en Verkoop Auto's"),
+// de uitleg uit de pagina's Welkom, Service en Werkplaats.
+const diensten = [
+  { naam: 'Reparatie', tekst: "Wij repareren auto's van alle merken en types." },
+  { naam: 'Onderhoud', tekst: "Onderhoud en reparatie van alle merken personenauto's en lichte bestelwagens." },
+  { naam: 'APK', tekst: 'U kunt bij ons ook terecht voor APK-keuringen.' },
+  { naam: 'In- en verkoop', tekst: "Jarenlange ervaring in de verkoop en inkoop van gebruikte auto's." },
+  { naam: 'Vervangend vervoer', tekst: 'Om u uw mobiele genot te kunnen garanderen.' },
+];
+const kortom = ['Veel keus', 'Veel techniek', 'Vervangend vervoer', 'Uitstekende service'];
+const paden = [
+  { id: 'zoeken', titel: 'Auto zoeken', sub: 'Merk, model, budget en bouwjaar' },
+  { id: 'verkopen', titel: 'Auto verkopen of inruilen', sub: 'Merk, model en kilometerstand' },
+  { id: 'werkplaats', titel: 'Werkplaats', sub: 'APK, onderhoud of reparatie' },
+];
+const dagen = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.6-.3Z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+---
+<Base
+  title="Autobedrijf Dennis Maas | Reparatie, onderhoud, APK en occasions in Etten-Leur"
+  description="Dynamisch autobedrijf aan de Ambachtlaan 22 in Etten-Leur. Verkoop en inkoop van gebruikte auto's, reparatie en onderhoud van alle merken, APK-keuringen en vervangend vervoer."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: gereedschapswand als groot beeld onder een petrol-laag, bewijzen rechts, gevelbord-tekst als strook. -->
+    <section class="donker relative isolate overflow-hidden bg-petrol text-white">
+      <div class="absolute inset-0 -z-10">
+        <Foto src={gereedschap} alt="" hero widths={[640, 1000, 1400, 1900]} sizes="100vw" class="object-[70%_50%]" />
+        <div class="absolute inset-0 bg-petrol/85 lg:bg-transparent lg:bg-[linear-gradient(100deg,var(--color-petrol)_30%,color-mix(in_srgb,var(--color-petrol)_78%,transparent)_58%,color-mix(in_srgb,var(--color-petrol)_35%,transparent))]"></div>
+      </div>
+      <div class="wrap grid gap-10 pt-12 pb-10 sm:pt-16 lg:grid-cols-12 lg:pt-24 lg:pb-14">
+        <div class="lg:col-span-8">
+          <p class="kicker text-mint">{site.straat}, {site.plaats}</p>
+          <h1 class="mt-5 text-4xl">Service is een begrip bij ons</h1>
+          <p class="mt-6 max-w-2xl text-lg text-white/90">{site.naam} is een dynamisch autobedrijf met een jarenlange ervaring in de verkoop en inkoop van gebruikte auto's. Daarnaast repareren wij ook auto's van alle merken en types.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-mint"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <a href="#hulp" class="mt-6 inline-flex items-center gap-2 font-display text-lg font-bold text-mint underline decoration-2 underline-offset-4 transition-colors hover:text-white">Waarmee kunnen we u helpen? <span class="h-5 w-5"><Fragment set:html={pijl} /></span></a>
+        </div>
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-5 self-end rounded-xl bg-diep/70 p-5 text-sm shadow-lg backdrop-blur-sm sm:grid-cols-3 lg:col-span-4 lg:col-start-9 lg:grid-cols-1 lg:p-7">
+          <div class="col-span-2 sm:col-span-1"><dt class="text-white/80">Google</dt><dd><strong class="font-display text-2xl">{site.google}</strong> <span class="text-white/85">({site.reviews} reviews)</span></dd></div>
+          <div><dt class="text-white/80">Ma t/m vr</dt><dd class="font-display text-xl font-bold whitespace-nowrap tabular-nums">08:30 - 17:30</dd></div>
+          <div><dt class="text-white/80">Zaterdag</dt><dd class="font-display text-xl font-bold whitespace-nowrap tabular-nums">09:00 - 12:00</dd></div>
+        </dl>
+      </div>
+      <div class="border-t border-white/15 bg-diep/60">
+        <div class="wrap flex flex-wrap items-baseline gap-x-6 gap-y-2 py-5 lg:pr-[26rem]">
+          <p class="kicker text-white/80">Voor al uw</p>
+          <ul class="flex flex-wrap gap-x-5 gap-y-1 font-display text-lg font-bold sm:text-xl">
+            {['Reparatie', 'Onderhoud', 'APK', "In- en verkoop auto's"].map((d, i) => (
+              <li class="flex items-center gap-5">{i > 0 && <span class="h-1.5 w-1.5 rounded-full bg-mint" aria-hidden="true"></span>}{d}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Welkom: hun eigen gevelbord valt over de rand van de hero; dienstenlijst in de woorden van het bord. -->
+    <section id="welkom" class="scroll-mt-20 pb-16 lg:pb-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <figure class="relative z-10 -mt-6 w-full max-w-[373px] self-start rounded-xl bg-white p-2 shadow-lg lg:col-span-5 lg:col-start-8 lg:row-start-1 lg:-mt-32 lg:ml-auto lg:rotate-[-1.5deg]">
+          <div class="aspect-[357/164] w-full overflow-hidden rounded-lg"><Foto src={gevel} alt="Het bord op onze gevel: Autobedrijf Dennis Maas, voor al uw reparatie, onderhoud, APK en in- en verkoop auto's" widths={[357]} sizes="357px" /></div>
+          <figcaption class="px-1.5 pt-2 pb-1 text-sm text-ink-soft">Ons bord aan de {site.straat}</figcaption>
+        </figure>
+        <div class="lg:col-span-5 lg:row-span-2 lg:row-start-1 lg:pt-20">
+          <p class="kicker text-turkoois">Welkom</p>
+          <h2 class="mt-3 text-3xl">Wij zorgen dat uw probleem snel en goed wordt opgelost</h2>
+          <p class="mt-6 text-lg">Ook als u uw auto niet bij ons heeft gekocht bent u van harte welkom. Wij hebben een eigen werkplaats.</p>
+          <p class="mt-4 text-ink-soft">Mocht uw droomauto niet tussen ons aanbod staan, of wilt u meer weten over reparaties of over ons bedrijf, neem dan gerust contact met ons op.</p>
+        </div>
+        <ol class="border-t border-line lg:col-span-7 lg:col-start-6">
+          {diensten.map((d, i) => (
+            <li class="grid gap-1 border-b border-line py-6 sm:grid-cols-[3.25rem_13rem_1fr] sm:gap-6">
+              <span class="font-display text-sm font-extrabold tabular-nums text-turkoois">0{i + 1}</span>
+              <h3 class="text-xl">{d.naam}</h3>
+              <p class="text-ink-soft">{d.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Werkplaats: de steeksleutel-foto (desktop) heeft rechts ruimte voor tekst; op mobiel de doppenset. -->
+    <section id="werkplaats" class="donker relative isolate scroll-mt-20 overflow-hidden bg-petrol text-white">
+      <div class="absolute inset-0 -z-10 hidden lg:block">
+        <Foto src={sleutel} alt="" widths={[1000, 1600, 2000]} sizes="100vw" class="object-left" />
+        <div class="absolute inset-0 bg-[linear-gradient(90deg,transparent_25%,color-mix(in_srgb,var(--color-petrol)_80%,transparent)_55%)]"></div>
+      </div>
+      <div class="wrap grid gap-10 py-16 lg:grid-cols-12 lg:py-28">
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="kicker text-mint">Werkplaats</p>
+          <h2 class="mt-3 text-3xl">Een moderne werkplaats met geavanceerde testapparatuur</h2>
+          <p class="mt-6 text-lg text-white/90">Voor de juiste uitvoering van uw opdracht en eerlijk vakkundig advies bent u bij {site.naam} aan het juiste adres.</p>
+          <p class="mt-4 text-white/85">Naast onderhoud en reparatie van alle merken personenauto's en lichte bestelwagens kunt u bij ons ook terecht voor APK-keuringen. Neem gerust contact met ons op.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#hulp" data-kies="werkplaats" class="btn btn-mint">Afspraak werkplaats <Fragment set:html={pijl} /></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+          </div>
+        </div>
+        <figure class="lg:hidden">
+          <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-lg"><Foto src={doppenset} alt="Een goed gebruikte doppenset met ratel en bits op de werkbank" widths={[480, 800, 1000]} sizes="100vw" /></div>
+        </figure>
+      </div>
+      <div class="border-t border-white/15 bg-diep/80">
+        <div class="wrap grid gap-6 py-8 lg:grid-cols-12 lg:items-center">
+          <p class="font-display text-xl font-bold text-mint lg:col-span-2">Kortom:</p>
+          <ul class="grid grid-cols-2 gap-x-6 gap-y-3 lg:col-span-10 lg:grid-cols-4">
+            {kortom.map((k) => <li class="border-l-2 border-mint pl-3 font-display text-xl leading-tight sm:pl-4 sm:text-2xl font-extrabold">{k}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Occasions: hun pagina is leeg, dus geen voorraad. Wel de showroom en de weg naar het actuele aanbod. -->
+    <section id="occasions" class="scroll-mt-20 bg-mist py-16 lg:py-24">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12">
+        <div class="order-2 lg:order-1 lg:col-span-5">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-[4/5]"><Foto src={banden} alt="Een stapel autobanden, van dichtbij" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 440px, 100vw" /></div>
+        </div>
+        <div class="order-1 lg:order-2 lg:col-span-6 lg:col-start-7">
+          <p class="kicker text-turkoois">Occasions</p>
+          <h2 class="mt-3 text-3xl">Een keur aan speciaal geselecteerde occasions</h2>
+          <p class="mt-6 text-lg">In onze showroom vindt u een keur aan speciaal geselecteerde occasions. Neem gerust eens een kijkje in ons actuele aanbod.</p>
+          <div class="mt-8 rounded-xl bg-white p-6 shadow-sm sm:p-7">
+            <h3 class="text-xl">Het actuele aanbod</h3>
+            <p class="mt-2 text-ink-soft">Bel of kom langs voor het actuele aanbod. Mocht uw droomauto er niet tussen staan, neem dan gerust contact met ons op.</p>
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href="#hulp" data-kies="zoeken" class="btn btn-turkoois">Geef uw zoekwens door <Fragment set:html={pijl} /></a>
+              <a href="#hulp" data-kies="verkopen" class="btn btn-line text-turkoois">Auto verkopen of inruilen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow: keuzehulp met drie paden. Zonder JS staan alle drie de formulierdelen gewoon onder elkaar. -->
+    <section id="hulp" class="donker scroll-mt-16 bg-petrol py-16 text-white lg:py-24" data-hulp>
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-mint">Aanvraag</p>
+          <h2 class="mt-3 text-3xl">Waarmee kunnen we u helpen?</h2>
+          <p class="mt-5 text-white/85">Kies wat u zoekt en vul in wat u al weet. Onderaan ziet u meteen uw aanvraag.</p>
+          <fieldset class="mt-8">
+            <legend class="sr-only">Kies waarmee we u kunnen helpen</legend>
+            <div class="grid gap-3">
+              {paden.map((p, i) => (
+                <label class="pad">
+                  <input type="radio" name="pad" value={p.id} class="sr-only" checked={i === 0} />
+                  <span class="nr">0{i + 1}</span>
+                  <span><span class="block font-display text-xl leading-tight font-extrabold">{p.titel}</span><span class="mt-1 block text-sm">{p.sub}</span></span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-10 hidden aspect-[3/2] overflow-hidden rounded-xl shadow-lg lg:block"><Foto src={doppenset} alt="Een goed gebruikte doppenset met ratel en bits op de werkbank" widths={[480, 800]} sizes="380px" /></div>
+        </div>
+
+        <form class="rounded-2xl bg-paper p-5 text-ink shadow-lg sm:p-8 lg:col-span-8" data-form novalidate>
+          <fieldset data-paneel="zoeken" class="grid gap-5 sm:grid-cols-2">
+            <legend class="mb-5 font-display text-2xl font-extrabold">Auto zoeken</legend>
+            <p class="-mt-2 text-ink-soft sm:col-span-2">Mocht uw droomauto niet tussen ons aanbod staan, dan horen we graag waar u naar zoekt.</p>
+            <label class="veld"><span>Merk</span><input name="z-merk" autocomplete="off" /></label>
+            <label class="veld"><span>Model</span><input name="z-model" autocomplete="off" /></label>
+            <label class="veld"><span>Budget tot (euro)</span><input name="z-budget" inputmode="numeric" autocomplete="off" /></label>
+            <label class="veld"><span>Bouwjaar vanaf</span><input name="z-jaar" inputmode="numeric" maxlength="4" autocomplete="off" /></label>
+          </fieldset>
+
+          <fieldset data-paneel="verkopen" class="grid gap-5 sm:grid-cols-2">
+            <legend class="mb-5 font-display text-2xl font-extrabold">Auto verkopen of inruilen</legend>
+            <div class="flex flex-wrap gap-2 sm:col-span-2" role="radiogroup" aria-label="Verkopen of inruilen">
+              <label class="chip"><input type="radio" name="v-soort" value="verkopen" class="sr-only" checked />Verkopen</label>
+              <label class="chip"><input type="radio" name="v-soort" value="inruilen" class="sr-only" />Inruilen</label>
+            </div>
+            <label class="veld"><span>Merk</span><input name="v-merk" autocomplete="off" /></label>
+            <label class="veld"><span>Model</span><input name="v-model" autocomplete="off" /></label>
+            <label class="veld"><span>Bouwjaar</span><input name="v-jaar" inputmode="numeric" maxlength="4" autocomplete="off" /></label>
+            <label class="veld"><span>Kilometerstand</span><input name="v-km" inputmode="numeric" autocomplete="off" /></label>
+          </fieldset>
+
+          <fieldset data-paneel="werkplaats" class="grid gap-5 sm:grid-cols-2">
+            <legend class="mb-5 font-display text-2xl font-extrabold">Werkplaats</legend>
+            <div class="flex flex-wrap gap-2 sm:col-span-2" role="group" aria-label="Wat wilt u laten doen?">
+              {['APK', 'Onderhoud', 'Reparatie'].map((w) => <label class="chip"><input type="checkbox" name="w-wat" value={w} class="sr-only" />{w}</label>)}
+            </div>
+            <label class="veld kenteken"><span>Kenteken</span><input name="w-kenteken" maxlength="8" autocomplete="off" placeholder="XX-000-X" /></label>
+            <label class="veld"><span>Gewenste dag</span>
+              <select name="w-dag"><option value="">Maakt niet uit</option>{dagen.map((d) => <option>{d}</option>)}</select>
+            </label>
+            <label class="veld sm:col-span-2"><span>Wat merkt u aan de auto? (optioneel)</span><textarea name="w-toelichting" rows="2"></textarea></label>
+          </fieldset>
+
+          <div class="mt-8 grid gap-5 border-t border-line pt-6 sm:grid-cols-2">
+            <label class="veld"><span>Uw naam</span><input name="naam" autocomplete="name" /></label>
+            <label class="veld"><span>Telefoonnummer</span><input name="telefoon" type="tel" autocomplete="tel" /></label>
+          </div>
+
+          <div class="mt-8 rounded-xl bg-white p-5 shadow-sm">
+            <p class="kicker text-turkoois">Uw aanvraag</p>
+            <p data-samenvatting aria-live="polite" class="mt-2 font-display text-xl leading-snug font-bold">Vul hierboven in wat u weet.</p>
+          </div>
+
+          {site.voorstel ? (
+            <p class="mt-6 rounded-xl bg-mist p-5 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="font-semibold whitespace-nowrap tabular-nums underline">{site.tel}</a>, stuur een WhatsApp naar <a href={site.whatsapp} class="font-semibold whitespace-nowrap tabular-nums underline">{site.mobiel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold break-all underline">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-turkoois mt-6">Aanvraag versturen</button>
+          )}
+        </form>
+      </div>
+    </section>
+
+    <script>
+      // Keuzehulp: toont het gekozen pad en zet de invoer om in één leesbare aanvraag. Verstuurt niets.
+      const sectie = document.querySelector<HTMLElement>('[data-hulp]');
+      if (sectie) {
+        const form = sectie.querySelector<HTMLFormElement>('[data-form]')!;
+        const panelen = form.querySelectorAll<HTMLFieldSetElement>('[data-paneel]');
+        const uit = form.querySelector<HTMLElement>('[data-samenvatting]')!;
+        const radios = sectie.querySelectorAll<HTMLInputElement>('input[name=pad]');
+        const w = (n: string) => ((form.elements.namedItem(n) as HTMLInputElement | null)?.value || '').trim();
+        const lijst = (a: string[]) => (a.length > 1 ? a.slice(0, -1).join(', ') + ' en ' + a[a.length - 1] : a[0] || '');
+        const bedrag = (s: string) => { const n = s.replace(/\D/g, ''); return n ? '€ ' + Number(n).toLocaleString('nl-NL') : ''; };
+        const km = (s: string) => { const n = s.replace(/\D/g, ''); return n ? Number(n).toLocaleString('nl-NL') + ' km' : ''; };
+        const pad = () => [...radios].find((r) => r.checked)?.value || 'zoeken';
+
+        const bijwerken = () => {
+          const p = pad();
+          panelen.forEach((f) => { f.hidden = f.dataset.paneel !== p; });
+          let tekst = '';
+          if (p === 'zoeken') {
+            const auto = [w('z-merk'), w('z-model')].filter(Boolean).join(' ');
+            const delen = [auto, w('z-budget') && `tot ${bedrag(w('z-budget'))}`, w('z-jaar') && `bouwjaar vanaf ${w('z-jaar')}`].filter(Boolean);
+            tekst = delen.length ? `U zoekt: ${delen.join(', ')}.` : 'Vul merk, model, budget of bouwjaar in.';
+          } else if (p === 'verkopen') {
+            const soort = (form.querySelector<HTMLInputElement>('input[name=v-soort]:checked')?.value) || 'verkopen';
+            const auto = [w('v-merk'), w('v-model')].filter(Boolean).join(' ');
+            const delen = [auto, w('v-jaar') && `bouwjaar ${w('v-jaar')}`, km(w('v-km'))].filter(Boolean);
+            tekst = delen.length ? `U wilt uw auto ${soort}: ${delen.join(', ')}.` : `U wilt uw auto ${soort}. Vul merk, model en kilometerstand in.`;
+          } else {
+            const wat = [...form.querySelectorAll<HTMLInputElement>('input[name=w-wat]:checked')].map((i) => i.value);
+            const kenteken = w('w-kenteken').toUpperCase();
+            const dag = w('w-dag');
+            const soort = wat.length ? lijst(wat.map((x, i) => (i === 0 || x === 'APK' ? x : x.toLowerCase()))) : 'Werkplaats';
+            const delen = [kenteken ? `${soort} voor kenteken ${kenteken}` : soort, dag && `bij voorkeur op ${dag.toLowerCase()}`].filter(Boolean);
+            tekst = wat.length || kenteken || dag ? `${delen.join(', ')}.` : 'Kies APK, onderhoud of reparatie en vul uw kenteken in.';
+          }
+          const naam = w('naam');
+          if (naam) tekst += ` Aanvraag van ${naam}${w('telefoon') ? `, ${w('telefoon')}` : ''}.`;
+          uit.textContent = tekst;
+        };
+
+        sectie.addEventListener('change', bijwerken);
+        form.addEventListener('input', bijwerken);
+        form.addEventListener('submit', (e) => e.preventDefault());
+        // Knoppen elders op de pagina kiezen meteen het juiste pad.
+        document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+          const r = [...radios].find((x) => x.value === a.dataset.kies);
+          if (r) { r.checked = true; bijwerken(); }
+        }));
+        bijwerken();
+      }
+    </script>
+
+    <!-- Route en contact: licht vlak, adres groot, tijden als tabel, bellen/appen in een donkere kaart. -->
+    <section id="contact" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-turkoois">Route en contact</p>
+          <h2 class="mt-3 text-3xl">Kom gerust langs</h2>
+          <address class="mt-8 font-display text-reus leading-[0.95] font-extrabold not-italic tracking-[-0.02em]">{site.straat}<br /><span class="text-turkoois">{site.postcode}<br />{site.plaats}</span></address>
+          <a href={site.maps} rel="noopener" class="btn btn-turkoois mt-8">Routebeschrijving <Fragment set:html={pijl} /></a>
+
+          <h3 class="mt-14 text-xl">Openingstijden</h3>
+          <dl class="mt-4 max-w-md border-t border-line">
+            {tijden.map((t) => (
+              <div class="flex justify-between gap-4 border-b border-line py-2.5"><dt>{t.dag}</dt><dd class="font-semibold whitespace-nowrap tabular-nums">{t.tijd}</dd></div>
+            ))}
+          </dl>
+        </div>
+        <div class="donker self-start rounded-2xl bg-turkoois p-6 text-white shadow-lg sm:p-8 lg:col-span-5 lg:col-start-8">
+          <h3 class="text-2xl">Bellen, appen of mailen</h3>
+          <p class="mt-3 text-white/90">Voor meer informatie of een vrijblijvende afspraak kunt u contact opnemen met Dennis Maas.</p>
+          <dl class="mt-6 grid gap-4">
+            <div class="border-t border-white/25 pt-4"><dt class="text-sm text-white/85">Telefoon</dt><dd><a href={site.telHref} class="font-display text-2xl font-extrabold whitespace-nowrap tabular-nums underline decoration-mint decoration-2 underline-offset-4">{site.tel}</a></dd></div>
+            <div class="border-t border-white/25 pt-4"><dt class="text-sm text-white/85">Mobiel en WhatsApp</dt><dd><a href={site.mobielHref} class="font-display text-2xl font-extrabold whitespace-nowrap tabular-nums underline decoration-mint decoration-2 underline-offset-4">{site.mobiel}</a></dd></div>
+            <div class="border-t border-white/25 pt-4"><dt class="text-sm text-white/85">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="font-semibold break-all underline decoration-mint decoration-2 underline-offset-4">{site.mail}</a></dd></div>
+            <div class="border-t border-white/25 pt-4 text-sm text-white/85"><dt class="inline">Fax </dt><dd class="inline whitespace-nowrap tabular-nums">{site.fax}</dd></div>
+          </dl>
+          <div class="mt-8 flex flex-col gap-3">
+            <a href={site.whatsapp} class="btn btn-mint"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+          <p class="mt-6 text-sm text-white/85"><strong class="font-display text-lg">{site.google}</strong> op Google, {site.reviews} reviews</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
