@@ -1,0 +1,54 @@
+---
+import { site, url } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const thuis = Astro.url.pathname.replace(/\/$/, '') === url('').replace(/\/$/, '');
+const anker = (id: string) => (thuis ? `#${id}` : `${url('')}#${id}`);
+const links = [
+  { id: 'diensten', label: 'Diensten' },
+  { id: 'werkkalender', label: 'Werkkalender' },
+  { id: 'machines', label: 'Machines' },
+  { id: 'noodhulp', label: 'Noodoplossingen' },
+  { id: 'over', label: 'Over Kats' },
+  { id: 'contact', label: 'Contact' },
+];
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-line bg-paper/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden xl:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          {links.map((l) => <li><a href={anker(l.id)} class="no-underline underline-offset-4 transition-colors hover:text-polder hover:underline">{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-line hidden !px-4 !py-2 text-sm text-ink lg:inline-flex hover:!bg-klei hover:!text-white">
+          <span class="whitespace-nowrap tabular-nums">{site.tel}</span>
+        </a>
+        <a href={site.whatsapp} class="btn btn-groen !px-4 !py-2 text-sm">
+          <Fragment set:html={wa} /><span class="max-[379px]:sr-only">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-klei py-12 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo licht />
+        <p class="mt-5">{site.juridisch}<br />{site.straat}<br />{site.postcode} {site.plaats}<br />KvK Rotterdam {site.kvk}</p>
+      </div>
+      <p class="md:col-span-4">
+        Telefoon <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />
+        Mobiel en WhatsApp <a href={site.mobielHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.mobiel}</a><br />
+        <a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a><br />
+        VCA en VKL gecertificeerd
+      </p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-8 text-xs">Sfeerfoto's via Unsplash en foto's van de huidige website, ter illustratie. Bij oplevering vervangen we ze door nieuwe eigen foto's.</p>}
+  </footer>
+)}

@@ -1,0 +1,489 @@
+---
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site } from '../data/site';
+
+import polder from '../assets/polder.jpg';
+import avond from '../assets/avond.jpg';
+import kopAkker from '../assets/kop-akkerbouw.jpg';
+import kopVee from '../assets/kop-veehouderij.jpg';
+import kopCultuur from '../assets/kop-cultuurtechniek.jpg';
+import kopGroen from '../assets/kop-groenvoorziening.jpg';
+
+// Eigen foto's uit hun fotoboek (640 px): nooit breder tonen dan dat.
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/f/*.jpg', { eager: true });
+const F = (n: string) => fotos[`../assets/f/${n}.jpg`].default;
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// Vier vakgebieden, tekst van hun homepage; onderwerpen uit hun menu.
+const diensten = [
+  { nr: '01', naam: 'Akkerbouw', foto: kopAkker, eigen: false, alt: 'Een Claas-combine oogst graan, met het maaibord voor de machine', tekst: 'Grondbewerkingen zoals woelen, cultiveren, ploegen, frezen, eggen en kilveren. Poten en zaaien. De verzorging van gewas. Oogsten en rooien.', subs: ['Grondbewerking', 'Poten en zaaien', 'Gewasverzorging', 'Oogst'] },
+  { nr: '02', naam: 'Veehouderij', foto: F('veehouderij-026'), eigen: true, alt: 'Onze groene trekker met een schudder op een gemaaid grasperceel', tekst: 'De voederwinning van gras moet zo zorgvuldig mogelijk gebeuren. Wij kunnen maaien, schudden, harken, persen, wikkelen, laden en het transport op korte en lange afstand regelen.', subs: ['Grasvoederwinning', 'Persen', 'Wikkelen en laden'] },
+  { nr: '03', naam: 'Cultuurtechniek', foto: kopCultuur, eigen: false, alt: 'Onze trekker met de belettering L. Kats agroservice Numansdorp en een waterwagen op een zandbaan', tekst: 'Ruilverkaveling, grondverbetering, de aanleg en inrichting van weg- en watersystemen. Grond ontgraven en verzetten, drainagewerk, rioleringen, sloten baggeren, watergangen onderhouden, beschoeiingen en damwanden.', subs: ['Grondverzet', 'Watertransport', 'Noodoplossingen'] },
+  { nr: '04', naam: 'Groenvoorziening', foto: kopGroen, eigen: false, alt: 'Onze kleine blauwe trekker met de belettering L. Kats agroservice Numansdorp freest een berm', tekst: 'Aanleg en onderhoud van groenvoorzieningen. Bomen planten en verzorgen, hagen knippen, bermen, slootkanten en gazons maaien, bedrijfsterreinen onkruidvrij maken en ongedierte bestrijden.', subs: ['Zaaien en maaien', 'Onkruidbestrijding', 'Ongediertebestrijding'] },
+];
+
+// Werkkalender. Seizoenen alleen waar hun site of fotoboek dat aangeeft (zie PLAN.md); de rest staat bij "alle seizoenen".
+type Type = 'akker' | 'vee' | 'overheid' | 'aannemer' | 'particulier';
+type Seizoen = 'voorjaar' | 'zomer' | 'najaar' | 'winter';
+const types: { id: Type; label: string; wie: string; app: string }[] = [
+  { id: 'akker', label: 'Akkerbouwer', wie: 'akkerbouwers', app: 'ik ben akkerbouwer' },
+  { id: 'vee', label: 'Veehouder', wie: 'veehouders', app: 'ik ben veehouder' },
+  { id: 'overheid', label: 'Gemeente, waterschap of Rijkswaterstaat', wie: 'gemeenten, waterschappen en Rijkswaterstaat', app: 'ik app namens een gemeente, waterschap of Rijkswaterstaat' },
+  { id: 'aannemer', label: 'Aannemer', wie: 'aannemers', app: 'ik ben aannemer' },
+  { id: 'particulier', label: 'Particulier', wie: 'particulieren', app: 'ik ben particulier' },
+];
+const seizoenen: { id: Seizoen; label: string }[] = [
+  { id: 'voorjaar', label: 'Voorjaar' },
+  { id: 'zomer', label: 'Zomer' },
+  { id: 'najaar', label: 'Najaar' },
+  { id: 'winter', label: 'Winter' },
+];
+const werk: { titel: string; vak: string; voor: Type[]; seizoen: Seizoen[]; punten: string[]; foto: string; alt: string; boek?: string }[] = [
+  { titel: 'Zaaibedbereiding', vak: 'Grondbewerking', voor: ['akker'], seizoen: ['voorjaar'], foto: 'akkerbouw-019', alt: 'Een groene trekker met een rode rotoreg op een egaal zaaibed',
+    punten: ['Voor de voorjaarswerkzaamheden een rotoreg van 2 of 3 meter breed, zo nodig gecombineerd met een machine in de fronthefinrichting.', 'Voor bieten een getrokken Steketee sneleg van 5 meter breed, met een trekker op lagedrukbanden.'] },
+  { titel: 'Aardappels poten en aanaarden in één werking', vak: 'Poten en zaaien', voor: ['akker'], seizoen: ['voorjaar'], foto: 'akkerbouw-022', alt: 'Een groene trekker met een aardappelpootmachine op een pas bewerkt perceel', boek: 'Uit ons fotoboek: in maart de eerste aardappels gepoot.',
+    punten: ['Aardappelpootmachine met speciale aanaardkappen en een frontfrees in de fronthef: u hoeft ons geen tweede keer in te schakelen.', 'De multivator zorgt voor een laag losse grond onder de pootaardappel.', 'De pootmachine is voorzien van missercontrole.'] },
+  { titel: 'Suikerbieten, granen en graszaad zaaien', vak: 'Poten en zaaien', voor: ['akker'], seizoen: ['voorjaar'], foto: 'akkerbouw-020', alt: 'Een groene trekker met een brede zaaimachine op een zaaibed',
+    punten: ['Suikerbieten: een elektrisch aangestuurde 12 rijen Kleine bietenzaaimachine. De trekker heeft dubbele montering op rijenafstand en een laag gewicht.', 'Ook voor alle granen, blauwmaanzaad of graszaad. We denken graag met u mee over de beste oplossing.'] },
+  { titel: 'Spuiten en bemesten', vak: 'Gewasverzorging', voor: ['akker'], seizoen: [], foto: 'akkerbouw-011', alt: 'Een trekker met een getrokken veldspuit met uitgeklapte spuitboom boven een gewas',
+    punten: ['Getrokken Amazone volleveldspuit met een werkbreedte van 40 meter, op het rijpadensysteem.', 'Parallel een computergestuurde Vicon kunstmeststrooier met weeginrichting.', 'Spuitlicenties 1, 2 en 3, in het bezit van onze vaste chauffeur.'] },
+  { titel: 'Schoffelen en slootkanten', vak: 'Gewasverzorging', voor: ['akker'], seizoen: ['voorjaar'], foto: 'akkerbouw-025', alt: 'Een rode trekker met een gele klepelmaaier op een slootkant',
+    punten: ['Suikerbieten: 6 en 12 rijen triltand schoffelmachine. Maïs en spruiten: Kongskilde triltand schoffelmachine.', 'Slootkanten met Hemos klepelmaaiers: 1 meter breed in de fronthef, 2,5 meter achterop. Zo hoeft u in het voorjaar maar één keer door het gewas.'] },
+  { titel: 'Granen en graszaad oogsten', vak: 'Oogst', voor: ['akker'], seizoen: ['zomer'], foto: 'akkerbouw-029', alt: 'Een combine oogst een veld rijp graan',
+    punten: ['Vier Claas combines met twee voorzetstukken: één speciaal voor graszaad en één met een standaardbak voor graan.', 'Het graanvoorzetstuk is speciaal geschikt voor koolzaad, met verlengmes en zaaimessen.'] },
+  { titel: 'Hooi en stro persen', vak: 'Oogst', voor: ['akker', 'vee'], seizoen: ['zomer'], foto: 'akkerbouw-035', alt: 'Een rode trekker met een grootpakpers op een stoppelveld', boek: 'Uit ons fotoboek: in juni volop hooi binnenhalen.',
+    punten: ['Vier New-Holland grootpakpersen en twee Welger kleine balenpersen.', 'Balenmaat naar keuze 1,20 x 0,90 of 1,20 x 0,70 meter. Met snijdinrichting: u bepaalt met onze chauffeurs hoe kort.', 'We staan bekend om ons grote aandeel in de aankoop van hooi en stro in de Hoekse Waard en omstreken.'] },
+  { titel: 'Aardappels en suikerbieten rooien', vak: 'Oogst', voor: ['akker'], seizoen: ['najaar'], foto: 'akkerbouw-044', alt: 'Een rode bietenrooier in een veld suikerbieten', boek: 'Uit ons fotoboek: in november suikerbieten rooien.',
+    punten: ['Het volledige pakket: loofklappen, rooien, transport en inschuren. Vroege aardappels loofklappen in combinatie met een Reglone bespuiting.', 'Twee getrokken Grimme rooiers, de rooiers met de minste rooibeschadiging.', 'Suikerbieten met een Vervaet bietenrooier met axiaal rollen.'] },
+  { titel: 'Ploegen en spitten: grond winterklaar', vak: 'Grondbewerking', voor: ['akker'], seizoen: ['najaar'], foto: 'akkerbouw-065', alt: 'Een groene trekker met een blauwe ploeg op versgeploegde grond',
+    punten: ['4-schaar Lemken ploeg met strokenpriesters: een goede keerring van de grond en een egaal ploegbeeld.', 'Voor moeilijke omstandigheden een Celli krukas spitmachine, al dan niet met rotoreg en zaaimachine.', 'Verder onder meer woelpoot, volleveldfrees, rijenfrees en cultivator.'] },
+  { titel: 'Gras maaien, schudden en harken', vak: 'Grasvoederwinning', voor: ['vee'], seizoen: ['voorjaar', 'zomer'], foto: 'veehouderij-038', alt: 'Een groene trekker met een maaicombinatie voor- en achterop in het gras', boek: 'Uit ons fotoboek: in juni vaker schudden dan gebruikelijk, voor hooi van goede kwaliteit.',
+    punten: ['Maaien met een maaicombinatie voor- en achterop de trekker.', 'Schudden met een Claas schudder van 6,80 meter werkbreedte, die goed aansluit op de maaicombinatie.', 'Harken met een dubbele Claas hark van 8,80 meter met middenafleg, zodat de pers het gewas eenvoudig oppakt.'] },
+  { titel: 'Grootpak persen', vak: 'Grasvoederwinning', voor: ['vee'], seizoen: ['voorjaar', 'zomer'], foto: 'veehouderij-011', alt: 'Een groene trekker met een rode grootpakpers op een grasperceel',
+    punten: ['Vier New-Holland grootpakpersen. Balenmaten 1,20 x 0,70, 1,20 x 0,90 en 0,80 x 0,70 meter.', 'De pers voor 1,20 x 0,70 heeft een tandemset en gestuurde as, zodat de grasmat behouden blijft.', 'Vierkante balen: makkelijk stapelen en transporteren, eenvoudig voederen in de stal en een gelijkmatige, hoge persdichtheid.'] },
+  { titel: 'Wikkelen, laden en transport', vak: 'Grasvoederwinning', voor: ['vee'], seizoen: ['voorjaar'], foto: 'veehouderij-019', alt: 'Een trekker met pers op een grasperceel langs de snelweg, met het afritbord Numansdorp en Zuid-Beijerland', boek: 'Uit ons fotoboek: in mei gras inkuilen en in folie wikkelen, aan de rijksweg A29.',
+    punten: ['Twee Kverneland/Taarup wikkelaars met een laag gewicht.', 'Laden met een Claas verreiker of een Ahlmann shovel.', 'Aanhangers voor transport op korte en lange afstand, ook te gebruiken met uw eigen trekker.'] },
+  { titel: 'Grondverzet en transport', vak: 'Grondverzet', voor: ['aannemer', 'overheid', 'particulier'], seizoen: [], foto: 'cultuurtechniek-044', alt: 'Een groene trekker met een rode grond-dumper op een bouwterrein', boek: 'Uit ons fotoboek: veel grond verzet in januari, met de Beco Gigant 200 in Spijkenisse.',
+    punten: ['Een Ahlmann shovel, bekend in de wegenbouw, en een verreiker met 7 meter hefhoogte.', 'Een 5,5 tons Hyundai rupskraan met bakken in alle maten, sorteergrijper, baggerbak, maaikorf en puinbak.', 'Een 4,5 tons kipwagen voor moeilijk bereikbare plaatsen; voor het grove werk de Beco Gigant 200.'] },
+  { titel: 'Vijvers, sloten en paardenbakken', vak: 'Grondverzet', voor: ['particulier', 'aannemer'], seizoen: [], foto: 'groenvoorziening-018', alt: 'Een groene rupskraan graaft naast een fietspad',
+    punten: ['Verhardingen aanleggen en verbeteren, rioleringen aansluiten en funderingen aanleggen.', 'Vijvers, sloten en paardenbakken aanleggen, en grond, grind en zand vervoeren.', 'Loonbedrijf Kats verzorgt al het grondwerk volledig.'] },
+  { titel: 'Sloten, watergangen en beschoeiingen', vak: 'Cultuurtechniek', voor: ['overheid', 'particulier', 'akker'], seizoen: [], foto: 'cultuurtechniek-053', alt: 'Een rupskraan werkt vanaf de oever in een sloot',
+    punten: ['Sloten baggeren en watergangen onderhouden.', 'Beschoeiingen en damwanden plaatsen.', 'Drainagewerk uitvoeren en rioleringen aanleggen.'] },
+  { titel: 'Watertransport', vak: 'Watertransport', voor: ['aannemer', 'overheid'], seizoen: [], foto: 'cultuurtechniek-005', alt: 'Een groene trekker met een waterwagen op een zandbaan',
+    punten: ['Waterwagen op lagedrukbanden: in de wegenbouw de zandbaan bevloeien en bij droogte nat houden tegen stof.', 'In de groenvoorziening pas geplante boompjes en bloemperken van water voorzien.', 'Water voor de drainreiniger, en bij vervuiling een rolveger voor- of achterop om de weg schoon te spoelen.'] },
+  { titel: 'Wateroverlast en stroomuitval', vak: 'Noodoplossingen', voor: ['overheid', 'aannemer', 'akker'], seizoen: [], foto: 'cultuurtechniek-018', alt: 'Twee trekkers aan het water met gele afvoerslangen over de dijk',
+    punten: ['Twee noodpompen van 972 en 1800 m³/h, aangedreven door een trekker, met een flexibele slang tot 50 meter.', 'Ook geschikt om water te verpompen bij een tekort, bijvoorbeeld bij beregening van uw land.', 'Een 40 kVA trekkergenerator als de stroom is onderbroken of voor een tijdelijke noodvoorziening.'] },
+  { titel: 'Sneeuw en ijs', vak: 'Noodoplossingen', voor: ['overheid', 'aannemer', 'particulier'], seizoen: ['winter'], foto: 'cultuurtechniek-049', alt: 'Een groene trekker met een sneeuwschuiver in de sneeuw',
+    punten: ['Meerdere sneeuwschuivers en een veegmachine voor het ruimen van sneeuw en ijs.', 'Sneeuwschuivers huren voor een seizoen, al dan niet met een strooier.'] },
+  { titel: 'Bermen, slootkanten en gazons', vak: 'Zaaien en maaien', voor: ['overheid', 'particulier'], seizoen: [], foto: 'groenvoorziening-004', alt: 'Een kleine blauwe trekker met een maai-arm maait een berm langs een pad',
+    punten: ['Een 4 meter lange hydraulische arm met klepelmaaier.', 'De New-Holland TCE 40: 1.350 kilo, 1,50 meter breed, met gazonbanden en een maaier van 1,80 meter in de fronthef.', 'Eggen met een rotoreg en zaaien met een graszaaimachine. Doorzaaien kan ook.'] },
+  { titel: 'Bomen, hagen en versnipperen', vak: 'Groenvoorziening', voor: ['overheid', 'particulier'], seizoen: [], foto: 'groenvoorziening-024', alt: 'Een oranje houtversnipperaar achter een trekker',
+    punten: ['Bomen planten en verzorgen en hagen knippen.', 'Bomen kappen en versnipperen tot een diameter van 27 centimeter, met een versnipperaar met hydraulische kraan: minder handwerk.', 'Afvoer van houtsnippers en boomstammen.'] },
+  { titel: 'Onkruidvrij met Select Spray', vak: 'Onkruidbestrijding', voor: ['overheid'], seizoen: [], foto: 'groenvoorziening-010', alt: 'Een gele quad met spuitapparatuur op een stoep',
+    punten: ['Select Spray selecteert onkruid op bladgroen en dient alleen vloeistof toe waar onkruid staat.', 'Op een Quad of op onze New-Holland trekker met spuitboom en haspel met spuitlans.', 'Bij grotere projecten een trekker met een 3 meter brede spuitboom en een grotere tank.'] },
+  { titel: 'Eikenprocessierups en luizen', vak: 'Ongediertebestrijding', voor: ['overheid'], seizoen: [], foto: 'groenvoorziening-013', alt: 'Een trekker met een elektrostatische spuit in een laan met bomen',
+    punten: ['Een elektrostatische spuit met het biologische bestrijdingsmiddel Xentari.', 'De deeltjes hechten zich optimaal aan de bladeren: geen dampwerking en verlies.', 'Een krachtige straal lucht met vloeistof, met een bereik van 40 meter.'] },
+];
+const labelVan = Object.fromEntries(seizoenen.map((s) => [s.id, s.label]));
+
+// Het machinepark in maten, allemaal van hun dienstpagina's.
+const maten = [
+  { getal: '40 m', wat: 'werkbreedte', bij: 'Getrokken Amazone volleveldspuit' },
+  { getal: '8,80 m', wat: 'dubbele hark', bij: 'Claas, met middenafleg' },
+  { getal: '6,80 m', wat: 'schudder', bij: 'Claas, sluit aan op de maaicombinatie' },
+  { getal: '5 m', wat: 'sneleg', bij: 'Getrokken Steketee, voor het bietenzaaibed' },
+  { getal: '12 rijen', wat: 'zaaimachine', bij: 'Kleine bietenzaaimachine, elektrisch aangestuurd' },
+  { getal: '4', wat: 'Claas combines', bij: 'Voor granen en graszaad' },
+  { getal: '4', wat: 'grootpakpersen', bij: 'New-Holland, met snijdinrichting' },
+  { getal: '7 m', wat: 'hefhoogte', bij: 'Verreiker voor bijzondere projecten' },
+  { getal: '5,5 ton', wat: 'rupskraan', bij: 'Hyundai, met bakken in alle maten' },
+  { getal: '1800 m³/h', wat: 'noodpomp', bij: 'Naast een pomp van 972 m³/h' },
+  { getal: '40 kVA', wat: 'trekkergenerator', bij: 'Bij stroomuitval of als noodvoorziening' },
+  { getal: '40 m', wat: 'bereik', bij: 'Elektrostatische spuit tegen de eikenprocessierups' },
+];
+
+// Fotoboek: eigen foto's die niet al in de werkkalender staan.
+const boek = [
+  { f: 'akkerbouw-004', bij: 'Trekker met rotoreg', alt: 'Een groene trekker met een oranje rotoreg op de kopakker' },
+  { f: 'akkerbouw-037', bij: 'Aardappels rooien', alt: 'Een groene trekker met een getrokken rode aardappelrooier' },
+  { f: 'veehouderij-013', bij: 'Balen wikkelen', alt: 'Een trekker met een rode wikkelaar die een grote baal in folie wikkelt' },
+  { f: 'veehouderij-022', bij: 'Transport van gewikkelde balen', alt: 'Een oplegger vol gewikkelde balen op een grasperceel' },
+  { f: 'cultuurtechniek-045', bij: 'Onze verreiker bij de betoncentrale aan de Moerdijk', alt: 'Een blauwe verreiker bij een betoncentrale' },
+  { f: 'cultuurtechniek-032', bij: 'Beschoeiing langs een woning', alt: 'Een nieuwe houten beschoeiing langs een sloot naast een woning' },
+  { f: 'groenvoorziening-002', bij: 'Groenonderhoud in de wijk', alt: 'Onze kleine blauwe trekker met een frees op een grasstrook bij een appartementengebouw' },
+  { f: 'cultuurtechniek-014', bij: 'Sloot uitgraven', alt: 'Een rupskraan aan het werk aan een sloot in een polder' },
+];
+---
+<Base
+  title="Loonbedrijf Kats | L. Kats Agroservice in Numansdorp, Hoeksche Waard"
+  description="Loonbedrijf Kats uit Numansdorp, opgericht in 1959: akkerbouw, veehouderij, cultuurtechniek en groenvoorziening voor akkerbouwers, veehouders, waterschappen, Rijkswaterstaat, gemeenten, aannemers en particulieren. VCA en VKL gecertificeerd."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: polder over de volle breedte, klei-vlak links, eigen trekker met pers als overlappende kaart. -->
+    <section class="donker relative isolate overflow-hidden bg-klei text-white lg:overflow-visible">
+      <div class="absolute inset-0 -z-10 overflow-hidden">
+        <Foto src={polder} alt="" hero widths={[480, 768, 1200, 1800]} sizes="100vw" class="object-[70%_60%]" />
+        <div class="absolute inset-0 bg-klei/70 lg:bg-transparent lg:bg-[linear-gradient(90deg,#221b13_0%,#221b13eb_32%,#221b1380_55%,#221b1300_78%)]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,#221b13cc,#221b1300)]"></div>
+      </div>
+      <div class="wrap grid grid-cols-1 gap-10 pt-12 pb-14 lg:grid-cols-12 lg:pt-20 lg:pb-24">
+        <div class="lg:col-span-7">
+          <p class="kicker text-koolzaad">Loonbedrijf in de Hoeksche Waard, sinds 1959</p>
+          <h1 class="mt-5 text-4xl">Loonwerk voor akker, wei, sloot en berm</h1>
+          <p class="mt-6 max-w-2xl text-lg text-white/90">Vanuit Numansdorp werkzaam in de agrarische, de cultuurtechnische en de grond-, weg- en waterbouwsector. Voor akkerbouwers, veehouders, waterschappen, Rijkswaterstaat, gemeenten, aannemers en particulieren.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-geel"><Fragment set:html={wa} /><span>WhatsApp Leen Kats</span></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-11 grid max-w-2xl grid-cols-2 gap-x-4 gap-y-5 border-t sm:grid-cols-3 border-white/25 pt-6 text-sm">
+            <div><dt class="text-white/75">Google</dt><dd class="mt-1"><strong class="block font-display text-2xl leading-tight font-extrabold text-koolzaad tabular-nums">{site.google}</strong><span class="text-white/80">{site.reviews} reviews</span></dd></div>
+            <div><dt class="text-white/75">Opgericht</dt><dd class="mt-1"><strong class="block font-display text-2xl leading-tight font-extrabold text-koolzaad tabular-nums">1959</strong><span class="text-white/80">als spuitloonbedrijf</span></dd></div>
+            <div class="col-span-2 sm:col-span-1"><dt class="text-white/75">Veiligheid</dt><dd class="mt-1"><strong class="block font-display text-2xl leading-tight font-extrabold text-koolzaad whitespace-nowrap">VCA en VKL</strong><span class="text-white/80">gecertificeerd</span></dd></div>
+          </dl>
+        </div>
+        <div class="relative hidden lg:col-span-5 lg:block">
+          <figure class="absolute right-0 -bottom-28 w-full max-w-[30rem] rounded-xl bg-paper p-2 text-ink shadow-lg">
+            <div class="aspect-[888/424] overflow-hidden rounded-lg"><Foto src={kopVee} alt="Onze trekker met de belettering L. Kats agroservice Numansdorp en een gele grootpakpers op een stoppelveld" widths={[480, 888]} sizes="480px" /></div>
+            <figcaption class="flex items-center justify-between gap-3 px-2 pt-3 pb-1.5 text-sm"><strong>Eigen materieel, eigen belettering</strong><span class="text-ink-soft">Numansdorp</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobiel: de eigen trekker direct onder de hero. -->
+    <div class="wrap -mt-6 lg:hidden">
+      <figure class="rounded-xl bg-paper p-1.5 shadow-lg">
+        <div class="aspect-[888/424] overflow-hidden rounded-lg"><Foto src={kopVee} alt="Onze trekker met de belettering L. Kats agroservice Numansdorp en een gele grootpakpers op een stoppelveld" widths={[480, 888]} sizes="100vw" /></div>
+        <figcaption class="px-1.5 pt-2 pb-1 text-sm font-semibold">Eigen materieel, eigen belettering</figcaption>
+      </figure>
+    </div>
+
+    <!-- Diensten: vier vakgebieden als grote kaarten. -->
+    <section id="diensten" class="scroll-mt-20 pt-16 pb-16 lg:pt-40 lg:pb-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-oker">Diensten</p>
+            <h2 class="mt-3 text-3xl">Vier vakgebieden, één loonbedrijf</h2>
+          </div>
+          <p class="text-lg text-ink-soft lg:col-span-5">Loonbedrijf Kats beschikt over een schat aan kennis en ervaring op het gebied van agrarische grond en bodemeigenschappen.</p>
+        </div>
+        <div class="mt-10 grid gap-6 md:grid-cols-2">
+          {diensten.map((d) => (
+            <article class="group flex flex-col overflow-hidden rounded-xl border border-line bg-white shadow-sm">
+              <div class="relative aspect-[888/424] overflow-hidden">
+                <Foto src={d.foto} alt={d.alt} widths={d.eigen ? [320, 640] : [480, 888]} sizes="(min-width: 768px) 600px, 100vw" class="transition-transform duration-500 group-hover:scale-[1.03]" />
+                <span class="absolute top-4 left-4 rounded-lg bg-klei px-2.5 py-1 font-display text-lg font-extrabold text-koolzaad tabular-nums">{d.nr}</span>
+              </div>
+              <div class="flex flex-1 flex-col p-6 sm:p-7">
+                <h3 class="text-2xl">{d.naam}</h3>
+                <p class="mt-3 text-ink-soft">{d.tekst}</p>
+                <ul class="mt-auto flex flex-wrap gap-2 pt-5 text-sm font-semibold">
+                  {d.subs.map((s) => <li class="rounded-full bg-zand px-3 py-1">{s}</li>)}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WOW: Werkkalender. Kies bedrijf en seizoen, zie het echte werk met machines, plan via WhatsApp. -->
+    <section id="werkkalender" class="donker relative isolate scroll-mt-16 overflow-hidden bg-klei py-16 text-white lg:py-24">
+      <div class="absolute inset-x-0 top-0 -z-10 h-[34rem] opacity-30">
+        <Foto src={avond} alt="" widths={[800, 1600]} sizes="100vw" class="object-[50%_62%]" />
+        <div class="absolute inset-0 bg-[linear-gradient(180deg,#221b1300_0%,#221b13_100%)]"></div>
+      </div>
+      <div class="wrap" data-wk>
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-koolzaad">Werkkalender</p>
+            <h2 class="mt-3 text-3xl">Wat doet Kats voor u, en wanneer?</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5">Kies uw soort bedrijf en het seizoen. U ziet welk werk wij voor u doen, met welke machines. Seizoenen staan alleen waar het werk daaraan vastzit.</p>
+        </div>
+
+        <div class="mt-10 grid gap-8 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <div class="lg:sticky lg:top-24">
+              <fieldset hidden data-wk-keuzes>
+                <legend class="kicker text-gras">1. Wie bent u?</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {types.map((t, i) => <button type="button" class="wk-keus" aria-pressed={i === 0 ? 'true' : 'false'} data-type={t.id} data-wie={t.wie} data-app={t.app}>{t.label}</button>)}
+                </div>
+              </fieldset>
+              <fieldset hidden class="mt-7" data-wk-keuzes>
+                <legend class="kicker text-gras">2. Welk seizoen?</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  <button type="button" class="wk-keus" aria-pressed="true" data-seizoen="alle">Alle seizoenen</button>
+                  {seizoenen.map((s) => <button type="button" class="wk-keus" aria-pressed="false" data-seizoen={s.id}>{s.label} <span class="tabular-nums opacity-80" data-telt={s.id}></span></button>)}
+                </div>
+              </fieldset>
+              <div class="mt-8 rounded-xl bg-kluit p-6 shadow-sm">
+                <p class="font-display text-xl leading-snug font-bold" aria-live="polite" data-wk-status>Al ons werk, van zaaibed tot sneeuwschuiver.</p>
+                <a href={site.whatsapp} class="btn btn-geel mt-5 w-full" data-wk-wa><Fragment set:html={wa} /><span>Plan het werk met Leen</span></a>
+                <p class="mt-4 text-sm text-white/75">Of bel <a href={site.telHref} class="font-semibold whitespace-nowrap text-white tabular-nums underline underline-offset-2">{site.tel}</a> of mobiel <a href={site.mobielHref} class="font-semibold whitespace-nowrap text-white tabular-nums underline underline-offset-2">{site.mobiel}</a>.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-8">
+            <ul class="grid gap-5 sm:grid-cols-2" data-wk-lijst>
+              {werk.map((w) => (
+                <li class="wk-kaart flex flex-col overflow-hidden rounded-xl bg-kluit shadow-sm" data-voor={w.voor.join(' ')} data-seizoen={w.seizoen.join(' ')} data-titel={w.titel}>
+                  <div class="relative aspect-[4/3] overflow-hidden">
+                    <Foto src={F(w.foto)} alt={w.alt} widths={[320, 640]} sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw" />
+                    {w.seizoen.length > 0 && (
+                      <div class="absolute top-3 left-3 flex gap-1.5">{w.seizoen.map((s) => <span class="wk-tag bg-koolzaad text-klei">{labelVan[s]}</span>)}</div>
+                    )}
+                  </div>
+                  <div class="flex flex-1 flex-col p-5">
+                    <p class="kicker text-gras">{w.vak}</p>
+                    <h3 class="mt-2 text-xl">{w.titel}</h3>
+                    <ul class="mt-3 space-y-2 text-sm text-white/85">
+                      {w.punten.map((p) => <li class="relative pl-4 before:absolute before:top-[0.6em] before:left-0 before:h-1.5 before:w-1.5 before:rounded-full before:bg-koolzaad">{p}</li>)}
+                    </ul>
+                    {w.boek && <p class="mt-4 border-t border-white/15 pt-3 text-sm text-white/75 italic">{w.boek}</p>}
+                    <a href={`${site.whatsapp}?text=${encodeURIComponent(`Hallo Leen, ik wil graag dit werk plannen: ${w.titel.toLowerCase()}.`)}`} class="mt-auto inline-flex items-center gap-1.5 pt-5 text-sm font-bold text-koolzaad underline-offset-4 hover:underline">Plan dit met Leen <Fragment set:html={pijl} /></a>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div class="mt-8 hidden rounded-xl border border-white/20 p-6" data-wk-verder>
+              <p class="text-sm text-white/80"><span data-wk-verder-kop>Verder voor u</span>. Tik om te bekijken:</p>
+              <ul class="mt-3 flex flex-wrap gap-2 text-sm font-semibold" data-wk-verder-lijst></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Machines: het machinepark in maten, naast de combine. -->
+    <section id="machines" class="scroll-mt-20 bg-zand py-16 lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-oker">Machines</p>
+          <h2 class="mt-3 text-3xl">Het machinepark in maten</h2>
+          <p class="mt-5 text-ink-soft">Een greep uit ons materieel, van de 40 meter spuitboom op het rijpadensysteem tot de kleine, wendbare New-Holland TCE 40 met gazonbanden.</p>
+          <figure class="mt-8">
+            <div class="aspect-[888/424] overflow-hidden rounded-xl shadow-sm lg:aspect-[4/3]"><Foto src={F('akkerbouw-045')} alt="Een groene trekker met een zaaicombinatie op een zaaibed onder een blauwe lucht" widths={[320, 640]} sizes="(min-width: 1024px) 400px, 100vw" /></div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Uit ons fotoboek akkerbouw</figcaption>
+          </figure>
+        </div>
+        <ul class="grid content-start gap-px overflow-hidden rounded-xl border border-line bg-line shadow-sm sm:grid-cols-2 lg:col-span-8 lg:grid-cols-3">
+          {maten.map((m) => (
+            <li class="grid grid-cols-[5.6rem_minmax(0,1fr)] items-baseline gap-x-3 bg-paper p-4 sm:block sm:p-6">
+              <p class="font-display text-lg leading-tight font-extrabold text-polder tabular-nums sm:text-3xl sm:leading-none sm:whitespace-nowrap" style="font-stretch:85%">{m.getal}</p>
+              <div class="[overflow-wrap:anywhere]">
+                <p class="font-bold sm:mt-2">{m.wat}</p>
+                <p class="mt-1 text-sm text-ink-soft">{m.bij}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Fotoboek: eigen foto's, klein genoeg voor hun eigen resolutie. -->
+    <section id="fotoboek" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-oker">Fotoboek</p>
+            <h2 class="mt-3 text-3xl">Op het land, aan de sloot, in de wijk</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5 lg:col-start-8">Een greep uit de fotoboeken akkerbouw, veehouderij, cultuurtechniek en groenvoorziening.</p>
+        </div>
+        <ul class="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-5">
+          {boek.map((b, i) => (
+            <li class={i === 0 || i === 5 ? 'col-span-2 lg:row-span-2' : ''}>
+              <figure class="h-full">
+                <div class={`overflow-hidden rounded-xl shadow-sm ${i === 0 || i === 5 ? 'aspect-[4/3] lg:aspect-auto lg:h-[calc(100%-2rem)]' : 'aspect-[4/3]'}`}><Foto src={F(b.f)} alt={b.alt} widths={[320, 640]} sizes={i === 0 || i === 5 ? '(min-width: 1024px) 620px, 100vw' : '(min-width: 1024px) 300px, 50vw'} /></div>
+                <figcaption class="mt-2 text-sm text-ink-soft">{b.bij}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Noodoplossingen: geel vlak, snel bellen. -->
+    <section id="noodhulp" class="scroll-mt-20 bg-koolzaad text-klei">
+      <div class="wrap grid items-center gap-10 py-14 lg:grid-cols-12 lg:py-20">
+        <div class="lg:col-span-7">
+          <p class="kicker">Noodoplossingen</p>
+          <h2 class="mt-3 text-3xl">Wateroverlast, stroomuitval of sneeuwval</h2>
+          <dl class="mt-8 grid gap-6 sm:grid-cols-3">
+            <div class="border-t-2 border-klei pt-4"><dt class="font-display text-xl font-extrabold">Wateroverlast</dt><dd class="mt-2 text-sm">Twee noodpompen, 972 en 1800 m³/h, met een flexibele slang tot 50 meter.</dd></div>
+            <div class="border-t-2 border-klei pt-4"><dt class="font-display text-xl font-extrabold">Energietekort</dt><dd class="mt-2 text-sm">Een 40 kVA trekkergenerator als de stroomtoevoer is onderbroken.</dd></div>
+            <div class="border-t-2 border-klei pt-4"><dt class="font-display text-xl font-extrabold">Sneeuwval</dt><dd class="mt-2 text-sm">Sneeuwschuivers en een veegmachine. Schuivers ook te huur voor een seizoen.</dd></div>
+          </dl>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.mobielHref} class="btn btn-klei"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+            <a href={site.whatsapp} class="btn btn-line hover:!bg-klei hover:!text-white"><Fragment set:html={wa} /><span>WhatsApp</span></a>
+          </div>
+        </div>
+        <figure class="lg:col-span-5">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg lg:rotate-1"><Foto src={F('cultuurtechniek-056')} alt="Een rij trekkers met oranje sneeuwschuivers op een besneeuwd terrein" widths={[320, 640]} sizes="(min-width: 1024px) 480px, 100vw" /></div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Over: verhaal in drie stappen, met de ploeg in de avondzon. -->
+    <section id="over" class="donker scroll-mt-20 bg-klei py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <figure class="lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg lg:aspect-[5/6]"><Foto src={avond} alt="Een trekker met ploeg op een akker bij zonsondergang" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 600px, 100vw" class="object-[62%_50%]" /></div>
+        </figure>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <p class="kicker text-koolzaad">Over Loonbedrijf Kats</p>
+          <h2 class="mt-3 text-3xl">Begonnen als spuitloonbedrijf in de Hoeksche Waard</h2>
+          <ol class="mt-10 space-y-8 border-l-2 border-white/20 pl-7">
+            <li class="relative before:absolute before:top-1.5 before:-left-[2.2rem] before:h-3.5 before:w-3.5 before:rounded-full before:bg-koolzaad">
+              <p class="font-display text-2xl font-extrabold text-koolzaad tabular-nums">1959</p>
+              <p class="mt-1 text-white/85">Loonbedrijf Kats begint als spuitloonbedrijf in de Hoeksche Waard.</p>
+            </li>
+            <li class="relative before:absolute before:top-1.5 before:-left-[2.2rem] before:h-3.5 before:w-3.5 before:rounded-full before:bg-koolzaad">
+              <p class="font-display text-2xl font-extrabold text-koolzaad tabular-nums">1990</p>
+              <p class="mt-1 text-white/85">Leen Kats staat aan het roer. Cultuurtechnisch werk en groenvoorziening gaan tot de dienstverlening behoren.</p>
+            </li>
+            <li class="relative before:absolute before:top-1.5 before:-left-[2.2rem] before:h-3.5 before:w-3.5 before:rounded-full before:bg-gras">
+              <p class="font-display text-2xl font-extrabold text-gras">Vandaag</p>
+              <p class="mt-1 text-white/85">Werkzaam in de agrarische, de cultuurtechnische en de grond-, weg- en waterbouwsector. VCA en VKL gecertificeerd.</p>
+            </li>
+          </ol>
+          <div class="mt-10 rounded-xl bg-kluit p-6 shadow-sm">
+            <h3 class="text-xl">Wij werken onder meer voor</h3>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+              {['Akkerbouwers', 'Veehouders', 'Waterschappen', 'Rijkswaterstaat', 'Gemeenten', 'Aannemers', 'Particulieren'].map((g) => <li class="rounded-full bg-klei px-3 py-1.5">{g}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="kicker text-oker">Contact</p>
+          <h2 class="mt-3 text-3xl">Werk te plannen? Stuur Leen een bericht</h2>
+          <p class="mt-5 max-w-2xl text-lg">Bel, app of mail. Loonbedrijf Kats zit aan de Middelsluissedijk in Numansdorp.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-groen"><Fragment set:html={wa} /><span>WhatsApp <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line text-ink hover:!bg-klei hover:!text-white"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+          <dl class="mt-10 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2">
+            <div>
+              <dt class="kicker text-oker">Telefoon</dt>
+              <dd class="mt-2"><a href={site.telHref} class="text-xl font-semibold whitespace-nowrap tabular-nums underline-offset-4 hover:underline">{site.tel}</a></dd>
+            </div>
+            <div>
+              <dt class="kicker text-oker">Mobiel en WhatsApp</dt>
+              <dd class="mt-2"><a href={site.mobielHref} class="text-xl font-semibold whitespace-nowrap tabular-nums underline-offset-4 hover:underline">{site.mobiel}</a><span class="mt-1 block text-sm text-ink-soft">{site.eigenaar}</span></dd>
+            </div>
+            <div>
+              <dt class="kicker text-oker">E-mail</dt>
+              <dd class="mt-2"><a href={`mailto:${site.mail}`} class="font-semibold break-all underline underline-offset-4">{site.mail}</a></dd>
+            </div>
+            <div>
+              <dt class="kicker text-oker">Adres</dt>
+              <dd class="mt-2"><address class="not-italic">{site.straat}<br />{site.postcode} {site.plaats}</address>
+                <a href={site.maps} rel="noopener" class="mt-2 inline-flex items-center gap-1.5 font-semibold text-polder underline underline-offset-4">Route plannen <Fragment set:html={pijl} /></a></dd>
+            </div>
+          </dl>
+        </div>
+        <div class="lg:col-span-4 lg:col-start-9">
+          <div class="overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="aspect-[888/424]"><Foto src={kopGroen} alt="Onze kleine blauwe trekker met de belettering L. Kats agroservice Numansdorp aan het werk in een berm" widths={[480, 888]} sizes="(min-width: 1024px) 400px, 100vw" /></div>
+            <div class="p-6">
+              <h3 class="text-xl">{site.juridisch}</h3>
+              <p class="mt-2 text-ink-soft">{site.straat}<br />{site.postcode} {site.plaats}</p>
+              <p class="mt-4 border-t border-line pt-4 text-sm text-ink-soft">KvK Rotterdam {site.kvk}<br />VCA en VKL gecertificeerd</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  // Werkkalender: zonder JS staan alle werkzaamheden er; met JS filteren op soort bedrijf en seizoen.
+  const wk = document.querySelector<HTMLElement>('[data-wk]');
+  if (wk) {
+    const kaarten = [...wk.querySelectorAll<HTMLElement>('.wk-kaart')];
+    const typeKnoppen = [...wk.querySelectorAll<HTMLButtonElement>('[data-type]')];
+    const seizoenKnoppen = [...wk.querySelectorAll<HTMLButtonElement>('button[data-seizoen]')];
+    const status = wk.querySelector<HTMLElement>('[data-wk-status]')!;
+    const waKnop = wk.querySelector<HTMLAnchorElement>('[data-wk-wa]')!;
+    const verder = wk.querySelector<HTMLElement>('[data-wk-verder]')!;
+    const verderKop = wk.querySelector<HTMLElement>('[data-wk-verder-kop]')!;
+    const verderLijst = wk.querySelector<HTMLElement>('[data-wk-verder-lijst]')!;
+    const basis = waKnop.getAttribute('href')!;
+    let type = typeKnoppen[0].dataset.type!;
+    // Start in het seizoen van vandaag.
+    const m = new Date().getMonth();
+    let seizoen = m >= 2 && m <= 4 ? 'voorjaar' : m >= 5 && m <= 7 ? 'zomer' : m >= 8 && m <= 10 ? 'najaar' : 'winter';
+    const nu = seizoen;
+    const nuKnop = seizoenKnoppen.find((k) => k.dataset.seizoen === nu);
+    if (nuKnop) nuKnop.insertAdjacentHTML('beforeend', ' <span class="sr-only">(nu)</span><span aria-hidden="true" class="text-xs font-bold uppercase tracking-wider">nu</span>');
+
+    wk.querySelectorAll<HTMLElement>('[data-wk-keuzes]').forEach((f) => (f.hidden = false));
+
+    const voorType = (k: HTMLElement) => k.dataset.voor!.split(' ').includes(type);
+    const inSeizoen = (k: HTMLElement, s: string) => k.dataset.seizoen!.split(' ').includes(s);
+
+    const toon = () => {
+      const knop = typeKnoppen.find((k) => k.dataset.type === type)!;
+      const wie = knop.dataset.wie!;
+      typeKnoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.type === type)));
+      seizoenKnoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.seizoen === seizoen)));
+      const vanType = kaarten.filter(voorType);
+      wk.querySelectorAll<HTMLElement>('[data-telt]').forEach((t) => {
+        const n = vanType.filter((k) => inSeizoen(k, t.dataset.telt!)).length;
+        t.textContent = `(${n})`;
+      });
+      const zicht = seizoen === 'alle' ? vanType : vanType.filter((k) => inSeizoen(k, seizoen));
+      kaarten.forEach((k) => (k.hidden = !zicht.includes(k)));
+      const rest = vanType.filter((k) => !zicht.includes(k));
+      const lidw: Record<string, string> = { voorjaar: 'in het voorjaar', zomer: 'in de zomer', najaar: 'in het najaar', winter: 'in de winter' };
+      const sLabel = seizoen === 'alle' ? '' : ` ${lidw[seizoen]}`;
+      status.textContent = zicht.length
+        ? `${zicht.length} ${zicht.length === 1 ? 'werkzaamheid' : 'werkzaamheden'} voor ${wie}${sLabel}.`
+        : `Voor ${wie} is er${sLabel} geen apart seizoenswerk. Kies hieronder wat u zoekt.`;
+      verder.classList.toggle('hidden', rest.length === 0);
+      verderKop.textContent = `Verder voor ${wie}`;
+      verderLijst.replaceChildren(...rest.map((k) => {
+        const li = document.createElement('li');
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'wk-keus';
+        b.textContent = k.dataset.titel!;
+        b.addEventListener('click', () => {
+          seizoen = 'alle';
+          toon();
+          k.setAttribute('tabindex', '-1');
+          k.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          k.focus({ preventScroll: true });
+        });
+        li.append(b);
+        return li;
+      }));
+      const tekst = `Hallo Leen, ${knop.dataset.app} en wil graag werk plannen${sLabel}.`;
+      waKnop.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    typeKnoppen.forEach((k) => k.addEventListener('click', () => { type = k.dataset.type!; toon(); }));
+    seizoenKnoppen.forEach((k) => k.addEventListener('click', () => { seizoen = k.dataset.seizoen!; toon(); }));
+    toon();
+  }
+</script>
