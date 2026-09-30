@@ -76,3 +76,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Dierenkliniek Wilhelminapark, Utrecht | https://michaelbeset-ops.github.io/sitefront/dierenkliniek-wilhelminapark/ | 9/10: 4,7 uit 325; frames-site zonder viewport, http. | 2026-09-30 | demo, mail |
 | Drukkerij de Kroon, Olst | https://michaelbeset-ops.github.io/sitefront/drukkerij-de-kroon/ | 8/10: drukkerij + uitgeverij sinds 1937, 5,0 uit 4; site zonder viewport. | 2026-09-30 | demo, mail |
 | Bouwkundig Tekenburo Gerrit Scholten, Heerde | https://michaelbeset-ops.github.io/sitefront/tekenburo-gerrit-scholten/ | 7/10: sinds 1988, 5,0 uit 5 (oud); site met frame, geen viewport. Activiteit onzeker. | 2026-09-30 | demo, mail |
+| Technisch Adviesburo Betuwe, Tiel | https://michaelbeset-ops.github.io/sitefront/technisch-adviesburo-betuwe/ | 8/10: installatietechnisch adviesburo sinds 1999, 06 op site; site Serif WebPlus met tabellen, geen viewport, http. | 2026-09-30 | demo, WhatsApp |

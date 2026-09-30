@@ -1,0 +1,596 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, bereikbaar } from '../data/site';
+import heroFoto from '../assets/hero-kanalen.jpg';
+import potlood from '../assets/tekening-potlood.jpg';
+import tekentafel from '../assets/tekentafel.jpg';
+import schakelkast from '../assets/schakelkast.jpg';
+import schemaLbk from '../assets/schema-lbk.png';
+import schemaOntdooi from '../assets/schema-ontdooi.png';
+import schemaStof from '../assets/schema-stofafzuiging.png';
+import cd from '../assets/cd-software.jpg';
+import projPand from '../assets/project-pand.png';
+import projLbk from '../assets/project-lbk.png';
+import projKast from '../assets/project-schakelkast.png';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.5 3.9 1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.3-.5-.4Z"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// 01-05: de werkvelden, uit hun pagina's calculaties, engineering, tekenwerk, energie en elektrotechniek.
+const diensten = [
+  { id: 'calculatie', naam: 'Calculatie', tekst: 'Projectcalculaties volgens de Gustaf Ende-normen, elektrotechnische calculatie conform de UNETO-normen. Opgebouwd uit materiaal, werk derden, stelposten, montage, reiskosten, engineering en algemene kosten.' },
+  { id: 'engineering', naam: 'Engineering', tekst: 'Van warmteverlies- en koellastberekening tot leidingnet-, riolerings- en brandlastberekeningen. Alles conform het bouwbesluit, de NEN-normen en de ISSO-publicaties.' },
+  { id: 'tekenwerk', naam: 'Tekenwerk', tekst: 'Ontwerp- en werktekeningen, schema\'s en revisietekeningen in AutoCAD. Ook oude tekeningen vanaf calque of witdruk digitaal maken, en toetsing van tekeningen van derden.' },
+  { id: 'klimaat', naam: 'Advies energie en klimaat', tekst: 'Verwarmen, koelen en ventileren met één klimaatinstallatie, voor nieuwbouw en renovatie. Wij zetten de voor- en nadelen van de systemen op een rij, technisch en financieel.' },
+  { id: 'elektro', naam: 'Elektro-, meet- en regeltechniek', tekst: 'Risicoanalyse en NEN 3140-inspecties, bestekken, verlichtingsplannen, ontruimings- en vluchtwegplannen, energieberekeningen en de werkvoorbereiding van projecten.' },
+];
+
+// Wegwijzer: per vraag alleen diensten die op hun site staan. "Meesturen" verwijst naar wat zij zelf noemen (bestek, calque, tekeningen van derden, enz.).
+const vragen = [
+  {
+    id: 'calculatie', naam: 'Wat gaat het kosten?', kort: 'Calculatie van een installatie of projectonderdeel',
+    kop: 'Calculatie', intro: 'Alle projectcalculaties worden opgebouwd uit materiaal, werk derden, stelposten, montage-ploeguren, montagekosten, reiskosten (km + uren), engineering en algemene kosten.',
+    diensten: ['Projectcalculatie volgens de Gustaf Ende-normen', 'Calculatie conform de UNETO-normen (elektrotechniek)', 'Werktuigkundige installaties: cv, perslucht, stofafzuiging, vacuüm, ventilatie, stoom, aardgas, riolering en hemelwater', 'Elektrotechnische installaties: licht, data- en telecommunicatie, zwakstroom, brandmeld, beveiliging, geluid en aarding'],
+    mee: ['Tekeningen en/of bestek van het project', 'Welk project of projectonderdeel u gecalculeerd wilt hebben', 'Om welke installaties het gaat'],
+  },
+  {
+    id: 'engineering', naam: 'Hoe groot moet het worden?', kort: 'Berekeningen en dimensionering',
+    kop: 'Engineering en berekeningen', intro: 'Alle werkzaamheden worden uitgevoerd conform het huidig geldende bouwbesluit, de huidig geldende NEN-normen en de ISSO-publicaties.',
+    diensten: ['Warmteverliesberekening NEN 5066 en koellastberekening NEN 5067', 'Luchtkanalen-, cv-, koel-, tapwater-, gas- en persluchtleidingberekening', 'Riolering en hemelwater, drainage en sprinklerinstallaties', 'Kabelberekening NEN 1010, brandlast- en vuurbelastingberekening', 'Energiebesparingsberekening NEN 2916'],
+    mee: ['Bouwkundige tekeningen of plattegronden', 'Het soort gebouw: kantoor, school, bedrijfshal, woning, enzovoort', 'Welke installaties berekend moeten worden'],
+  },
+  {
+    id: 'tekenwerk', naam: 'Ik heb tekeningen nodig', kort: 'Ontwerp, werktekening, schema of revisie',
+    kop: 'Tekenwerk', intro: 'U hoeft vooraf geen schetsontwerp te maken. Het schetsontwerp wordt eventueel door ons gemaakt en ter goedkeuring naar u verzonden. Daarna wordt het geheel in AutoCAD getekend.',
+    diensten: ['Ontwerptekeningen aan de hand van een bestek', 'Definitieve werktekeningen voor uitvoering', 'Oude tekeningen vanaf calque of witdruk digitaal maken', 'Controle en toetsing van tekeningen van derden', 'Schema\'s: cv, koeling, luchttechniek / LBK, water, riolering, gas, stoom, perslucht, elektra en regeltechniek'],
+    mee: ['Het bestek, voor ontwerptekeningen', 'Oude tekeningen op calque of witdruk die digitaal moeten', 'Tekeningen van derden die getoetst moeten worden'],
+  },
+  {
+    id: 'klimaat', naam: 'Welk installatieconcept past?', kort: 'Verwarmen, koelen, ventileren, energie',
+    kop: 'Advies energie en klimaat', intro: 'Om tot een juiste keuze te komen van het toe te passen installatieconcept, zetten wij alle voor- en nadelen van de systemen op een rij. Zo kunt u een duidelijke keuze maken, zowel technisch als financieel.',
+    diensten: ['Verwarmen, koelen en ventileren met één klimaatinstallatie', 'Energiebesparende gebouwgebonden installaties (EPC)', 'Warmtepompen, zonneboilers, koude- en warmteopslag in de bodem', 'Warmteterugwinning, ook uit douchewater', 'Hergebruik regenwater en waterbesparing'],
+    mee: ['Nieuwbouw of renovatie', 'Woning of utiliteitsgebouw', 'Tekeningen of plattegronden van het gebouw'],
+  },
+  {
+    id: 'elektro', naam: 'Elektra, verlichting of veiligheid', kort: 'Elektro-, meet- en regeltechniek',
+    kop: 'Elektro-, meet- en regeltechniek', intro: 'Van licht en kracht tot gebouwbeheer en noodstroom: TAB tekent, berekent en bereidt het werk voor.',
+    diensten: ['Risicoanalyse en NEN 3140-inspecties', 'Het ontwerpen van verlichtingsplannen', 'Ontruimings- en vluchtwegplannen', 'Het opstellen van bestekken', 'Energieberekeningen en concepten', 'De werkvoorbereiding van projecten'],
+    mee: ['Plattegronden van het gebouw', 'Om welke installaties het gaat: licht, kracht, zwakstroom, noodverlichting, brandmelding'],
+  },
+  {
+    id: 'milieu', naam: 'Milieu en veiligheid', kort: 'Milieuplannen, metingen, arbo',
+    kop: 'Gezondheid, milieu en welzijn', intro: 'Bij Technisch Adviesburo Betuwe zijn sinds 2002 alle medewerkers VCA** gecertificeerd.',
+    diensten: ['Inventarisatie bedrijf en bedrijfsmilieuplannen', 'Emissieberekeningen, lucht en geluid', 'Legionellabeheersing en waterbehandeling', 'Asbestanalyse en -sanering', 'Risico-inventarisatie, arbowet en arbeidshygiënische metingen', 'Wet milieubeheer en subsidiemogelijkheden'],
+    mee: ['Een omschrijving van uw bedrijf en de processen', 'Welke vraag er ligt: melding, toetsing, meting of plan'],
+  },
+];
+
+const berekeningen = [
+  ['Warmteverliesberekening', 'NEN 5066'], ['Koellastberekening', 'NEN 5067'], ['Energiebesparing', 'NEN 2916'], ['Kabelberekening', 'NEN 1010'],
+  ['Temperatuuroverschrijdingsberekening', ''], ['Luchtkanalenberekening', ''], ['Cv-leidingberekening', ''], ['Koelleidingberekening', ''],
+  ['Tapwaterleidingberekening', ''], ['Grijswaterleidingberekening', ''], ['Gasleidingberekening', ''], ['Persluchtleidingnetberekening', ''],
+  ['Brandblusleidingnetberekening', ''], ['Drukleidingberekening', ''], ['Riolering en hemelwater', ''], ['Drainageleidingberekening', ''],
+  ['Boilerberekening', ''], ['Warmtewisselaarberekening', ''], ['Stoominstallatieberekening', ''], ['Warmtapwaterberekening', ''],
+  ['Stofafzuiginstallatieberekening', ''], ['Sprinklerinstallatieberekening', ''], ['Geluiddemperberekening', ''], ['Brandlastberekening', ''],
+  ['Vuurbelastingberekening', ''], ['Beheersbaarheid van brand', ''], ['Gelijkwaardigheidsberekening', ''], ['Milieuberekening', ''],
+  ['Waterbehandelingberekening', ''], ['Centrale verwarming', ''], ['Data-installatie', ''], ['Aardingsinstallatie', ''], ['Brandmeldinstallatie', ''],
+];
+
+const issoVoordelen = [
+  'Al uw eisen voldoen aan de door de overheid opgestelde wetten.',
+  'Achteraf geen nadelige procedure of kosten voor het project.',
+  'Wetenschappelijk onderbouwde berekeningen van installaties.',
+  'Gestructureerde uitwerking van onderdelen van uw projecten.',
+  'Een gedegen eindresultaat van al uw wensen en eisen.',
+];
+
+const specialisaties = ['Stofafzuiging van speciale processen', 'Invriezen van voedingsmiddelen', 'Ontdooien van voedingsmiddelen', 'Luchtkwaliteit opslag cultuurgoederen', 'Transportventilatie via tunnel of band'];
+
+const tekenen = [
+  'Oude tekeningen vanaf calque of witdruk digitaal maken.',
+  'Ontwerptekeningen verzorgen aan de hand van een bestek.',
+  'Definitieve werktekeningen maken voor uitvoering.',
+  'Controle en toetsing van tekeningen van derden.',
+  'Aanneming van tekenwerk voor het gehele project.',
+  'Al het tekenwerk wordt door ons zelfstandig uitgevoerd, vanuit onze ontwerpstudio in Tiel.',
+];
+const schemas = ['Koeltechnisch', 'Cv-technisch', 'Luchttechnisch / LBK', 'Watertechnisch', 'Rioleringstechnisch', 'Procestechnisch', 'Gastechnisch', 'Principeschema\'s', 'Stoom en condensaat', 'Elektrisch', 'Regeltechnisch', 'Perslucht'];
+const tekeningen = ['Brandbestrijding', 'Vluchtwegsignalering', 'Stookruimte', 'Bouwkundige plattegrond', 'Detail en aanzicht', 'Sparing en doorvoer', 'HVAC-installatie', 'Piping proces', 'Bouwkundig', 'Revisie', 'Infrastructuur', 'Datanetwerk', 'Zwakstroominstallatie', 'Apparatenbouw', 'Brandmeldinstallatie'];
+
+const concepten = [
+  { nr: 1, naam: '1 klimaatinstallatie', via: 'luchtbehandeling', rijen: ['Ja', 'Ja', 'Ja', 'Ja'] },
+  { nr: 2, naam: '2 klimaatinstallaties', via: 'lucht en airco', rijen: ['Lucht', 'Splitsystemen o.g.', 'Lucht', 'Lucht'] },
+  { nr: 3, naam: '3 klimaatinstallaties', via: 'cv, airco en wtw', rijen: ['Radiatoren', 'Splitsystemen o.g.', 'Lucht wtw', 'Lucht wtw'] },
+];
+const functies = ['Verwarmen', 'Koelen', 'Ventileren', 'Filteren'];
+const overigeConcepten = ['Warmtepompboiler', 'Zonneboilersysteem', 'Koude- en warmteopslag in de bodem', 'Warmteterugwinning uit douchewater', 'Vervangen cv-ketel', 'Zonnepanelen', 'Nachtstroom', 'Energiebesparende apparatuur', 'Energiebesparende verlichting', 'Hergebruik regenwater', 'Waterbesparende douchekoppen en toiletten'];
+
+const elektroInstallaties = ['Zwakstroom', 'Licht', 'Kracht', 'Noodverlichting', 'Noodstroomvoorzieningen', 'Telematica', 'Domotica', 'Communicatie', 'Brandbeveiliging', 'Beveiliging', 'Zusteroproep', 'Geluid', 'Video', 'Toegangscontrole', 'Gebouwbeheer', 'Besturingstechniek', 'Klimaatregeltechniek', 'Energietechniek', 'Energieopwekking', 'Transportinstallaties', 'Liften en roltrappen', 'Antenne-installaties CAI', 'Infrastructuur', 'Datanetwerken', 'WKK-installaties', 'Grootkeukeninstallaties', 'No-break', 'Aarding', 'Buizenpost', 'Schakelverdeelinrichtingen'];
+const milieu = [
+  { kop: 'Water', items: ['Waterbesparing', 'Watermanagement', 'Waterbehandeling', 'Legionellabeheersing', 'Grijswatersystemen'] },
+  { kop: 'Energie', items: ['Koude- en warmteopslag', 'Energiezorg', 'Energietechniek', 'Duurzame energie', 'Lagetemperatuursystemen'] },
+  { kop: 'Milieumanagement', items: ['Duurzaam bouwen', 'Milieuzorgsystemen', 'Geluidsonderzoek en -advies', 'Emissieberekeningen'] },
+  { kop: 'Veiligheid', items: ['Toegangscontrole', 'Asbestsanering', 'Ontruimingsinstallaties', 'Risico-inventarisatie', 'Arbowet'] },
+];
+
+const gebouwen = ['Kerken', 'Kantoorgebouwen', 'Scholen', 'Universiteiten', 'Winkels', 'Showrooms', 'Zwembaden', 'Tuinkassen', 'Procesindustrie', 'Parkeergarages', 'Magazijnen', 'Milieuopslag', 'Stallen', 'Boerderijen', 'Controlekamers', 'Weegkamers', 'Meetruimten', 'Sportcentra', 'Fabrieken', 'Houtopslaghallen', 'Bulkopslaghallen', 'Machinehallen', 'Houtzagerijen', 'Archieven', 'Computerruimten', 'Natuursteenbedrijven', 'Machinebouw', 'Constructiebouw', 'Restaurants', 'Bedrijfskeukens', 'Cleanrooms', 'Operatiekamers', 'Individuele woningen', 'Utiliteitsbouw', 'Renovatiebouw', 'Bedrijfspanden', 'Bedrijfshallen', 'Werkplaatsen', 'Sportcomplexen', 'Theaters', 'Muziekgebouwen', 'Verpleeghuizen', 'Studio\'s', 'Kunstopslaghallen', 'Tunnels', 'Gezondheidssector', 'Laboratoria', 'Bloembolcellen'];
+
+// "TAB is actief met de volgende disciplines": hun A-Z-lijst, dubbelingen eruit, schrijfwijze rechtgezet.
+const disciplines = ['Aardingsinstallaties', 'Aardgasinstallaties', 'Afscheidingsinstallaties', 'Afvaltransportsystemen', 'Airconditioning', 'Absorptiekoeling', 'Adiabatische systemen', 'Afzuiginstallaties', 'Buizenpostinstallaties', 'Bevochtigingsinstallaties', 'Brandmeldinstallaties', 'Brandbestrijding', 'Binnenriolering', 'Brandberekeningen', 'LPG- en dieselafzuiginstallaties', 'CO-beheersing', 'Condensaatinstallaties', 'Centrale verwarming', 'Centrale luchtverwarming', 'Centrale stofzuiging', 'Cleanrooms', 'Computerairconditioning', 'Demiwaterinstallaties', 'Drukverhogingsinstallaties', 'Datanetwerken', 'Data-installaties', 'Droogkamerinstallaties', 'Dieselprocesinstallaties', 'Energietechniek', 'Energiecentrales', 'Elektrische installaties', 'Energiezuinige installaties', 'Filterreinigingssystemen', 'Free-coolinginstallaties', 'Gasgestookte verwarming', 'Gasinstallaties', 'Gebouwbeheersystemen', 'Gebouwautomatisering', 'Geluidsinstallaties', 'Hemelwaterafvoeren', 'Heetwaterinstallaties', 'Houtmotafzuiginstallaties', 'Hogedrukafzuigventilatie', 'Hoogspanningsinstallaties', 'HVAC-installaties', 'Inductieventilatie', 'Industriële ventilatie', 'Inductie-afzuigprocessen', 'Isolatievoorzieningen', 'Inbraakbewakingsinstallaties', 'Indirecte koeling', 'Koudewisselaars', 'Kasverwarming', 'Kaskoeling', 'Kasventilatie', 'Klimaatkamers', 'Klimaattechniek', 'Koel- en vriescellen', 'Koeling', 'Kunstlichtinstallaties', 'Kunstopslaginstallaties', 'Loodgieterswerkzaamheden', 'Luchtbehandeling', 'Luchtverwarming', 'Licht- en krachtinstallaties', 'Lachgasinstallaties', 'Laboratoria', 'Lokale verwarming', 'Luchtbevochtiging', 'Luchtinblaassystemen', 'Lagedrukstoominstallaties', 'Legionellabestrijding', 'Make-up-airinstallaties', 'Milieutechniek', 'Melkrobots veehouderij', 'Medische gassen', 'Mengluchtsystemen', 'Musea-installaties', 'Nachtventilatie', 'No-breakinstallaties', 'Noodstroomvoorzieningen', 'Noodverlichtingsinstallaties', 'Natuurlijke ventilatie', 'Noodoverstroomsystemen', 'Nooddouchesystemen', 'Osmose-installaties', 'Omgekeerde osmose', 'Onderverdeelinrichtingen', 'Ontluchtingsinstallaties', 'Onderzoek en studies', 'Onderhoudstermijnen', 'Ontvochtigingsinstallaties', 'Operatiekamers', 'Propaangasinstallaties', 'Pneumatische processen', 'Prijscalculaties', 'Procesinstallaties', 'Plenumventilatie', 'Persluchtinstallaties', 'Pompdrukinstallaties', 'Regeltechnische installaties', 'Recirculatiesystemen', 'Rookgaskoeling', 'Restwarmtesystemen', 'Rioolwaterinstallaties', 'Rook- en warmteafvoer (RWA)', 'Sanitaire installaties', 'Stoominstallaties', 'Stofzuiginstallaties', 'Stofafzuiginstallaties', 'Schakel- en verdeelinrichtingen', 'Schakelkasten en panelen', 'Signaleringssystemen', 'Sprinklerinstallaties', 'Spuisystemen', 'Stadsverwarming', 'Stikstofinstallaties', 'Stralingsverwarming', 'Suskappen en suskasten', 'Telematica-installaties', 'Tunnelventilatiesystemen', 'Twin-coilsystemen', 'Total-energysystemen', 'Terreinverlichting', 'Toegangscontrole', 'Tapwaterinstallaties', 'Terreinleidinginstallaties', 'Uitblaasplenumsystemen', 'Uurlijkse klimaatgegevens', 'Verlichting', 'Vluchtwegsignalering', 'Ventilatie', 'Vuilwaterriolering', 'Vacuüminstallaties', 'Verdringingssystemen', 'Verdeelinrichtingen', 'Verfspuitinrichtingen', 'Verpleegruimten', 'Vloerverwarming', 'Vetafscheidingsprocessen', 'Vul- en aftapinstallaties', 'Warmtekrachtinstallaties', 'Warmtepompsystemen', 'Warmtekrachtkoppeling', 'Waterleidingen', 'Warmtewisselaars', 'Waterbehandeling', 'Werkplekverlichting', 'Werkplekconditionering', 'Windenergiesystemen', 'Zonne-energie', 'Zuurstofinstallaties', 'Zusteroproepinstallaties', 'Zetmeelafscheiding', 'Zuurkastinstallaties', 'Zuigdrukregelingen', 'Zuiveringsinstallaties', 'Zwembadinstallaties'];
+
+const software = ['Cv-installaties', 'Koelinstallaties', 'Waterinstallaties', 'Gasinstallaties', 'AC-installaties', 'Klimaatinstallaties', 'Persluchtinstallaties', 'Luchtinstallaties'];
+const softwareVoorbeelden = ['Warmteverliesberekening NEN 5066 / ISSO 4', 'Koellastberekening woningen en utiliteit', 'Berekening vloerverwarming ISSO 10', 'Berekening expansievat cv-installaties', 'Berekening diameter tapwaterleidingen', 'Berekening gasleiding', 'Berekening ventilatie stookruimte NEN 1078', 'Berekening vetafscheider keuken NEN 7087', 'Kengetallen en vuistregels conform ISSO 33', 'Montagetijden conform Gustaf Ende-norm'];
+const vrij = ['Uw bedrijfsnaam en logo invoeren', 'Kleuren, teksten en lay-out veranderen', 'Vrije toegang tot de formules', 'Berekening opslaan in de projectmap', 'Alle printerinstellingen wijzigen'];
+const co2 = ['Berekening doseerhoeveelheid', 'Keuze brandstof: aardgas, propaan, butaan', 'Selectie rookgascondensor', 'Selectie gewenste einddruk 2, 4, 6, 8 mbar', 'Berekening weerstand hoofdkanaal, opstand en darm', 'Selectie van een juiste transportventilator', 'Automatische tekening doseerinstallatie'];
+
+const eigenschappen = [
+  'Wij behartigen uw belangen naar onze beste weten.',
+  'Wij verrichten onze diensten naar beste kunnen en wetenschap.',
+  'Alles wordt zo goed en zorgvuldig mogelijk uitgevoerd.',
+  'Uw gegevens worden niet aan derden bekend gemaakt.',
+  'Wij verrichten een betrouwbare en gedegen dienstverlening.',
+  'Wij vermijden alles wat onze onafhankelijkheid kan schaden.',
+];
+const voorwaarden = [
+  { k: 'Honorering', v: 'Bestede tijd x tarief per tijdseenheid. Het uurtarief hangt af van de complexiteit van het project.' },
+  { k: 'Regeling', v: 'Op alle werkzaamheden is de DNR 2005 van toepassing.' },
+  { k: 'Offertes', v: 'Al onze uitgebrachte offertes zijn 3 maanden geldig.' },
+  { k: 'Betaling', v: 'In overleg, afhankelijk van de duur van het project. Termijn 14 dagen netto na factuurdatum.' },
+];
+---
+<Base
+  title="Technisch Adviesburo Betuwe | Calculatie, engineering, tekenwerk en advies installatietechniek, Tiel"
+  description="Technisch Adviesburo Betuwe (TAB) in Tiel: calculatie-, engineering-, teken- en adviesburo voor installatietechniek, werktuigbouw en elektro- en regeltechniek. Sinds 1999, voor Nederland, Duitsland en België."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: nachtblauw met tekenraster. Korte, grote kop links; rechts een grote foto die over de rand valt, met hun eigen principeschema als overlappende kaart. -->
+    <section class="donker raster relative flow-root bg-nacht text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pt-10 pb-14 lg:grid-cols-12 lg:gap-12 lg:pt-16 lg:pb-16">
+        <div class="lg:col-span-7 lg:row-start-1 lg:self-center">
+          <p class="kicker flex items-center gap-3 text-ijs"><span class="h-px w-8 bg-signaal" aria-hidden="true"></span>Tiel, sinds 15 januari 1999</p>
+          <h1 class="mt-5 text-[min(9.6vw,4.6rem)] lg:text-[min(4.9vw,4.6rem)]">Installatietechniek</h1>
+          <p class="mt-3 max-w-xl font-display text-xl leading-tight font-bold text-ijs sm:text-2xl">Calculatie, engineering, tekenwerk en advies</p>
+          <p class="mt-5 max-w-xl text-white/85 sm:text-lg">Ook voor werktuigbouw en elektro- en regeltechniek kunnen wij u op meerdere vakdisciplines van dienst zijn.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#wegwijzer" class="btn btn-ijs">Welke discipline heeft u nodig? <Fragment set:html={pijl} /></a>
+            <a href={site.telHref} class="btn btn-line text-white"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+          </div>
+        </div>
+        <div class="relative lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:-mb-40">
+          <figure class="relative -mx-5 sm:mx-0">
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl sm:shadow-lg lg:aspect-auto lg:h-[700px]">
+              <Foto src={heroFoto} alt="Van onderen gezien: grote spiraalgefalste ventilatiekanalen langs een gevel met een glazen dak erboven" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 460px, 100vw" class="object-[30%_50%]" />
+            </div>
+          </figure>
+          <figure class="relative z-10 -mt-14 ml-3 w-[calc(100%-1.5rem)] max-w-[420px] rounded-xl bg-white p-2 text-ink shadow-lg sm:ml-6 lg:absolute lg:bottom-10 lg:-left-10 lg:mt-0 lg:ml-0 lg:w-[380px]">
+            <Image src={schemaLbk} alt="Principeschema van een luchtbehandelingskast met buitenlucht, menglucht, toevoerlucht, retourlucht en afblaaslucht, op blauwe achtergrond" widths={[497]} sizes="400px" class="block h-auto w-full rounded-lg" />
+            <figcaption class="flex items-baseline justify-between gap-3 px-1.5 pt-2 pb-0.5 text-xs"><span class="font-semibold">Principe luchtbehandelingskast voor verantwoorde conservering van cultuurgoederen</span><span class="kicker whitespace-nowrap text-helder">TAB</span></figcaption>
+          </figure>
+        </div>
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-white/15 pt-6 text-sm sm:grid-cols-3 lg:col-span-7 lg:col-start-1 lg:row-start-2 lg:self-end lg:pr-6">
+          <div><dt class="text-white/70">Telefonisch bereikbaar</dt><dd class="mt-0.5 font-display text-base font-bold"><span class="whitespace-nowrap">{bereikbaar.dagen}</span> <span class="whitespace-nowrap tabular-nums">{bereikbaar.tijd}</span></dd></div>
+          <div><dt class="text-white/70">Vrijblijvende prijsopgave</dt><dd class="mt-0.5 font-display text-base font-bold">Binnen 24 uur</dd></div>
+          <div class="col-span-2 sm:col-span-1"><dt class="text-white/70">Markt</dt><dd class="mt-0.5 font-display text-base font-bold">Nederland, Duitsland en België</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- Diensten: genummerde lijst naast een vaste kolom. -->
+    <section id="diensten" class="scroll-mt-16 pt-16 pb-20 lg:pt-56 lg:pb-28">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-helder">Werkzaamheden</p>
+          <h2 class="mt-3 text-3xl">Een klein buro met veel disciplines</h2>
+          <p class="mt-5 text-ink-soft">De onderneming is een volledig zelfstandig bedrijf en richt zich hoofdzakelijk op de Nederlandse, Duitse en Belgische markt. Wij zijn een kleine onderneming met weinig overheadkosten.</p>
+          <p class="mt-4 text-ink-soft">Hierdoor kunnen wij op een zeer snelle en budgetvriendelijke manier uw project of onderdeel van een project realiseren.</p>
+          <ul class="mt-7 flex flex-wrap gap-2 text-sm font-semibold" aria-label="Soorten werk">
+            {['Advies', 'Engineering', 'Tekenwerk', 'Project', 'Berekening'].map((w) => <li class="rounded-full bg-mist px-3 py-1">{w}</li>)}
+          </ul>
+        </div>
+        <ol class="grid gap-px overflow-hidden rounded-xl border border-line bg-line shadow-sm lg:col-span-8">
+          {diensten.map((d, i) => (
+            <li class="grid gap-2 bg-white p-6 sm:grid-cols-[4rem_1fr] sm:gap-4 lg:p-7">
+              <span class="font-display text-sm font-bold text-helder tabular-nums">0{i + 1}</span>
+              <div>
+                <h3 class="text-xl">{d.naam}</h3>
+                <p class="mt-2 text-ink-soft">{d.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Wow: de wegwijzer. Zonder JavaScript staan alle zes de antwoorden gewoon onder elkaar. -->
+    <section id="wegwijzer" class="donker raster scroll-mt-16 bg-nacht py-20 text-white lg:py-28" data-wegwijzer>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-ijs">Wegwijzer</p>
+            <h2 class="mt-3 text-3xl">Welke discipline heeft u nodig?</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5">Kies uw vraag. U ziet welke diensten van TAB erbij horen en wat u het beste kunt meesturen. Vooraf ontvangt u een geheel vrijblijvende prijsopgave, per project of projectonderdeel.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+          <fieldset class="lg:col-span-5" data-keuzes hidden>
+            <legend class="kicker mb-4 text-white/80">Uw vraag</legend>
+            <div class="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
+              {vragen.map((v, i) => (
+                <label class="keuze">
+                  <input type="radio" name="vraag" value={v.id} class="sr-only" checked={i === 0} />
+                  <span class="nr tabular-nums" aria-hidden="true">0{i + 1}</span>
+                  <span><strong>{v.naam}</strong><small>{v.kort}</small></span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="lg:col-span-7" aria-live="polite" data-uitkomst>
+            {vragen.map((v) => (
+              <article class="mb-6 overflow-hidden rounded-xl bg-white text-ink shadow-lg last:mb-0" data-paneel={v.id} aria-labelledby={`p-${v.id}`}>
+                <div class="border-b border-line bg-mist px-6 py-5 lg:px-8">
+                  <p class="kicker text-helder">{v.naam}</p>
+                  <h3 id={`p-${v.id}`} class="mt-1.5 text-2xl">{v.kop}</h3>
+                  <p class="mt-2 text-sm text-ink-soft">{v.intro}</p>
+                </div>
+                <div class="grid gap-8 px-6 py-6 md:grid-cols-2 lg:px-8 lg:py-7">
+                  <div>
+                    <h4 class="font-display font-bold">Wat TAB voor u doet</h4>
+                    <ul class="mt-3 space-y-2.5 text-sm">
+                      {v.diensten.map((d) => <li class="flex gap-2.5"><span class="mt-[0.55rem] h-[3px] w-3 flex-none bg-signaal" aria-hidden="true"></span><span>{d}</span></li>)}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 class="font-display font-bold">Handig om mee te sturen</h4>
+                    <div class="mt-2 text-sm">
+                      {v.mee.map((m) => <label class="vink"><input type="checkbox" value={m} data-mee /> <span>{m}</span></label>)}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 border-t border-line px-6 py-5 lg:px-8">
+                  <a href={`mailto:${site.mail}?subject=${encodeURIComponent(`Projectaanvraag: ${v.kop}`)}`} class="btn btn-marine text-sm" data-mail={v.kop}><Fragment set:html={mail} />Mail uw aanvraag</a>
+                  <a href={site.whatsapp} class="btn btn-line text-sm text-marine hover:!bg-marine hover:!text-white"><Fragment set:html={wa} />WhatsApp <span class="whitespace-nowrap tabular-nums">{site.gsm}</span></a>
+                  <p class="w-full text-xs text-ink-soft" data-hint hidden>Aangevinkte punten komen als checklist in uw e-mail.</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Wegwijzer: toont het paneel bij de gekozen vraag en zet de aangevinkte punten als checklist in de e-mail. Verstuurt niets zelf.
+      const sectie = document.querySelector<HTMLElement>('[data-wegwijzer]');
+      if (sectie) {
+        const keuzes = sectie.querySelector<HTMLFieldSetElement>('[data-keuzes]')!;
+        const panelen = [...sectie.querySelectorAll<HTMLElement>('[data-paneel]')];
+        const uitkomst = sectie.querySelector<HTMLElement>('[data-uitkomst]')!;
+        keuzes.hidden = false;
+        sectie.querySelectorAll<HTMLElement>('[data-hint]').forEach((h) => (h.hidden = false));
+        const toon = (id: string) => panelen.forEach((p) => (p.hidden = p.dataset.paneel !== id));
+        toon((keuzes.querySelector('input:checked') as HTMLInputElement).value);
+        keuzes.addEventListener('change', (e) => {
+          toon((e.target as HTMLInputElement).value);
+          if (innerWidth < 1024) {
+            const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            uitkomst.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: 'start' });
+          }
+        });
+        panelen.forEach((p) => {
+          const link = p.querySelector<HTMLAnchorElement>('[data-mail]')!;
+          const basis = link.href.split('?')[0];
+          const onderwerp = `Projectaanvraag: ${link.dataset.mail}`;
+          const werkBij = () => {
+            const mee = [...p.querySelectorAll<HTMLInputElement>('[data-mee]:checked')].map((c) => `- ${c.value}`);
+            const body = mee.length ? `Ik stuur mee:\n${mee.join('\n')}\n\n` : '';
+            link.href = `${basis}?subject=${encodeURIComponent(onderwerp)}${body ? `&body=${encodeURIComponent(body)}` : ''}`;
+          };
+          p.addEventListener('change', werkBij);
+        });
+      }
+    </script>
+
+    <!-- Engineering: normen en berekeningen als technisch overzicht. -->
+    <section id="engineering" class="scroll-mt-16 py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-helder">Engineering van projecten</p>
+          <h2 class="mt-3 text-3xl">Berekend volgens bouwbesluit, NEN en ISSO</h2>
+          <p class="mt-5 text-ink-soft">Om kwalitatief een zo goed mogelijke dienst te verlenen en een zo goed mogelijk product te leveren, hanteren wij zoveel mogelijk de bestaande ISSO-publicaties. Uiteraard wordt als eerste het bouwbesluit getoetst, met de verwijzing naar de desbetreffende NEN-normen.</p>
+          <ul class="mt-7 space-y-3">
+            {issoVoordelen.map((v) => <li class="flex gap-3"><svg viewBox="0 0 20 20" class="mt-1 h-4 w-4 flex-none text-helder" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m4 10.5 4 4 8-9" /></svg><span>{v}</span></li>)}
+          </ul>
+          <figure class="mt-10 overflow-hidden rounded-xl shadow-sm">
+            <div class="aspect-[3/2]"><Foto src={potlood} alt="Close-up van een potloodpunt en een schaallat op een technische tekening met maatvoering" widths={[480, 800]} sizes="(min-width: 1024px) 460px, 100vw" /></div>
+          </figure>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rounded-xl border border-line bg-white shadow-sm">
+            <div class="flex items-baseline justify-between gap-4 border-b border-line px-6 py-4">
+              <h3 class="text-lg">Engineering bestaat uit</h3>
+              <span class="text-sm text-ink-soft tabular-nums">{berekeningen.length} berekeningen</span>
+            </div>
+            <ul class="grid px-6 py-2 sm:grid-cols-2 sm:gap-x-8">
+              {berekeningen.map(([n, norm]) => (
+                <li class="flex items-baseline justify-between gap-3 border-b border-line/70 py-2.5 text-sm last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0">
+                  <span class="min-w-0 [overflow-wrap:anywhere]">{n}</span>
+                  {norm && <span class="flex-none rounded-md bg-mist px-2 py-0.5 font-display text-xs font-bold whitespace-nowrap text-marine">{norm}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p class="mt-5 text-sm text-ink-soft">ISSO wordt gedragen door de gehele installatiesector, met onder meer TVVL, UNETO, VNI, VABI, SAVI en ONRI.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specialisatie: hun eigen principeschema's, op ware grootte. -->
+    <section class="bg-mist py-20 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-helder">Specialisatie TAB</p>
+            <h2 class="mt-3 text-3xl">Lucht, stof en temperatuur in speciale processen</h2>
+          </div>
+          <ul class="grid gap-x-6 gap-y-2 text-sm font-semibold sm:grid-cols-2 lg:col-span-6">
+            {specialisaties.map((s) => <li class="flex gap-2.5"><span class="mt-[0.6rem] h-[3px] w-3 flex-none bg-signaal" aria-hidden="true"></span>{s}</li>)}
+          </ul>
+        </div>
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          {[
+            { src: schemaOntdooi, alt: 'Principeschema van een automatische ontdooi-installatie met vis uit een diepvriespakket, gescheiden warmtewisselaar, aanvoer 30 graden en retour 10 graden', bij: 'Principe automatische ontdooi-installatie' },
+            { src: schemaStof, alt: 'Principeschema van stofafzuiging voor een natuursteenbedrijf met afzuigzone, sproeizone, druppelvanger, luchttoevoer en vuilwateropvangbak', bij: 'Principe stofafzuiging natuursteenbedrijf' },
+          ].map((s) => (
+            <figure class="flex flex-col items-center rounded-xl bg-white p-5 shadow-sm sm:flex-row sm:items-end sm:gap-6">
+              <Image src={s.src} alt={s.alt} widths={[387]} sizes="(min-width: 640px) 240px, 100vw" class="h-auto w-full max-w-[387px] rounded-lg sm:w-60" />
+              <figcaption class="mt-4 sm:mt-0 sm:pb-1"><span class="kicker text-helder">Principeschema</span><span class="mt-1.5 block font-display text-lg leading-snug font-bold">{s.bij}</span><span class="mt-1 block text-sm text-ink-soft">Uit de huidige website van TAB</span></figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Tekenwerk: groot beeld links, lijst rechts, tags eronder. -->
+    <section id="tekenwerk" class="scroll-mt-16 py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <figure class="relative lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-full lg:min-h-[520px]">
+            <Foto src={tekentafel} alt="Iemand tekent met een pen op een grote vel papier, met een schaallat en een rol tekenpapier op een houten tafel" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 560px, 100vw" class="object-[40%_50%]" />
+          </div>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="kicker text-helder">Tekenwerk</p>
+          <h2 class="mt-3 text-3xl">Wat kan Technisch Adviesburo Betuwe voor u tekenen?</h2>
+          <ol class="mt-7 divide-y divide-line border-y border-line">
+            {tekenen.map((t, i) => <li class="flex gap-4 py-3.5"><span class="w-6 flex-none font-display text-sm font-bold text-helder tabular-nums">{i + 1}</span><span>{t}</span></li>)}
+          </ol>
+          <p class="mt-6 text-sm text-ink-soft">Totaalaanneming van tekenwerk per project, of op basis van bestede tijd. Symbolen conform de NEN-normen, tekenformaten conform NEN 379, bouwkundige aanduidingen conform NEN 114. Vooraf een geheel vrijblijvende prijsopgave.</p>
+        </div>
+        <div class="grid gap-8 md:grid-cols-2 lg:col-span-12">
+          <div class="rounded-xl bg-white p-6 shadow-sm">
+            <h3 class="text-lg">Schema's</h3>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm">{schemas.map((s) => <li class="rounded-md border border-line px-2.5 py-1">{s}</li>)}</ul>
+          </div>
+          <div class="rounded-xl bg-white p-6 shadow-sm">
+            <h3 class="text-lg">Tekeningen</h3>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm">{tekeningen.map((s) => <li class="rounded-md border border-line px-2.5 py-1">{s}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Klimaatconcepten: vergelijkingstabel op donker. -->
+    <section id="klimaat" class="donker scroll-mt-16 bg-marine py-20 text-white lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-ijs">Verwarmen, koelen en ventileren</p>
+          <h2 class="mt-3 text-3xl">Drie concepten naast elkaar</h2>
+          <p class="mt-5 text-white/85">Door de aanscherping van de EPC-waarde voor woningen en utiliteitsgebouwen ontkomen we er niet meer aan om energiebesparende gebouwgebonden installaties toe te passen. Om aan deze wettelijke eisen te voldoen, heeft Technisch Adviesburo Betuwe al diverse innovatieve installatieconcepten gerealiseerd.</p>
+        </div>
+        <div class="lg:col-span-8">
+          <div class="overflow-x-auto rounded-xl bg-white text-ink shadow-lg">
+            <table class="w-full min-w-[520px] text-left text-sm">
+              <caption class="sr-only">Vergelijking van drie klimaatinstallatieconcepten</caption>
+              <thead>
+                <tr class="border-b border-line">
+                  <th scope="col" class="w-[22%] px-5 py-4 font-display text-xs font-bold uppercase tracking-[.12em] text-ink-soft">Functie</th>
+                  {concepten.map((c) => <th scope="col" class="px-5 py-4 align-top"><span class="kicker text-helder">Concept {c.nr}</span><span class="mt-1 block font-display text-[0.95rem] leading-tight font-bold whitespace-nowrap">{c.naam}</span><span class="block font-normal text-ink-soft">d.m.v. {c.via}</span></th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {functies.map((f, r) => (
+                  <tr class="border-b border-line">
+                    <th scope="row" class="px-5 py-3 font-semibold">{f}</th>
+                    {concepten.map((c) => <td class="px-5 py-3">{c.rijen[r]}</td>)}
+                  </tr>
+                ))}
+                <tr class="border-b border-line"><th scope="row" class="px-5 py-3 font-semibold">Warmte- en koudeterugwinning</th>{concepten.map(() => <td class="px-5 py-3">Ja</td>)}</tr>
+                <tr class="bg-paper"><th scope="row" class="px-5 py-3 font-semibold">Opties</th>{concepten.map(() => <td class="px-5 py-3 text-ink-soft">Bevochtigen, ontvochtigen</td>)}</tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="mt-3 text-sm text-white/80 sm:hidden">Schuif de tabel opzij voor concept 2 en 3.</p>
+          <h3 class="mt-10 text-lg">Overige energiebesparende concepten</h3>
+          <ul class="mt-4 flex flex-wrap gap-2 text-sm">{overigeConcepten.map((o) => <li class="rounded-md bg-white/10 px-2.5 py-1 text-white/90">{o}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Elektro en milieu: foto met twee lijstkolommen. -->
+    <section class="py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="kicker text-helder">Elektrotechniek, meet- en regeltechniek</p>
+          <h2 class="mt-3 text-3xl">Van licht en kracht tot gebouwbeheer</h2>
+          <ul class="mt-7 columns-2 gap-6 text-sm sm:columns-3">
+            {elektroInstallaties.map((e) => <li class="break-inside-avoid border-b border-line py-1.5 [overflow-wrap:anywhere]">{e}</li>)}
+          </ul>
+        </div>
+        <figure class="lg:col-span-5">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-[4/5]">
+            <Foto src={schakelkast} alt="Open schakelkast met rijen relais, contactoren en transformatoren op metalen rails" widths={[480, 800]} sizes="(min-width: 1024px) 460px, 100vw" />
+          </div>
+        </figure>
+        <div class="lg:col-span-12">
+          <div class="grid gap-8 rounded-xl bg-white p-6 shadow-sm md:grid-cols-12 lg:p-10">
+            <div class="md:col-span-4">
+              <p class="kicker text-helder">Gezondheid, milieu en welzijn</p>
+              <h3 class="mt-3 text-2xl">Sinds 2002 alle medewerkers VCA** gecertificeerd</h3>
+              <p class="mt-3 text-sm text-ink-soft">Hiermee bevorderen wij de veiligheid, de gezondheid en het welzijn van al onze werknemers.</p>
+            </div>
+            <div class="grid gap-6 sm:grid-cols-2 md:col-span-8 lg:grid-cols-4">
+              {milieu.map((m) => (
+                <div>
+                  <h4 class="font-display font-bold">{m.kop}</h4>
+                  <ul class="mt-2 space-y-1 text-sm text-ink-soft">{m.items.map((i) => <li>{i}</li>)}</ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projecten: soorten gebouwen, eigen projectfoto's op ware grootte, referentie, A-Z. -->
+    <section id="projecten" class="scroll-mt-16 border-t border-line bg-white py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-helder">Projecten</p>
+          <h2 class="mt-3 text-3xl">Van kerk tot cleanroom</h2>
+          <p class="mt-5 text-ink-soft">Individueel, industrieel, woningbouw, utiliteitsbouw, automatisering en energiebesparing. TAB werkte aan onder meer:</p>
+          <div class="mt-8 grid max-w-[470px] grid-cols-3 gap-2.5">
+            {[
+              { src: projPand, alt: 'Klein projectfotootje: bedrijfspand met bakstenen gevel en glazen entree', w: 149 },
+              { src: projLbk, alt: 'Klein projectfotootje: luchtbehandelingskast in een technische ruimte', w: 148 },
+              { src: projKast, alt: 'Klein projectfotootje: geopende schakelkast met bekabeling', w: 148 },
+            ].map((p) => <Image src={p.src} alt={p.alt} widths={[p.w]} sizes={`${p.w}px`} class="h-auto w-full max-w-[149px] rounded-lg ring-1 ring-line" />)}
+          </div>
+          <p class="mt-3 text-xs text-ink-soft">Projectfoto's van de huidige website, op ware grootte.</p>
+          <div class="mt-10 rounded-xl bg-nacht p-6 text-white">
+            <p class="kicker text-ijs">Referentieproject</p>
+            <h3 class="mt-2 text-xl">Nieuwbouw en renovatie Pontmeyer Utrecht</h3>
+            <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 text-sm">
+              <dt class="text-white/70">Locatie</dt><dd>Lage Weide, Utrecht</dd>
+              <dt class="text-white/70">Bruto vloeroppervlak</dt><dd class="tabular-nums">6.732 m²</dd>
+              <dt class="text-white/70">Oplevering</dt><dd>Februari 2001</dd>
+              <dt class="text-white/70">Rol TAB</dt><dd>Adviseur E + W</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <ul class="columns-2 gap-6 text-sm sm:columns-3">
+            {gebouwen.map((g) => <li class="break-inside-avoid border-b border-line py-1.5 [overflow-wrap:anywhere]">{g}</li>)}
+          </ul>
+          <details class="group mt-10 rounded-xl border border-line bg-paper">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 font-display font-bold [&::-webkit-details-marker]:hidden">
+              <span>Alle {disciplines.length} disciplines van A tot Z</span>
+              <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none transition-transform group-open:rotate-45" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+            </summary>
+            <ul class="columns-2 gap-6 border-t border-line px-6 py-5 text-sm sm:columns-3">
+              {disciplines.map((d) => <li class="break-inside-avoid py-0.5 [overflow-wrap:anywhere]">{d}</li>)}
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Software: eigen rekenpakket, zonder oude acties en prijzen. -->
+    <section id="software" class="scroll-mt-16 bg-mist py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-helder">Softwareberekeningen</p>
+          <h2 class="mt-3 text-3xl">Meer dan 60 berekeningen voor de installatietechniek</h2>
+          <p class="mt-5 text-ink-soft">TAB ontwikkelt ook software voor de installatietechniek: berekeningen in Microsoft Excel die u zelf kunt aanpassen.</p>
+          <ul class="mt-5 flex flex-wrap gap-2 text-sm">{software.map((s) => <li class="rounded-md bg-white px-2.5 py-1 shadow-sm">{s}</li>)}</ul>
+          <div class="mt-8 flex items-center gap-5">
+            <Image src={cd} alt="Cd-rom met het TAB-logo en de tekst Software Berekeningen Installatietechniek, op gras" widths={[180]} sizes="112px" class="h-28 w-28 flex-none rounded-lg object-cover" />
+            <p class="text-sm text-ink-soft">Informatie en bestellen via de e-mail:<br /><a href={`mailto:${site.mail}?subject=${encodeURIComponent('Softwareberekeningen TAB')}`} class="break-all font-semibold text-helder underline underline-offset-2">{site.mail}</a></p>
+          </div>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
+          <div class="rounded-xl bg-white p-6 shadow-sm sm:col-span-2">
+            <h3 class="text-lg">Een greep uit de berekeningen</h3>
+            <ul class="mt-3 grid gap-x-6 text-sm sm:grid-cols-2">{softwareVoorbeelden.map((s) => <li class="border-b border-line py-1.5">{s}</li>)}</ul>
+          </div>
+          <div class="rounded-xl bg-white p-6 shadow-sm">
+            <h3 class="text-lg">Vrij voor de gebruiker</h3>
+            <ul class="mt-3 space-y-1.5 text-sm">{vrij.map((s) => <li class="flex gap-2.5"><span class="mt-[0.55rem] h-[3px] w-3 flex-none bg-signaal" aria-hidden="true"></span>{s}</li>)}</ul>
+          </div>
+          <div class="rounded-xl bg-white p-6 shadow-sm">
+            <h3 class="text-lg">CO₂-dosering glastuinbouw</h3>
+            <ul class="mt-3 space-y-1.5 text-sm">{co2.map((s) => <li class="flex gap-2.5"><span class="mt-[0.55rem] h-[3px] w-3 flex-none bg-signaal" aria-hidden="true"></span>{s}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over TAB: korte tijdlijn, eigenschappen en voorwaarden. -->
+    <section id="over" class="scroll-mt-16 py-20 lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-helder">Over TAB</p>
+          <h2 class="mt-3 text-3xl">Zelfstandig, onafhankelijk, vanuit Tiel</h2>
+          <ol class="mt-8 border-l-2 border-signaal">
+            <li class="relative pb-8 pl-7"><span class="absolute top-2 -left-[7px] h-3 w-3 rounded-full bg-signaal" aria-hidden="true"></span><p class="font-display text-cijfer leading-none font-bold text-marine tabular-nums">1999</p><p class="mt-2 text-ink-soft">Op 15 januari 1999 start Technisch Adviesburo Betuwe in Tiel.</p></li>
+            <li class="relative pb-8 pl-7"><span class="absolute top-2 -left-[7px] h-3 w-3 rounded-full bg-signaal" aria-hidden="true"></span><p class="font-display text-cijfer leading-none font-bold text-marine tabular-nums">2002</p><p class="mt-2 text-ink-soft">Alle medewerkers VCA** gecertificeerd.</p></li>
+            <li class="relative pl-7"><span class="absolute top-2 -left-[7px] h-3 w-3 rounded-full bg-signaal" aria-hidden="true"></span><p class="font-display text-cijfer leading-none font-bold text-marine">Nu</p><p class="mt-2 text-ink-soft">Hoofdzakelijk actief op de Nederlandse, Duitse en Belgische markt.</p></li>
+          </ol>
+        </div>
+        <div class="grid gap-6 lg:col-span-7">
+          <div class="rounded-xl bg-white p-6 shadow-sm lg:p-8">
+            <h3 class="text-xl">Bijzondere eigenschappen van TAB</h3>
+            <ul class="mt-4 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+              {eigenschappen.map((e) => <li class="flex gap-3 text-sm"><svg viewBox="0 0 20 20" class="mt-0.5 h-4 w-4 flex-none text-helder" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m4 10.5 4 4 8-9" /></svg><span>{e}</span></li>)}
+            </ul>
+          </div>
+          <div class="rounded-xl border border-line p-6 lg:p-8">
+            <h3 class="text-xl">Voorwaarden</h3>
+            <dl class="mt-4 divide-y divide-line text-sm">
+              {voorwaarden.map((v) => <div class="grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4"><dt class="font-semibold">{v.k}</dt><dd class="text-ink-soft">{v.v}</dd></div>)}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="donker raster scroll-mt-16 bg-nacht py-20 text-white lg:py-28">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="kicker text-ijs">Contact</p>
+          <h2 class="mt-3 text-3xl">Vragen of een project? Neem vrijblijvend contact op.</h2>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.telHref} class="btn btn-ijs"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+            <a href={site.whatsapp} class="btn btn-line text-white"><Fragment set:html={wa} />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line text-white"><Fragment set:html={mail} />Mail</a>
+          </div>
+          <dl class="mt-10 grid gap-6 sm:grid-cols-2">
+            <div><dt class="text-sm text-white/70">Adres</dt><dd class="mt-1 text-lg">{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.maps} class="mt-1 inline-block text-base font-semibold text-ijs underline underline-offset-4">Route plannen</a></dd></div>
+            <div><dt class="text-sm text-white/70">Telefoon</dt><dd class="mt-1 text-lg"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-4">{site.tel}</a><br />GSM <a href={site.gsmHref} class="whitespace-nowrap tabular-nums underline underline-offset-4">{site.gsm}</a><br /><span class="text-base text-white/80">Fax <span class="whitespace-nowrap tabular-nums">{site.fax}</span></span></dd></div>
+            <div class="sm:col-span-2"><dt class="text-sm text-white/70">E-mail</dt><dd class="mt-1 text-lg"><a href={`mailto:${site.mail}`} class="break-all underline underline-offset-4">{site.mail}</a></dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-5">
+          <div class="rounded-xl bg-white p-6 text-ink shadow-lg lg:p-8">
+            <h3 class="text-xl">Telefonisch bereikbaar</h3>
+            <dl class="mt-4 divide-y divide-line">
+              <div class="flex justify-between gap-4 py-3"><dt>Maandag t/m zaterdag</dt><dd class="font-semibold whitespace-nowrap tabular-nums">9.00 - 18.00</dd></div>
+              <div class="flex justify-between gap-4 py-3"><dt>Zondag en feestdagen</dt><dd class="font-semibold">Niet bereikbaar</dd></div>
+            </dl>
+            <p class="mt-5 rounded-lg bg-mist p-4 text-sm">Geheel vrijblijvende prijsopgave per project binnen 24 uur.</p>
+            <p class="mt-4 text-sm text-ink-soft">KvK {site.kvk} &middot; Btw {site.btw}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
