@@ -1,0 +1,52 @@
+---
+import { site, url } from '../data/site';
+import Logo from './Logo.astro';
+import { waIcon as wa } from '../data/icons';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const thuis = Astro.url.pathname.replace(/\/$/, '') === url('').replace(/\/$/, '');
+const anker = (id: string) => (thuis ? `#${id}` : `${url('')}#${id}`);
+const links = [
+  { id: 'pand', label: 'Het pand' },
+  { id: 'aanbod', label: 'Aanbod' },
+  { id: 'plannen', label: 'Plan uw beurt' },
+  { id: 'klanten', label: 'Klanten' },
+  { id: 'contact', label: 'Contact' },
+];
+---
+{deel === 'kop' ? (
+  <header class="donker sticky top-0 z-40 border-b border-white/10 bg-nacht/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-sm font-semibold text-white/85">
+          {links.map((l) => <li><a href={anker(l.id)} class="no-underline underline-offset-4 transition-colors hover:text-hemel hover:underline">{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-line hidden !px-4 !py-2 text-sm text-white md:inline-flex">
+          <span class="whitespace-nowrap tabular-nums">{site.tel}</span>
+        </a>
+        <a href={site.whatsapp} class="btn btn-hemel !px-4 !py-2 text-sm !shadow-none">
+          <Fragment set:html={wa} /><span class="max-[379px]:sr-only">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-nacht py-14 text-white/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo />
+        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-white/75">[[AANLEVEREN: KvK-nummer]]</span></p>
+      </div>
+      <p class="md:col-span-4">
+        Telefoon en WhatsApp <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />
+        Ma t/m vr <span class="whitespace-nowrap tabular-nums">08:00 – 17:30</span><br />
+        Za <span class="whitespace-nowrap tabular-nums">09:00 – 13:00</span>, zo gesloten
+      </p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-10 text-xs text-white/75">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

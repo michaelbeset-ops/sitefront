@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import "@fontsource-variable/sora";
+@import "@fontsource-variable/figtree";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Naar hun gevelbord: antraciet onderband, helder blauw "Cleaning", wit paneel. */
+  --color-nacht: #0d1015;      /* hero, planner, footer */
+  --color-lak: #161b22;        /* kaarten op nacht */
+  --color-staal: #232a34;      /* randen/hover op nacht */
+  --color-hemel: #2aa9ee;      /* gevelbord-blauw: alleen op donker of met nacht-tekst */
+  --color-ijs: #8fd3f7;        /* licht blauw, alleen op donker */
+  --color-diep: #0a659f;       /* blauw als tekst/knop op licht (witte tekst) */
+  --color-diepst: #084e7b;     /* hover van diep */
+  --color-ink: #0f141a;
+  --color-ink-soft: #4a5462;
+  --color-paper: #f5f7f9;
+  --color-mist: #e7ecf1;
+  --color-line: #0f141a1f;
+  --color-white: #ffffff;
+
+  --font-display: "Sora Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Figtree Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #0d101512, 0 2px 8px -2px #0d10151a;
+  --shadow-lg: 0 40px 80px -30px #000000cc;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 2.6vw + 1rem, 3.1rem);
+  --text-4xl: clamp(2rem, 3.2vw + 1.35rem, 4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; text-wrap: balance; overflow-wrap: anywhere; }
+  h1 { font-weight: 750; letter-spacing: -0.045em; line-height: 1; }
+  h3 { font-weight: 650; letter-spacing: -0.02em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-diep); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-hemel); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; font-family: var(--font-body); font-weight: 700; padding: .95rem 1.4rem; border-radius: var(--radius-lg); text-decoration: none; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 1.2em; height: 1.2em; flex: none; }
+  .btn-hemel { background: var(--color-hemel); color: var(--color-nacht); box-shadow: 0 10px 30px -12px #2aa9eeaa; }
+  .btn-hemel:hover { background: var(--color-ijs); }
+  .btn-diep { background: var(--color-diep); color: var(--color-white); }
+  .btn-diep:hover { background: var(--color-diepst); }
+  .btn-nacht { background: var(--color-nacht); color: var(--color-white); }
+  .btn-nacht:hover { background: var(--color-staal); }
+  .btn-line { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .btn-line:hover { background: var(--color-white); color: var(--color-nacht); box-shadow: none; }
+  .kicker { font-family: var(--font-display); font-size: .75rem; font-weight: 650; letter-spacing: .18em; text-transform: uppercase; }
+  .aanleveren { font-size: var(--text-xs); color: var(--color-ink-soft); }
+
+  /* Planner (wow) */
+  .keus { position: relative; display: block; cursor: pointer; }
+  .keus input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .keus > span { display: flex; align-items: center; gap: .6rem; min-height: 3rem; border-radius: var(--radius-lg); padding: .7rem 1rem; font-weight: 650; color: #ffffffe0; background: var(--color-lak); box-shadow: inset 0 0 0 1.5px var(--color-staal); transition: background-color .2s ease, color .2s ease, box-shadow .2s ease; }
+  .keus:hover > span { box-shadow: inset 0 0 0 1.5px var(--color-hemel); color: var(--color-white); }
+  .keus input:checked + span { background: var(--color-hemel); color: var(--color-nacht); box-shadow: none; }
+  .keus input:focus-visible + span { outline: 3px solid var(--color-hemel); outline-offset: 3px; }
+  .keus input:disabled + span { opacity: .45; cursor: not-allowed; text-decoration: line-through; }
+  .keus svg { width: 2.4rem; height: 1.4rem; flex: none; }
+}
