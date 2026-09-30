@@ -9,7 +9,7 @@
 ## Bronnen
 - content/b14/wijk.txt (home, te koop + losse verkooppagina's, contact) en wijk-secties.txt (sloepenhaven.nl,
   drogejachthaven.nl, winterstalling-jachthaven.nl, fullservicejachthaven.nl, bouwvanwijk.nl).
-- Eigen foto's van hun site (sloepen, hal, werf), stock via Unsplash (t14-sloep). Zie src/assets/BRONNEN.txt.
+- Alleen eigen foto's: luchtfoto's, hallen, werf en historische zwart-witfoto's van hun sectiesites, sloepen van de verkooppagina's. Geen stock meer. Zie src/assets/BRONNEN.txt.
 
 ## Richting
 - Eén pagina met alles vindbaar: jachthaven, ligplaatskiezer, droge jachthaven + winterstalling, ligging, jachtwerf,
@@ -23,5 +23,5 @@
 ## Zelf gekozen
 - Vertrekpunt gekopieerd van demos/autoschade-gerritsma (zelfde Astro/Tailwind-patroon als varilux, recenter).
 - Logo: typografisch wordmark "Jachthaven / van Wijk" met sloepsilhouet (hun site heeft geen beeldlogo).
-- Stockfoto zeilboot: Cyrillische bootnaam en klein embleem op de romp weggewerkt; masten-foto bijgesneden
-  (flats en palmen weg).
+
+
