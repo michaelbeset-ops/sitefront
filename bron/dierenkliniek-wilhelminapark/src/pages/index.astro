@@ -1,0 +1,442 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, icoon } from '../data/site';
+import katAaien from '../assets/kat-aaien.jpg';
+import pand from '../assets/pand.jpg';
+import pup from '../assets/pup.jpg';
+import hondGras from '../assets/hond-gras.jpg';
+import katSchoot from '../assets/kat-schoot.jpg';
+import dierenartsen from '../assets/dierenartsen.jpg';
+import team2021 from '../assets/team-2021.jpg';
+import opname from '../assets/opname.jpg';
+import caviaWeeg from '../assets/cavia-weegschaal.jpg';
+
+// Wegwijzer: per diersoort de eigen adviezen van hun dierinfo-pagina's (hond.html, kat.html, konijn.html,
+// knaagdier.html, fret.html, senioren.html), ingekort maar niet aangevuld.
+type Blok = { kop: string; tekst?: string; lijst?: string[]; na?: string };
+type Dier = { id: string; naam: string; sub: string; kop: string; intro: string; blokken: Blok[]; noot?: string; fret?: boolean };
+const dieren: Dier[] = [
+  {
+    id: 'hond', naam: 'Hond', sub: 'Vaccinatie, wormen, pup, senior', kop: 'Uw hond',
+    intro: 'Als honden dierenartsen brengen we naar voren wat we in onze kliniek tegenkomen bij honden: van preventieve tot en met curatieve diergeneeskunde.',
+    blokken: [
+      { kop: 'Vaccinatie op maat', tekst: 'We vaccineren gericht en brengen per hond in kaart welke vaccinaties echt noodzakelijk zijn. In ons basisschema:', lijst: ['Hondenziekte (ziekte van Carré)', 'Leverziekte (HCC)', 'Ziekte van Weil (leptospirose)', 'Parvo', 'Kennelhoest (Bordetella)', 'Rabiës: minimaal 21 tot 30 dagen voor vertrek naar het buitenland'] },
+      { kop: 'Jaarlijkse gezondheidscontrole', tekst: 'Voorafgaand aan de jaarlijkse vaccinatie kijken we onder andere naar:', lijst: ['De tanden (poetsen kan worden voorgedaan)', 'De oren, het hart, de buik en de huid', 'Het gewicht van uw hond', 'Eventuele gezondheidsklachten en zo nodig voeding'] },
+      { kop: 'Ontwormen', tekst: 'Pups worden bij de fokker op 2, 4 en 6 weken ontwormd, daarna op 8 tot 12 weken, op 4, 5, 6 en 9 maanden en op 1 jaar.', na: 'Minstens 4x per jaar ontwormen als er jonge kinderen of een zwangere vrouw in huis zijn, als uw hond poep van andere honden eet, als u met uw hond jaagt of naar Zuid- of Oost-Europa gaat.' },
+      { kop: 'Vlooien en chip', tekst: 'Denk er altijd aan dat maar 5% van de totale vlooienpopulatie op de hond te vinden is.', na: 'Het is verplicht dat uw hond gechipt is. Loopt hij weg, dan is hij via de chip snel weer bij u terug.' },
+      { kop: 'Naar het buitenland', tekst: 'Een rabiësvaccinatie, een chip en een officieel Europees dierenpaspoort zijn verplicht. Sommige landen, onder andere Engeland en Noorwegen, hebben aanvullende eisen.' },
+      { kop: 'De oudere hond', tekst: 'Voor oudere honden hebben we een seniorenprogramma. Let ook op dementie: een hond die anders doet, afwezig lijkt, ongelukjes in huis krijgt of \'s nachts door het huis doolt.' },
+    ],
+    noot: 'Het gebit: sinds 2023 behandelen we alleen het gebit van honden van onze eigen klanten.',
+  },
+  {
+    id: 'kat', naam: 'Kat', sub: 'Vaccinatie, wormen, kitten, senior', kop: 'Uw kat',
+    intro: 'Dierenarts Diane van Driel heeft zich toegelegd op de kattendiergeneeskunde. We zijn een cat friendly practice: 60% van onze patiënten zijn katten.',
+    blokken: [
+      { kop: 'Vaccinatie op maat', tekst: 'Per kat brengen we in kaart welke vaccinaties echt noodzakelijk zijn. In ons basisschema:', lijst: ['Kattenziekte', 'Niesziekte', 'Bordetella: minimaal 21 tot 30 dagen voordat de kat naar een pension gaat', 'Rabiës: minimaal 30 dagen voor vertrek naar het buitenland'] },
+      { kop: 'Jaarlijkse gezondheidscontrole', tekst: 'Voorafgaand aan de jaarlijkse vaccinatie kijken we onder andere naar:', lijst: ['De tanden (tandsteen wordt gelijk verwijderd)', 'De oren, het hart, de buik en de huid', 'Het gewicht van uw kat', 'Eventuele gezondheidsklachten en zo nodig voeding'] },
+      { kop: 'Ontwormen', tekst: 'Een kitten wordt bij de fokker op 3, 5 en 7 weken ontwormd, daarna op 12 weken, op 3, 4, 5, 6 en 9 maanden en op 1 jaar. We volgen het ESCCAP-advies.', na: 'Komt uw kat niet buiten, dan hoeft u niet 4x per jaar te ontwormen. Vangt uw kat vaak muizen, dan zelfs vaker dan 4x per jaar.' },
+      { kop: 'Chippen', tekst: 'We adviseren u uw kat te laten chippen. Wij melden de cijfercode na het inbrengen aan bij Petbase. Voor een verzekering is een chip verplicht.' },
+      { kop: 'Seniorencheck vanaf 8 jaar', tekst: 'We nemen een vragenlijst met u door, bespreken het gedrag, wegen uw kat, doen een lichamelijk onderzoek, meten de bloeddruk en onderzoeken de urine. We plannen een afspraak van 30 minuten.', na: 'Lukt het, neem dan urine van uw kat mee. Katkor om de urine op te vangen kunt u gratis ophalen.' },
+      { kop: 'Opletten bij een oudere kat', lijst: ['Vermageren', 'Veel drinken en plassen', 'Braken', 'Een mottige vacht', 'Minder goed springen', 'Onrustig of verward gedrag'] },
+    ],
+  },
+  {
+    id: 'konijn', naam: 'Konijn', sub: 'Enten, voeding, stille darm', kop: 'Uw konijn',
+    intro: 'Konijnendierenarts Evert-Jan de Boer en zijn team schrijven over ziektes en gezonde konijnen. Het verdoven van een konijn is bij ons net zo veilig als het verdoven van een hond of een kat.',
+    blokken: [
+      { kop: 'Vaccinatie in de lente', tekst: 'Eén vaccin beschermt 1 jaar lang tegen myxomatose, RHD1 en RHD2, vanaf een leeftijd van 7 weken. We adviseren konijnen elk jaar in april, mei of juni te laten vaccineren.', na: 'Is uw konijn nog niet gevaccineerd? Laat dat dan zo snel mogelijk doen.' },
+      { kop: 'De juiste voeding', tekst: 'De juiste hoeveelheid konijnenvoer is van levensbelang voor uw konijn:', lijst: ['Onbeperkt hooi', 'Beperkt groenvoer', '20 gram konijnenvoer (biks) per kilogram lichaamsgewicht', 'Zeer beperkt snoepjes'] },
+      { kop: 'Let erop dat uw konijn poept', tekst: 'Een konijn moet de hele dag door poepen. Eet het niet en ziet u weinig of geen keutels, dan moet u aan een stilliggende darm denken.' },
+      { kop: 'Signalen dat uw konijn ziek is', lijst: ['Niet willen eten en/of drinken', 'Vieze ogen en/of een vieze neus', 'Kwijlen, een natte bek of kin', 'Sloom, stil in een hoekje zitten', 'Een scheve kopstand', 'Knarsetanden'] },
+      { kop: 'Vlooien en mijten', tekst: 'Gebruik nooit een antivlooienmiddel met de werkzame stof fipronil: dat kan dodelijk zijn voor een konijn. Ook andere middelen voor hond of kat kunnen giftig zijn.' },
+      { kop: 'Steriliseren en castreren', tekst: 'Vrouwtjes kunt u vanaf 6 maanden laten steriliseren; dat verkleint de kans op een baarmoedertumor. Mannetjes castreren kan vanaf 4 à 5 maanden.' },
+    ],
+  },
+  {
+    id: 'knaagdier', naam: 'Cavia en knaagdier', sub: 'Cavia, chinchilla, degoe', kop: 'Uw cavia of knaagdier',
+    intro: 'We behandelen cavia\'s en knaagdieren zoals chinchilla\'s en degoes. Andere dierenartsen sturen een cavia naar ons door als ze er zelf niet meer uitkomen.',
+    blokken: [
+      { kop: 'De juiste voeding', lijst: ['Caviavoer met extra vitamine C: 10 tot 15 gram per dag, niet onbeperkt', 'Veel hooi, elke dag', 'Groente, gematigd en laat de cavia eraan wennen', 'Elke dag een tablet vitamine C van 50 tot 70 mg'] },
+      { kop: 'Waarom vitamine C', tekst: 'Een cavia kan net als een mens geen vitamine C aanmaken of langere tijd opslaan. Geef dus speciaal caviavoer, en niet het voer van andere knaagdieren of konijnen.' },
+      { kop: 'Weeg elke week', tekst: 'De belangrijkste tip: weeg uw cavia elke week op een keukenweegschaal. Valt hij af, dan weet u dat er iets aan de hand is.' },
+      { kop: 'Samen houden', tekst: 'De beste combinaties zijn 2 vrouwtjes, of een vrouwtje en een gecastreerd mannetje. Een beertje kan vanaf 4 à 5 maanden gecastreerd worden.' },
+      { kop: 'Pas op in de zomer', tekst: 'Als de zon fel schijnt, kan een cavia die niet in de schaduw kan schuilen oververhit raken.' },
+      { kop: 'Let op veranderingen', lijst: ['Minder eten of drinken dan normaal', 'Moeite met ademen, of niezen', 'Luid tandengeknars', 'Vachtveranderingen of jeuk'] },
+    ],
+  },
+  {
+    id: 'fret', naam: 'Fret', sub: 'Waar u terecht kunt', kop: 'Uw fret', fret: true,
+    intro: 'Sinds medio 2013 behandelen wij geen fretten meer. We hebben ons meer en meer toegelegd op katten, honden, konijnen en knaagdieren, en verwijzen eigenaren van fretten naar dierenartsen die meer kennis van fretten hebben.',
+    blokken: [
+      { kop: 'In de buurt (Utrecht)', lijst: ['Universiteitskliniek voor Gezelschapsdieren, afdeling Vogels en Bijzondere dieren, Yalelaan 108, 3584 CM Utrecht, tel. 030 253 9411', 'Dierenarts Tineke Deden'] },
+      { kop: 'Iets verder van Utrecht', lijst: ['De frettenkliniek, dierenarts Hanneke Roest'] },
+    ],
+  },
+];
+
+const aandacht = ['Interne geneeskunde', 'Dermatologie', 'Tandheelkunde', 'Orthopedie', 'Oogheelkunde', 'Keel-, neus- en oorproblemen, met endoscopie', 'Geriatrische dieren: dementie, artrose, nier- en schildklierproblemen', 'Dieren met overgewicht', 'Kattendiergeneeskunde', 'Konijnendiergeneeskunde', 'Caviadiergeneeskunde'];
+
+const faciliteiten = [
+  { kop: 'Eigen laboratorium', tekst: 'Voor bloedonderzoek, met een reflotron, snaptesten en een hematocriet bloedanalyser. We werken ook met diverse laboratoria, zoals dat van de faculteit Diergeneeskunde bij ons om de hoek.' },
+  { kop: 'Röntgen', tekst: 'We maken zelf röntgenfoto\'s en kunnen ze snel beoordelen. Voor het gebit hebben we een tandheelkundig röntgentoestel met een direct digitale sensor. Voor echo\'s verwijzen we door naar collega-dierenartsen of een specialist.' },
+  { kop: 'Endoscopie', tekst: 'Kijken en gelijk behandelen, in oren, neuzen, de blaas en met een flexibele scoop zelfs in de maag. We maken foto\'s tijdens de behandeling; die krijgt u na afloop mee.' },
+  { kop: 'Tandheelkunde', tekst: 'Twee ultrasone scalers en twee tandheelkundige units, en instrumenten voor elke diersoort. Orthodontie, vullingen en wortelkanaalbehandelingen zijn mogelijk.' },
+  { kop: 'Operaties', tekst: 'Onder gasanesthesie en voortdurende hart- en adembewaking. Na de operatie kijken we tanden, nagels en oren na, en u krijgt een nazorgformulier mee.' },
+];
+
+const artsen = [
+  { naam: 'Evert-Jan de Boer', tags: ['Konijn en cavia', 'Tandheelkunde', 'Endoscopie'], tekst: 'Tandheelkundig dierenarts. Zijn afstudeerscriptie ging over de anesthesie bij het konijn. Geeft nascholing aan dierenartsen en studenten over konijnen en cavia\'s, en behandelt daarnaast honden en katten.' },
+  { naam: 'Diane van Driel', tags: ['Katten', 'Interne geneeskunde', 'Gedrag'], tekst: 'Heeft zich toegelegd op de kattengeneeskunde en de interne geneeskunde. Voor gedragsproblemen bij de kat, en ook de hond, kunt u bij haar terecht. Zorgde dat we een cat friendly practice zijn.' },
+  { naam: 'Martin Vink', tags: ['Hond en kat', 'Orthopedie', 'Oogheelkunde'], tekst: 'Richt zich vooral op honden en katten, met affiniteit voor konijnen en knaagdieren. Interesse in orthopedie, chirurgie en oogheelkunde; bij botbreuken bij het konijn kunt u bij hem terecht.' },
+  { naam: 'Marlies Schouten', tags: ['Cavia', 'Echografie', 'Dermatologie'], tekst: 'Vindt eigenlijk alles interessant, maar vooral echografie, tandheelkunde, dermatologie en caviageneeskunde. Volgde de cavianascholing via caviawijzer.nl.' },
+];
+
+const waarden = [
+  { kop: 'Kwaliteit', tekst: 'We stellen hoge eisen aan ons werk. Voor elk deelgebied van de diergeneeskunde hebben we een deskundige in huis.' },
+  { kop: 'Zorg', tekst: 'Een goed ingewerkte groep dierenartsen en paraveterinairen die al langere tijd samenwerkt, en daardoor veel aandacht aan u en uw huisdier kan geven.' },
+  { kop: 'Nascholing', tekst: 'We blijven door regelmatige nascholing op de hoogte, en dragen onze kennis over: bij ons lopen regelmatig studenten en stagiaires mee.' },
+];
+
+const situaties = [
+  { kop: 'Ik ben een vaste klant', punten: ['Bel tijdens de openingstijden of mail voor overleg.', 'Voor een afspraak belt u op werkdagen tussen 10.00 en 17.00 uur.', 'Buiten de openingstijden is een van onze dierenartsen altijd telefonisch bereikbaar. We zijn dan niet in de praktijk; indien nodig spreken we met u af wanneer u langs kunt komen. Hier zijn extra kosten aan verbonden.'] },
+  { kop: 'Ik ben geen vaste klant', punten: ['Heeft uw dierenarts u aangeraden ons te bellen om te overleggen? Vraag dan uw dierenarts om contact met ons op te nemen.', 'Voor advies kunt u onze websites gebruiken.', 'Buiten de openingstijden kunt u terecht bij uw eigen dierenarts of diens vervanger.'] },
+  { kop: 'Ik ben doorverwezen', punten: ['Bel op werkdagen tussen 10.00 en 17.00 uur of mail om een afspraak te maken.', 'Laat uw dierenarts de patiëntenkaart en eventuele röntgenfoto\'s per e-mail doorsturen.', 'Na de behandeling krijgt uw dierenarts van ons een verslag per e-mail.'] },
+  { kop: 'Ik ben dierenarts', punten: ['Bel of mail met een concrete vraag, en stuur niet alleen het patiëntendossier.', 'Voor veel vragen hebben we een kant-en-klaar antwoord en behandelplan dat we u kunnen toesturen.', 'Bij uitgebreide vragen sturen we een rekening voor de tijd die we eraan besteden.'] },
+];
+
+const routes = [
+  { kop: 'Vanaf de A28 / Berekuil', tekst: 'A28 afslag centrum. Bij de rotonde de Berekuil afslag Wilhelminapark-Oudwijk, dan de borden Wilhelminapark: via de Prinsessenlaan, langs de begraafplaats en het Rosarium. De weg gaat over in de Mauritsstraat; in de bocht ligt de kliniek.' },
+  { kop: 'Vanaf de Waterlinieweg', tekst: 'Afslag stadion Galgenwaard, centrum aanhouden via de Stadionlaan. Bij de 1e stoplichten rechts de A. van Ostadelaan in, bij de 2e rechts de Jan van Scorelstraat in. Die gaat over in de Stadhouderslaan en in de bocht in de J.W. Frisostraat.' },
+  { kop: 'Vanuit het centrum', tekst: 'Burgemeester Reigerstraat, rotonde driekwart nemen. Aan het einde van het Wilhelminapark rechtsaf de Prinses Marijkelaan, daarna rechts de Mauritsstraat in, die in de bocht overgaat in de J.W. Frisostraat.' },
+  { kop: 'Met de bus', tekst: 'Lijn 8 vanaf Utrecht Centraal (centrumzijde), uitstappen bij halte Rosarium. Reistijd ongeveer 18 minuten.' },
+];
+---
+<Base
+  title="Dierenkliniek Wilhelminapark | Dierenarts in Utrecht voor hond, kat, konijn en cavia"
+  description="Modern uitgeruste dierenkliniek aan de J.W. Frisostraat 1 in Utrecht. Voor honden, katten, konijnen, cavia's en knaagdieren, met eigen laboratorium, röntgen, endoscopie en tandheelkunde. Bel 030 210 9000."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: bosgroen vlak met grote kop links, sfeerfoto rechts, en een bewijzenbalk met het eigen pand over de rand. -->
+    <section class="donker relative bg-bos text-white">
+      <div class="relative aspect-[4/3] overflow-hidden sm:aspect-[16/9] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[54%]">
+        <Foto src={katAaien} alt="Een vrouw aait een cyperse kat die tevreden de ogen dichtdoet, in zacht zonlicht bij het raam" hero sizes="(min-width: 1024px) 54vw, 100vw" class="object-[62%_40%]" />
+        <div class="absolute inset-0 hidden bg-[linear-gradient(90deg,var(--color-bos)_0%,#0f2e1dcc_10%,#0f2e1d00_42%)] lg:block"></div>
+      </div>
+      <div class="wrap relative grid pt-9 pb-28 sm:pt-12 lg:min-h-[640px] lg:grid-cols-12 lg:items-center lg:pt-12 lg:pb-36">
+        <div class="lg:col-span-6">
+          <p class="kicker text-munt">Dierenkliniek in Utrecht</p>
+          <h1 class="mt-5 text-4xl">Wij zijn er voor de dieren en voor u</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Een modern uitgeruste kliniek voor gezelschapsdieren, met uitgebreide faciliteiten. We behandelen honden, katten, konijnen, cavia's en knaagdieren, en besteden veel aandacht aan het voorkomen van ziekten.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-munt"><Fragment set:html={icoon.tel} />Bel voor een afspraak</a>
+            <a href="#wegwijzer" class="btn btn-line">Voor welk dier?<Fragment set:html={icoon.pijl} /></a>
+          </div>
+        </div>
+      </div>
+      <div class="relative bg-[linear-gradient(to_bottom,var(--color-bos)_50%,var(--color-papier)_50%)]">
+        <div class="wrap">
+          <dl class="-mt-20 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-line text-ink shadow-lg lg:grid-cols-[auto_1fr_1fr_1fr]">
+            <div class="col-span-2 grid grid-cols-[auto_1fr] content-center items-center gap-x-4 bg-papier p-3 pr-6 lg:col-span-1">
+              <dt class="col-start-2 row-start-1 self-end kicker whitespace-nowrap text-groen">{site.straat}</dt>
+              <dd class="col-start-2 row-start-2 mt-1 self-start font-display text-base leading-tight font-semibold sm:text-lg">{site.postcode} {site.plaats}, op afspraak</dd>
+              <dd class="col-start-1 row-span-2 row-start-1 aspect-[397/219] w-[104px] overflow-hidden rounded-lg sm:w-[180px]"><Foto src={pand} alt="Ons pand aan de J.W. Frisostraat: bakstenen gevel met de namen Dierenkliniek en Wilhelminapark boven de ramen" widths={[397]} sizes="180px" /></dd>
+            </div>
+            <div class="bg-papier p-5 sm:p-6"><dt class="kicker text-ink-soft">Google</dt><dd class="mt-1"><span class="font-display text-[2.3rem] leading-none font-bold whitespace-nowrap sm:text-[2.6rem]">{site.google}</span> <span class="block text-sm text-ink-soft">uit {site.reviews} reviews</span></dd></div>
+            <div class="bg-papier p-5 sm:p-6"><dt class="kicker text-ink-soft">Afspraak bellen</dt><dd class="mt-1"><span class="font-display text-[2.3rem] leading-none font-bold whitespace-nowrap sm:text-[2.6rem]">10 – 17</span> <span class="block text-sm text-ink-soft">maandag t/m vrijdag</span></dd></div>
+            <div class="col-span-2 bg-munt p-5 text-bos sm:p-6 lg:col-span-1"><dt class="kicker">Vaste klanten</dt><dd class="mt-1"><span class="font-display text-[2.3rem] leading-none font-bold whitespace-nowrap sm:text-[2.6rem]">24 uur</span> <span class="block text-sm">per dag bereikbaar op <span class="num">{site.tel}</span></span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wow: wegwijzer per diersoort met hun eigen adviezen. Zonder JS staan alle dieren onder elkaar. -->
+    <section id="wegwijzer" class="scroll-mt-16 bg-salie py-16 lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-24">
+            <p class="kicker text-groen">Dieren info</p>
+            <h2 class="mt-3 text-3xl">Voor welk dier?</h2>
+            <p class="mt-5 text-ink-soft">Kies uw huisdier en lees onze adviezen: vaccinatie- en ontwormschema's, voeding, huisvesting en het beste tijdstip om te steriliseren of castreren.</p>
+            <div role="tablist" aria-label="Kies een diersoort" aria-orientation="vertical" class="mt-7 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-1" data-tabs hidden>
+              {dieren.map((d, i) => (
+                <button type="button" role="tab" id={`tab-${d.id}`} aria-controls={`paneel-${d.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="dier-tab">
+                  <span class="flex-1">{d.naam}<small>{d.sub}</small></span>
+                  <Fragment set:html={icoon.pijl} />
+                </button>
+              ))}
+            </div>
+            <p class="sr-only" aria-live="polite" data-status></p>
+          </div>
+        </div>
+        <div class="grid gap-6 lg:col-span-8">
+          {dieren.map((d) => (
+            <div id={`paneel-${d.id}`} role="tabpanel" aria-labelledby={`tab-${d.id}`} tabindex="0" class="scroll-mt-24 rounded-xl bg-white p-6 shadow-sm sm:p-9" data-paneel>
+              <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+                <h3 class="text-2xl sm:text-3xl">{d.kop}</h3>
+                <p class="kicker text-groen">{d.fret ? 'Doorverwijzing' : 'Onze adviezen'}</p>
+              </div>
+              <p class="mt-4 max-w-2xl text-lg">{d.intro}</p>
+              <div class="mt-7 grid gap-x-8 gap-y-6 md:grid-cols-2">
+                {d.blokken.map((b) => (
+                  <div class="tip">
+                    <h4 class="font-display text-lg font-semibold">{b.kop}</h4>
+                    {b.tekst && <p class="mt-1.5 text-ink-soft">{b.tekst}</p>}
+                    {b.lijst && <ul class="text-ink-soft">{b.lijst.map((l) => <li>{l}</li>)}</ul>}
+                    {b.na && <p class="mt-2 text-ink-soft">{b.na}</p>}
+                    {b.kop === 'Weeg elke week' && (
+                      <figure class="mt-3 w-[190px] max-w-full">
+                        <div class="aspect-[3/2] overflow-hidden rounded-lg"><Foto src={caviaWeeg} alt="Een cavia op een digitale keukenweegschaal in onze kliniek" widths={[225]} sizes="190px" /></div>
+                      </figure>
+                    )}
+                  </div>
+                ))}
+              </div>
+              {d.noot && <p class="mt-6 rounded-lg bg-salie px-4 py-3 text-sm">{d.noot}</p>}
+              <div class="mt-8 flex flex-col gap-3 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-sm text-ink-soft">{d.fret ? 'Voor uw hond, kat, konijn of knaagdier kunt u wel bij ons terecht.' : 'Vragen over uw ' + d.naam.toLowerCase() + '? Of tijd voor een afspraak?'}</p>
+                <a href={site.telHref} class="btn btn-groen"><Fragment set:html={icoon.tel} />Bel <span class="num">{site.tel}</span></a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- De kliniek: aandachtsgebieden als genummerde lijst, preventie in drie kaarten, grote hondenfoto. -->
+    <section id="kliniek" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-groen">Behandelingen en onderzoeken</p>
+          <h2 class="mt-3 text-3xl">Alle aspecten van de gezondheid van uw huisdier</h2>
+          <p class="mt-6 text-lg">Naast de gewone diergeneeskunde hebben wij ons toegelegd op een aantal vakgebieden, mede door het volgen en geven van nascholing.</p>
+          <p class="mt-4 text-ink-soft">We zijn voortgekomen uit de kliniek van kattenspecialist Theo Ottenschot. Vooral in de tandheelkunde en rhinoscopie bij gezelschapsdieren hebben we ons ver doorontwikkeld. Daarover schreven we een aparte website: <a href={site.dierengebit} rel="noopener" class="font-semibold text-groen underline underline-offset-2">dierengebit.nl</a>.</p>
+          <figure class="mt-8 overflow-hidden rounded-xl shadow-sm">
+            <div class="aspect-[4/3] lg:aspect-[4/5]"><Foto src={pup} alt="Een jonge hond met een oranje halsband ligt met een knuffelbeer op schoot, een hand op zijn rug" sizes="(min-width: 1024px) 38vw, 100vw" class="object-[35%_50%]" /></div>
+          </figure>
+        </div>
+        <div class="lg:col-span-7">
+          <ol class="grid border-t border-line sm:grid-cols-2 sm:gap-x-8">
+            {aandacht.map((a, i) => (
+              <li class="grid grid-cols-[2.75rem_1fr] items-baseline gap-3 border-b border-line py-4">
+                <span class="num font-display text-sm font-bold text-groen" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <span class="font-semibold">{a}</span>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-10 grid gap-4 md:grid-cols-3">
+            <div class="rounded-xl bg-white p-6 shadow-sm">
+              <h3 class="text-xl">Voorkomen is beter dan genezen</h3>
+              <p class="mt-2 text-sm text-ink-soft">Extra zorg voor vlooienbestrijding, ontwormen en vaccinaties tijdens de jaarlijkse check-up. Per dier kijken we welk vaccin nodig is.</p>
+            </div>
+            <div class="rounded-xl bg-white p-6 shadow-sm">
+              <h3 class="text-xl">Van neus tot staart</h3>
+              <p class="mt-2 text-sm text-ink-soft">Bij de jaarlijkse gezondheidscontrole bespreken we ook gezondheids- of gedragsproblemen. U ontvangt ieder jaar automatisch een oproep.</p>
+            </div>
+            <div class="rounded-xl bg-white p-6 shadow-sm">
+              <h3 class="text-xl">Advies aan de balie</h3>
+              <p class="mt-2 text-sm text-ink-soft">Onze assistentes adviseren over voeding, diëten, overgewicht, ontworming en vlooienbestrijding. Voor een dierenarts maakt u telefonisch een afspraak.</p>
+            </div>
+          </div>
+          <figure class="mt-10 overflow-hidden rounded-xl shadow-sm">
+            <div class="aspect-[16/9]"><Foto src={hondGras} alt="Een Berner sennenhond met de tong uit de bek in het gras, in warm avondlicht" sizes="(min-width: 1024px) 55vw, 100vw" class="object-[70%_50%]" /></div>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Faciliteiten: donker vlak, eigen foto van de opname groot, faciliteiten als raster. -->
+    <section id="faciliteiten" class="donker scroll-mt-16 bg-bos py-16 text-white lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-munt">Faciliteiten</p>
+            <h2 class="mt-3 text-3xl">Hoe eerder de oorzaak bekend is, hoe sneller de behandeling begint</h2>
+          </div>
+          <p class="text-lg text-white/80 lg:col-span-5">Daarom beschikt onze kliniek over eigen laboratoriumfaciliteiten en uitgebreide diagnostische apparatuur.</p>
+        </div>
+        <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {faciliteiten.map((f, i) => (
+            <div class="rounded-xl bg-bos-2 p-6 sm:p-7">
+              <span class="num font-display text-sm font-bold text-munt" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-3 text-xl">{f.kop}</h3>
+              <p class="mt-2 text-sm text-white/80">{f.tekst}</p>
+            </div>
+          ))}
+          <div class="rounded-xl bg-munt p-6 text-bos sm:p-7">
+            <span class="num font-display text-sm font-bold" aria-hidden="true">06</span>
+            <h3 class="mt-3 text-xl">Opname en intensive care</h3>
+            <p class="mt-2 text-sm">Verwarmde opnamehokken in diverse groottes, zuurstof en warmte om bij te komen na een verdoving. Konijnen en knaagdieren krijgen een tentje om in weg te duiken. U kunt op ziekenbezoek komen; spreek daarvoor een tijd af met de assistente.</p>
+          </div>
+        </div>
+        <figure class="mx-auto mt-10 max-w-[1000px]">
+          <div class="aspect-[1000/308] overflow-hidden rounded-xl"><Foto src={opname} alt="Onze opname: rijen opnamehokken met drinkflessen en briefjes, rechts verwarmd met warmtelampen" widths={[1000]} sizes="(min-width: 1200px) 1000px, 100vw" /></div>
+          <figcaption class="mt-3 text-sm text-white/75">De opname in onze kliniek, met verwarmde hokken voor intensive care.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Team: de vier dierenartsen groot, per arts de eigen interesses, daaronder waarden en het hele team. -->
+    <section id="team" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div class="lg:col-span-5">
+            <p class="kicker text-groen">Ons team</p>
+            <h2 class="mt-3 text-3xl">Dierenartsen en assistentes</h2>
+            <p class="mt-6 text-lg">Ons vaste team bestaat uit dierenartsen, paraveterinaire assistentes en stagiaires. Kom gerust eens binnenlopen om kennis te maken.</p>
+          </div>
+          <figure class="lg:col-span-7">
+            <div class="aspect-[1000/522] overflow-hidden rounded-xl shadow-sm"><Foto src={dierenartsen} alt="Vier dierenartsen van onze kliniek in witte jassen, lachend voor een bakstenen muur" widths={[1000]} sizes="(min-width: 1024px) 700px, 100vw" /></div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Diane van Driel, Marlies Schouten, Martin Vink en Evert-Jan de Boer.</figcaption>
+          </figure>
+        </div>
+        <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {artsen.map((a) => (
+            <article class="flex flex-col rounded-xl bg-white p-6 shadow-sm">
+              <p class="kicker text-ink-soft">Dierenarts</p>
+              <h3 class="mt-2 text-xl">{a.naam}</h3>
+              <ul class="mt-3 flex flex-wrap gap-1.5">
+                {a.tags.map((t) => <li class="rounded-md bg-salie px-2 py-0.5 text-xs font-semibold text-groen">{t}</li>)}
+              </ul>
+              <p class="mt-4 text-sm text-ink-soft">{a.tekst}</p>
+            </article>
+          ))}
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div class="rounded-xl border border-line p-6">
+            <p class="kicker text-ink-soft">Ook dierenarts</p>
+            <p class="mt-2 font-display text-lg font-semibold">Suzan van Leeuwen</p>
+          </div>
+          <div class="rounded-xl border border-line p-6">
+            <p class="kicker text-ink-soft">Paraveterinaire assistentes</p>
+            <p class="mt-2 font-display text-lg font-semibold">Lieke Elberse, Romy Klinkenberg en Elena Agterberg</p>
+          </div>
+        </div>
+
+        <div class="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div class="lg:col-span-5">
+            <h3 class="text-2xl">Waar staan wij voor?</h3>
+            <dl class="mt-6 grid gap-5">
+              {waarden.map((w) => (
+                <div class="border-t border-line pt-4">
+                  <dt class="font-display text-lg font-semibold text-groen">{w.kop}</dt>
+                  <dd class="mt-1 text-ink-soft">{w.tekst}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div class="lg:col-span-7">
+            <figure>
+              <div class="aspect-[1250/472] overflow-hidden rounded-xl shadow-sm"><Foto src={team2021} alt="Het hele team van onze kliniek in 2021, samen achter plantenbakken met rode en witte geraniums in de stad" widths={[800, 1250]} sizes="(min-width: 1024px) 700px, 100vw" /></div>
+              <figcaption class="mt-3 text-sm text-ink-soft">Het team in 2021: dierenartsen, paraveterinaire assistentes en studenten Diergeneeskunde.</figcaption>
+            </figure>
+            <p class="mt-6 text-ink-soft">U zult regelmatig nieuwe gezichten zien: studenten van de faculteit Diergeneeskunde in Utrecht, en stagiaires paraveterinair of dierenartsassistente van Yuverta uit Houten of Aeres uit Barneveld. We zijn een door Aequor officieel erkend opleidingsbedrijf.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact: tijden, situaties, spoed en route. -->
+    <section id="contact" class="donker scroll-mt-16 bg-bos py-16 text-white lg:py-24">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-munt">Contact en openingstijden</p>
+          <h2 class="mt-3 text-3xl">We werken alleen op afspraak</h2>
+          <p class="mt-5 text-lg text-white/85">Voor een afspraak belt u op werkdagen, van maandag tot en met vrijdag tussen 10.00 en 17.00 uur.</p>
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-munt"><Fragment set:html={icoon.tel} />Bel <span class="num">{site.tel}</span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={icoon.mail} />Mail ons</a>
+          </div>
+          <address class="mt-8 not-italic text-white/85">
+            <strong class="text-white">{site.naam}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}<br />
+            <a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a>
+          </address>
+          <div class="mt-8 rounded-xl bg-bos-2 px-5 text-sm sm:px-6"><dl class="divide-y divide-white/15">
+            <div class="grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-4"><dt class="text-white/80">Spreekuur op afspraak</dt><dd class="num font-semibold">ma t/m vr 9.00 – 17.00</dd></div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-4"><dt class="text-white/80">Bellen voor een afspraak</dt><dd class="num font-semibold">ma t/m vr 10.00 – 17.00</dd></div>
+            <div class="grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-4"><dt class="text-white/80">Voer en medicijnen ophalen</dt><dd class="font-semibold sm:text-right"><span class="num">ma t/m vr 9.00 – 18.00</span><br /><span class="num">za 10.00 – 11.30</span></dd></div>
+            </dl><p class="border-t border-white/15 py-4 text-white/80">Alleen voor eigen klanten is er op zaterdagochtend een spreekuur; daar zijn extra kosten aan verbonden. Wilt u zeker weten dat voer of medicijn aanwezig is, bestel het dan vooraf per telefoon of e-mail.</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <h3 class="text-2xl">Welke situatie past bij u?</h3>
+          <div class="mt-5 grid gap-2">
+            {situaties.map((s, i) => (
+              <details class="situatie rounded-xl bg-bos-2" open={i === 0}>
+                <summary class="flex items-center justify-between gap-4 px-5 py-4 font-semibold sm:px-6">{s.kop}<span class="plus grid h-7 w-7 flex-none place-items-center rounded-md bg-white/10 text-lg leading-none" aria-hidden="true">+</span></summary>
+                <ul class="grid gap-2 px-5 pb-5 text-sm text-white/80 sm:px-6">
+                  {s.punten.map((p) => <li class="border-t border-white/10 pt-2">{p}</li>)}
+                </ul>
+              </details>
+            ))}
+          </div>
+
+          <div class="mt-8 rounded-xl bg-munt p-6 text-bos sm:p-7">
+            <h3 class="text-xl">Spoed buiten de openingstijden</h3>
+            <p class="mt-2 text-sm">Vaste klanten bellen ons: een van onze dierenartsen is altijd bereikbaar. Kunnen wij u in de dienst niet helpen, dan sturen we u door naar de Spoedkliniek van het Evidensia Dierenziekenhuis in Nieuwegein.</p>
+            <p class="mt-3 text-sm">Geen vaste klant? Neem contact op met uw eigen dierenarts, of met een van de twee spoedklinieken in de buurt:</p>
+            <ul class="mt-3 grid gap-2 text-sm font-semibold sm:grid-cols-2">
+              <li class="rounded-lg bg-white/60 px-4 py-3">Spoedkliniek Gezelschapsdieren Midden-Nederland, Utrecht<br /><a href="tel:+319002223000" class="num underline underline-offset-2">0900 222 3000</a></li>
+              <li class="rounded-lg bg-white/60 px-4 py-3">Spoedkliniek Evidensia Dierenziekenhuis, Nieuwegein<br /><a href="tel:+31302027070" class="num underline underline-offset-2">030 202 7070</a></li>
+            </ul>
+          </div>
+
+          <h3 class="mt-12 text-2xl">Route</h3>
+          <div class="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {routes.map((r) => (
+              <div class="border-t border-white/15 pt-4">
+                <h4 class="font-display font-semibold text-munt">{r.kop}</h4>
+                <p class="mt-1 text-sm text-white/80">{r.tekst}</p>
+              </div>
+            ))}
+          </div>
+          <a href={site.maps} rel="noopener" class="btn btn-line mt-7">Open in Google Maps<Fragment set:html={icoon.pijl} /></a>
+
+          <p class="mt-10 border-t border-white/15 pt-5 text-sm text-white/75">Komt u voor de eerste keer, dan voldoet u de behandeling direct, per pin of contant.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  // Wegwijzer als tabs; zonder JS blijven alle diersoorten gewoon onder elkaar staan.
+  const lijst = document.querySelector<HTMLElement>('[data-tabs]');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  if (lijst) {
+    const tabs = Array.from(lijst.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panelen = tabs.map((t) => document.getElementById(t.getAttribute('aria-controls')!)!);
+    const kies = (i: number, focus = false, melden = true) => {
+      tabs.forEach((t, j) => {
+        const aan = i === j;
+        t.setAttribute('aria-selected', String(aan));
+        t.tabIndex = aan ? 0 : -1;
+        panelen[j].hidden = !aan;
+      });
+      if (focus) tabs[i].focus();
+      if (melden && status) status.textContent = `Adviezen voor: ${tabs[i].querySelector('span')?.firstChild?.textContent ?? ''}`;
+    };
+    lijst.hidden = false;
+    kies(0, false, false);
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => {
+        kies(i);
+        if (window.matchMedia('(max-width: 1023px)').matches) panelen[i].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      t.addEventListener('keydown', (e) => {
+        const n = tabs.length;
+        let doel = -1;
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') doel = (i + 1) % n;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') doel = (i - 1 + n) % n;
+        if (e.key === 'Home') doel = 0;
+        if (e.key === 'End') doel = n - 1;
+        if (doel >= 0) { e.preventDefault(); kies(doel, true); }
+      });
+    });
+  }
+</script>

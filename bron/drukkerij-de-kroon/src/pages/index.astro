@@ -1,0 +1,372 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site } from '../data/site';
+import heroFoto from '../assets/stock-letters.jpg';
+import zetsel from '../assets/stock-zetsel.jpg';
+import pers from '../assets/stock-pers.jpg';
+import ontvangst from '../assets/eigen-ontvangst.png';
+import digitaal from '../assets/eigen-digitaal.png';
+import heidelberg from '../assets/eigen-heidelberg.png';
+import persMan from '../assets/eigen-pers-man.png';
+import snijden from '../assets/eigen-snijden.png';
+import kleur from '../assets/eigen-kleurcontrole.png';
+import vellen from '../assets/eigen-vellen.png';
+import etiket from '../assets/eigen-etiketten.png';
+import proeven from '../assets/eigen-drukproeven.png';
+import kaart from '../assets/eigen-kaart.png';
+import b1 from '../assets/boek-01.png';
+import b2 from '../assets/boek-02.png';
+import b3 from '../assets/boek-03.png';
+import b4 from '../assets/boek-04.png';
+import b5 from '../assets/boek-05.png';
+import b6 from '../assets/boek-06.png';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// Drukwerk-wegwijzer: elke uitkomst komt letterlijk uit hun pagina's handelsdrukwerk, reclamedrukwerk, boeken en kaarten.
+// "Meenemen" staat er alleen waar de bron het zegt (kaarten: eigen ontwerp, modellen ter inzage). Geen prijzen.
+const keuzes = [
+  {
+    id: 'huisstijl', label: 'Visitekaartjes en huisstijl', sub: 'Van visitekaartje tot factuur', afdeling: 'Handelsdrukwerk',
+    kop: 'Aan uw huisstijl is veel zorg besteed',
+    tekst: ['U wilt die zorg en uitstraling natuurlijk ook terugzien in uw drukwerk, waarbij het visitekaartje even belangrijk is als de factuur.'],
+    feiten: ['Vorm- en kleurvast, alles volgens uw en onze kwaliteitsnorm.', 'Maar wel op een efficiënte wijze geproduceerd.'],
+    foto: kleur, alt: 'Een kleurenwaaier op een bedrukt vel, voor de kleurcontrole', bij: 'Kleurcontrole in onze drukkerij',
+  },
+  {
+    id: 'reclame', label: 'Flyers, posters en folders', sub: 'Ook brochures en uitnodigingen', afdeling: 'Reclamedrukwerk',
+    kop: 'Te veel om op te noemen',
+    tekst: ['Wij drukken reclame-uitingen als flyers, posters en folders, brochures en zelfklevende etiketten, maar ook een uitnodiging voor uw bedrijfsborrel of tennistoernooi.'],
+    feiten: ['In een kleine of grote oplage.', 'In elk standaardformaat of met een speciale stans.'],
+    foto: vellen, alt: 'Bedrukte vellen liggen dakpansgewijs op de band van een drukpers', bij: 'Vellen van de pers',
+  },
+  {
+    id: 'etiketten', label: 'Etiketten', sub: 'Zelfklevend', afdeling: 'Reclamedrukwerk',
+    kop: 'Zelfklevende etiketten',
+    tekst: ['In een kleine of grote oplage, in elk standaardformaat of met een speciale stans.'],
+    feiten: [],
+    foto: etiket, alt: 'Een groot drukvel vol ronde, gekleurde ontwerpen', bij: 'Reclamedrukwerk van de Kroon',
+  },
+  {
+    id: 'boek', label: 'Een boek', sub: 'Romans, jeugd- en kookboeken, historische werken', afdeling: 'Boeken',
+    kop: 'Een spannend en fascinerend proces',
+    tekst: [
+      'Drukkerij de Kroon heeft in de loop der jaren al een opmerkelijk aantal boeken geproduceerd.',
+      'De vaak zeer nauwe samenwerking met een auteur is vrijwel altijd een spannend en fascinerend proces met een tastbaar gevolg: een heus boek.',
+    ],
+    feiten: ['Niet alleen het drukken: vaak ook het titelontwerp en de vormgeving, soms geheel in eigen huis.', 'Vele auteurs, producenten en ook promovendi weten ons te vinden.'],
+    foto: proeven, alt: 'Opengeslagen drukproeven met oude kaarten en een portretfoto', bij: 'Drukproeven',
+  },
+  {
+    id: 'kaart', label: 'Een kaart', sub: 'Voor een huwelijk, een geboorte, een overlijden', afdeling: 'Kaarten',
+    kop: 'IJkpunten in het leven',
+    tekst: [
+      'Een kaart voor een bijzondere gebeurtenis, een huwelijk, een geboorte, een overlijden.',
+      'Een eigen ontwerp of een ontwerp van de Kroon, ludiek of klassiek: wij drukken ze, analoog of digitaal, in goed overleg en op tijd.',
+    ],
+    feiten: [],
+    meenemen: ['Uw eigen ontwerp, als u dat heeft.', 'Of kies vooraf: vele modellen liggen bij ons ter inzage.'],
+    foto: kaart, alt: 'Uitnodiging voor een 40-jarig huwelijksfeest, met gele bloemen', bij: 'Een uitnodiging van onze kaartenpagina',
+  },
+];
+
+const boeken = [
+  { src: b1, alt: 'Boekomslag: Zwaartekracht, Theo Schreurs' },
+  { src: b2, alt: 'Boekomslag: De IJssellinie, deel 1' },
+  { src: b3, alt: 'Boekomslag: De wonderbaarlijke avonturen van de kleine Oekibala, Arno Guldemond' },
+  { src: b4, alt: 'Boekomslag: Vreuten in het olde Salland, A. Bakhuis-Brascamp' },
+  { src: b5, alt: 'Boekomslag: De piloot in de kersenboom, Frits Loggen' },
+  { src: b6, alt: 'Boekomslag: De Schiedamse tak van de familie Van der Schalk' },
+];
+---
+<Base
+  title="Drukkerij de Kroon Olst | Drukkerij en uitgeverij sinds 1937"
+  description="Drukkerij de Kroon aan de Spoorstraat 15 in Olst: handelsdrukwerk, reclamedrukwerk, boeken en kaarten, en een eigen uitgeverij. Sinds 1937, naast het NS-station."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: inktzwart vlak, grote serif-kop, bewijzen onderaan. Rechts een grote persfoto die over de rand valt, met de ontvangstruimte als inzet. -->
+    <section class="donker relative bg-inkt text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-12 lg:grid-cols-12 lg:gap-12 lg:pt-16 lg:pb-12">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-5 lg:col-start-8 lg:self-start lg:-mb-44">
+          <figure>
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[760px] lg:shadow-lg">
+              <Foto src={heroFoto} alt="Een verzameling oude houten drukletters in rood, bruin en zwart" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 460px, 100vw" class="object-[45%_50%]" />
+            </div>
+          </figure>
+          <figure class="absolute -bottom-12 left-4 z-10 w-44 overflow-hidden rounded-xl bg-papier p-1.5 shadow-lg sm:left-6 sm:w-56 lg:bottom-28 lg:-left-8 lg:w-[272px]">
+            <div class="aspect-[397/263] overflow-hidden rounded-lg"><Foto src={ontvangst} alt="Onze ontvangstruimte met balie, boekenkast en een grote plant" widths={[397]} sizes="(min-width: 1024px) 260px, 216px" /></div>
+            <figcaption class="px-1.5 pt-1.5 pb-0.5 text-xs font-semibold text-ink">Onze ontvangstruimte, {site.straat}</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-10 lg:order-1 lg:col-span-7 lg:pt-8">
+          <p class="kicker text-roos">Drukkerij en uitgeverij in {site.plaats}</p>
+          <h1 class="mt-5 text-4xl">Drukkers met <span class="serif-i text-roos">passie</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-white/85">Drukkerij de Kroon heeft u veel te bieden. Sinds de oprichting in 1937 drukken wij met ambitie en denken flexibel mee met iedere opdrachtgever, groot of klein.</p>
+          <p class="serif-i mt-4 max-w-xl text-xl text-white/90">Voor dat beetje extra, de toegevoegde waarde, uw winst.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-kroon"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href="#wegwijzer" class="btn btn-line">Wat wilt u laten drukken?</a>
+          </div>
+          <dl class="mt-12 grid grid-cols-1 gap-x-8 gap-y-5 border-t border-white/20 pt-6 sm:grid-cols-[auto_auto_1fr]">
+            <div><dt class="text-sm text-white/75">Opgericht</dt><dd class="font-display text-3xl leading-none font-semibold">Sinds 1937</dd></div>
+            <div><dt class="text-sm text-white/75">Google</dt><dd class="mt-1"><strong class="font-display text-2xl font-semibold">{site.google}</strong> <span class="whitespace-nowrap text-sm text-white/80">uit {site.reviews} reviews</span></dd></div>
+            <div><dt class="text-sm text-white/75">Bereikbaar</dt><dd class="mt-1 text-sm text-white/90">Vrij parkeren op eigen terrein, grenzend aan het NS-station {site.plaats}</dd></div>
+          </dl>
+          <p class="mt-8"><a href="#drukkerij" class="group inline-flex items-center gap-2 font-semibold text-white underline decoration-roos decoration-2 underline-offset-4">Mogen wij u even rondleiden? <span class="inline-block w-5 transition-transform group-hover:translate-x-1"><Fragment set:html={pijl} /></span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Drukkerij: techniek en mensen. Digitaal en klassiek naast elkaar, met hun eigen foto's (397 breed, nooit groter). -->
+    <section id="drukkerij" class="scroll-mt-20 pt-24 pb-16 lg:pt-32 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-6 xl:col-span-5">
+          <p class="kicker text-wijn">Drukkerij</p>
+          <h2 class="mt-3 text-3xl">Drukken is techniek, menen velen</h2>
+          <p class="mt-6 text-lg">En dat is ten dele waar. Techniek kun je kopen en dat hebben we ook gedaan, de modernste digitale apparatuur draait ook bij ons dagelijks. Zo efficiënt dat we ons bedrijf zonder meer een <em>'groene onderneming'</em> kunnen noemen.</p>
+        </div>
+        <blockquote class="border-l-4 border-kroon pl-6 lg:col-span-6 lg:col-start-7 xl:col-span-6 xl:col-start-7 lg:self-end">
+          <p class="serif-i text-2xl leading-snug">Maar daarnaast investeerden we ook in mensen en in kennis, zodat we iedere opdrachtgever kunnen bieden waar we zo trots op zijn: <span class="font-semibold not-italic text-kroon">kwaliteit.</span></p>
+        </blockquote>
+      </div>
+
+      <div class="wrap mt-14 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-20">
+        <article class="rounded-xl bg-white p-5 shadow-sm sm:p-6">
+          <div class="grid gap-5 sm:grid-cols-[minmax(0,240px)_1fr] md:grid-cols-1 xl:grid-cols-[minmax(0,260px)_1fr]">
+            <figure class="max-w-[397px]"><div class="aspect-[397/263] overflow-hidden rounded-lg"><Foto src={digitaal} alt="Een medewerker achter de computer naast een grote digitale drukmachine" widths={[397]} sizes="(min-width: 1280px) 260px, 397px" /></div></figure>
+            <div>
+              <p class="kicker text-wijn">Digitaal</p>
+              <h3 class="mt-2 text-xl">De modernste digitale apparatuur</h3>
+              <p class="mt-2 text-ink-soft">Draait bij ons dagelijks, flexibel en efficiënt.</p>
+            </div>
+          </div>
+        </article>
+        <article class="rounded-xl bg-white p-5 shadow-sm sm:p-6">
+          <div class="grid gap-5 sm:grid-cols-[minmax(0,240px)_1fr] md:grid-cols-1 xl:grid-cols-[minmax(0,260px)_1fr]">
+            <figure class="max-w-[397px]"><div class="aspect-[397/263] overflow-hidden rounded-lg"><Foto src={heidelberg} alt="De klassieke Heidelberg drukpers in onze drukkerij, met een stapel vellen" widths={[397]} sizes="(min-width: 1280px) 260px, 397px" /></div></figure>
+            <div>
+              <p class="kicker text-wijn">Klassiek</p>
+              <h3 class="mt-2 text-xl">En soms nog een klassieke Heidelberg drukpers</h3>
+              <p class="mt-2 text-ink-soft">Wij werken met de modernste digitale apparatuur, hoewel soms ook nog gebruik wordt gemaakt van een klassieke Heidelberg drukpers.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Wow: de Drukwerk-wegwijzer. Zonder JS: alle vijf de uitkomsten als kaarten onder elkaar. -->
+    <section id="wegwijzer" class="scroll-mt-16 bg-karton py-16 lg:py-24" data-wegwijzer>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-wijn">Drukwerk-wegwijzer</p>
+            <h2 class="mt-3 text-3xl">Wat wilt u laten maken?</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5 lg:self-end">Kies wat u wilt laten maken en lees wat de Kroon ervoor doet: handelsdrukwerk, reclamedrukwerk, boeken of kaarten.</p>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 gap-8 lg:mt-12 lg:grid-cols-12 lg:gap-10">
+          <form class="lg:col-span-4" hidden data-keuzes>
+            <fieldset>
+              <legend class="sr-only">Wat wilt u laten maken?</legend>
+              <div class="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
+                {keuzes.map((k, i) => (
+                  <label class="keuze"><input type="radio" class="sr-only" name="drukwerk" value={k.id} checked={i === 0} /><span class="nr" aria-hidden="true">{i + 1}</span><strong>{k.label}</strong><small>{k.sub}</small></label>
+                ))}
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="grid gap-6 lg:col-span-8" aria-live="polite" data-uitkomsten>
+            {keuzes.map((k, i) => (
+              <article data-paneel={k.id} class="scroll-mt-20 overflow-hidden rounded-xl bg-papier shadow-sm">
+                <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+                  <figure class="flex flex-col justify-between gap-6 bg-inkt p-3 md:p-4">
+                    <div>
+                    <div class="mx-auto max-w-[397px] overflow-hidden rounded-lg"><Foto src={k.foto} alt={k.alt} widths={[397]} sizes="397px" class="!h-auto" /></div>
+                    <figcaption class="mx-auto mt-2 max-w-[397px] text-xs text-white/80">{k.bij}</figcaption>
+                    </div>
+                    <p class="hidden px-1 pb-2 text-white md:block" aria-hidden="true"><span class="kicker block text-roos">Keuze {i + 1} van {keuzes.length}</span><span class="mt-2 block font-display text-3xl leading-none font-semibold">{k.label}</span></p>
+                  </figure>
+                  <div class="p-6 sm:p-8">
+                    <p class="kicker text-wijn">{k.afdeling}</p>
+                    <h3 class="mt-2 text-2xl">{k.kop}</h3>
+                    {k.tekst.map((t) => <p class="mt-3">{t}</p>)}
+                    {k.feiten.length > 0 && (
+                      <ul class="mt-5 space-y-2 border-t border-line pt-4">
+                        {k.feiten.map((f) => <li class="flex gap-3"><span class="mt-2.5 h-1.5 w-1.5 flex-none rounded-full bg-kroon" aria-hidden="true"></span><span>{f}</span></li>)}
+                      </ul>
+                    )}
+                    {k.meenemen && (
+                      <div class="mt-5 rounded-lg bg-karton p-4">
+                        <p class="font-bold">Wat u kunt meenemen</p>
+                        <ul class="mt-2 space-y-1.5">
+                          {k.meenemen.map((m) => <li class="flex gap-3"><span class="mt-2.5 h-1.5 w-1.5 flex-none rounded-full bg-wijn" aria-hidden="true"></span><span>{m}</span></li>)}
+                        </ul>
+                      </div>
+                    )}
+                    {k.id === 'boek' && <p class="mt-4 text-sm"><a href="#uitgeverij" class="font-semibold text-wijn underline underline-offset-4">Ook in eigen beheer: onze uitgeverij</a></p>}
+                  </div>
+                </div>
+                <div class="flex flex-col gap-4 border-t border-line bg-white px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+                  <p class="font-display text-xl font-semibold">Komt u eens praten? <span class="serif-i text-wijn">Bij een kop koffie.</span></p>
+                  <a href={site.telHref} class="btn btn-kroon flex-none !py-2.5"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Drukwerk-wegwijzer: toont bij elke keuze alleen het bijbehorende paneel. Zonder JS blijven alle panelen zichtbaar.
+      const sectie = document.querySelector<HTMLElement>('[data-wegwijzer]');
+      if (sectie) {
+        const form = sectie.querySelector<HTMLFormElement>('[data-keuzes]')!;
+        const panelen = [...sectie.querySelectorAll<HTMLElement>('[data-paneel]')];
+        form.hidden = false;
+        form.addEventListener('submit', (e) => e.preventDefault());
+        const toon = (id: string) => panelen.forEach((p) => { p.hidden = p.dataset.paneel !== id; });
+        toon((form.querySelector('input:checked') as HTMLInputElement).value);
+        form.addEventListener('change', (e) => {
+          const id = (e.target as HTMLInputElement).value;
+          toon(id);
+          // Op de telefoon staat het paneel onder de keuzes: schuif het in beeld.
+          if (innerWidth < 1024) {
+            const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            panelen.find((p) => p.dataset.paneel === id)?.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: 'start' });
+          }
+        });
+      }
+    </script>
+
+    <!-- Boeken en uitgeverij: inktzwart, met hun eigen boekomslagen als plank. -->
+    <section id="uitgeverij" class="donker scroll-mt-16 bg-inkt py-16 text-white lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-roos">Boeken</p>
+          <h2 class="mt-3 text-3xl">Een opmerkelijk aantal boeken</h2>
+          <p class="mt-6 text-lg text-white/85">Drukkerij de Kroon heeft in de loop der jaren al een opmerkelijk aantal boeken geproduceerd. En was dan niet alleen verantwoordelijk voor het drukken, maar werd vaak ook intensief betrokken bij het titelontwerp en de vormgeving, iets dat soms geheel in eigen huis werd gedaan. En daar zijn we, niet zonder reden, trots op.</p>
+          <div class="mt-10 border-t border-white/20 pt-8">
+            <p class="kicker text-roos">Uitgeverij</p>
+            <h3 class="mt-3 text-2xl">Fictie en non-fictie, in eigen beheer</h3>
+            <p class="mt-4 text-white/85">Het vakmanschap binnen drukkerij de Kroon vertaalt zich ook in het in eigen beheer uitgeven van boeken en periodieken. Fictie en non-fictie rolt bij ons met enige regelmaat van de persen.</p>
+            <p class="mt-4 text-white/85">En ook hier gaat het steeds weer om kwalitatief hoogstaand maatwerk en een intensieve samenwerking met de auteur en illustrator. Iets dat we erg waarderen.</p>
+          </div>
+        </div>
+        <figure class="lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg lg:aspect-auto lg:h-full lg:min-h-[520px]"><Foto src={zetsel} alt="Een blok loden zetsel, bijeengebonden met touw, op een werkbank" sizes="(min-width: 1024px) 560px, 100vw" class="object-[40%_50%]" /></div>
+        </figure>
+      </div>
+
+      <div class="wrap mt-14 lg:mt-20">
+        <div class="flex flex-wrap items-end justify-between gap-x-8 gap-y-2 border-b border-white/20 pb-4">
+          <h3 class="text-xl">Romans, jeugd- en kookboeken, historische werken</h3>
+          <p class="text-sm text-white/75">Een greep uit de boeken op onze huidige website</p>
+        </div>
+        <ul class="mt-8 grid grid-cols-3 gap-4 sm:gap-6 lg:grid-cols-6">
+          {boeken.map((b, i) => (
+            <li class={`transition-transform duration-300 hover:-translate-y-1 ${i % 2 ? 'lg:mt-6' : ''}`}>
+              <div class="mx-auto max-w-[225px] overflow-hidden rounded-md shadow-lg"><Foto src={b.src} alt={b.alt} widths={[225]} sizes="(min-width: 1024px) 170px, 30vw" class="!h-auto" /></div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 max-w-2xl text-white/85">De vaak zeer nauwe samenwerking met een auteur is vrijwel altijd een spannend en fascinerend proces met een tastbaar gevolg: een heus boek. Vele auteurs, producenten en ook promovendi weten ons te vinden voor de totstandkoming van deze fase.</p>
+      </div>
+    </section>
+
+    <!-- Over ons: groot jaartal, de tekst van hun over-ons-pagina, twee eigen foto's en een brede sfeerstrook. -->
+    <section id="over" class="scroll-mt-16 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-wijn">Over ons</p>
+          <p class="mt-4 font-display text-jaar leading-[0.85] font-semibold tracking-[-0.04em] text-kroon tabular-nums" aria-hidden="true">1937</p>
+          <p class="mt-4 max-w-sm text-ink-soft">Sinds de oprichting in 1937 drukken wij met ambitie en denken flexibel mee met iedere opdrachtgever, groot of klein.</p>
+          <div class="mt-8 grid max-w-[520px] grid-cols-2 gap-3">
+            <figure><div class="aspect-[397/263] overflow-hidden rounded-lg shadow-sm"><Foto src={persMan} alt="Een drukker controleert een vel aan de drukpers" widths={[397]} sizes="(min-width: 1024px) 250px, 50vw" /></div></figure>
+            <figure><div class="aspect-[397/263] overflow-hidden rounded-lg shadow-sm"><Foto src={snijden} alt="Een medewerker aan een machine met stapels papier" widths={[397]} sizes="(min-width: 1024px) 250px, 50vw" /></div></figure>
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <h2 class="text-3xl">Een moderne drukkerij met een jong en bevlogen management</h2>
+          <p class="mt-6 text-lg">Met meer dan 70 jaar ervaring in de grafische industrie zijn wij in staat iedere opdracht tot volle tevredenheid uit te voeren.</p>
+          <p class="mt-4">Wij werken met de modernste digitale apparatuur, hoewel soms ook nog gebruik wordt gemaakt van een klassieke Heidelberg drukpers, flexibel en efficiënt.</p>
+          <p class="mt-4">Maar drukken is ook communiceren en ook daar denken wij, in alle details, graag in mee.</p>
+          <ul class="mt-8 grid grid-cols-2 border-t border-line sm:grid-cols-4">
+            {['Vormgeving', 'Papierkeuze', 'Opmaak', 'Formaat'].map((w, i) => (
+              <li class="border-b border-line py-4 pr-3"><span class="block text-xs font-bold text-wijn tabular-nums">0{i + 1}</span><span class="font-display text-xl font-semibold">{w}</span></li>
+            ))}
+          </ul>
+          <p class="mt-6 text-lg">Op iedere vraag van uw kant komt een antwoord. <span class="serif-i text-xl text-wijn">Bij een kop koffie.</span></p>
+          <p class="mt-8 font-display text-2xl font-semibold">de Kroon: <span class="serif-i text-kroon">drukkers met passie</span></p>
+        </div>
+      </div>
+
+      <figure class="wrap mt-16 lg:mt-20">
+        <div class="relative aspect-[16/9] overflow-hidden rounded-xl shadow-sm sm:aspect-[21/8]">
+          <Foto src={pers} alt="Detail van een vellenpers: rollen en grijpers boven een wit vel papier" sizes="(min-width: 1216px) 1152px, 100vw" class="object-[60%_60%]" />
+        </div>
+      </figure>
+    </section>
+
+    <!-- Huis aan huis: alleen zoals hun eigen pagina het noemt. -->
+    <section class="bg-karton py-10">
+      <div class="wrap flex flex-col gap-3 sm:flex-row sm:items-baseline sm:gap-8">
+        <p class="kicker flex-none text-wijn">Huis aan huis</p>
+        <p><strong>Huis aan huis Reklamix.</strong> Kijk voor actuele informatie op de <a class="underline underline-offset-4" href="https://huisaanhuisreklamix.nl/" rel="noopener">website van huis aan huis reklamix</a>.</p>
+      </div>
+    </section>
+
+    <!-- Contact: wijnrood vlak, adres, bereikbaarheid en het contactformulier van hun huidige site. -->
+    <section id="contact" class="donker scroll-mt-16 bg-wijn py-16 text-white lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-blos">Contact</p>
+          <h2 class="mt-3 text-3xl">Komt u eens praten?</h2>
+          <p class="serif-i mt-3 text-2xl text-blos">Bij een kop koffie.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-wit"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+          <div class="mt-10 grid gap-8 border-t border-white/25 pt-8 sm:grid-cols-2">
+            <address class="not-italic">
+              <strong class="font-display text-xl font-semibold">{site.juridisch}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}
+              <span class="mt-3 block text-sm text-white/80">{site.postbus}, {site.postbusPc}</span>
+            </address>
+            <p class="text-sm leading-7">T <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />F <span class="whitespace-nowrap tabular-nums">{site.fax}</span><br /><a href={`mailto:${site.mail}`} class="break-all underline underline-offset-2">{site.mail}</a><br />KvK <span class="tabular-nums">{site.kvk}</span></p>
+          </div>
+          <div class="mt-8 rounded-xl bg-white/10 p-5">
+            <p>Drukkerij de Kroon is gevestigd in Olst, in de directe omgeving van Zwolle, Deventer en Zutphen.</p>
+            <p class="mt-2">Vrij parkeren op het eigen parkeerterrein en grenzend aan het NS-station Olst.</p>
+            <a href={site.maps} rel="noopener" class="mt-4 inline-flex items-center gap-2 font-semibold underline decoration-blos decoration-2 underline-offset-4">Route plannen <span class="inline-block w-5"><Fragment set:html={pijl} /></span></a>
+          </div>
+          <p class="mt-6 text-sm text-white/80">Openingstijden: [[AANLEVEREN: openingstijden]]</p>
+        </div>
+
+        <form class="rounded-xl bg-papier p-6 text-ink shadow-lg sm:p-8 lg:col-span-5 lg:col-start-8 lg:self-start" action="#" onsubmit="return false">
+          <h3 class="text-2xl">Contactformulier</h3>
+          <p class="mt-1 text-sm text-ink-soft">Laat uw gegevens en uw vraag achter.</p>
+          <div class="mt-6 grid gap-4">
+            <div class="veld"><label for="f-naam">Naam</label><input id="f-naam" name="naam" autocomplete="name" /></div>
+            <div class="veld"><label for="f-tel">Telefoonnummer</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" /></div>
+            <div class="veld"><label for="f-mail">E-mailadres</label><input id="f-mail" name="email" type="email" autocomplete="email" /></div>
+            <div class="veld"><label for="f-bericht">Bericht</label><textarea id="f-bericht" name="bericht" rows="4"></textarea></div>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-6 rounded-lg bg-karton p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="font-semibold whitespace-nowrap tabular-nums underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold break-all underline">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-kroon mt-6">Versturen</button>
+          )}
+        </form>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

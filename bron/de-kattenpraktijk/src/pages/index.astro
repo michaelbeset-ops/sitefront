@@ -1,0 +1,476 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { Image } from 'astro:assets';
+import { site, prijzen, prijsGeldig, spoedtarieven, euro } from '../data/site';
+
+import heroKat from '../assets/hero-kat.jpg';
+import wachtkamer from '../assets/wachtkamer.jpg';
+import raam from '../assets/wachtruimte-raam.jpg';
+import balie from '../assets/balie.jpg';
+import spreekkamer from '../assets/spreekkamer.jpg';
+import certificaat from '../assets/certificaat.jpg';
+import schoot from '../assets/schoot.jpg';
+import ok from '../assets/ok.jpg';
+import lab from '../assets/lab.jpg';
+import rontgen from '../assets/rontgen.jpg';
+import opname from '../assets/opname.jpg';
+import gebit from '../assets/gebit.jpg';
+import rodeKat from '../assets/rode-kat.jpg';
+import kitten from '../assets/kitten-donker.jpg';
+import team from '../assets/team.jpg';
+import petra from '../assets/petra.jpg';
+import sanne from '../assets/sanne.jpg';
+import joyce from '../assets/joyce.jpg';
+import zixin from '../assets/zixin.jpg';
+import chantal from '../assets/chantal.jpg';
+import ingang from '../assets/ingang.jpg';
+import katKoning from '../assets/kat-koning.png';
+
+const tel = (
+  '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>'
+);
+
+// Pagina "Visie": de "Omdat..."-redenen, ingekort.
+const omdat = [
+  { kop: 'Geen andere huisdieren', tekst: 'Er komen geen andere huisdieren die geluiden maken waarvan een kat kan schrikken, of luchtjes achterlaten die een kattenneus feilloos als bedreigend beschouwt.' },
+  { kop: 'Minder bang, minder stress', tekst: 'Een kat is in een niet bedreigende omgeving minder bang. En is de kat meer op zijn gemak, dan is het bezoek aan de dierenarts ook voor u minder stressvol.' },
+  { kop: 'Handigheid en geduld', tekst: 'Zowel dierenarts als assistente hebben jarenlange ervaring met de behandeling van katten.' },
+  { kop: 'Kennis van de kattengeneeskunde', tekst: 'Alle noodzakelijke wetenschappelijke kennis van de geneeskunde van de kat is aanwezig.' },
+  { kop: 'Voeding en medicatie', tekst: 'Er is een ruim assortiment voeding en medicatie voor katten aanwezig.' },
+];
+
+// Pagina's Spreekuur t/m Voeding, ingekort. foto = eigen foto van hun site (klein getoond).
+const zorg = [
+  { kop: 'Spreekuur', foto: null, tekst: 'Alleen op afspraak, dus geen inloopspreekuur. Voor een standaard afspraak gaan we uit van een kwartier; voor gecompliceerdere klachten plannen we meer tijd in.', punten: ['Vaccinatie en gezondheidscheck', 'Gebitsklachten, bloeddrukmeting', 'Klein consult bij de assistente, bijv. een teek verwijderen'] },
+  { kop: 'Operaties en narcose', foto: ok, alt: 'De operatiekamer van De Kattenpraktijk', tekst: 'Moderne narcosetechniek en een speciaal ontworpen katten-operatietafel waarop de kat warm en comfortabel ligt. Voor oude katten en dieren met een verhoogd narcoserisico is de inademingsnarcose een veilige manier.', punten: ['Sterilisatie en castratie', 'Blaas- en darmoperaties, tumoren', '’s Ochtends nuchter brengen, ’s middags wakker mee naar huis'] },
+  { kop: 'Gebitsbehandeling', foto: gebit, alt: 'Gebitsbehandeling bij een kat onder narcose', tekst: 'In een aparte ruimte: tandsteen verwijderen, het gebit polijsten, of losse en beschadigde kiezen en tanden trekken.', punten: ['Signalen: stinkende adem, kwijlen', 'Raar of slecht eten, pijn bij het openen van de bek', 'Humeurigheid of zich terugtrekken'] },
+  { kop: 'Röntgenonderzoek', pos: 'object-top', foto: rontgen, alt: 'Het röntgenapparaat in de praktijk', tekst: 'Voor de foto hoeft de kat slechts enkele seconden stil te liggen, terwijl arts en assistente het dier in de goede positie houden. Een narcose is meestal niet nodig.', punten: [] },
+  { kop: 'Laboratorium', foto: lab, alt: 'Het bloedonderzoekapparaat in de praktijk', tekst: 'Bloedonderzoek met de Vetscan: de uitslag binnen 10 minuten, ook voor de schildklierfunctie. Klaar terwijl u wacht met een kopje koffie.', punten: ['Urine: blaasontsteking of blaasgruis', 'Ontlasting: wormen en Giardia'] },
+  { kop: 'Opname', foto: opname, alt: 'Twee katten slapen in een opnameverblijf', tekst: 'Katvriendelijke verblijven van kunststof: geen lawaai en behaaglijker dan koud metaal, met zachte ligkussentjes en snoezelzakken om in weg te kruipen.', punten: ['Dagopname en langdurige opname', 'Zuurstofruimte voor benauwde katten', 'Aparte quarantaine met glazen deur'] },
+];
+
+const verder = [
+  { kop: 'Gedragstherapie', tekst: 'Heeft afwijkend gedrag geen lichamelijke oorzaak, dan werken we samen met gediplomeerde gedragstherapeuten van Tinley Gedragstherapie voor Dieren. Het gedragsconsult is bij u thuis.' },
+  { kop: 'Doorverwijzing', tekst: 'Voor echo, scopie, MRI en CT of specialistische operaties verwijzen we door, onder meer naar Evidensia Dierenziekenhuis Barendrecht, Veterinair Verwijscentrum Gouda en AniCura Dordrecht/Haaglanden. U krijgt een verwijsbrief mee.' },
+  { kop: 'Voeding en Slim Fit', tekst: 'De volledige Veterinaire Voedingslijn en dieetlijn van Royal Canin, plus enkele veelgebruikte dieetvoeders van Hill’s. Met het Slim Fit programma controleren we maandelijks gratis het gewicht van uw kat.' },
+];
+
+const teamleden = [
+  { naam: 'Petra', rol: 'Kattendierenarts', foto: petra, tekst: 'Sinds 1998 dierenarts voor gezelschapsdieren. De start van De Kattenpraktijk in 2012 was een lang gekoesterde droom. Thuis: de Abessijnen Ruby en Donna.' },
+  { naam: 'Sanne', rol: 'Dierenarts', foto: sanne, tekst: 'Van kinds af aan een echt kattenmens. Volgde de anderhalf jaar durende opleiding Feline Medicine (kattengeneeskunde) aan de Universiteit van Sydney.' },
+  { naam: 'Joyce', rol: 'Assistente', foto: joyce, tekst: 'Paraveterinair met het diploma Cat Friendly Nurse van de ISFM. Werkte eerder al samen met Petra.' },
+  { naam: 'Zixin', rol: 'Paraveterinair', foto: zixin, tekst: 'Sinds mei 2021 met veel plezier bij De Kattenpraktijk, omringd door verschillende katten.' },
+  { naam: 'Chantal', rol: 'Assistente', foto: chantal, tekst: 'Werkte vijf jaar als assistente in het Dierenziekenhuis Nieuwegein. Haar hart ligt toch echt bij katten.' },
+];
+
+const spoedgevallen = ['Duidelijke benauwdheid', 'Verminderd bewustzijn of duidelijke flauwte', 'Een moederpoes waarbij de bevalling niet vordert', 'Hevige pijn', 'Botbreuken', 'Verlammingen', 'Een kater die tracht te plassen maar geen urine produceert', 'Grote verwondingen'];
+---
+<Base
+  title={`${site.naam} | Dierenarts uitsluitend voor katten in Capelle aan den IJssel`}
+  description="De Kattenpraktijk in Capelle aan den IJssel: de dierenartspraktijk uitsluitend voor katten. Cat Friendly Clinic Gold Certificate. Spreekuur op afspraak, operaties, röntgen, laboratorium en opname."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+
+    <!-- HERO -->
+    <section class="donker relative bg-petrol text-white">
+      <div class="wrap grid gap-10 pt-14 pb-12 lg:grid-cols-12 lg:pt-20 lg:pb-16">
+        <div class="lg:col-span-8">
+          <p class="kicker text-turkoois">Capelle aan den IJssel · uitsluitend voor katten</p>
+          <h1 class="mt-5 text-4xl">Een dierenarts waar de kat <em class="pr-[0.08em] font-[inherit] text-messing" style="font-variation-settings:'SOFT' 100,'WONK' 1">koning</em> is</h1>
+          <p class="mt-6 max-w-2xl text-lg text-white/85">De Kattenpraktijk is dé dierenartspraktijk uitsluitend voor katten, volledig op de kat ingericht: een rustige en huiselijke spreekkamer en opnamefaciliteiten met oog voor welzijn en hygiëne van de kat.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.telHref} class="btn btn-messing"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+            <a href="#tarieven" class="btn btn-line text-white">Wat kost het?</a>
+          </div>
+        </div>
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-5 self-end border-t border-white/15 pt-6 text-sm sm:grid-cols-4 lg:col-span-4 lg:grid-cols-1 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
+          <div><dt class="text-white/75">Google</dt><dd class="mt-1"><span class="font-display text-2xl font-semibold">{site.google}</span> <span class="text-white/75">({site.reviews} reviews)</span></dd></div>
+          <div><dt class="text-white/75">Cat Friendly Clinic</dt><dd class="mt-1 font-display text-lg font-semibold sm:text-xl text-messing">Gold Certificate</dd></div>
+          <div><dt class="text-white/75">Ma t/m vr</dt><dd class="mt-1 font-display text-lg font-semibold sm:text-xl whitespace-nowrap tabular-nums">08.30 – 12.00<br />13.00 – 18.00</dd></div>
+          <div><dt class="text-white/75">Spreekuur</dt><dd class="mt-1 font-display text-lg font-semibold sm:text-xl">Alleen op afspraak</dd></div>
+        </dl>
+      </div>
+      <!-- Beeld dat over de rand valt: sfeerfoto groot, eigen wachtruimte als inzet. -->
+      <div class="wrap relative">
+        <div class="relative -mb-40 grid gap-4 md:grid-cols-12 lg:-mb-56">
+          <div class="relative h-72 overflow-hidden rounded-2xl shadow-lg sm:h-96 md:col-span-8 lg:h-[30rem]">
+            <Foto src={heroKat} hero alt="Een vrouw aait een cyperse kat onder de kin (sfeerfoto)" sizes="(min-width: 1024px) 800px, 100vw" class="object-[50%_35%]" />
+          </div>
+          <figure class="relative hidden overflow-hidden rounded-2xl bg-white shadow-lg md:col-span-4 md:mt-16 md:block">
+            <div class="h-80 lg:h-[26rem]"><Foto src={wachtkamer} alt="De wachtkamer van De Kattenpraktijk met petrolblauwe fluwelen bank en behang" sizes="400px" widths={[400, 800]} /></div>
+            <figcaption class="flex items-center justify-between gap-3 px-4 py-3 text-sm"><span class="font-semibold text-ink">Onze wachtkamer</span><span class="text-ink-soft">Kompasstraat 2G</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAAROM -->
+    <section id="waarom" class="scroll-mt-20 pt-56 pb-20 lg:pt-72 lg:pb-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-brons">Waarom een kattendierenarts?</p>
+          <h2 class="mt-4 text-3xl">Een kat is nu eenmaal geen kleine hond</h2>
+          <p class="mt-5 text-ink-soft">Katten zijn bijzondere dieren. Vaak wordt de kat behandeld als een kleine hond. En dat terwijl de kat wat betreft gedrag, lichaamsbouw, voeding en ziektes beslist geen hond is.</p>
+          <div class="mt-8 flex items-end gap-5 rounded-xl bg-zand p-6 shadow-sm">
+            <Image src={katKoning} alt="" width={116} height={267} class="-mb-2 h-36 w-auto flex-none" loading="lazy" />
+            <div>
+              <h3 class="text-xl">Cats only</h3>
+              <p class="mt-2 text-sm text-ink-soft">Niet omdat wij andere dieren niet leuk vinden, maar zodat er op geen enkel moment een confrontatie is met andere dieren. Een kattenneus is immers vele malen beter ontwikkeld dan de onze. Voor andere dieren verwijzen we u naar collega-dierenartsen in Capelle aan den IJssel of omgeving.</p>
+            </div>
+          </div>
+        </div>
+        <ol class="lg:col-span-7 lg:pl-6">
+          {omdat.map((o, i) => (
+            <li class="grid grid-cols-[3rem_1fr] gap-4 border-t border-line py-6 first:border-t-0 first:pt-0 sm:grid-cols-[4rem_1fr]">
+              <span class="font-display text-2xl text-brons tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div><h3 class="text-xl">{o.kop}</h3><p class="mt-1.5 text-ink-soft">{o.tekst}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- CAT FRIENDLY -->
+    <section id="catfriendly" class="scroll-mt-20 bg-zand py-20 lg:py-28">
+      <div class="wrap">
+        <div class="grid items-center gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-6">
+            <p class="kicker text-brons">Cat Friendly Clinic</p>
+            <h2 class="mt-4 text-3xl">Sinds 2014 een Gold Certificate aan de muur</h2>
+            <p class="mt-5 text-ink-soft">De ISFM (International Society of Feline Medicine) stimuleert praktijken om zo in te richten dat een bezoek voor katten zo stressloos mogelijk is. Er zijn drie niveaus: Aspirant, Silver en Gold. Alleen praktijken die op alle vlakken zijn ingericht op de behandeling van katten, krijgen het Gold Certificate.</p>
+            <p class="mt-4 text-ink-soft">Na een uitgebreide toelatingskeuring, die periodiek herhaald wordt, bezitten we sinds 2014 ons Gold Certificate. Het prijkt trots aan de muur van onze wachtkamer.</p>
+            <ol class="mt-8 grid grid-cols-3 gap-2 text-center text-sm font-semibold" aria-label="Niveaus Cat Friendly Clinic">
+              <li class="rounded-lg bg-paper/70 px-2 py-3 text-ink-soft">Aspirant</li>
+              <li class="rounded-lg bg-paper/70 px-2 py-3 text-ink-soft">Silver</li>
+              <li class="rounded-lg bg-petrol px-2 py-3 text-messing shadow-sm">Gold <span class="sr-only">(De Kattenpraktijk)</span></li>
+            </ol>
+          </div>
+          <figure class="lg:col-span-6">
+            <div class="aspect-[2/1] overflow-hidden rounded-2xl shadow-lg"><Foto src={certificaat} alt="Het ingelijste Cat Friendly Clinic Gold Certificate voor De Kattenpraktijk" sizes="(min-width: 1024px) 600px, 100vw" widths={[600, 1000, 1400]} /></div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Het certificaat in onze wachtkamer.</figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-16 grid gap-4 md:grid-cols-12 lg:mt-20">
+          <figure class="relative overflow-hidden rounded-2xl shadow-sm md:col-span-8">
+            <div class="h-64 sm:h-80 lg:h-[26rem]"><Foto src={raam} alt="De wachtruimte met de getekende kat met kroon op het raam en de balie met bloemen" sizes="(min-width: 768px) 66vw, 100vw" class="object-[30%_50%]" /></div>
+          </figure>
+          <div class="flex flex-col justify-center gap-6 rounded-2xl bg-paper p-6 shadow-sm md:col-span-4 lg:p-8">
+            <h3 class="text-2xl">Zo merkt uw kat het</h3>
+            <ul class="space-y-4 text-sm text-ink-soft">
+              <li><strong class="text-ink">Weinig ziekenhuiswit.</strong> Juist warme kleuren, en een fauteuil in de spreekkamer: uw kat kan op schoot behandeld worden.</li>
+              <li><strong class="text-ink">Mandjes omhoog.</strong> Katten kijken in een nieuwe omgeving graag vanaf hoogte om zich heen.</li>
+              <li><strong class="text-ink">Rust in de agenda.</strong> Het spreekuur is zo ingedeeld dat elke patiënt met geduld en rust benaderd kan worden.</li>
+            </ul>
+          </div>
+          <div class="h-64 overflow-hidden rounded-2xl shadow-sm md:col-span-4 md:h-80"><Foto src={balie} alt="De balie van De Kattenpraktijk met twee assistentes" sizes="(min-width: 768px) 33vw, 100vw" class="object-[50%_45%]" /></div>
+          <div class="h-64 overflow-hidden rounded-2xl shadow-sm md:col-span-4 md:h-80"><Foto src={spreekkamer} alt="Een spreekkamer van De Kattenpraktijk" sizes="(min-width: 768px) 33vw, 100vw" /></div>
+          <div class="h-64 overflow-hidden rounded-2xl shadow-sm md:col-span-4 md:h-80"><Foto src={schoot} alt="Een grijs gestreepte kat op schoot (sfeerfoto)" sizes="(min-width: 768px) 33vw, 100vw" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZORG -->
+    <section id="zorg" class="scroll-mt-20 py-20 lg:py-28">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-brons">Wat doet de Kattenpraktijk?</p>
+            <h2 class="mt-4 text-3xl">Van spreekuur tot opname, in een praktijk die op katten is ingericht</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5">Tijdens de openingstijden kunt u ook altijd vrij binnenlopen voor diervoeding, vlooien- en wormmiddelen, medicijnen of informatie.</p>
+        </div>
+
+        <ol class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {zorg.map((z, i) => (
+            <li class="flex flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+              {z.foto ? (
+                <div class="h-44 overflow-hidden bg-zand"><Foto src={z.foto} alt={z.alt ?? ''} sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw" widths={[400, 600]} class={(z as any).pos ?? ''} /></div>
+              ) : (
+                <div class="flex h-44 items-end bg-petrol p-6 text-white">
+                  <p class="font-display text-2xl leading-tight">Een standaard afspraak: <span class="text-messing">een kwartier</span></p>
+                </div>
+              )}
+              <div class="flex flex-1 flex-col p-6">
+                <p class="font-display text-sm text-brons tabular-nums" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+                <h3 class="mt-1 text-xl">{z.kop}</h3>
+                <p class="mt-2 text-sm text-ink-soft">{z.tekst}</p>
+                {z.punten.length > 0 && (
+                  <ul class="mt-4 space-y-1.5 border-t border-line pt-4 text-sm">
+                    {z.punten.map((p) => <li class="flex gap-2"><span class="mt-[0.55em] h-1.5 w-1.5 flex-none rounded-full bg-teal" aria-hidden="true" />{p}</li>)}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-5 grid gap-5 md:grid-cols-3">
+          {verder.map((v) => (
+            <div class="rounded-xl border border-line p-6">
+              <h3 class="text-xl">{v.kop}</h3>
+              <p class="mt-2 text-sm text-ink-soft">{v.tekst}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WOW: WAT KOST HET? -->
+    <section id="tarieven" class="donker scroll-mt-20 bg-petrol py-20 text-white lg:py-28" data-reken>
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-turkoois">Wat kost het?</p>
+          <h2 class="mt-4 text-3xl">Vooraf weten waar u aan toe bent</h2>
+          <p class="mt-5 text-white/85">De Kattenpraktijk heeft voor de veel voorkomende behandelingen standaard prijzen. Voor de overige behandelingen kunnen wij u altijd een prijsindicatie geven. Soms moeten we de kat eerst gezien hebben, bijvoorbeeld bij een gebitsbehandeling.</p>
+          <div class="mt-8 hidden h-72 overflow-hidden rounded-2xl lg:block"><Foto src={rodeKat} alt="Een rode kat ligt ontspannen op een kleed (sfeerfoto)" sizes="480px" widths={[480, 960]} /></div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="rounded-2xl bg-paper p-5 text-ink shadow-lg sm:p-8">
+            <div class="flex gap-1 rounded-full bg-zand p-1" role="tablist" aria-label="Soort bezoek" data-tabs hidden>
+              <button type="button" role="tab" class="tab" id="tab-afspraak" aria-controls="paneel-afspraak" aria-selected="true">Op afspraak</button>
+              <button type="button" role="tab" class="tab" id="tab-spoed" aria-controls="paneel-spoed" aria-selected="false" tabindex="-1"><span class="sm:hidden">Spoed</span><span class="hidden sm:inline">Spoed, buiten openingstijden</span></button>
+            </div>
+
+            <div id="paneel-afspraak" role="tabpanel" aria-labelledby="tab-afspraak" class="mt-6">
+              <h3 class="text-xl">Standaardprijzen <span class="text-sm font-normal whitespace-nowrap text-ink-soft">(geldig vanaf {prijsGeldig})</span></h3>
+              <p class="mt-1 text-sm text-ink-soft" data-js hidden>Tel per kat wat u komt doen.</p>
+              <ul class="mt-4 divide-y divide-line">
+                {prijzen.map((p) => (
+                  <li class="grid grid-cols-[1fr_auto] items-center gap-x-4 gap-y-1.5 py-3 sm:grid-cols-[1fr_auto_auto]" data-regel={p.id} data-cent={p.cent} data-reductie={p.reductie ? '1' : '0'}>
+                    <div class="col-span-2 min-w-0 sm:col-span-1">
+                      <p class="font-semibold leading-snug">{p.naam}</p>
+                      {p.extra && <p class="text-xs text-ink-soft">{p.extra}</p>}
+                    </div>
+                    <p class="whitespace-nowrap tabular-nums font-semibold">{euro(p.cent)}</p>
+                    <div class="flex items-center gap-2" data-js hidden>
+                      <button type="button" class="stap" data-min aria-label={`Eén minder: ${p.naam}`} disabled>−</button>
+                      <output class="w-6 text-center font-semibold tabular-nums" aria-label={`Aantal ${p.naam}`}>0</output>
+                      <button type="button" class="stap" data-plus aria-label={`Eén meer: ${p.naam}`}>+</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div class="mt-5 rounded-xl bg-petrol p-5 text-white" data-js hidden>
+                <div aria-live="polite" data-uitkomst>
+                  <p class="text-sm text-white/80">Kies hierboven een behandeling.</p>
+                </div>
+              </div>
+              <p class="mt-4 text-sm text-ink-soft">Met meer dan één kat tegelijk op het spreekuur? Dan krijgt u <span class="whitespace-nowrap tabular-nums">€ 10,00</span> reductie op het consult of de vaccinatie van het tweede of volgende dier. Een klein consult bij de assistente (bijvoorbeeld een teek verwijderen) is goedkoper dan een standaard consult.</p>
+            </div>
+
+            <div id="paneel-spoed" role="tabpanel" aria-labelledby="tab-spoed" class="mt-10 border-t border-line pt-8" data-spoedpaneel>
+              <h3 class="text-xl">Spoedtarieven</h3>
+              <p class="mt-1 text-sm text-ink-soft">Tijdens de spoeddienst gelden hogere tarieven dan tijdens reguliere tijden.</p>
+              <fieldset class="mt-4">
+                <legend class="sr-only">Wanneer belt u?</legend>
+                <div class="grid gap-2">
+                  {spoedtarieven.map((s, i) => (
+                    <label class="spoedkeuze">
+                      <input type="radio" name="spoed" value={s.id} data-cent={s.cent} checked={i === 1} />
+                      <span class="min-w-0 flex-1"><span class="block font-semibold leading-snug">{s.naam}</span>{s.tijd && <span class="block text-xs text-ink-soft tabular-nums">{s.tijd}</span>}</span>
+                      <span class="whitespace-nowrap font-semibold tabular-nums">{euro(s.cent)}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <p class="mt-4 text-sm text-ink-soft">Spoed is voor zaken die niet tot de eerstvolgende werkdag kunnen wachten. Bij twijfel kunt u bellen: <a href={site.telHref} class="font-semibold whitespace-nowrap text-teal underline underline-offset-2 tabular-nums">{site.tel}</a>.</p>
+            </div>
+
+            <p class="mt-6 border-t border-line pt-4 text-xs text-ink-soft">Indicatie op basis van de prijzen van De Kattenpraktijk; de standaardprijzen zijn geldig vanaf {prijsGeldig}. Aan deze berekening kunt u geen rechten ontlenen: vraag de praktijk naar de exacte kosten voor uw kat.</p>
+          </div>
+          <ul class="mt-8 space-y-3 sm:px-2 text-sm text-white/85">
+            <li><strong class="text-white">Betalen:</strong> contant of met PIN. Betaling op rekening is niet mogelijk. U krijgt een gespecificeerde kwitantie, bijvoorbeeld voor uw huisdierenverzekering.</li>
+            <li><strong class="text-white">Annuleren:</strong> kosteloos tot minimaal 24 uur vóór de afspraak. Daarna of bij niet nakomen kunnen we de prijs van een consult in rekening brengen.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Rekenhulp: telt de bedragen uit hun eigen prijslijst op. Zonder JS blijft de prijslijst gewoon leesbaar.
+      const sectie = document.querySelector<HTMLElement>('[data-reken]');
+      if (sectie) {
+        const fmt = (c: number) => '€ ' + (c / 100).toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        sectie.querySelectorAll<HTMLElement>('[data-js]').forEach((el) => (el.hidden = false));
+        const tabs = sectie.querySelector<HTMLElement>('[data-tabs]')!;
+        tabs.hidden = false;
+        const knoppen = [...tabs.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+        const panelen = knoppen.map((k) => document.getElementById(k.getAttribute('aria-controls')!)!);
+        const spoedPaneel = sectie.querySelector<HTMLElement>('[data-spoedpaneel]')!;
+        spoedPaneel.classList.remove('mt-10', 'border-t', 'pt-8');
+        spoedPaneel.classList.add('mt-6');
+        const kies = (i: number, focus = false) => {
+          knoppen.forEach((k, j) => {
+            k.setAttribute('aria-selected', String(i === j));
+            k.tabIndex = i === j ? 0 : -1;
+            panelen[j].hidden = i !== j;
+          });
+          if (focus) knoppen[i].focus();
+        };
+        knoppen.forEach((k, i) => {
+          k.addEventListener('click', () => kies(i));
+          k.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); kies((i + 1) % knoppen.length, true); }
+          });
+        });
+        kies(0);
+        document.querySelectorAll('[data-naar-spoed]').forEach((a) => a.addEventListener('click', () => kies(1)));
+
+        const regels = [...sectie.querySelectorAll<HTMLElement>('[data-regel]')];
+        const aantallen = new Map<string, number>();
+        const uitkomst = sectie.querySelector<HTMLElement>('[data-uitkomst]')!;
+        const teken = () => {
+          let totaal = 0; let reductieStuks = 0; const lijn: string[] = [];
+          regels.forEach((r) => {
+            const n = aantallen.get(r.dataset.regel!) || 0;
+            const cent = Number(r.dataset.cent);
+            const naam = r.querySelector('p')!.textContent!;
+            r.querySelector('output')!.textContent = String(n);
+            (r.querySelector('[data-min]') as HTMLButtonElement).disabled = n === 0;
+            if (n > 0) {
+              totaal += n * cent;
+              if (r.dataset.reductie === '1') reductieStuks += n;
+              lijn.push(`<li class="flex justify-between gap-4"><span>${n} × ${naam}</span><span class="whitespace-nowrap tabular-nums">${fmt(n * cent)}</span></li>`);
+            }
+          });
+          if (!lijn.length) { uitkomst.innerHTML = '<p class="text-sm text-white/80">Kies hierboven een behandeling.</p>'; return; }
+          const korting = reductieStuks > 1 ? (reductieStuks - 1) * 1000 : 0;
+          if (korting) lijn.push(`<li class="flex justify-between gap-4 text-turkoois"><span>Reductie tweede en volgende kat</span><span class="whitespace-nowrap tabular-nums">− ${fmt(korting)}</span></li>`);
+          uitkomst.innerHTML = `<ul class="space-y-1 text-sm text-white/85">${lijn.join('')}</ul>
+            <p class="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 border-t border-white/20 pt-4"><span class="text-sm text-white/80">Indicatie totaal</span><span class="font-display text-prijs leading-none text-messing whitespace-nowrap tabular-nums">${fmt(totaal - korting)}</span></p>
+            <p class="mt-2 text-xs text-white/75">Uitgaande van één behandeling per kat. Excl. eventuele injecties of medicijnen.</p>`;
+        };
+        regels.forEach((r) => {
+          const id = r.dataset.regel!;
+          r.querySelector('[data-plus]')!.addEventListener('click', () => { aantallen.set(id, Math.min(9, (aantallen.get(id) || 0) + 1)); teken(); });
+          r.querySelector('[data-min]')!.addEventListener('click', () => { aantallen.set(id, Math.max(0, (aantallen.get(id) || 0) - 1)); teken(); });
+        });
+        aantallen.set('vac-kn', 1);
+        teken();
+      }
+    </script>
+
+    <!-- TEAM -->
+    <section id="team" class="scroll-mt-20 py-20 lg:py-28">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div class="lg:col-span-5">
+            <p class="kicker text-brons">Wie is de Kattenpraktijk?</p>
+            <h2 class="mt-4 text-3xl">Kennis, handigheid en geduld</h2>
+            <p class="mt-5 text-ink-soft">Joyce zegt het zo: het blijft een overwinning wanneer we met rust en geduld een bange kat zo op zijn gemak krijgen, dat we een behandeling goed kunnen uitvoeren. Voor het dier minder stress, en het bespaart vaak een onnodige narcose.</p>
+          </div>
+          <figure class="lg:col-span-7">
+            <div class="aspect-[1284/775] overflow-hidden rounded-2xl shadow-lg"><Foto src={team} alt="Het team van De Kattenpraktijk: vijf vrouwen lachend bij elkaar" sizes="(min-width: 1024px) 700px, 100vw" widths={[640, 960, 1284]} /></div>
+          </figure>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-5">
+          {teamleden.map((t) => (
+            <li class="overflow-hidden rounded-xl bg-white shadow-sm">
+              <div class="aspect-[4/5] overflow-hidden bg-zand"><Foto src={t.foto} alt={`${t.naam}, ${t.rol.toLowerCase()}, met een kat`} sizes="(min-width: 1024px) 240px, (min-width: 768px) 33vw, 50vw" widths={[320, 480]} class="object-[50%_25%]" /></div>
+              <div class="p-4 sm:p-5">
+                <h3 class="text-xl">{t.naam}</h3>
+                <p class="mt-0.5 text-sm font-semibold text-brons">{t.rol}</p>
+                <p class="mt-2 text-sm leading-snug text-ink-soft sm:mt-3 sm:leading-normal">{t.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- SPOED -->
+    <section id="spoed" class="donker scroll-mt-20 bg-nacht text-white">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative h-72 sm:h-96 lg:col-span-5 lg:h-auto">
+          <Foto src={kitten} alt="Een cyperse kitten kijkt op in het donker (sfeerfoto)" sizes="(min-width: 1024px) 42vw, 100vw" />
+        </div>
+        <div class="px-5 py-16 sm:px-8 lg:col-span-7 lg:px-16 lg:py-24">
+          <p class="kicker text-turkoois">Spoed</p>
+          <h2 class="mt-4 max-w-xl text-3xl">Dieren houden nu eenmaal geen rekening met openingstijden</h2>
+          <p class="mt-5 max-w-xl text-white/85">Patiënten van de Kattenpraktijk kunnen voor spoedgevallen bellen met ons praktijknummer. Doet dierenarts Jager zelf dienst, dan hoort u via de telefoonbeantwoorder het spoednummer. Anders werken we samen met Evidensia Dierenziekenhuis Barendrecht (Bijdorp-West 12); dat nummer hoort u ook via de beantwoorder.</p>
+          <a href={site.telHref} class="btn btn-messing mt-8"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">Bel {site.tel}</span></a>
+          <h3 class="mt-12 text-xl">Vrijwel altijd reden voor spoed</h3>
+          <ul class="mt-4 grid gap-x-8 gap-y-2 text-white/85 sm:grid-cols-2">
+            {spoedgevallen.map((s) => <li class="flex gap-3 border-b border-white/10 pb-2"><span class="mt-[0.6em] h-1.5 w-1.5 flex-none rounded-full bg-messing" aria-hidden="true" />{s}</li>)}
+          </ul>
+          <p class="mt-6 text-sm text-white/80">Bij twijfel kunt u bellen en zal de dierenarts u adviseren. <a href="#tarieven" class="underline underline-offset-2" data-naar-spoed>Spoedtarieven bekijken</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- AFSCHEID -->
+    <section id="afscheid" class="scroll-mt-20 bg-zand py-20 lg:py-24">
+      <div class="wrap grid gap-8 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-brons">Afscheid</p>
+          <h2 class="mt-4 text-3xl">In alle rust afscheid nemen</h2>
+        </div>
+        <div class="grid gap-6 text-ink-soft sm:grid-cols-2 lg:col-span-8">
+          <p>Voor de euthanasie van uw kat houden we altijd met voldoende tijd rekening. U beslist zelf waar de kat op dat moment is: op schoot in een gemakkelijke stoel, of op de behandeltafel. Wilt u dat uw kat thuis inslaapt, dan kan er ook een huisvisite worden afgesproken; bespreek dit liefst tijdig (houdt u rekening met extra kosten).</p>
+          <p>U beslist ook zelf wat er daarna met de kat gebeurt. Voor crematie werken we samen met Dierencrematorium Het Hoeksche Hof. U kunt uw kat daar zelf brengen, of bij ons achterlaten: wij regelen dat de kat wordt opgehaald.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / ROUTE -->
+    <section id="contact" class="scroll-mt-20 py-20 lg:py-28">
+      <div class="wrap grid gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-brons">Afspraak en route</p>
+          <h2 class="mt-4 text-3xl">Bel voor een afspraak</h2>
+          <p class="mt-5 text-ink-soft">We werken uitsluitend op afspraak, zodat we voldoende tijd en aandacht hebben voor elke patiënt. Afhankelijk van de reden van het bezoek zorgen we voor een passende afspraak.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.telHref} class="btn btn-teal"><Fragment set:html={tel} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line text-teal">Mail ons</a>
+          </div>
+          <p class="mt-3 text-sm break-all text-ink-soft">{site.mail}</p>
+
+          <div class="mt-10 rounded-xl bg-white p-6 shadow-sm">
+            <h3 class="text-xl">Openingstijden</h3>
+            <dl class="mt-4 divide-y divide-line text-sm">
+              <div class="flex justify-between gap-4 py-2.5"><dt>Maandag t/m vrijdag</dt><dd class="text-right font-semibold whitespace-nowrap tabular-nums">08.30 – 12.00<br />13.00 – 18.00</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt>Daarbuiten</dt><dd class="text-right font-semibold">Alleen spoed, via {site.tel.replace(/ /g, ' ')}</dd></div>
+            </dl>
+            <p class="mt-3 text-xs text-ink-soft">Tijdens de openingstijden zijn medicijnen en kattenvoeding verkrijgbaar.</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="overflow-hidden rounded-2xl bg-petrol text-white shadow-lg sm:grid sm:grid-cols-5">
+            <div class="h-72 sm:col-span-2 sm:h-auto"><Foto src={ingang} alt="Het pand van De Kattenpraktijk met de ingang" sizes="(min-width: 640px) 300px, 100vw" widths={[400, 700]} class="object-[50%_60%]" /></div>
+            <div class="donker p-6 sm:col-span-3 sm:p-8">
+              <p class="kicker text-turkoois">Let op de ingang</p>
+              <p class="mt-3 font-display text-2xl leading-tight">{site.straat}<br /><span class="text-lg">{site.postcode} {site.plaats}</span></p>
+              <p class="mt-4 text-sm text-white/85">De hoofdingang is aan de <strong class="text-white">Admiraal Helfrichweg</strong>, bij de kruising van Poolvosweg, Gemzenstraat en Arend Brinkmanrede. Met het adres Kompasstraat 2G sturen veel navigatiesystemen u naar de achterzijde, die alleen voor leveranciers is.</p>
+              <p class="mt-4 rounded-lg bg-white/10 px-4 py-3 text-sm">In de navigatie: <strong class="text-messing">Gemzenstraat 10</strong> brengt u het dichtst bij de ingang.</p>
+              <a href={site.maps} class="btn btn-messing mt-6 text-sm">Route plannen</a>
+            </div>
+          </div>
+
+          <div class="mt-5 grid gap-5 sm:grid-cols-2">
+            <div class="rounded-xl border border-line p-6">
+              <h3 class="text-xl">Gratis parkeren</h3>
+              <ul class="mt-3 space-y-1.5 text-sm text-ink-soft">
+                <li>Kompasstraat 2, <strong class="text-ink">vóór het hek</strong>, bij Autohopper en JM Carhifi</li>
+                <li>Gemzenstraat</li>
+                <li>Poolvosweg</li>
+                <li>Arend Brinkmanrede</li>
+              </ul>
+              <p class="mt-3 text-xs text-ink-soft">Ná het toegangshek aan de Kompasstraat is privéterrein: daar mag u niet parkeren.</p>
+            </div>
+            <div class="rounded-xl border border-line p-6">
+              <h3 class="text-xl">Met de auto</h3>
+              <p class="mt-3 text-sm text-ink-soft">Goed bereikbaar via de A16, afslag 25 Capelle. Of vanaf de Abram van Rijckevorselweg (N210), afslag ’s Gravenland: de Van Beethovenlaan helemaal uitrijden tot de kruising Poolvosweg / Adm. Helfrichweg.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

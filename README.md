@@ -72,3 +72,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Gebr. Heemskerk, Nieuw-Vennep | https://michaelbeset-ops.github.io/sitefront/gebr-heemskerk/ | 9/10: mechanisatie + constructie sinds 1960, 4,6 uit 33; site © 2017 zonder viewport. | 2026-09-29 | demo, WhatsApp |
 | SB Tyres, Putten | https://michaelbeset-ops.github.io/sitefront/sb-tyres/ | 8/10: 4,8 uit 63, tel/WhatsApp Steven; site zonder viewport. | 2026-09-29 | demo, WhatsApp |
 | Automobielbedrijf Aalbers, Ruurlo | https://michaelbeset-ops.github.io/sitefront/auto-aalbers/ | 8/10: 4,9 uit 46; site zonder viewport, lege team/occasions. | 2026-09-29 | demo, mail |
+| De Kattenpraktijk, Capelle a/d IJssel | https://michaelbeset-ops.github.io/sitefront/de-kattenpraktijk/ | 9/10: kattendierenarts, Cat Friendly Gold, 4,9 uit 313; site zonder viewport, http. | 2026-09-30 | demo, mail |
+| Dierenkliniek Wilhelminapark, Utrecht | https://michaelbeset-ops.github.io/sitefront/dierenkliniek-wilhelminapark/ | 9/10: 4,7 uit 325; frames-site zonder viewport, http. | 2026-09-30 | demo, mail |
+| Drukkerij de Kroon, Olst | https://michaelbeset-ops.github.io/sitefront/drukkerij-de-kroon/ | 8/10: drukkerij + uitgeverij sinds 1937, 5,0 uit 4; site zonder viewport. | 2026-09-30 | demo, mail |
+| Bouwkundig Tekenburo Gerrit Scholten, Heerde | https://michaelbeset-ops.github.io/sitefront/tekenburo-gerrit-scholten/ | 7/10: sinds 1988, 5,0 uit 5 (oud); site met frame, geen viewport. Activiteit onzeker. | 2026-09-30 | demo, mail |
