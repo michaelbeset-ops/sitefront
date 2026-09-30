@@ -1,0 +1,387 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import TrapPlan from '../components/TrapPlan.astro';
+import { site, trappen, uitvoering, montage, opties } from '../data/site';
+import heroFoto from '../assets/hero-kwarttrap.jpg';
+import trapHal from '../assets/trap-hal.jpg';
+import leuning from '../assets/leuning-detail.jpg';
+import trapRaam from '../assets/trap-raam.jpg';
+import vuren from '../assets/vuren.jpg';
+import houtsoorten from '../assets/houtsoorten.jpg';
+import vanBoven from '../assets/werk/werk-1453.jpg';
+
+// Hun gallery: foto's van 150x200, nooit groter getoond dan dat.
+const werkFotos = import.meta.glob<{ default: ImageMetadata }>('../assets/werk/werk-*.jpg', { eager: true });
+const werkAlt: Record<string, string> = {
+  '0837': 'Witte open trap met spijlen tegen een wand in een lege ruimte',
+  '0839': 'Smalle witte dichte trap langs een muur, met leuning',
+  '0887': 'Lichte trap met spijlen en een bolle knop op de trappaal',
+  '0945': 'Trapgat met wit hekwerk rondom, van boven gezien',
+  '1010': 'Witte dichte kwarttrap in een kale ruimte',
+  '1052': 'Steile, open vuren trap zonder grondverf',
+  '1063': 'Lichte trap met leuning, van onderen gezien',
+  '1129': 'Dichte trap met draaiende treden onderaan, in de grondverf',
+  '1237': 'Open vuren trap met spijlen langs een witte wand',
+  '1366': 'Dichte trap onder een schuin plafond, in de grondverf',
+  '1571': 'Kwarttrap met witte treden, van boven gezien',
+  '1591': 'Witte open trap met spijlen in een lichte ruimte',
+  '1053': 'Vuren hekwerk rondom een trapgat, naast een witte deur',
+  '0881': 'Wit traphek met ronde spijlen voor een bakstenen muur',
+  '1240': 'Open trap met spijlen en een leuning aan de wand',
+};
+const werk = Object.entries(werkFotos)
+  .map(([pad, m]) => ({ nr: pad.match(/werk-(\d+)/)![1], src: m.default }))
+  .filter((w) => w.nr !== '1453');
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.3-.4.8-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.2.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const vinkje = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>`;
+
+const euro = (n: number) => `€ ${n.toLocaleString('nl-NL')}`;
+const vanaf = Math.min(...trappen.map((t) => t.prijs));
+
+// Werkwijze: hun pagina "Werkwijze" plus de levertijd en de 30 km van de homepage.
+const stappen = [
+  { kop: 'Kosteloos advies en inmeten', tekst: 'Wij komen altijd kosteloos bij u langs voor advies op maat en het inmeten van uw nieuwe trap, mits u binnen een straal van 30 kilometer woont of gevestigd bent.' },
+  { kop: 'Een offerte op maat', tekst: 'Aan de hand van de ingemeten gegevens maken wij voor u een offerte op maat.' },
+  { kop: 'Tekeningen in 2D en 3D', tekst: 'Past de offerte bij uw budget en wensen? Dan krijgt u binnen een aantal dagen per e-mail tekeningen in 2D en 3D ter goedkeuring. Zo ziet u precies hoe uw nieuwe trap eruit komt te zien.' },
+  { kop: 'Productie, levering en montage', tekst: 'Na uw akkoord gaat de trap in productie en wordt hij bij u geleverd en gemonteerd. De levertijd bedraagt nu gemiddeld 3 weken.' },
+];
+
+// Accessoires: hun pagina "Trappen Accessoires".
+const accessoires = [
+  { naam: 'Trapleuningen', tekst: 'Per set: rond 38 mm, rechthoekig of model sleutelgat (omega profiel).' },
+  { naam: 'Traphekken', tekst: 'Standaard met ronde spijl van 27 mm, per meter berekend. Op de trap en rondom uw trapgat.' },
+  { naam: 'Antislip strips', tekst: '1 of 2 antislip strips, in uw treden gefreesd.' },
+  { naam: 'Grondverf', tekst: 'Uw trap laten behandelen met grondverf.' },
+  { naam: 'Open of dicht', tekst: 'U kiest zelf voor een open of een dichte trap.' },
+];
+---
+<Base
+  title="De Trappen Concurrent | Vuren trappen op maat uit Moordrecht"
+  description="De Trappen Concurrent in Moordrecht levert en monteert vuren houten trappen tegen concurrerende prijzen. Bereken direct uw indicatieprijs incl. btw. Kosteloos inmeten binnen 30 km."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: warm bijna-zwart zoals hun logokader, grote kop, bewijzen in een rij. Rechts een grote trapfoto die over de rand valt, met een eigen foto als inzet. -->
+    <section class="donker relative bg-nacht text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-12 lg:grid-cols-12 lg:gap-12 lg:pt-12 lg:pb-12">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-5 lg:col-start-8 lg:self-start lg:-mb-44">
+          <figure>
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[760px] lg:shadow-lg">
+              <Foto src={heroFoto} alt="Donker gebeitste houten kwarttrap met dichte treden in een wit trappenhuis, van boven gezien" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 1200px, 100vw" class="object-[64%_50%]" />
+            </div>
+          </figure>
+          <figure class="absolute -bottom-12 left-4 z-10 w-44 overflow-hidden rounded-xl bg-white p-1.5 shadow-lg sm:left-6 sm:w-56 lg:bottom-20 lg:-left-14 lg:w-[300px]">
+            <div class="aspect-[300/225] overflow-hidden rounded-lg"><Foto src={vanBoven} alt="Een door ons geleverde witte trap in een trappenhuis, van boven gezien" widths={[300]} sizes="(min-width: 1024px) 288px, 210px" /></div>
+            <figcaption class="px-1.5 pt-1.5 pb-0.5 text-xs font-bold text-ink">Uit ons werk</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-8 lg:order-1 lg:col-span-7 lg:pt-6">
+          <p class="kicker text-roze">Moordrecht &middot; trappen op maat</p>
+          <h1 class="mt-4 text-4xl">Vuren trappen op maat, tegen concurrerende prijzen</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Wij leveren en monteren vuren houten trappen. Bereken hieronder direct een indicatieprijs voor uw nieuwe trap, inclusief btw, en vink de opties aan die u wenst.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#prijzen" class="btn btn-vuren">Bereken uw prijs <Fragment set:html={pijl} /></a>
+            <a href={site.whatsapp} class="btn btn-line"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+          </div>
+          <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/20 pt-6 text-sm sm:grid-cols-4">
+            <div><dt class="text-white/75">Google</dt><dd><strong class="font-display text-2xl leading-none">{site.google}</strong> <span class="whitespace-nowrap text-white/80">({site.reviews} reviews)</span></dd></div>
+            <div><dt class="text-white/75">Basistrap</dt><dd><span class="text-white/80">vanaf</span> <strong class="font-display text-2xl leading-none whitespace-nowrap tabular-nums">{euro(vanaf)}</strong></dd></div>
+            <div><dt class="text-white/75">Levertijd nu</dt><dd><strong class="font-display text-2xl leading-none">3 weken</strong> <span class="text-white/80">gemiddeld</span></dd></div>
+            <div><dt class="text-white/75">Inmeten en advies</dt><dd><strong class="font-display text-2xl leading-none">Kosteloos</strong> <span class="whitespace-nowrap text-white/80">tot 30 km</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Werkwijze: kop en foto links, genummerde tijdlijn rechts. -->
+    <section id="werkwijze" class="scroll-mt-20 pt-24 pb-16 lg:pt-52 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-rood">Werkwijze</p>
+          <h2 class="mt-3 text-3xl">Van inmeten tot montage</h2>
+          <p class="mt-6 text-lg">Wij vinden ons werk leuk, hebben oog voor uw wensen en nemen de tijd om met u de mogelijkheden door te spreken.</p>
+          <figure class="mt-10">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={trapHal} alt="Houten trap met draaiende treden onderaan en een leuning met spijlen, in een hal met behang" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+          </figure>
+        </div>
+        <ol class="lg:col-span-6 lg:col-start-7 lg:pt-4">
+          {stappen.map((s, i) => (
+            <li class="relative grid grid-cols-[3.25rem_1fr] gap-5 pb-10 last:pb-0">
+              {i < stappen.length - 1 && <span class="absolute top-14 bottom-2 left-[1.6rem] w-px bg-line" aria-hidden="true"></span>}
+              <span class="grid h-13 w-13 place-items-center rounded-full bg-nacht font-display text-2xl font-extrabold text-white tabular-nums">{i + 1}</span>
+              <div class="pt-2"><h3 class="text-2xl">{s.kop}</h3><p class="mt-2 text-ink-soft">{s.tekst}</p></div>
+            </li>
+          ))}
+          <li class="mt-10 rounded-xl bg-mist p-6">
+            <p class="font-bold">Liever eerst zelf rekenen?</p>
+            <p class="mt-1 text-ink-soft">Met de prijscalculator ziet u direct een indicatie, inclusief btw.</p>
+            <a href="#prijzen" class="btn btn-ink mt-4">Naar de calculator <Fragment set:html={pijl} /></a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Wow: de prijscalculator van hun prijspagina, met exact hun bedragen en optelling. -->
+    <section id="prijzen" class="donker scroll-mt-16 bg-nacht py-16 text-white lg:py-24" data-calc>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-roze">Prijscalculator</p>
+            <h2 class="mt-3 text-3xl">Wat kost uw nieuwe trap?</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5 lg:self-end">Kies uw trap, open of dicht, met of zonder montage en de opties die u wenst. U ziet direct de indicatieprijs inclusief btw.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12">
+          <form class="lg:col-span-7" data-keuzes action="#" onsubmit="return false">
+            <fieldset>
+              <legend class="font-display text-2xl font-extrabold">1. Kies uw trap</legend>
+              <p class="mt-1 text-sm text-white/75">Bovenaanzicht. Elke vorm kan links- of rechtsom.</p>
+              <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                {trappen.map((t, i) => (
+                  <label class={`tegel flex-col gap-2 p-3 ${i === trappen.length - 1 ? 'col-span-2' : ''}`}>
+                    <input type="radio" class="sr-only" name="trap" value={t.id} data-prijs={t.prijs} data-naam={t.naam} checked={i === 0} />
+                    <TrapPlan type={t.id as any} class="plan h-auto w-full max-w-[13rem]" />
+                    <span class="flex flex-wrap items-baseline justify-between gap-x-2">
+                      <strong class="font-display text-xl leading-none font-extrabold">{t.naam}</strong>
+                      <span class="klein font-bold whitespace-nowrap tabular-nums">{euro(t.prijs)}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <div class="mt-8 grid gap-8 sm:grid-cols-2">
+              <fieldset>
+                <legend class="font-display text-2xl font-extrabold">2. Open of dicht</legend>
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                  {uitvoering.map((u, i) => (
+                    <label class="tegel flex-col px-4 py-3">
+                      <input type="radio" class="sr-only" name="uitvoering" value={u.id} data-prijs={u.prijs} data-naam={u.naam} checked={i === 0} />
+                      <strong class="font-bold">{u.naam}</strong>
+                      <span class="klein whitespace-nowrap tabular-nums">+ {euro(u.prijs)}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend class="font-display text-2xl font-extrabold">3. Montage</legend>
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                  {montage.map((m, i) => (
+                    <label class="tegel flex-col px-4 py-3">
+                      <input type="radio" class="sr-only" name="montage" value={m.id} data-prijs={m.prijs} data-naam={m.naam} checked={i === 0} />
+                      <strong class="font-bold">{m.naam}</strong>
+                      <span class="klein whitespace-nowrap tabular-nums">+ {euro(m.prijs)}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </div>
+
+            <fieldset class="mt-8">
+              <legend class="font-display text-2xl font-extrabold">4. Opties</legend>
+              <div class="mt-4 grid gap-2 sm:grid-cols-2">
+                {opties.map((o) => (
+                  <label class="tegel items-center gap-3 px-4 py-3">
+                    <input type="checkbox" class="sr-only" name="opties" value={o.id} data-prijs={o.prijs} data-naam={o.naam} />
+                    <span class="vink"><Fragment set:html={vinkje} /></span>
+                    <span class="flex min-w-0 flex-1 flex-col"><strong class="font-bold leading-snug">{o.naam}</strong><span class="klein">{o.bij}</span></span>
+                    <span class="klein font-bold whitespace-nowrap tabular-nums">+ {euro(o.prijs)}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <a href="#bon" class="sticky bottom-3 z-10 mt-8 flex items-center justify-between gap-4 rounded-xl bg-vuren px-5 py-3 text-nacht no-underline shadow-lg lg:hidden" hidden data-mini>
+              <span class="text-sm font-bold">Uw indicatie <span class="block font-normal">incl. btw</span></span>
+              <span class="font-display text-2xl leading-none font-extrabold whitespace-nowrap tabular-nums" data-mini-totaal>€ 1.499,00</span>
+            </a>
+          </form>
+
+          <div class="lg:col-span-5">
+            <div class="rounded-xl bg-white p-6 text-ink shadow-lg sm:p-8 lg:sticky lg:top-24 scroll-mt-20" id="bon" data-bon>
+              <p class="kicker text-rood">Uw indicatie</p>
+              <ul class="mt-4 divide-y divide-line border-y border-line text-sm" data-regels>
+                <li class="flex justify-between gap-4 py-2.5"><span>Halfslag, open trap</span><span class="whitespace-nowrap tabular-nums">{euro(1499)}</span></li>
+              </ul>
+              <div class="mt-5 flex flex-wrap items-end justify-between gap-x-4" aria-live="polite">
+                <p class="text-sm text-ink-soft">Totaal <span class="block">incl. btw</span></p>
+                <p class="font-display text-prijs leading-[0.85] font-extrabold whitespace-nowrap tabular-nums" data-totaal>€ 1.499,00</p>
+              </div>
+              <p class="mt-4 rounded-lg bg-mist px-4 py-3 text-sm"><strong>Indicatie, definitieve prijs na inmeten.</strong> De prijs is mede afhankelijk van de hoogte van vloer tot vloer en de lengte en breedte van uw trap.</p>
+              <div class="mt-6 flex flex-col gap-3">
+                <a href={`mailto:${site.mail}?subject=Inmeetafspraak`} class="btn btn-rood" data-mail><Fragment set:html={mail} />Inmeetafspraak maken</a>
+                <a href={site.whatsapp} class="btn btn-ink" data-wa><Fragment set:html={wa} />Stuur via WhatsApp</a>
+              </div>
+              <p class="mt-4 text-xs text-ink-soft">Uw keuze gaat mee in het bericht. In de calculator is uitgegaan van de maatvoering volgens het oude bouwbesluit en een gemiddelde hoogte van circa 2600 mm.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Rekent exact zoals hun calculate(): trap + open/dicht + montage + aangevinkte opties, incl. btw.
+      const sectie = document.querySelector<HTMLElement>('[data-calc]');
+      if (sectie) {
+        const form = sectie.querySelector<HTMLFormElement>('[data-keuzes]')!;
+        const regels = sectie.querySelector<HTMLElement>('[data-regels]')!;
+        const totaal = sectie.querySelector<HTMLElement>('[data-totaal]')!;
+        const mailKnop = sectie.querySelector<HTMLAnchorElement>('[data-mail]')!;
+        const waKnop = sectie.querySelector<HTMLAnchorElement>('[data-wa]')!;
+        const mailBasis = mailKnop.href.split('?')[0];
+        const waBasis = waKnop.href.split('?')[0];
+        const fmt = (n: number) => '€ ' + n.toLocaleString('nl-NL', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        const kort = (n: number) => '€ ' + n.toLocaleString('nl-NL');
+        const regel = (naam: string, prijs: string) => {
+          const li = document.createElement('li');
+          li.className = 'flex justify-between gap-4 py-2.5';
+          const a = document.createElement('span'); a.textContent = naam;
+          const b = document.createElement('span'); b.className = 'whitespace-nowrap tabular-nums'; b.textContent = prijs;
+          li.append(a, b);
+          return li;
+        };
+        const miniBalk = sectie.querySelector<HTMLElement>('[data-mini]')!;
+        const mini = sectie.querySelector<HTMLElement>('[data-mini-totaal]')!;
+        miniBalk.hidden = false;
+        const reken = () => {
+          const trap = form.querySelector<HTMLInputElement>('input[name=trap]:checked')!;
+          const uitv = form.querySelector<HTMLInputElement>('input[name=uitvoering]:checked')!;
+          const mont = form.querySelector<HTMLInputElement>('input[name=montage]:checked')!;
+          const opt = [...form.querySelectorAll<HTMLInputElement>('input[name=opties]:checked')];
+          const som = [trap, uitv, mont, ...opt].reduce((t, i) => t + Number(i.dataset.prijs), 0);
+          const basis = Number(trap.dataset.prijs) + Number(uitv.dataset.prijs);
+          const lijst = [regel(`${trap.dataset.naam}, ${uitv.dataset.naam!.toLowerCase()}`, kort(basis))];
+          lijst.push(regel(mont.dataset.naam!, Number(mont.dataset.prijs) ? `+ ${kort(Number(mont.dataset.prijs))}` : '€ 0'));
+          opt.forEach((o) => lijst.push(regel(o.dataset.naam!, `+ ${kort(Number(o.dataset.prijs))}`)));
+          regels.replaceChildren(...lijst);
+          totaal.textContent = fmt(som);
+          mini.textContent = fmt(som);
+          const tekst = [
+            'Graag maak ik een inmeetafspraak voor deze trap:',
+            `- ${trap.dataset.naam} (links of rechts: nog te bepalen)`,
+            `- ${uitv.dataset.naam}`,
+            `- ${mont.dataset.naam}`,
+            ...(opt.length ? opt.map((o) => `- ${o.dataset.naam}`) : ['- Geen opties']),
+            `Indicatie volgens de calculator: ${fmt(som)} incl. btw.`,
+            '',
+            'Naam:',
+            'Adres:',
+            'Telefoon:',
+          ].join('\n');
+          mailKnop.href = `${mailBasis}?subject=${encodeURIComponent('Inmeetafspraak trap')}&body=${encodeURIComponent(tekst)}`;
+          waKnop.href = `${waBasis}?text=${encodeURIComponent(tekst)}`;
+        };
+        form.addEventListener('change', reken);
+        reken();
+      }
+    </script>
+
+    <!-- Hout en accessoires: twee houtkaarten met hun eigen beelden, daarnaast de accessoires met een grote detailfoto. -->
+    <section id="accessoires" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-6">
+            <p class="kicker text-rood">Hout en accessoires</p>
+            <h2 class="mt-3 text-3xl">Degelijk, functioneel en voordelig</h2>
+          </div>
+          <p class="text-lg lg:col-span-5 lg:col-start-8 lg:self-end">Vuren hout is de meest gebruikte houtsoort voor trappen. Het is degelijk, duurzaam en voordelig.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <article class="overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="aspect-[664/185] overflow-hidden"><Foto src={vuren} alt="Close-up van licht vurenhout met een rustige nerf" widths={[664]} sizes="(min-width: 768px) 600px, 100vw" /></div>
+            <div class="p-6 sm:p-8">
+              <p class="kicker text-rood">Standaard</p>
+              <h3 class="mt-2 text-2xl">Vuren trappen</h3>
+              <p class="mt-3 text-ink-soft">Wij leveren en monteren vuren houten trappen tegen concurrerende prijzen. Alle bedragen in de calculator gaan uit van vuren.</p>
+            </div>
+          </article>
+          <article class="overflow-hidden rounded-xl bg-white shadow-sm">
+            <div class="aspect-[664/185] overflow-hidden bg-white"><Foto src={houtsoorten} alt="Negen staaltjes hout in verschillende tinten, van donkerbruin via roodbruin tot lichtgeel" widths={[664]} sizes="(min-width: 768px) 600px, 100vw" class="object-top" /></div>
+            <div class="p-6 sm:p-8">
+              <p class="kicker text-rood">Op aanvraag</p>
+              <h3 class="mt-2 text-2xl">Overige houtsoorten</h3>
+              <p class="mt-3 text-ink-soft">Liever een andere houtsoort dan vuren? Vraag ernaar bij het inmeten, dan bespreken we de mogelijkheden.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="mt-16 grid grid-cols-1 gap-10 lg:mt-20 lg:grid-cols-12 lg:items-center">
+          <figure class="lg:col-span-5">
+            <div class="aspect-[4/5] overflow-hidden rounded-xl shadow-sm"><Foto src={leuning} alt="Detail van een houten trappaal met groeven, een leuning en witte spijlen" sizes="(min-width: 1024px) 460px, 100vw" class="object-[30%_50%]" /></div>
+          </figure>
+          <div class="lg:col-span-6 lg:col-start-7">
+            <h3 class="text-2xl">Accessoires bij uw trap</h3>
+            <p class="mt-3 text-ink-soft">Bij trappen horen ook accessoires: trapleuningen, traphekken, grondverf, hekwerk op de trap en rondom uw trapgat. Ook kunt u ervoor kiezen antislip strips in uw treden te laten frezen.</p>
+            <ol class="mt-8 border-t border-line">
+              {accessoires.map((a, i) => (
+                <li class="grid gap-1 border-b border-line py-5 sm:grid-cols-[2.5rem_10rem_1fr] sm:gap-5">
+                  <span class="font-display text-xl font-extrabold tabular-nums text-rood">0{i + 1}</span>
+                  <h4 class="font-display text-xl leading-none font-extrabold">{a.naam}</h4>
+                  <p class="text-ink-soft">{a.tekst}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ons werk: hun eigen galleryfoto's op ware grootte. -->
+    <section id="werk" class="scroll-mt-20 bg-mist py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="kicker text-rood">Ons werk</p>
+          <h2 class="mt-3 text-3xl">Trappen die wij geleverd hebben</h2>
+          <p class="mt-6 text-ink-soft">Een kleine selectie van het werk dat De Trappen Concurrent geleverd heeft. Wilt u meer zien? Neem gerust contact op of kijk op onze Facebookpagina. Daar vindt u foto's van verschillende modellen trappen.</p>
+          <a href={site.facebook} rel="noopener" class="btn btn-ink mt-8">Meer foto's op Facebook <Fragment set:html={pijl} /></a>
+        </div>
+        <ul class="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3 lg:col-span-8">
+          {werk.map((w) => (
+            <li class="max-w-[150px]">
+              <div class="aspect-[3/4] overflow-hidden rounded-lg bg-paper shadow-sm"><Foto src={w.src} alt={werkAlt[w.nr]} widths={[150]} sizes="150px" /></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="donker scroll-mt-20 bg-diep text-white">
+      <div class="wrap grid grid-cols-1 gap-12 py-16 lg:grid-cols-12 lg:py-24">
+        <div class="lg:col-span-6">
+          <p class="kicker text-roze">Contact</p>
+          <h2 class="mt-3 text-3xl">Een afspraak met een van onze vakmensen?</h2>
+          <p class="mt-6 text-lg text-white/90">Of wilt u meer informatie over trappen en opties? Neem gerust contact op via e-mail, WhatsApp of de telefoon, wij staan u graag te woord.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-vuren"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-10 grid gap-x-8 gap-y-4 border-t border-white/25 pt-6 sm:grid-cols-2">
+            <div><dt class="text-sm text-white/80">Telefoon</dt><dd><a href={site.telHref} class="font-bold whitespace-nowrap tabular-nums underline decoration-roze decoration-2 underline-offset-4">{site.tel}</a></dd></div>
+            <div><dt class="text-sm text-white/80">Mobiel en WhatsApp</dt><dd><a href={site.mobielHref} class="font-bold whitespace-nowrap tabular-nums underline decoration-roze decoration-2 underline-offset-4">{site.mobiel}</a></dd></div>
+            <div class="sm:col-span-2"><dt class="text-sm text-white/80">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="font-bold break-all underline decoration-roze decoration-2 underline-offset-4">{site.mail}</a></dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <figure class="overflow-hidden rounded-xl bg-nacht shadow-lg">
+            <div class="aspect-[3/2] overflow-hidden"><Foto src={trapRaam} alt="Houten trap met draaiende treden en gedraaide spijlen bij een raam, in schemerlicht" sizes="(min-width: 1024px) 460px, 100vw" /></div>
+            <figcaption class="p-6">
+              <address class="text-lg not-italic"><strong class="font-display text-2xl font-extrabold">{site.naam}</strong><br />{site.straat}<br />{site.postcode} {site.plaats}</address>
+              <a href={site.maps} rel="noopener" class="mt-3 inline-block font-bold underline decoration-roze decoration-2 underline-offset-4">Route plannen</a>
+              <p class="mt-4 text-sm text-white/80">Kosteloos inmeten en advies op maat binnen een straal van 30 kilometer.</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>

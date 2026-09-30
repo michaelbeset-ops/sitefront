@@ -1,0 +1,42 @@
+---
+// Bovenaanzicht per trap-type, nagetekend naar de plaatjes in hun prijscalculator (half, twee, boven, onder, steek).
+// Stip = begin van de looplijn, pijl = richting naar boven.
+interface Props { type: 'half' | 'twee' | 'boven' | 'onder' | 'steek'; class?: string }
+const { type, class: cls = '' } = Astro.props;
+const rng = (a: number, b: number, s: number) => { const r: number[] = []; for (let x = a; x <= b; x += s) r.push(x); return r; };
+const L = 'M4 6H116V58H98V24H4Z';
+const U = 'M4 6H116V52H4V34H96V24H4Z';
+const vormen: Record<string, { omtrek: string; lijnen: string; loop: string }> = {
+  steek: { omtrek: 'M4 21H116V43H4Z', lijnen: rng(12, 108, 8).map((x) => `M${x} 21V43`).join(''), loop: 'M8 32H110' },
+  onder: {
+    omtrek: L,
+    lijnen: rng(14, 78, 8).map((x) => `M${x} 6V24`).join('') + ['86 6', '106 6', '116 14', '116 30', '116 42'].map((p) => `M98 24L${p.replace(' ', ' ')}`).join('') + 'M98 50H116',
+    loop: 'M107 55V24Q107 15 98 15H8',
+  },
+  boven: {
+    omtrek: L,
+    lijnen: rng(14, 78, 8).map((x) => `M${x} 6V24`).join('') + ['86 6', '106 6', '116 14', '116 30', '116 42'].map((p) => `M98 24L${p}`).join('') + 'M98 50H116',
+    loop: 'M8 15H98Q107 15 107 24V55',
+  },
+  half: {
+    omtrek: U,
+    lijnen: rng(14, 78, 8).map((x) => `M${x} 6V24M${x} 34V52`).join('') + ['84 6', '100 6', '116 10', '116 22', '116 36', '116 48', '100 52', '84 52'].map((p) => `M96 29L${p}`).join(''),
+    loop: 'M8 43H96Q107 43 107 29Q107 15 96 15H8',
+  },
+  twee: {
+    omtrek: U,
+    lijnen: rng(14, 78, 8).map((x) => `M${x} 6V24M${x} 34V52`).join('') + ['84 6', '102 6', '116 14'].map((p) => `M96 24L${p}`).join('') + ['116 44', '102 52', '84 52'].map((p) => `M96 34L${p}`).join('') + 'M96 29H116',
+    loop: 'M8 43H96Q107 43 107 34V24Q107 15 96 15H8',
+  },
+};
+const v = vormen[type];
+const start = v.loop.match(/^M(\d+) (\d+)/)!;
+const id = `pijl-${type}`;
+---
+<svg viewBox="0 0 120 62" class={cls} aria-hidden="true" fill="none" stroke="currentColor">
+  <defs><marker id={id} viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="currentColor" stroke="none" /></marker></defs>
+  <path d={v.lijnen} stroke-width="1" opacity="0.55" />
+  <path d={v.omtrek} stroke-width="1.8" stroke-linejoin="round" />
+  <path d={v.loop} stroke-width="1.4" stroke-dasharray="3 2.5" marker-end={`url(#${id})`} />
+  <circle cx={start[1]} cy={start[2]} r="2.6" fill="currentColor" stroke="none" />
+</svg>

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@import "@fontsource-variable/newsreader";
+@import "@fontsource-variable/archivo/wdth.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Hun rood/zwarte logo, verfijnd: warm roetzwart als basis, logorood verdiept, pannenrood alleen op donker. */
+  --color-roet: #171311;       /* hero, projecten, footer */
+  --color-antraciet: #241e1b;  /* kaarten op roet */
+  --color-rood: #c1231b;       /* logorood: knoppen met witte tekst, beeldmerk */
+  --color-steen: #9a1a14;      /* rood als tekst op licht */
+  --color-pan: #f0694f;        /* pannenrood: accenten en knoppen op donker (met roet-tekst) */
+  --color-ink: #1d1714;
+  --color-ink-soft: #5b504a;
+  --color-paper: #f6f2ec;
+  --color-zand: #ebe3d6;
+  --color-line: #1d17141f;
+  --color-lood: #8c8680;       /* alleen het huisje in het beeldmerk */
+  --color-white: #ffffff;
+
+  --font-display: "Newsreader Variable", ui-serif, Georgia, serif;
+  --font-body: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #17131114, 0 2px 8px -2px #17131114;
+  --shadow-lg: 0 28px 60px -24px #171311a6;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.45rem;
+  --text-2xl: 1.95rem;
+  --text-3xl: clamp(2.1rem, 3.4vw + 1rem, 3.5rem);
+  --text-4xl: clamp(2.6rem, 5vw + 1rem, 5.1rem);
+  --text-groot: clamp(3rem, 5vw + 1rem, 4.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 560; letter-spacing: -0.02em; line-height: 1.02; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.01em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-steen); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-pan); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; font-family: var(--font-body); font-weight: 700; font-stretch: 108%; padding: .9rem 1.35rem; border-radius: var(--radius-lg); text-decoration: none; transition: background-color .2s ease, color .2s ease, box-shadow .2s ease, transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn svg { width: 1.1em; height: 1.1em; flex: none; }
+  .btn-rood { background: var(--color-rood); color: var(--color-white); }
+  .btn-rood:hover { background: var(--color-steen); }
+  .btn-pan { background: var(--color-pan); color: var(--color-roet); }
+  .btn-pan:hover { background: var(--color-white); }
+  .btn-line { box-shadow: inset 0 0 0 2px currentColor; }
+  .btn-line:hover { background: var(--color-white); color: var(--color-roet); box-shadow: none; }
+  .kicker { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 700; font-stretch: 115%; letter-spacing: .16em; text-transform: uppercase; }
+
+  /* Filterknoppen van de projectenkaart. */
+  .chip { display: inline-flex; align-items: center; gap: .45rem; border-radius: var(--radius-full); padding: .5rem .95rem; font-size: var(--text-sm); font-weight: 600; cursor: pointer; background: #ffffff0d; box-shadow: inset 0 0 0 1.5px #ffffff38; color: var(--color-white); transition: background-color .15s ease, box-shadow .15s ease, color .15s ease; }
+  .chip:hover { box-shadow: inset 0 0 0 2px var(--color-pan); }
+  .chip[aria-pressed="true"] { background: var(--color-pan); color: var(--color-roet); box-shadow: none; }
+  .chip small { font-size: var(--text-xs); opacity: .85; font-variant-numeric: tabular-nums; }
+
+  .pin { cursor: pointer; pointer-events: bounding-box; }
+  .pin circle.stip { transition: r .2s ease, fill .2s ease; }
+  .pin:hover circle.stip, .pin:focus-visible circle.stip { r: 9; }
+  .pin[aria-pressed="true"] circle.stip { fill: var(--color-pan); r: 10; }
+  .pin:focus-visible { outline: none; }
+  .pin:focus-visible circle.ring { stroke: var(--color-white); stroke-width: 2.5; }
+
+  .veld label { display: block; font-weight: 700; font-size: var(--text-sm); }
+  .veld input, .veld textarea { margin-top: .35rem; width: 100%; border-radius: var(--radius-md); border: 1.5px solid #1d17144d; background: var(--color-white); padding: .7rem .85rem; font: inherit; color: var(--color-ink); }
+  .veld input:focus-visible, .veld textarea:focus-visible { outline: 3px solid var(--color-steen); outline-offset: 1px; border-color: var(--color-steen); }
+
+  dialog.lichtbak { margin: auto; max-height: calc(100dvh - 1.5rem); max-width: min(50rem, calc(100vw - 1.5rem)); width: 100%; padding: 0; border: 0; border-radius: var(--radius-xl); background: var(--color-roet); color: var(--color-white); }
+  dialog.lichtbak::backdrop { background: #171311e0; }
+}

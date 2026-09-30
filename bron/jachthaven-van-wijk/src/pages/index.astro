@@ -1,0 +1,628 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site } from '../data/site';
+import havenLucht from '../assets/haven-lucht.jpg';
+import sloepVlag from '../assets/sloep-vlag.jpg';
+import haven621 from '../assets/haven-621.jpg';
+import masten from '../assets/masten.jpg';
+import hal830 from '../assets/hal-830.jpg';
+import plas from '../assets/plas-zeilboot.jpg';
+import stootwil from '../assets/stootwil.jpg';
+import dashboard from '../assets/dashboard.jpg';
+import werf621 from '../assets/werf-621.jpg';
+import halZwart from '../assets/hal-zwart.jpg';
+import sloep550 from '../assets/sloep-550.jpg';
+import classicRood from '../assets/classic-rood.jpg';
+import sloep830 from '../assets/sloep-830.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+const route = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>`;
+
+// Buitenhaven: voorzieningen letterlijk van sloepenhaven.nl.
+const voorzieningen = [
+  'Permanente ligplaatsen, huur per seizoen',
+  'Elektriciteitsaansluitingen; vanaf 9 meter met een eigen aansluiting per ligplaats',
+  'Diverse watertappunten',
+  'Sanitaire voorzieningen met toiletten, douches en wastafels',
+  'Altijd een kopsteiger; vanaf 9 meter eveneens met een korte of lange zijsteiger',
+  'Afvalcontainers',
+  'Afsluitbare haven met cameratoezicht',
+  'Eigen parkeerterrein (± 140 plaatsen), op enige afstand van onze groene haven',
+];
+
+// Droge jachthaven: voordelen en specialisaties van drogejachthaven.nl.
+const droogVoordelen = [
+  'De boot en eventueel ook de buitenboordmotor staan afgesloten in de loods',
+  'De boot blijft in nieuwstaat',
+  'Weinig onderhoud',
+  'Super locatie, goed bereikbaar en zeer centraal in het watersportgebied',
+  'Voordelig: standaardprijzen voor het zomerseizoen, of het gehele jaar',
+];
+const droogSoorten = ['Consoleboten', 'RIBs', 'Speedboten', 'Sloepen', 'Open zeilboten'];
+
+// Winterstalling: de drie soorten van winterstalling-jachthaven.nl.
+const winter = [
+  { naam: 'Overdekte ligplaatsen', maat: 'tot ca. 20 m', tekst: 'In ons botenhuis, voor zowel kleine als grotere motor- en zeiljachten. Standaardtarieven per m², exclusief eventuele aanvullende services.' },
+  { naam: 'Droog in de hal', maat: 'sloepen en klassiekers', tekst: 'Voornamelijk sloepen, klassieke boten en vergelijkbaar. De standaardtarieven zijn inclusief hellingen, afspuiten, opbokken en intern transport.' },
+  { naam: 'Buiten op het droge', maat: 'tot ca. 16 ton', tekst: 'Voor zowel kleine als grotere motor- en zeiljachten. De tarieven zijn inclusief hellingen, afspuiten, opbokken en intern transport.' },
+];
+
+// Jachtwerf: werkzaamheden van fullservicejachthaven.nl en de standaardservices van de winterstallingspagina.
+const werk = [
+  { naam: 'Hellingen en transport', tekst: 'Botenlift tot 16,5 ton, een hydraulische botenkar van Knijpstra voor de handling op de werf, en transport van boten.' },
+  { naam: 'Algemeen onderhoud', tekst: 'Service, schoonmaken, antifouling. Het onderwaterschip schilderen, de romp poetsen en in de was zetten, gelcoatreparaties en schilderwerk.' },
+  { naam: 'Motor en winterklaar', tekst: 'Een motorservicebeurt: olie verversen, olie- en brandstoffilters vervangen, kleppen stellen, impeller en koelvloeistof controleren. Lenspompsysteem en motor winterklaar, de bilge vochtvrij.' },
+  { naam: 'Spuitwerk en refit', tekst: 'Spuitwerk aan Van Wijk sloepen, tot en met een totale refit. Specialisme in polyester en houtwerk, tot en met het vernieuwen van het elektrische systeem.' },
+  { naam: 'Houtwerk en stoffering', tekst: 'Nieuw houtwerk, teakdekken reinigen, stoffering van kussens en het plaatsen van een nieuwe buiskap.' },
+];
+
+// Van Wijk-typen: maten uit hun eigen verkooppagina's. Geen actueel aanbod, geen prijzen.
+const typen = [
+  { type: '550', maat: '5,50 m lang, 2,30 tot 2,35 m breed', tekst: 'Een heel makkelijk te gebruiken sloep met stijl.', foto: sloep550, alt: 'Een Van Wijk 550 in volle vaart, van bovenaf, met twee opvarenden en donkerblauwe kussens', pos: 'object-[50%_45%]', breed: 650 },
+  { type: '621', maat: '6,21 m lang, 2,35 tot 2,40 m breed', tekst: 'Een zeer veelzijdige sloep met veel gebruiksmogelijkheden, zowel voor een dagtocht als op groter water. Ook als Classic, Lounge en by Gant.', foto: classicRood, alt: 'De boeg van een Van Wijk 621 Classic met rode romp en touwen stootwil, binnen in onze hal', pos: 'object-center', breed: 806 },
+  { type: '830', maat: '8,30 m lang, 3,00 m breed', tekst: 'Ruimte voor opties als een toilet, dekdouche, koelkast, kachel en boegschroef. Ook als Classic en Innovator.', foto: sloep830, alt: 'Een Van Wijk 830 met donkerblauwe romp en groene waterlijn op een trailer bij onze werf', pos: 'object-center', breed: 800 },
+];
+
+// Ligplaatskiezer: elke uitkomst is een zin of kenmerk uit hun eigen pagina's. Geen prijzen.
+const opties = [
+  { id: 'buiten', naam: 'Buitenhaven', waar: 'Aan de Wijde Aa', kort: 'Ligplaatsen van 7 tot 14 m aan een lange steiger. Geen bruggen tussen u en het open water.' },
+  { id: 'overdekt', naam: 'Overdekte haven', waar: 'Aan de Wijde Aa', kort: 'Voor sloepen, klassieke jachten en vergelijkbaar. De jachten liggen overdekt in het water.' },
+  { id: 'droog', naam: 'Droge jachthaven', waar: 'Aan de Woudwetering', kort: 'Droog binnen in de hal op een eigen trailer, met een automatische helling in zelfbediening.' },
+  { id: 'winter', naam: 'Winterstalling', waar: 'Overdekt, in de hal of buiten', kort: 'Overdekte ligplaatsen tot ca. 20 m, droog in de hal, of buiten op het droge tot ca. 16 ton.' },
+];
+const soorten = [
+  { id: 'sloep', naam: 'Sloep' },
+  { id: 'zeil', naam: 'Zeilboot', uitleg: 'met staande mast' },
+  { id: 'motor', naam: 'Motorjacht' },
+  { id: 'rib', naam: 'RIB of consoleboot' },
+];
+const perioden = [
+  { id: 'zomer', naam: 'Zomer' },
+  { id: 'winter', naam: 'Winter' },
+  { id: 'jaar', naam: 'Hele jaar' },
+];
+
+const historie = [
+  { jaar: '1847', tekst: 'Overgrootvader Boot begint in Woubrugge Scheepswerf De Dageraad, en bouwt houten schuiten en tjalken voor de toen nog zeilende vrachtvaart.' },
+  { jaar: '1902', tekst: 'De werf gaat over op tjalken en klippers in ijzer, en binnenvaartuigen, duwboten en coasters (tot wel 65 meter) in staal.' },
+  { jaar: '1930', tekst: 'Gerrit van Wijk en Jo Boot beginnen aan de noordkant van Woubrugge de Woubrugse Jachtwerf G. van Wijk en Zoon. Samen met de familie Boot start de bouw van de Wibo’s: Wi van Van Wijk, Bo van Boot.' },
+  { jaar: '1958', tekst: 'Bouw van Wijk wordt eigenaar. Met de Wibo-serie introduceert Van Wijk het seriematig bouwen van stalen kajuitzeiljachten.' },
+  { jaar: '1986', tekst: 'Start van het ontwikkelen en produceren van Van Wijk motorsloepen. Sinds 1998 wordt de productie uitgevoerd door Van Wijk Maritiem.' },
+  { jaar: '1999', tekst: 'Bouw van Wijk Jr., vijfde generatie watersportondernemer in Woubrugge, zet de jachthavens voort.' },
+  { jaar: '2004', tekst: 'De Overdekte Jachthaven Woubrugge wordt gebouwd: een geheel nieuwe, geheel overdekte sloepenhaven aan de Wijde Aa.' },
+  { jaar: '2008', tekst: 'Jachthaven Woubrugge, op de kruising van Woudwetering, Wijde Aa en Braassemermeer, wordt totaal vernieuwd. De grootste haven: ruim 1,1 hectare.' },
+  { jaar: '2011', tekst: 'De jachtwerf aan de Boddens Hosangweg 80 breidt uit met een gespecialiseerd team voor onderhoud en refits aan sloepen.' },
+  { jaar: '2012', tekst: 'De werf krijgt nieuwe daken en een nieuwe hal, en we starten met het concept Droge Jachthaven.' },
+];
+
+const accessoires = ['Buiskappen', 'Kussens', 'Zonnedekken', 'Teakdekken', 'RVS zwemtrappen', 'Vlaggenstokken', 'Fenders', 'Letters', 'Originele navigatieverlichting', 'Onderdelen'];
+
+const aanbodMail = `mailto:${site.mail}?subject=${encodeURIComponent('Vraag naar het actuele aanbod')}`;
+---
+<Base
+  title="Jachthaven van Wijk Woubrugge | Ligplaats, droge jachthaven, winterstalling en jachtwerf"
+  description="Ligplaatsen van 5 tot 20 m aan de Wijde Aa: buiten, overdekt en droog in de hal. Winterstalling, jachtwerf met botenlift tot 16,5 ton, en Van Wijk sloepen. Woubrugge, Hollands Plassengebied."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: diep plassenblauw, grote kop, feiten als rustige kolom. Rechts een luchtbeeld van een haven dat over de rand valt, met een eigen Van Wijk-sloep als inzet. -->
+    <section class="donker relative bg-diep text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-14 lg:grid-cols-12 lg:gap-12 lg:pt-14 lg:pb-12">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-5 lg:col-start-8 lg:self-start lg:-mb-44">
+          <figure>
+            <div class="aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[760px] lg:shadow-lg">
+              <Foto src={havenLucht} alt="Luchtfoto van een jachthaven: twee lange steigers met witte boten aan weerszijden, op donker water" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 500px, 100vw" class="object-[42%_50%]" />
+            </div>
+          </figure>
+          <figure class="absolute -bottom-12 left-4 z-10 w-48 overflow-hidden rounded-xl bg-paper p-1.5 shadow-lg sm:left-6 sm:w-60 lg:bottom-40 lg:-left-6 lg:w-[300px]">
+            <div class="aspect-[3/2] overflow-hidden rounded-lg"><Foto src={sloepVlag} alt="Een Van Wijk 621 met donkerblauwe romp en touwen stootwil vaart weg, de Nederlandse vlag wappert achterop" widths={[400, 600]} sizes="(min-width: 1024px) 288px, 230px" /></div>
+            <figcaption class="px-1.5 pt-2 pb-1 text-xs font-semibold text-ink">Een Van Wijk 621 op het water</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-8 lg:order-1 lg:col-span-7 lg:pt-8">
+          <p class="kicker text-teak">Woubrugge · Wijde Aa · Braassemermeer</p>
+          <h1 class="mt-4 text-4xl">Ligplaats, stalling en werf aan de Wijde Aa</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Ligplaatsen van 5 tot 20 m: buiten, overdekt en droog in de hal, op een geweldige locatie in het Hollands Plassengebied. Met een eigen jachtwerf, winterstalling en de verkoop van boten.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#kiezer" class="btn btn-teak">Welke ligplaats past bij u? <Fragment set:html={pijl} /></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-12 grid grid-cols-2 gap-x-6 gap-y-6 border-t border-white/20 pt-6 text-sm sm:flex sm:flex-wrap sm:gap-x-9">
+            <div><dt class="text-white/75">Ligplaatsen</dt><dd class="mt-1 font-display text-xl font-semibold sm:text-2xl sm:whitespace-nowrap lg:text-[1.65rem]">5&nbsp;tot&nbsp;20&nbsp;m</dd></div>
+            <div><dt class="text-white/75">Botenlift</dt><dd class="mt-1 font-display text-xl font-semibold sm:text-2xl sm:whitespace-nowrap lg:text-[1.65rem]">16,5&nbsp;ton</dd></div>
+            <div><dt class="text-white/75">Grootste haven</dt><dd class="mt-1 font-display text-xl font-semibold sm:text-2xl sm:whitespace-nowrap lg:text-[1.65rem]">ruim 1,1&nbsp;ha</dd></div>
+            <div><dt class="text-white/75">Aan het water</dt><dd class="mt-1 font-display text-xl font-semibold sm:text-2xl sm:whitespace-nowrap lg:text-[1.65rem]">5e generatie</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jachthaven: buitenhaven en overdekte haven. -->
+    <section id="jachthaven" class="scroll-mt-20 pt-24 pb-16 lg:pt-36 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-mahonie">Jachthaven</p>
+          <h2 class="mt-3 text-3xl">Buitenhaven en overdekte haven, direct aan de Wijde Aa</h2>
+          <p class="mt-6 text-lg">Zowel de overdekte haven als de buitenhaven liggen midden in een natuurlijke groene omgeving, direct aan de Wijde Aa. Met kleine en grote ligplaatsen van 5 tot 20 m, voor zowel het zomer- als het winterseizoen.</p>
+          <p class="mt-4 text-ink-soft">Gunstig gelegen in de directe nabijheid van diverse aantrekkelijke plassen, zoals de Braassem, de Kagerplassen, de Westeinder en de Wijde Aa.</p>
+        </div>
+        <figure class="lg:col-span-6">
+          <div class="aspect-[4/3] max-w-[800px] overflow-hidden rounded-xl shadow-sm"><Foto src={haven621} alt="Een Van Wijk 621 met witte romp en touwen stootwil aan de steiger, met de Nederlandse vlag, voor een blauw motorjacht" widths={[480, 800]} sizes="(min-width: 1024px) 560px, 100vw" /></div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Een Van Wijk 621 aan de steiger.</figcaption>
+        </figure>
+      </div>
+
+      <div class="wrap mt-14 grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <article class="rounded-xl bg-white p-6 shadow-sm sm:p-9 lg:col-span-7">
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <h3 class="text-2xl">Buitenhaven</h3>
+            <p class="rounded-full bg-zand px-3 py-1 text-sm font-semibold whitespace-nowrap">7 tot 14 m</p>
+          </div>
+          <p class="mt-4">Vooral onze vernieuwde buitenhaven is uitermate geschikt voor zeilboten (al of niet met staande mast): er hoeven geen bruggen of andere obstakels gepasseerd te worden. Direct buiten de haven kunnen de zeilen worden gehesen. Ook sloepen, kruisers en andere motorboten zijn van harte welkom.</p>
+          <p class="mt-4 text-ink-soft">De boten liggen aan een lange steiger die grenst aan een gras- en groenstrook, waarop men in het zomerseizoen ook kan recreëren. Huurt u een ligplaats voor het zomerseizoen, dan mag u het aansluitende winterseizoen kosteloos op diezelfde plaats blijven overwinteren. Alleen de wintermaanden huren kan ook.</p>
+          <h4 class="mt-8 kicker text-mahonie">Voorzieningen</h4>
+          <ul class="mt-3 grid gap-x-8 gap-y-2.5 text-sm sm:grid-cols-2">
+            {voorzieningen.map((v) => <li class="flex gap-3"><span class="mt-2 h-1.5 w-1.5 flex-none rounded-full bg-teak" aria-hidden="true"></span><span>{v}</span></li>)}
+          </ul>
+        </article>
+        <article class="flex flex-col overflow-hidden rounded-xl bg-fjord text-white shadow-sm donker lg:col-span-5">
+          <div class="order-2 min-h-56 flex-1 overflow-hidden"><Foto src={masten} alt="Masten van zeilboten spiegelen in het stille water van een haven" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 470px, 100vw" /></div>
+          <div class="order-1 p-6 sm:p-9">
+            <div class="flex flex-wrap items-baseline justify-between gap-3">
+              <h3 class="text-2xl">Overdekte haven</h3>
+              <p class="rounded-full bg-white/10 px-3 py-1 text-sm font-semibold whitespace-nowrap">sloepen en klassiekers</p>
+            </div>
+            <p class="mt-4 text-white/90">Voor sloepen, klassieke jachten en vergelijkbaar, met ook een aantal buitenligplaatsen aan de Wijde Aa. Een grote overdekking op een unieke locatie, met voldoende parkeergelegenheid.</p>
+            <p class="mt-4 text-white/80">De jachten liggen overdekt in het water en kunnen ook in de wintermaanden droog bij ons binnen blijven liggen. Schoonmaak en het onderhoud van uw sloep kunnen wij verzorgen.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Wow: de ligplaatskiezer. Zonder JS: de vier opties als kaarten. -->
+    <section id="kiezer" class="donker scroll-mt-20 bg-diep py-16 text-white lg:py-24" data-kiezer>
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="kicker text-teak">Ligplaatskiezer</p>
+            <h2 class="mt-3 text-3xl">Welke ligplaats past bij uw boot?</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-5 lg:self-end">Buiten, overdekt, droog in de hal of alleen voor de winter. Kies de lengte en het soort boot, en wanneer u een plek zoekt.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12" hidden data-kiezer-blok>
+          <form class="lg:col-span-5" data-keuzes>
+            <fieldset>
+              <legend class="text-lg font-bold">1. Hoe lang is uw boot?</legend>
+              <div class="mt-4 rounded-xl bg-white/5 p-5 ring-1 ring-white/15">
+                <div class="flex items-baseline justify-between gap-4">
+                  <label for="k-lengte" class="text-sm text-white/80">Lengte over alles</label>
+                  <output for="k-lengte" class="font-display text-3xl font-semibold tabular-nums whitespace-nowrap" data-lengte-uit>6,5 m</output>
+                </div>
+                <input id="k-lengte" name="lengte" type="range" min="4" max="24" step="0.5" value="6.5" class="lengte mt-2" aria-valuetext="6,5 meter" />
+                <div class="flex justify-between text-xs text-white/75 tabular-nums" aria-hidden="true"><span>4 m</span><span>14 m</span><span>24 m</span></div>
+              </div>
+            </fieldset>
+            <fieldset class="mt-8">
+              <legend class="text-lg font-bold">2. Wat voor boot?</legend>
+              <div class="mt-4 grid grid-cols-2 gap-2">
+                {soorten.map((s, i) => (
+                  <label class="keuze"><input type="radio" class="sr-only" name="soort" value={s.id} checked={i === 0} /><strong>{s.naam}</strong>{s.uitleg && <small>{s.uitleg}</small>}</label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset class="mt-8">
+              <legend class="text-lg font-bold">3. Wanneer?</legend>
+              <div class="mt-4 grid grid-cols-3 gap-2">
+                {perioden.map((p, i) => (
+                  <label class="keuze text-center"><input type="radio" class="sr-only" name="periode" value={p.id} checked={i === 2} /><strong>{p.naam}</strong></label>
+                ))}
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="lg:col-span-7">
+            <div class="scroll-mt-20 rounded-xl bg-fjord p-6 shadow-lg sm:p-8" aria-live="polite" data-uitkomst>
+              <p class="kicker text-nevel" data-label>Uw boot</p>
+              <p class="mt-3 font-display text-2xl leading-tight font-semibold" data-kop>Kies hiernaast uw boot.</p>
+              <div class="mt-6 grid gap-4" data-lijst></div>
+              <div class="mt-8 flex flex-col gap-3 border-t border-white/20 pt-6 sm:flex-row sm:flex-wrap">
+                <a href={`mailto:${site.mail}`} class="btn btn-teak" data-mail><Fragment set:html={mail} /> Mail uw keuze</a>
+                <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+              </div>
+            </div>
+            <p class="mt-4 text-sm text-white/75">Samengevat van onze pagina's over de jachthaven, droge jachthaven en winterstalling. Tarieven op aanvraag.</p>
+          </div>
+        </div>
+
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-opties>
+          {opties.map((o) => (
+            <li data-optie={o.id} class="rounded-xl border border-white/15 p-5 transition-colors">
+              <p class="kicker text-nevel">{o.waar}</p>
+              <h3 class="mt-2 text-xl">{o.naam}</h3>
+              <p class="mt-3 text-sm text-white/80">{o.kort}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <script>
+      // Ligplaatskiezer: toont per combinatie de opties en kenmerken uit hun eigen pagina's. Rekent geen prijzen.
+      type Fit = { id: string; naam: string; fit: 'goed' | 'ook'; punten: string[] };
+      const sectie = document.querySelector<HTMLElement>('[data-kiezer]');
+      if (sectie) {
+        const blok = sectie.querySelector<HTMLElement>('[data-kiezer-blok]')!;
+        const form = sectie.querySelector<HTMLFormElement>('[data-keuzes]')!;
+        const range = form.querySelector<HTMLInputElement>('#k-lengte')!;
+        const uit = form.querySelector<HTMLElement>('[data-lengte-uit]')!;
+        const label = sectie.querySelector<HTMLElement>('[data-label]')!;
+        const kop = sectie.querySelector<HTMLElement>('[data-kop]')!;
+        const lijst = sectie.querySelector<HTMLElement>('[data-lijst]')!;
+        const mailKnop = sectie.querySelector<HTMLAnchorElement>('[data-mail]')!;
+        const uitkomst = sectie.querySelector<HTMLElement>('[data-uitkomst]')!;
+        const soortNaam: Record<string, string> = { sloep: 'sloep', zeil: 'zeilboot met staande mast', motor: 'motorjacht', rib: 'RIB of consoleboot' };
+        const periodeNaam: Record<string, string> = { zomer: 'zomerseizoen', winter: 'winter', jaar: 'het hele jaar' };
+        const mailAdres = mailKnop.getAttribute('href')!.replace('mailto:', '');
+        blok.hidden = false;
+        form.addEventListener('submit', (e) => e.preventDefault());
+
+        const m = (n: number) => `${String(n).replace('.', ',')} m`;
+
+        function bereken(L: number, S: string, P: string): Fit[] {
+          const r: Fit[] = [];
+          if (L > 20) return r;
+          if (L >= 7 && L <= 14) {
+            const p: string[] = [];
+            if (S === 'zeil') p.push('Uitermate geschikt voor zeilboten met staande mast: geen bruggen of andere obstakels, direct buiten de haven kunnen de zeilen worden gehesen.');
+            else p.push('Ligplaatsen van 7 tot 14 m aan een lange steiger, grenzend aan een gras- en groenstrook.');
+            p.push(L >= 9 ? 'Vanaf 9 meter: een eigen elektriciteitsaansluiting en een korte of lange zijsteiger.' : 'Altijd een kopsteiger, diverse watertappunten en sanitair met toiletten, douches en wastafels.');
+            if (P === 'winter') p.push('Het is ook mogelijk om alleen gedurende de wintermaanden een ligplaats te huren.');
+            else p.push('Huurt u voor het zomerseizoen, dan mag u het aansluitende winterseizoen kosteloos op diezelfde plaats blijven overwinteren.');
+            p.push('Afsluitbare haven met cameratoezicht, eigen parkeerterrein.');
+            r.push({ id: 'buiten', naam: 'Buitenhaven aan de Wijde Aa', fit: S === 'zeil' || S === 'motor' ? 'goed' : 'ook', punten: p });
+          }
+          if (P !== 'winter' && L >= 5 && (S === 'sloep' || S === 'motor')) {
+            r.push({ id: 'overdekt', naam: 'Overdekte haven', fit: S === 'sloep' ? 'goed' : 'ook', punten: [
+              S === 'sloep' ? 'Voor sloepen, klassieke jachten en vergelijkbaar: uw boot ligt overdekt in het water.' : 'Voor sloepen, klassieke jachten en vergelijkbaar. Heeft u een klassiek jacht, vraag dan naar de mogelijkheden.',
+              'In de wintermaanden kan de boot droog bij ons binnen blijven liggen.',
+              'Schoonmaakservices, en ook het onderhoud van uw sloep kunnen wij verzorgen.',
+            ] });
+          }
+          if (P !== 'winter' && (S === 'rib' || S === 'sloep')) {
+            r.push({ id: 'droog', naam: 'Droge jachthaven', fit: 'goed', punten: [
+              'Droog binnen in de hal op een eigen trailer of botenkar, afgesloten in de loods. Ook de buitenboordmotor.',
+              'Automatische helling met snelle zelfbediening: binnen een paar minuten ligt de boot te water.',
+              P === 'jaar' ? 'Standaardprijzen voor het gehele jaar.' : 'Standaardprijzen voor het zomerseizoen.',
+              'Weinig onderhoud: de boot blijft in nieuwstaat.',
+            ] });
+          }
+          if (P === 'winter') {
+            const p: string[] = [];
+            let fit: 'goed' | 'ook' = 'goed';
+            if (S === 'sloep') p.push('Droog in de hal: voornamelijk sloepen, klassieke boten en vergelijkbaar. Inclusief hellingen, afspuiten, opbokken en intern transport.');
+            if (S === 'rib') { p.push('Droog in de hal: voornamelijk sloepen, klassieke boten en vergelijkbaar. Vraag naar de mogelijkheden voor uw boot.'); fit = 'ook'; }
+            if (S !== 'rib') p.push('Overdekte ligplaatsen in ons botenhuis, voor kleine en grotere motor- en zeiljachten tot ca. 20 m. Standaardtarieven per m².');
+            if (S === 'zeil' || S === 'motor') p.push('Buiten op het droge, voor motor- en zeiljachten tot ca. 16 ton. Inclusief hellingen, afspuiten, opbokken en intern transport.');
+            p.push('Werkzaamheden in de winterstalling laat u door ons uitvoeren, zoals het onderwaterschip schilderen of een motorservicebeurt.');
+            r.push({ id: 'winter', naam: 'Winterstalling', fit, punten: p });
+          }
+          return r;
+        }
+
+        const punt = (t: string) => {
+          const li = document.createElement('li');
+          li.className = 'flex gap-3 text-sm text-white/90';
+          const bol = document.createElement('span');
+          bol.className = 'mt-2 h-1.5 w-1.5 flex-none rounded-full bg-teak';
+          bol.setAttribute('aria-hidden', 'true');
+          const s = document.createElement('span');
+          s.textContent = t;
+          li.append(bol, s);
+          return li;
+        };
+        const kaart = (f: Fit) => {
+          const d = document.createElement('div');
+          d.className = 'rounded-lg bg-diep/60 p-5 ring-1 ring-white/15';
+          const kopje = document.createElement('div');
+          kopje.className = 'flex flex-wrap items-center justify-between gap-2';
+          const h = document.createElement('h3');
+          h.className = 'text-xl';
+          h.textContent = f.naam;
+          const b = document.createElement('span');
+          b.className = f.fit === 'goed' ? 'rounded-full bg-teak px-3 py-0.5 text-xs font-bold text-diep' : 'rounded-full px-3 py-0.5 text-xs font-bold text-white ring-1 ring-white/40';
+          b.textContent = f.fit === 'goed' ? 'Past goed' : 'Ook mogelijk';
+          kopje.append(h, b);
+          const ul = document.createElement('ul');
+          ul.className = 'mt-3 space-y-2';
+          ul.append(...f.punten.map(punt));
+          d.append(kopje, ul);
+          return d;
+        };
+
+        function toon(e?: Event) {
+          const L = Number(range.value);
+          const S = (form.querySelector('input[name=soort]:checked') as HTMLInputElement).value;
+          const P = (form.querySelector('input[name=periode]:checked') as HTMLInputElement).value;
+          uit.textContent = m(L);
+          range.setAttribute('aria-valuetext', `${String(L).replace('.', ',')} meter`);
+          const res = bereken(L, S, P);
+          label.textContent = `${m(L)} ${soortNaam[S]}, ${periodeNaam[P]}`;
+          sectie!.querySelectorAll<HTMLElement>('[data-optie]').forEach((k) => {
+            const aan = res.some((f) => f.id === k.dataset.optie);
+            k.classList.toggle('bg-white/10', aan);
+            k.classList.toggle('ring-2', aan);
+            k.classList.toggle('ring-teak', aan);
+          });
+          if (L > 20) {
+            kop.textContent = 'Onze ligplaatsen gaan tot 20 m.';
+            lijst.replaceChildren(punt('Neem contact met ons op: graag laten wij u de mogelijkheden hier eens zien.'));
+          } else if (!res.length) {
+            kop.textContent = 'Geen vaste plek in ons overzicht voor deze combinatie.';
+            lijst.replaceChildren(punt('Neem contact met ons op: graag laten wij u de mogelijkheden hier eens zien.'));
+          } else {
+            kop.textContent = res.length === 1 ? 'Dit past bij uw boot:' : `${res.length} mogelijkheden voor uw boot:`;
+            lijst.replaceChildren(...res.map(kaart));
+          }
+          const tekst = `Beste Bouw van Wijk,\n\nIk zoek een plek voor mijn boot:\n- Lengte: ${m(L)}\n- Soort: ${soortNaam[S]}\n- Periode: ${periodeNaam[P]}${res.length ? `\n- Volgens de ligplaatskiezer: ${res.map((f) => f.naam).join(', ')}` : ''}\n\nWilt u contact met mij opnemen?\n`;
+          mailKnop.href = `mailto:${mailAdres}?subject=${encodeURIComponent(`Ligplaats voor mijn ${soortNaam[S]} van ${m(L)}`)}&body=${encodeURIComponent(tekst)}`;
+          const vraag = document.querySelector<HTMLTextAreaElement>('#f-vraag');
+          if (vraag && (!vraag.value || vraag.dataset.auto === '1')) { vraag.value = tekst.replace('Beste Bouw van Wijk,\n\n', ''); vraag.dataset.auto = '1'; }
+          // Op de telefoon staat de uitkomst onder de keuzes: bij een keuze voor de periode even in beeld schuiven.
+          if (e && innerWidth < 1024 && (e.target as HTMLInputElement).name === 'periode') {
+            const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            uitkomst.scrollIntoView({ behavior: rustig ? 'auto' : 'smooth', block: 'start' });
+          }
+        }
+        form.addEventListener('input', toon);
+        form.addEventListener('change', toon);
+        document.querySelector<HTMLTextAreaElement>('#f-vraag')?.addEventListener('input', (e) => { (e.target as HTMLTextAreaElement).dataset.auto = '0'; });
+        toon();
+      }
+    </script>
+
+    <!-- Droge jachthaven en winterstalling. -->
+    <section id="droog" class="scroll-mt-20 bg-zand py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <figure class="lg:col-span-6 lg:order-2">
+          <div class="aspect-[4/3] max-w-[800px] overflow-hidden rounded-xl shadow-sm"><Foto src={hal830} alt="Binnen in onze hal: een sloep met donkerblauwe buiskap en een Nederlandse vlag, met op de achtergrond consoleboten op trailers" widths={[480, 800]} sizes="(min-width: 1024px) 560px, 100vw" /></div>
+          <figcaption class="mt-3 text-sm text-ink-soft">Droog binnen in de hal, op een eigen trailer of botenkar.</figcaption>
+          <div class="mt-8 rounded-xl bg-paper p-6 shadow-sm sm:p-8">
+            <p class="font-display text-xl font-semibold">Wij zijn voornamelijk gespecialiseerd in het droogstallen van:</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {droogSoorten.map((s) => <li class="rounded-full bg-zand px-3.5 py-1.5 text-sm font-semibold">{s}</li>)}
+            </ul>
+          </div>
+        </figure>
+        <div class="lg:col-span-6 lg:order-1">
+          <p class="kicker text-mahonie">Droge jachthaven · aan de Woudwetering</p>
+          <h2 class="mt-3 text-3xl">Te water als u vaart, anders droog binnen</h2>
+          <p class="mt-6 text-lg">Hier staan de boten droog binnen in de hal op een eigen trailer of botenkar. Wij hebben een eenvoudige automatische helling met snelle zelfbediening. Het zichzelf bewezen hefsysteem werkt zeer eenvoudig: binnen een paar minuten ligt de boot te water.</p>
+          <p class="mt-4 text-ink-soft">Buiten aan het water is voldoende mogelijkheid de boten af te meren voor de helling.</p>
+          <ul class="mt-8 space-y-3 border-t border-line pt-6">
+            {droogVoordelen.map((v) => <li class="flex gap-3"><span class="mt-2.5 h-2 w-2 flex-none rounded-full bg-teak" aria-hidden="true"></span><span>{v}</span></li>)}
+          </ul>
+        </div>
+      </div>
+
+      <div id="winterstalling" class="wrap scroll-mt-20 mt-20 lg:mt-28">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <p class="kicker text-mahonie">Winterstalling</p>
+            <h2 class="mt-3 text-3xl">Drie manieren om te overwinteren</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-6 lg:col-start-7 lg:self-end">Werkzaamheden in de winterstalling kunt u door ons laten uitvoeren. Zelf werken is niet toegestaan: zo zit uw boot niet onder het stof van werk aan de boot naast u, en het is ook een kwestie van brandveiligheid.</p>
+        </div>
+        <ol class="mt-10 grid gap-4 lg:grid-cols-3">
+          {winter.map((w, i) => (
+            <li class="flex flex-col rounded-xl bg-paper p-6 shadow-sm sm:p-8">
+              <span class="font-display text-sm font-semibold tabular-nums text-mahonie">0{i + 1}</span>
+              <h3 class="mt-2 text-2xl">{w.naam}</h3>
+              <p class="mt-1 text-sm font-semibold text-meer">{w.maat}</p>
+              <p class="mt-4 text-ink-soft">{w.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Ligging: grote foto van een plas met de vaarbestemmingen eroverheen. -->
+    <section class="donker relative isolate overflow-hidden bg-diep text-white">
+      <div class="absolute inset-0 -z-10 lg:left-[30%]">
+        <Foto src={plas} alt="" widths={[800, 1200, 1800]} sizes="100vw" class="object-[50%_62%]" />
+        <div class="absolute inset-0 bg-diep/75 lg:bg-transparent lg:bg-gradient-to-r lg:from-diep lg:via-diep/30 lg:to-transparent"></div>
+      </div>
+      <div class="wrap grid grid-cols-1 gap-10 py-20 lg:grid-cols-12 lg:py-32">
+        <div class="lg:col-span-6">
+          <p class="kicker text-teak">Ligging</p>
+          <h2 class="mt-3 text-3xl">Direct buiten de haven gaan de zeilen omhoog</h2>
+          <p class="mt-6 text-lg text-white/90">Zeilen op de Wijde Aa en de Braassem, meteen. De route naar de Kagerplassen of de Westeinder neemt nauwelijks één vaaruurtje in beslag.</p>
+          <p class="mt-4 text-white/85">Een groot watersportgebied in de Randstad, tussen Leiden, Alphen aan den Rijn en Roelofarendsveen. De Braassemermeer, de Wijde Aa, de Westeinder en de Kagerplassen vormen een driehoek waarbinnen vele vaarwateren liggen.</p>
+          <div class="mt-10 border-t border-white/25 pt-6">
+            <p class="text-sm text-white/80">Leuk om met een boot te bezoeken</p>
+            <ul class="mt-3 flex flex-wrap gap-2 text-sm font-semibold">
+              {['Leiden', 'Alphen aan den Rijn', 'Warmond', 'Aalsmeer', 'Gouda', 'Nieuwkoop'].map((p) => <li class="rounded-full bg-white/10 px-3.5 py-1.5 ring-1 ring-white/25">{p}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jachtwerf: genummerde lijst en een fotostrook met eigen werk. -->
+    <section id="jachtwerf" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-mahonie">Jachtwerf · Boddens Hosangweg 80</p>
+          <h2 class="mt-3 text-3xl">Hellingen tot 16,5 ton, onderhoud en refit</h2>
+          <p class="mt-6 text-lg">Met onze botenlift kunnen wij boten hellingen tot 16,5 ton. Op de automatische trailerhelling kunt u de boot vanaf de trailer te water laten, of op de trailer zetten.</p>
+          <p class="mt-4 text-ink-soft">Uiteraard kunnen wij op maat andere services leveren, in overleg.</p>
+          <dl class="mt-8 grid grid-cols-1 gap-px overflow-hidden rounded-xl bg-line shadow-sm sm:grid-cols-3 lg:grid-cols-1">
+            <div class="bg-white p-5"><dt class="text-sm text-ink-soft">Botenlift</dt><dd class="mt-1 font-display text-2xl font-semibold">tot 16,5&nbsp;ton</dd></div>
+            <div class="bg-white p-5"><dt class="text-sm text-ink-soft">Handling op de werf</dt><dd class="mt-1 font-display text-xl font-semibold">Hydraulische botenkar</dd></div>
+            <div class="bg-white p-5"><dt class="text-sm text-ink-soft">Zelf te water laten</dt><dd class="mt-1 font-display text-xl font-semibold">Automatische trailerhelling</dd></div>
+          </dl>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#contact" class="btn btn-fjord">Werk aanvragen <Fragment set:html={pijl} /></a>
+          </div>
+        </div>
+        <ol class="border-t border-line lg:col-span-7">
+          {werk.map((w, i) => (
+            <li class="grid gap-1 border-b border-line py-6 sm:grid-cols-[3rem_12rem_1fr] sm:gap-6">
+              <span class="font-display text-sm font-semibold tabular-nums text-mahonie">0{i + 1}</span>
+              <h3 class="text-xl">{w.naam}</h3>
+              <p class="text-ink-soft">{w.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="wrap mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-20 lg:grid-cols-12">
+        <figure class="col-span-2 lg:col-span-6">
+          <div class="aspect-[1024/570] overflow-hidden rounded-xl shadow-sm"><Foto src={stootwil} alt="Close-up van een touwen stootwil langs een donkerblauwe, glanzend gelakte romp" widths={[480, 800, 1024]} sizes="(min-width: 1024px) 560px, 100vw" /></div>
+          <figcaption class="mt-2 text-sm text-ink-soft">Afwerking tot in de stootwil.</figcaption>
+        </figure>
+        <figure class="lg:col-span-3">
+          <div class="aspect-[4/5] overflow-hidden rounded-xl shadow-sm"><Foto src={dashboard} alt="Mahoniehouten dashboard met klokken en schakelaars, op een teakhouten vloer" widths={[400, 600]} sizes="(min-width: 1024px) 270px, 50vw" /></div>
+          <figcaption class="mt-2 text-sm text-ink-soft">Houtwerk aan boord.</figcaption>
+        </figure>
+        <figure class="lg:col-span-3">
+          <div class="aspect-[4/5] overflow-hidden rounded-xl shadow-sm"><Foto src={werf621} alt="Een Van Wijk 621 met donkerblauwe romp en Nederlandse vlag op de bok, voor de hal van onze werf" widths={[400, 640]} sizes="(min-width: 1024px) 270px, 50vw" class="object-[60%_50%]" /></div>
+          <figcaption class="mt-2 text-sm text-ink-soft">Op de bok voor onze hal.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Onze sloepen: de Van Wijk-typen, zonder actueel aanbod of prijzen. -->
+    <section id="sloepen" class="donker scroll-mt-20 bg-fjord py-16 text-white lg:py-24">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-6">
+            <p class="kicker text-spaan">Van Wijk motorsloepen</p>
+            <h2 class="mt-3 text-3xl">Onze sloepen</h2>
+          </div>
+          <p class="text-white/85 lg:col-span-6 lg:self-end">In 1986 is het bedrijf gestart met het ontwikkelen en produceren van Van Wijk motorsloepen. Daarmee werd een trend gezet die ervoor heeft gezorgd dat deze markt een van de grootste is in de Nederlandse watersportbranche.</p>
+        </div>
+
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {typen.map((t) => (
+            <li class="group flex flex-col overflow-hidden rounded-xl bg-diep shadow-sm ring-1 ring-white/10">
+              <div class="aspect-[4/3] overflow-hidden"><Foto src={t.foto} alt={t.alt} widths={[400, Math.min(t.breed, 640)]} sizes="(min-width: 1024px) 280px, (min-width: 768px) 50vw, 100vw" class={`${t.pos} transition-transform duration-500 group-hover:scale-[1.03]`} /></div>
+              <div class="flex flex-1 flex-col p-6">
+                <p class="font-display text-[2.6rem] leading-none font-semibold tracking-[-0.03em]"><span class="sr-only">Van Wijk </span>{t.type}</p>
+                <p class="mt-2 text-sm font-semibold text-nevel">{t.maat}</p>
+                <p class="mt-4 text-white/85">{t.tekst}</p>
+              </div>
+            </li>
+          ))}
+          <li class="flex flex-col justify-between rounded-xl bg-teak p-6 text-diep shadow-sm">
+            <div>
+              <p class="font-display text-[2.6rem] leading-none font-semibold tracking-[-0.03em]"><span class="sr-only">Van Wijk </span>1030</p>
+              <p class="mt-2 text-sm font-semibold">en de 910</p>
+              <p class="mt-4">De grotere Van Wijk-typen kwamen ook via ons in de verkoop.</p>
+            </div>
+            <a href={aanbodMail} class="btn btn-fjord mt-8 self-start">Vraag naar het actuele aanbod</a>
+          </li>
+        </ul>
+
+        <div class="mt-14 grid grid-cols-1 gap-8 border-t border-white/20 pt-10 lg:grid-cols-12">
+          <div class="lg:col-span-6">
+            <h3 class="text-2xl">In- en verkoop van boten</h3>
+            <p class="mt-4 text-white/85">Afhankelijk van het aanbod kunt u bij ons terecht voor een sloep, zeilboot, motorboot, rubberboot of consoleboot, maar ook voor een boottrailer of andere toebehoren. Het merendeel van de boten is in Woubrugge te bezichtigen, op afspraak.</p>
+            <a href={aanbodMail} class="btn btn-teak mt-6">Vraag naar het actuele aanbod <Fragment set:html={pijl} /></a>
+          </div>
+          <div class="lg:col-span-5 lg:col-start-8">
+            <h3 class="text-2xl">Van Wijk onderdelen en accessoires</h3>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm">
+              {accessoires.map((a) => <li class="rounded-full px-3.5 py-1.5 ring-1 ring-white/30">{a}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over ons: familiegeschiedenis als tijdlijn, met de grote getallen ernaast. -->
+    <section id="over" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-24">
+            <p class="kicker text-mahonie">Over ons</p>
+            <h2 class="mt-3 text-3xl">Vijf generaties watersport in Woubrugge</h2>
+            <p class="mt-6 text-lg">Jachthaven van Wijk Woubrugge is een onderdeel van de Woubrugse Jachtwerf G. van Wijk en Zoon.</p>
+            <dl class="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8">
+              <div class="col-span-2"><dt class="text-sm text-ink-soft">Zeil- en motorjachten gebouwd, hout en staal</dt><dd class="font-display text-jaar font-semibold whitespace-nowrap">ruim 3200</dd></div>
+              <div><dt class="text-sm text-ink-soft">Wibo-zeiljachten</dt><dd class="font-display text-jaar font-semibold whitespace-nowrap">ca. 2200</dd></div>
+              <div><dt class="text-sm text-ink-soft">Braassemkruisers</dt><dd class="font-display text-jaar font-semibold whitespace-nowrap">ca. 300</dd></div>
+            </dl>
+            <figure class="mt-10 hidden lg:block">
+              <div class="aspect-[806/605] max-w-[806px] overflow-hidden rounded-xl shadow-sm"><Foto src={halZwart} alt="De boeg van een zwarte Van Wijk 621 met dikke touwen stootwil, op de bok in onze hal" widths={[480, 806]} sizes="440px" /></div>
+            </figure>
+          </div>
+        </div>
+        <ol class="lg:col-span-7 lg:col-start-6 lg:pl-8">
+          {historie.map((h, i) => (
+            <li class="relative grid grid-cols-[4.5rem_1fr] gap-5 pb-9 last:pb-0 sm:grid-cols-[6rem_1fr]">
+              {i < historie.length - 1 && <span class="absolute top-9 bottom-1 left-[1.1rem] w-px bg-line sm:left-[1.4rem]" aria-hidden="true"></span>}
+              <span class="relative font-display text-xl font-semibold tabular-nums text-mahonie">{h.jaar}</span>
+              <p class="pt-0.5">{h.tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact: adres, locaties, en het formulier van hun huidige site. -->
+    <section id="contact" class="scroll-mt-20 bg-zand py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-mahonie">Contact</p>
+          <h2 class="mt-3 text-3xl">Graag laten wij u de mogelijkheden eens zien</h2>
+          <address class="mt-8 not-italic">
+            <p class="font-display text-xl font-semibold">{site.contactpersoon}</p>
+            <p class="mt-1">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          </address>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="btn btn-fjord"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line-licht"><Fragment set:html={mail} /><span class="break-all">{site.mail}</span></a>
+          </div>
+          <a href={site.maps} class="mt-5 inline-flex items-center gap-2 font-semibold text-meer underline underline-offset-4 [&>svg]:h-5 [&>svg]:w-5"><Fragment set:html={route} />Route naar de jachtwerf</a>
+
+          <dl class="mt-10 space-y-5 border-t border-line pt-8">
+            <div><dt class="kicker text-mahonie">Jachtwerf en droge jachthaven</dt><dd class="mt-1">Aan de Woudwetering, {site.straat}</dd></div>
+            <div><dt class="kicker text-mahonie">Buitenhaven en overdekte haven</dt><dd class="mt-1">Direct aan de Wijde Aa. Eigen parkeerterrein met ± 140 plaatsen.</dd></div>
+            <div><dt class="kicker text-mahonie">Boten bezichtigen</dt><dd class="mt-1">Op afspraak, in het weekend gesloten.</dd></div>
+          </dl>
+          <p class="mt-6 text-xs text-ink-soft">[[AANLEVEREN: openingstijden kantoor en werf]]</p>
+        </div>
+
+        <div class="grid gap-6 lg:col-span-6 lg:col-start-7 lg:self-start">
+        <form class="rounded-xl bg-paper p-6 shadow-sm sm:p-8" action="#" onsubmit="return false">
+          <h3 class="text-2xl">Meer informatie?</h3>
+          <p class="mt-1 text-sm text-ink-soft">Velden met een * zijn vereiste velden.</p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-2">
+            <div class="veld"><label for="f-naam">Uw naam *</label><input id="f-naam" name="naam" autocomplete="name" required /></div>
+            <div class="veld"><label for="f-tel">Telefoonnummer</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" /></div>
+            <div class="veld sm:col-span-2"><label for="f-mail">Uw e-mail *</label><input id="f-mail" name="email" type="email" autocomplete="email" required /></div>
+            <div class="veld sm:col-span-2"><label for="f-vraag">Uw vraag</label><textarea id="f-vraag" name="vraag" rows="6"></textarea></div>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-6 rounded-lg bg-zand p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.telHref} class="font-semibold whitespace-nowrap tabular-nums underline">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="font-semibold break-all underline">{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="btn btn-fjord mt-6">Versturen</button>
+          )}
+        </form>
+        <div class="donker rounded-xl bg-diep p-6 text-white shadow-sm sm:p-8">
+          <p class="font-display text-xl font-semibold">{site.juridisch}</p>
+          <p class="mt-1 text-sm text-white/80">KvK {site.kvk} · {site.straat} · {site.postcode} {site.plaats}</p>
+          <p class="mt-4 border-t border-white/20 pt-4 text-sm text-white/85">Alle ligplaatsen worden verhuurd conform onze standaard overeenkomst en de NJI Voorwaarden Winterberging en/of ligplaatsverhuur.</p>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
