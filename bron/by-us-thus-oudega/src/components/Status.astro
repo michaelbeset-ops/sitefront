@@ -1,0 +1,38 @@
+---
+// Live "Vandaag open?"-status. Zonder JS: de vaste openingstijden.
+---
+<style>
+  .status[data-status='open'] .stip { animation: gloed 2.4s ease-in-out infinite; }
+  .status[data-status='dicht'] .stip { background: var(--color-molke); opacity: .55; }
+  @keyframes gloed { 50% { box-shadow: 0 0 0 5px #f0c06033; } }
+</style>
+<div class="status rounded-xl border border-lijn-licht bg-turf-2 p-5 shadow-sm" data-status="basis">
+  <p class="eyebrow flex items-center gap-2 text-lamp-zacht"><span class="stip h-2 w-2 rounded-full bg-lamp" aria-hidden="true"></span><span data-kort>Openingstijden</span></p>
+  <div aria-live="polite">
+    <p class="mt-2 font-display text-xl font-semibold leading-snug text-molke" data-tekst>Vrijdag, zaterdag en zondag van 17.00 tot 21.00 uur.</p>
+    <p class="mt-1 text-sm text-molke/80" data-verder>Maandag t/m donderdag gesloten.</p>
+  </div>
+</div>
+
+<script is:inline>
+  // Direct na de status uitgevoerd (geen verspringing). Zelfde regels als src/scripts/open.ts.
+  (function () {
+    var OPEN = [5, 6, 0];
+    var DAG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    var MND = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var nu = new Date(Date.UTC(+p.year, +p.month - 1, +p.day));
+    var min = (+p.hour) * 60 + (+p.minute);
+    function volgende() { var d = new Date(nu); for (var i = 0; i < 8; i++) { d.setUTCDate(d.getUTCDate() + 1); if (OPEN.indexOf(d.getUTCDay()) > -1) break; } return DAG[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MND[d.getUTCMonth()]; }
+    var wd = nu.getUTCDay(), r;
+    if (OPEN.indexOf(wd) > -1 && min < 17 * 60) r = ['open', 'Vandaag open', 'Vandaag open van 17.00 tot 21.00 uur.', 'Reserveer gerust via WhatsApp.'];
+    else if (OPEN.indexOf(wd) > -1 && min < 21 * 60) r = ['open', 'Nu open', 'Nu open, tot 21.00 uur.', 'Bel of app even of er nog plek is.'];
+    else r = ['dicht', OPEN.indexOf(wd) > -1 ? 'Nu gesloten' : 'Vandaag gesloten', OPEN.indexOf(wd) > -1 ? 'Open van 17.00 tot 21.00 uur.' : 'Maandag t/m donderdag gesloten.', 'Weer open op ' + volgende() + ', vanaf 17.00 uur.'];
+    var el = document.querySelector('.status');
+    el.dataset.status = r[0];
+    el.querySelector('[data-kort]').textContent = r[1];
+    el.querySelector('[data-tekst]').textContent = r[2];
+    el.querySelector('[data-verder]').textContent = r[3];
+  })();
+</script>

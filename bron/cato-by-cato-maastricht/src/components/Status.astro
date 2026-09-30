@@ -1,0 +1,37 @@
+---
+// Live "Nu open?"-status (tijdzone Europe/Amsterdam). Zonder JS: de vaste openingstijden.
+---
+<style>
+  .status[data-status='open'] .stip { background: var(--color-munt); animation: gloed 2.4s ease-in-out infinite; }
+  .status[data-status='dicht'] .stip { background: var(--color-roze); }
+  @keyframes gloed { 50% { box-shadow: 0 0 0 5px #25d36633; } }
+</style>
+<div class="status rounded-xl border border-lijn-licht bg-petrol-2 p-5 shadow-sm" data-status="basis">
+  <p class="eyebrow flex items-center gap-2 text-kurkuma"><span class="stip h-2 w-2 rounded-full bg-kurkuma" aria-hidden="true"></span><span data-kort>Openingstijden</span></p>
+  <div aria-live="polite">
+    <p class="mt-2 font-display text-xl font-semibold leading-snug text-havermout" data-tekst>Ma t/m vr 12:00 tot 20:30, za 12:00 tot 18:00.</p>
+    <p class="mt-1 text-sm text-havermout/80" data-verder>Zondag gesloten.</p>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var T = [null, ['12:00', '20:30'], ['12:00', '20:30'], ['12:00', '20:30'], ['12:00', '20:30'], ['12:00', '20:30'], ['12:00', '18:00']];
+    var DAG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    var nu = Number(p.hour) * 60 + Number(p.minute);
+    function m(t) { var a = t.split(':'); return a[0] * 60 + Number(a[1]); }
+    function volgende(w) { for (var i = 1; i < 8; i++) { var d = (w + i) % 7; if (T[d]) return (i === 1 ? 'morgen' : DAG[d]) + ' vanaf ' + T[d][0]; } }
+    var t = T[wd], r;
+    if (t && nu >= m(t[0]) && nu < m(t[1])) r = ['open', 'Nu open', 'Vandaag open tot ' + t[1] + '.', 'Stuur je bestelling vooraf via WhatsApp.'];
+    else if (t && nu < m(t[0])) r = ['dicht', 'Nu nog dicht', 'Vandaag open van ' + t[0] + ' tot ' + t[1] + '.', 'Bestel alvast via WhatsApp.'];
+    else r = ['dicht', 'Nu gesloten', 'Weer open ' + volgende(wd) + '.', wd === 0 ? 'Op zondag zijn we dicht.' : 'Zondag gesloten.'];
+    var el = document.querySelector('.status');
+    el.dataset.status = r[0];
+    el.querySelector('[data-kort]').textContent = r[1];
+    el.querySelector('[data-tekst]').textContent = r[2];
+    el.querySelector('[data-verder]').textContent = r[3];
+  })();
+</script>

@@ -1,0 +1,50 @@
+---
+import { site, url, waIcoon, telIcoon, instaIcoon } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const thuis = Astro.url.pathname.replace(/\/$/, '') === url('').replace(/\/$/, '');
+const anker = (id: string) => (thuis ? `#${id}` : `${url('')}#${id}`);
+const links = [
+  { id: 'populair', label: 'Scones en taart' },
+  { id: 'park', label: 'Aan het water' },
+  { id: 'langskomen', label: 'Langskomen' },
+  { id: 'contact', label: 'Openingstijden' },
+];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn-licht bg-pruim/95 text-room backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-8 text-sm font-medium">
+          {links.map((l) => <li><a href={anker(l.id)} class="text-room/90 no-underline underline-offset-8 transition-colors hover:text-roos hover:underline">{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-lijn hidden !px-4 !py-2 text-sm md:inline-flex">
+          <Fragment set:html={telIcoon} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span>
+        </a>
+        <a href={site.whatsapp} class="btn btn-roos !px-4 !py-2 text-sm">
+          <Fragment set:html={waIcoon} /><span class="max-[359px]:sr-only">WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="bg-pruim pb-10 pt-14 text-room/85">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo class="text-room" />
+        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-room/75">KvK</span> <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span></p>
+      </div>
+      <p class="md:col-span-4">
+        WhatsApp en bellen <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />
+        Woensdag t/m zondag <span class="whitespace-nowrap tabular-nums">10.00 - 16.00</span><br />
+        <a href={site.instagram} rel="noopener" class="inline-flex items-center gap-1.5 underline underline-offset-2"><span class="inline-block h-4 w-4"><Fragment set:html={instaIcoon} /></span>{site.insta}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-10 border-t border-lijn-licht pt-6 text-xs text-room/75">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

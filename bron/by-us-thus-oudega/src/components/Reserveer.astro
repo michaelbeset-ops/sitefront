@@ -1,0 +1,163 @@
+---
+// Reserveringshulp: aantal personen, dag (alleen vrijdag, zaterdag, zondag), tijd tussen 17.00 en 20.00,
+// binnen of terras en een dieetwens. Maakt er een net WhatsApp-bericht van. Verstuurt zelf niets:
+// de knop opent WhatsApp met het bericht klaar, de gast drukt zelf op verzenden.
+import { site, wa } from '../data/site';
+const tijden = ['17.00', '17.30', '18.00', '18.30', '19.00', '19.30', '20.00'];
+const plekken = ['Binnen', 'Op het terras', 'Maakt niet uit'];
+const veld = 'mt-1.5 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 text-inkt shadow-sm transition-colors focus:border-pompebled';
+const chip = 'keuze flex cursor-pointer items-center justify-center rounded-lg border border-lijn bg-white px-3 py-2.5 text-sm font-semibold shadow-sm transition-colors hover:border-pompebled';
+---
+<form id="reserveer" class="licht rounded-2xl bg-molke p-5 text-inkt shadow-xl sm:p-8" novalidate>
+  <p class="eyebrow text-pompebled">Reserveer een tafel via WhatsApp</p>
+  <h3 class="mt-2 text-2xl">Wanneer komt u eten?</h3>
+
+  <fieldset class="mt-7">
+    <legend class="flex items-baseline gap-2 text-sm font-bold"><span class="font-display text-base italic text-pompebled">1</span> Met hoeveel personen?</legend>
+    <div class="mt-2 flex flex-wrap items-center gap-2">
+      <button type="button" data-min class="grid h-12 w-11 place-items-center sm:w-12 rounded-lg border border-lijn bg-white text-xl font-bold shadow-sm transition-colors hover:border-pompebled" aria-label="Eén persoon minder">&minus;</button>
+      <label class="sr-only" for="personen">Aantal personen</label>
+      <input id="personen" type="number" name="personen" min="1" max="30" value="2" inputmode="numeric" class="h-12 w-16 rounded-lg sm:w-20 border border-lijn bg-white text-center font-display text-xl font-semibold tabular-nums shadow-sm" />
+      <button type="button" data-plus class="grid h-12 w-11 place-items-center sm:w-12 rounded-lg border border-lijn bg-white text-xl font-bold shadow-sm transition-colors hover:border-pompebled" aria-label="Eén persoon meer">+</button>
+      <span class="ml-1 text-sm text-inkt-zacht" data-pers-woord>personen</span>
+    </div>
+  </fieldset>
+
+  <fieldset class="mt-7">
+    <legend class="flex items-baseline gap-2 text-sm font-bold"><span class="font-display text-base italic text-pompebled">2</span> Welke dag?</legend>
+    <p class="mt-1 text-sm text-inkt-zacht">Open op vrijdag, zaterdag en zondag. Maandag t/m donderdag dicht.</p>
+    <div class="mt-3 grid grid-cols-3 gap-2" data-dagen>
+      {['Vrijdag', 'Zaterdag', 'Zondag'].map((d) => (
+        <label class={chip}><input type="radio" name="dag" value={d.toLowerCase()} class="sr-only" />{d}</label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="mt-7">
+    <legend class="flex items-baseline gap-2 text-sm font-bold"><span class="font-display text-base italic text-pompebled">3</span> Hoe laat?</legend>
+    <p class="mt-1 text-sm text-inkt-zacht">Kies een tijd tussen 17.00 en 20.00 uur. Open tot 21.00 uur.</p>
+    <div class="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-7" data-tijden>
+      {tijden.map((t) => (
+        <label class={`${chip} !px-1 tabular-nums`}><input type="radio" name="tijd" value={t} class="sr-only" />{t}</label>
+      ))}
+    </div>
+  </fieldset>
+
+  <fieldset class="mt-7">
+    <legend class="flex items-baseline gap-2 text-sm font-bold"><span class="font-display text-base italic text-pompebled">4</span> Uw wensen</legend>
+    <div class="mt-3 grid gap-2 sm:grid-cols-3">
+      {plekken.map((p, i) => (
+        <label class={chip}><input type="radio" name="plek" value={p} checked={i === 2} class="sr-only" />{p}</label>
+      ))}
+    </div>
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+      <label class="block text-sm font-semibold">Dieetwens of allergie <span class="font-normal text-inkt-zacht">(optioneel)</span>
+        <input type="text" name="dieet" placeholder="Bijv. vegetarisch, glutenvrij" class={veld} />
+      </label>
+      <label class="block text-sm font-semibold">Uw naam <span class="font-normal text-inkt-zacht">(optioneel)</span>
+        <input type="text" name="naam" autocomplete="name" class={veld} />
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="mt-8 rounded-xl bg-greide p-4 text-molke sm:p-5">
+    <p class="eyebrow text-lamp-zacht">Uw bericht</p>
+    <div class="relative mt-3 max-w-md rounded-xl rounded-tl-sm bg-white px-4 py-3 text-sm leading-relaxed text-inkt shadow-sm">
+      <p class="whitespace-pre-line" data-bericht aria-live="polite">Kies een dag en een tijd, dan zetten we uw bericht klaar.</p>
+    </div>
+    <a href={site.whatsapp} data-knop class="btn btn-lamp mt-5 w-full sm:w-auto"><Fragment set:html={wa} />Open WhatsApp met dit bericht</a>
+    <p class="mt-3 text-sm text-molke/80">U verstuurt het bericht zelf. Liever bellen: <a href={site.telHref} class="whitespace-nowrap font-semibold tabular-nums text-lamp-zacht underline underline-offset-2">{site.tel}</a></p>
+  </div>
+</form>
+
+<style>
+  .keuze:has(input:checked) { background: var(--color-pompebled); border-color: var(--color-pompebled); color: var(--color-white); }
+  .keuze:has(input:focus-visible) { outline: 3px solid var(--color-pompebled); outline-offset: 2px; }
+  .keuze:has(input:disabled) { cursor: not-allowed; background: transparent; box-shadow: none; color: var(--color-inkt-zacht); border-style: dashed; }
+  .keuze:has(input:disabled):hover { border-color: var(--color-lijn); }
+</style>
+
+<script>
+  import { site } from '../data/site';
+  import { vanYmd, plusDagen, isOpen, dagNaam, nuInOudega, KORT, MAANDEN } from '../scripts/open';
+
+  const f = document.getElementById('reserveer') as HTMLFormElement;
+  const bericht = f.querySelector<HTMLElement>('[data-bericht]')!;
+  const knop = f.querySelector<HTMLAnchorElement>('[data-knop]')!;
+  const pers = f.querySelector<HTMLInputElement>('#personen')!;
+  const persWoord = f.querySelector<HTMLElement>('[data-pers-woord]')!;
+  const nu = nuInOudega();
+  const chip = 'keuze flex cursor-pointer flex-col items-center justify-center rounded-lg border border-lijn bg-white px-1 py-2 text-center shadow-sm transition-colors hover:border-pompebled';
+
+  // Dagen: de komende twee weken als kalenderstrook. Alleen vrijdag, zaterdag en zondag zijn te kiezen.
+  const dagenBox = f.querySelector<HTMLElement>('[data-dagen]')!;
+  dagenBox.className = 'mt-3 grid grid-cols-7 gap-1.5 sm:gap-2';
+  dagenBox.innerHTML = '';
+  for (let i = 0; i < 14; i++) {
+    const dag = vanYmd(plusDagen(nu.dag.ymd, i));
+    const open = isOpen(dag) && !(i === 0 && nu.minuut >= 20 * 60);
+    const lab = document.createElement('label');
+    lab.className = chip;
+    lab.innerHTML = `<input type="radio" name="dag" value="${dag.ymd}" class="sr-only" ${open ? '' : 'disabled'} aria-label="${dagNaam(dag)}${open ? '' : ', gesloten'}">`
+      + `<span class="text-[0.6875rem] font-bold uppercase tracking-wide" aria-hidden="true">${KORT[dag.wd]}</span>`
+      + `<span class="font-display text-lg font-semibold leading-tight tabular-nums" aria-hidden="true">${dag.d}</span>`
+      + `<span class="text-[0.6875rem]" aria-hidden="true">${open ? MAANDEN[dag.m - 1].slice(0, 3) : 'dicht'}</span>`;
+    dagenBox.append(lab);
+  }
+
+  const waarde = (n: string) => (f.querySelector<HTMLInputElement>(`input[name="${n}"]:checked`)?.value ?? '');
+  const tekst = (n: string) => ((f.elements.namedItem(n) as HTMLInputElement).value.trim());
+
+  function tijdenBijwerken(ymd: string) {
+    // Vandaag: tijden die al voorbij zijn uitzetten.
+    f.querySelectorAll<HTMLInputElement>('input[name="tijd"]').forEach((t) => {
+      const [u, m] = t.value.split('.').map(Number);
+      const voorbij = ymd === nu.dag.ymd && u * 60 + m <= nu.minuut;
+      t.disabled = voorbij;
+      if (voorbij) t.checked = false;
+    });
+  }
+
+  function bijwerken() {
+    let n = Math.round(Number(pers.value) || 0);
+    if (n < 1) n = 1;
+    if (n > 30) n = 30;
+    persWoord.textContent = n === 1 ? 'persoon' : 'personen';
+    const dag = waarde('dag');
+    if (dag) tijdenBijwerken(dag);
+    const tijd = waarde('tijd');
+    const plek = waarde('plek');
+    const dieet = tekst('dieet');
+    const naam = tekst('naam');
+    if (!dag || !tijd) {
+      bericht.textContent = !dag && !tijd ? 'Kies een dag en een tijd, dan zetten we uw bericht klaar.' : !dag ? 'Kies nog een dag (vrijdag, zaterdag of zondag).' : 'Kies nog een tijd tussen 17.00 en 20.00 uur.';
+      knop.href = site.whatsapp;
+      knop.setAttribute('aria-disabled', 'true');
+      return;
+    }
+    const regels = [
+      'Hallo Bennie en Jacqueline,',
+      '',
+      'Graag reserveer ik een tafel bij By ús thús.',
+      `Dag: ${dagNaam(vanYmd(dag))}`,
+      `Tijd: ${tijd} uur`,
+      `Aantal personen: ${n}`,
+      plek && plek !== 'Maakt niet uit' ? `Voorkeur: ${plek.toLowerCase()}` : '',
+      dieet ? `Dieetwens of allergie: ${dieet}` : '',
+      '',
+      'Kunt u laten weten of dit past?',
+      naam ? `Groet, ${naam}` : 'Groet,',
+    ].filter((r, i, a) => r !== '' || (a[i - 1] ?? '') !== '');
+    const tekstBericht = regels.join('\n');
+    bericht.textContent = tekstBericht;
+    knop.href = `https://wa.me/${site.wa}?text=${encodeURIComponent(tekstBericht)}`;
+    knop.removeAttribute('aria-disabled');
+  }
+
+  f.querySelector('[data-min]')!.addEventListener('click', () => { pers.value = String(Math.max(1, (Number(pers.value) || 1) - 1)); bijwerken(); });
+  f.querySelector('[data-plus]')!.addEventListener('click', () => { pers.value = String(Math.min(30, (Number(pers.value) || 1) + 1)); bijwerken(); });
+  f.addEventListener('input', bijwerken);
+  f.addEventListener('change', bijwerken);
+  f.addEventListener('submit', (e) => e.preventDefault());
+  bijwerken();
+</script>

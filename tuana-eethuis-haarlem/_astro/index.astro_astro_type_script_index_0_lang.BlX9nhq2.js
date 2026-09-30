@@ -1,0 +1,1 @@
+import{i as e}from"./open.CQEea9c5.js";document.querySelector(`.dagrij[data-wd="${e().wd}"]`)?.classList.add(`vandaag`);

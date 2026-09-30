@@ -86,3 +86,13 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Ponchi Garage, Dordrecht | https://michaelbeset-ops.github.io/sitefront/ponchi-garage/ | 9/10: geen website, recent overgenomen, 4,8 uit 63 (recent), 06/WhatsApp. | 2026-09-30 | demo, WhatsApp |
 | Roj Bouw, Zwijndrecht | https://michaelbeset-ops.github.io/sitefront/roj-bouw/ | 9/10: geen website, jong (2023), stukadoor/schilder, 4,8 uit 45 (recent), 06/WhatsApp. | 2026-09-30 | demo, WhatsApp |
 | Autocleaning Zwijndrecht | https://michaelbeset-ops.github.io/sitefront/autocleaning-zwijndrecht/ | 8/10: geen website, jong (2022), eigen unit, 4,8 uit 26, 06/WhatsApp. | 2026-09-30 | demo, WhatsApp |
+| Restaurant By ús thús, Oudega | https://michaelbeset-ops.github.io/sitefront/by-us-thus-oudega/ | horeca zonder website, 4,7 uit 225, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Lunchroom 1NUL1, Eindhoven | https://michaelbeset-ops.github.io/sitefront/lunchroom-1nul1/ | alleen Instagram, 4,4 uit 247, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| WELA Thai, Grave | https://michaelbeset-ops.github.io/sitefront/wela-grave/ | geen website, 5,0 uit 38 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Bloem, Den Bosch | https://michaelbeset-ops.github.io/sitefront/bloem-den-bosch/ | alleen Instagram, 4,7 uit 247, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Taratoer, Leiden | https://michaelbeset-ops.github.io/sitefront/taratoer-leiden/ | alleen Instagram, 5,0 uit 124 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Madame Marie, Leiden | https://michaelbeset-ops.github.io/sitefront/madame-marie-leiden/ | geen website, 4,8 uit 315, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Bij Nadia, Panningen | https://michaelbeset-ops.github.io/sitefront/bij-nadia-panningen/ | geen website, 4,9 uit 112, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Cato by cato, Maastricht | https://michaelbeset-ops.github.io/sitefront/cato-by-cato-maastricht/ | geen website, 4,8 uit 479, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Tuana Eethuis, Haarlem | https://michaelbeset-ops.github.io/sitefront/tuana-eethuis-haarlem/ | geen website, 4,7 uit 258, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Patisserie by Barbara, Amsterdam | https://michaelbeset-ops.github.io/sitefront/patisserie-by-barbara/ | geen website, 4,8 uit 266 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |

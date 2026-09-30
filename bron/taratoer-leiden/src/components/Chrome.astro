@@ -1,0 +1,42 @@
+---
+import { site, url, waIcoon, telIcoon } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const thuis = Astro.url.pathname.replace(/\/$/, '') === url('').replace(/\/$/, '');
+const anker = (id: string) => (thuis ? `#${id}` : `${url('')}#${id}`);
+const links = [
+  { id: 'populair', label: 'Populair' },
+  { id: 'bestellen', label: 'Bestelling samenstellen' },
+  { id: 'contact', label: 'Tijden en route' },
+];
+---
+{deel === 'kop' ? (
+  <header class="donker sticky top-0 z-40 border-b border-lijn-licht bg-ceder/95 text-creme backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          {links.map((l) => <li><a href={anker(l.id)} class="no-underline transition-colors hover:text-saffraan">{l.label}</a></li>)}
+        </ul>
+      </nav>
+      <a href={site.whatsapp} class="btn btn-wa !px-4 !py-2 text-sm"><Fragment set:html={waIcoon} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-ceder pb-10 pt-14 text-creme/85">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo class="text-creme" />
+        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}</p>
+      </div>
+      <p class="md:col-span-4">
+        Bellen en WhatsApp <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a><br />
+        Instagram <a href={site.instagram} class="underline underline-offset-2">{site.instaNaam}</a><br />
+        <span class="text-creme/75">KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span></span>
+      </p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-10 border-t border-lijn-licht pt-6 text-xs text-creme/75">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

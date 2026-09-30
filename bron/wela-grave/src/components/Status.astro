@@ -1,0 +1,37 @@
+---
+// Live "Nu open?"-status (tijdzone Europe/Amsterdam). Zonder JS: de vaste openingstijden.
+---
+<style>
+  .status[data-status='open'] .stip { animation: gloed 2.4s ease-in-out infinite; }
+  .status[data-status='dicht'] .stip { background: var(--color-creme); opacity: .55; }
+  @keyframes gloed { 50% { box-shadow: 0 0 0 5px #dcaa4c33; } }
+</style>
+<div class="status rounded-xl border border-lijn-licht bg-nacht-2/90 p-5 shadow-sm backdrop-blur-sm" data-status="basis">
+  <p class="eyebrow flex items-center gap-2 text-goud-zacht"><span class="stip h-2 w-2 rounded-full bg-goud" aria-hidden="true"></span><span data-kort>Openingstijden</span></p>
+  <div aria-live="polite">
+    <p class="mt-2 font-display text-xl font-semibold leading-snug text-creme" data-tekst>Woensdag t/m zondag van 15.00 tot 21.30 uur.</p>
+    <p class="mt-1 text-sm text-creme/80" data-verder>Maandag en dinsdag gesloten.</p>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var OPEN = [3, 4, 5, 6, 0];
+    var DAG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    var t = Number(p.hour) * 60 + Number(p.minute);
+    function volgende(w) { for (var i = 1; i < 8; i++) { var d = (w + i) % 7; if (OPEN.indexOf(d) > -1) return DAG[d]; } }
+    var open = OPEN.indexOf(wd) > -1, r;
+    if (open && t >= 900 && t < 1290) r = ['open', 'Nu geopend', 'Vandaag open tot 21.30 uur.', 'Aan tafel of afhalen: stuur een WhatsApp.'];
+    else if (open && t < 900) r = ['dicht', 'Vandaag open', 'Vandaag geopend van 15.00 tot 21.30 uur.', 'U kunt nu al reserveren of bestellen via WhatsApp.'];
+    else r = ['dicht', 'Nu gesloten', 'Weer open op ' + volgende(wd) + ' om 15.00 uur.', 'Woensdag t/m zondag van 15.00 tot 21.30 uur.'];
+    document.querySelectorAll('.status').forEach(function (el) {
+      el.dataset.status = r[0];
+      el.querySelector('[data-kort]').textContent = r[1];
+      el.querySelector('[data-tekst]').textContent = r[2];
+      el.querySelector('[data-verder]').textContent = r[3];
+    });
+  })();
+</script>

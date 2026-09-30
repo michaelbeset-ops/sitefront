@@ -1,0 +1,134 @@
+---
+// "Kom je (met een groep) langs?": dag (alleen wo t/m zo), tijd binnen 10.00-16.00, aantal personen, gelegenheid
+// en wensen worden één net WhatsApp-bericht. Zonder JS: vaste dagkeuze en een gewone WhatsApp-link.
+import { site, waIcoon } from '../data/site';
+const dagen = ['Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'];
+const tijden = ['10.00', '11.00', '12.00', '13.00', '14.00', '15.00'];
+const gelegenheden = [
+  { v: 'wandeling', l: 'Na een wandeling' },
+  { v: 'verjaardag', l: 'Verjaardag' },
+  { v: 'kinderen', l: 'Met kinderen' },
+];
+const wensen = [
+  { v: 'scones', l: 'Scones' },
+  { v: 'taart', l: 'Taart' },
+  { v: 'vegan', l: 'Iets vegans' },
+];
+const lbl = 'text-sm font-semibold';
+---
+<form id="langs" class="licht rounded-2xl bg-room p-5 text-inkt shadow-xl sm:p-8" novalidate>
+  <div class="grid gap-7">
+    <fieldset>
+      <legend class={lbl}>Welke dag? <span class="font-normal text-inkt-zacht">(woensdag t/m zondag)</span></legend>
+      <div class="mt-3 flex flex-wrap gap-2" data-dagen>
+        {dagen.map((d, i) => (
+          <label class="chip"><input type="radio" name="dag" value={d.toLowerCase()} checked={i === 3} /><span>{d}</span></label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <label class={`block ${lbl}`}>Rond hoe laat?
+        <select name="tijd" class="mt-2 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 font-normal text-inkt shadow-sm">
+          {tijden.map((t) => <option value={t} selected={t === '11.00'}>{t} uur</option>)}
+          <option value="">Weet ik nog niet</option>
+        </select>
+      </label>
+      <div>
+        <span class={lbl} id="pers-label">Met hoeveel personen?</span>
+        <div class="mt-2 flex items-stretch overflow-hidden rounded-lg border border-lijn bg-white shadow-sm" role="group" aria-labelledby="pers-label">
+          <button type="button" class="w-12 text-xl text-framboos transition-colors hover:bg-blos" data-min aria-label="Een persoon minder">&minus;</button>
+          <input type="number" name="personen" value="4" min="1" max="40" inputmode="numeric" aria-labelledby="pers-label" class="w-full min-w-0 border-x border-lijn py-3 text-center text-lg font-semibold tabular-nums" />
+          <button type="button" class="w-12 text-xl text-framboos transition-colors hover:bg-blos" data-plus aria-label="Een persoon meer">+</button>
+        </div>
+      </div>
+    </div>
+
+    <fieldset>
+      <legend class={lbl}>Waarom kom je? <span class="font-normal text-inkt-zacht">(mag meer dan één)</span></legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {gelegenheden.map((g) => <label class="chip"><input type="checkbox" name="gelegenheid" value={g.v} /><span>{g.l}</span></label>)}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class={lbl}>Waar heb je zin in?</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {wensen.map((w) => <label class="chip"><input type="checkbox" name="wens" value={w.v} checked={w.v === 'scones'} /><span>{w.l}</span></label>)}
+      </div>
+    </fieldset>
+
+    <label class={`block ${lbl}`}>Je naam <span class="font-normal text-inkt-zacht">(optioneel)</span>
+      <input type="text" name="naam" autocomplete="given-name" class="mt-2 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 font-normal text-inkt shadow-sm" />
+    </label>
+  </div>
+
+  <div class="mt-7 rounded-xl bg-blos p-4 sm:p-5">
+    <p class="eyebrow text-salie">Je bericht</p>
+    <p class="mt-2 whitespace-pre-line text-[0.95rem] leading-relaxed" aria-live="polite" data-bericht>Hoi Bloem, wij willen graag langskomen op zaterdag rond 11.00 uur, met 4 personen. We hebben zin in scones. Tot dan.</p>
+  </div>
+
+  <div class="mt-6 flex flex-wrap items-center gap-3">
+    <a href={site.whatsapp} class="btn btn-wa" data-wa><Fragment set:html={waIcoon} />Stuur via WhatsApp</a>
+    <span class="text-sm text-inkt-zacht">Of bel <a href={site.telHref} class="whitespace-nowrap font-semibold tabular-nums text-framboos underline underline-offset-2">{site.tel}</a></span>
+  </div>
+</form>
+
+<script>
+  import { komendeDagen, kortNaam, dagNaam, vanYmd, nuInDenBosch } from '../scripts/open';
+  const f = document.getElementById('langs') as HTMLFormElement;
+  const vak = f.querySelector<HTMLElement>('[data-dagen]')!;
+  const uit = f.querySelector<HTMLElement>('[data-bericht]')!;
+  const wa = f.querySelector<HTMLAnchorElement>('[data-wa]')!;
+  const pers = f.elements.namedItem('personen') as HTMLInputElement;
+  const basis = wa.href.split('?')[0];
+
+  // Echte data: de eerstvolgende 8 open dagen als keuzechips.
+  const vandaag = nuInDenBosch().dag.ymd;
+  const morgen = new Date(Date.UTC(+vandaag.slice(0, 4), +vandaag.slice(5, 7) - 1, +vandaag.slice(8, 10) + 1)).toISOString().slice(0, 10);
+  vak.innerHTML = '';
+  komendeDagen(8).forEach((d, i) => {
+    const k = kortNaam(d);
+    const bijnaam = d.ymd === vandaag ? 'vandaag' : d.ymd === morgen ? 'morgen' : k.wd;
+    const l = document.createElement('label');
+    l.className = 'chip';
+    l.innerHTML = `<input type="radio" name="dag" value="${d.ymd}"${i === 0 ? ' checked' : ''}><span><strong class="font-semibold">${bijnaam}</strong> <small class="text-[0.8125rem] tabular-nums opacity-90">${k.datum}</small></span>`;
+    vak.appendChild(l);
+  });
+
+  const alle = (n: string) => [...f.querySelectorAll<HTMLInputElement>(`input[name="${n}"]:checked`)].map((x) => x.value);
+  const lijst = (a: string[]) => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} en ${a[a.length - 1]}`);
+
+  function bouw() {
+    const dagV = (f.querySelector<HTMLInputElement>('input[name="dag"]:checked') || { value: '' }).value;
+    const dag = /^\d{4}-/.test(dagV) ? (dagV === vandaag ? 'vandaag' : dagNaam(vanYmd(dagV))) : dagV;
+    const tijd = (f.elements.namedItem('tijd') as HTMLSelectElement).value;
+    const n = Math.max(1, Math.min(40, Number(pers.value) || 1));
+    const g = alle('gelegenheid');
+    const w = alle('wens');
+    const naam = (f.elements.namedItem('naam') as HTMLInputElement).value.trim();
+    const ik = n === 1;
+    const zinnen: string[] = [];
+    zinnen.push(`Hoi Bloem, ${ik ? 'ik wil' : 'wij willen'} graag langskomen${dag ? ` op ${dag}` : ''}${tijd ? ` rond ${tijd} uur` : ''}, ${ik ? 'alleen' : `met ${n} personen`}.`);
+    const extra: string[] = [];
+    if (g.includes('wandeling')) extra.push(`${ik ? 'Ik kom' : 'We komen'} na een wandeling door het park.`);
+    if (g.includes('verjaardag')) extra.push(`${ik ? 'Ik vier' : 'We vieren'} een verjaardag.`);
+    if (g.includes('kinderen')) extra.push(`Er ${ik ? 'komen' : 'zijn'} kinderen bij.`);
+    zinnen.push(...extra);
+    const zin = w.filter((x) => x !== 'vegan');
+    if (zin.length) zinnen.push(`${ik ? 'Ik heb' : 'We hebben'} zin in ${lijst(zin)}.`);
+    if (w.includes('vegan')) zinnen.push(`Graag ook iets vegans.`);
+    if (n >= 6 || g.includes('verjaardag')) zinnen.push('Kunnen jullie daar rekening mee houden?');
+    zinnen.push(naam ? `Groet, ${naam}` : 'Tot dan.');
+    const tekst = zinnen.join(' ').replace(' Groet,', '\n\nGroet,');
+    uit.textContent = tekst;
+    wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+  }
+
+  f.querySelector('[data-min]')!.addEventListener('click', () => { pers.value = String(Math.max(1, (Number(pers.value) || 1) - 1)); bouw(); });
+  f.querySelector('[data-plus]')!.addEventListener('click', () => { pers.value = String(Math.min(40, (Number(pers.value) || 0) + 1)); bouw(); });
+  f.addEventListener('input', bouw);
+  f.addEventListener('change', bouw);
+  f.addEventListener('submit', (e) => e.preventDefault());
+  bouw();
+</script>

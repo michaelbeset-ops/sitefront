@@ -1,0 +1,178 @@
+---
+// Wow: "Stel je bak samen". Base, vega, porties en ophaalmoment (binnen de openingstijden) worden een net
+// WhatsApp-bericht. Zonder JS blijft het een leesbaar formulier met een gewone WhatsApp-link.
+import { site } from '../data/site';
+import Wa from './Wa.astro';
+const bases = [
+  { naam: 'Linzen', kleur: 'bg-kurkuma' },
+  { naam: 'Couscous', kleur: 'bg-zand' },
+  { naam: 'Bulgur', kleur: 'bg-roze' },
+];
+const dagen = ['maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+---
+<form class="bak grid gap-6 lg:grid-cols-12 lg:gap-8" data-wa={site.wa} onsubmit="return false">
+  <div class="grid gap-7 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-lijn sm:p-8 lg:col-span-7">
+    <fieldset>
+      <legend class="flex items-baseline gap-3 font-display text-xl font-bold"><span class="text-sm text-tomaat">01</span> Kies je base</legend>
+      <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+        {bases.map((b) => (
+          <label class="cursor-pointer">
+            <input type="radio" name="base" value={b.naam} class="peer sr-only" />
+            <span class={`tegel flex min-h-24 flex-col justify-between rounded-xl p-3 transition-all duration-200 hover:-translate-y-0.5 sm:min-h-28 sm:p-4 ${b.kleur}`}>
+              <span class="vink grid h-6 w-6 place-content-center rounded-full bg-white/80 text-inkt" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-4 w-4 opacity-0 transition-opacity" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span>
+              <span class="font-display text-base font-bold leading-tight text-inkt sm:text-lg">{b.naam}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="grid gap-7 sm:grid-cols-2">
+      <fieldset>
+        <legend class="flex items-baseline gap-3 font-display text-xl font-bold"><span class="text-sm text-tomaat">02</span> Vega?</legend>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <label class="cursor-pointer"><input type="radio" name="vega" value="ja" class="sr-only" checked /><span class="pil">Ja, vega</span></label>
+          <label class="cursor-pointer"><input type="radio" name="vega" value="nee" class="sr-only" /><span class="pil">Maakt niet uit</span></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend class="flex items-baseline gap-3 font-display text-xl font-bold"><span class="text-sm text-tomaat">03</span> Porties</legend>
+        <div class="mt-4 inline-flex items-center rounded-full bg-havermout p-1 ring-1 ring-lijn">
+          <button type="button" class="stap grid h-10 w-10 place-content-center rounded-full text-xl font-bold transition-colors hover:bg-zand" data-stap="-1" aria-label="Eén portie minder">&minus;</button>
+          <label for="porties" class="sr-only">Aantal porties</label>
+          <input id="porties" name="porties" type="number" min="1" max="12" value="1" inputmode="numeric" class="w-12 bg-transparent text-center font-display text-xl font-bold tabular-nums [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none" />
+          <button type="button" class="stap grid h-10 w-10 place-content-center rounded-full text-xl font-bold transition-colors hover:bg-zand" data-stap="1" aria-label="Eén portie meer">+</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <fieldset>
+      <legend class="flex items-baseline gap-3 font-display text-xl font-bold"><span class="text-sm text-tomaat">04</span> Wanneer haal je op?</legend>
+      <div class="mt-4 grid gap-3 sm:grid-cols-2">
+        <div>
+          <label for="dag" class="text-sm font-semibold text-inkt-zacht">Dag</label>
+          <select id="dag" name="dag" class="veld mt-1">
+            {dagen.map((d) => <option value={d}>{d}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="tijd" class="text-sm font-semibold text-inkt-zacht">Tijd</label>
+          <select id="tijd" name="tijd" class="veld mt-1 tabular-nums">
+            <option value="">Kies een tijd</option>
+          </select>
+        </div>
+      </div>
+      <p class="mt-2 text-sm text-inkt-zacht">Ma t/m vr <span class="whitespace-nowrap tabular-nums">12:00 tot 20:30</span>, za <span class="whitespace-nowrap tabular-nums">12:00 tot 18:00</span>, zondag dicht.</p>
+    </fieldset>
+
+    <div class="grid gap-3 sm:grid-cols-2">
+      <div>
+        <label for="naam" class="text-sm font-semibold text-inkt-zacht">Je naam</label>
+        <input id="naam" name="naam" type="text" autocomplete="given-name" class="veld mt-1" />
+      </div>
+      <div>
+        <label for="noot" class="text-sm font-semibold text-inkt-zacht">Opmerking of allergie</label>
+        <input id="noot" name="noot" type="text" class="veld mt-1" />
+      </div>
+    </div>
+  </div>
+
+  <div class="lg:col-span-5">
+    <div class="rounded-2xl bg-petrol p-5 text-havermout shadow-xl sm:p-7 lg:sticky lg:top-24">
+      <p class="eyebrow text-kurkuma">Je bericht aan Cato</p>
+      <div class="mt-4 rounded-xl rounded-tr-sm bg-kurkuma-zacht p-4 text-inkt shadow-sm">
+        <p class="bericht whitespace-pre-line text-sm leading-relaxed sm:text-base" aria-live="polite">Hoi Cato! Ik wil graag bestellen om af te halen.</p>
+      </div>
+      <p class="hint mt-4 min-h-6 text-sm font-semibold text-roze" aria-live="polite"></p>
+      <a href={site.wa} class="stuur btn btn-wa mt-2 w-full text-lg"><Wa class="h-5 w-5" /> Verstuur via WhatsApp</a>
+      <p class="mt-4 text-sm text-havermout/80">Het bericht opent in WhatsApp, je verstuurt het zelf. Liever bellen? <a href={site.telHref} class="whitespace-nowrap font-semibold tabular-nums text-havermout underline underline-offset-4">{site.tel}</a></p>
+    </div>
+  </div>
+</form>
+
+<style>
+  .tegel { box-shadow: inset 0 0 0 2px transparent; }
+  input:checked + .tegel { box-shadow: inset 0 0 0 3px var(--color-inkt); }
+  input:focus-visible + .tegel, input:focus-visible + .pil { outline: 3px solid var(--color-tomaat); outline-offset: 2px; }
+  input:checked + .tegel .vink svg { opacity: 1; }
+  .pil { display: inline-flex; border-radius: 999px; padding: .55rem 1rem; font-weight: 600; background: var(--color-havermout); box-shadow: inset 0 0 0 1.5px var(--color-lijn); transition: background-color .2s, color .2s, box-shadow .2s; }
+  label:hover .pil { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  input:checked + .pil { background: var(--color-inkt); color: var(--color-havermout); box-shadow: none; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-lg); background: var(--color-havermout); padding: .7rem .9rem; box-shadow: inset 0 0 0 1.5px var(--color-lijn); transition: box-shadow .2s; }
+  .veld:hover { box-shadow: inset 0 0 0 1.5px var(--color-inkt-zacht); }
+  .stuur[aria-disabled='true'] { background: var(--color-petrol-3); color: var(--color-havermout); cursor: not-allowed; transform: none; }
+</style>
+
+<script>
+  import { TIJDEN, minuten, klok, plusDag, vanYmd, dagNaam, nuInMaastricht } from '../scripts/open';
+  const f = document.querySelector<HTMLFormElement>('form.bak')!;
+  const dag = f.querySelector<HTMLSelectElement>('#dag')!;
+  const tijd = f.querySelector<HTMLSelectElement>('#tijd')!;
+  const porties = f.querySelector<HTMLInputElement>('#porties')!;
+  const bericht = f.querySelector<HTMLElement>('.bericht')!;
+  const hint = f.querySelector<HTMLElement>('.hint')!;
+  const stuur = f.querySelector<HTMLAnchorElement>('.stuur')!;
+  const wa = f.dataset.wa!;
+  const nu = nuInMaastricht();
+
+  // Ophaaldagen: vandaag (als er nog tijd is) en de volgende open dagen; zondag valt vanzelf af.
+  const opties: { ymd: string; label: string }[] = [];
+  for (let i = 0; opties.length < 7 && i < 14; i++) {
+    const d = vanYmd(plusDag(nu.dag.ymd, i));
+    const t = TIJDEN[d.wd];
+    if (!t) continue;
+    if (i === 0 && Math.ceil((nu.min + 30) / 15) * 15 > minuten(t[1]) - 15) continue;
+    const naam = dagNaam(d);
+    opties.push({ ymd: d.ymd, label: i === 0 ? `vandaag, ${naam}` : i === 1 ? `morgen, ${naam}` : naam });
+  }
+  dag.innerHTML = opties.map((o) => `<option value="${o.ymd}">${o.label}</option>`).join('');
+
+  function vulTijden() {
+    const d = vanYmd(dag.value);
+    const t = TIJDEN[d.wd]!;
+    let van = minuten(t[0]);
+    if (d.ymd === nu.dag.ymd) van = Math.max(van, Math.ceil((nu.min + 30) / 15) * 15);
+    const oud = tijd.value;
+    const slots: string[] = [];
+    for (let m = van; m <= minuten(t[1]) - 15; m += 15) slots.push(klok(m));
+    tijd.innerHTML = '<option value="">Kies een tijd</option>' + slots.map((s) => `<option${s === oud ? ' selected' : ''}>${s}</option>`).join('');
+  }
+
+  function bouw() {
+    const data = new FormData(f);
+    const base = data.get('base') as string | null;
+    const n = Math.min(12, Math.max(1, Number(porties.value) || 1));
+    const vega = data.get('vega') === 'ja' ? 'ja, graag' : 'maakt niet uit';
+    const d = vanYmd(dag.value);
+    const regels = [
+      'Hoi Cato! Ik wil graag bestellen om af te halen.',
+      '',
+      `Base: ${base ? base.toLowerCase() : '...'}`,
+      `Vega: ${vega}`,
+      `Porties: ${n}`,
+      `Ophalen: ${dagNaam(d)}${tijd.value ? ` om ${tijd.value}` : ''}`,
+    ];
+    const naam = String(data.get('naam') || '').trim();
+    const noot = String(data.get('noot') || '').trim();
+    if (naam) regels.push(`Naam: ${naam}`);
+    if (noot) regels.push(`Opmerking: ${noot}`);
+    regels.push('', 'Kan dat?');
+    const tekst = regels.join('\n');
+    bericht.textContent = tekst;
+    const mist = !base ? 'Kies eerst een base.' : !tijd.value ? 'Kies nog een ophaaltijd.' : '';
+    hint.textContent = mist;
+    if (mist) { stuur.setAttribute('aria-disabled', 'true'); stuur.href = wa; }
+    else { stuur.removeAttribute('aria-disabled'); stuur.href = `${wa}?text=${encodeURIComponent(tekst)}`; }
+  }
+
+  stuur.addEventListener('click', (e) => { if (stuur.getAttribute('aria-disabled') === 'true') e.preventDefault(); });
+  f.querySelectorAll<HTMLButtonElement>('.stap').forEach((b) => b.addEventListener('click', () => {
+    porties.value = String(Math.min(12, Math.max(1, (Number(porties.value) || 1) + Number(b.dataset.stap))));
+    bouw();
+  }));
+  dag.addEventListener('change', () => { vulTijden(); bouw(); });
+  f.addEventListener('input', bouw);
+  f.addEventListener('change', bouw);
+  vulTijden();
+  bouw();
+</script>

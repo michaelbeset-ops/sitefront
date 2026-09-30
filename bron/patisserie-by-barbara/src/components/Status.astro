@@ -1,0 +1,32 @@
+---
+// Live "nu open?"-status op Amsterdamse tijd. Zonder JS: de vaste openingstijden.
+---
+<style>
+  .status[data-status='open'] .stip { background: #3f8f5a; animation: puls 2.4s ease-in-out infinite; }
+  @keyframes puls { 50% { box-shadow: 0 0 0 5px #3f8f5a33; } }
+</style>
+<div class="status rounded-xl bg-white/80 p-4 shadow-sm ring-1 ring-lijn" data-status="basis">
+  <p class="eyebrow flex items-center gap-2 text-inkt-zacht"><span class="stip h-2 w-2 rounded-full bg-inkt-zacht" aria-hidden="true"></span><span data-kort>Elke dag open</span></p>
+  <p class="mt-1.5 font-semibold leading-snug text-inkt" aria-live="polite" data-tekst>Ma t/m vr vanaf 09.00, za vanaf 09.30, zo vanaf 10.00.</p>
+</div>
+
+<script is:inline>
+  // Direct na de status uitgevoerd (geen verspringing). Zelfde tijden als src/scripts/open.ts.
+  (function () {
+    var U = { 0: [600, 900], 1: [540, 960], 2: [540, 960], 3: [540, 960], 4: [540, 960], 5: [540, 990], 6: [570, 900] };
+    var DAG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    var p = {};
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+    var wd = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    var m = Number(p.hour) * 60 + Number(p.minute);
+    function t(x) { return String(Math.floor(x / 60)).padStart(2, '0') + '.' + String(x % 60).padStart(2, '0'); }
+    var u = U[wd], r;
+    if (m >= u[0] && m < u[1]) r = ['open', 'Nu open', 'Vandaag open tot ' + t(u[1]) + ' uur.'];
+    else if (m < u[0]) r = ['dicht', 'Nog dicht', 'Vandaag open van ' + t(u[0]) + ' tot ' + t(u[1]) + ' uur.'];
+    else { var n = (wd + 1) % 7; r = ['dicht', 'Nu gesloten', 'Morgen (' + DAG[n] + ') weer open vanaf ' + t(U[n][0]) + ' uur.']; }
+    var el = document.querySelector('.status');
+    el.dataset.status = r[0];
+    el.querySelector('[data-kort]').textContent = r[1];
+    el.querySelector('[data-tekst]').textContent = r[2];
+  })();
+</script>

@@ -1,0 +1,154 @@
+---
+// Wow-functie: "Stel je bestelling samen". Alleen de gerechten en drankjes die gasten in de Google-reviews noemen,
+// zonder prijzen (die zijn niet bekend). Het resultaat is een net WhatsApp-bericht naar Taratoer; er wordt pas iets
+// verstuurd als de bezoeker zelf in WhatsApp op verzenden drukt. Zonder JS: gewone velden en een WhatsApp-link.
+import { site, waIcoon } from '../data/site';
+const eten = [
+  { id: 'wrap', naam: 'Wrap' },
+  { id: 'falafel', naam: 'Falafel' },
+  { id: 'shoarma', naam: 'Shoarma' },
+  { id: 'broodje', naam: 'Broodje' },
+];
+const drinken = [
+  { id: 'ayran', naam: 'Ayran' },
+  { id: 'salep', naam: 'Salep' },
+];
+const keuze = 'flex cursor-pointer items-center justify-center rounded-full bg-white px-4 py-2.5 text-sm font-semibold shadow-sm ring-1 ring-lijn transition-colors has-[:checked]:bg-ceder has-[:checked]:text-creme has-[:checked]:ring-ceder has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-granaat';
+const veld = 'mt-1.5 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 text-inkt shadow-sm transition-colors focus:border-granaat';
+---
+<form id="bestelling" class="licht grid overflow-hidden rounded-2xl bg-papier text-inkt shadow-xl lg:grid-cols-12" novalidate>
+  <div class="p-5 sm:p-8 lg:col-span-7">
+    <fieldset>
+      <legend class="font-display text-xl font-bold tracking-[-0.02em]">1. Wat mag het zijn?</legend>
+      <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+        {[...eten].map((g) => (
+          <li class="teller flex items-center justify-between gap-3 rounded-xl bg-white p-3 pl-4 shadow-sm ring-1 ring-lijn" data-id={g.id}>
+            <label for={`n-${g.id}`} class="font-semibold">{g.naam}</label>
+            <span class="flex items-center gap-1.5">
+              <button type="button" class="min hidden h-9 w-9 place-items-center rounded-full bg-zand text-lg font-bold leading-none transition-colors hover:bg-ceder hover:text-creme" aria-label={`Eén ${g.naam.toLowerCase()} minder`}>&minus;</button>
+              <input id={`n-${g.id}`} name={g.id} data-naam={g.naam} data-soort="eten" type="number" inputmode="numeric" min="0" max="20" value="0" class="h-9 w-12 rounded-lg border border-lijn bg-papier text-center font-semibold tabular-nums" />
+              <button type="button" class="plus hidden h-9 w-9 place-items-center rounded-full bg-granaat text-lg font-bold leading-none text-white transition-colors hover:bg-granaat-donker" aria-label={`Eén ${g.naam.toLowerCase()} meer`}>+</button>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </fieldset>
+
+    <fieldset class="mt-7">
+      <legend class="font-display text-xl font-bold tracking-[-0.02em]">2. Vegan of vegetarisch?</legend>
+      <div class="mt-4 flex flex-wrap gap-2.5">
+        <label class={keuze}><input type="radio" name="voorkeur" value="" class="sr-only" checked />Maakt niet uit</label>
+        <label class={keuze}><input type="radio" name="voorkeur" value="vegetarisch" class="sr-only" />Vegetarisch</label>
+        <label class={keuze}><input type="radio" name="voorkeur" value="vegan" class="sr-only" />Vegan</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="mt-7">
+      <legend class="font-display text-xl font-bold tracking-[-0.02em]">3. Iets erbij drinken?</legend>
+      <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+        {drinken.map((g) => (
+          <li class="teller flex items-center justify-between gap-3 rounded-xl bg-white p-3 pl-4 shadow-sm ring-1 ring-lijn" data-id={g.id}>
+            <label for={`n-${g.id}`} class="font-semibold">{g.naam}</label>
+            <span class="flex items-center gap-1.5">
+              <button type="button" class="min hidden h-9 w-9 place-items-center rounded-full bg-zand text-lg font-bold leading-none transition-colors hover:bg-ceder hover:text-creme" aria-label={`Eén ${g.naam.toLowerCase()} minder`}>&minus;</button>
+              <input id={`n-${g.id}`} name={g.id} data-naam={g.naam} data-soort="drinken" type="number" inputmode="numeric" min="0" max="20" value="0" class="h-9 w-12 rounded-lg border border-lijn bg-papier text-center font-semibold tabular-nums" />
+              <button type="button" class="plus hidden h-9 w-9 place-items-center rounded-full bg-granaat text-lg font-bold leading-none text-white transition-colors hover:bg-granaat-donker" aria-label={`Eén ${g.naam.toLowerCase()} meer`}>+</button>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </fieldset>
+
+    <fieldset class="mt-7">
+      <legend class="font-display text-xl font-bold tracking-[-0.02em]">4. Afhalen of hier eten?</legend>
+      <div class="mt-4 flex flex-wrap gap-2.5">
+        <label class={keuze}><input type="radio" name="waar" value="afhalen" class="sr-only" checked />Afhalen</label>
+        <label class={keuze}><input type="radio" name="waar" value="hier" class="sr-only" />Hier eten</label>
+      </div>
+      <div class="mt-4 grid gap-4 sm:grid-cols-2">
+        <label class="block text-sm font-semibold">Hoe laat? <span class="font-normal text-inkt-zacht">(open vanaf 17.00 uur)</span>
+          <input type="time" name="tijd" min="17:00" step="900" value="17:30" class={veld} />
+        </label>
+        <label class="block text-sm font-semibold">Je naam <span class="font-normal text-inkt-zacht">(mag leeg)</span>
+          <input type="text" name="naam" autocomplete="given-name" class={veld} />
+        </label>
+        <label class="block text-sm font-semibold sm:col-span-2">Opmerking <span class="font-normal text-inkt-zacht">(bijvoorbeeld zonder ui)</span>
+          <input type="text" name="opmerking" class={veld} />
+        </label>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="donker flex flex-col bg-ceder-3 p-5 text-creme sm:p-8 lg:col-span-5">
+    <p class="eyebrow text-saffraan">Je bericht aan Taratoer</p>
+    <div class="mt-4 flex-1">
+      <div class="relative ml-auto max-w-sm rounded-2xl rounded-tr-sm bg-[#d9fdd3] p-4 text-[0.95rem] leading-relaxed text-inkt shadow-md">
+        <p class="whitespace-pre-line break-words" data-bericht aria-live="polite">Hoi Taratoer, ik wil graag bestellen. Kies links wat je wilt, dan zetten we het bericht voor je klaar.</p>
+      </div>
+      <p class="mt-4 text-sm text-creme/80" data-hint aria-live="polite"></p>
+    </div>
+    <a href={site.whatsapp} class="btn btn-wa mt-6 w-full" data-knop><Fragment set:html={waIcoon} />Open WhatsApp met dit bericht</a>
+    <p class="mt-3 text-sm text-creme/80">Het bericht gaat pas weg als je in WhatsApp op verzenden drukt. Liever bellen? <a href={site.telHref} class="whitespace-nowrap font-semibold tabular-nums text-saffraan underline underline-offset-2">{site.tel}</a></p>
+    {site.voorstel && <p class="mt-4 border-t border-lijn-licht pt-4 text-xs text-creme/75">Ontwerpvoorstel: prijzen staan hier nog niet bij. <span>[[AANLEVEREN: menukaart met prijzen]]</span></p>}
+  </div>
+</form>
+
+<script>
+  const f = document.getElementById('bestelling') as HTMLFormElement;
+  const bericht = f.querySelector<HTMLElement>('[data-bericht]')!;
+  const hint = f.querySelector<HTMLElement>('[data-hint]')!;
+  const knop = f.querySelector<HTMLAnchorElement>('[data-knop]')!;
+  const basis = knop.href.split('?')[0];
+  const tellers = [...f.querySelectorAll<HTMLInputElement>('input[type=number]')];
+
+  f.querySelectorAll<HTMLElement>('.teller').forEach((rij) => {
+    const inp = rij.querySelector('input')!;
+    rij.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+      b.classList.remove('hidden');
+      b.classList.add('grid');
+      b.addEventListener('click', () => {
+        const n = Math.max(0, Math.min(20, (Number(inp.value) || 0) + (b.classList.contains('plus') ? 1 : -1)));
+        inp.value = String(n);
+        maak();
+      });
+    });
+  });
+
+  function waarde(naam: string) {
+    return (f.elements.namedItem(naam) as HTMLInputElement | RadioNodeList | null)?.value ?? '';
+  }
+
+  function maak() {
+    const regels = (soort: string) => tellers
+      .filter((i) => i.dataset.soort === soort && Number(i.value) > 0)
+      .map((i) => `- ${Math.min(20, Number(i.value))}x ${i.dataset.naam}`);
+    const eten = regels('eten');
+    const drank = regels('drinken');
+    const voorkeur = waarde('voorkeur');
+    const waar = waarde('waar');
+    const tijd = waarde('tijd');
+    const naam = waarde('naam').trim();
+    const opm = waarde('opmerking').trim();
+
+    let tijdTekst = tijd ? `om ${tijd.replace(':', '.')} uur` : 'zo snel mogelijk';
+    hint.textContent = '';
+    if (tijd && tijd < '17:00') { hint.textContent = 'Taratoer gaat open om 17.00 uur. Kies een tijd vanaf 17.00.'; tijdTekst = 'vanaf 17.00 uur'; }
+
+    const delen = ['Hoi Taratoer, ik wil graag bestellen:'];
+    if (eten.length || drank.length) delen.push([...eten, ...drank].join('\n'));
+    else { delen.push('(nog niets gekozen)'); if (!hint.textContent) hint.textContent = 'Kies minstens één gerecht of drankje.'; }
+    if (voorkeur) delen.push(`Graag ${voorkeur}.`);
+    delen.push(waar === 'hier' ? `Ik eet het graag bij jullie, ${tijdTekst}.` : `Ik haal het af ${tijdTekst}.`);
+    if (opm) delen.push(`Opmerking: ${opm}`);
+    if (naam) delen.push(`Groet, ${naam}`);
+
+    const tekst = delen.join('\n\n');
+    bericht.textContent = tekst;
+    knop.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+  }
+
+  f.addEventListener('input', maak);
+  f.addEventListener('change', maak);
+  f.addEventListener('submit', (e) => e.preventDefault());
+  maak();
+</script>

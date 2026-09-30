@@ -1,0 +1,36 @@
+---
+import { site, url, wa, telIcoon } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 text-inkt backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={url('#uit-de-oven')} class="no-underline transition-colors hover:text-framboos">Uit de oven</a></li>
+          <li><a href={url('#bestellen')} class="no-underline transition-colors hover:text-framboos">Taart bestellen</a></li>
+          <li><a href={url('#bezoek')} class="no-underline transition-colors hover:text-framboos">Openingstijden</a></li>
+        </ul>
+      </nav>
+      <div class="flex items-center gap-2">
+        <a href={site.telHref} class="btn btn-lijn hidden !px-4 !py-2 text-sm lg:inline-flex"><Fragment set:html={telIcoon} /><span class="whitespace-nowrap tabular-nums">{site.tel}</span></a>
+        <a href={site.whatsapp} class="btn btn-framboos !gap-2 !px-3.5 !py-2 text-sm"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="donker bg-pruim pb-10 pt-14 text-papier/85">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo donker class="text-papier" />
+        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}</p>
+      </div>
+      <p class="md:col-span-4"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline-offset-2 hover:underline">T {site.tel}</a><br /><a href={site.whatsapp} class="underline-offset-2 hover:underline">WhatsApp</a><br /><span>KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span></span></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-10 border-t border-lijn-licht pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

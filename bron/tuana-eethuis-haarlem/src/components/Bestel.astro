@@ -1,0 +1,152 @@
+---
+// Wow-functie: bestelling samenstellen (aantallen per gerecht, afhalen, ophaaltijd binnen de openingstijden)
+// en klaarzetten als WhatsApp-bericht. Geen prijzen: die zijn niet bekend. Zonder JS: gewone WhatsApp-knop.
+import { site, bestelItems, wa } from '../data/site';
+const veld = 'mt-1.5 block w-full rounded-lg border border-lijn bg-white px-3.5 py-3 text-inkt shadow-sm transition-colors focus:border-paprika';
+---
+<form id="bestel" class="licht grid overflow-hidden rounded-2xl bg-meel text-inkt shadow-xl lg:grid-cols-12" novalidate>
+  <fieldset class="min-w-0 p-5 sm:p-8 lg:col-span-7">
+    <legend class="float-left w-full">
+      <span class="eyebrow block text-paprika">Stap 1</span>
+      <span class="mt-2 block font-display text-2xl font-bold">Wat mag het zijn?</span>
+    </legend>
+    <ul class="clear-both mt-5 divide-y divide-lijn rounded-xl bg-white shadow-sm ring-1 ring-lijn">
+      {bestelItems.map((it) => (
+        <li class="flex items-center justify-between gap-3 px-4 py-3 sm:px-5" data-rij>
+          <label for={`n-${it.id}`} class="min-w-0 text-lg font-semibold leading-snug">{it.naam}</label>
+          <div class="flex shrink-0 items-center gap-1.5">
+            <button type="button" class="stap hidden" data-min><span aria-hidden="true">&minus;</span><span class="sr-only">Eén {it.naam} minder</span></button>
+            <input id={`n-${it.id}`} name={it.id} data-naam={it.naam} type="number" inputmode="numeric" min="0" max="50" value="0" class="aantal h-11 w-14 rounded-lg border border-lijn bg-meel text-center text-lg font-bold tabular-nums" />
+            <button type="button" class="stap hidden" data-plus><span aria-hidden="true">+</span><span class="sr-only">Eén {it.naam} meer</span></button>
+          </div>
+        </li>
+      ))}
+    </ul>
+    <p class="mt-4 text-sm text-inkt-zacht">Welk broodje, welk vlees of welke saus: zet het bij de opmerking. <span class="text-xs">[[AANLEVEREN: volledige menukaart met prijzen]]</span></p>
+  </fieldset>
+
+  <div class="border-t border-lijn bg-deeg p-5 sm:p-8 lg:col-span-5 lg:border-l lg:border-t-0">
+    <p class="eyebrow text-paprika">Stap 2</p>
+    <h3 class="mt-2 text-2xl">Afhalen, wanneer?</h3>
+    <div class="mt-5 grid gap-4">
+      <fieldset class="min-w-0">
+        <legend class="text-sm font-semibold">Dag</legend>
+        <div class="mt-1.5 grid grid-cols-3 gap-2" data-dagen>
+          <label class="dag"><input type="radio" name="dag" value="0" checked class="sr-only" /><span>Vandaag</span></label>
+          <label class="dag"><input type="radio" name="dag" value="1" class="sr-only" /><span>Morgen</span></label>
+          <label class="dag"><input type="radio" name="dag" value="2" class="sr-only" /><span>Overmorgen</span></label>
+        </div>
+      </fieldset>
+      <label class="block text-sm font-semibold">Ophaaltijd
+        <select name="tijd" class={veld} data-tijd>
+          <option value="">Ma t/m za 09.00 tot 20.00, zo 11.00 tot 20.00</option>
+        </select>
+      </label>
+      <label class="block text-sm font-semibold">Uw naam <span class="font-normal text-inkt-zacht">(voor bij het ophalen)</span>
+        <input type="text" name="naam" autocomplete="name" class={veld} />
+      </label>
+      <label class="block text-sm font-semibold">Opmerking <span class="font-normal text-inkt-zacht">(mag leeg)</span>
+        <textarea name="opmerking" rows="2" class={veld}></textarea>
+      </label>
+    </div>
+
+    <p class="eyebrow mt-7 text-paprika">Uw bericht</p>
+    <p data-bericht aria-live="polite" class="mt-3 whitespace-pre-line rounded-xl rounded-tl-sm bg-white p-4 text-sm leading-relaxed text-inkt shadow-sm ring-1 ring-lijn">Kies hiernaast wat u wilt bestellen.</p>
+    <a href={site.whatsapp} data-knop class="btn btn-wa mt-5 w-full"><Fragment set:html={wa} />Open WhatsApp met deze bestelling</a>
+    <p class="mt-3 text-sm text-inkt-zacht">WhatsApp opent met het bericht klaar. U kunt het nog aanpassen voordat u het verstuurt.{site.voorstel && ' Dit is een ontwerpvoorstel: deze pagina verstuurt zelf niets.'}</p>
+  </div>
+</form>
+
+<style>
+  .stap { height: 2.75rem; width: 2.75rem; border-radius: var(--radius-full); font-size: 1.35rem; font-weight: 700; line-height: 1; color: var(--color-paprika); background: var(--color-meel); box-shadow: inset 0 0 0 1.5px var(--color-lijn); transition: background-color .2s ease, color .2s ease; }
+  .stap:hover { background: var(--color-paprika); color: var(--color-white); }
+  .aantal { -moz-appearance: textfield; }
+  .aantal::-webkit-inner-spin-button, .aantal::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  [data-rij].gekozen { background: #fbf1dc; }
+  [data-rij].gekozen .aantal { background: var(--color-paprika); color: var(--color-white); border-color: var(--color-paprika); }
+  .dag span { display: block; cursor: pointer; border-radius: var(--radius-lg); background: var(--color-white); padding: .7rem .4rem; text-align: center; font-size: var(--text-sm); font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--color-lijn); transition: background-color .2s ease, color .2s ease; }
+  .dag input:checked + span { background: var(--color-oven); color: var(--color-deeg); box-shadow: none; }
+  .dag input:focus-visible + span { outline: 3px solid var(--color-paprika); outline-offset: 2px; }
+  .dag input:disabled + span { opacity: .45; cursor: not-allowed; text-decoration: line-through; }
+</style>
+
+<script>
+  import { TIJDEN, nuInHaarlem, plusDagen, datumTekst, klok } from '../scripts/open';
+  const f = document.getElementById('bestel') as HTMLFormElement;
+  const bericht = f.querySelector<HTMLElement>('[data-bericht]')!;
+  const knop = f.querySelector<HTMLAnchorElement>('[data-knop]')!;
+  const tijdSel = f.querySelector<HTMLSelectElement>('[data-tijd]')!;
+  const basis = knop.href;
+  const invoer = [...f.querySelectorAll<HTMLInputElement>('.aantal')];
+
+  f.querySelectorAll<HTMLButtonElement>('.stap').forEach((b) => {
+    b.classList.remove('hidden');
+    b.addEventListener('click', () => {
+      const i = b.parentElement!.querySelector<HTMLInputElement>('.aantal')!;
+      i.value = String(Math.min(50, Math.max(0, (Number(i.value) || 0) + (b.hasAttribute('data-plus') ? 1 : -1))));
+      werk();
+    });
+  });
+
+  // Ophaaltijden per kwartier binnen de openingstijden; vandaag pas vanaf 20 minuten na nu.
+  function slots(offset: number) {
+    const nu = nuInHaarlem();
+    const d = plusDagen(nu.datum, offset);
+    const [open, dicht] = TIJDEN[d.getUTCDay()];
+    let start = open + 15;
+    if (offset === 0) start = Math.max(start, Math.ceil((nu.min + 20) / 15) * 15);
+    const lijst: number[] = [];
+    for (let m = start; m <= dicht - 15; m += 15) lijst.push(m);
+    return { d, lijst };
+  }
+  function vulTijden() {
+    const offset = Number((f.elements.namedItem('dag') as RadioNodeList).value);
+    const vorige = tijdSel.value;
+    const { lijst } = slots(offset);
+    tijdSel.innerHTML = '';
+    lijst.forEach((m) => { const o = new Option(`${klok(m)} uur`, klok(m)); tijdSel.add(o); });
+    if ([...tijdSel.options].some((o) => o.value === vorige)) tijdSel.value = vorige;
+  }
+  // Is vandaag geen ophaaltijd meer mogelijk, dan valt "Vandaag" af.
+  const vandaag = f.querySelector<HTMLInputElement>('input[name="dag"][value="0"]')!;
+  if (slots(0).lijst.length === 0) {
+    vandaag.disabled = true;
+    f.querySelector<HTMLInputElement>('input[name="dag"][value="1"]')!.checked = true;
+  }
+
+  function werk() {
+    const regels: string[] = [];
+    invoer.forEach((i) => {
+      const n = Number(i.value) || 0;
+      i.closest('[data-rij]')!.classList.toggle('gekozen', n > 0);
+      if (n > 0) regels.push(`${n}x ${i.dataset.naam}`);
+    });
+    const offset = Number((f.elements.namedItem('dag') as RadioNodeList).value);
+    const { d } = slots(offset);
+    const dagWoord = ['vandaag', 'morgen', 'overmorgen'][offset];
+    const naam = (f.elements.namedItem('naam') as HTMLInputElement).value.trim();
+    const opm = (f.elements.namedItem('opmerking') as HTMLTextAreaElement).value.trim();
+    if (!regels.length) {
+      bericht.textContent = 'Kies wat u wilt bestellen: tik op + bij een gerecht.';
+      knop.href = basis;
+      return;
+    }
+    const tekst = [
+      'Hallo Tuana Eethuis, ik wil graag bestellen om af te halen:',
+      ...regels,
+      '',
+      `Ophalen: ${dagWoord} (${datumTekst(d)}) om ${tijdSel.value} uur`,
+      naam ? `Naam: ${naam}` : '',
+      opm ? `Opmerking: ${opm}` : '',
+      '',
+      'Alvast bedankt.',
+    ].filter((r, i, a) => r !== '' || (a[i - 1] !== '' && i > 0)).join('\n');
+    bericht.textContent = tekst;
+    knop.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+  }
+  f.addEventListener('change', (e) => { if ((e.target as HTMLInputElement).name === 'dag') vulTijden(); werk(); });
+  f.addEventListener('input', werk);
+  f.addEventListener('submit', (e) => e.preventDefault());
+  vulTijden();
+  werk();
+</script>

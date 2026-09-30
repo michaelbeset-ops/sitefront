@@ -1,0 +1,33 @@
+---
+import { site, url, wa } from '../data/site';
+import Logo from './Logo.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn-licht bg-oven/95 text-deeg backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="no-underline"><Logo /></a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-7 text-sm font-semibold">
+          <li><a href={url('#populair')} class="no-underline transition-colors hover:text-saffraan">Populair</a></li>
+          <li><a href={url('#bestellen')} class="no-underline transition-colors hover:text-saffraan">Bestellen</a></li>
+          <li><a href={url('#contact')} class="no-underline transition-colors hover:text-saffraan">Openingstijden en route</a></li>
+        </ul>
+      </nav>
+      <a href={site.whatsapp} class="btn btn-wa !px-4 !py-2 text-sm"><Fragment set:html={wa} /><span class="max-[379px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-oven pb-10 pt-14 text-deeg/80">
+    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo />
+        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}</p>
+      </div>
+      <p class="md:col-span-4"><a href={site.telHref} class="whitespace-nowrap tabular-nums underline-offset-2 hover:underline">T {site.tel}</a><br /><a href={site.whatsapp} class="underline-offset-2 hover:underline">WhatsApp</a><br /><span class="text-deeg/75">KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span></span></p>
+      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mt-10 border-t border-lijn-licht pt-6 text-xs text-deeg/75">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

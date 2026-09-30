@@ -1,0 +1,1 @@
+import{a as e}from"./open.BHOcUAL6.js";var t=e().dag.wd;document.querySelector(`.dagrij[data-wd="${t}"]`)?.classList.add(`vandaag`);
