@@ -1,0 +1,449 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { Image } from 'astro:assets';
+import { site } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import vakwerk from '../assets/vakwerk.jpg';
+import gmk from '../assets/e/gmk.jpg';
+import kNew from '../assets/e/t_kraan_new.jpg';
+import k2 from '../assets/e/t_kraan_2.jpg';
+import k3 from '../assets/e/t_kraan_3.jpg';
+import kCab from '../assets/e/t_kraan_cabine.jpg';
+import er20 from '../assets/e/p-t_20-gif.jpg';
+import er30 from '../assets/e/p-t_30-gif.jpg';
+import er51 from '../assets/e/p-t_51-gif.jpg';
+import er52 from '../assets/e/p-t_52-gif.jpg';
+import bp1 from '../assets/e/p-t_1-jpg.jpg';
+import bp2 from '../assets/e/p-t_2-jpg.jpg';
+import dw3 from '../assets/e/p-t_3-gif.jpg';
+import dw4 from '../assets/e/p-t_4-gif.jpg';
+import dw5 from '../assets/e/p-t_5-gif.jpg';
+import dw6 from '../assets/e/p-t_6-gif.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const pin = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>`;
+
+// Diensten, uit hun profiel- en activiteitenpagina.
+const diensten = [
+  { naam: 'Verhuur van hijskranen', tekst: 'Het verhuren van hijskranen is onze hoofdzaak.' },
+  { naam: 'Machinisten, riggers en hijsuitvoerders', tekst: 'Naast kranen verhuren wij ook de mensen: machinisten, riggers en hijsuitvoerders.' },
+  { naam: 'Aannemen en uitvoeren van hijswerk', tekst: 'Gespecialiseerd in het aannemen en uitvoeren van hijswerkzaamheden, in samenwerking met onze gediplomeerd uitvoerder hijswerken.' },
+  { naam: 'Reparatie en (de)montage', tekst: 'Naast alles wat met hijsen te maken heeft, doen wij ook reparatie en (de)montage.' },
+  { naam: 'In- en verkoop van machines', tekst: 'Ook voor de in- en verkoop van machines kunt u bij ons terecht.' },
+];
+
+// Materieellijst van hun site: één kraan met deze maximale waarden. De kraankiezer rekent alleen hiermee.
+const kraan = { naam: 'Grove GMK 4080-1', cap: 80, radius: 54, mastMin: 11, mastMax: 51, jibMin: 9, jibMax: 15 };
+
+// Projecten, in de volgorde van hun referentiepagina. "Opdrachtgever" alleen waar een naam staat.
+const uitgelicht = [
+  {
+    titel: 'Plaatsing airco-units op Erasmus Universiteit te Rotterdam',
+    tekst: 'Opbouwen van rupskraan (Demag CC 2600) d.m.v. drie hulpkranen, in het centrum van Rotterdam, voor het plaatsen van 3 koelmachines van ongeveer 7000 kg per stuk, op het dak van de Erasmus Universiteit.',
+    fotos: [
+      { src: er30, alt: 'Luchtfoto van de binnenstad met de gele vakwerkmast van de rupskraan uitgelegd op straat' },
+      { src: er20, alt: 'De gele vakwerkmast wordt opgebouwd langs een straat met bomen' },
+      { src: er51, alt: 'Een koelmachine hangt aan de kraan boven de gevelletters van de Erasmus Universiteit' },
+      { src: er52, alt: 'De groene koelmachine op het dak, monteurs ernaast' },
+    ],
+  },
+  {
+    titel: 'Aansluiting op RWZI Bereplaat',
+    opdrachtgever: 'Visser & Smit Hanab',
+    tekst: 'Inhijsen waterleidingbuis t.b.v. rioolwaterzuiveringsinstallatie Bereplaat te Spijkenisse.',
+    fotos: [
+      { src: bp1, alt: 'Een grote zwarte waterleidingbuis op het werkterrein, met de rode kraan erachter' },
+      { src: bp2, alt: 'De rode kraan van De Poortere met cabine, onder een blauwe lucht' },
+    ],
+  },
+  {
+    titel: 'Laden damwand',
+    tekst: 'Laden damwand.',
+    fotos: [
+      { src: dw6, alt: 'Damwandplanken op een ponton aan de kade' },
+      { src: dw4, alt: 'Een kraan hijst een damwandplank boven het water' },
+      { src: dw5, alt: 'Kraan op de kade tussen containers, onder een bewolkte lucht' },
+      { src: dw3, alt: 'Een oplegger met damwand tussen de containers' },
+    ],
+  },
+];
+
+const projecten = [
+  { titel: 'Woningbouw', opdrachtgever: 'Berting Bouw', tekst: 'Plaatsen dakconstructie woning.' },
+  { titel: 'HB Jansen Holding', opdrachtgever: 'Handel en Constructie P. Jansen', tekst: 'Demonteren transportsysteem.' },
+  { titel: 'Plaatsen parkeerdek parkeergarage', opdrachtgever: 'Haitsma te Dordrecht', tekst: 'Plaatsen parkeerdek parkeergarage.' },
+  { titel: 'Monteren brugdelen pal naast A12 te Zoetermeer', opdrachtgever: 'Iemans', tekst: 'M.b.v. een 300, 400 en 650 tonner wordt dit brugdeel op hoogte gebracht, waarna met een kleine kraan de tijdelijke ondersteuning wordt aangebracht.' },
+  { titel: 'Demonteren havenkraan Capelle aan den IJssel', tekst: 'Na het plaatsen van de hijsbalken en het vastmaken van de stroppen vanuit een manbak kan de jib er weer af. Intussen hijst de 400 tons LTM 1400 het kraandeel naar beneden en wordt de KMK 4070 in positie gereden om het kraandeel te "staarten". Vervolgens wordt het kraandeel door de twee kranen op stoppingen gelegd.' },
+  { titel: 'Hijsen boot te Middelburg', tekst: 'Met behulp van twee evenaars en twee lange stroppen "in de broek" komt Bruce weer op het droge (+/- 2,5 ton).' },
+  { titel: 'Plaatsen zonneboiler te Wemeldinge', tekst: 'Met deze afmetingen toch maar met een kraan op zijn plaats leggen.' },
+  { titel: 'Woningbouw te Waarde', tekst: 'Plaatsen betonliggers en vloerplaten.' },
+  { titel: 'Verplaatsen dakmateriaal over winkelpand te Goes', tekst: 'Verwijderen oude dakbedekking d.m.v. kantelbak.' },
+  { titel: 'Bouw fundering, oude veiling Kapelle-Biezelinge', tekst: 'Bekisting maken en beton storten.' },
+  { titel: 'Opbouwen kermisattractie te Middelburg', tekst: 'Zeer krappe locatie voor de "Magic Mouse" op Plein 1940. Zwaarste hijs: container met de wagentjes, ongeveer 9 ton.' },
+  { titel: 'Zuigbuis-arm voor zandzuiger "Oranje" van Boskalis te Goes', tekst: 'Laden d.m.v. 650 tons Demag AC 650, ongeveer 90 ton per stuk, afbouwen met een KMK 4070 en simuleren wederom met een Demag AC 650 om de zuigbuis-arm door zijn dode punt heen te halen en zijn volledige beweging na te bootsen.' },
+];
+---
+<Base
+  title="De Poortere Kraanverhuur | Verhuur van hijskranen in Waarde"
+  description="De Poortere Kraanverhuur B.V. in Waarde: verhuur van hijskranen, machinisten, riggers en hijsuitvoerders voor bouw, petrochemie en industrie. VCA* gecertificeerd en 24/7 bereikbaar."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: cabinezwart vlak, brede kop met hun slogan. Rechts groot hijswerk over de rand, hun eigen kraan als inzet. -->
+    <section class="donker relative bg-nacht text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-14 lg:grid-cols-12 lg:gap-12 lg:pt-12 lg:pb-14">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-6 lg:self-start lg:-mb-32">
+          <div class="relative aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[720px] lg:shadow-lg">
+            <Foto src={hero} alt="Telescoopgiek van een mobiele kraan met haak, tegen een blauwe lucht met stapelwolken" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 640px, 100vw" class="object-[40%_50%] lg:object-[30%_50%]" />
+            <p class="absolute top-4 left-4 rounded-full bg-nacht/85 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">Hijswerk voor bouw, petrochemie en industrie</p>
+          </div>
+          <figure class="absolute -bottom-10 right-4 z-10 w-44 overflow-hidden rounded-xl bg-white p-1.5 text-ink shadow-lg sm:w-72 sm:p-2 lg:-bottom-12 lg:-right-6 lg:w-80">
+            <div class="overflow-hidden rounded-lg"><Image src={gmk} alt="Onze Grove GMK 4080-1: rode giek, zwarte cabine met De Poortere-opschrift" widths={[320, 560]} sizes="(min-width: 1024px) 304px, 272px" format="webp" quality={75} loading="eager" class="block h-auto w-full" /></div>
+            <figcaption class="flex items-end justify-between gap-3 px-2 pt-2 pb-1">
+              <span><span class="kicker hidden text-rood sm:block">Eigen materieel</span><strong class="font-display text-xs whitespace-nowrap [font-stretch:110%] sm:text-base">{kraan.naam}</strong></span>
+              <span class="num hidden text-right text-sm leading-tight text-ink-soft sm:block"><strong class="block text-ink">{kraan.cap} ton</strong>{kraan.radius} mtr radius</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-12 lg:order-1 lg:col-span-6 lg:pt-10">
+          <p class="kicker text-sein">Kraanverhuur in Waarde · 24/7 bereikbaar</p>
+          <h1 class="mt-5 text-4xl">Zo beleeft uw last een veilige vlucht</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">Het verhuren van hijskranen is onze hoofdzaak. Daarnaast verhuren wij machinisten, riggers en hijsuitvoerders, voor onder andere de bouwsector, petrochemie en de industriesector.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-rood"><Fragment set:html={wa} /><span>Stuur een WhatsApp</span></a>
+            <a href={site.mobielHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+          </div>
+          <dl class="mt-11 grid max-w-xl grid-cols-3 gap-x-5 border-t border-white/20 pt-6 text-sm">
+            <div><dt class="text-white/75">Veiligheid</dt><dd class="mt-1"><strong class="block font-display text-xl leading-tight font-extrabold text-white [font-stretch:112%]">VCA*</strong><span class="text-white/80">sinds 2000</span></dd></div>
+            <div><dt class="text-white/75">Erkend</dt><dd class="mt-1"><strong class="block font-display text-xl leading-tight font-extrabold text-white [font-stretch:112%]">VVT</strong><span class="text-white/80">erkennings&shy;regeling</span></dd></div>
+            <div><dt class="text-white/75">Google</dt><dd class="mt-1"><strong class="block font-display text-xl leading-tight font-extrabold text-white [font-stretch:112%]">{site.google}</strong><span class="text-white/80">uit {site.reviews} reviews</span></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diensten: profieltekst links met sfeerfoto, genummerde dienstenlijst rechts. -->
+    <section id="diensten" class="scroll-mt-20 pt-24 pb-16 lg:pt-44 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-rood">Wat wij doen</p>
+          <h2 class="mt-3 text-3xl">Alles wat met hijsen te maken heeft</h2>
+          <p class="mt-6 text-lg">De Poortere Kraanverhuur is een flexibele onderneming die al ruim 20 jaar werkzaamheden verricht voor onder andere de bouwsector, petrochemie en de industriesector.</p>
+          <ul class="mt-6 flex flex-wrap gap-2 text-sm font-semibold" aria-label="Sectoren">
+            <li class="rounded-full border border-line bg-white px-3.5 py-1.5 shadow-sm">Bouwsector</li>
+            <li class="rounded-full border border-line bg-white px-3.5 py-1.5 shadow-sm">Petrochemie</li>
+            <li class="rounded-full border border-line bg-white px-3.5 py-1.5 shadow-sm">Industriesector</li>
+          </ul>
+          <div class="donker mt-9 rounded-xl bg-nacht p-6 text-white shadow-sm">
+            <p class="kicker text-sein">Altijd bereikbaar</p>
+            <p class="num mt-2 text-3xl font-extrabold">24/7</p>
+            <p class="mt-2 text-sm text-white/85">Voor het oplossen van uw verticaal- en/of horizontaal transport.</p>
+            <a href={site.mobielHref} class="mt-4 inline-flex items-center gap-2 font-semibold text-white underline underline-offset-4 hover:text-sein"><span class="h-4 w-4"><Fragment set:html={tel} /></span><span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></a>
+          </div>
+        </div>
+        <ol class="border-t border-line lg:col-span-7 lg:pt-2">
+          {diensten.map((d, i) => (
+            <li class="group grid grid-cols-[2.75rem_1fr] gap-4 border-b border-line py-6 sm:grid-cols-[4rem_1fr] sm:gap-6 lg:py-7">
+              <span class="num text-2xl font-extrabold text-rood transition-transform duration-200 group-hover:translate-x-1">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-xl sm:text-2xl">{d.naam}</h3>
+                <p class="mt-2 max-w-xl text-ink-soft">{d.tekst}</p>
+              </div>
+            </li>
+          ))}
+          <li class="pt-8">
+            <a href={site.whatsapp} class="btn btn-nacht"><Fragment set:html={wa} /><span>Vraag direct naar de mogelijkheden</span></a>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Materieel + kraankiezer: donker vlak, hun eigen kraan met de maximale waarden, daaronder de interactieve kiezer. -->
+    <section id="materieel" class="donker scroll-mt-16 bg-nacht text-white">
+      <div class="strepen h-2" aria-hidden="true"></div>
+      <div class="wrap py-16 lg:py-24">
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-5">
+            <p class="kicker text-sein">Ons materieel</p>
+            <h2 class="mt-3 text-3xl">{kraan.naam}</h2>
+            <p class="mt-5 text-white/85">De mobiele kraan uit onze materieellijst, met de maximale waarden zoals wij ze opgeven.</p>
+          </div>
+          <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/15 lg:col-span-7">
+            <div class="bg-staal p-5"><dt class="text-xs text-white/75">Max. capaciteit</dt><dd class="num mt-1 text-2xl font-extrabold whitespace-nowrap">80 <span class="text-base font-bold text-white/80">ton</span></dd></div>
+            <div class="bg-staal p-5"><dt class="text-xs text-white/75">Max. radius</dt><dd class="num mt-1 text-2xl font-extrabold whitespace-nowrap">54 <span class="text-base font-bold text-white/80">mtr</span></dd></div>
+            <div class="bg-staal p-5"><dt class="text-xs text-white/75">Hoofdmast</dt><dd class="num mt-1 text-lg font-extrabold">11,0 tot 51,0 <span class="text-sm font-bold text-white/80">mtr</span></dd></div>
+            <div class="bg-staal p-5"><dt class="text-xs text-white/75">Jib</dt><dd class="num mt-1 text-lg font-extrabold">9,0 tot 15,0 <span class="text-sm font-bold text-white/80">mtr</span></dd></div>
+          </dl>
+        </div>
+        <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:max-w-[52rem]" aria-label="Foto's van de Grove GMK 4080-1">
+          {[
+            { src: kNew, alt: 'De Grove GMK 4080-1 op het terrein, rode giek ingeschoven' },
+            { src: k2, alt: 'De kraan met uitgeschoven stempels en rijplaten' },
+            { src: k3, alt: 'Achterzijde van de kraan met rood-witte markering, onder een blauwe lucht' },
+            { src: kCab, alt: 'De kraancabine van dichtbij, met de rode giek erboven' },
+          ].map((f) => (
+            <li class="overflow-hidden rounded-lg bg-staal"><Image src={f.src} alt={f.alt} widths={[200]} sizes="200px" format="webp" quality={80} class="block aspect-[4/3] h-auto w-full max-w-[200px] object-cover" /></li>
+          ))}
+        </ul>
+
+        <!-- Kraankiezer -->
+        <div id="kraankiezer" class="mt-16 scroll-mt-24 overflow-hidden rounded-xl bg-staal shadow-lg ring-1 ring-white/10 lg:mt-20">
+          <div class="grid grid-cols-1 lg:grid-cols-12">
+            <form class="kk p-6 sm:p-8 lg:col-span-5 lg:p-10" id="kk-form" novalidate>
+              <p class="kicker text-sein">Kraankiezer</p>
+              <h2 class="mt-3 text-2xl sm:text-3xl">Welke kraan heeft u nodig?</h2>
+              <p class="mt-4 text-sm text-white/80">Vul uw last in en zie meteen of die binnen de maximale waarden van onze {kraan.naam} valt.</p>
+              <div class="mt-7 space-y-5">
+                <div class="kk-veld">
+                  <label for="kk-gewicht" class="flex items-baseline justify-between text-sm font-semibold"><span>Gewicht van de last</span><span class="text-xs font-normal text-white/75">ton</span></label>
+                  <input id="kk-gewicht" name="gewicht" type="number" inputmode="decimal" min="0" step="0.1" value="7" class="mt-2 rounded-lg border border-white/20 bg-nacht px-4 py-3 text-lg text-white" />
+                  <div class="kk-balk mt-2" aria-hidden="true"><span data-balk="gewicht"></span></div>
+                </div>
+                <div class="kk-veld">
+                  <label for="kk-afstand" class="flex items-baseline justify-between text-sm font-semibold"><span>Afstand vanaf de kraan</span><span class="text-xs font-normal text-white/75">meter</span></label>
+                  <input id="kk-afstand" name="afstand" type="number" inputmode="decimal" min="0" step="0.5" value="18" class="mt-2 rounded-lg border border-white/20 bg-nacht px-4 py-3 text-lg text-white" />
+                  <div class="kk-balk mt-2" aria-hidden="true"><span data-balk="afstand"></span></div>
+                </div>
+                <div class="kk-veld">
+                  <label for="kk-hoogte" class="flex items-baseline justify-between text-sm font-semibold"><span>Hoogte waarop de last moet komen</span><span class="text-xs font-normal text-white/75">meter</span></label>
+                  <input id="kk-hoogte" name="hoogte" type="number" inputmode="decimal" min="0" step="0.5" value="25" class="mt-2 rounded-lg border border-white/20 bg-nacht px-4 py-3 text-lg text-white" />
+                  <div class="kk-balk mt-2" aria-hidden="true"><span data-balk="hoogte"></span></div>
+                </div>
+                <div class="kk-veld">
+                  <label for="kk-wat" class="text-sm font-semibold">Wat en waar <span class="font-normal text-white/75">(optioneel)</span></label>
+                  <input id="kk-wat" name="wat" type="text" autocomplete="off" placeholder="Bijv. koelmachine op dak, Goes" class="mt-2 rounded-lg border border-white/20 bg-nacht px-4 py-3 text-white placeholder:text-white/60" />
+                </div>
+              </div>
+            </form>
+
+            <div class="flex flex-col border-t border-white/10 bg-nacht/60 p-6 sm:p-8 lg:col-span-7 lg:border-t-0 lg:border-l lg:p-10">
+              <svg id="kk-svg" viewBox="0 0 520 380" class="h-auto w-full" role="img" aria-labelledby="kk-svg-t">
+                <title id="kk-svg-t">Schematische tekening: de kraan, de afstand en hoogte van uw last, de maximale radius van 54 meter en de hoofdmast van 51 meter</title>
+                <defs>
+                  <pattern id="kk-rast" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0v25" fill="none" stroke="#ffffff" stroke-opacity=".06" /></pattern>
+                </defs>
+                <rect x="60" y="20" width="440" height="320" fill="url(#kk-rast)" />
+                <!-- schaal: 1 meter = 5 px, voet van de mast op (80, 340) -->
+                <path d="M335 340 A255 255 0 0 0 80 85" fill="none" stroke="#ffffff" stroke-opacity=".35" stroke-dasharray="5 6" />
+                <text x="236" y="116" fill="#ffffff" fill-opacity=".75" font-size="15">hoofdmast 51,0 mtr</text>
+                <line x1="350" y1="20" x2="350" y2="340" stroke="#ff6a5c" stroke-opacity=".7" stroke-dasharray="3 5" />
+                <text x="344" y="36" fill="#ff6a5c" font-size="15" text-anchor="end">max. radius 54 mtr</text>
+                <line x1="20" y1="340" x2="510" y2="340" stroke="#ffffff" stroke-opacity=".45" />
+                <g fill="#ffffff" fill-opacity=".75" font-size="14">
+                  <text x="80" y="362" text-anchor="middle">0</text><text x="205" y="362" text-anchor="middle">25 m</text><text x="330" y="362" text-anchor="middle">50 m</text><text x="455" y="362" text-anchor="middle">75 m</text>
+                </g>
+                <!-- kraan -->
+                <rect x="30" y="318" width="74" height="16" rx="3" fill="#b8141f" />
+                <rect x="58" y="304" width="30" height="16" rx="2" fill="#2b2e33" />
+                <circle cx="42" cy="336" r="5" fill="#2b2e33" /><circle cx="60" cy="336" r="5" fill="#2b2e33" /><circle cx="92" cy="336" r="5" fill="#2b2e33" />
+                <line id="kk-mast" x1="80" y1="312" x2="170" y2="215" stroke="#e8453a" stroke-width="7" stroke-linecap="round" />
+                <line id="kk-kabel" x1="170" y1="215" x2="170" y2="215" stroke="#ffffff" stroke-width="1.5" />
+                <rect id="kk-last" x="160" y="215" width="20" height="14" rx="2" fill="#ffffff" />
+                <circle id="kk-punt" cx="170" cy="215" r="4" fill="#ff6a5c" />
+              </svg>
+              <div id="kk-uitkomst" class="mt-6 rounded-xl border border-white/15 bg-staal p-5" aria-live="polite">
+                <p class="kicker text-sein" id="kk-status">Indicatie</p>
+                <p class="mt-2 text-lg font-semibold" id="kk-tekst">Onze {kraan.naam} heeft een maximale capaciteit van 80 ton en een maximale radius van 54 mtr.</p>
+                <p class="mt-2 text-sm text-white/80" id="kk-extra">Maximale capaciteit en maximale radius gelden niet tegelijk: hoe verder de last van de kraan af ligt, hoe minder de kraan kan hijsen.</p>
+              </div>
+              <p class="mt-4 text-xs leading-relaxed text-white/75"><strong class="text-white">Indicatie; hijsplan en lastdiagram door onze hijsuitvoerder.</strong> De kiezer vergelijkt alleen met de maximale waarden uit onze materieellijst. De tekening is schematisch.</p>
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <a id="kk-wa" href={site.whatsapp} class="btn btn-rood"><Fragment set:html={wa} /><span>Stuur uw hijsvraag via WhatsApp</span></a>
+                <a href={site.mobielHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Veiligheid: grote vakwerkfoto links, certificering en tekst rechts. -->
+    <section id="veiligheid" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+        <div class="relative lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-full lg:min-h-[520px]">
+            <Foto src={vakwerk} alt="Gele vakwerkmast met jib van een grote kraan, van onderaf gezien tegen een diepblauwe lucht" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 600px, 100vw" class="object-[45%_40%]" />
+          </div>
+          <div class="absolute right-4 bottom-4 left-4 rounded-xl bg-nacht/90 p-5 text-white backdrop-blur-sm sm:right-auto sm:max-w-xs">
+            <p class="text-sm text-white/85">In samenwerking met onze uitvoerder (gediplomeerd uitvoerder hijswerken) beleeft uw last een veilige vlucht.</p>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:py-4">
+          <p class="kicker text-rood">Veiligheid en kwaliteit</p>
+          <h2 class="mt-3 text-3xl">Veiligheid staat hoog in het vaandel</h2>
+          <p class="mt-6 text-lg">De Poortere Kraanverhuur geldt als één van de meest vooraanstaande bedrijven als het gaat om de veiligheid. Naast de nodige ervaring staan veiligheid en kwaliteit hoog in het vaandel.</p>
+          <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="rounded-xl border border-line bg-white p-6 shadow-sm">
+              <p class="num text-3xl font-extrabold text-rood">VCA*</p>
+              <h3 class="mt-2 text-lg">Gecertificeerd sinds 2000</h3>
+              <p class="mt-1 text-sm text-ink-soft">De Poortere Kraanverhuur is sinds 2000 VCA* gecertificeerd.</p>
+            </div>
+            <div class="rounded-xl border border-line bg-white p-6 shadow-sm">
+              <p class="num text-3xl font-extrabold text-rood">VVT</p>
+              <h3 class="mt-2 text-lg">Erkenningsregeling</h3>
+              <p class="mt-1 text-sm text-ink-soft">In het bezit van het certificaat 'VVT-erkenningsregeling' (Vereniging Verticaal Transport).</p>
+            </div>
+          </div>
+          <p class="mt-8 text-ink-soft">Gecertificeerd zijn wil zeggen dat wij in de praktijk voldoen aan alle vigerende wet- en regelgeving voor het verticaaltransportbedrijf en de verzamelde veiligheidscriteria uit het Veiligheidshandboek van de VVT.</p>
+          <p class="mt-4 text-ink-soft">Wij voldoen aan de criteria van de erkenningsregeling en nemen deel aan een continu proces van het doorvoeren van actuele ontwikkelingen en verbeteringen op het gebied van veiligheid, milieu en vakmanschap.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projecten: drie uitgelichte projecten met hun eigen foto's (klein formaat, als contactvel), daarna de volledige lijst. -->
+    <section id="projecten" class="scroll-mt-20 border-t border-line bg-beton py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-rood">Projecten</p>
+            <h2 class="mt-3 text-3xl">Van zonneboiler tot zuigbuis-arm van ca. 90 ton</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5">Een greep uit ons werk: van woningbouw in Waarde tot een koelmachine op het dak van de Erasmus Universiteit.</p>
+        </div>
+
+        <div class="mt-10 space-y-5">
+          {uitgelicht.map((p, i) => (
+            <article class="grid grid-cols-1 gap-6 rounded-xl bg-white p-5 shadow-sm sm:p-7 lg:grid-cols-12 lg:gap-8">
+              <div class="lg:col-span-5">
+                <p class="num text-sm font-bold text-rood">Project {String(i + 1).padStart(2, '0')}</p>
+                <h3 class="mt-2 text-xl">{p.titel}</h3>
+                {p.opdrachtgever && <p class="mt-2 text-sm"><span class="text-ink-soft">Opdrachtgever:</span> <strong>{p.opdrachtgever}</strong></p>}
+                <p class="mt-3 text-sm text-ink-soft">{p.tekst}</p>
+              </div>
+              <ul class="flex flex-wrap content-start gap-2.5 lg:col-span-7 lg:justify-end" aria-label={`Foto's: ${p.titel}`}>
+                {p.fotos.map((f) => (
+                  <li class="w-[calc(50%_-_0.35rem)] overflow-hidden rounded-lg sm:w-[150px]"><Image src={f.src} alt={f.alt} widths={[150]} sizes="150px" format="webp" quality={85} class="block aspect-[4/3] h-auto w-full object-cover" /></li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <ol class="mt-12 grid grid-cols-1 gap-x-10 border-t border-ink/15 md:grid-cols-2">
+          {projecten.map((p, i) => (
+            <li class="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-ink/15 py-5">
+              <span class="num pt-0.5 text-sm font-bold text-rood">{String(i + 4).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-lg">{p.titel}</h3>
+                {p.opdrachtgever && <p class="mt-1 text-sm"><span class="text-ink-soft">Opdrachtgever:</span> <strong>{p.opdrachtgever}</strong></p>}
+                <p class="mt-1.5 text-sm text-ink-soft">{p.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Contact: donker, bellen en appen voorop, formulier ernaast. -->
+    <section id="contact" class="donker scroll-mt-16 bg-nacht text-white">
+      <div class="strepen h-2" aria-hidden="true"></div>
+      <div class="wrap grid grid-cols-1 gap-12 py-16 lg:grid-cols-12 lg:py-24">
+        <div class="lg:col-span-5">
+          <p class="kicker text-sein">Contact · 24/7 bereikbaar</p>
+          <h2 class="mt-3 text-3xl">Een hijsvraag? Bel of app ons</h2>
+          <p class="mt-5 text-white/85">De Poortere Kraanverhuur is 24/7 bereikbaar voor het oplossen van uw verticaal- en/of horizontaal transport.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-rood"><Fragment set:html={wa} /><span>Stuur een WhatsApp</span></a>
+            <a href={site.mobielHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+          </div>
+          <dl class="mt-10 grid grid-cols-1 gap-6 border-t border-white/20 pt-8 text-sm sm:grid-cols-2">
+            <div>
+              <dt class="kicker text-white/75">Adres</dt>
+              <dd class="mt-2 text-base">{site.juridisch}<br />{site.straat}<br />{site.postcode} {site.plaats}</dd>
+              <dd class="mt-3"><a href={site.maps} class="inline-flex items-center gap-2 font-semibold text-sein underline underline-offset-4 hover:text-white"><span class="h-4 w-4"><Fragment set:html={pin} /></span>Route in Google Maps</a></dd>
+            </div>
+            <div>
+              <dt class="kicker text-white/75">Bereikbaar</dt>
+              <dd class="mt-2 text-base"><strong class="num text-2xl font-extrabold">24/7</strong><br />Mobiel <a href={site.mobielHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.mobiel}</a></dd>
+              <dd class="mt-3 text-white/80">KvK <span class="tabular-nums">{site.kvk}</span></dd>
+            </div>
+          </dl>
+        </div>
+
+        <form class="rounded-xl bg-paper p-6 text-ink shadow-lg sm:p-8 lg:col-span-7" action="#" method="post" onsubmit="return false">
+          <h3 class="text-xl">Stel uw vraag</h3>
+          <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div><label for="f-naam" class="text-sm font-semibold">Volledige naam</label><input id="f-naam" name="naam" autocomplete="name" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5" /></div>
+            <div><label for="f-bedrijf" class="text-sm font-semibold">Bedrijfsnaam</label><input id="f-bedrijf" name="bedrijf" autocomplete="organization" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5" /></div>
+            <div><label for="f-mail" class="text-sm font-semibold">E-mailadres</label><input id="f-mail" name="email" type="email" autocomplete="email" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5" /></div>
+            <div><label for="f-tel" class="text-sm font-semibold">Telefoonnummer</label><input id="f-tel" name="telefoon" type="tel" autocomplete="tel" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5" /></div>
+            <div class="sm:col-span-2"><label for="f-over" class="text-sm font-semibold">Informatie over</label>
+              <select id="f-over" name="over" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5">
+                <option>Kraanverhuur</option><option>Machinisten</option><option>Inkoop</option><option>Verkoop</option><option>Algemeen</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2"><label for="f-vraag" class="text-sm font-semibold">Vragen en/of opmerkingen</label><textarea id="f-vraag" name="vraag" rows="4" class="mt-1.5 w-full rounded-lg border border-ink/25 bg-white px-3.5 py-2.5"></textarea></div>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-6 rounded-lg border border-line bg-beton px-4 py-3 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel <a href={site.mobielHref} class="whitespace-nowrap tabular-nums font-semibold underline">{site.mobiel}</a> of <a href={site.whatsapp} class="font-semibold underline">stuur een WhatsApp</a>. <span class="text-xs text-ink-soft">E-mail: {site.mail}</span></p>
+          ) : (
+            <button type="submit" class="btn btn-rood mt-6">Verstuur</button>
+          )}
+        </form>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  // Kraankiezer: vergelijkt uw last alleen met de maximale waarden uit de materieellijst (80 ton, 54 mtr radius,
+  // hoofdmast tot 51,0 mtr, jib 9,0 tot 15,0 mtr). Geen lasttabellen.
+  const K = { naam: 'Grove GMK 4080-1', cap: 80, radius: 54, mast: 51, jib: 15 };
+  const $ = <T extends Element>(s: string) => document.querySelector(s) as T | null;
+  const g = $<HTMLInputElement>('#kk-gewicht'), a = $<HTMLInputElement>('#kk-afstand'), h = $<HTMLInputElement>('#kk-hoogte'), w = $<HTMLInputElement>('#kk-wat');
+  const nl = (n: number) => n.toLocaleString('nl-NL', { maximumFractionDigits: 1 });
+  const num = (el: HTMLInputElement | null) => { const v = parseFloat((el?.value || '').replace(',', '.')); return isFinite(v) && v >= 0 ? v : 0; };
+  function balk(naam: string, waarde: number, max: number) {
+    const el = document.querySelector<HTMLElement>(`[data-balk="${naam}"]`);
+    if (!el) return;
+    el.style.width = `${Math.min(100, (waarde / max) * 100)}%`;
+    el.classList.toggle('over', waarde > max);
+  }
+  function teken(r: number, hh: number, ok: boolean) {
+    const X0 = 80, Y0 = 340, S = 5;
+    const x = Math.min(500, X0 + r * S), y = Math.max(24, Y0 - Math.max(hh, 0) * S - 28);
+    const kleur = ok ? '#ff6a5c' : '#ffb347';
+    const set = (id: string, attrs: Record<string, string | number>) => { const el = document.getElementById(id); if (el) for (const k in attrs) el.setAttribute(k, String(attrs[k])); };
+    set('kk-mast', { x2: x, y2: y });
+    set('kk-kabel', { x1: x, y1: y, x2: x, y2: y + 20 });
+    set('kk-last', { x: x - 10, y: y + 20 });
+    set('kk-punt', { cx: x, cy: y, fill: kleur });
+  }
+  function update() {
+    const kg = num(g), r = num(a), hh = num(h);
+    balk('gewicht', kg, K.cap); balk('afstand', r, K.radius); balk('hoogte', hh, K.mast + K.jib);
+    const te: string[] = [];
+    if (kg > K.cap) te.push(`zwaarder dan de maximale capaciteit (${K.cap} ton)`);
+    if (r > K.radius) te.push(`verder weg dan de maximale radius (${K.radius} mtr)`);
+    if (hh > K.mast + K.jib) te.push(`hoger dan hoofdmast (51,0 mtr) en jib (15,0 mtr) samen`);
+    const ok = te.length === 0;
+    const status = document.getElementById('kk-status'), tekst = document.getElementById('kk-tekst'), extra = document.getElementById('kk-extra');
+    if (status && tekst && extra) {
+      if (ok) {
+        status.textContent = 'Binnen de maximale waarden';
+        tekst.textContent = `${nl(kg)} ton op ${nl(r)} mtr afstand: dit valt binnen de maximale capaciteit en radius van onze ${K.naam}.`;
+        extra.textContent = hh > K.mast
+          ? 'De gevraagde hoogte ligt boven de langste hoofdmast (51,0 mtr): dan komt de jib (9,0 tot 15,0 mtr) in beeld. Maximale capaciteit en radius gelden niet tegelijk; of deze combinatie kan, blijkt uit het lastdiagram.'
+          : 'Maximale capaciteit en maximale radius gelden niet tegelijk: hoe verder de last van de kraan af ligt, hoe minder de kraan kan hijsen. Of deze combinatie kan, blijkt uit het lastdiagram.';
+      } else {
+        status.textContent = 'Buiten de maximale waarden';
+        tekst.textContent = `Dit valt buiten onze ${K.naam}: ${te.join(' en ')}.`;
+        extra.textContent = 'Leg uw hijsvraag voor aan onze hijsuitvoerder: stuur de gegevens via WhatsApp of bel ons.';
+      }
+    }
+    teken(r, hh, ok);
+    const wat = (w?.value || '').trim();
+    const bericht = `Hallo De Poortere, ik heb een hijsvraag.\nGewicht last: ca. ${nl(kg)} ton\nAfstand vanaf de kraan: ca. ${nl(r)} m\nHoogte: ca. ${nl(hh)} m${wat ? `\nWat en waar: ${wat}` : ''}\n(Ingevuld via de kraankiezer op de website.)`;
+    const knop = document.getElementById('kk-wa') as HTMLAnchorElement | null;
+    if (knop) knop.href = `https://wa.me/31653150215?text=${encodeURIComponent(bericht)}`;
+  }
+  [g, a, h, w].forEach((el) => el?.addEventListener('input', update));
+  document.getElementById('kk-form')?.addEventListener('submit', (e) => e.preventDefault());
+  update();
+</script>
