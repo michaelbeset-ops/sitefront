@@ -1,0 +1,468 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site } from '../data/site';
+
+import villa from '../assets/villa.jpg';
+import gertJan from '../assets/gert-jan.jpg';
+import toogkapellen from '../assets/toogkapellen.jpg';
+import gevel from '../assets/gevel.jpg';
+import bouwbord from '../assets/bouwbord.jpg';
+
+import l01 from '../assets/l/01-kap.jpg';
+import l02 from '../assets/l/02-dakplaten.jpg';
+import l03 from '../assets/l/03-dakplaten.jpg';
+import l04 from '../assets/l/04-eerste-laag.jpg';
+import l05 from '../assets/l/05-deels.jpg';
+import l06 from '../assets/l/06-dakkapel.jpg';
+import l07 from '../assets/l/07-achterzijde.jpg';
+import l08 from '../assets/l/08-detail.jpg';
+import l09 from '../assets/l/09-wolfskap.jpg';
+import l10 from '../assets/l/10-winter.jpg';
+
+import renVoor from '../assets/w/renovatie-voor.jpg';
+import kilgoot from '../assets/w/kilgoot-voor.jpg';
+import renNa from '../assets/w/renovatie-na.jpg';
+import renNa2 from '../assets/w/renovatie-na-2.jpg';
+import renNaDetail from '../assets/w/renovatie-na-detail.jpg';
+import zwembad from '../assets/w/villa-zwembad.jpg';
+import tuinkoof from '../assets/w/tuinkoof.jpg';
+import boerderij from '../assets/w/boerderij-zijgevel.jpg';
+import schuur from '../assets/w/schuur.jpg';
+import velux from '../assets/w/velux.jpg';
+import dakdoorvoer from '../assets/w/dakdoorvoer.jpg';
+import vervangen1 from '../assets/w/vervangen-1.jpg';
+import vervangen2 from '../assets/w/vervangen-2.jpg';
+import vervangen3 from '../assets/w/vervangen-3.jpg';
+import prieelKap from '../assets/w/prieel-kap.jpg';
+import prieelBinden from '../assets/w/prieel-binden.jpg';
+import prieelKlaar from '../assets/w/prieel-klaar.jpg';
+import paviljoen from '../assets/w/paviljoen.jpg';
+import paviljoen2 from '../assets/w/paviljoen-2.jpg';
+
+const tel = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`;
+const wa = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>`;
+const mail = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
+const pijl = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+// Werkzaamheden, letterlijk uit hun homepage. Waar hun fotoalbum een voorbeeld heeft, staat de foto erbij (met hun bijschrift).
+const werk = [
+  { naam: 'Nieuwbouw', foto: toogkapellen, bij: 'Nieuw rieten dak met toogvormige dakkapellen' },
+  { naam: 'Vernieuwen', foto: vervangen2, bij: 'Vervangen rieten dak woning: eerste dakvlak klaar' },
+  { naam: 'Onderhoud' },
+  { naam: 'Renovatie', foto: renNa, bij: 'Na volledige renovatie' },
+  { naam: 'Tuinhuizen', foto: tuinkoof, bij: 'Renovatie tuinkoof' },
+  { naam: 'Carports' },
+  { naam: 'Dierverblijven' },
+  { naam: 'Dakramen en dakkapellen plaatsen', foto: velux, bij: 'Nieuw rieten dak met ingedekte veluxramen en dakdoorvoer' },
+];
+
+// "Van kap tot rieten dak": het nieuwgebouwde landhuis uit hun fotoalbum, in albumvolgorde, met hun eigen bijschriften.
+const stappen = [
+  { kort: 'Kapconstructie', bij: 'Timmeren kapconstructie', src: l01, alt: 'Het landhuis in aanbouw: de houten kapconstructie wordt getimmerd, met steigers en stapels hout ervoor' },
+  { kort: 'Dakplaten', bij: 'Aanbrengen dakplaten tbv schroefdak', src: l02, alt: 'Het landhuis met de dakplaten voor het schroefdak aangebracht, nog zonder riet' },
+  { kort: 'Dakplaten', bij: 'Aanbrengen dakplaten tbv schroefdak', src: l03, alt: 'Zijkant van het landhuis met de dakplaten en steigers, een shovel op de voorgrond' },
+  { kort: 'Eerste laag', bij: 'De eerste laag riet wordt aangebracht', src: l04, alt: 'De eerste laag riet op het dak, met bossen riet en dakplaten op de grond', staand: true },
+  { kort: 'Deels gedekt', bij: 'Voorzijde deels rietgedekt', src: l05, alt: 'De voorzijde van het landhuis deels gedekt met riet, de rest afgedekt met een oranje zeil' },
+  { kort: 'Dakkapel', bij: 'Aansluiten onderzijde dakkapel', src: l06, alt: 'Tussen het groen door: de rietdekker sluit het riet aan onder een dakkapel' },
+  { kort: 'Achterzijde', bij: 'Eindresultaat achterzijde', src: l07, alt: 'De achterzijde van het landhuis met het nieuwe rieten dak en drie dakkapellen, paarden in de wei ervoor' },
+  { kort: 'Detail', bij: 'Detail eindresultaat achterzijde', src: l08, alt: 'Detail van het rieten dak aan de achterzijde, met een regenboog in de lucht' },
+  { kort: 'Wolfskap', bij: 'Eindresultaat wolfskap', src: l09, alt: 'De wolfskap van het landhuis: rieten dak boven een donkere houten gevel met witte openslaande deuren' },
+  { kort: 'Winter', bij: 'Eindresultaat in de winter', src: l10, alt: 'Het landhuis met het rieten dak onder de sneeuw' },
+];
+
+// Fotoalbum: projecten met hun bijschriften. Het paviljoen staat zonder bijschrift in hun album.
+const reeksen = [
+  {
+    titel: 'Vervangen rieten dak woning',
+    fotos: [
+      { src: vervangen1, bij: 'Vervangen rieten dak woning', alt: 'Een woning met steigers rondom, het nieuwe riet deels aangebracht' },
+      { src: vervangen3, bij: 'Vooraanzicht halverwege werkzaamheden', alt: 'Vooraanzicht van de wit gepleisterde woning halverwege de werkzaamheden' },
+    ],
+  },
+  {
+    titel: 'Gevlochten prieel',
+    fotos: [
+      { src: prieelKap, bij: 'Kapconstructie', alt: 'Een gevlochten wilgentenen prieel met de kale kapconstructie erop' },
+      { src: prieelBinden, bij: 'Binden bossen riet', alt: 'De rietdekker op een trapje bindt bossen riet op het prieel' },
+    ],
+  },
+];
+---
+<Base
+  title="Van de Graaf Rieten Daken | Rietdekkersbedrijf in Hardinxveld-Giessendam"
+  description="All-round rietdekkersbedrijf Van de Graaf Rieten Daken uit Hardinxveld-Giessendam: nieuwbouw, vernieuwen, onderhoud en renovatie van rieten daken. Meer dan 25 jaar actief, 10 jaar garantie op de geleverde arbeid."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- Hero: veen-donker vlak, grote serif-kop, bewijzen. Rechts hun eigen rietgedekte villa, over de rand, met Gert-Jan als inzet. -->
+    <section class="donker relative bg-veen text-white">
+      <div class="wrap grid grid-cols-1 gap-10 pb-14 lg:grid-cols-12 lg:gap-12 lg:pt-12 lg:pb-14">
+        <div class="relative -mx-5 sm:mx-0 lg:order-2 lg:col-span-7 lg:self-start lg:-mb-36">
+          <div class="relative aspect-[4/3] overflow-hidden sm:rounded-xl lg:aspect-auto lg:h-[600px] lg:shadow-lg">
+            <Foto src={villa} alt="Nieuwgebouwde villa met een groot, goudkleurig rieten dak en ronde dakkapellen, aan het water" hero widths={[480, 800, 1200]} sizes="(min-width: 1024px) 700px, 100vw" class="object-[50%_60%]" />
+            <p class="absolute top-4 left-4 rounded-full bg-veen/85 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur-sm">Nieuw rieten dak op nieuwgebouwde villa</p>
+          </div>
+          <figure class="absolute -bottom-10 right-4 z-10 hidden w-44 overflow-hidden rounded-xl bg-paper p-1.5 shadow-lg sm:block sm:w-56 lg:-bottom-12 lg:-right-4 lg:w-64">
+            <div class="aspect-[4/3] overflow-hidden rounded-lg"><Foto src={gertJan} alt="Gert-Jan van de Graaf aan het werk op een rieten dak" widths={[320, 520]} sizes="(min-width: 1024px) 244px, 210px" class="object-[40%_50%]" /></div>
+            <figcaption class="px-1.5 pt-2 pb-1 text-xs text-ink"><strong class="block text-sm">Gert-Jan van de Graaf</strong>Rietdekker, Hardinxveld-Giessendam</figcaption>
+          </figure>
+        </div>
+
+        <div class="pt-8 lg:order-1 lg:col-span-5 lg:pt-8">
+          <p class="kicker text-riet">Rietdekkersbedrijf in Hardinxveld-Giessendam</p>
+          <h1 class="mt-5 text-4xl">Wij staan voor ons vakwerk</h1>
+          <p class="mt-6 max-w-xl text-lg text-white/85">All-round rietdekker voor nieuwbouw, vernieuwen, onderhoud en renovatie. Voor een uitgebreide klantenkring in de Alblasserwaard, Vijfheerenlanden, Land van Heusden en Altena en ver daar buiten.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-riet"><Fragment set:html={wa} /><span>WhatsApp Gert-Jan</span></a>
+            <a href={site.telHref} class="btn btn-line"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+          </div>
+          <dl class="mt-11 grid grid-cols-2 gap-x-5 border-t border-white/20 pt-6 text-sm">
+            <div><dt class="text-white/75">Actief</dt><dd class="mt-1"><strong class="block font-display text-xl leading-tight font-bold text-halm">Meer dan 25 jaar</strong><span class="text-white/80">in de rietdekkerij</span></dd></div>
+            <div><dt class="text-white/75">Garantie</dt><dd class="mt-1"><strong class="block font-display text-xl leading-tight font-bold text-halm">10 jaar</strong><span class="text-white/80">op de geleverde arbeid</span></dd></div>
+          </dl>
+          <p class="mt-5 text-sm text-white/75"><span class="font-semibold text-white">{site.google}</span> op Google ({site.reviews} reviews)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wat wij doen: tekst links, werkzaamheden als genummerde lijst met albumfoto's rechts. -->
+    <section id="werk" class="scroll-mt-20 pt-20 pb-16 lg:pt-44 lg:pb-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="kicker text-brons">Wat wij doen</p>
+          <h2 class="mt-3 text-3xl">Alle rietdekkers&shy;werkzaamheden</h2>
+          <p class="mt-6 text-lg">Als all-round rietdekkersbedrijf verzorgen wij vanuit Hardinxveld-Giessendam het rietdekkerswerk voor een uitgebreide klantenkring. Meer dan 25 jaar zijn wij actief in de "rietdekkerij".</p>
+          <p class="mt-4 text-ink-soft">Door alleen met riet van eerste kwaliteit te werken en het geheel met zorg af te werken, kunt u zich als klant verheugen op een schitterend en duurzaam eindresultaat. Dit alles tegen een nette prijs-kwaliteitverhouding.</p>
+          <div class="mt-8 rounded-xl border border-line bg-white p-6 shadow-sm">
+            <p class="kicker text-brons">Ook mogelijk</p>
+            <h3 class="mt-2 text-xl">Impregneren</h3>
+            <p class="mt-2 text-ink-soft">Zelfs impregneren ten behoeve van brandvertraging en tegen mosgroei behoort tegenwoordig tot de mogelijkheden. In sommige gevallen kan dit leiden tot een lagere verzekeringspremie.</p>
+          </div>
+        </div>
+        <ol class="border-t border-line lg:col-span-7">
+          {werk.map((w, i) => (
+            <li class="grid grid-cols-[2.5rem_1fr_auto] items-center gap-4 border-b border-line py-4 sm:grid-cols-[3rem_1fr_auto] sm:gap-6">
+              <span class="font-display text-lg font-bold tabular-nums text-brons">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-xl sm:text-2xl">{w.naam}</h3>
+                {w.bij && <p class="mt-1 text-sm text-ink-soft">{w.bij}</p>}
+              </div>
+              {w.foto ? (
+                <div class="h-16 w-20 overflow-hidden rounded-lg shadow-sm sm:h-20 sm:w-28"><Foto src={w.foto} alt="" widths={[240]} sizes="112px" /></div>
+              ) : <span aria-hidden="true"></span>}
+            </li>
+          ))}
+          <li class="grid grid-cols-[2.5rem_1fr] gap-4 py-4 sm:grid-cols-[3rem_1fr] sm:gap-6">
+            <span class="font-display text-lg font-bold text-brons">+</span>
+            <p class="text-ink-soft">En meer: wij kunnen alle rietdekkerswerkzaamheden voor u verzorgen.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Twijfel over uw dak: de vrijblijvende beoordeling bij u thuis, met WhatsApp. -->
+    <section class="bg-riet text-veen">
+      <div class="wrap grid grid-cols-1 items-center gap-10 py-14 lg:grid-cols-12 lg:py-16">
+        <div class="lg:col-span-7">
+          <p class="kicker">Vrijblijvende beoordeling bij u thuis</p>
+          <h2 class="mt-3 text-3xl">Twijfelt u over de staat van uw dak?</h2>
+          <p class="mt-5 max-w-2xl text-lg">Heeft u vragen over de huidige staat van uw dak, maak dan een afspraak voor een vrijblijvende beoordeling bij u thuis. Wij staan altijd klaar om vrijblijvend een eerlijk advies uit te brengen.</p>
+          <p class="mt-3 max-w-2xl">Ook kunt u bij ons terecht voor een deskundig en eerlijk advies bij aankoop van een pand met een rieten dak.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-veen"><Fragment set:html={wa} /><span>Afspraak via WhatsApp</span></a>
+            <a href={site.mobielHref} class="btn btn-line hover:!bg-veen hover:!text-white"><Fragment set:html={tel} /><span>Bel <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+          </div>
+        </div>
+        <div class="relative lg:col-span-5">
+          <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-lg sm:aspect-[5/4] lg:rotate-1">
+            <Foto src={gevel} alt="Een woning met een rieten dak en dakkapel boven een bakstenen gevel" widths={[480, 800]} sizes="(min-width: 1024px) 460px, 100vw" class="object-[50%_35%]" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WOW: Van kap tot rieten dak. Tijdlijn door het nieuwgebouwde landhuis, met hun eigen stapfoto's en bijschriften. -->
+    <section id="van-kap-tot-dak" class="donker scroll-mt-20 bg-veen py-16 text-white lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-riet">Nieuwgebouwd landhuis</p>
+            <h2 class="mt-3 text-3xl">Van kap tot rieten dak</h2>
+          </div>
+          <p class="text-white/80 lg:col-span-5">Volg een nieuwgebouwd landhuis uit ons fotoalbum, van het timmeren van de kapconstructie tot het eindresultaat in de winter.</p>
+        </div>
+
+        <div class="mt-10" data-tl>
+          <div class="grid gap-8 lg:grid-cols-12">
+            <ol class="grid gap-6 sm:grid-cols-2 lg:col-span-8 lg:grid-cols-2" data-tl-lijst>
+              {stappen.map((s, i) => (
+                <li class="tl-stap" data-stap={i} {...(i === 0 ? { 'data-actief': '' } : {})}>
+                  <figure>
+                    <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-turf shadow-lg">
+                      <Foto src={s.src} alt={s.alt} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 800px, 100vw" class={s.staand ? '!object-contain' : ''} />
+                      <span class="absolute top-4 left-4 rounded-full bg-veen/85 px-3 py-1.5 text-xs font-semibold tabular-nums backdrop-blur-sm">Fase {i + 1} van {stappen.length}</span>
+                    </div>
+                    <figcaption class="mt-3 text-white/85">{s.bij}</figcaption>
+                  </figure>
+                </li>
+              ))}
+            </ol>
+            <div class="hidden flex-col lg:col-span-4" data-tl-paneel>
+              <p class="kicker text-riet" aria-hidden="true"><span data-tl-nr>1</span> / {stappen.length}</p>
+              <p class="mt-4 font-display text-2xl leading-tight font-bold" data-tl-bij aria-live="polite">{stappen[0].bij}</p>
+              <div class="mt-8 flex gap-3">
+                <button type="button" class="btn btn-line !px-4" data-tl-vorige><span aria-hidden="true">&larr;</span> Vorige</button>
+                <button type="button" class="btn btn-riet !px-5" data-tl-volgende>Volgende <span aria-hidden="true">&rarr;</span></button>
+              </div>
+              <p class="mt-6 border-t border-white/15 pt-4 text-sm text-white/75">Hierna: <span class="text-white" data-tl-hierna>{stappen[1].bij}</span></p>
+              <div class="mt-auto hidden pt-10 lg:block">
+                <div class="h-1.5 overflow-hidden rounded-full bg-white/15"><div class="h-full rounded-full bg-riet transition-[width] duration-300" style="width:10%" data-tl-balk></div></div>
+                <p class="mt-3 text-sm text-white/75">Gebruik ook de pijltjestoetsen.</p>
+              </div>
+            </div>
+          </div>
+          <ol class="mt-10 hidden grid-cols-5 gap-x-3 gap-y-5 lg:grid-cols-10" aria-label="Fasen van de bouw" data-tl-knoppen>
+            {stappen.map((s, i) => (
+              <li><button type="button" class="tl-knop w-full" data-naar={i}><span class="font-bold tabular-nums">{String(i + 1).padStart(2, '0')}</span> <span class="hidden sm:block">{s.kort}</span><span class="sr-only">, fase {i + 1}: {s.bij}</span></button></li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Voor en na: hun eigen renovatiefoto's, asymmetrisch. -->
+    <section id="renovatie" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <p class="kicker text-brons">Renovatie</p>
+            <h2 class="mt-3 text-3xl">Voor en na een volledige renovatie</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5 lg:col-start-8">Als leek is het erg lastig om te beoordelen of men te maken heeft met vakwerk of (helaas komt het voor) prutswerk. Deze woning ziet u voor en na de renovatie.</p>
+        </div>
+        <div class="mt-10 grid gap-6 lg:grid-cols-12">
+          <figure class="lg:col-span-5 lg:mt-16">
+            <div class="relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm">
+              <Foto src={renVoor} alt="Het oude, grijs verweerde rieten dak met twee dakkapellen en een kilgoot, voor de renovatie" widths={[480, 800]} sizes="(min-width: 1024px) 480px, 100vw" />
+              <span class="absolute top-4 left-4 rounded-full bg-veen/85 px-3 py-1.5 text-xs font-bold tracking-wider text-white uppercase">Voor</span>
+            </div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Voor volledige renovatie</figcaption>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+              <div class="aspect-[4/3] overflow-hidden rounded-lg shadow-sm"><Foto src={kilgoot} alt="Close-up van de versleten kilgoot voor de renovatie" widths={[320, 480]} sizes="(min-width: 1024px) 230px, 50vw" /></div>
+              <div class="aspect-[4/3] overflow-hidden rounded-lg shadow-sm"><Foto src={renNaDetail} alt="Een dakkapel in het nieuwe, goudkleurige riet na de renovatie" widths={[320, 480]} sizes="(min-width: 1024px) 230px, 50vw" /></div>
+              <p class="text-sm text-ink-soft">Kilgoot voor renovatie</p>
+              <p class="text-sm text-ink-soft">Na volledige renovatie</p>
+            </div>
+          </figure>
+          <figure class="lg:col-span-7">
+            <div class="relative aspect-[4/3] overflow-hidden rounded-xl shadow-lg">
+              <Foto src={renNa2} alt="De witte woning met het volledig vernieuwde rieten dak en dakkapellen, onder een blauwe lucht" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 700px, 100vw" />
+              <span class="absolute top-4 left-4 rounded-full bg-riet px-3 py-1.5 text-xs font-bold tracking-wider text-veen uppercase">Na</span>
+            </div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Na volledige renovatie</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fotoalbum: grote foto's met hun eigen bijschriften, afgewisseld met twee reeksen. -->
+    <section id="fotoalbum" class="scroll-mt-20 bg-stro py-16 lg:py-24">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="kicker text-brons">Fotoalbum</p>
+            <h2 class="mt-3 text-3xl">Villa, boerderij, schuur of prieel</h2>
+          </div>
+          <p class="text-ink-soft lg:col-span-5">Van tuinhuizen tot villa's: een greep uit ons werk, met de bijschriften uit ons fotoalbum.</p>
+        </div>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-6 lg:grid-cols-12">
+          <figure class="md:col-span-6 lg:col-span-8">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-[30rem]"><Foto src={zwembad} alt="Een villa met een rieten dak, gezien over een zwembad" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 800px, 100vw" class="object-[50%_30%]" /></div>
+            <figcaption class="mt-3 font-semibold">Luxe rietgedekte villa met zwembad</figcaption>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-[30rem]"><Foto src={tuinkoof} alt="De rietdekker op een ladder werkt aan het rieten dak van een houten tuinkoof" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" class="object-[50%_30%]" /></div>
+            <figcaption class="mt-3 font-semibold">Renovatie tuinkoof</figcaption>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={boerderij} alt="Een bakstenen boerderij met een nieuw rieten dak en dakramen" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" /></div>
+            <figcaption class="mt-3 font-semibold">Herbouwde boerderij: zijgevel</figcaption>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={schuur} alt="Een nieuwgebouwde bakstenen schuur met een rond rieten dak naast een woning" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" /></div>
+            <figcaption class="mt-3 font-semibold">Nieuw rieten dak op nieuwgebouwde schuur</figcaption>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={dakdoorvoer} alt="Close-up van een rieten dakvlak met een ingedekte dakdoorvoer" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" /></div>
+            <figcaption class="mt-3 font-semibold">Detail ingedekte dakdoorvoer tbv ontluchting</figcaption>
+          </figure>
+
+          {reeksen.map((r) => (
+            <div class="rounded-xl bg-paper p-4 shadow-sm md:col-span-6 sm:p-5">
+              <h3 class="text-xl">{r.titel}</h3>
+              <div class="mt-4 grid grid-cols-2 gap-4">
+                {r.fotos.map((f) => (
+                  <figure>
+                    <div class="aspect-[4/3] overflow-hidden rounded-lg"><Foto src={f.src} alt={f.alt} widths={[320, 600]} sizes="(min-width: 1024px) 290px, 50vw" /></div>
+                    <figcaption class="mt-2 text-sm text-ink-soft">{f.bij}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-[30rem]"><Foto src={prieelKlaar} alt="Het gevlochten prieel, klaar, met een puntig rieten dak" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" class="object-[50%_40%]" /></div>
+            <figcaption class="mt-3 font-semibold">Gevlochten prieel: klaar</figcaption>
+          </figure>
+          <figure class="md:col-span-6 lg:col-span-8">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm lg:aspect-auto lg:h-[30rem]"><Foto src={paviljoen} alt="Een paviljoen op een ponton aan het water, met een dikke laag nieuw riet, tijdens het werk" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 800px, 100vw" /></div>
+            <figcaption class="mt-3 font-semibold">Paviljoen aan het water, tijdens het rietdekken</figcaption>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={paviljoen2} alt="Het paviljoen van opzij, het riet net aangebracht" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" /></div>
+          </figure>
+          <figure class="md:col-span-3 lg:col-span-4">
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={velux} alt="Een woning met een rieten dak met ingedekte veluxramen, gezien vanaf de tuin" widths={[480, 800]} sizes="(min-width: 1024px) 400px, 50vw" /></div>
+            <figcaption class="mt-3 font-semibold">Nieuw rieten dak met ingedekte veluxramen en dakdoorvoer</figcaption>
+          </figure>
+          <div class="donker flex flex-col rounded-xl bg-veen p-6 text-white shadow-sm md:col-span-6 lg:col-span-4 lg:p-8">
+            <p class="kicker text-riet">Uw dak</p>
+            <h3 class="mt-3 text-2xl">Vrijblijvende beoordeling bij u thuis</h3>
+            <p class="mt-3 text-white/80">Heeft u vragen over de huidige staat van uw dak? Maak een afspraak met Gert-Jan.</p>
+            <div class="mt-auto pt-6">
+              <a href={site.whatsapp} class="btn btn-riet w-full"><Fragment set:html={wa} /><span>WhatsApp Gert-Jan</span></a>
+              <p class="mt-4 text-sm text-white/75">Bezoek ook onze <a href={site.facebook} class="font-semibold text-white underline underline-offset-4">Facebookpagina</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Werkwijze en garantie: Gert-Jan groot, persoonlijk contact, 10 jaar garantie. -->
+    <section id="werkwijze" class="donker scroll-mt-20 bg-veen py-16 text-white lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <figure class="lg:sticky lg:top-24">
+            <div class="aspect-[3/2] overflow-hidden rounded-xl shadow-lg lg:aspect-[4/5]"><Foto src={gertJan} alt="Gert-Jan van de Graaf aan het werk op een rieten dak" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 600px, 100vw" class="lg:object-[38%_50%]" /></div>
+            <figcaption class="mt-3 text-sm text-white/75">Gert-Jan van de Graaf</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <p class="kicker text-riet">Werkwijze</p>
+          <h2 class="mt-3 text-3xl">Persoonlijk contact is voor ons erg belangrijk</h2>
+          <p class="mt-6 text-lg text-white/85">Zo worden misverstanden voorkomen en wordt vertrouwen opgebouwd; onontbeerlijk met specialistisch werk als rietdekken.</p>
+          <p class="mt-4 text-white/80">Tevens staan wij voor onze klanten altijd klaar om vrijblijvend een eerlijk advies uit te brengen over de huidige staat van uw dak.</p>
+          <div id="garantie" class="mt-10 scroll-mt-24 rounded-xl bg-turf p-6 shadow-sm sm:p-8">
+            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+              <strong class="font-display text-4xl leading-none font-bold text-riet">10 jaar</strong>
+              <span class="text-lg font-semibold">garantie op de geleverde arbeid</span>
+            </div>
+            <p class="mt-4 text-white/80">Graag laten wij onze klanten zien dat wij staan voor ons vakwerk. Graag vertellen wij u of ook u zich kan verheugen op maar liefst 10 jaar garantie op de geleverde arbeid aan uw nieuwe rieten dak.</p>
+            <a href={site.telHref} class="mt-5 inline-flex items-center gap-1.5 font-semibold text-riet underline underline-offset-4">Vraag het ons: <span class="whitespace-nowrap tabular-nums">{site.tel}</span> <Fragment set:html={pijl} /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact: WhatsApp en bellen voorop, gegevens, werkgebied, hun bouwbord. -->
+    <section id="contact" class="scroll-mt-20 py-16 lg:py-24">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="kicker text-brons">Contact</p>
+          <h2 class="mt-3 text-3xl">Alles over dit mooie ambacht</h2>
+          <p class="mt-5 text-lg">Wilt u meer informatie, neemt u dan gerust contact met ons op. Via telefoon, WhatsApp of mail vertellen wij u alles wat u wilt weten over dit mooie ambacht.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.whatsapp} class="btn btn-veen"><Fragment set:html={wa} /><span>WhatsApp <span class="whitespace-nowrap tabular-nums">{site.mobiel}</span></span></a>
+            <a href={`mailto:${site.mail}`} class="btn btn-line text-ink hover:!bg-veen hover:!text-white"><Fragment set:html={mail} />Mail ons</a>
+          </div>
+
+          <dl class="mt-10 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2">
+            <div>
+              <dt class="kicker text-brons">Telefoon</dt>
+              <dd class="mt-2"><a href={site.telHref} class="text-xl font-semibold whitespace-nowrap tabular-nums underline-offset-4 hover:underline">{site.tel}</a><span class="mt-1 block text-sm text-ink-soft">Schakelt na 4x overgaan kosteloos door naar mobiel</span></dd>
+            </div>
+            <div>
+              <dt class="kicker text-brons">Mobiel en WhatsApp</dt>
+              <dd class="mt-2"><a href={site.mobielHref} class="text-xl font-semibold whitespace-nowrap tabular-nums underline-offset-4 hover:underline">{site.mobiel}</a><span class="mt-1 block text-sm text-ink-soft">{site.eigenaar}</span></dd>
+            </div>
+            <div>
+              <dt class="kicker text-brons">E-mail</dt>
+              <dd class="mt-2"><a href={`mailto:${site.mail}`} class="font-semibold break-all underline underline-offset-4">{site.mail}</a></dd>
+            </div>
+            <div>
+              <dt class="kicker text-brons">Adres</dt>
+              <dd class="mt-2"><address class="not-italic">{site.straat}<br />{site.postcode} {site.plaats}</address>
+                <a href={site.maps} rel="noopener" class="mt-2 inline-flex items-center gap-1.5 font-semibold text-brons underline underline-offset-4">Route plannen <Fragment set:html={pijl} /></a></dd>
+            </div>
+          </dl>
+          <p class="mt-8 text-sm text-ink-soft">Bezoek ook onze <a href={site.facebook} class="font-semibold text-brons underline underline-offset-4">Facebookpagina</a>.</p>
+        </div>
+
+        <div class="lg:col-span-5 lg:col-start-8">
+          <figure>
+            <div class="aspect-[4/3] overflow-hidden rounded-xl shadow-sm"><Foto src={bouwbord} alt="Ons bouwbord met Gert-Jan op een rieten dak en de naam Van de Graaf Rieten Daken, naast een bos riet" widths={[480, 760]} sizes="(min-width: 1024px) 480px, 100vw" /></div>
+            <figcaption class="mt-3 text-sm text-ink-soft">Ons bouwbord</figcaption>
+          </figure>
+          <div class="mt-8 rounded-xl bg-stro p-6">
+            <h3 class="text-xl">Werkgebied</h3>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+              {['Alblasserwaard', 'Vijfheerenlanden', 'Land van Heusden en Altena', 'en ver daar buiten'].map((g) => <li class="rounded-full bg-paper px-3 py-1.5 shadow-sm">{g}</li>)}
+            </ul>
+            <p class="mt-4 text-sm text-ink-soft">Vanuit Hardinxveld-Giessendam.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  // Tijdlijn: zonder JS staan alle fasen als raster; met JS een diavoorstelling met knoppen, fasebalk en pijltjestoetsen.
+  const tl = document.querySelector<HTMLElement>('[data-tl]');
+  if (tl) {
+    const lijst = tl.querySelector<HTMLElement>('[data-tl-lijst]')!;
+    const stappen = [...tl.querySelectorAll<HTMLElement>('.tl-stap')];
+    const knoppen = [...tl.querySelectorAll<HTMLButtonElement>('[data-naar]')];
+    const paneel = tl.querySelector<HTMLElement>('[data-tl-paneel]')!;
+    const nr = tl.querySelector<HTMLElement>('[data-tl-nr]')!;
+    const bij = tl.querySelector<HTMLElement>('[data-tl-bij]')!;
+    const hierna = tl.querySelector<HTMLElement>('[data-tl-hierna]')!;
+    const balk = tl.querySelector<HTMLElement>('[data-tl-balk]')!;
+    const vorige = tl.querySelector<HTMLButtonElement>('[data-tl-vorige]')!;
+    const volgende = tl.querySelector<HTMLButtonElement>('[data-tl-volgende]')!;
+    const bijschriften = stappen.map((s) => s.querySelector('figcaption')?.textContent ?? '');
+    let huidig = 0;
+
+    lijst.classList.add('tl-js');
+    lijst.classList.remove('sm:grid-cols-2', 'lg:grid-cols-2');
+    paneel.classList.remove('hidden');
+    paneel.classList.add('flex');
+    tl.querySelector('[data-tl-knoppen]')!.classList.replace('hidden', 'grid');
+
+    const toon = (i: number) => {
+      huidig = (i + stappen.length) % stappen.length;
+      stappen.forEach((s, j) => s.toggleAttribute('data-actief', j === huidig));
+      knoppen.forEach((k, j) => {
+        k.classList.toggle('gedaan', j < huidig);
+        if (j === huidig) k.setAttribute('aria-current', 'step'); else k.removeAttribute('aria-current');
+      });
+      nr.textContent = String(huidig + 1);
+      bij.textContent = bijschriften[huidig];
+      hierna.textContent = huidig === stappen.length - 1 ? 'Terug naar het begin' : bijschriften[huidig + 1];
+      balk.style.width = `${((huidig + 1) / stappen.length) * 100}%`;
+    };
+    knoppen.forEach((k, j) => k.addEventListener('click', () => toon(j)));
+    vorige.addEventListener('click', () => toon(huidig - 1));
+    volgende.addEventListener('click', () => toon(huidig + 1));
+    tl.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { toon(huidig + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { toon(huidig - 1); e.preventDefault(); }
+    });
+    toon(0);
+  }
+</script>
