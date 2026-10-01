@@ -1,0 +1,70 @@
+---
+// Een emaille wijzerplaat, gesigneerd zoals oude klokmakers hun naam en plaats op de plaat zetten.
+// De wijzers lopen mee met de echte tijd (script onderaan); zonder JavaScript staan ze op 10:10.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const romeins = ['XII', 'I', 'II', 'III', 'IIII', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
+const streepjes = Array.from({ length: 60 }, (_, i) => i);
+---
+<svg viewBox="-500 -500 1000 1000" class={`wijzerplaat ${cls}`} role="img" aria-label="Wijzerplaat met de huidige tijd, gesigneerd Erwin Knijf, Nieuwerkerk aan den IJssel">
+  <defs>
+    <radialGradient id="emaille" cx="38%" cy="32%" r="80%">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset=".7" stop-color="#f4f4f1" />
+      <stop offset="1" stop-color="#e4e4e0" />
+    </radialGradient>
+    <radialGradient id="rand" cx="50%" cy="50%" r="50%">
+      <stop offset=".93" stop-color="#151515" stop-opacity="0" />
+      <stop offset="1" stop-color="#151515" stop-opacity=".16" />
+    </radialGradient>
+  </defs>
+  <circle r="496" fill="none" stroke="#151515" stroke-width="3" />
+  <circle r="486" fill="url(#emaille)" />
+  <circle r="486" fill="url(#rand)" />
+  <!-- minutenrand -->
+  <circle r="452" fill="none" stroke="#151515" stroke-width="1.5" />
+  <circle r="420" fill="none" stroke="#151515" stroke-width="1" />
+  {streepjes.map((i) => (
+    <line x1="0" y1={i % 5 === 0 ? -452 : -452} x2="0" y2={i % 5 === 0 ? -420 : -436} stroke="#151515" stroke-width={i % 5 === 0 ? 5 : 1.6} transform={`rotate(${i * 6})`} />
+  ))}
+  <!-- romeinse cijfers, radiaal zoals op een klassieke plaat -->
+  {romeins.map((r, i) => (
+    <text x="0" y="-322" text-anchor="middle" font-family="'Libre Caslon Display', Georgia, serif" font-size="86" fill="#151515" transform={`rotate(${i * 30})`}>{r}</text>
+  ))}
+  <!-- signatuur -->
+  <text x="0" y="-150" text-anchor="middle" font-family="'Libre Caslon Display', Georgia, serif" font-size="40" letter-spacing="6" fill="#151515">ERWIN KNIJF</text>
+  <text x="0" y="-112" text-anchor="middle" font-family="'Hanken Grotesk Variable', system-ui, sans-serif" font-size="15.5" font-weight="600" letter-spacing="4.2" fill="#55575c">NIEUWERKERK A/D IJSSEL</text>
+  <!-- wijzers in gebruineerd staal -->
+  <g class="uur" transform="rotate(305)">
+    <path d="M-9 40 L-6 -150 L0 -160 L6 -150 L9 40 Z" fill="#243a8c" />
+    <circle cy="-182" r="27" fill="none" stroke="#243a8c" stroke-width="11" />
+    <path d="M-5 -205 L0 -250 L5 -205 Z" fill="#243a8c" />
+  </g>
+  <g class="min" transform="rotate(60)">
+    <path d="M-7 50 L-4 -330 L0 -345 L4 -330 L7 50 Z" fill="#243a8c" />
+    <circle cy="-268" r="20" fill="none" stroke="#243a8c" stroke-width="8" />
+    <path d="M-3.5 -345 L0 -405 L3.5 -345 Z" fill="#243a8c" />
+  </g>
+  <g class="sec" transform="rotate(180)">
+    <line x1="0" y1="90" x2="0" y2="-430" stroke="#243a8c" stroke-width="3" />
+    <circle cy="70" r="14" fill="#243a8c" />
+  </g>
+  <circle r="17" fill="#243a8c" />
+  <circle r="6" fill="#d9dbe3" />
+</svg>
+
+<script>
+  // Wijzers op de echte tijd zetten; de secondewijzer verspringt per seconde, zoals bij een uurwerk met anker.
+  const platen = document.querySelectorAll<SVGSVGElement>('svg.wijzerplaat');
+  const zet = () => {
+    const n = new Date();
+    const s = n.getSeconds(), m = n.getMinutes() + s / 60, u = (n.getHours() % 12) + m / 60;
+    platen.forEach((p) => {
+      p.querySelector('.uur')?.setAttribute('transform', `rotate(${u * 30})`);
+      p.querySelector('.min')?.setAttribute('transform', `rotate(${m * 6})`);
+      p.querySelector('.sec')?.setAttribute('transform', `rotate(${s * 6})`);
+    });
+  };
+  zet();
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(zet, 1000);
+</script>

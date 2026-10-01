@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "@fontsource-variable/anybody/standard.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een zeilmakerij aan de haven: wit zeildoek, het taanrood van de bruine vloot, touw, koperen ogen en havenwater. */
+  --color-doek: #e8e9e4;        /* pagina: zeildoek */
+  --color-wit: #ffffff;
+  --color-inkt: #15191d;        /* tekst, op doek 15:1 */
+  --color-grijs: #4f565b;       /* bijtekst, op doek 6,6:1 */
+  --color-taan: #7a3120;        /* taanrood; doek erop 7,6:1 */
+  --color-taan-diep: #4c1c12;   /* voet */
+  --color-taan-licht: #f0cdb9;  /* tekst op taan, 6,3:1 */
+  --color-touw: #c7ad7f;        /* touw, alleen decoratief */
+  --color-koper: #b98d3a;       /* koperen ogen, alleen decoratief */
+  --color-lijn: #15191d29;
+  --color-lijn-licht: #e8e9e440;
+
+  --font-sans: "Anybody Variable", "Arial Narrow", system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: clamp(1.4rem, 1vw + 1.1rem, 1.85rem);
+  --text-2xl: clamp(1.9rem, 2.4vw + 1.2rem, 3.2rem);
+  --text-3xl: clamp(2.3rem, 3.6vw + 1.2rem, 4.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-doek);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-stretch: 100%;
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-weight: 760; font-stretch: 118%; line-height: 1; letter-spacing: -.015em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-taan); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-taan); outline-offset: 3px; }
+  .op-taan :focus-visible { outline-color: var(--color-doek); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .breed { font-stretch: 140%; font-weight: 800; }
+  .smal { font-stretch: 78%; }
+
+  /* Knop: een strook doek met een doorgestikte zoom. */
+  .knop { position: relative; display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; font-stretch: 110%; font-size: var(--text-sm); padding: .9rem 1.3rem; background: var(--color-taan); color: var(--color-wit); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+  .knop::after { content: ""; position: absolute; inset: 4px; border: 1px dashed #ffffff8c; pointer-events: none; }
+  .knop:hover { background: var(--color-inkt); transform: translateY(-1px); }
+  .op-taan .knop { background: var(--color-doek); color: var(--color-taan-diep); }
+  .op-taan .knop::after { border-color: #4c1c1266; }
+  .op-taan .knop:hover { background: var(--color-wit); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease; }
+  .lijn:hover { color: var(--color-taan); }
+  .op-taan .lijn:hover { color: var(--color-wit); }
+
+  /* Doorgestikte naad als scheidingslijn. */
+  .naad { border-bottom: 1.5px dashed color-mix(in srgb, currentColor 40%, transparent); }
+
+  /* Een regel in de lijst die WhatsApp opent: de naad wordt taanrood bij hover. */
+  .regel { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .95rem 0; text-decoration: none; transition: color .2s ease, padding-left .2s ease, border-color .2s ease; }
+  .regel:hover { color: var(--color-taan); padding-left: .4rem; border-color: var(--color-taan); }
+  .regel .pijl { font-size: var(--text-xs); color: var(--color-grijs); white-space: nowrap; transition: color .2s ease; }
+  .regel:hover .pijl { color: var(--color-taan); }
+}

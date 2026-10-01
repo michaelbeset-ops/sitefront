@@ -1,0 +1,35 @@
+---
+// De rivierkaart: Nieuwe Maas en Koningshaven rond het Noordereiland, de bruggen als dunne lijnen,
+// en de pin op Maaskade 132-B. Data: tools/kaart.mjs (OpenStreetMap).
+import { kaart } from '../data/kaart';
+interface Props { viewBox: string; class?: string; labels?: boolean; }
+const { viewBox, class: cls = '', labels = true } = Astro.props;
+const [px, py] = kaart.femm;
+const label = 'font-family:var(--font-mono);font-size:13px;letter-spacing:.02em';
+---
+<svg viewBox={viewBox} preserveAspectRatio="xMidYMid slice" class={cls} role="img" aria-label="Kaart: F.E.M.M. ligt aan de Maaskade op het Noordereiland, tussen de Willemsbrug en de Erasmusbrug.">
+  <defs>
+    <pattern id="diep" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)">
+      <line x1="0" y1="0" x2="0" y2="9" stroke="var(--color-rivier-diep)" stroke-width="1" />
+    </pattern>
+  </defs>
+  <rect x="-500" y="-500" width="2000" height="1800" fill="var(--color-papier)" />
+  <path d={kaart.water} fill="var(--color-rivier)" fill-rule="evenodd" />
+  <path d={kaart.water} fill="url(#diep)" fill-rule="evenodd" opacity=".55" />
+  <path d={kaart.eiland} fill="var(--color-marine)" />
+  {kaart.brug.map((b) => <path d={b.d} fill="none" stroke="var(--color-marine)" stroke-width="3.2" stroke-linecap="round" />)}
+  {labels && (
+    <g fill="var(--color-marine)" style={label}>
+      <text x="610" y="70" transform="rotate(-24 610 70)">NIEUWE MAAS</text>
+      <text x="318" y="412" transform="rotate(-50 318 412)">NIEUWE MAAS</text>
+      <text x="625" y="372" transform="rotate(-40 625 372)" fill="var(--color-marine)">Koningshaven</text>
+      <text x="628" y="122" fill="var(--color-staal)">Willemsbrug</text>
+      <text x="300" y="468" fill="var(--color-staal)" transform="rotate(-33 300 468)">Erasmusbrug</text>
+      <text x="548" y="318" fill="var(--color-papier)" style="font-family:var(--font-sans);font-weight:800;font-size:16px;letter-spacing:.14em" transform="rotate(-37.5 548 318)">NOORDEREILAND</text>
+    </g>
+  )}
+  <g transform={`translate(${px} ${py})`}>
+    <circle r="22" fill="var(--color-boei)" opacity=".18"><animate attributeName="r" values="12;26;12" dur="3.2s" repeatCount="indefinite" /></circle>
+    <circle data-pin r="8.5" fill="var(--color-boei)" stroke="var(--color-wit)" stroke-width="2.5" />
+  </g>
+</svg>

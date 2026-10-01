@@ -1,0 +1,50 @@
+---
+import { site, url, lijstMail } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
+      <a href={url('')} class="flex items-center gap-3 text-marine no-underline" aria-label={`${site.naam}, naar de homepage`}>
+        <Merk class="h-9 w-11 shrink-0" />
+        <span class="leading-none">
+          <span class="block text-[1.35rem] font-extrabold tracking-[-.03em]">F.E.M.M.</span>
+          <span class="mono mt-0.5 block text-[.7rem] text-staal">Rotterdam</span>
+        </span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-9 text-[.95rem] font-medium">
+          <li><a href={url('#toonbank')} class="no-underline underline-offset-[6px] hover:underline">De winkel</a></li>
+          <li><a href={url('#aan-boord')} class="no-underline underline-offset-[6px] hover:underline">Aan boord</a></li>
+          <li><a href={url('#langskomen')} class="no-underline underline-offset-[6px] hover:underline">Langskomen</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="knop !gap-2 !px-3.5 !py-2.5 text-sm">
+        <svg viewBox="0 0 24 24" class="h-4 w-4" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>
+        <span class="tabular-nums max-[379px]:sr-only">{site.tel}</span><span class="sr-only min-[380px]:hidden">Bellen</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-marine text-mist">
+    <div class="wrap grid gap-10 pb-10 pt-16 text-sm md:grid-cols-12">
+      <div class="flex items-end gap-4 text-wit md:col-span-5">
+        <Merk class="h-14 w-16 shrink-0" />
+        <p class="leading-none"><span class="block text-[2.8rem] font-extrabold tracking-[-.04em]">F.E.M.M.</span><span class="mono mt-1 block text-xs text-mist">Maaskade, Noordereiland</span></p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a> · <a href={lijstMail} class="lijn">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">
+      Kaart op basis van <a href="https://www.openstreetmap.org/copyright" class="lijn">OpenStreetMap</a>-gegevens.{site.voorstel && " Sfeerfoto's via Unsplash, ter illustratie."}
+    </p>
+  </footer>
+)}

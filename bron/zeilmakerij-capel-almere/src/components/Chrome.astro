@@ -1,0 +1,42 @@
+---
+import { site, url } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg class="h-[1.05em] w-[1.05em] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="relative z-40 border-b border-lijn bg-canvas">
+    <div class="wrap flex h-[4.5rem] items-center justify-between gap-4">
+      <a href={url('')} class="flex items-baseline gap-2.5 text-inkt no-underline">
+        <span class="slab text-[1.9rem] font-bold leading-none tracking-[-.02em]">Capel</span>
+        <span class="text-sm text-staal">zeilmakerij<span class="max-sm:hidden"> &middot; Almere</span></span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-9 text-[.95rem]">
+          <li><a href={url('#repareren')} class="no-underline decoration-1 underline-offset-4 hover:underline">Wat we repareren</a></li>
+          <li><a href={url('#winter')} class="no-underline decoration-1 underline-offset-4 hover:underline">De winterklus</a></li>
+          <li><a href={url('#steiger')} class="no-underline decoration-1 underline-offset-4 hover:underline">De Steiger 7c</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="knop !px-3.5 !py-2.5 text-sm"><Fragment set:html={tel} /><span class="tabular-nums lining-nums max-[359px]:sr-only">{site.tel}</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-inkt text-canvas">
+    <div class="zoom" aria-hidden="true"></div>
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <p class="md:col-span-5"><span class="slab block text-[3.2rem] font-bold leading-[.9]">Capel</span><span class="mt-2 block text-[#b9c0c4]">Zeilmakerij P.J. Capel, Almere</span></p>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums lining-nums">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="lijn break-all">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        Google {site.google.score} uit {site.google.aantal} reviews<br />
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs text-[#b9c0c4]">Foto's van uw eigen website zeilmakerijcapel.nl, ter illustratie.</p>}
+  </footer>
+)}

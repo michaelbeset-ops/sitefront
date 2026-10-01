@@ -1,0 +1,44 @@
+---
+import { Image } from 'astro:assets';
+import { site, url, wa, waMet, mailOfferte } from '../data/site';
+import logo from '../assets/logo.png';
+import rogWit from '../assets/rog-wit.png';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-doek/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="block shrink-0" aria-label={`${site.naam}, naar de homepage`}>
+        <Image src={logo} alt="" widths={[200, 400]} sizes="180px" class="h-auto w-[150px] sm:w-[180px]" loading="eager" />
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-9 text-[.95rem] font-medium">
+          <li><a href={url('#maken')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Wat we maken</a></li>
+          <li><a href={url('#mal')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Op maat</a></li>
+          <li><a href={url('#werkplaats')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Werkplaats</a></li>
+        </ul>
+      </nav>
+      <a href={waMet('ik heb een vraag.')} class="knop !px-3.5 !py-2.5 !text-sm"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-marine text-mist">
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <div class="flex items-center gap-4 md:col-span-5">
+        <Image src={rogWit} alt="" widths={[160]} sizes="80px" class="h-auto w-20 shrink-0" />
+        <p class="display text-[1.7rem] leading-none text-wit">Florian<br /><span class="text-limoen">Zeilmakerij</span></p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('ik heb een vraag.')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={mailOfferte} class="lijn break-all">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="tabular-nums">{site.kvk}</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">Foto's en logo van uw huidige website, ter illustratie.</p>}
+  </footer>
+)}

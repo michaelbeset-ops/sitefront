@@ -1,0 +1,81 @@
+@import "tailwindcss";
+@import "@fontsource/zilla-slab/500.css";
+@import "@fontsource/zilla-slab/700.css";
+@import "@fontsource/zilla-slab/500-italic.css";
+@import "@fontsource/hanken-grotesk/400.css";
+@import "@fontsource/hanken-grotesk/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De werkplaats van Capel: wit pvc-doek, kobaltblauw dekzeil (hun bootkappen), staalgrijze zeilringen. */
+  --color-canvas: #eef0ee;      /* pagina: wit doek */
+  --color-white: #ffffff;
+  --color-inkt: #121619;        /* tekst, op canvas 16:1 */
+  --color-staal: #50575d;       /* bijtekst, op canvas 6,4:1 */
+  --color-zeil: #1846b4;        /* het blauwe dekzeil; wit erop 7,4:1, op canvas 6,6:1 */
+  --color-zeil-diep: #0f2f7e;   /* hover en schaduwkant van het doek */
+  --color-ring: #a7adb1;        /* zeilring */
+  --color-lijn: #12161926;
+  --color-lijn-licht: #ffffff40;
+
+  --font-slab: "Zilla Slab", "Rockwell", "Georgia", serif;
+  --font-sans: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.45rem, 1vw + 1.1rem, 1.9rem);
+  --text-2xl: clamp(2rem, 2.4vw + 1.2rem, 3.4rem);
+  --text-3xl: clamp(2.6rem, 3.6vw + 1.3rem, 5rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background-color: var(--color-canvas); color: var(--color-inkt); font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--font-slab); font-weight: 700; line-height: .98; letter-spacing: -.015em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-zeil); color: var(--color-white); }
+  :focus-visible { outline: 2px solid var(--color-zeil); outline-offset: 3px; }
+  .op-zeil :focus-visible { outline-color: var(--color-white); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .slab { font-family: var(--font-slab); }
+
+  /* De zoom van een dekzeil: blauw doek, aan beide kanten een witte stiksteek en om de zoveel cm een zeilring. */
+  .zoom { --a: 128px; height: 46px; background:
+      radial-gradient(circle, var(--color-canvas) 0 5px, #8d9499 5.5px 6.5px, #d9dddf 7px 9px, #6c7378 9.5px 10.5px, #0000 11px) 50% 50% / var(--a) 100% repeat-x,
+      repeating-linear-gradient(90deg, #ffffffd0 0 8px, #0000 8px 13px) 0 7px / 100% 1.5px no-repeat,
+      repeating-linear-gradient(90deg, #ffffffd0 0 8px, #0000 8px 13px) 0 calc(100% - 7px) / 100% 1.5px no-repeat,
+      var(--color-zeil); }
+  .zoom-v { --a: 128px; width: 46px; background:
+      radial-gradient(circle, var(--color-canvas) 0 5px, #8d9499 5.5px 6.5px, #d9dddf 7px 9px, #6c7378 9.5px 10.5px, #0000 11px) 50% 50% / 100% var(--a) repeat-y,
+      repeating-linear-gradient(180deg, #ffffffd0 0 8px, #0000 8px 13px) 7px 0 / 1.5px 100% no-repeat,
+      repeating-linear-gradient(180deg, #ffffffd0 0 8px, #0000 8px 13px) calc(100% - 7px) 0 / 1.5px 100% no-repeat,
+      var(--color-zeil); }
+
+  /* Een stiksteek als lijn. */
+  .steek { border-top: 1.5px dashed color-mix(in srgb, currentColor 40%, transparent); }
+
+  .knop { display: inline-flex; align-items: center; gap: .65rem; font-weight: 600; padding: .85rem 1.25rem; background: var(--color-zeil); color: var(--color-white); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-zeil-diep); transform: translateY(-1px); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease, text-decoration-color .2s ease; }
+  .lijn:hover { color: var(--color-zeil); }
+  .op-zeil .lijn:hover { color: var(--color-white); text-decoration-thickness: 2px; }
+
+  /* Het telefoonnummer als grote slab-regel met een blauwe zoom eronder. */
+  .nummer { font-family: var(--font-slab); font-weight: 700; text-decoration: underline; text-decoration-color: var(--color-zeil); text-decoration-thickness: .09em; text-underline-offset: .16em; text-decoration-skip-ink: none; transition: color .2s ease, text-underline-offset .2s ease; }
+  .nummer:hover { color: var(--color-zeil); text-underline-offset: .24em; }
+}

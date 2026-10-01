@@ -1,0 +1,42 @@
+---
+import { site, url, wa, waMet, mailMet } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-doek">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-center gap-3 text-inkt no-underline">
+        <svg viewBox="0 0 40 40" class="h-8 w-8 shrink-0" aria-hidden="true"><rect x="1" y="1" width="38" height="38" fill="#7a3120" /><rect x="4.5" y="4.5" width="31" height="31" fill="none" stroke="#e8e9e4" stroke-width="1" stroke-dasharray="3 2" /><circle cx="20" cy="20" r="7" fill="none" stroke="#b98d3a" stroke-width="3.5" /></svg>
+        <span class="flex flex-col leading-none">
+          <span class="breed text-[1.05rem] tracking-tight">De Vrijheid</span>
+          <span class="smal mt-1 text-xs text-grijs">Nautic Zeilmakerij</span>
+        </span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-8 text-sm font-medium">
+          <li><a href={url('#maakt')} class="no-underline underline-offset-4 hover:underline">Wat Cees maakt</a></li>
+          <li><a href={url('#ver-weg')} class="no-underline underline-offset-4 hover:underline">Ook ver weg</a></li>
+          <li><a href={url('#werkplaats')} class="no-underline underline-offset-4 hover:underline">Werkplaats</a></li>
+        </ul>
+      </nav>
+      <a href={waMet('ik heb een vraag over ')} class="knop !px-3.5 !py-2.5"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-taan bg-taan-diep text-doek">
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <p class="md:col-span-5"><span class="breed block text-[2rem] leading-none">De Vrijheid</span><span class="mt-2 block text-taan-licht">Nautic Zeilmakerij, {site.wie}</span></p>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={mailMet('Vraag aan de zeilmakerij')} class="lijn break-all">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs text-taan-licht">Foto's van de huidige website devrijheidnautic.nl en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

@@ -103,3 +103,11 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Louffee Coffee, Diemen | https://michaelbeset-ops.github.io/sitefront/louffee-coffee-diemen/ | site staat op "doing some work", 4,8 uit 420, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Toko Patja, Heerlen | https://michaelbeset-ops.github.io/sitefront/toko-patja-heerlen/ | oude site kapot op mobiel, 4,6 uit 501, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Fadi's Eten & Drinken, Rotterdam | https://michaelbeset-ops.github.io/sitefront/fadis-rotterdam/ | eigen domein dood, 4,7 uit 207, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| F.E.M.M. Rotterdam (scheepsuitrusting) | https://michaelbeset-ops.github.io/sitefront/femm-rotterdam/ | oude site zonder mobiele weergave, 4,8 uit 98. | 2026-10-01 | demo, LinkedIn |
+| Breskens Yacht Service | https://michaelbeset-ops.github.io/sitefront/breskens-yacht-service/ | oude site zonder mobiele weergave, 4,9 uit 15. | 2026-10-01 | demo, LinkedIn |
+| Zeilmakerij Capel, Almere | https://michaelbeset-ops.github.io/sitefront/zeilmakerij-capel-almere/ | site uit 2015, geen mobiele weergave, 4,6 uit 21. | 2026-10-01 | demo, LinkedIn |
+| De Zeilmakerij Giethoorn | https://michaelbeset-ops.github.io/sitefront/zeilmakerij-giethoorn/ | verouderde site, 4,5 uit 23. | 2026-10-01 | demo, LinkedIn |
+| Scheepswerf Schreur, Giethoorn | https://michaelbeset-ops.github.io/sitefront/scheepswerf-schreur-giethoorn/ | site uit 2012, geen mobiele weergave, 4,7 uit 7. | 2026-10-01 | demo, LinkedIn |
+| De Vrijheid Nautic Zeilmakerij, Numansdorp | https://michaelbeset-ops.github.io/sitefront/de-vrijheid-nautic-numansdorp/ | verouderde site, 5,0 uit 3, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Florian Zeilmakerij, Goes | https://michaelbeset-ops.github.io/sitefront/florian-zeilmakerij-goes/ | gedateerde site, 3,9 uit 16, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Uurwerkhersteller Erwin Knijf, Nieuwerkerk a/d IJssel | https://michaelbeset-ops.github.io/sitefront/erwin-knijf-uurwerkhersteller/ | geen website, 4,0 uit 5, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |

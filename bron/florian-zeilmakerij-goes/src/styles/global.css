@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@import "@fontsource-variable/saira/standard.css";
+@import "@fontsource-variable/instrument-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een stalenboek van kappendoek: grijswit tentdoek, marine, het blauw van de pijlstaartrog en het limoen van de bus. */
+  --color-doek: #f1f3f4;        /* pagina */
+  --color-wit: #ffffff;
+  --color-marine: #0e1a2b;      /* tekst; op doek 16:1 */
+  --color-staal: #4f5b6a;       /* bijtekst; op doek 6,3:1 */
+  --color-rog: #0058af;         /* logoblauw; wit erop 6,9:1, op doek 6,2:1 */
+  --color-limoen: #9ad13a;      /* alleen op marine (9,6:1) */
+  --color-mist: #c3cad3;        /* lichte tekst op marine */
+  --color-lijn: #0e1a2b24;
+  --color-lijn-licht: #ffffff2e;
+
+  --font-display: "Saira Variable", "Arial Narrow", sans-serif;
+  --font-sans: "Instrument Sans Variable", system-ui, sans-serif;
+
+  --radius-sm: 3px;
+  --shadow-sm: 0 1px 2px #0e1a2b1f, 0 4px 14px #0e1a2b14;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.4rem, 1vw + 1.1rem, 1.85rem);
+  --text-2xl: clamp(1.9rem, 2.4vw + 1.2rem, 3.2rem);
+  --text-3xl: clamp(2.5rem, 4.6vw + .6rem, 5.4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-doek);
+    color: var(--color-marine);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; font-stretch: 106%; line-height: .94; letter-spacing: -.02em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rog); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rog); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-limoen); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 92rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+
+  .display { font-family: var(--font-display); font-weight: 800; font-stretch: 106%; letter-spacing: -.02em; }
+
+  /* Knop: een strook marine doek met een stiknaad erin. */
+  .knop { position: relative; display: inline-flex; align-items: center; gap: .65rem; font-weight: 600; font-size: var(--text-base);
+    padding: .95rem 1.35rem; background: var(--color-marine); color: var(--color-wit); text-decoration: none; border-radius: var(--radius-sm);
+    transition: background-color .2s ease, transform .2s ease; }
+  .knop::after { content: ""; position: absolute; inset: 4px; border: 1px dashed #ffffff55; border-radius: 2px; pointer-events: none; }
+  .knop:hover { background: var(--color-rog); transform: translateY(-1px); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease; }
+  .lijn:hover { color: var(--color-rog); }
+  .op-donker .lijn:hover { color: var(--color-limoen); }
+
+  /* De stiknaad: een dubbele gestippelde naad, zoals op de zoom van een kap. */
+  .naad { height: 7px; border-top: 1.5px dashed currentColor; border-bottom: 1.5px dashed currentColor; opacity: .4; }
+
+  /* Drukknoop: de ronde knopen onderaan een sprayhood. */
+  .knoop { width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #f4f6f8 0 18%, #b8c0c8 40%, #6b747d 75%); box-shadow: 0 0 0 1.5px #0e1a2b55, 0 1px 2px #0e1a2b55; }
+
+  /* Een doekstaal: effen kleur met een fijne weefstructuur en een stiknaad op de rand. */
+  .staal { position: relative; background-color: var(--k);
+    background-image: repeating-linear-gradient(0deg, #ffffff0d 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, #0000000f 0 1px, transparent 1px 3px); }
+  .staal::after { content: ""; position: absolute; inset: 5px; border: 1.5px dashed #ffffff66; pointer-events: none; }
+  .staal.licht::after { border-color: #0e1a2b55; }
+}

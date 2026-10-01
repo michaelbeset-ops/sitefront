@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "@fontsource/libre-caslon-display/400.css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een emaille wijzerplaat: koel wit emaille, zwarte cijfers, en het blauw van gebruineerde stalen wijzers. */
+  --color-email: #f6f6f3;      /* pagina, de wijzerplaat */
+  --color-wit: #ffffff;
+  --color-inkt: #151515;       /* tekst; op email 17:1 */
+  --color-grafiet: #55575c;    /* bijtekst; op email 6,8:1 */
+  --color-staal: #243a8c;      /* gebruineerd staal; wit erop 9,6:1, op email 9:1 */
+  --color-staal-licht: #9fb2ef;/* alleen op inkt (8,9:1) */
+  --color-kast: #0f0f10;       /* de donkere klokkast */
+  --color-zilver: #c9cacc;     /* lichte tekst op kast */
+  --color-haar: #15151526;     /* haarlijn */
+  --color-haar-licht: #ffffff26;
+
+  --font-display: "Libre Caslon Display", "Didot", "Georgia", serif;
+  --font-sans: "Hanken Grotesk Variable", system-ui, sans-serif;
+
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px #1515151a;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.5rem, 1vw + 1.15rem, 2rem);
+  --text-2xl: clamp(2.2rem, 3vw + 1.2rem, 3.9rem);
+  --text-3xl: clamp(3.6rem, 9vw, 9.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-email);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: .95; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-staal); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-staal); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-staal-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 88rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+
+  .display { font-family: var(--font-display); font-weight: 400; }
+
+  /* Knop: een gebruineerd-stalen plaatje met een haarlijn eromheen. */
+  .knop { display: inline-flex; align-items: center; gap: .65rem; font-weight: 600; font-size: var(--text-base); padding: .95rem 1.4rem;
+    background: var(--color-staal); color: var(--color-wit); text-decoration: none; border-radius: var(--radius-full);
+    box-shadow: 0 0 0 1px var(--color-email), 0 0 0 2px var(--color-staal); transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-inkt); box-shadow: 0 0 0 1px var(--color-email), 0 0 0 2px var(--color-inkt); transform: translateY(-1px); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease; }
+  .lijn:hover { color: var(--color-staal); }
+  .op-donker .lijn:hover { color: var(--color-staal-licht); }
+
+  /* De minutenrand: een rij streepjes met om de vijf een langere, als de rand van een wijzerplaat. */
+  .minuten { height: 14px; color: var(--color-inkt);
+    background:
+      repeating-linear-gradient(90deg, currentColor 0 1.5px, transparent 1.5px 60px) 0 0 / 100% 14px no-repeat,
+      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 12px) 0 100% / 100% 7px no-repeat; opacity: .55; }
+
+  .keuze input:checked + span { background: var(--color-inkt); color: var(--color-email); }
+  .keuze input:focus-visible + span { outline: 2px solid var(--color-staal); outline-offset: 3px; }
+}

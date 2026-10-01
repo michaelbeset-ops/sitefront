@@ -1,0 +1,45 @@
+---
+import { site, url, wimpel } from '../data/site';
+interface Props { deel: 'kop' | 'voet'; taal?: boolean }
+const { deel, taal = false } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="relative z-40 bg-nacht text-white">
+    <div class="wrap flex h-[4.75rem] items-center justify-between gap-3 max-[359px]:!px-4 border-b border-lijn-licht">
+      <a href={url('')} class="flex items-center gap-3 no-underline">
+        <svg viewBox="0 0 60 80" class="h-11 w-auto shrink-0 text-white" aria-hidden="true"><Fragment set:html={wimpel} /></svg>
+        <span class="krona whitespace-nowrap text-[.95rem] leading-[1.15] tracking-[-.01em] max-[359px]:text-[.8rem]">De Zeilmakerij<br /><span class="text-licht">Giethoorn</span></span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-9 text-[.95rem] text-licht">
+          <li><a href={url('#maken')} class="no-underline underline-offset-4 hover:text-white hover:underline" data-de="Was wir machen">Wat we maken</a></li>
+          <li><a href={url('#route')} class="no-underline underline-offset-4 hover:text-white hover:underline" data-de="Anfahrt und Zeiten">Route en tijden</a></li>
+        </ul>
+      </nav>
+      <div class="flex shrink-0 items-center gap-2 sm:gap-4">
+        {taal && <button type="button" id="taal" class="cursor-pointer px-2 py-2 text-sm text-licht max-[359px]:px-0 max-[359px]:text-xs underline-offset-4 transition-colors hover:text-white hover:underline" lang="de" aria-label="Deutsch">Deutsch</button>}
+        <a href={site.telHref} class="knop whitespace-nowrap !px-3.5 !py-2.5 text-sm"><span class="tabular-nums max-sm:hidden">{site.tel}</span><span class="sm:hidden">Bel</span></a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="bg-nacht text-white">
+    <div class="wrap grid gap-10 pb-10 pt-16 text-sm md:grid-cols-12">
+      <div class="flex items-start gap-4 md:col-span-5">
+        <svg viewBox="0 0 60 80" class="h-20 w-auto shrink-0 text-white" aria-hidden="true"><Fragment set:html={wimpel} /></svg>
+        <p class="krona text-xl leading-tight">De Zeilmakerij<br />Giethoorn BV</p>
+      </div>
+      <p class="text-licht md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums text-white">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="lijn break-all text-white">{site.mail}</a>
+      </p>
+      <p class="text-licht md:col-span-3 md:text-right">
+        KvK {site.kvk}<br />
+        Google {site.google.score} uit {site.google.aantal} reviews<br />
+        <a href={url('privacy/')} class="lijn text-white">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs text-licht">Foto's van uw eigen website zeilmakerijgiethoorn.nl en een sfeerfoto via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

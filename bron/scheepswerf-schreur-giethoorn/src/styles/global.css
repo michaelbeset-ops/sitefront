@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import "@fontsource/libre-caslon-display/400.css";
+@import "@fontsource/libre-caslon-text/400.css";
+@import "@fontsource/libre-caslon-text/400-italic.css";
+@import "@fontsource/libre-caslon-text/700.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De werf aan het Binnenpad: kalkwit papier, het groen van de oude schuurdeur, teer en eikenhout. */
+  --color-kalk: #efeee8;        /* pagina */
+  --color-wit: #ffffff;
+  --color-teer: #1b1c19;        /* tekst, op kalk 15:1 */
+  --color-grijs: #565a52;       /* bijtekst, op kalk 6,4:1 */
+  --color-deur: #2e5a4c;        /* schuurdeurgroen; kalk erop 6,9:1 */
+  --color-deur-diep: #21423a;   /* voet */
+  --color-mos: #c7d4c9;         /* bijtekst op groen, 5,1:1 */
+  --color-eik: #8a4f1c;         /* eikenhout: accent, lijnen; op kalk 5,6:1 */
+  --color-eik-licht: #d9a66b;   /* eikenhout op groen, 4,9:1 */
+  --color-lijn: #1b1c1926;
+  --color-lijn-licht: #efeee833;
+
+  --font-display: "Libre Caslon Display", "Georgia", serif;
+  --font-tekst: "Libre Caslon Text", "Georgia", serif;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-2xl: clamp(2.1rem, 2.4vw + 1.4rem, 3.4rem);
+  --text-3xl: clamp(2.7rem, 4vw + 1.4rem, 5.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-teer);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1; letter-spacing: -.01em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-deur); color: var(--color-kalk); }
+  :focus-visible { outline: 2px solid var(--color-eik); outline-offset: 3px; }
+  .op-groen :focus-visible { outline-color: var(--color-kalk); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .display { font-family: var(--font-display); font-weight: 400; }
+
+  /* Knop: een vlak kalkwit bord op de groene deur, of groen op papier. Geen pil. */
+  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; font-size: var(--text-sm); padding: .85rem 1.25rem; background: var(--color-deur); color: var(--color-kalk); text-decoration: none; letter-spacing: .01em; transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-teer); transform: translateY(-1px); }
+  .op-groen .knop { background: var(--color-kalk); color: var(--color-deur-diep); }
+  .op-groen .knop:hover { background: var(--color-wit); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease; }
+  .lijn:hover { color: var(--color-eik); }
+  .op-groen .lijn:hover { color: var(--color-wit); }
+
+  /* Maatlijn zoals op een bouwtekening: dunne lijn met schuine tikjes aan beide eindes. */
+  .maat { display: flex; align-items: center; gap: .75rem; font-style: italic; font-size: var(--text-xs); }
+  .maat::before, .maat::after { content: ""; flex: 1; height: 9px; background:
+      linear-gradient(currentColor 0 0) center / 100% 1px no-repeat; }
+  .maat::before { border-left: 1px solid currentColor; }
+  .maat::after { border-right: 1px solid currentColor; }
+
+  .stip { flex: 1; min-width: 1rem; border-bottom: 1px dotted color-mix(in srgb, currentColor 55%, transparent); transform: translateY(-.3em); }
+
+  /* De keuzelijst van de punters: radio verstopt, de regel zelf is de knop. */
+  .type input { position: absolute; opacity: 0; pointer-events: none; }
+  .type label { cursor: pointer; transition: color .15s ease, background-color .15s ease; }
+  .type label:hover { color: var(--color-eik); }
+  .type input:checked + label { color: var(--color-kalk); background: var(--color-deur); }
+  .type input:focus-visible + label { outline: 2px solid var(--color-eik); outline-offset: 2px; }
+}

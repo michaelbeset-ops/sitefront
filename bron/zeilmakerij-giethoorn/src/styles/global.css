@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "@fontsource/krona-one/400.css";
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Giethoorn bij avond: het nachtblauw van hun oude site, het kanaalwater, mist over het riet en de oranje wimpel uit het logo. */
+  --color-nacht: #0b1638;       /* donkere vlakken; wit erop 17:1 */
+  --color-nacht-2: #18275a;     /* de N334 */
+  --color-water: #2c5b8a;       /* het kanaal */
+  --color-mist: #e3e8ea;        /* lichte vlakken */
+  --color-white: #ffffff;
+  --color-licht: #c3cddf;       /* bijtekst op nacht, 10:1 */
+  --color-grijs: #4a5668;       /* bijtekst op mist, 6,3:1 */
+  --color-wimpel: #e9572b;      /* knop (nachtblauw erop 5,2:1), wimpels, accenten */
+  --color-wimpel-licht: #f27a52;/* hover */
+  --color-lijn: #0b163826;
+  --color-lijn-licht: #c3cddf33;
+
+  --font-krona: "Krona One", "Arial Black", sans-serif;
+  --font-sans: "Instrument Sans", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.25rem, .8vw + 1rem, 1.6rem);
+  --text-2xl: clamp(1.7rem, 1.9vw + 1rem, 2.6rem);
+  --text-3xl: clamp(2.1rem, 3.2vw + 1rem, 4.1rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background-color: var(--color-mist); color: var(--color-nacht); font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--font-krona); font-weight: 400; line-height: 1.08; letter-spacing: -.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-wimpel); color: var(--color-nacht); }
+  :focus-visible { outline: 2px solid var(--color-wimpel); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .krona { font-family: var(--font-krona); font-weight: 400; }
+
+  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; padding: .9rem 1.3rem; background: var(--color-wimpel); color: var(--color-nacht); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-wimpel-licht); transform: translateY(-1px); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, currentColor 55%, transparent); transition: color .2s ease, text-decoration-color .2s ease; }
+  .lijn:hover { text-decoration-color: var(--color-wimpel); }
+
+  /* De route: de N334 en het kanaal Beukers-Steenwijk lopen parallel; ertussen ligt de zeilmakerij. */
+  .weg { background:
+      repeating-linear-gradient(90deg, #ffffffb0 0 26px, #0000 26px 52px) 0 50% / 100% 2px no-repeat,
+      linear-gradient(#ffffff40 0 0) 0 4px / 100% 1px no-repeat,
+      linear-gradient(#ffffff40 0 0) 0 calc(100% - 4px) / 100% 1px no-repeat,
+      var(--color-nacht-2); }
+  .kanaal { background:
+      radial-gradient(10px 3px at 50% 0, #ffffff30 98%, #0000) 0 9px / 46px 16px repeat-x,
+      radial-gradient(10px 3px at 50% 0, #ffffff22 98%, #0000) 23px 25px / 46px 16px repeat-x,
+      var(--color-water); }
+  .rijden { animation: rijden 3.4s cubic-bezier(.3,.7,.3,1) .4s both; }
+  .varen { animation: varen 4.2s cubic-bezier(.3,.7,.3,1) .4s both; }
+  @keyframes rijden { from { transform: translateX(-38vw); } }
+  @keyframes varen { from { transform: translateX(36vw); } }
+}
