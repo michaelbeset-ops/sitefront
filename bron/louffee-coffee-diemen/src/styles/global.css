@@ -1,0 +1,100 @@
+@import "tailwindcss";
+@import "@fontsource/gloock/400.css";
+@import "@fontsource/dm-mono/400.css";
+@import "@fontsource/dm-mono/500.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Het gelaagde glas en de kassa van Louffee: melk, schuim, één espressoband, gevelgrijs en de rode kassatoets. */
+  --color-melk: #f3f2ef;        /* pagina */
+  --color-schuim: #ffffff;      /* de kassabon */
+  --color-inkt: #191817;        /* tekst, op melk 16:1 */
+  --color-grijs: #5f6264;       /* bijtekst en het gevelhart, op melk 5,6:1 */
+  --color-espresso: #1d1714;    /* de donkere band en de voet */
+  --color-crema: #ddd6cd;       /* lichte tekst op espresso */
+  --color-crema-zacht: #aaa197; /* bijtekst op espresso */
+  --color-rood: #b3261e;        /* kassatoets; wit erop 6,3:1, op melk 5,8:1 */
+  --color-lijn: #19181726;
+  --color-lijn-licht: #ddd6cd33;
+  --color-white: #ffffff;
+
+  --font-display: "Gloock", "Georgia", serif;
+  --font-mono: "DM Mono", ui-monospace, "Cascadia Mono", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-2xl: clamp(2rem, 2.2vw + 1.4rem, 3.25rem);
+  --text-3xl: clamp(2.6rem, 4.4vw + 1.2rem, 5.5rem);
+  --text-4xl: clamp(2.35rem, 8.2vw, 8.5rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-melk);
+    color: var(--color-inkt);
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: .98; letter-spacing: -.012em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-white); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-crema); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+
+  .display { font-family: var(--font-display); font-weight: 400; letter-spacing: -.012em; }
+
+  /* Knop: een vlak zwart kassalabel, rood bij hover. */
+  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 500; font-size: var(--text-sm); padding: .8rem 1.15rem; background: var(--color-inkt); color: var(--color-white); text-decoration: none; transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-rood); transform: translateY(-1px); }
+
+  /* Een vraag als grote serif-regel met een rode onderstreping. */
+  .vraag { font-family: var(--font-display); text-decoration: underline; text-decoration-color: var(--color-rood); text-decoration-thickness: .055em; text-underline-offset: .16em; text-decoration-skip-ink: none; transition: color .2s ease, text-underline-offset .2s ease; }
+  .vraag:hover { color: var(--color-rood); text-underline-offset: .26em; }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease; }
+  .lijn:hover { color: var(--color-rood); }
+  .op-donker .lijn:hover { color: var(--color-white); }
+
+  /* De kassabon: wit papier met een gekartelde boven- en onderrand. */
+  .bon { --k: 9px; background: var(--color-schuim); color: var(--color-inkt);
+    -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--k) * 2) var(--k) repeat-x,
+                  conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--k) * 2) var(--k) repeat-x,
+                  linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--k) + 1px) no-repeat;
+            mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / calc(var(--k) * 2) var(--k) repeat-x,
+                  conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / calc(var(--k) * 2) var(--k) repeat-x,
+                  linear-gradient(#000 0 0) center / 100% calc(100% - 2 * var(--k) + 1px) no-repeat; }
+  .bon-schaduw { filter: drop-shadow(0 1px 1px #19181724) drop-shadow(0 14px 22px #19181718); }
+  .streep { border-top: 1.5px dashed color-mix(in srgb, currentColor 45%, transparent); }
+  .stip { flex: 1; min-width: 1rem; border-bottom: 1.5px dotted color-mix(in srgb, currentColor 45%, transparent); transform: translateY(-.32em); }
+
+  /* De stoep voor de deur: grijs-wit-zwarte pixelbestrating. */
+  .stoep { height: var(--h, 48px); background: url("/sitefront/louffee-coffee-diemen/stoep.svg") left top / auto 100% repeat-x; }
+
+  /* Kassatoetsen: rond, wit met een donkere rand; ingedrukt worden ze rood, zoals de rode toetsen op hun kassa. */
+  .toets { position: relative; display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 50%; cursor: pointer;
+    background: radial-gradient(circle at 50% 38%, #fbfaf8 0 55%, #d6d2cb 100%); color: var(--color-inkt);
+    box-shadow: inset 0 0 0 3px #0f0c0a, inset 0 0 0 5px #8c857d, 0 5px 0 #0b0907;
+    font-family: var(--font-display); font-size: 1.6rem; line-height: 1; padding-top: .12em;
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease; user-select: none; }
+  .toets:hover { transform: translateY(1px); }
+  input:checked + .toets { background: radial-gradient(circle at 50% 38%, #d23a30 0 55%, #9b1f18 100%); color: var(--color-white); transform: translateY(4px); box-shadow: inset 0 0 0 3px #0f0c0a, inset 0 0 0 5px #6d1510, 0 1px 0 #0b0907; }
+  input:focus-visible + .toets { outline: 2px solid var(--color-crema); outline-offset: 4px; }
+}

@@ -100,3 +100,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Bomboca, Arnhem | https://michaelbeset-ops.github.io/sitefront/bomboca-arnhem/ | alleen Facebook, 4,6 uit 427, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Effe Anders, Steenbergen | https://michaelbeset-ops.github.io/sitefront/effe-anders-steenbergen/ | site "onder constructie", 4,5 uit 197, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | JAPAN CAFE, Arnhem | https://michaelbeset-ops.github.io/sitefront/japan-cafe-arnhem/ | geen website, 4,3 uit 51 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Louffee Coffee, Diemen | https://michaelbeset-ops.github.io/sitefront/louffee-coffee-diemen/ | site staat op "doing some work", 4,8 uit 420, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Toko Patja, Heerlen | https://michaelbeset-ops.github.io/sitefront/toko-patja-heerlen/ | oude site kapot op mobiel, 4,6 uit 501, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Fadi's Eten & Drinken, Rotterdam | https://michaelbeset-ops.github.io/sitefront/fadis-rotterdam/ | eigen domein dood, 4,7 uit 207, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |

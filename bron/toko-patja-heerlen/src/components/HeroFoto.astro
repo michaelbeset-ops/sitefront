@@ -1,0 +1,18 @@
+---
+// De batikfoto: op telefoons het (bijna vierkante) middenstuk, vanaf 768px de hele tafel. Zo laadt een telefoon geen
+// breed beeld waarvan hij alleen het midden laat zien.
+import { getImage } from 'astro:assets';
+import heel from '../assets/batik.jpg';
+import smal from '../assets/batik-smal.jpg';
+interface Props { alt: string; class?: string }
+const { alt, class: cls = '' } = Astro.props;
+const q = 46;
+const breed = await Promise.all([960, 1280, 1600].map((w) => getImage({ src: heel, width: w, format: 'webp', quality: q })));
+const klein = await Promise.all([480, 680, 1000].map((w) => getImage({ src: smal, width: w, format: 'webp', quality: q })));
+const set = (l: typeof breed) => l.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+---
+<picture>
+  <source media="(min-width: 768px)" srcset={set(breed)} sizes="100vw" type="image/webp" />
+  <source srcset={set(klein)} sizes="94vw" type="image/webp" />
+  <img src={klein[1].src} alt={alt} width="1000" height="961" loading="eager" fetchpriority="high" decoding="async" class={`block h-full w-full object-cover ${cls}`} />
+</picture>

@@ -1,0 +1,46 @@
+---
+import { site, url, wa, waMet } from '../data/site';
+import Ruit from './Ruit.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-licht/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-center gap-3 text-inkt no-underline">
+        <Ruit tekst={false} class="h-7 w-7 shrink-0 text-tafel" />
+        <span class="flex items-baseline gap-2.5 leading-none">
+          <span class="font-serif text-[1.6rem] leading-none">Fadi's</span>
+          <span class="hidden text-sm text-inkt-zacht min-[400px]:inline">eten &amp; drinken</span>
+        </span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-8 text-sm">
+          <li><a href={url('#kaart')} class="no-underline decoration-1 underline-offset-4 hover:underline">De kaart</a></li>
+          <li><a href={url('#aan-huis')} class="no-underline decoration-1 underline-offset-4 hover:underline">Fadi's aan huis</a></li>
+          <li><a href={url('#eiland')} class="no-underline decoration-1 underline-offset-4 hover:underline">Tijden en route</a></li>
+        </ul>
+      </nav>
+      <a href={waMet('')} class="knop !px-3.5 !py-2"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-groen bg-tafel-diep text-white">
+    <div class="wrap grid gap-10 pb-10 pt-16 text-sm md:grid-cols-12 md:items-center">
+      <div class="md:col-span-4">
+        <Ruit class="h-36 w-36 text-white md:h-44 md:w-44" />
+      </div>
+      <p class="md:col-span-4">
+        {site.naam}<br />
+        {site.straat}<br />{site.postcode} {site.plaats}, Noordereiland<br />
+        <a href={waMet('')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={site.instagram} class="lijn">Instagram @fadis_eten_en_drinken</a>
+      </p>
+      <p class="md:col-span-4 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel, ter illustratie. Kaart van het Noordereiland: © OpenStreetMap-bijdragers.</p>}
+  </footer>
+)}

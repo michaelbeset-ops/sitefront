@@ -1,0 +1,44 @@
+---
+import { site, url, wa, waMet, berichten } from '../data/site';
+import { kawung } from '../data/kawung';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-rijst/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-center gap-3 text-antraciet no-underline" aria-label="Toko Patja, naar het begin">
+        <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-antraciet/70 p-1.5 text-koper-donker" set:html={kawung} />
+        <span class="toko text-[1.15rem] tracking-[.2em]">Toko Patja</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="toko-klein flex gap-9 !text-[.78rem]">
+          <li><a href={url('#vitrine')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">De vitrine</a></li>
+          <li><a href={url('#catering')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Catering</a></li>
+          <li><a href={url('#plein')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Tijden en plein</a></li>
+        </ul>
+      </nav>
+      <a href={waMet(berichten.afhalen)} class="knop !px-3.5 !py-2.5"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">Bestellen</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-antraciet text-rijst">
+    <div class="kawung opacity-70" style="--h:22px" aria-hidden="true"></div>
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="toko text-[1.9rem] tracking-[.22em] text-koper">Toko Patja</p>
+        <p class="toko-klein mt-3 text-koper/85">Indonesische specialiteiten<br />Restaurant · Catering · Afhaal</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="lijn [overflow-wrap:anywhere]">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs text-rijst/80">Foto's van uw Google-bedrijfsprofiel en uw eigen website, ter illustratie.</p>}
+  </footer>
+)}

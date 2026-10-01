@@ -1,0 +1,196 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import Ruit from '../components/Ruit.astro';
+import { site, url, wa, waMet, berichten } from '../data/site';
+import { eiland } from '../data/eiland';
+import ontbijt from '../assets/ontbijt.jpg';
+import soep from '../assets/soep.jpg';
+import kisir from '../assets/kisir.jpg';
+import raam from '../assets/raam.jpg';
+import binnen from '../assets/binnen.jpg';
+import hoek from '../assets/hoek.jpg';
+
+// De kaart van hun eigen bestelpagina (zonder de oude prijzen), aangevuld met wat op hun foto's en in de reviews staat.
+const kaart = [
+  { kop: 'Ontbijt', items: [
+    ['Turks ontbijt', 'olijven, kaas, tomaat, brood en thee'],
+    ['Boeren omelet', 'met brood'],
+  ] },
+  { kop: 'Salades', items: [
+    ['Kisir salade', 'couscoussalade, klein of groot'],
+    ["Fadi's kisir salade", 'met abrikozen en pistachenoten'],
+    ['Salade gemengd', 'couscous, bonensalade, feta en cacık'],
+    ['Çoban salatası', 'tomaat, komkommer, ui, kaas, olijfolie'],
+  ] },
+  { kop: 'Warm', items: [
+    ['Linzensoep', 'met brood'],
+    ['Lahmacun', 'Turkse pizza, ook met kaas of vlees'],
+    ['Gözleme', 'vegetarisch, met spinazie of feta'],
+    ['Warme Turkse bol', 'met lams-kipvlees'],
+    ["Fadi's hamburger", 'mozzarella, rode ui, tomatensaus'],
+  ] },
+];
+
+const dagen = [
+  { wd: 1, naam: 'Maandag', tijd: '9.30 - 18.00' },
+  { wd: 2, naam: 'Dinsdag', tijd: '9.30 - 18.00' },
+  { wd: 3, naam: 'Woensdag', tijd: '9.30 - 18.00' },
+  { wd: 4, naam: 'Donderdag', tijd: '9.30 - 18.00' },
+  { wd: 5, naam: 'Vrijdag', tijd: '9.30 - 18.00' },
+  { wd: 6, naam: 'Zaterdag', tijd: '9.30 - 16.30' },
+  { wd: 0, naam: 'Zondag', tijd: 'gesloten' },
+];
+---
+<Base
+  title="Fadi's Eten & Drinken | Turkse lunch op het Noordereiland, Rotterdam"
+  description="Turks ontbijt, kisir, linzensoep, lahmacun en baklava. Al 15 jaar op het Noordereiland, Van der Takstraat 194. Lunch bestellen via WhatsApp, catering met Fadi's aan huis."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+
+    <!-- Het tafeltje: Turks ontbijt op hun groene terrastafel, met één wit kaartje erop. -->
+    <section aria-labelledby="titel" class="relative lg:h-[calc(100svh-6.25rem)] lg:min-h-[40rem] lg:max-h-[54rem]">
+      <div class="aspect-[4/3] sm:aspect-[16/9] lg:absolute lg:inset-0 lg:aspect-auto">
+        <Foto src={ontbijt} hero alt="Turks ontbijt op een groen terrastafeltje: twee borden met olijven, tomaat, komkommer, kaas, boter, jam en een ei, manden met simit en brood, en thee in tulpglaasjes." sizes="100vw" class="object-[0%_60%] lg:object-[50%_50%]" />
+      </div>
+      <div class="relative z-10 -mt-14 px-3 sm:-mt-24 sm:px-10 lg:mx-auto lg:mt-0 lg:flex lg:h-full lg:max-w-[86rem] lg:items-center lg:justify-end lg:px-10">
+        <div class="bg-white px-5 pb-8 pt-8 sm:px-10 lg:w-[37.5rem] lg:px-12 lg:pb-11 lg:pt-12">
+          <h1 id="titel" class="text-4xl lg:text-[4.1rem]">Turks lunchen <span class="block text-tafel">op het eiland.</span></h1>
+          <p class="mt-6 max-w-[34ch] text-lg leading-relaxed">Turks ontbijt, verse salades, linzensoep en baklava. Al 15 jaar bij Fadime, op de hoek van de Van der Takstraat.</p>
+          <a href={waMet(berichten.lunch)} class="knop mt-8"><Fragment set:html={wa} />Lunch bestellen om op te halen</a>
+          <p class="mt-5 text-sm text-inkt-zacht">Maandag t/m vrijdag <span class="whitespace-nowrap tabular-nums">9.30 - 18.00</span>, zaterdag tot <span class="tabular-nums">16.30</span>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- De kaart, op het groen van hun terrastafels. -->
+    <section id="kaart" aria-labelledby="kaart-titel" class="op-groen mt-14 bg-tafel text-white lg:mt-0">
+      <div class="wrap grid gap-y-12 py-20 lg:grid-cols-12 lg:gap-x-14 lg:py-28">
+        <div class="lg:sticky lg:top-24 lg:col-span-5 lg:self-start">
+          <h2 id="kaart-titel" class="text-3xl">Van de kaart</h2>
+          <p class="mt-5 max-w-[30ch] text-lg">Alles vers gemaakt, en ruim opgeschept.</p>
+          <figure class="mt-10">
+            <div class="aspect-[4/3] overflow-hidden lg:aspect-[6/5]"><Foto src={soep} alt="Een kom linzensoep, daarachter thee in een tulpglaasje op een rood-wit schoteltje, een mandje brood en een partje citroen." sizes="(min-width: 1024px) 36vw, 100vw" class="object-[30%_60%]" /></div>
+            <figcaption class="mt-3 text-sm">Linzensoep met brood, en thee.</figcaption>
+          </figure>
+        </div>
+        <div class="min-w-0 lg:col-span-7">
+          <div class="space-y-12">
+            {kaart.map((g) => (
+              <div>
+                <h3 class="flex items-center gap-3 border-b border-lijn-licht pb-3 font-body text-sm font-semibold tracking-normal"><span class="ruitje text-[.7rem]" aria-hidden="true"></span>{g.kop}</h3>
+                <ul class="mt-2">
+                  {g.items.map(([n, t]) => (
+                    <li class="py-3 sm:flex sm:items-baseline sm:gap-4">
+                      <span class="font-serif text-xl leading-tight">{n}</span>
+                      <span class="stip hidden sm:block" aria-hidden="true"></span>
+                      <span class="mt-1 block text-sm sm:mt-0 sm:text-right">{t}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <p class="border-t border-lijn-licht pt-6 font-serif text-xl">En baklava, Turkse thee en koffie.</p>
+          </div>
+          <div class="mt-12 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-7">
+            <a href={waMet(berichten.lunch)} class="knop knop-wit"><Fragment set:html={wa} />Lunch bestellen</a>
+            <p class="text-sm">Bestel via WhatsApp, ophalen tussen <span class="whitespace-nowrap tabular-nums">11 en 14 uur</span>.</p>
+          </div>
+          <p class="mt-8 text-xs">[[AANLEVEREN: actuele kaart met prijzen]]</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- De Buik van Rotterdam, naast de kisir-bowl. -->
+    <section aria-label="Uit De Buik van Rotterdam" class="grid lg:grid-cols-12 lg:items-center">
+      <div class="aspect-[4/5] max-h-[44rem] w-full overflow-hidden lg:col-span-6 lg:aspect-[5/6]">
+        <Foto src={kisir} alt="Een kom met kisir, rode salade met paprika en bonen, feta en yoghurt met zwarte komijn, op een groen tafeltje met een kanten onderlegger, naast een kop koffie en een potje bloemen." sizes="(min-width: 1024px) 50vw, 100vw" class="object-[50%_70%]" />
+      </div>
+      <figure class="px-5 py-16 md:px-10 lg:col-span-6 lg:col-start-7 lg:py-20 lg:pl-6 lg:pr-[max(2.5rem,calc((100vw-86rem)/2+2.5rem))]">
+        <blockquote class="text-[2.1rem] sm:text-3xl lg:text-[3.6rem]">
+          <p>&ldquo;Probeer er vooral de couscoussalade.&rdquo;</p>
+        </blockquote>
+        <figcaption class="mt-8 max-w-[38ch] text-inkt-zacht">De Buik van Rotterdam, over <span class="text-inkt">het gezelligste Turkse lunchtentje van het Noordereiland</span>.</figcaption>
+        <p class="mt-10 flex items-center gap-3 text-sm"><span class="ruitje text-thee" aria-hidden="true"></span>Op de kaart als kisir salade, klein of groot.</p>
+      </figure>
+    </section>
+
+    <!-- Binnen: de hoge ramen met de bolle lampen. -->
+    <section aria-labelledby="binnen-titel" class="wrap grid gap-y-10 pb-24 pt-8 lg:grid-cols-12 lg:gap-x-14 lg:pb-32 lg:pt-16">
+      <div class="flex flex-col lg:col-span-4 lg:pb-4">
+        <Ruit class="mb-auto hidden h-44 w-44 text-tafel lg:block" />
+        <h2 id="binnen-titel" class="text-2xl">Rustig iets eten en drinken op het eiland</h2>
+        <p class="mt-5 max-w-[34ch]">Hoge ramen, bolle lampen en Turkse gastvrijheid. Met mooi weer zit u buiten, op het terras op de hoek.</p>
+      </div>
+      <div class="aspect-[4/5] overflow-hidden sm:aspect-[4/3] lg:col-span-8">
+        <Foto src={raam} alt="Binnen bij Fadi's: twee bolle melkglaslampen voor de hoge ramen, het ruitlogo op het glas, een vitrine met theepotten en zwarte stoelen aan houten tafels." sizes="(min-width: 1024px) 60vw, 100vw" class="object-[50%_38%]" />
+      </div>
+    </section>
+
+    <!-- Fadi's aan huis: catering. -->
+    <section id="aan-huis" aria-labelledby="huis-titel" class="bg-white">
+      <div class="wrap grid gap-y-10 py-20 lg:grid-cols-12 lg:gap-x-14 lg:py-28">
+        <div class="aspect-[4/3] overflow-hidden lg:col-span-7 lg:aspect-[7/6]">
+          <Foto src={binnen} alt="Een gedekte tafel bij Fadi's met een bord olijven, kaas, ei en tomaat, een pannetje menemen, een mand brood en twee glaasjes thee, met daarachter de zaak en de ramen." sizes="(min-width: 1024px) 50vw, 100vw" class="object-[50%_82%]" />
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8 lg:self-center">
+          <h2 id="huis-titel" class="text-3xl">Fadi's aan&nbsp;huis</h2>
+          <p class="mt-6 max-w-[36ch] text-lg">Catering voor een feest thuis of op het werk. Glutenvrij of vegetarisch kan ook.</p>
+          <p class="mt-4 max-w-[36ch] text-inkt-zacht">Onder meer Hogeschool Rotterdam en de Politieacademie gingen u voor.</p>
+          <a href={waMet(berichten.catering)} class="knop mt-9"><Fragment set:html={wa} />Catering aanvragen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het eiland: tijden, adres en het Noordereiland als kaartje. -->
+    <section id="eiland" aria-labelledby="eiland-titel" class="wrap grid gap-y-14 py-20 lg:grid-cols-12 lg:gap-x-14 lg:py-28">
+      <div class="lg:col-span-5">
+        <h2 id="eiland-titel" class="text-3xl">Van der Takstraat <span class="tabular-nums">194</span></h2>
+        <p class="mt-4 text-lg">Op de hoek, midden op het Noordereiland.</p>
+        <dl class="mt-10 border-t border-lijn">
+          {dagen.map((d) => (
+            <div data-wd={d.wd} class="flex items-baseline justify-between gap-4 border-b border-lijn py-2.5">
+              <dt class="flex items-center gap-2.5">{d.naam}<span class="vandaag hidden items-center gap-1.5 text-sm text-thee"><span class="ruitje text-[.6rem]" aria-hidden="true"></span>vandaag</span></dt>
+              <dd class={`whitespace-nowrap tabular-nums ${d.wd === 0 ? 'text-inkt-zacht' : ''}`}>{d.tijd}</dd>
+            </div>
+          ))}
+        </dl>
+        <a href={waMet('')} class="knop mt-10"><Fragment set:html={wa} />WhatsApp</a>
+        <p class="mt-5 leading-loose">
+          Of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+          <a href={site.maps} class="lijn">Route in Google Maps</a><br />
+          <span class="text-sm text-inkt-zacht">{site.google.score} op Google, uit {site.google.aantal} reviews</span>
+        </p>
+      </div>
+      <div class="lg:col-span-7">
+        <figure class="relative">
+          <svg viewBox="-40 -60 1080 940" class="block h-auto w-full bg-maas" role="img" aria-labelledby="kaart-alt">
+            <title id="kaart-alt">Kaartje van het Noordereiland tussen de Nieuwe Maas en de Koningshaven, met Fadi's als rode stip midden op het eiland.</title>
+            <path d={eiland.pad} fill="var(--color-tafel)" />
+            <g font-family="Young Serif, Georgia, serif" font-size="46" fill="var(--color-inkt-zacht)">
+              <text x="10" y="120">Nieuwe Maas</text>
+              <text x="250" y="840">Koningshaven</text>
+            </g>
+            <circle cx={eiland.fadi.x} cy={eiland.fadi.y} r="19" fill="var(--color-thee)" stroke="#ffffff" stroke-width="6" />
+            <text x={eiland.fadi.x - 150} y={eiland.fadi.y + 125} text-anchor="middle" font-family="Young Serif, Georgia, serif" font-size="54" fill="#ffffff">Fadi's</text>
+          </svg>
+          <div class="absolute bottom-0 right-0 w-[42%] border-l-[6px] border-t-[6px] border-maas">
+            <div class="aspect-[815/739] overflow-hidden"><Foto src={hoek} alt="Het hoekpand van Fadi's in de zon: rode baksteen, huisnummer 194 boven de deur, het ruitlogo op het raam en terrasstoelen op de stoep." sizes="(min-width: 1024px) 24vw, 42vw" /></div>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  import { nuInRotterdam } from '../scripts/open';
+  const { wd } = nuInRotterdam();
+  const rij = document.querySelector(`[data-wd="${wd}"]`);
+  rij?.classList.add('font-semibold');
+  rij?.querySelector('.vandaag')?.classList.replace('hidden', 'inline-flex');
+</script>
