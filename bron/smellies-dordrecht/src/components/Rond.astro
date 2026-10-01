@@ -1,0 +1,17 @@
+---
+// Het productbeeld: een strakke ronde uitsnede van de wax ('bonbon'), op een vlak in de eigen waskleur.
+import { Image } from 'astro:assets';
+import { beeldRond, tint, type Geur } from '../data/geuren';
+interface Props { g: Geur; widths: number[]; sizes: string; class?: string; ring?: string; alt?: string; eager?: boolean; pct?: number }
+const { g, widths, sizes, class: cls = 'aspect-[4/5]', ring = 'w-[64%]', alt = '', eager = false, pct = 30 } = Astro.props;
+---
+<div class:list={['rond relative flex items-center justify-center overflow-hidden', cls]} style={`background:${tint(g.kleur, pct)}`}>
+  <div class:list={['rond-in relative aspect-square overflow-hidden rounded-full', ring]}>
+    <Image src={beeldRond(g.beeld)} alt={alt} widths={widths} sizes={sizes} format="webp" quality={78} loading={eager ? 'eager' : 'lazy'} fetchpriority={eager ? 'high' : undefined} class="h-full w-full object-cover" />
+  </div>
+</div>
+<style>
+  .rond-in { box-shadow: 0 28px 50px -26px rgb(46 47 52 / .45), 0 2px 6px -2px rgb(46 47 52 / .12); transition: transform 1.1s var(--ease-zacht); }
+  :global(a:hover) .rond-in { transform: scale(1.035) rotate(-2deg); }
+  @media (prefers-reduced-motion: reduce) { :global(a:hover) .rond-in { transform: none; } }
+</style>

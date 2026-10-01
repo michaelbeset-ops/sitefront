@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+import Kop from '../../components/Kop.astro';
+import Voet from '../../components/Voet.astro';
+import Kaart from '../../components/Kaart.astro';
+import { url } from '../../data/site';
+import { geuren, families } from '../../data/geuren';
+const telling = Object.fromEntries(families.map((f) => [f.id, geuren.filter((g) => g.fam.includes(f.id)).length]));
+---
+<Base title="Geuren | Smellies" description={`Alle ${geuren.length} geuren van Smellies: handgemaakte geurbonbons van soja- en koolzaadwas, per 5 of 15 stuks.`}>
+  <Kop actief="geuren/" />
+  <main id="inhoud">
+    <div class="wrap pb-12 pt-14 lg:pb-16 lg:pt-20">
+      <nav aria-label="Kruimelpad" class="ui flex flex-wrap gap-x-2 text-grijs"><a href={url('')} class="lijn-in">Home</a> <span aria-hidden="true">/</span> <span aria-current="page" class="text-inkt">Geuren</span></nav>
+      <div class="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
+        <h1 class="text-[clamp(3rem,7vw,7.5rem)] font-light leading-[.92] tracking-[-.05em] md:col-span-7">Geuren</h1>
+        <p class="max-w-md text-lg leading-relaxed text-grijs md:col-span-5 md:justify-self-end">Elke kleur is een andere geur. Met de hand gemaakt van soja- en koolzaadwas, per 5 of 15 stuks.</p>
+      </div>
+    </div>
+
+    <div class="kiezer sticky top-16 z-30 border-y border-lijn bg-papier/95 backdrop-blur" data-kiezer>
+      <div class="wrap flex items-center justify-between gap-6">
+        <div class="-my-px flex gap-7 overflow-x-auto py-4 pr-8 [scrollbar-width:none] max-md:[mask-image:linear-gradient(90deg,black_80%,transparent)]" role="group" aria-label="Filter op geurfamilie">
+          <button type="button" class="filter ui shrink-0" aria-pressed="true" data-fam="alles">Alles <span class="num text-grijs">{geuren.length}</span></button>
+          {families.map((f) => <button type="button" class="filter ui shrink-0" aria-pressed="false" data-fam={f.id}>{f.naam} <span class="num text-grijs">{telling[f.id]}</span></button>)}
+        </div>
+        <p class="mono hidden shrink-0 text-grijs sm:block" aria-live="polite"><span class="num" data-teller>{geuren.length}</span> van {geuren.length}</p>
+      </div>
+    </div>
+
+    <h2 class="sr-only">Alle geuren</h2>
+    <ul class="wrap grid grid-cols-2 gap-x-4 gap-y-12 pb-32 pt-12 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-20 lg:pt-16" data-grid>
+      {geuren.map((g, i) => (
+        <li class="kaart" data-fams={g.fam.join(' ')}>
+          <Kaart g={g} eager={i < 3} />
+        </li>
+      ))}
+    </ul>
+    <p class="wrap mono -mt-20 pb-28 text-grijs">Prijzen van smellies.nl, stand 1 oktober 2026. Bestellen gaat via de webwinkel.</p>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .filter { position: relative; padding: .25rem 0; color: var(--color-grijs); transition: color .3s; }
+  .filter:hover, .filter[aria-pressed='true'] { color: var(--color-inkt); }
+  .filter::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1.05rem; height: 1px; background: var(--color-inkt); transform: scaleX(0); transform-origin: 0 50%; transition: transform .45s var(--ease-zacht); }
+  .filter[aria-pressed='true']::after { transform: scaleX(1); }
+  .kaart { transition: opacity .5s var(--ease-zacht), transform .6s var(--ease-zacht); }
+  .kaart.uit { display: none; }
+  .kaart.weg { opacity: 0; transform: translateY(10px); }
+</style>
+
+<script>
+  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const kaarten = [...document.querySelectorAll<HTMLElement>('.kaart')];
+  const teller = document.querySelector('[data-teller]');
+  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('.filter')];
+  const kies = (fam: string, scroll = true) => {
+    knoppen.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.fam === fam)));
+    const tonen = kaarten.filter((c) => fam === 'alles' || c.dataset.fams!.split(' ').includes(fam));
+    kaarten.forEach((c) => c.classList.add('weg'));
+    setTimeout(() => {
+      kaarten.forEach((c) => c.classList.toggle('uit', !tonen.includes(c)));
+      requestAnimationFrame(() => tonen.forEach((c, i) => setTimeout(() => c.classList.remove('weg'), Math.min(i, 9) * 40)));
+      if (teller) teller.textContent = String(tonen.length);
+      const kiezer = document.querySelector<HTMLElement>('[data-kiezer]')!;
+      if (scroll && kiezer.getBoundingClientRect().top < 70) document.querySelector('[data-grid]')!.scrollIntoView({ block: 'start', behavior: rustig ? 'auto' : 'smooth' });
+      history.replaceState(null, '', fam === 'alles' ? location.pathname : `#${fam}`);
+    }, rustig ? 0 : 220);
+  };
+  knoppen.forEach((k) => k.addEventListener('click', () => kies(k.dataset.fam!)));
+  const start = location.hash.slice(1);
+  if (knoppen.some((k) => k.dataset.fam === start)) kies(start, false);
+</script>

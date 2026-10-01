@@ -64,3 +64,23 @@ De 3 stappen zijn geen kaartenrij maar een scroll-gestuurde tekening met tekst e
 ## Bronnen
 smellies.nl (categorie- en productpagina's, Wat zijn Smellies, Over Smellies, Contact, Bezorgen), bekeken 1-10-2026;
 data hergebruikt uit v1 (`../smellies-dordrecht`) en aangevuld met de volledige productomschrijvingen.
+
+## Herziening 2 (1 oktober 2026, na oordeel Michael: "hero leuk, daarna verschrikkelijk")
+Het grid van 36 wax-hoopjes op de homepage is weg. Nieuwe opbouw:
+- **Home** (6 secties): hero (ongewijzigd), kort merkstatement, Uitgelicht (Pumpkin Spice, Libre, Snuggels als
+  grote banden in hun eigen waskleur), Collecties als vier beeldlinks, Zo werkt het (compact, tekening speelt de 3
+  stappen af, klikbaar), Groothandel. Footer = contact.
+- **/geuren/**: alle 40 (36 + 4 herfst), filter Fris / Bloemig / Zoet & kruidig / Warm & houtig / Herfst
+  (ook via #hash), 3 kolommen, klik naar productpagina.
+- **/geuren/<slug>/**: 40 statische productpagina's: groot beeld + hoop + detail, hun omschrijving, samenstelling,
+  keuze 5 stuks € 2,75 / 15 stuks € 8,00 (Choo Choo: alleen 15, zoals op hun site), knop naar de echte variant
+  op smellies.nl, brandtijd, zo gebruik je hem, Past ook bij (3 uit dezelfde familie), kruimelpad.
+- **/collecties/**: Herfst (banner, 4 geuren, prijzen kaarsen/duo/spray), Mixen (typografisch), Smellies & zo.
+
+### Productbeelden
+Originelen opnieuw van hun CDN gehaald zonder cache-pad: 1000 tot 1600 px i.p.v. 800 (bron/wax-hr).
+tools/beelden.mjs maakt per geur een strakke middenuitsnede (60%) en een macro, licht gelijkgetrokken
+(helderheid +3%, verzadiging +5%, fijne verscherping). Getest: rond, volle macro, boog (shots/_beeldtest.png).
+Gekozen: de ronde 'bonbon'-uitsnede met zachte schaduw op een vlak in de gemeten waskleur (30% gemengd met papier).
+Waskleur per geur gemeten met tools/kleuren.mjs (gemiddelde van de lichtste 60% pixels).
+Prijzen en varianten: uit de productgegevens van smellies.nl (5 stuks variant 6196551, 15 stuks variant 5188161).

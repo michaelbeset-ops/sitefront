@@ -1,0 +1,17 @@
+---
+import Rond from './Rond.astro';
+import { url } from '../data/site';
+import { famNaam, type Geur } from '../data/geuren';
+interface Props { g: Geur; eager?: boolean; klein?: boolean }
+const { g, eager = false, klein = false } = Astro.props;
+const prijs = g.opties[0];
+const fams = g.fam.length ? g.fam.map((f) => famNaam[f]) : ['Parfumgeur'];
+---
+<a href={url(`geuren/${g.slug}/`)} class="kaart-link group block min-w-0">
+  <Rond g={g} widths={klein ? [300, 480] : [360, 560, 720]} sizes={klein ? '(min-width: 1024px) 26vw, 46vw' : '(min-width: 1024px) 28vw, 46vw'} eager={eager} />
+  <div class="mt-4 flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+    <h3 class="text-base leading-snug tracking-[-.02em] sm:text-lg"><span class="lijn-in">{g.naam}</span></h3>
+    <p class="num shrink-0 text-sm text-grijs"><span class="text-xs">vanaf</span> € {prijs.prijs}</p>
+  </div>
+  <p class="ui mt-1.5 text-grijs">{fams[0]}{fams.length > 1 && <span class="max-sm:hidden">, {fams.slice(1).join(', ')}</span>}</p>
+</a>

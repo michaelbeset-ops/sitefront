@@ -1,0 +1,48 @@
+---
+// Lijntekening van de brander. data-stap 1: Smellie in de schaal, 2: smelt en geurt, 3: lichtje uit.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+---
+<svg viewBox="62 8 276 392" class={cls} role="img" aria-label="Lijntekening van een geurbrander: een Smellie smelt in het schaaltje boven een waxinelichtje.">
+  <defs>
+    <radialGradient id="gloed"><stop offset="0" stop-color="#f6c98a" stop-opacity=".5" /><stop offset="1" stop-color="#f6c98a" stop-opacity="0" /></radialGradient>
+    <clipPath id="kom"><path d="M88 150a112 20 0 0 0 224 0q0 52-112 56-112-4-112-56Z" /></clipPath>
+  </defs>
+  <g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <g class="geur">
+      <path d="M170 112c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
+      <path d="M200 104c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
+      <path d="M230 112c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
+    </g>
+    <g clip-path="url(#kom)"><ellipse class="plas" cx="200" cy="156" rx="112" ry="26" fill="var(--wax)" stroke="none" /></g>
+    <ellipse cx="200" cy="150" rx="112" ry="20" />
+    <path d="M88 150q0 52 112 56 112-4 112-56" />
+    <g class="bonbon"><path d="M178 122h44l-5 26h-34Z" fill="var(--wax)" stroke="none" /><path d="M186 124l2 22M194 124l1 23M202 124v23M210 124l-1 23M218 124l-2 22" stroke="#000" stroke-opacity=".15" /><ellipse cx="200" cy="122" rx="22" ry="5" fill="var(--wax)" stroke="none" /></g>
+    <path d="M116 196v188h168V196" />
+    <path d="M164 384v-56a36 36 0 0 1 72 0v56" />
+    <path d="M100 384h200" />
+    <circle class="gloedje" cx="200" cy="352" r="56" fill="url(#gloed)" stroke="none" />
+    <path d="M184 372h32v10h-32z" />
+    <path class="vlam" d="M200 342c7 9 9 16 6 22-1.6 3-4 4.5-6 4.5s-4.4-1.5-6-4.5c-3-6-1-13 6-22Z" fill="#f6c98a" stroke="none" />
+    <path d="M200 372v-4" />
+  </g>
+</svg>
+<style is:global>
+  [data-stap] { --wax: #a48edc; }
+  [data-stap] .bonbon, [data-stap] .plas, [data-stap] .vlam, [data-stap] .gloedje, [data-stap] .geur path { transform-box: fill-box; transition: transform 1.4s var(--ease-zacht), opacity 1s var(--ease-zacht), filter 1s; }
+  [data-stap] .bonbon { transform-origin: 50% 100%; }
+  [data-stap] .plas { transform-origin: 50% 0; transform: scale(.25, .2); }
+  [data-stap] .vlam { transform-origin: 50% 100%; animation: flakker 2.4s ease-in-out infinite; }
+  [data-stap] .gloedje { transform-origin: center; }
+  [data-stap] .geur path { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
+  [data-stap='2'] .bonbon, [data-stap='3'] .bonbon { transform: translateY(18px) scale(1.5, .05); opacity: 0; }
+  [data-stap='2'] .plas, [data-stap='3'] .plas { transform: none; }
+  [data-stap='2'] .geur path { animation: stijg 3.6s var(--ease-zacht) infinite; opacity: .8; }
+  [data-stap='2'] .geur path:nth-child(2) { animation-delay: .6s; }
+  [data-stap='2'] .geur path:nth-child(3) { animation-delay: 1.2s; }
+  [data-stap='3'] .vlam, [data-stap='3'] .gloedje { opacity: 0; transform: scale(.4); }
+  [data-stap='3'] .plas { filter: saturate(.55) brightness(1.12); }
+  @keyframes flakker { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(.94, 1.07) skewX(2deg); } 70% { transform: scale(1.03, .96) skewX(-2deg); } }
+  @keyframes stijg { 0% { stroke-dashoffset: 1; opacity: 0; } 25% { opacity: .85; } 70% { stroke-dashoffset: 0; opacity: .6; } 100% { stroke-dashoffset: -1; opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { [data-stap='2'] .geur path { stroke-dashoffset: 0; opacity: .7; } }
+</style>

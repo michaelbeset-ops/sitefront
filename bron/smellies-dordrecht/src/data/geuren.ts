@@ -1,77 +1,165 @@
-// Alle namen, prijzen, omschrijvingen en samenstellingen van smellies.nl (categorie- en productpagina's,
-// bekeken 1 oktober 2026). "Dupe van <merk>" is bewust weggelaten. De zin is hun eigen zin, soms ingekort.
-// Kleur = gemeten in hun eigen productfoto van de wax. Families: onze indeling, afgeleid uit hun eigen
-// omschrijving (woorden als fris, bloemen, zoet, kruidig, houtachtig) of hun samenstelling; zie PLAN.md.
+// Alle namen, omschrijvingen, samenstellingen en prijzen van de productpagina's op smellies.nl (bekeken 1 oktober 2026).
+// "Dupe van <merk>" en "geïnspireerd op <merk>" zijn bewust weggelaten; verder hun eigen tekst, licht opgeschoond
+// (spelling, leestekens). Prijzen: 5 stuks € 2,75 (variant 6196551), 15 stuks € 8,00 (variant 5188161), uit hun
+// eigen productgegevens. Choo Choo staat op hun site nu alleen als 15 stuks.
+// Waskleur: gemeten in de foto (tools/kleuren.mjs). Families: onze indeling uit hun eigen omschrijving; zie PLAN.md.
 import type { ImageMetadata } from 'astro';
-const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/wax/*.jpg', { eager: true });
-export const foto = (bestand: string) => fotos[`../assets/wax/${bestand}.jpg`].default;
+import kleuren from './kleuren.json';
 
-export type Familie = 'fris' | 'bloemig' | 'zoet' | 'houtig';
+const rond = import.meta.glob<{ default: ImageMetadata }>('../assets/rond/*.jpg', { eager: true });
+const macro = import.meta.glob<{ default: ImageMetadata }>('../assets/macro/*.jpg', { eager: true });
+export const beeldRond = (b: string) => rond[`../assets/rond/${b}.jpg`].default;
+export const beeldMacro = (b: string) => macro[`../assets/macro/${b}.jpg`].default;
+
+export type Familie = 'fris' | 'bloemig' | 'zoet' | 'houtig' | 'herfst';
 export const families: { id: Familie; naam: string }[] = [
   { id: 'fris', naam: 'Fris' },
   { id: 'bloemig', naam: 'Bloemig' },
   { id: 'zoet', naam: 'Zoet & kruidig' },
   { id: 'houtig', naam: 'Warm & houtig' },
+  { id: 'herfst', naam: 'Herfst' },
+];
+export const famNaam = Object.fromEntries(families.map((f) => [f.id, f.naam])) as Record<Familie, string>;
+
+export interface Optie { stuks: number; prijs: string; href: string }
+export interface Geur {
+  naam: string; slug: string; beeld: string; pad: string; kleur: string;
+  fam: Familie[]; zin: string; tekst: string[]; noten: string[]; opties: Optie[]; herfst: boolean;
+}
+
+const WINKEL = 'https://www.smellies.nl/';
+const maak = (naam: string, slug: string, pad: string, fam: Familie[], zin: string, tekst: string[], noten: string[] = [], alleen15 = false): Geur => {
+  const herfst = pad.includes('/herfst/');
+  const beeld = `${herfst ? 'herfst' : 'smellies'}-${slug}`;
+  const [id, ...rest] = pad.split('/');
+  const variant = (v: string) => `${WINKEL}${id}-${v}/${rest.join('/')}`;
+  const opties: Optie[] = [
+    ...(alleen15 ? [] : [{ stuks: 5, prijs: '2,75', href: variant('6196551') }]),
+    { stuks: 15, prijs: '8,00', href: variant('5188161') },
+  ];
+  return { naam, slug, beeld, pad: WINKEL + pad, kleur: (kleuren as Record<string, string>)[beeld], fam: herfst ? ['herfst', ...fam] : fam, zin, tekst, noten, opties, herfst };
+};
+
+export const geuren: Geur[] = [
+  maak('Adore', 'adore', 'a-50644283/smellies/adore/', ['bloemig'], 'Een zeer vrouwelijke geur, vol bloemenextracten.',
+    ['Een zeer vrouwelijke geur, vol bloemenextracten. Om vrolijk van te worden!'], ['bergamot', 'rozen', 'jasmijn', 'amber']),
+  maak('Angel', 'angel', 'a-50644375/smellies/angel/', ['zoet'], 'Een verrukkelijke samenstelling van diverse ingrediënten.',
+    ['Een verrukkelijke samenstelling van diverse ingrediënten.'], ['citroen', 'honingmeloen', 'framboos', 'krenten', 'jasmijn', 'gardenia', 'nootmuskaat', 'muskus', 'sandelhout', 'patchouli']),
+  maak('Apple Pie', 'apple-pie', 'a-50644892/smellies/apple-pie/', ['zoet'], 'De geur van vers gebakken appeltaart.',
+    ['Een heerlijke geur van vers gebakken appeltaart!'], ['zoete warme appels', 'nootmuskaat', 'kaneel']),
+  maak('Babypowder', 'babypowder', 'a-50644938/smellies/babypowder/', ['fris'], 'De welbekende geur van babypoeder.',
+    ['De welbekende geur van babypoeder.']),
+  maak('Baccarat', 'baccarat', 'a-85486221/smellies/baccarat/', ['houtig'], 'Een intense mix van jasmijn, saffraan en amber.',
+    ['Een intense mix van jasmijn, saffraan en amber. Ideaal om de warmte in deze wintertijd naar binnen te brengen.'], ['jasmijn', 'saffraan', 'amber']),
+  maak('Bedtime Baby', 'bedtime-baby', 'a-50644959/smellies/bedtime-baby/', ['bloemig'], 'Heerlijke geur vlak voor het slapen gaan.',
+    ['Heerlijke geur vlak voor het slapen gaan!'], ['kamille', 'lavendel', 'mandarijn', 'neroli', 'lelie van dalen', 'lichte muskus']),
+  maak('Belle', 'belle', 'a-50644982/smellies/belle/', ['zoet', 'bloemig'], 'Iris, peer en oranjebloesem op praline en vanille.',
+    ['De nummer 1 geur van dit moment!'], ['iris', 'arabische jasmijn', 'peer', 'oranjebloesem', 'zwarte bes', 'praline', 'vanille', 'patchouli']),
+  maak('Black Magic', 'black-magic', 'a-50645017/smellies/black-magic/', ['zoet'], 'Een hedendaagse geur van elegantie en moderniteit.',
+    ['Een hedendaagse geur van elegantie en moderniteit.'], ['koffie', 'oranjebloesem', 'vanille']),
+  maak('Black Orchid', 'black-orchid', 'a-53815175/smellies/black-orchid/', ['houtig'], 'Een luxueuze en sensuele geur.',
+    ['Een luxueuze en sensuele geur.'], ['zwarte orchidee', 'specerijen', 'vanille', 'houtsoorten']),
+  maak('Blue Fresh', 'blue-fresh', 'a-58966296/smellies/blue-fresh/', ['fris'], 'Een krachtige frisse geur, als fris gewassen kleding.',
+    ['Een krachtige frisse geur die je doet denken aan fris gewassen kleding. Het maakt je vrolijk en opgeruimd. Het hele huis vult zich met een zalige frisse geur.']),
+  maak('Blush', 'blush', 'a-50645028/smellies/blush/', ['houtig', 'bloemig'], 'Een oosterse, houtachtige geur. Een exotische bloemenzee.',
+    ['Een oosterse, houtachtige geur. De samenstelling is een exotische bloemenzee.'], ['gardenia', 'fresia', 'jasmijn', 'turkse roos', 'koriander', 'vanille', 'patchouli', 'vetiver']),
+  maak('Cherry Pie', 'cherry-pie', 'a-62274601/smellies/cherry-pie/', ['zoet'], 'Zalig zoete geur van kersentaart.',
+    ['Zalig zoete geur van kersentaart. Het water loopt je in de mond.'], ['kersen', 'deeg', 'bitterkoekjes', 'bruine suiker', 'vanille', 'kaneel']),
+  maak('Choo Choo', 'choo-choo', 'a-57569009/smellies/choo-choo/', ['bloemig'], 'Een onweerstaanbare bloemige geur.',
+    ['Een onweerstaanbare bloemige geur die je meeneemt op een zintuiglijke reis vol charme en vrouwelijkheid. Hij opent met een sprankelende mix van frisse appel, sappige peer en zachte fresia.',
+     'Het hart onthult een weelderige combinatie van pruim, jasmijn en orchidee, sensueel en elegant. De geur vloeit uiteindelijk over in een warme basis van hout, musk en een vleugje romige vanille.'],
+    ['appel', 'fresia', 'peer', 'pruim', 'jasmijn', 'orchidee', 'houtachtige tonen', 'musk', 'vanille'], true),
+  maak('Clean Cotton', 'clean-cotton', 'a-50645094/smellies/clean-cotton/', ['fris'], 'De bekende, heerlijk frisse geur.',
+    ['De bekende, heerlijk frisse geur!'], ['citrus', 'poeder', 'hout', 'kaffir lime', 'limoenschilletjes', 'babypoeder', 'afrikaanse viooltjes', 'jasmijn', 'witte musk']),
+  maak('Dame', 'dame', 'a-50645136/smellies/dame/', [], 'Super sensuele geur, een klassieker.',
+    ['Super sensuele geur, een klassieker!']),
+  maak('Fabulous Lady', 'fabulous-lady', 'a-77798180/smellies/fabulous-lady/', ['bloemig'], 'Een oriëntaalse bloemengeur vol rijke geuren.',
+    ['Een heerlijke oriëntaalse bloemengeur vol rijke geuren zoals mandarijnbloesem, jasmijn en tonkaboon.'], ['mandarijn', 'jasmijn', 'tuberoos', 'vanille', 'mos', 'tonkaboon', 'ylang ylang']),
+  maak('Forever & Ever', 'forever-ever', 'a-57569006/smellies/forever-ever/', ['bloemig', 'fris'], 'Frisse citrus, weelderige bloemen en zoet sandelhout.',
+    ['Bekende klassieke parfumgeur. Perfecte combinatie van frisse citrus, weelderige bloemen en zoet sandelhout.'], ['citrus', 'freesia', 'salie', 'lelie van dalen', 'narcis', 'sandelhout', 'musk', 'vanille']),
+  maak('Fresh Linen', 'fresh-linen', 'a-50645380/smellies/fresh-linen/', ['fris'], 'De geur van wasverzachter.',
+    ['De geur van wasverzachter. Deze geur staat in de top 3 van populaire geuren!']),
+  maak('Gingerbread', 'gingerbread', 'a-85486092/smellies/gingerbread/', ['zoet'], 'Doet denken aan vers gebakken peperkoekjes.',
+    ['Een geur die je doet denken aan vers gebakken peperkoekjes. Met tonen van gember, kaneel, nootmuskaat en kruidnagel, die een warm en geruststellend aroma creëren. Ideaal om de warmte in deze wintertijd naar binnen te brengen.'],
+    ['vanille', 'bruine suiker', 'citrus', 'kaneel', 'kruidnagel', 'gember', 'nootmuskaat']),
+  maak('Juicy Orange', 'juicy-orange', 'a-51551235/smellies/juicy-orange/', ['fris'], 'Frisse sinaasappelgeur, aangevuld met frisse bloemen.',
+    ['Juicy ontbrak nog in het assortiment! Heerlijk frisse sinaasappelgeur, aangevuld met frisse bloemen.'], ['sinaasappel', 'mandarijn', 'perzik', 'bergamot', 'aardbei', 'framboos', 'witte musk']),
+  maak('Komkommer & aloe vera', 'komkommer-aloe-vera', 'a-50645531/smellies/komkommer-aloe-vera/', ['fris'], 'Een frisse, schone en lichtgroene geur.',
+    ['Een frisse, schone en lichtgroene geur, met hints van het natuurlijke, milde aroma van aloë vera en de frisse, koele geur van komkommer. Heerlijk om de kamer op te frissen en een ontspannen sfeer te creëren.']),
+  maak('Libre', 'libre', 'a-62274626/smellies/libre/', ['bloemig'], 'Citrus, limoen en sinaasappel met hints van jasmijn.',
+    ['Een zeer elegante geur met topnoten van citrus, limoen en sinaasappel, kruidige middennoten en hints van jasmijn.'], ['citrus', 'limoen', 'sinaasappel', 'jasmijn', 'lelietje-van-dalen', 'muskus', 'vanille', 'amber']),
+  maak('Light Blue', 'light-blue', 'a-50644903/smellies/light-blue/', ['fris', 'bloemig'], 'Een frisse geur met vele zachte bloemengeuren.',
+    ['Een heerlijk frisse geur met vele zachte bloemengeuren.'], ['citroen', 'hyacint', 'appel', 'bamboe', 'cederhout', 'muskus', 'witte rozen', 'jasmijn']),
+  maak('Million Lady', 'million-lady', 'a-50645550/smellies/million-lady/', ['bloemig'], 'Een zeer vrouwelijke geur.',
+    ['Een zeer vrouwelijke geur.'], ['rijpe frambozen', 'zoete sinaasappels', 'mint', 'sinaasappelbloesem', 'pioenrozen', 'jasmijn', 'vanille', 'patchouli', 'honing', 'amber']),
+  maak('Musk & Sandelwood', 'musk-sandelwood', 'a-50645671/smellies/musk-sandelwood/', ['houtig'], 'Warme tonen zoals musk, vetiver en sandelwood.',
+    ['Typische sandelwoodgeur. Warme tonen zoals musk, vetiver en sandelwood.'], ['musk', 'lelie', 'ylang ylang', 'sandelwood', 'amber', 'vetiver']),
+  maak('Mystic Forest', 'mystic-forest', 'a-50645558/smellies/mystic-forest/', ['houtig', 'zoet'], 'Zoet, houtachtig en aromatisch, met oud.',
+    ['Zoete, houtachtige, aromatische en complexe geur. Hoofdbestanddeel is oud (in het Arabisch oudh), dat soms wordt aangeduid als vloeibaar goud.'], ['oud']),
+  maak('Olympia', 'olympia', 'a-58475174/smellies/olympia/', ['fris', 'zoet'], 'Een oriëntaals frisse geur met zoete vanille.',
+    ['Een oriëntaals frisse geur met zoete vanille.'], ['zoete sinaasappel', 'peer', 'waterjasmijn', 'gember', 'waterlelie', 'amber', 'vanille', 'sandelhout']),
+  maak('Relax & Zen', 'relax-zen', 'a-53815451/smellies/relax-zen/', ['houtig'], 'Houtachtig. Werkt kalmerend en ontspannend.',
+    ['Een zeer vrouwelijke, houtachtige geur. Werkt kalmerend en ontspannend.'], ['amber', 'zwarte orchidee', 'gember', 'waterlelie', 'kyara hout', 'jasmijn']),
+  maak('Snuggels', 'snuggels', 'a-80973461/smellies/snuggels/', ['fris'], 'Zacht, fris en onweerstaanbaar schoon.',
+    ['Een zachte, frisse en onweerstaanbaar schone geur die direct een gevoel van comfort en geborgenheid oproept. Hij opent met sprankelende citrusnoten van bergamot, die zorgen voor een frisse, lichte eerste indruk.',
+     'De geur sluit warm en rustgevend af met een zachte basis van houtsoorten, amber en musk. Perfect voor liefhebbers van een fris gewassen, clean en comfortabel geurprofiel dat lang blijft hangen.'],
+    ['bergamot', 'perzik', 'appel', 'kokosnoot', 'aardbei', 'lelietje-van-dalen', 'lelie', 'oranjebloesem', 'viooltje', 'houtsoorten', 'amber', 'musk']),
+  maak('So Delicious', 'so-delicious', 'a-50645491/smellies/so-delicious/', ['fris'], 'De bekende frisse groene-appelgeur.',
+    ['De bekende frisse groene-appelgeur.'], ['groene appel', 'exotische bloemen', 'sensueel hout']),
+  maak('Space', 'space', 'a-50645629/smellies/space/', ['bloemig'], 'Licht gewaagd, maar zeker niet overheersend.',
+    ['Licht gewaagde geur, maar zeker niet overheersend. Gewoon goed!'], ['meloen', 'mandarijntjes', 'oranjebloesem', 'jasmijn', 'rozen', 'houttonen', 'vanille', 'musk']),
+  maak('Sunshine', 'sunshine', 'a-78505154/smellies/sunshine/', ['fris'], 'De voorjaarsgeur van Smellies.',
+    ['Sunshine is de voorjaarsgeur van Smellies! Een heerlijke fruitige geur die je huis laat ruiken in de stijl van de bekende wasverzachter.'],
+    ['groene munt', 'romig', 'sinaasappel', 'lelietje-van-dalen', 'jasmijn', 'dennen', 'vanille', 'tonkaboon', 'houtachtige witte muskus']),
+  maak('Sweet Cookies', 'sweet-cookies', 'a-50645479/smellies/sweet-cookies/', ['zoet'], 'Alsof je net verse koekjes hebt gebakken.',
+    ['Een lekkere zoete geur. Alsof je net verse koekjes hebt gebakken!'], ['kaneel', 'zoetige sinaasappel', 'speculaas', 'chocolade', 'appel', 'vanille']),
+  maak('Sweet Jasmine', 'sweet-jasmine', 'a-50645668/smellies/sweet-jasmine/', ['bloemig', 'fris'], 'Een combinatie van zoet en fris.',
+    ['Zoete jasmijn is een combinatie van zoet en fris, ook wel bekend als Toscaanse jasmijn. Een unieke combinatiegeur waar je lang van kunt genieten.'], ['jasmijn', 'citroen', 'lichte musk', 'bergamot', 'bloesem']),
+  maak('Vanille', 'vanille', 'a-50645534/smellies/vanille/', ['zoet'], 'Warm, romig en heerlijk zoet.',
+    ['Een warme, romige en heerlijk zoete geur die direct zorgt voor een knus en vertrouwd gevoel in huis. Hij opent met de volle, herkenbare geur van romige vanille en doet denken aan een vers bereid dessert of een bolletje vanille-ijs.',
+     'De geur ontwikkelt zich tot een rijke en comfortabele geurbeleving met zachte, zoete nuances die warmte en gezelligheid uitstralen.'], ['romige vanille']),
+  maak('Yes', 'yes', 'a-60635311/smellies/yes/', ['bloemig'], 'Een vrouwelijke, elegante geur.',
+    ['Een vrouwelijke, elegante geur, voor de moderne vrouw.'], ['nektar', 'sandelhout', 'freesia', 'muskus', 'zwarte bes']),
+
+  // Herfstcollectie (eigen categorie op smellies.nl)
+  maak('Happy Autumn', 'happy-autumn', 'a-65943987/herfst/happy-autumn/', ['houtig'], 'Een frisse herfstochtend, vallende bladeren.',
+    ['De nieuwe Happy Autumn geur neemt je mee naar een frisse herfstochtend, waar de lucht gevuld is met een vleugje citrus en de aarde onder je voeten zacht ruikt naar vallende bladeren. Terwijl je door het bos wandelt, voel je de warmte van amber en sandelhout die je omhult, als een zachte deken tegen de kou.',
+     'De lichte tonen van eucalyptus en lavendel brengen rust en balans, terwijl de diepe, houtachtige basis van ceder en patchouli de geur zijn karakter en kracht geeft.'],
+    ['bergamot', 'citroen', 'eucalyptus', 'lavendel', 'aardse herfstbladeren', 'amber', 'sandelhout', 'ceder', 'patchouli']),
+  maak('Love Autumn', 'love-autumn', 'a-65943992/herfst/love-autumn/', ['zoet'], 'Warme zoete sinaasappel, gelaagd op gember.',
+    ['Herfst betekent guur weer, binnen alles gezellig maken en een heerlijke herfstgeur in de brander. Een geur van warme zoete sinaasappel, gelaagd op gember met een licht bloemig gevoel. Niet te kruidig, maar vol met hartnoten van vanille, kruidnagel, kaneel en nootmuskaat.'],
+    ['zoete sinaasappel', 'gember', 'vanille', 'kaneel']),
+  maak('Sweet Autumn', 'sweet-autumn', 'a-65943997/herfst/sweet-autumn/', ['zoet'], 'Citroen, suikerspin en vanille.',
+    ['Herfst betekent guur weer, binnen alles gezellig maken en een heerlijke herfstgeur in de brander. Sweet Autumn is een geur met zoete citrusakkoorden van citroen, muskus, suikerspinnen en vanille. Deze zoete geur brengt de zoetheid in huis.'],
+    ['citroen', 'suikerspinnen', 'vanille', 'muskus']),
+  maak('Pumpkin Spice', 'pumpkin-spice', 'a-102141336/herfst/pumpkin-spice/', ['zoet'], 'De ultieme belichaming van de herfst.',
+    ['De geur Pumpkin Spice is de ultieme belichaming van de herfst. Zodra je hem ruikt, waan je je in een keuken waar net een versgebakken pompoentaart uit de oven komt.',
+     'De kruidige warmte van kaneel en kruidnagel vult de lucht, terwijl zoete fruitnoten een speels accent geven. Op de achtergrond zorgen houtachtige tonen voor diepte en warmte, en de zachte geur van pompoen maakt het geheel compleet.'],
+    ['kaneel', 'kruidnagel', 'zoete fruitnoten', 'houtachtige noten', 'pompoen']),
 ];
 
-export interface Geur { naam: string; slug: string; pad: string; kleur: string; fam: Familie[]; zin: string; noten: string[] }
+export const smellies = geuren.filter((g) => !g.herfst);
+export const herfst = geuren.filter((g) => g.herfst);
+export const geur = (slug: string) => geuren.find((g) => g.slug === slug)!;
 
-const g = (naam: string, slug: string, pad: string, kleur: string, fam: Familie[], zin: string, noten: string[] = []): Geur =>
-  ({ naam, slug: `smellies-${slug}`, pad, kleur, fam, zin, noten });
+/** Tint achter het productbeeld: de waskleur, gemengd met papier. */
+export const tint = (kleur: string, pct = 30) => `color-mix(in oklab, ${kleur} ${pct}%, #f3f1ec)`;
 
-/** De 36 Smellies uit de categorie SMELLIES, in hun eigen (alfabetische) volgorde. Allemaal € 2,75. */
-export const smellies: Geur[] = [
-  g('Adore', 'adore', 'a-50644283/smellies/adore/', '#e16a02', ['bloemig'], 'Een zeer vrouwelijke geur, vol bloemen extracten.', ['bergamot', 'rozen', 'jasmijn', 'amber']),
-  g('Angel', 'angel', 'a-50644375/smellies/angel/', '#95a8b0', ['zoet'], 'Een verrukkelijke samenstelling van diverse ingrediënten.', ['citroen', 'honingmeloen', 'framboos', 'nootmuskaat', 'sandelhout']),
-  g('Apple Pie', 'apple-pie', 'a-50644892/smellies/apple-pie/', '#aa7143', ['zoet'], 'De geur van vers gebakken appeltaart.', ['zoete warme appels', 'nootmuskaat', 'kaneel']),
-  g('Babypowder', 'babypowder', 'a-50644938/smellies/babypowder/', '#bdaf9b', ['fris'], 'De welbekende geur van babypoeder.', ['babypoeder']),
-  g('Baccarat', 'baccarat', 'a-85486221/smellies/baccarat/', '#c8a0a4', ['houtig'], 'Een intense mix van jasmijn, saffraan en amber.', ['jasmijn', 'saffraan', 'amber']),
-  g('Bedtime Baby', 'bedtime-baby', 'a-50644959/smellies/bedtime-baby/', '#785b8e', ['bloemig'], 'Heerlijke geur vlak voor het slapen gaan.', ['kamille', 'lavendel', 'neroli', 'lelie van dalen']),
-  g('Belle', 'belle', 'a-50644982/smellies/belle/', '#d0bbab', ['zoet', 'bloemig'], 'Iris, peer en oranjebloesem op praline en vanille.', ['iris', 'peer', 'oranjebloesem', 'praline', 'vanille']),
-  g('Black Magic', 'black-magic', 'a-50645017/smellies/black-magic/', '#9c938e', ['zoet'], 'Een hedendaagse geur van elegantie en moderniteit.', ['koffie', 'oranjebloesem', 'vanille']),
-  g('Black Orchid', 'black-orchid', 'a-53815175/smellies/black-orchid/', '#b2acac', ['houtig'], 'Een luxueuze en sensuele geur.', ['zwarte orchidee', 'specerijen', 'vanille', 'houtsoorten']),
-  g('Blue Fresh', 'blue-fresh', 'a-58966296/smellies/blue-fresh/', '#b4bfc2', ['fris'], 'Een krachtige frisse geur die je doet denken aan fris gewassen kleding.'),
-  g('Blush', 'blush', 'a-50645028/smellies/blush/', '#b61b0f', ['houtig', 'bloemig'], 'Een oosterse, houtachtige geur. Een exotische bloemenzee.', ['gardenia', 'fresia', 'turkse roos', 'vanille', 'vetiver']),
-  g('Cherry Pie', 'cherry-pie', 'a-62274601/smellies/cherry-pie/', '#da2f2a', ['zoet'], 'Zalig zoete geur van kersentaart.', ['kersen', 'bitterkoekjes', 'bruine suiker', 'kaneel']),
-  g('Choo Choo', 'choo-choo', 'a-57569009/smellies/choo-choo/', '#bf4479', ['bloemig'], 'Een onweerstaanbare bloemige geur.', ['appel', 'peer', 'fresia', 'pruim', 'orchidee', 'vanille']),
-  g('Clean Cotton', 'clean-cotton', 'a-50645094/smellies/clean-cotton/', '#a7a5a3', ['fris'], 'De bekende, heerlijk frisse geur.', ['kaffir lime', 'babypoeder', 'jasmijn', 'witte musk']),
-  g('Dame', 'dame', 'a-50645136/smellies/dame/', '#cda194', [], 'Super sensuele geur, een klassieker.'),
-  g('Fabulous Lady', 'fabulous-lady', 'a-77798180/smellies/fabulous-lady/', '#c34b87', ['bloemig'], 'Een oriëntaalse bloemengeur vol rijke geuren.', ['mandarijn', 'jasmijn', 'tuberoos', 'tonkaboon', 'ylang ylang']),
-  g('Forever & Ever', 'forever-ever', 'a-57569006/smellies/forever-ever/', '#a38ac0', ['bloemig', 'fris'], 'Frisse citrus, weelderige bloemen en zoet sandelhout.', ['citrus', 'freesia', 'salie', 'narcis', 'sandelhout']),
-  g('Fresh Linen', 'fresh-linen', 'a-50645380/smellies/fresh-linen/', '#cfb5ad', ['fris'], 'De geur van wasverzachter. In de top 3 van populaire geuren.'),
-  g('Gingerbread', 'gingerbread', 'a-85486092/smellies/gingerbread/', '#b08b67', ['zoet'], 'Doet denken aan vers gebakken peperkoekjes.', ['bruine suiker', 'kaneel', 'kruidnagel', 'gember', 'nootmuskaat']),
-  g('Juicy Orange', 'juicy-orange', 'a-51551235/smellies/juicy-orange/', '#dc5b02', ['fris'], 'Frisse sinaasappelgeur, aangevuld met frisse bloemen.', ['sinaasappel', 'mandarijn', 'perzik', 'bergamot', 'witte musk']),
-  g('Komkommer & aloe vera', 'komkommer-aloe-vera', 'a-50645531/smellies/komkommer-aloe-vera/', '#7b9a4a', ['fris'], 'Een frisse, schone en lichtgroene geur.', ['komkommer', 'aloe vera']),
-  g('Libre', 'libre', 'a-62274626/smellies/libre/', '#b04270', ['bloemig'], 'Citrus, limoen en sinaasappel met hints van jasmijn.', ['citrus', 'limoen', 'jasmijn', 'lelietje-van-dalen', 'amber']),
-  g('Light Blue', 'light-blue', 'a-50644903/smellies/light-blue/', '#93b0bc', ['fris', 'bloemig'], 'Een frisse geur met vele zachte bloemengeuren.', ['citroen', 'hyacint', 'appel', 'bamboe', 'cederhout']),
-  g('Million Lady', 'million-lady', 'a-50645550/smellies/million-lady/', '#92a069', ['bloemig'], 'Een zeer vrouwelijke geur.', ['frambozen', 'sinaasappel', 'pioenrozen', 'honing', 'amber']),
-  g('Musk & Sandelwood', 'musk-sandelwood', 'a-50645671/smellies/musk-sandelwood/', '#dad6cd', ['houtig'], 'Warme tonen zoals musk, vetiver en sandelwood.', ['musk', 'lelie', 'ylang ylang', 'sandelwood', 'vetiver']),
-  g('Mystic Forest', 'mystic-forest', 'a-50645558/smellies/mystic-forest/', '#b4191c', ['houtig', 'zoet'], 'Zoet, houtachtig en aromatisch, met oud als hoofdbestanddeel.', ['oud']),
-  g('Olympia', 'olympia', 'a-58475174/smellies/olympia/', '#b0adb5', ['fris', 'zoet'], 'Een oriëntaals frisse geur met zoete vanille.', ['sinaasappel', 'peer', 'waterjasmijn', 'gember', 'sandelhout']),
-  g('Relax & Zen', 'relax-zen', 'a-53815451/smellies/relax-zen/', '#6f8d99', ['houtig'], 'Houtachtig. Werkt kalmerend en ontspannend.', ['amber', 'zwarte orchidee', 'gember', 'waterlelie', 'kyara hout']),
-  g('Snuggels', 'snuggels', 'a-80973461/smellies/snuggels/', '#9582d2', ['fris'], 'Zacht, fris en onweerstaanbaar schoon.', ['bergamot', 'perzik', 'kokosnoot', 'viooltje', 'musk']),
-  g('So Delicious', 'so-delicious', 'a-50645491/smellies/so-delicious/', '#d2d8af', ['fris'], 'De bekende frisse groene-appelgeur.', ['groene appel', 'exotische bloemen', 'sensueel hout']),
-  g('Space', 'space', 'a-50645629/smellies/space/', '#a48edc', ['bloemig'], 'Licht gewaagd, maar zeker niet overheersend.', ['meloen', 'mandarijntjes', 'oranjebloesem', 'jasmijn', 'vanille']),
-  g('Sunshine', 'sunshine', 'a-78505154/smellies/sunshine/', '#cc5a04', ['fris'], 'De voorjaarsgeur van Smellies. Fruitig, in de stijl van wasverzachter.', ['groene munt', 'sinaasappel', 'jasmijn', 'dennen', 'witte muskus']),
-  g('Sweet Cookies', 'sweet-cookies', 'a-50645479/smellies/sweet-cookies/', '#b97342', ['zoet'], 'Alsof je net verse koekjes hebt gebakken.', ['kaneel', 'speculaas', 'chocolade', 'appel', 'vanille']),
-  g('Sweet Jasmine', 'sweet-jasmine', 'a-50645668/smellies/sweet-jasmine/', '#d6c59a', ['bloemig', 'fris'], 'Een combinatie van zoet en fris. Ook bekend als Toscaanse jasmijn.', ['jasmijn', 'citroen', 'lichte musk', 'bergamot', 'bloesem']),
-  g('Vanille', 'vanille', 'a-50645534/smellies/vanille/', '#cda4a8', ['zoet'], 'Warm, romig en heerlijk zoet.', ['romige vanille']),
-  g('Yes', 'yes', 'a-60635311/smellies/yes/', '#cc9a96', ['bloemig'], 'Een vrouwelijke, elegante geur.', ['nektar', 'sandelhout', 'freesia', 'muskus', 'zwarte bes']),
-];
-
-/** Herfstcollectie (limited), eigen categorie op smellies.nl. Smellies € 2,75. */
-export const herfst = [
-  { naam: 'Happy Autumn', slug: 'herfst-happy-autumn', pad: 'a-65943987/herfst/happy-autumn/', noten: ['bergamot', 'eucalyptus', 'lavendel', 'herfstbladeren', 'ceder'] },
-  { naam: 'Love Autumn', slug: 'herfst-love-autumn', pad: 'a-65943992/herfst/love-autumn/', noten: ['zoete sinaasappel', 'gember', 'vanille', 'kaneel'] },
-  { naam: 'Sweet Autumn', slug: 'herfst-sweet-autumn', pad: 'a-65943997/herfst/sweet-autumn/', noten: ['citroen', 'suikerspin', 'vanille', 'muskus'] },
-  { naam: 'Pumpkin Spice', slug: 'herfst-pumpkin-spice', pad: 'a-102141336/herfst/pumpkin-spice/', noten: ['kaneel', 'kruidnagel', 'pompoen', 'houtachtige noten'] },
-];
+/** Past ook bij: drie geuren uit dezelfde familie (vaste volgorde, zodat het per build gelijk blijft). */
+export const pastBij = (g: Geur) => {
+  const fam = g.fam.find((f) => f !== 'herfst') ?? g.fam[0];
+  const rest = geuren.filter((x) => x.slug !== g.slug);
+  const zelfde = rest.filter((x) => fam && x.fam.includes(fam));
+  const lijst = (zelfde.length >= 3 ? zelfde : [...zelfde, ...rest.filter((x) => !zelfde.includes(x))]);
+  const start = geuren.indexOf(g) % lijst.length;
+  return [...lijst.slice(start), ...lijst.slice(0, start)].slice(0, 3);
+};
 
 export const mixen = [
-  { naam: 'Flower mix', zin: 'zalige bloemengeuren', pad: 'a-55714915/mixen/flower-mix-10/' },
-  { naam: 'Fresh mix', zin: 'frisse, niet overheersende geuren', pad: 'a-55714930/mixen/fresh-mix-10/' },
-  { naam: 'Parfum mix', zin: 'bekende parfumgeuren', pad: 'a-55714906/mixen/parfum-mix-10/' },
-  { naam: 'Sweet mix', zin: 'zoete en kruidige geuren', pad: 'a-55714937/mixen/sweet-mix-10/' },
+  { naam: 'Flower mix', zin: 'zalige bloemengeuren', pad: WINKEL + 'a-55714915/mixen/flower-mix-10/' },
+  { naam: 'Fresh mix', zin: 'frisse, niet overheersende geuren', pad: WINKEL + 'a-55714930/mixen/fresh-mix-10/' },
+  { naam: 'Parfum mix', zin: 'bekende parfumgeuren', pad: WINKEL + 'a-55714906/mixen/parfum-mix-10/' },
+  { naam: 'Sweet mix', zin: 'zoete en kruidige geuren', pad: WINKEL + 'a-55714937/mixen/sweet-mix-10/' },
 ];
 
 /** Kleuren voor het smeltbeeld in de hero: gemeten in hun eigen wax-foto's (licht opgehelderd voor zachte overgangen). */

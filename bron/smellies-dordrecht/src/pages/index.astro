@@ -3,44 +3,31 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, url, shop, waMet } from '../data/site';
-import { smellies, families, herfst, mixen, smeltPaletten, foto } from '../data/geuren';
+import Rond from '../components/Rond.astro';
+import Brander from '../components/Brander.astro';
+import { site, url, waMet } from '../data/site';
+import { geur, smellies, smeltPaletten, famNaam, tint, beeldRond } from '../data/geuren';
 import herfstkaarsen from '../assets/herfstkaarsen.jpg';
 import kaars from '../assets/zo/geurkaarsen-geurkaars-black-magic.jpg';
-import stokjes from '../assets/zo/geurstokjes-geurstokjes-fresh-linen.jpg';
-import spray from '../assets/zo/roomspray-roomspray-belle.jpg';
-import korrels from '../assets/zo/stofzuigerparfum-stofzuigerkorrels-adore.jpg';
-import kyoto from '../assets/zo/branders-luxe-brander-kyoto.jpg';
-import autop from '../assets/zo/auto-parfum-50ml-autoparfum-50ml-bemin.jpg';
 
-const famNaam = Object.fromEntries(families.map((f) => [f.id, f.naam]));
-const telling = Object.fromEntries(families.map((f) => [f.id, smellies.filter((s) => s.fam.includes(f.id)).length]));
-
-const zo = [
-  { naam: 'Geurkaars', bij: '200 ml, meer dan 50 branduren', prijs: '€ 22,50', pad: 'c-4237155/geurkaarsen/', src: kaars, alt: 'Smellies geurkaars Black Magic in zwarte pot, met zwarte doos' },
-  { naam: 'Geurstokjes', bij: 'Voor woonkamer, slaapkamer of badkamer', prijs: '€ 22,50', pad: 'c-4225804/geurstokjes/', src: stokjes, alt: 'Smellies geurstokjes Fresh Linen in een zwarte fles' },
-  { naam: 'Roomspray', bij: 'Direct geur, ook samen met je Smellies', prijs: '€ 9,99', pad: 'c-4764065/roomspray/', src: spray, alt: 'Smellies roomspray Belle, zwarte fles' },
-  { naam: 'Luxe brander Kyoto', bij: 'Bruin keramiek, rond design', prijs: '€ 14,99', pad: 'a-102973254/branders/luxe-brander-kyoto/', src: kyoto, alt: 'Luxe brander Kyoto van keramiek, twee keer, met en zonder lichtje' },
-  { naam: 'Stofzuigerkorrels', bij: '50 of 200 gram', prijs: 'vanaf € 3,49', pad: 'c-5227203/stofzuigerparfum/', src: korrels, alt: 'Smellies stofzuigerkorrels Adore in een fles' },
-  { naam: 'Autoparfum', bij: '50 of 100 ml, drie dames- en drie herengeuren', prijs: 'vanaf € 4,50', pad: 'c-5746982/autoparfum/', src: autop, alt: 'Autoparfum 50 ml in de geur Bemin' },
+const uitgelicht = [
+  { g: geur('pumpkin-spice'), label: 'Uit de herfstcollectie' },
+  { g: geur('libre'), label: famNaam.bloemig },
+  { g: geur('snuggels'), label: famNaam.fris },
 ];
-const zoLijst = [
-  { naam: 'Geurolie', bij: '10 ml, voor brander en radiatorbakje', prijs: '€ 7,50', pad: 'c-4297372/geurolie/' },
-  { naam: 'Navulling geurstokjes', bij: 'Voor je geurstokjes', prijs: '€ 13,50', pad: 'c-5777615/navulling-geurstokjes/' },
-];
-const herfstPrijzen = [
-  ['Herfst-Smellies', '€ 2,75'],
-  ['Roomspray herfst', '€ 6,49'],
-  ['Herfstduo', '€ 9,99'],
-  ['Herfstkaars, limited', '€ 17,50'],
-];
+const trio = [geur('yes'), geur('space'), geur('light-blue')];
 const pal0 = smeltPaletten[0];
+const stappen = [
+  ['Leg een Smellie in de brander.', 'Steek het waxinelichtje eronder aan. Meer heb je niet nodig.'],
+  ['Hij smelt, en geurt meteen.', 'Spetteren doet hij niet: een veilig alternatief voor geurolie, geurkaars of wierook.'],
+  ['Genoeg? Blaas het lichtje uit.', 'De wax wordt weer hard en geurt nog uren. Later smelt je hem opnieuw, tot de geur na 8 tot 12 uur op is.'],
+];
 ---
 <Base title="Smellies | Handgemaakte geurbonbons van soja- en koolzaadwas" description="Smellies maakt sinds 2013 geurbonbons, geurkaarsen en geurartikelen met de hand, van 100% soja- en koolzaadwas. 36 geuren, uit Dordrecht.">
   <Kop opHero />
   <main id="inhoud">
 
-    <!-- Hero: vloeiende wax in hun eigen waskleuren, met het woordmerk. -->
+    <!-- 1. Hero: vloeiende wax in hun eigen waskleuren, met het woordmerk. -->
     <section class="hero relative -mt-16 flex min-h-[38rem] flex-col overflow-hidden" style={`--c0:${pal0.kleuren[0]};--c1:${pal0.kleuren[1]};--c2:${pal0.kleuren[2]};--c3:${pal0.kleuren[3]}`} aria-labelledby="titel" data-hero>
       <canvas class="smelt absolute inset-0 h-full w-full" aria-hidden="true" data-smelt data-paletten={JSON.stringify(smeltPaletten.map((p) => p.kleuren))} data-namen={JSON.stringify(smeltPaletten.map((p) => p.namen.slice(0, 3)))}></canvas>
       <div class="relative flex flex-1 flex-col items-center justify-center px-4 pt-16 text-center">
@@ -51,7 +38,7 @@ const pal0 = smeltPaletten[0];
         <div>
           <h1 id="titel" class="max-w-[17ch] text-[clamp(1.6rem,1.8vw+1rem,2.6rem)] leading-[1.08] tracking-[-.03em]">Handgemaakte geurbonbons van soja- en koolzaadwas.</h1>
           <p class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4">
-            <a href={url('#geuren')} class="knop">Bekijk de 36 geuren</a>
+            <a href={url('geuren/')} class="knop">Bekijk de geuren</a>
             <a href={site.winkel} class="ui lijn">Naar de webwinkel ↗</a>
           </p>
         </div>
@@ -62,226 +49,113 @@ const pal0 = smeltPaletten[0];
       </div>
     </section>
 
-    <!-- Statement: wat het is, groot gezet. -->
-    <section aria-labelledby="t-over" class="wrap py-28 lg:py-44">
-      <h2 id="t-over" class="rijs max-w-[19ch] text-[clamp(2.25rem,5.4vw+.4rem,6rem)] leading-[1.02]">
-        Alles zelf, met de hand. <span class="text-grijs">Van 100% soja- en koolzaadwas, zonder paraffine. Sinds 2013.</span>
+    <!-- 2. Merkstatement -->
+    <section aria-labelledby="t-over" class="wrap grid gap-y-10 py-28 md:grid-cols-12 md:gap-x-8 lg:py-40">
+      <h2 id="t-over" class="rijs text-[clamp(2.25rem,4.6vw+.4rem,5.25rem)] leading-[1.03] md:col-span-10">
+        Alles zelf, met de hand. <span class="text-grijs">Van 100% soja- en koolzaadwas, zonder paraffine. Sinds 2013, vanuit Dordrecht.</span>
       </h2>
-
-      <div class="mt-20 grid gap-y-14 md:grid-cols-12 md:gap-x-8 lg:mt-32">
-        <figure class="rijs md:col-span-6 lg:col-span-5">
-          <div class="aspect-[4/5] overflow-hidden bg-nevel">
-            <Image src={foto('smellies-baccarat')} alt="Smellies Baccarat van dichtbij: hartjes van wax in lila en wit" widths={[400, 640, 800]} sizes="(min-width: 1024px) 34vw, (min-width: 768px) 46vw, 92vw" format="webp" quality={70} class="parallax h-full w-full scale-[1.12] object-cover" data-parallax="-0.05" />
-          </div>
-          <figcaption class="mono mt-3 text-grijs">Baccarat, jasmijn, saffraan en amber</figcaption>
-        </figure>
-
-        <div class="rijs flex flex-col justify-end md:col-span-6 lg:col-span-3 lg:col-start-7" style="--d:.1s">
-          <p class="text-lg leading-relaxed">Smellies zijn geurende kaarsjes die je laat smelten in een oliebrander. Zodra de Smellie smelt, geurt je huis.</p>
-          <ul class="mono mt-10 divide-y divide-lijn border-y border-lijn text-grijs">
-            <li class="flex justify-between gap-4 py-3"><span>Geur per Smellie</span><span class="num text-inkt">8 tot 12 uur</span></li>
-            <li class="flex justify-between gap-4 py-3"><span>Spetteren</span><span class="text-inkt">nee</span></li>
-            <li class="flex justify-between gap-4 py-3"><span>Getest op dieren</span><span class="text-inkt">nee</span></li>
-            <li class="flex justify-between gap-4 py-3"><span>Geuren</span><span class="num text-inkt">36 + herfst</span></li>
-          </ul>
-        </div>
-
-        <figure class="rijs md:col-span-5 md:col-start-8 lg:col-span-3 lg:col-start-10 lg:mt-48" style="--d:.2s">
-          <div class="aspect-square overflow-hidden bg-nevel">
-            <Image src={foto('smellies-juicy-orange')} alt="Smellies Juicy Orange van dichtbij: oranje hartjes van wax" widths={[320, 480, 640]} sizes="(min-width: 1024px) 22vw, (min-width: 768px) 38vw, 92vw" format="webp" quality={70} class="parallax h-full w-full scale-[1.12] object-cover" data-parallax="0.06" />
-          </div>
-          <figcaption class="mono mt-3 text-grijs">Juicy Orange, sinaasappel en mandarijn</figcaption>
-        </figure>
-      </div>
+      <p class="rijs mono flex flex-wrap gap-x-8 gap-y-2 text-grijs md:col-span-12" style="--d:.1s">
+        <span>8 tot 12 uur geur per Smellie</span><span>Spettert niet</span><span>Niet getest op dieren</span><span>Verkooppunten in NL, BE en UK</span>
+      </p>
     </section>
 
-    <!-- Geuren: alle 36, met een werkende geurkiezer. -->
-    <section id="geuren" aria-labelledby="t-geuren" class="scroll-mt-16 border-t border-lijn">
-      <div class="wrap pb-28 pt-20 lg:pb-40 lg:pt-28">
-        <div class="grid gap-8 md:grid-cols-12 md:items-end">
-          <h2 id="t-geuren" class="text-3xl md:col-span-7">Geuren</h2>
-          <p class="max-w-md text-grijs md:col-span-5 md:justify-self-end md:text-right">Elke kleur is een andere geur. Kies een familie, of ga over een Smellie heen voor de samenstelling.</p>
-        </div>
-
-        <div class="kiezer sticky top-16 z-30 -mx-5 mt-12 border-y border-lijn bg-papier/95 px-5 backdrop-blur md:-mx-10 md:px-10" data-kiezer>
-          <div class="flex items-center justify-between gap-6">
-            <div class="-my-px flex gap-6 overflow-x-auto py-4 pr-8 [scrollbar-width:none] max-md:[mask-image:linear-gradient(90deg,black_80%,transparent)]" role="group" aria-label="Filter op geurfamilie">
-              <button type="button" class="filter ui shrink-0" aria-pressed="true" data-fam="alles">Alles <span class="num text-grijs">36</span></button>
-              {families.map((f) => <button type="button" class="filter ui shrink-0" aria-pressed="false" data-fam={f.id}>{f.naam} <span class="num text-grijs">{telling[f.id]}</span></button>)}
+    <!-- 3. Uitgelicht: drie geuren, groot, elk in zijn eigen waskleur. -->
+    <section aria-labelledby="t-uitgelicht">
+      <div class="wrap flex items-end justify-between gap-6 pb-10">
+        <h2 id="t-uitgelicht" class="text-3xl">Uitgelicht</h2>
+        <a href={url('geuren/')} class="ui lijn mb-2 shrink-0">Alle {smellies.length} geuren</a>
+      </div>
+      {uitgelicht.map(({ g, label }, i) => (
+        <article class="band" style={`background:${tint(g.kleur, 34)}`} aria-labelledby={`u-${g.slug}`}>
+          <div class="wrap grid items-center gap-y-10 py-16 md:grid-cols-12 md:gap-x-8 lg:py-24">
+            <a href={url(`geuren/${g.slug}/`)} class:list={['rijs block md:col-span-6', i % 2 && 'md:order-2 md:col-start-7']} tabindex="-1" aria-hidden="true">
+              <Rond g={g} pct={34} class="aspect-square" ring="w-[82%] max-w-[34rem]" widths={[480, 720, 900]} sizes="(min-width: 768px) 40vw, 82vw" />
+            </a>
+            <div class:list={['rijs md:col-span-5', i % 2 ? 'md:order-1 md:col-start-1' : 'md:col-start-8']} style="--d:.1s">
+              <p class="ui">{label}</p>
+              <h3 id={`u-${g.slug}`} class="naam mt-5">{g.naam}</h3>
+              <p class="mt-6 max-w-md text-xl leading-snug tracking-[-.01em]">{g.zin}</p>
+              {g.noten.length > 0 && <p class="mono mt-6 max-w-md leading-relaxed">{g.noten.join(' · ')}</p>}
+              <div class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5 border-t border-inkt/20 pt-6">
+                <p class="num text-sm">{g.opties.map((o) => `${o.stuks} stuks € ${o.prijs}`).join('   ·   ')}</p>
+                <a href={url(`geuren/${g.slug}/`)} class="knop">Bekijk {g.naam}</a>
+              </div>
             </div>
-            <p class="mono hidden shrink-0 text-grijs sm:block" aria-live="polite"><span class="num" data-teller>36</span> van 36</p>
           </div>
-        </div>
-
-        <ul class="mt-10 grid grid-cols-2 gap-x-3 gap-y-10 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-y-14" data-grid>
-          {smellies.map((g, i) => (
-            <li class="kaart" data-fams={g.fam.join(' ')} style={`--kleur:${g.kleur}`}>
-              <a href={shop(g.pad)} class="group block">
-                <div class="relative aspect-[4/5] overflow-hidden bg-nevel">
-                  <Image src={foto(g.slug)} alt="" widths={[240, 360, 520]} sizes="(min-width: 1024px) 23vw, (min-width: 768px) 31vw, 46vw" format="webp" quality={68} loading={i < 4 ? 'eager' : 'lazy'} class="h-full w-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-zacht)] group-hover:scale-[1.045]" />
-                  <div class="noten absolute inset-x-0 bottom-0 bg-papier/92 p-4 backdrop-blur-sm" aria-hidden="true">
-                    <p class="text-sm leading-snug">{g.zin}</p>
-                    {g.noten.length > 0 && <p class="mono mt-2 text-grijs">{g.noten.join(' · ')}</p>}
-                    <p class="ui mt-3">Bestel ↗</p>
-                  </div>
-                </div>
-                <div class="mt-3 flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
-                  <h3 class="text-[.9375rem] font-medium leading-snug tracking-[-.01em]">{g.naam}</h3>
-                  <span class="num shrink-0 text-sm text-grijs">€ 2,75</span>
-                </div>
-                <p class="ui mt-1 text-grijs">{g.fam.length ? famNaam[g.fam[0]] : 'Parfumgeur'}{g.fam.length > 1 && <span class="max-sm:hidden">, {g.fam.slice(1).map((f) => famNaam[f]).join(', ')}</span>}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <p class="mono mt-14 text-grijs">Prijzen per stuk, van smellies.nl. Stand 1 oktober 2026. Bestellen gaat via de webwinkel.</p>
-      </div>
+        </article>
+      ))}
     </section>
 
-    <!-- Zo werkt het: brander, smelten, uitblazen. De tekening volgt het scrollen. -->
+    <!-- 4. Collecties als rustige beeldlinks -->
+    <section aria-labelledby="t-collecties" class="wrap py-28 lg:py-40">
+      <h2 id="t-collecties" class="text-3xl">Collecties</h2>
+      <ul class="mt-12 grid gap-x-6 gap-y-14 md:grid-cols-12">
+        <li class="rijs md:col-span-7">
+          <a href={url('geuren/')} class="coll group block">
+            <div class="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-nevel">
+              {trio.map((g, i) => (
+                <div class="trio absolute aspect-square w-[38%] overflow-hidden rounded-full" style={`--i:${i}`}>
+                  <Image src={beeldRond(g.beeld)} alt="" widths={[300, 480]} sizes="(min-width: 768px) 22vw, 36vw" format="webp" quality={76} class="h-full w-full object-cover" />
+                </div>
+              ))}
+            </div>
+            <p class="mt-4 flex items-baseline justify-between gap-4"><span class="text-2xl tracking-[-.03em]"><span class="lijn-in">Smellies</span></span><span class="ui text-grijs">{smellies.length} geuren</span></p>
+          </a>
+        </li>
+        <li class="rijs md:col-span-5" style="--d:.08s">
+          <a href={url('collecties/#smellies-en-zo')} class="coll group flex h-full flex-col">
+            <div class="relative aspect-[4/3] overflow-hidden bg-blank md:aspect-auto md:flex-1">
+              <Image src={kaars} alt="" widths={[400, 640]} sizes="(min-width: 768px) 38vw, 90vw" format="webp" quality={78} class="beeld absolute inset-0 h-full w-full object-contain p-[12%]" />
+            </div>
+            <p class="mt-4 flex items-baseline justify-between gap-4"><span class="text-2xl tracking-[-.03em]"><span class="lijn-in">Smellies &amp; zo</span></span><span class="ui text-grijs">Kaars, stokjes, spray</span></p>
+          </a>
+        </li>
+        <li class="rijs md:col-span-8">
+          <a href={url('collecties/#herfst')} class="coll group block">
+            <div class="aspect-[1310/462] overflow-hidden bg-nevel max-md:aspect-[4/3]">
+              <Image src={herfstkaarsen} alt="" widths={[640, 960, 1310]} sizes="(min-width: 768px) 62vw, 100vw" format="webp" quality={72} class="beeld h-full w-full object-cover" />
+            </div>
+            <p class="mt-4 flex items-baseline justify-between gap-4"><span class="text-2xl tracking-[-.03em]"><span class="lijn-in">Herfst</span></span><span class="ui text-grijs">Limited kaarsen, vier geuren</span></p>
+          </a>
+        </li>
+        <li class="rijs md:col-span-4" style="--d:.08s">
+          <a href={url('collecties/#mixen')} class="coll group flex h-full flex-col">
+            <div class="flex aspect-[4/3] flex-col justify-between bg-antraciet p-6 text-licht md:aspect-auto md:flex-1">
+              <span class="tien" aria-hidden="true">10</span>
+              <span class="mono text-licht-zacht">Flower · Fresh · Parfum · Sweet</span>
+            </div>
+            <p class="mt-4 flex items-baseline justify-between gap-4"><span class="text-2xl tracking-[-.03em]"><span class="lijn-in">Mixen</span></span><span class="ui text-grijs">Tien geuren per mix</span></p>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 5. Zo werkt het: compact, de tekening speelt de drie stappen af. -->
     <section id="zo-werkt-het" aria-labelledby="t-zo" class="donker scroll-mt-16 bg-antraciet text-licht">
-      <div class="wrap grid pb-24 pt-20 lg:grid-cols-12 lg:gap-x-8 lg:pb-32 lg:pt-32" data-stappen>
-        <div class="lg:col-span-12">
-          <h2 id="t-zo" class="rijs max-w-[14ch] text-3xl">Eén brander, één lichtje, één Smellie.</h2>
+      <div class="wrap grid items-center gap-y-12 py-24 md:grid-cols-12 md:gap-x-8 lg:py-32">
+        <div class="md:col-span-5 lg:col-span-4" data-stap="1" data-tekening>
+          <Brander class="mx-auto block w-[min(100%,17rem)] lg:w-[min(100%,21rem)]" />
         </div>
-
-        <div class="tekening sticky top-16 z-10 -mx-5 bg-antraciet px-5 pb-4 pt-6 lg:top-24 lg:col-span-6 lg:mx-0 lg:mt-16 lg:self-start lg:px-0" data-stap="1" data-tekening>
-          <svg viewBox="62 8 276 392" class="mx-auto block h-[34svh] max-h-[30rem] w-auto lg:h-auto lg:w-[min(100%,26rem)] lg:max-h-none" role="img" aria-label="Lijntekening van een geurbrander: een Smellie smelt in het schaaltje boven een waxinelichtje.">
-            <defs>
-              <radialGradient id="gloed"><stop offset="0" stop-color="#f6c98a" stop-opacity=".5" /><stop offset="1" stop-color="#f6c98a" stop-opacity="0" /></radialGradient>
-              <clipPath id="kom"><path d="M88 150a112 20 0 0 0 224 0q0 52-112 56-112-4-112-56Z" /></clipPath>
-            </defs>
-            <g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
-              <g class="geur">
-                <path d="M170 112c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
-                <path d="M200 104c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
-                <path d="M230 112c-10-16 10-26 0-42s10-26 0-42" pathLength="1" />
-              </g>
-              <g clip-path="url(#kom)"><ellipse class="plas" cx="200" cy="156" rx="112" ry="26" fill="var(--wax)" stroke="none" /></g>
-              <ellipse cx="200" cy="150" rx="112" ry="20" />
-              <path d="M88 150q0 52 112 56 112-4 112-56" />
-              <g class="bonbon"><path d="M178 122h44l-5 26h-34Z" fill="var(--wax)" stroke="none" /><path d="M186 124l2 22M194 124l1 23M202 124v23M210 124l-1 23M218 124l-2 22" stroke="#000" stroke-opacity=".15" /><ellipse cx="200" cy="122" rx="22" ry="5" fill="var(--wax)" stroke="none" /></g>
-              <path d="M116 196v188h168V196" />
-              <path d="M164 384v-56a36 36 0 0 1 72 0v56" />
-              <path d="M100 384h200" />
-              <circle class="gloedje" cx="200" cy="352" r="56" fill="url(#gloed)" stroke="none" />
-              <path d="M184 372h32v10h-32z" />
-              <path class="vlam" d="M200 342c7 9 9 16 6 22-1.6 3-4 4.5-6 4.5s-4.4-1.5-6-4.5c-3-6-1-13 6-22Z" fill="#f6c98a" stroke="none" />
-              <path d="M200 372v-4" />
-            </g>
-          </svg>
+        <div class="md:col-span-7 lg:col-span-7 lg:col-start-6">
+          <h2 id="t-zo" class="max-w-[16ch] text-3xl">Eén brander, één lichtje, één Smellie.</h2>
+          <ol class="mt-12 grid gap-px bg-lijn-licht sm:grid-cols-3" data-stappen>
+            {stappen.map(([kop, tekst], i) => (
+              <li class="bg-antraciet">
+                <button type="button" class="stap h-full w-full py-5 text-left sm:pr-6" aria-pressed={i === 0 ? 'true' : 'false'} data-naar={i + 1}>
+                  <span class="mono text-licht-zacht">{i + 1} / 3</span>
+                  <span class="mt-3 block text-lg leading-snug tracking-[-.02em]">{kop}</span>
+                  <span class="mt-2 block text-sm leading-relaxed text-licht-zacht">{tekst}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
         </div>
-
-        <ol class="lg:col-span-5 lg:col-start-8 lg:mt-16">
-          <li class="stap" data-stap-tekst="1">
-            <p class="mono text-licht-zacht">1 / 3</p>
-            <h3 class="mt-4 text-2xl">Leg een Smellie in de brander.</h3>
-            <p class="mt-4 max-w-sm text-licht-zacht">Steek het waxinelichtje eronder aan. Meer heb je niet nodig: een oliebrander, een lichtje en een Smellie.</p>
-          </li>
-          <li class="stap" data-stap-tekst="2">
-            <p class="mono text-licht-zacht">2 / 3</p>
-            <h3 class="mt-4 text-2xl">Hij smelt, en geurt meteen.</h3>
-            <p class="mt-4 max-w-sm text-licht-zacht">De Smellie smelt en geeft direct geur in huis. Spetteren doet hij niet: een veilig alternatief voor geurolie, geurkaars of wierook.</p>
-          </li>
-          <li class="stap" data-stap-tekst="3">
-            <p class="mono text-licht-zacht">3 / 3</p>
-            <h3 class="mt-4 text-2xl">Genoeg? Blaas het lichtje uit.</h3>
-            <p class="mt-4 max-w-sm text-licht-zacht">De wax wordt weer hard en blijft nog uren geuren. Later smelt je hem gewoon opnieuw, tot de geur na 8 tot 12 uur op is.</p>
-          </li>
-        </ol>
       </div>
     </section>
 
-    <!-- Collecties: herfst, mixen, Smellies & zo. -->
-    <section id="collecties" aria-labelledby="t-collecties" class="scroll-mt-16">
-      <h2 id="t-collecties" class="sr-only">Collecties</h2>
-
-      <!-- Herfst -->
-      <article class="wrap grid gap-y-10 pb-24 pt-28 md:grid-cols-12 md:gap-x-8 lg:pb-36 lg:pt-40" aria-labelledby="t-herfst">
-        <div class="md:col-span-12 lg:col-span-8">
-          <div class="rijs aspect-[1310/462] overflow-hidden bg-nevel">
-            <Image src={herfstkaarsen} alt="De herfstkaarsen van Smellies: een keramieken eikel open met de kaars erin, een eikel en een pompoen, op een houten plank voor een herfstbos." widths={[640, 960, 1310]} sizes="(min-width: 1024px) 62vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover" />
-          </div>
-          <ul class="mt-3 grid grid-cols-4 gap-3 sm:gap-5">
-            {herfst.map((h, i) => (
-              <li class="rijs" style={`--d:${i * 0.06}s`}>
-                <a href={shop(h.pad)} class="group block">
-                  <span class="block aspect-square overflow-hidden bg-nevel"><Image src={foto(h.slug)} alt={`Smellies ${h.naam}, herfstgeur`} widths={[160, 240, 360]} sizes="(min-width: 1024px) 14vw, 22vw" format="webp" quality={68} class="h-full w-full object-cover transition-transform duration-[1.2s] group-hover:scale-[1.05]" /></span>
-                  <span class="mt-2 block text-xs font-medium leading-snug sm:text-sm"><span class="lijn-in">{h.naam}</span></span>
-                  <span class="mono hidden text-grijs sm:block">{h.noten.slice(0, 3).join(' · ')}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div class="rijs flex flex-col md:col-span-8 lg:col-span-4" style="--d:.1s">
-          <p class="ui text-grijs">Herfst, limited</p>
-          <h3 id="t-herfst" class="mt-5 text-2xl">Herfstweer buiten? Happy Autumn binnen.</h3>
-          <p class="mt-5 text-grijs">Vier herfstgeuren, een roomspray en kaarsen in een keramieken eikel of pompoen.</p>
-          <ul class="mt-8 divide-y divide-lijn border-y border-lijn text-sm">
-            {herfstPrijzen.map(([n, p]) => <li class="flex justify-between gap-4 py-3"><span>{n}</span><span class="num">{p}</span></li>)}
-          </ul>
-          <p class="mt-8"><a href={shop('c-5442737/herfst/')} class="knop">Bekijk de herfstcollectie ↗</a></p>
-        </div>
-      </article>
-
-      <!-- Mixen -->
-      <article class="border-t border-lijn" aria-labelledby="t-mixen">
-        <div class="wrap grid gap-y-12 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
-          <div class="rijs md:col-span-5">
-            <p class="tien" aria-hidden="true">10</p>
-            <h3 id="t-mixen" class="mt-2 text-2xl">Kun je niet kiezen? <span class="text-grijs">Neem een mix van tien geuren.</span></h3>
-          </div>
-          <ul class="md:col-span-7 md:self-end">
-            {mixen.map((m, i) => (
-              <li class="rijs border-t border-lijn last:border-b" style={`--d:${i * 0.06}s`}>
-                <a href={shop(m.pad)} class="mix group grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-5 sm:grid-cols-[12rem_1fr_auto] sm:py-6">
-                  <span class="text-xl tracking-[-.02em]">{m.naam}</span>
-                  <span class="num text-sm sm:order-3">€ 5,50 <span class="pijl inline-block" aria-hidden="true">↗</span></span>
-                  <span class="col-span-2 text-sm text-grijs sm:col-span-1">10 geuren, {m.zin}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </article>
-
-      <!-- Smellies & zo -->
-      <article class="bg-wit" aria-labelledby="t-zo-meer">
-        <div class="wrap py-24 lg:py-36">
-          <div class="grid gap-6 md:grid-cols-12 md:items-end">
-            <h3 id="t-zo-meer" class="rijs text-3xl md:col-span-7">Smellies &amp; zo</h3>
-            <p class="rijs max-w-md text-grijs md:col-span-5 md:justify-self-end md:text-right">Dezelfde geuren, ook als kaars, stokjes, olie of spray.</p>
-          </div>
-          <ul class="mt-14 grid grid-cols-2 gap-x-3 gap-y-12 sm:gap-x-5 md:grid-cols-3 lg:grid-cols-6">
-            {zo.map((z, i) => (
-              <li class="rijs" style={`--d:${(i % 6) * 0.05}s`}>
-                <a href={shop(z.pad)} class="group block">
-                  <span class="block aspect-square overflow-hidden bg-blank p-[6%]"><Image src={z.src} alt={z.alt} widths={[240, 360]} sizes="(min-width: 1024px) 14vw, (min-width: 768px) 30vw, 46vw" format="webp" quality={72} class="h-full w-full object-contain transition-transform duration-[1.2s] group-hover:scale-[1.04]" /></span>
-                  <span class="mt-3 flex flex-wrap items-baseline justify-between gap-x-3"><span class="text-[.9375rem] font-medium leading-snug">{z.naam}</span><span class="num shrink-0 text-sm text-grijs">{z.prijs.startsWith('vanaf') && <span class="text-xs">vanaf </span>}{z.prijs.replace('vanaf ', '')}</span></span>
-                  <span class="mt-1 block text-xs leading-snug text-grijs">{z.bij}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <ul class="mt-16 grid gap-x-8 border-t border-lijn md:grid-cols-2">
-            {zoLijst.map((z) => (
-              <li class="border-b border-lijn">
-                <a href={shop(z.pad)} class="group flex items-baseline justify-between gap-4 py-4 text-sm">
-                  <span><span class="font-medium"><span class="lijn-in">{z.naam}</span></span> <span class="text-grijs">{z.bij}</span></span>
-                  <span class="num shrink-0">{z.prijs}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p class="mono mt-6 text-grijs">Stand 1 oktober 2026.</p>
-        </div>
-      </article>
-    </section>
-
-    <!-- Groothandel en verkooppunten -->
+    <!-- 6. Groothandel en verkooppunten -->
     <section id="groothandel" aria-labelledby="t-groot" class="scroll-mt-16 bg-nevel">
-      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-32">
         <div class="rijs md:col-span-6 lg:col-span-5">
           <h2 id="t-groot" class="text-3xl">Smellies in je eigen winkel?</h2>
           <p class="mt-8 max-w-md text-lg leading-relaxed">Naast de webwinkel ligt Smellies bij verkooppunten in drie landen. Geef je bedrijfsgegevens door; na goedkeuring krijg je een account bij de groothandel.</p>
@@ -290,7 +164,7 @@ const pal0 = smeltPaletten[0];
             <a href={waMet('ik heb een winkel en wil graag verkooppunt van Smellies worden. Mijn bedrijf: ')} class="ui lijn">App je gegevens</a>
           </p>
         </div>
-        <ul class="landen md:col-span-6 md:col-start-7 lg:col-span-6 lg:col-start-7 md:self-end" aria-label="Verkooppunten in">
+        <ul class="landen md:col-span-6 md:col-start-7 md:self-end" aria-label="Verkooppunten in">
           {[['Nederland', 'NL'], ['België', 'BE'], ['Engeland', 'UK']].map(([l, c], i) => (
             <li class="rijs flex items-baseline justify-between border-b border-lijn py-3" style={`--d:${i * 0.08}s`}><span>{l}</span><span class="mono text-grijs">{c}</span></li>
           ))}
@@ -312,47 +186,24 @@ const pal0 = smeltPaletten[0];
   .heromerk { font-size: clamp(2.1rem, 11vw, 10.5rem); font-weight: 300; letter-spacing: .3em; margin-right: -.3em; }
   @media (min-width: 768px) { .heromerk { font-size: clamp(2.1rem, 10.2vw, 10.5rem); letter-spacing: .38em; margin-right: -.38em; } }
 
-  /* Geurkiezer */
-  .filter { position: relative; padding: .25rem 0; color: var(--color-grijs); transition: color .3s; }
-  .filter:hover, .filter[aria-pressed='true'] { color: var(--color-inkt); }
-  .filter::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1.05rem; height: 1px; background: var(--color-inkt); transform: scaleX(0); transform-origin: 0 50%; transition: transform .45s var(--ease-zacht); }
-  .filter[aria-pressed='true']::after { transform: scaleX(1); }
-  .kaart { transition: opacity .5s var(--ease-zacht), transform .6s var(--ease-zacht); }
-  .kaart.uit { display: none; }
-  .kaart.weg { opacity: 0; transform: translateY(8px); }
-  .noten { transform: translateY(101%); transition: transform .55s var(--ease-zacht); }
-  @media (hover: hover) { .group:hover .noten, .group:focus-visible .noten { transform: none; } }
-  @media (hover: none) { .noten { display: none; } }
+  .naam { font-size: clamp(3rem, 6.4vw, 7rem); font-weight: 300; line-height: .95; letter-spacing: -.05em; }
 
-  /* Zo werkt het */
-  .tekening { --wax: #a48edc; color: var(--color-licht); }
-  .stap { position: relative; padding-block: 3.5rem; padding-left: 1.5rem; }
-  .stap::before { content: ''; position: absolute; left: 0; top: 3.6rem; bottom: 3.6rem; width: 1px; background: var(--color-lijn-licht); }
-  .stap::after { content: ''; position: absolute; left: 0; top: 3.6rem; bottom: 3.6rem; width: 1px; background: var(--color-licht); transform: scaleY(0); transform-origin: 50% 0; transition: transform .9s var(--ease-zacht); }
-  .stap.actief::after { transform: none; }
-  @media (min-width: 1024px) { .stap { min-height: 52vh; padding-block: 0; display: flex; flex-direction: column; justify-content: center; } .stap::before, .stap::after { top: 30%; bottom: 30%; } }
-  .bonbon, .plas, .vlam, .gloedje, .geur path { transform-box: fill-box; transition: transform 1.4s var(--ease-zacht), opacity 1s var(--ease-zacht), fill 1s; }
-  .bonbon { transform-origin: 50% 100%; }
-  .plas { transform-origin: 50% 0; transform: scale(.25, .2); }
-  .vlam { transform-origin: 50% 100%; animation: flakker 2.4s ease-in-out infinite; }
-  .gloedje { transform-origin: center; }
-  .geur path { stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; }
-  [data-stap='2'] .bonbon, [data-stap='3'] .bonbon { transform: translateY(18px) scale(1.5, .05); opacity: 0; }
-  [data-stap='2'] .plas, [data-stap='3'] .plas { transform: none; }
-  [data-stap='2'] .geur path { animation: stijg 3.6s var(--ease-zacht) infinite; opacity: .8; }
-  [data-stap='2'] .geur path:nth-child(2) { animation-delay: .6s; }
-  [data-stap='2'] .geur path:nth-child(3) { animation-delay: 1.2s; }
-  [data-stap='3'] .vlam, [data-stap='3'] .gloedje { opacity: 0; transform: scale(.4); }
-  [data-stap='3'] .plas { filter: saturate(.55) brightness(1.12); }
-  @keyframes flakker { 0%, 100% { transform: scale(1, 1); } 40% { transform: scale(.94, 1.07) skewX(2deg); } 70% { transform: scale(1.03, .96) skewX(-2deg); } }
-  @keyframes stijg { 0% { stroke-dashoffset: 1; opacity: 0; } 25% { opacity: .85; } 70% { stroke-dashoffset: 0; opacity: .6; } 100% { stroke-dashoffset: -1; opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { [data-stap='2'] .geur path { stroke-dashoffset: 0; opacity: .7; } }
+  .trio { box-shadow: 0 30px 50px -28px rgb(46 47 52 / .5); transition: transform 1.2s var(--ease-zacht); }
+  .trio[style*='--i:0'] { transform: translate(-62%, 6%); }
+  .trio[style*='--i:1'] { transform: translate(0, -8%); z-index: 1; }
+  .trio[style*='--i:2'] { transform: translate(62%, 8%); }
+  .coll:hover .trio[style*='--i:0'] { transform: translate(-70%, 4%) rotate(-4deg); }
+  .coll:hover .trio[style*='--i:1'] { transform: translate(0, -12%); }
+  .coll:hover .trio[style*='--i:2'] { transform: translate(70%, 10%) rotate(4deg); }
+  .coll .beeld { transition: transform 1.4s var(--ease-zacht); }
+  .coll:hover .beeld { transform: scale(1.035); }
 
-  .tien { font-size: clamp(7rem, 15vw, 15rem); font-weight: 200; line-height: .8; letter-spacing: -.06em; font-variant-numeric: tabular-nums; margin-left: -.06em; }
-  .mix .pijl { transition: transform .4s var(--ease-zacht); }
-  .mix:hover .pijl { transform: translate(3px, -3px); }
-  .mix { transition: padding .5s var(--ease-zacht); }
-  @media (hover: hover) { .mix:hover { padding-left: .75rem; } }
+  .tien { font-size: clamp(6rem, 11vw, 11rem); font-weight: 200; line-height: .8; letter-spacing: -.06em; font-variant-numeric: tabular-nums; }
+
+  .stap { position: relative; transition: color .4s; }
+  .stap::before { content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px; background: var(--color-licht); transform: scaleX(0); transform-origin: 0 50%; }
+  .stap[aria-pressed='true']::before { transform: scaleX(1); transition: transform var(--duur, 3.4s) linear; }
+  .stap[aria-pressed='false'] > span:nth-child(2) { color: var(--color-licht-zacht); }
 
   .landen { font-size: clamp(2.25rem, 4.6vw, 4.75rem); font-weight: 300; letter-spacing: -.035em; line-height: 1.05; }
 </style>
@@ -371,45 +222,16 @@ const pal0 = smeltPaletten[0];
     if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
   }
 
-
-  // Rustige parallax op de macrofoto's.
-  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const px = [...document.querySelectorAll<HTMLElement>('[data-parallax]')];
-  if (!rustig && px.length) {
-    let tik = false;
-    const zet = () => { tik = false; const h = innerHeight; px.forEach((el) => { const r = el.parentElement!.getBoundingClientRect(); if (r.bottom < 0 || r.top > h) return; const m = (r.top + r.height / 2 - h / 2) * Number(el.dataset.parallax); el.style.transform = `translate3d(0, ${m.toFixed(1)}px, 0) scale(1.12)`; }); };
-    addEventListener('scroll', () => { if (!tik) { tik = true; requestAnimationFrame(zet); } }, { passive: true });
-    zet();
-  }
-
-  // Geurkiezer: filter op familie.
-  const kaarten = [...document.querySelectorAll<HTMLElement>('.kaart')];
-  const teller = document.querySelector('[data-teller]');
-  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('.filter')];
-  knoppen.forEach((k) => k.addEventListener('click', () => {
-    const fam = k.dataset.fam!;
-    knoppen.forEach((b) => b.setAttribute('aria-pressed', String(b === k)));
-    const tonen = kaarten.filter((c) => fam === 'alles' || c.dataset.fams!.split(' ').includes(fam));
-    kaarten.forEach((c) => c.classList.add('weg'));
-    setTimeout(() => {
-      kaarten.forEach((c) => c.classList.toggle('uit', !tonen.includes(c)));
-      requestAnimationFrame(() => tonen.forEach((c, i) => setTimeout(() => c.classList.remove('weg'), Math.min(i, 12) * 35)));
-      if (teller) teller.textContent = String(tonen.length);
-      const kiezer = document.querySelector<HTMLElement>('[data-kiezer]')!;
-      if (kiezer.getBoundingClientRect().top < 70) document.getElementById('geuren')!.querySelector('[data-grid]')!.scrollIntoView({ block: 'start', behavior: rustig ? 'auto' : 'smooth' });
-    }, rustig ? 0 : 220);
-  }));
-
-  // Zo werkt het: de stap die in beeld is, stuurt de tekening.
+  // Zo werkt het: de tekening speelt de stappen af zolang hij in beeld is; klikken kiest een stap.
   const tekening = document.querySelector<HTMLElement>('[data-tekening]');
-  const stappen = [...document.querySelectorAll<HTMLElement>('[data-stap-tekst]')];
-  if (tekening && stappen.length) {
-    stappen[0].classList.add('actief');
-    const obs = new IntersectionObserver((es) => es.forEach((e) => {
-      if (!e.isIntersecting) return;
-      stappen.forEach((s) => s.classList.toggle('actief', s === e.target));
-      tekening.dataset.stap = (e.target as HTMLElement).dataset.stapTekst!;
-    }), { rootMargin: '-40% 0px -40% 0px' });
-    stappen.forEach((s) => obs.observe(s));
+  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('[data-naar]')];
+  const rustig = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (tekening && knoppen.length) {
+    let stap = 1, klok = 0;
+    const zet = (n: number) => { stap = n; tekening.dataset.stap = String(n); knoppen.forEach((k) => k.setAttribute('aria-pressed', String(Number(k.dataset.naar) === n))); };
+    const loop = () => { clearInterval(klok); if (!rustig) klok = window.setInterval(() => zet((stap % 3) + 1), 3400); };
+    knoppen.forEach((k) => k.addEventListener('click', () => { zet(Number(k.dataset.naar)); loop(); }));
+    if (rustig) zet(2);
+    else new IntersectionObserver(([e]) => { if (e.isIntersecting) { zet(1); loop(); } else clearInterval(klok); }, { threshold: 0.4 }).observe(tekening);
   }
 </script>
