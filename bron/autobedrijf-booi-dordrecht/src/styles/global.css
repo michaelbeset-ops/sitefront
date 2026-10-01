@@ -1,0 +1,85 @@
+@import "tailwindcss";
+@import "@fontsource-variable/jost/wght.css";
+@import "@fontsource/overpass-mono/400.css";
+@import "@fontsource/overpass-mono/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De showroom aan de Reeweg Zuid: gele lichtbak, zwarte letters, blauwe gevel, grijs asfalt. */
+  --color-asfalt: #ecebe8;     /* pagina */
+  --color-wit: #ffffff;
+  --color-inkt: #141414;       /* tekst; op asfalt 16:1 */
+  --color-grijs: #4a4b50;      /* bijtekst; op asfalt 7,6:1 */
+  --color-geel: #f5c400;       /* de lichtbak; inkt erop 12:1 */
+  --color-geel-diep: #e0b000;
+  --color-gevel: #1d44b0;      /* de blauwe gevel; wit erop 8,4:1 */
+  --color-gevel-diep: #142f7d;
+  --color-glas: #c8d4f2;       /* lichte tekst op gevel; 5,9:1 */
+  --color-lijn: #14141422;
+  --color-lijn-licht: #ffffff2e;
+
+  --font-sans: "Jost Variable", "Century Gothic", "Futura", sans-serif;
+  --font-mono: "Overpass Mono", ui-monospace, monospace;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.2rem;
+  --text-xl: clamp(1.45rem, 1vw + 1.15rem, 1.9rem);
+  --text-2xl: clamp(2.1rem, 2.6vw + 1.2rem, 3.6rem);
+  --text-3xl: clamp(2.5rem, 3.6vw + 1.2rem, 4.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-asfalt);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-weight: 600; line-height: 1.02; letter-spacing: -.012em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-geel); color: var(--color-inkt); }
+  :focus-visible { outline: 3px solid var(--color-gevel); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-geel); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+
+  /* Lettering van het bord: brede kapitalen met veel lucht. */
+  .bord { font-weight: 700; text-transform: uppercase; letter-spacing: .14em; }
+
+  /* Knop als het bord boven de ingang: zwart pijlvak links, geel vlak met zwarte letters. */
+  .bordknop {
+    display: inline-flex; align-items: stretch; text-decoration: none; font-weight: 600;
+    background: var(--color-geel); color: var(--color-inkt); box-shadow: inset 0 0 0 2px var(--color-inkt);
+    transition: background-color .18s ease, transform .18s ease;
+  }
+  .bordknop > .pijl { display: grid; place-items: center; background: var(--color-inkt); color: var(--color-wit); padding-inline: .8rem; }
+  .bordknop > .tekst { padding: .8rem 1.1rem; display: flex; align-items: center; gap: .5rem; }
+  .bordknop:hover { background: var(--color-wit); }
+  .bordknop:active { transform: translateY(1px); }
+
+  .lijn { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: text-decoration-color .15s ease; }
+  .lijn:hover { text-decoration-color: var(--color-geel); }
+
+  /* Kozijnen van de showroomgevel als achtergrond van het blauwe vlak. */
+  .kozijn {
+    background-color: var(--color-gevel);
+    background-image: linear-gradient(90deg, #ffffff14 0 2px, transparent 2px);
+    background-size: 25% 100%;
+  }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+}

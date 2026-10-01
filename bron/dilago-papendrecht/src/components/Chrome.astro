@@ -1,0 +1,48 @@
+---
+import { Image } from 'astro:assets';
+import { site, url, vraagMail } from '../data/site';
+import logo from '../assets/logo.png';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn-sterk bg-papier/95 backdrop-blur">
+    <div class="wrap flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
+      <a href={url('')} class="flex h-full items-center bg-grafiet px-3 md:px-4" aria-label={`${site.bv}, naar de homepage`}>
+        <Image src={logo} alt="" width={354} height={100} densities={[1, 2]} format="webp" class="h-9 w-auto md:h-10" loading="eager" />
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-8 text-[1.02rem] font-medium">
+          <li><a href={url('#diensten')} class="no-underline decoration-logo decoration-[3px] underline-offset-[8px] hover:underline">Diensten</a></li>
+          <li><a href={url('#jaarkleur')} class="no-underline decoration-logo decoration-[3px] underline-offset-[8px] hover:underline">Jaarkleur</a></li>
+          <li><a href={site.webshop} class="no-underline decoration-logo decoration-[3px] underline-offset-[8px] hover:underline">Hijswinkel</a></li>
+          <li><a href={url('#contact')} class="no-underline decoration-logo decoration-[3px] underline-offset-[8px] hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="flex flex-col items-end text-right no-underline">
+        <span class="mono text-[.68rem] leading-none text-staal md:text-[.72rem]">ook 24/7 storingen</span>
+        <span class="mt-1 text-[1.15rem] font-semibold leading-none tabular-nums md:text-[1.3rem]">{site.tel}</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-grafiet text-wit">
+    <div class="wrap grid gap-10 pb-10 pt-16 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Image src={logo} alt={site.bv} width={354} height={100} densities={[1, 2]} format="webp" class="h-12 w-auto" />
+        <p class="mt-4 max-w-[22rem] text-mist">Voor iedere hijsjob is DiLAGO uw hijsspecialist.</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.bv}<br />{site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={vraagMail} class="lijn">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        <a href={site.webshop} class="lijn">Hijswinkel</a><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a><br />
+        <span class="text-sm text-mist">Metaalunie-voorwaarden<br />KvK [[AANLEVEREN: KvK-nummer]]</span>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-sm text-mist">Foto's en logo van uw eigen website en bedrijfsfolder, ter illustratie.</p>}
+  </footer>
+)}

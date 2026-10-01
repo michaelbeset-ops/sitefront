@@ -111,3 +111,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Vrijheid Nautic Zeilmakerij, Numansdorp | https://michaelbeset-ops.github.io/sitefront/de-vrijheid-nautic-numansdorp/ | verouderde site, 5,0 uit 3, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Florian Zeilmakerij, Goes | https://michaelbeset-ops.github.io/sitefront/florian-zeilmakerij-goes/ | gedateerde site, 3,9 uit 16, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Uurwerkhersteller Erwin Knijf, Nieuwerkerk a/d IJssel | https://michaelbeset-ops.github.io/sitefront/erwin-knijf-uurwerkhersteller/ | geen website, 4,0 uit 5, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Autobedrijf Booi en Zn, Dordrecht | https://michaelbeset-ops.github.io/sitefront/autobedrijf-booi-dordrecht/ | site uit ca. 2008, 4,7 uit 69. | 2026-10-01 | demo, mail |
+| Nol Bikker Motoren, Noordeloos | https://michaelbeset-ops.github.io/sitefront/nol-bikker-motoren/ | verouderde site, 4,7 uit 96. | 2026-10-01 | demo, mail |
+| Van Wijgerden Transport B.V., Molenaarsgraaf | https://michaelbeset-ops.github.io/sitefront/van-wijgerden-transport/ | domein zonder website, 4,6 uit 8. | 2026-10-01 | demo, LinkedIn |
+| DiLAGO Hijs- en Heftechniek B.V., Papendrecht | https://michaelbeset-ops.github.io/sitefront/dilago-papendrecht/ | homepage leeg (serverfout), 4,8 uit 6. | 2026-10-01 | demo, LinkedIn/mail |

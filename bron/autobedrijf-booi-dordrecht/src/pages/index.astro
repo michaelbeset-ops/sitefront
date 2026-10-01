@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, voorraad, autoMail, zoekMail, werkplaatsMail } from '../data/site';
+import hero from '../assets/hero.jpg';
+import gevel from '../assets/gevel.jpg';
+import showroom from '../assets/showroom.jpg';
+import parasol from '../assets/parasol.jpg';
+
+const merken = [...new Set(voorraad.map((a) => a.merk))];
+const tel = `<svg viewBox="0 0 24 24" class="h-[1.15em] w-[1.15em]" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+---
+<Base title="Auto Booi Dordrecht | Occasions, onderhoud en APK sinds 1980" description="Familiebedrijf van de broers Frans en Leon Booi aan de Reeweg Zuid 46 in Dordrecht. Jonge occasions met BOVAG-garantie en NAP, onderhoud en APK. Bel 078 617 10 72.">
+  <Chrome deel="kop" />
+  <main id="inhoud">
+
+    <!-- 1. Voor de showroom -->
+    <section class="grid lg:h-[calc(100svh-4.75rem-2rem)] lg:max-h-[52rem] lg:min-h-[38rem] lg:grid-cols-12">
+      <figure class="relative aspect-[16/11] overflow-hidden bg-inkt sm:aspect-[16/9] lg:col-span-8 lg:aspect-auto">
+        <Foto src={hero} alt="Een blauwe Ford Focus voor de showroom van Auto Booi aan de Reeweg Zuid, met het gele showroombord boven de ingang" hero sizes="(min-width: 1024px) 67vw, 100vw" class="object-[30%_62%]" />
+        <figcaption class="absolute bottom-0 left-0 bg-inkt px-4 py-2 text-[.8rem] text-asfalt md:px-6 lg:hidden">Reeweg Zuid 46, Dordrecht</figcaption>
+      </figure>
+      <div class="kozijn flex flex-col justify-between gap-8 px-5 pb-10 pt-8 text-wit md:px-12 md:pb-12 md:pt-14 lg:col-span-4 lg:px-11">
+        <div>
+          <p class="text-[1.02rem] text-glas">Familiebedrijf in Dordrecht, sinds 1980</p>
+          <h1 class="mt-4 text-[clamp(2.4rem,7.5vw,3.5rem)] lg:text-[clamp(2.8rem,3.9vw,4rem)]">Jonge occasions, eerlijk onderhoud.</h1>
+          <p class="mt-5 max-w-[30rem] text-lg leading-relaxed text-[#e7ecfa] md:mt-7">De broers Frans en Leon Booi leveren elke occasion af met BOVAG-garantie en Nationale AutoPas.</p>
+        <div class="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-8 md:mt-10">
+            <a href={site.telHref} class="bordknop text-[1.1rem]"><span class="pijl"><Fragment set:html={tel} /></span><span class="tekst">Bel <span class="whitespace-nowrap tabular-nums">{site.tel}</span></span></a>
+            <a href="#aanbod" class="lijn text-[1.08rem] font-medium text-wit">Bekijk de {voorraad.length} auto's</a>
+          </div>
+        </div>
+
+        <p class="hidden border-t border-lijn-licht pt-5 text-[.95rem] leading-relaxed text-glas lg:block">Reeweg Zuid 46, Dordrecht<br />Ma t/m vr 08:00 - 17:30 &middot; za 10:00 - 16:00</p>
+      </div>
+    </section>
+
+    <!-- 2. Het aanbod als prijsbord -->
+    <section id="aanbod" class="wrap grid scroll-mt-24 gap-10 py-20 md:py-28 lg:grid-cols-12 lg:gap-14">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-32">
+          <h2 class="text-2xl">{voorraad.length} auto's binnen.</h2>
+          <p class="mt-5 max-w-sm text-grijs">Stand 1 oktober 2026, prijzen rijklaar. Foto's en alle opties staan in het <a href={site.voorraad} class="lijn text-inkt">actuele aanbod</a>.</p>
+          <div class="mt-8 flex flex-wrap gap-2" role="group" aria-label="Toon merk">
+            <button type="button" data-merk="" aria-pressed="true" class="merk border-2 border-inkt px-3 py-1.5 text-sm font-medium transition-colors aria-pressed:bg-inkt aria-pressed:text-geel hover:bg-wit">Alle</button>
+            {merken.map((m) => <button type="button" data-merk={m} aria-pressed="false" class="merk border-2 border-inkt px-3 py-1.5 text-sm font-medium transition-colors aria-pressed:bg-inkt aria-pressed:text-geel hover:bg-wit">{m}</button>)}
+          </div>
+          <p class="mt-10 max-w-sm border-l-4 border-geel pl-4">Staat uw auto er niet tussen? <a href={zoekMail} class="lijn font-semibold">Mail wat u zoekt</a>, met uw eventuele inruilauto erbij.</p>
+        </div>
+      </div>
+      <div class="lg:col-span-8">
+        <div class="hidden grid-cols-[1fr_4rem_6.5rem_7rem] gap-4 border-b-2 border-inkt pb-2 text-xs uppercase tracking-[.12em] text-grijs md:grid">
+          <span>Merk en model</span><span class="text-right">Jaar</span><span class="text-right">Km-stand</span><span class="text-right">Rijklaar</span>
+        </div>
+        <ul id="bord">
+          {voorraad.map((a) => (
+            <li data-merk={a.merk} class="border-b border-lijn">
+              <a href={autoMail(a)} class="group grid grid-cols-[1fr_auto] gap-x-4 gap-y-1 py-3.5 no-underline transition-colors hover:bg-geel md:grid-cols-[1fr_4rem_6.5rem_7rem] md:items-baseline md:px-2">
+                <span><strong class="font-semibold">{a.merk}</strong> {a.model}<span class="ml-2 text-sm text-grijs">{a.soort}</span><span class="sr-only">, mail een vraag over deze auto</span></span>
+                <span class="num col-start-2 row-start-1 text-right font-semibold md:col-start-4">€&nbsp;{a.prijs}</span>
+                <span class="num text-sm text-grijs md:col-start-2 md:row-start-1 md:text-right md:text-base md:text-inkt">{a.jaar}<span class="md:hidden"> &middot; {a.km} km</span></span>
+                <span class="num hidden text-right md:col-start-3 md:row-start-1 md:block">{a.km}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 text-sm text-grijs">Klik op een auto om een vraag te mailen of een proefrit af te spreken.</p>
+      </div>
+    </section>
+
+    <!-- 3. Werkplaats, inruil, financiering -->
+    <section id="werkplaats" class="op-donker scroll-mt-20 bg-inkt text-asfalt">
+      <div class="wrap grid gap-12 py-20 md:py-28 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 class="text-2xl text-wit"><span class="text-geel" aria-hidden="true">&larr;</span> De werkplaats</h2>
+          <p class="mt-6 max-w-md text-lg leading-relaxed">Groot en klein onderhoud, de jaarlijkse APK en alle andere garagewerkzaamheden. Dit alles met BOVAG-garantie.</p>
+          <p class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href={werkplaatsMail} class="bordknop"><span class="pijl" aria-hidden="true">&rarr;</span><span class="tekst">Afspraak per mail</span></a>
+            <a href={site.telHref} class="lijn text-wit">of bel <span class="num whitespace-nowrap">{site.tel}</span></a>
+          </p>
+          <div class="mt-14 grid gap-8 border-t border-lijn-licht pt-10 sm:grid-cols-2">
+            <div>
+              <h3 class="text-xl text-wit">Inruil</h3>
+              <p class="mt-2 text-[#c9c9c4]">Uw huidige auto inruilen? Zet merk, model en kenteken in uw mail, dan bespreken we de mogelijkheden.</p>
+            </div>
+            <div>
+              <h3 class="text-xl text-wit">Financiering</h3>
+              <p class="mt-2 text-[#c9c9c4]">Financiering is altijd maatwerk. Bespreek de mogelijkheden in de showroom.</p>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 self-start lg:col-span-6 lg:col-start-7">
+          <figure class="col-span-2 overflow-hidden"><Foto src={showroom} alt="De showroom van binnen, met rijen gepoetste occasions" sizes="(min-width: 1024px) 40vw, 100vw" class="aspect-[3/2] max-h-[22rem]" /></figure>
+          <figure class="overflow-hidden"><Foto src={parasol} alt="Zithoek met gele parasol tussen de auto's in de showroom" sizes="(min-width: 1024px) 20vw, 50vw" class="aspect-[4/3]" /></figure>
+          <p class="self-end text-sm text-[#b9b9b4]">In de showroom staan de auto's keurig gepoetst binnen. Kom langs voor een proefrit, onder het genot van een kop koffie.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. De broers -->
+    <section class="wrap grid items-center gap-10 py-20 md:py-28 lg:grid-cols-12 lg:gap-14">
+      <figure class="overflow-hidden lg:col-span-6">
+        <Foto src={gevel} alt="Het gele showroombord met telefoonnummer en de ingang van Auto Booi" sizes="(min-width: 1024px) 45vw, 100vw" class="aspect-[4/3]" />
+      </figure>
+      <div class="lg:col-span-5 lg:col-start-8">
+        <h2 class="text-2xl">Twee broers, één showroom.</h2>
+        <p class="mt-6 text-lg leading-relaxed">Frans en Leon Booi zijn de drijvende krachten achter het familiebedrijf. Klanten noemen vooral hen: persoonlijk, eerlijk, een goede prijs, en ze doen wat ze beloven.</p>
+        <p class="mt-4 text-lg leading-relaxed">Bij de aflevering staat de auto keurig klaar en krijgt u uitgebreide uitleg.</p>
+        <p class="mt-8 text-sm text-grijs">Google: {site.google.score} uit {site.google.aantal} reviews</p>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+
+  <script>
+    const knoppen = document.querySelectorAll<HTMLButtonElement>('button.merk');
+    const rijen = document.querySelectorAll<HTMLLIElement>('#bord > li');
+    knoppen.forEach((k) => k.addEventListener('click', () => {
+      const m = k.dataset.merk;
+      knoppen.forEach((x) => x.setAttribute('aria-pressed', String(x === k)));
+      rijen.forEach((r) => { r.hidden = !!m && r.dataset.merk !== m; });
+    }));
+  </script>
+</Base>

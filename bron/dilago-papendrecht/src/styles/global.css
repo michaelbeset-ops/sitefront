@@ -1,0 +1,76 @@
+@import "tailwindcss";
+@import "@fontsource/bai-jamjuree/400.css";
+@import "@fontsource/bai-jamjuree/500.css";
+@import "@fontsource/bai-jamjuree/600.css";
+@import "@fontsource/bai-jamjuree/700.css";
+@import "@fontsource/azeret-mono/400.css";
+@import "@fontsource/azeret-mono/500.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een keuringsrapport: wit papier, grafiet, dunne lijnen; het geel van hun eigen logo en haak; de IMO-jaarkleuren als enige kleur. */
+  --color-papier: #f5f5f1;     /* pagina */
+  --color-wit: #ffffff;
+  --color-grafiet: #1e2023;    /* tekst; op papier 15,5:1 */
+  --color-staal: #575b61;      /* bijtekst; op papier 6,4:1 */
+  --color-logo: #f7c500;       /* DiLAGO-geel; grafiet erop 11:1 */
+  --color-lucht: #c9daea;      /* de lucht achter de haak */
+  --color-lijn: #1e202326;
+  --color-lijn-sterk: #1e2023;
+  --color-lijn-licht: #ffffff30;
+  --color-mist: #b9bcc1;       /* lichte tekst op grafiet 9:1 */
+
+  --font-sans: "Bai Jamjuree", system-ui, sans-serif;
+  --font-mono: "Azeret Mono", ui-monospace, monospace;
+
+  --text-xs: 0.76rem;
+  --text-sm: 0.88rem;
+  --text-base: 1.05rem;
+  --text-lg: 1.2rem;
+  --text-xl: clamp(1.45rem, 1vw + 1.15rem, 1.9rem);
+  --text-2xl: clamp(2.2rem, 2.6vw + 1.3rem, 3.6rem);
+  --text-3xl: clamp(2.6rem, 4.2vw + .8rem, 5.4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-grafiet);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-weight: 600; line-height: 1; letter-spacing: -.025em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-logo); color: var(--color-grafiet); }
+  :focus-visible { outline: 3px solid var(--color-logo); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .mono { font-family: var(--font-mono); font-size: .82em; letter-spacing: -.01em; }
+
+  /* Knoppen: rechthoekig als een typeplaatje; bij hover schuift een geel streepje in, zoals een gekeurde sluiting. */
+  .knop { display: inline-flex; align-items: center; gap: .65rem; font-weight: 600; font-size: 1.1rem; padding: .85rem 1.3rem; background: var(--color-grafiet); color: var(--color-wit); text-decoration: none;
+    box-shadow: inset 0 -4px 0 var(--color-logo); transition: box-shadow .2s ease, background-color .2s ease; }
+  .knop:hover { box-shadow: inset 0 -100px 0 var(--color-logo); color: var(--color-grafiet); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; transition: text-decoration-color .2s ease, text-decoration-thickness .2s ease; }
+  .lijn:hover { text-decoration-color: var(--color-logo); text-decoration-thickness: 3px; }
+
+  /* Het rapport: regels met een etiket links en een waarde rechts. */
+  .rapport > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1rem; align-items: baseline; padding-block: .6rem; border-top: 1px solid var(--color-lijn); }
+  .rapport > div:last-child { border-bottom: 1px solid var(--color-lijn); }
+  .rapport dt { font-family: var(--font-mono); font-size: .76rem; color: var(--color-staal); }
+  @media (max-width: 420px) { .rapport > div { grid-template-columns: 7.2rem 1fr; } }
+}

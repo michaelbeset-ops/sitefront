@@ -1,0 +1,53 @@
+---
+import { site, url, tijden, vraagMail } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg viewBox="0 0 24 24" class="h-[1.05em] w-[1.05em]" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-tank/95 backdrop-blur">
+    <div class="wrap flex h-[3.9rem] items-center justify-between gap-6 md:h-[4.5rem]">
+      <a href={url('')} class="font-display text-[1.25rem] font-extrabold italic leading-none tracking-[-.01em] no-underline md:text-[1.6rem]" aria-label={`${site.naam}, naar de homepage`}>
+        Nol Bikker <span class="text-groen">Motoren</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-9 text-[.98rem] font-medium">
+          <li><a href={url('#museum')} class="no-underline transition-colors hover:text-groen">Museum</a></li>
+          <li><a href={url('#aanbod')} class="no-underline transition-colors hover:text-groen">Aanbod</a></li>
+          <li><a href={url('#werkplaats')} class="no-underline transition-colors hover:text-groen">Werkplaats</a></li>
+          <li><a href={url('#route')} class="no-underline transition-colors hover:text-groen">Route en tijden</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="flex items-center gap-2 font-semibold text-groen no-underline transition-colors hover:text-bies">
+        <Fragment set:html={tel} /><span class="tabular-nums max-[379px]:sr-only">{site.tel}</span><span class="sr-only">bellen</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer id="route" class="scroll-mt-20 border-t border-lijn">
+    <div class="wrap grid gap-12 py-20 md:grid-cols-12 md:py-24">
+      <div class="md:col-span-5">
+        <h2 class="text-2xl">Grotewaard 8, Noordeloos.</h2>
+        <ol class="mt-8 space-y-2 text-mist">
+          <li>Vanaf de A27, tussen Vianen en Gorinchem: afslag Noordeloos.</li>
+          <li>Volg de borden richting Noordeloos.</li>
+          <li>Bij de rotonde niet rechtsaf het dorp in, maar linksaf.</li>
+          <li>Wij zitten direct aan uw linkerhand.</li>
+        </ol>
+        <p class="mt-8"><a href={site.maps} class="lijn font-semibold">Route plannen</a></p>
+      </div>
+      <dl class="grid grid-cols-[auto_1fr] gap-x-8 gap-y-1.5 self-start md:col-span-3 md:col-start-7">
+        {tijden.map(([d, t]) => (<><dt class="text-mist">{d}</dt><dd class="tabular-nums">{t}</dd></>))}
+      </dl>
+      <p class="self-start md:col-span-3 md:col-start-10 md:text-right">
+        <a href={site.telHref} class="font-display text-[1.6rem] font-extrabold italic tabular-nums text-groen no-underline">{site.tel}</a><br />
+        <a href={vraagMail} class="lijn">{site.mail}</a>
+      </p>
+    </div>
+    <div class="wrap flex flex-col gap-3 border-t border-lijn py-8 text-sm text-mist md:flex-row md:justify-between">
+      <p>{site.naam}, {site.straat}, {site.postcode} {site.plaats} &middot; Google {site.google.score} uit {site.google.aantal} reviews &middot; KvK [[AANLEVEREN: KvK-nummer]]</p>
+      <p><a href={url('privacy/')} class="lijn">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-sm text-mist">Foto's van uw Google-bedrijfsprofiel en uw eigen website, ter illustratie.</p>}
+  </footer>
+)}

@@ -1,0 +1,47 @@
+---
+import { site, url } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg viewBox="0 0 24 24" class="h-[1em] w-[1em]" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="op-nacht sticky top-0 z-40 bg-nacht text-wit">
+    <div class="wrap flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
+      <a href={url('')} class="group flex items-center gap-3 no-underline" aria-label={`${site.naam}, naar de homepage`}>
+        <span class="strepen hidden h-9 w-14 sm:block" aria-hidden="true"></span>
+        <span class="flex flex-col">
+          <span class="cond text-[1.55rem] font-semibold italic leading-none md:text-[1.8rem]">van Wijgerden</span>
+          <span class="cond mt-0.5 text-[.8rem] font-medium leading-none tracking-[.04em] text-lucht md:text-[.88rem]">transport &middot; molenaarsgraaf</span>
+        </span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="cond flex gap-9 text-[1.15rem] font-medium uppercase tracking-[.06em]">
+          <li><a href={url('#materieel')} class="no-underline decoration-bord decoration-2 underline-offset-[7px] hover:underline">Materieel</a></li>
+          <li><a href={url('#haven')} class="no-underline decoration-bord decoration-2 underline-offset-[7px] hover:underline">Werkgebied</a></li>
+          <li><a href={url('#contact')} class="no-underline decoration-bord decoration-2 underline-offset-[7px] hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="cond flex items-center gap-2 text-[1.3rem] font-bold tabular-nums text-bord no-underline transition-colors hover:text-wit md:text-[1.45rem]">
+        <Fragment set:html={tel} /><span class="max-[379px]:sr-only">{site.tel}</span><span class="sr-only"> bellen</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer class="op-nacht bg-nacht text-wit">
+    <div class="wrap grid gap-10 pb-10 pt-16 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="cond text-[2.2rem] font-semibold italic leading-none">van Wijgerden</p>
+        <p class="cond mt-1 text-lg text-lucht">transport &middot; molenaarsgraaf</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.bv}<br />{site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK {site.kvk}<br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-sm text-lucht">Foto's van uw Google-bedrijfsprofiel, ter illustratie.</p>}
+  </footer>
+)}

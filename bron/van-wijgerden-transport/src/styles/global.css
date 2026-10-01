@@ -1,0 +1,79 @@
+@import "tailwindcss";
+@import "@fontsource/mohave/500.css";
+@import "@fontsource/mohave/700.css";
+@import "@fontsource/mohave/600-italic.css";
+@import "@fontsource/be-vietnam-pro/400.css";
+@import "@fontsource/be-vietnam-pro/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De eigen FH16: zilverwitte cabine, airbrush-blauw, het gele convooibord, het asfalt van het erf. */
+  --color-zilver: #eef1f5;     /* pagina */
+  --color-wit: #ffffff;
+  --color-nacht: #0e2560;      /* het donkere cabineblauw; wit erop 14:1 */
+  --color-cabine: #1f55c6;     /* de airbrushstrepen; wit erop 6,6:1 */
+  --color-lucht: #bcd0f2;      /* lichte tekst op nacht 9:1 */
+  --color-bord: #ffc90a;       /* convoi exceptionnel; nacht erop 9,6:1 */
+  --color-asfalt: #1c1f24;     /* tekst; op zilver 15:1 */
+  --color-grind: #555c66;      /* bijtekst; op zilver 6:1 */
+  --color-vwt: #e4572e;        /* het oranje van het vwt-logo, alleen als streepje */
+  --color-lijn: #1c1f2426;
+  --color-lijn-licht: #ffffff38;
+
+  --font-cond: "Mohave", "Arial Narrow", sans-serif;
+  --font-sans: "Be Vietnam Pro", system-ui, sans-serif;
+
+  --text-xs: 0.78rem;
+  --text-sm: 0.9rem;
+  --text-base: 1.02rem;
+  --text-lg: 1.15rem;
+  --text-xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-2xl: clamp(2.6rem, 3.4vw + 1.3rem, 4.8rem);
+  --text-3xl: clamp(3rem, 6vw + .6rem, 7.6rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-zilver);
+    color: var(--color-asfalt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: var(--font-cond); font-weight: 700; text-transform: uppercase; line-height: .86; letter-spacing: -.005em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-bord); color: var(--color-asfalt); }
+  :focus-visible { outline: 3px solid var(--color-bord); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .cond { font-family: var(--font-cond); }
+
+  /* Het convooibord van de bumper: geel, zwarte rand, smalle kapitalen. Hier staat het telefoonnummer op. */
+  .bord { display: inline-flex; flex-direction: column; align-items: center; background: var(--color-bord); color: var(--color-asfalt);
+    border: 3px solid var(--color-asfalt); outline: 2px solid var(--color-bord); border-radius: 3px; padding: .35rem 1.1rem .3rem;
+    font-family: var(--font-cond); text-decoration: none; text-transform: uppercase; line-height: 1;
+    transition: transform .2s ease, box-shadow .2s ease; box-shadow: 0 1px 0 #0003; }
+  .bord:hover { transform: translateY(-2px); box-shadow: 0 8px 18px -8px #0008; }
+  .bord-klein { font-size: .78rem; font-weight: 600; letter-spacing: .14em; }
+  .bord-groot { font-size: clamp(2rem, 2.2vw + 1.2rem, 3rem); font-weight: 700; letter-spacing: .02em; font-variant-numeric: tabular-nums; margin-top: .12rem; }
+
+  /* De airbrushstrepen van de cabine: drie schuine banen. */
+  .strepen { background:
+      linear-gradient(100deg, transparent 0 18%, var(--color-cabine) 18% 30%, transparent 30% 38%, var(--color-cabine) 38% 44%, transparent 44% 50%, var(--color-lucht) 50% 53%, transparent 53%); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; transition: color .2s ease, text-decoration-color .2s ease; }
+  .lijn:hover { color: var(--color-cabine); text-decoration-thickness: 2px; }
+  .op-nacht .lijn:hover { color: var(--color-wit); text-decoration-color: var(--color-bord); }
+}

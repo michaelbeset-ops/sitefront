@@ -1,0 +1,55 @@
+---
+import { site, url, tijden, zoekMail } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg viewBox="0 0 24 24" class="h-[1.1em] w-[1.1em]" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b-[3px] border-inkt bg-geel text-inkt">
+    <div class="flex h-[3.9rem] items-stretch md:h-[4.75rem]">
+      <a href={url('')} class="flex flex-col justify-center bg-inkt px-4 text-wit no-underline md:px-7" aria-label={`${site.naam}, naar de homepage`}>
+        <span class="text-[1.3rem] font-[750] leading-none tracking-[.04em] md:text-[1.75rem]">AUTO BOOI</span>
+        <span class="mt-1 text-[.62rem] font-medium uppercase leading-none tracking-[.32em] text-geel md:text-[.72rem]">Occasioncenter</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden flex-1 items-center lg:flex">
+        <ul class="flex h-full items-stretch">
+          <li class="flex"><a href={url('#aanbod')} class="bord flex items-center px-6 text-[.92rem] no-underline transition-colors hover:bg-inkt hover:text-geel">Showroom</a></li>
+          <li class="flex"><a href={url('#werkplaats')} class="bord flex items-center gap-2 px-6 text-[.92rem] no-underline transition-colors hover:bg-inkt hover:text-geel"><span aria-hidden="true">&larr;</span> Werkplaats</a></li>
+          <li class="flex"><a href={url('#contact')} class="bord flex items-center px-6 text-[.92rem] no-underline transition-colors hover:bg-inkt hover:text-geel">Route en tijden</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="ml-auto flex items-center gap-2.5 px-4 font-semibold no-underline transition-colors hover:bg-inkt hover:text-geel md:px-7">
+        <Fragment set:html={tel} />
+        <span class="bord hidden text-[1.15rem] tracking-[.1em] sm:inline">Tel. 078 - 617 10 72</span>
+        <span class="sr-only sm:hidden">Bel {site.tel}</span>
+      </a>
+    </div>
+  </header>
+) : (
+  <footer id="contact" class="op-donker bg-inkt text-asfalt">
+    <div class="border-b-[3px] border-inkt bg-geel text-inkt">
+      <div class="wrap grid gap-8 py-12 md:grid-cols-12 md:py-16">
+        <div class="md:col-span-6">
+          <h2 class="text-2xl">Reeweg Zuid 46, Dordrecht</h2>
+          <p class="mt-4 max-w-md">{site.postcode} {site.plaats}. De ingang van de showroom zit onder het gele bord.</p>
+          <p class="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+            <a href={site.maps} class="lijn font-semibold">Route plannen</a>
+            <a href={zoekMail} class="lijn font-semibold">Mail ons</a>
+          </p>
+        </div>
+        <dl class="grid grid-cols-[auto_1fr] gap-x-8 gap-y-1.5 self-start md:col-span-3">
+          {tijden.map(([d, t]) => (<><dt>{d}</dt><dd class="num text-[.95rem]">{t}</dd></>))}
+        </dl>
+        <p class="self-start md:col-span-3 md:text-right">
+          <a href={site.telHref} class="num whitespace-nowrap text-[1.35rem] font-semibold no-underline">{site.tel}</a><br />
+          <a href={`mailto:${site.mail}`} class="lijn">{site.mail}</a>
+        </p>
+      </div>
+    </div>
+    <div class="wrap flex flex-col gap-3 py-8 text-sm md:flex-row md:items-center md:justify-between">
+      <p>{site.volledig} &middot; BOVAG-lid &middot; KvK [[AANLEVEREN: KvK-nummer]]</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="lijn">Privacyverklaring</a><a href={site.voorraad} class="lijn">Actueel aanbod</a></p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-5 text-sm text-[#b9b9b4]">Foto's van uw eigen website en uw Google-bedrijfsprofiel, aanbod overgenomen van uw voorraadpagina op 1 oktober 2026, ter illustratie.</p>}
+  </footer>
+)}
