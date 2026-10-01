@@ -115,3 +115,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Nol Bikker Motoren, Noordeloos | https://michaelbeset-ops.github.io/sitefront/nol-bikker-motoren/ | verouderde site, 4,7 uit 96. | 2026-10-01 | demo, mail |
 | Van Wijgerden Transport B.V., Molenaarsgraaf | https://michaelbeset-ops.github.io/sitefront/van-wijgerden-transport/ | domein zonder website, 4,6 uit 8. | 2026-10-01 | demo, LinkedIn |
 | DiLAGO Hijs- en Heftechniek B.V., Papendrecht | https://michaelbeset-ops.github.io/sitefront/dilago-papendrecht/ | homepage leeg (serverfout), 4,8 uit 6. | 2026-10-01 | demo, LinkedIn/mail |
+| Smellies, Dordrecht (geurwax, webshop) | https://michaelbeset-ops.github.io/sitefront/smellies-dordrecht/ | Mijnwebwinkel-template, 5,0 uit 5, 06 op eigen site. | 2026-10-01 | demo, WhatsApp |

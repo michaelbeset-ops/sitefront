@@ -1,0 +1,53 @@
+---
+import { site, url, wa, waMet } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const nav = [
+  ['Zo werkt het', '#brander'],
+  ['Geuren', '#toonbank'],
+  ['Herfst', '#herfst'],
+  ['Groothandel', '#groothandel'],
+  ['Contact', '#contact'],
+];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="group flex flex-col leading-none text-inkt no-underline">
+        <span class="text-[1.35rem] font-[350] tracking-[.24em]">SMELLIES<sup class="ml-0.5 text-[.5em] tracking-normal">®</sup></span>
+        <span class="cursief mt-0.5 text-[.95rem] tracking-normal text-zacht transition-colors group-hover:text-framboos">Scents &amp; Happiness</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-8 text-sm">
+          {nav.map(([t, h]) => <li><a href={url(h)} class="no-underline decoration-1 underline-offset-[6px] transition-colors hover:text-framboos hover:underline">{t}</a></li>)}
+        </ul>
+      </nav>
+      <div class="flex items-center gap-5">
+        <a href={site.winkel} class="lijn hidden text-sm sm:inline">Webwinkel</a>
+        <a href={waMet('')} class="knop !px-3.5 !py-2.5"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+      </div>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-pruim text-licht">
+    <div class="schulp-op" style="--s:var(--color-pruim);background-color:var(--color-papier)" aria-hidden="true"></div>
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <p class="leading-none md:col-span-5">
+        <span class="block text-[2rem] font-[350] tracking-[.24em]">SMELLIES<sup class="ml-1 text-[.45em] tracking-normal">®</sup></span>
+        <span class="cursief mt-2 block text-xl text-licht-zacht">Scents &amp; Happiness</span>
+      </p>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="lijn">{site.mail}</a><br />
+        <a href={site.instagram} class="lijn">Instagram</a> en <a href={site.facebook} class="lijn">Facebook</a> @smellies.nl
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK {site.kvk}<br />
+        <a href={site.groothandel} class="lijn">Groothandel</a><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs text-licht-zacht">Productfoto's, namen, omschrijvingen en prijzen van smellies.nl (stand 1 oktober 2026), ter illustratie. Bestellen gaat in dit voorstel via de bestaande webwinkel.</p>}
+  </footer>
+)}
