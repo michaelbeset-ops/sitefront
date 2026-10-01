@@ -14,9 +14,11 @@ met één vak voor het etiket, en de toonbank leest als een patisserie met cursi
 Het eigen detail is het geschulpte bonbon-cupje (de geribbelde rand van hun vormpjes) als kleurstaal, sectierand en beeldsnede,
 plus de brander waarin de gekozen geur echt smelt.
 
-## Kleur en letter
-Zeepwit #f7f4f8, aubergine-inkt #2a1530, avondband #24102a, framboos #ad2f69 (Choo Choo/Libre), lila #e9e2f1 (Space),
-vlam #ffa244 (alleen het waxinelichtje). Instrument Serif (recht + cursief) voor koppen en etiketten, Golos Text voor tekst.
+## Kleur en letter (restyle 01-10-2026: hun eigen huisstijl)
+Uit smellies.nl: antraciet #2e2f34 (hun header; ook brander-band en voet), wit en lichtgrijs #f2f2f3, warm herfstoranje
+#a9500d als enige accent (op wit 5,8:1, wit erop 5,5:1) en #f0a35a op antraciet (6,4:1). Logo zoals het hunne: SMELLIES (R)
+in dunne, ruim gespatieerde hoofdletters in een dun kader, streepje, "Scents & Happiness".
+Josefin Sans (licht, 250-300) voor logo en koppen, Mulish voor tekst. Kleur zit verder alleen in de wax-foto's.
 
 ## Verloop
 1. Vitrine: 10 eigen wax-foto's, kop "Geur die je laat smelten.", wisselend woord uit hun eigen omschrijvingen.
@@ -29,7 +31,7 @@ vlam #ffa244 (alleen het waxinelichtje). Instrument Serif (recht + cursief) voor
 
 ## Bewust vermeden
 Geen donkere standaard-hero, geen pill-knoppenpaar, geen stat-rij, geen open/dicht-kaartje, geen polaroid/sticker, geen
-kicker-labels, geen icoon-kaartenrij, geen reviews, geen wizard, geen beige/goud.
+kicker-labels, geen icoon-kaartenrij, geen reviews, geen wizard, geen beige/goud, geen paars.
 
 ## Zelf gekozen
 Geen nep-winkelmandje: elke "Bestel" gaat naar de echte productpagina. "Dupe van ..." merknamen weggelaten; alleen hun
