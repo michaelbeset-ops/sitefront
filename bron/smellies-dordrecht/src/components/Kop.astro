@@ -1,0 +1,73 @@
+---
+import { site, url, waMet } from '../data/site';
+interface Props { opHero?: boolean }
+const { opHero = false } = Astro.props;
+const nav = [
+  ['Geuren', '#geuren'],
+  ['Zo werkt het', '#zo-werkt-het'],
+  ['Collecties', '#collecties'],
+  ['Groothandel', '#groothandel'],
+  ['Contact', '#contact'],
+];
+---
+<header class:list={['kop sticky top-0 z-40', opHero ? 'op-hero' : 'vast']} data-kop>
+  <div class="wrap grid h-16 grid-cols-[1fr_auto_1fr] items-center gap-6">
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="ui flex gap-7">
+        {nav.slice(0, 4).map(([t, h]) => <li><a href={url(h)} class="lijn-in">{t}</a></li>)}
+      </ul>
+    </nav>
+    <a href={url('')} class="klein-merk col-start-1 justify-self-start text-[1.0625rem] lg:col-start-2 lg:justify-self-center" aria-label="Smellies, naar de homepage">
+      <span class="woordmerk" aria-hidden="true">SMELLIES<sup>®</sup></span>
+    </a>
+    <div class="col-start-3 flex items-center justify-end gap-6">
+      <a href={site.winkel} class="ui lijn-in hidden sm:inline">Webwinkel <span aria-hidden="true">↗</span></a>
+      <a href={waMet('')} class="ui lijn-in hidden lg:inline">WhatsApp</a>
+      <button type="button" class="ui lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>Menu</button>
+    </div>
+  </div>
+
+  <div id="menu" class="menu lg:hidden" hidden data-menu>
+    <nav aria-label="Menu" class="wrap flex h-full flex-col justify-between pb-10 pt-6">
+      <ul class="space-y-1">
+        {nav.map(([t, h]) => <li><a href={url(h)} class="block py-1 text-[2.25rem] leading-tight tracking-[-.03em]" data-menu-link>{t}</a></li>)}
+      </ul>
+      <p class="ui space-y-3 text-grijs">
+        <a href={site.winkel} class="lijn block w-fit text-inkt">Webwinkel ↗</a>
+        <a href={waMet('')} class="lijn block w-fit text-inkt">WhatsApp</a>
+        <a href={site.telHref} class="num block w-fit">{site.tel}</a>
+      </p>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .kop { transition: background-color .5s var(--ease-zacht), box-shadow .5s var(--ease-zacht); }
+  .kop.vast { background-color: color-mix(in srgb, var(--color-papier) 97%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 1px 0 var(--color-lijn); }
+  .klein-merk { transition: opacity .5s var(--ease-zacht), transform .5s var(--ease-zacht); }
+  .op-hero:not(.vast) .klein-merk { opacity: 0; transform: translateY(-6px); pointer-events: none; }
+  .menu { position: fixed; left: 0; right: 0; bottom: 0; top: 4rem; background: var(--color-papier); overflow-y: auto; }
+  .menu-open .klein-merk { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
+  .menu-open { background-color: var(--color-papier) !important; }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
+  if (kop.classList.contains('op-hero')) {
+    const hero = document.querySelector('[data-hero]');
+    if (hero) new IntersectionObserver(([e]) => kop.classList.toggle('vast', !e.isIntersecting), { rootMargin: '-64px 0px 0px 0px', threshold: 0.08 }).observe(hero);
+  }
+  const knop = kop.querySelector<HTMLButtonElement>('[data-menu-knop]')!;
+  const menu = kop.querySelector<HTMLElement>('[data-menu]')!;
+  const zet = (open: boolean) => {
+    menu.style.top = kop.getBoundingClientRect().bottom + 'px';
+    menu.hidden = !open;
+    knop.setAttribute('aria-expanded', String(open));
+    knop.textContent = open ? 'Sluiten' : 'Menu';
+    kop.classList.toggle('menu-open', open);
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  knop.addEventListener('click', () => zet(menu.hidden));
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => zet(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { zet(false); knop.focus(); } });
+</script>

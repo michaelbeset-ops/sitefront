@@ -1,6 +1,7 @@
 @import "tailwindcss";
-@import "@fontsource-variable/josefin-sans/index.css";
-@import "@fontsource-variable/mulish/index.css";
+
+@import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
 
 @theme {
   --color-*: initial;
@@ -8,81 +9,91 @@
   --radius-*: initial;
   --shadow-*: initial;
 
-  /* De huisstijl van smellies.nl: antraciet kopvlak, wit en lichtgrijs, warm herfstoranje als enige accent.
-     De kleur zit verder in de wax-foto's zelf. */
-  --color-papier: #ffffff;       /* pagina */
-  --color-wit: #ffffff;
-  --color-mist: #f2f2f3;         /* lichtgrijze vlakken */
-  --color-inkt: #2e2f34;         /* tekst, op wit 13:1 */
-  --color-zacht: #5c5f66;        /* bijtekst, op wit 6,4:1, op mist 5,7:1 */
-  --color-antraciet: #2e2f34;    /* kop, brander-band en voet: hun eigen header */
-  --color-oranje: #a9500d;       /* accent; op wit 5,8:1, op mist 4,9:1, wit erop 5,5:1 */
-  --color-zon: #f0a35a;          /* oranje op antraciet, 6,4:1; ook de vlam */
-  --color-licht: #f4f4f5;        /* tekst op antraciet */
-  --color-licht-zacht: #b9bbc1;  /* bijtekst op antraciet, 7:1 */
-  --color-lijn: #2e2f3424;
-  --color-lijn-licht: #f4f4f52e;
+  /* Monochroom: papier, antraciet (hun eigen #2e2f34), één neutraal grijs. Kleur komt alleen uit de wax. */
+  --color-papier: #f3f1ec;      /* pagina, warm wit */
+  --color-wit: #fbfaf7;         /* sectievlak Smellies & zo */
+  --color-blank: #ffffff;       /* achter packshots, gelijk aan hun eigen fotowit */
+  --color-inkt: #2e2f34;        /* tekst, op papier 12:1 */
+  --color-grijs: #6d6c69;       /* bijtekst, op papier 4,9:1 */
+  --color-nevel: #e6e3dc;       /* rustige vlakken */
+  --color-lijn: #2e2f341f;
+  --color-antraciet: #2e2f34;
+  --color-licht: #f3f1ec;
+  --color-licht-zacht: #a9a9a7; /* bijtekst op antraciet, 6,4:1 */
+  --color-lijn-licht: #f3f1ec26;
 
-  --font-display: "Josefin Sans Variable", "Century Gothic", "Segoe UI", sans-serif;
-  --font-sans: "Mulish Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Geist Variable", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, "Cascadia Mono", monospace;
 
+  /* Vaste schaal (1.25 met optische stappen); grote koppen vloeiend. */
+  --text-micro: 0.6875rem;   /* 11px UI-hoofdletters */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.1875rem;
-  --text-xl: clamp(1.35rem, .9vw + 1.1rem, 1.85rem);
-  --text-2xl: clamp(1.9rem, 2vw + 1.2rem, 3.1rem);
-  --text-3xl: clamp(2.3rem, 3.4vw + .9rem, 4.75rem);
-  --text-4xl: clamp(2.6rem, 5.6vw, 6.5rem);
+  --text-xl: clamp(1.375rem, 0.6vw + 1.2rem, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.6vw + 1.2rem, 2.75rem);
+  --text-3xl: clamp(2.25rem, 3.4vw + 1rem, 4.5rem);
+  --text-4xl: clamp(2.75rem, 6.2vw + .5rem, 7.5rem);
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
 }
 
 @layer base {
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
     background-color: var(--color-papier);
     color: var(--color-inkt);
     font-family: var(--font-sans);
     font-size: var(--text-base);
     line-height: 1.6;
+    font-feature-settings: "ss01" 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 250; line-height: 1.04; letter-spacing: .01em; text-wrap: balance; overflow-wrap: anywhere; }
+  h1, h2, h3 { font-weight: 400; line-height: 1.02; letter-spacing: -0.035em; text-wrap: balance; }
   p { text-wrap: pretty; }
-  ::selection { background: var(--color-oranje); color: var(--color-wit); }
-  :focus-visible { outline: 2px solid var(--color-oranje); outline-offset: 3px; }
-  .op-donker :focus-visible { outline-color: var(--color-zon); }
+  ::selection { background: var(--color-inkt); color: var(--color-papier); }
+  :focus-visible { outline: 2px solid var(--color-inkt); outline-offset: 4px; }
+  .donker :focus-visible { outline-color: var(--color-licht); }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    *, *::before, *::after { transition: none !important; animation: none !important; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
   }
 }
 
 @layer components {
-  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
-  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .wrap { width: 100%; max-width: 96rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
 
-  .display { font-family: var(--font-display); font-weight: 250; }
-  .cursief { font-family: var(--font-display); font-weight: 300; letter-spacing: .01em; }
-  /* Hun logo: dunne, ruim gespatieerde hoofdletters in een dun kader. */
-  .logo { font-family: var(--font-display); font-weight: 250; letter-spacing: .14em; }
+  /* Kleine UI-tekst: 11px hoofdletters met tracking, zoals op de etiketten van hun eigen flessen. */
+  .ui { font-size: var(--text-micro); line-height: 1.4; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+  .mono { font-family: var(--font-mono); font-size: var(--text-micro); letter-spacing: .02em; font-feature-settings: "zero" 0; }
+  .num { font-variant-numeric: tabular-nums; }
 
-  /* Knop: een plat oranje vlak zoals hun SHOP NOW, antraciet bij hover. Geen pil, geen schaduw. */
-  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; font-size: var(--text-sm); letter-spacing: .06em; text-transform: uppercase; padding: .85rem 1.3rem; background: var(--color-oranje); color: var(--color-wit); text-decoration: none; border-radius: 3px; transition: background-color .2s ease, transform .2s ease; }
-  .knop:hover { background: var(--color-inkt); transform: translateY(-1px); }
-  .knop-licht { background: var(--color-zon); color: var(--color-antraciet); }
-  .knop-licht:hover { background: var(--color-licht); color: var(--color-antraciet); }
+  /* Woordmerk: SMELLIES ® ruim gespatieerd; de tracking wordt rechts gecompenseerd zodat het optisch centreert. */
+  .woordmerk { font-weight: 300; letter-spacing: .42em; margin-right: -.42em; white-space: nowrap; line-height: 1; }
+  .woordmerk sup { font-size: .22em; letter-spacing: 0; vertical-align: top; position: relative; top: .55em; margin-left: -1.45em; font-weight: 400; }
 
-  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: color .2s ease, text-underline-offset .2s ease; }
-  .lijn:hover { color: var(--color-oranje); text-underline-offset: 6px; }
-  .op-donker .lijn:hover { color: var(--color-zon); }
+  /* Link met lijn die van links inschuift. */
+  .lijn { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn:hover { background-size: 0 1px; background-position: 100% 100%; }
+  .lijn-in { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; transition: background-size .45s var(--ease-zacht); }
+  .lijn-in:hover, a:hover > .lijn-in { background-size: 100% 1px; }
 
-  /* Het geschulpte bonbon-cupje (de geribbelde rand van hun cupcake-vormpjes): als masker voor de kleurstalen. */
-  .cupje { -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50.00 5.00 A7.18 7.18 0 0 1 63.91 7.20 A7.18 7.18 0 0 1 76.45 13.59 A7.18 7.18 0 0 1 86.41 23.55 A7.18 7.18 0 0 1 92.80 36.09 A7.18 7.18 0 0 1 95.00 50.00 A7.18 7.18 0 0 1 92.80 63.91 A7.18 7.18 0 0 1 86.41 76.45 A7.18 7.18 0 0 1 76.45 86.41 A7.18 7.18 0 0 1 63.91 92.80 A7.18 7.18 0 0 1 50.00 95.00 A7.18 7.18 0 0 1 36.09 92.80 A7.18 7.18 0 0 1 23.55 86.41 A7.18 7.18 0 0 1 13.59 76.45 A7.18 7.18 0 0 1 7.20 63.91 A7.18 7.18 0 0 1 5.00 50.00 A7.18 7.18 0 0 1 7.20 36.09 A7.18 7.18 0 0 1 13.59 23.55 A7.18 7.18 0 0 1 23.55 13.59 A7.18 7.18 0 0 1 36.09 7.20 A7.18 7.18 0 0 1 50.00 5.00Z'/%3E%3C/svg%3E") center / contain no-repeat;
-            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50.00 5.00 A7.18 7.18 0 0 1 63.91 7.20 A7.18 7.18 0 0 1 76.45 13.59 A7.18 7.18 0 0 1 86.41 23.55 A7.18 7.18 0 0 1 92.80 36.09 A7.18 7.18 0 0 1 95.00 50.00 A7.18 7.18 0 0 1 92.80 63.91 A7.18 7.18 0 0 1 86.41 76.45 A7.18 7.18 0 0 1 76.45 86.41 A7.18 7.18 0 0 1 63.91 92.80 A7.18 7.18 0 0 1 50.00 95.00 A7.18 7.18 0 0 1 36.09 92.80 A7.18 7.18 0 0 1 23.55 86.41 A7.18 7.18 0 0 1 13.59 76.45 A7.18 7.18 0 0 1 7.20 63.91 A7.18 7.18 0 0 1 5.00 50.00 A7.18 7.18 0 0 1 7.20 36.09 A7.18 7.18 0 0 1 13.59 23.55 A7.18 7.18 0 0 1 23.55 13.59 A7.18 7.18 0 0 1 36.09 7.20 A7.18 7.18 0 0 1 50.00 5.00Z'/%3E%3C/svg%3E") center / contain no-repeat; }
+  /* Knop: rechthoek, dunne rand, vult zich bij hover. Geen pil, geen schaduw. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .75rem; min-height: 3rem; padding: 0 1.5rem; border: 1px solid currentColor; font-size: var(--text-micro); letter-spacing: .14em; text-transform: uppercase; font-weight: 500; text-decoration: none; position: relative; isolation: isolate; overflow: hidden; transition: color .4s var(--ease-zacht); }
+  .knop::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--color-inkt); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .45s var(--ease-zacht); }
+  .knop:hover { color: var(--color-papier); }
+  .knop:hover::before { transform: scaleY(1); }
+  .knop-vol { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
+  .knop-vol::before { background: var(--color-papier); }
+  .knop-vol:hover { color: var(--color-inkt); }
+  .donker .knop::before { background: var(--color-licht); }
+  .donker .knop:hover { color: var(--color-antraciet); }
 
-  /* Geschulpte rand (als de papieren rand van een bonbondoos) tussen twee vlakken. */
-  .schulp { height: 14px; background: radial-gradient(circle at 10px 0, transparent 9.5px, var(--s, var(--color-antraciet)) 10px) 0 0 / 20px 14px repeat-x; }
-  .schulp-op { height: 14px; background: radial-gradient(circle at 10px 14px, transparent 9.5px, var(--s, var(--color-antraciet)) 10px) 0 0 / 20px 14px repeat-x; }
-
-  /* Prijsregel met stippellijn, als een etiket in een bonbonwinkel. */
-  .stip { flex: 1; min-width: 1.5rem; border-bottom: 1.5px dotted currentColor; opacity: .35; transform: translateY(-.32em); }
+  /* Zachte onthulling bij scrollen (alleen als JS draait en beweging mag). */
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease-zacht), transform 1.2s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
 }

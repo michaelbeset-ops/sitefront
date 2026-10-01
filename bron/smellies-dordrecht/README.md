@@ -1,7 +1,11 @@
-# smellies-dordrecht
+# smellies-dordrecht (v2)
 
-Ontwerpvoorstel (Astro + Tailwind 4) voor Smellies, Dordrecht. Zie PLAN.md.
+Ontwerpvoorstel (Astro + Tailwind 4) voor Smellies, Dordrecht. Vervangt straks de demo in `smellies-dordrecht/`
+(zelfde base `/sitefront/smellies-dordrecht`). Zie PLAN.md.
 
     npm install
     PUBLIC_VOORSTEL=1 npx astro build   # voorstelbalk + noindex
-    npx astro preview --port 4571       # http://localhost:4571/sitefront/smellies-dordrecht/
+    npx astro preview --port 4581       # http://localhost:4581/sitefront/smellies-dordrecht/
+
+Hulpscripts (draaien met de preview aan): `node tools/shots.mjs r1` (screenshots 1440/390/320),
+`node tools/test.mjs` (filter, stappen, ankers), `node tools/og.mjs` (public/og.jpg).
