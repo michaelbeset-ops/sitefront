@@ -1,0 +1,98 @@
+@import "tailwindcss";
+@import "@fontsource/squada-one/400.css";
+@import "@fontsource-variable/archivo";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Etalageruit aan de Markt: wit glas, zwarte kaart, rode belettering, de vlag als enige ornament. */
+  --color-glas: #fdfdfb;
+  --color-mist: #f1f1ee;        /* heel licht grijs vlak, koel (geen crème) */
+  --color-inkt: #131313;        /* tekst en de zwarte kaart; op glas ~18:1 */
+  --color-inkt-zacht: #4a4a48;  /* kleine bijtekst; op glas ~8.9:1 */
+  --color-rood: #c4122f;        /* raamrood; op glas ~6:1, wit erop ~6:1 */
+  --color-rood-diep: #9d0c24;   /* hover */
+  --color-rood-licht: #ee4a5f;  /* rood op zwart, alleen grote tekst */
+  --color-groen: #2f7a3b;       /* vlaggroen; alleen vlakken en grote tekst */
+  --color-ster: #f2c919;        /* alleen de ster, of tekst op zwart */
+  --color-wit: #ffffff;
+  --color-grijs-op-zwart: #b9b9b4; /* kleine tekst op zwart ~9:1 */
+  --color-lijn: #13131322;
+  --color-lijn-zwart: #ffffff2e;
+
+  --font-raam: "Squada One", "Arial Narrow", Impact, sans-serif;
+  --font-body: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.45rem, 0.6vw + 1.25rem, 1.85rem);
+  --text-2xl: clamp(1.9rem, 1.5vw + 1.4rem, 2.9rem);
+  --text-3xl: clamp(2.6rem, 3.4vw + 1.5rem, 5rem);
+  --text-4xl: clamp(3.6rem, 7.5vw + 1rem, 9rem);
+  --text-menu: clamp(1.6rem, 1.4vw + 1.15rem, 2.6rem);
+  --text-reus: clamp(6.6rem, 16.4vw, 15.5rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  [id] { scroll-margin-top: 4.5rem; }
+  body {
+    background-color: var(--color-glas);
+    color: var(--color-inkt);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-family: var(--font-raam); font-weight: 400; line-height: 0.9; letter-spacing: 0; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { line-height: 1; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  .op-zwart :focus-visible { outline-color: var(--color-ster); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 88rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .raam { font-family: var(--font-raam); font-weight: 400; }
+
+  /* Vlagbaan: groen 2, wit 1, rood 4, wit 1, groen 2 (vlag van Suriname), met de gele ster aan beide uiteinden. */
+  .vlag { --h: 22px; position: relative; height: var(--h);
+    background: linear-gradient(to bottom,
+      var(--color-groen) 0 20%, #fff 20% 30%, var(--color-rood) 30% 70%, #fff 70% 80%, var(--color-groen) 80% 100%); }
+  .vlag .st { position: absolute; top: 50%; width: calc(var(--h) * .62); height: calc(var(--h) * .62); transform: translateY(-50%); }
+  .vlag .st svg { display: block; width: 100%; height: 100%; }
+
+  /* Knop: vlak en recht, als een stuk raambelettering. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; font-weight: 650; font-size: var(--text-sm);
+    padding: .9rem 1.3rem; background: var(--color-inkt); color: var(--color-wit); text-decoration: none;
+    transition: background-color .2s ease, transform .2s ease; }
+  .knop:hover { background: var(--color-rood); transform: translateY(-1px); }
+  .knop-rood { background: var(--color-rood); }
+  .knop-rood:hover { background: var(--color-rood-diep); }
+
+  /* Menukaart: gerecht ...... vinkje */
+  .regel { display: flex; align-items: baseline; gap: .7rem; cursor: pointer; padding-block: .18rem; }
+  .regel .stip { flex: 1; min-width: 1rem; border-bottom: 2px dotted color-mix(in srgb, currentColor 38%, transparent); transform: translateY(-.28em); }
+  .regel input { appearance: none; flex: none; width: 1.15rem; height: 1.15rem; border: 2px solid currentColor; transform: translateY(-.05em);
+    cursor: pointer; display: grid; place-content: center; transition: background-color .15s ease; }
+  .regel input::after { content: ""; width: .5rem; height: .28rem; border: solid #fff; border-width: 0 0 2.5px 2.5px; transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+  .regel input:checked { background: var(--color-rood); border-color: var(--color-rood); }
+  .regel input:checked::after { opacity: 1; }
+  .regel:hover .naam { color: var(--color-rood); }
+  .op-zwart .regel:hover .naam { color: var(--color-ster); }
+  .regel .naam { transition: color .15s ease; }
+
+  /* Doorgestreept: de oude site. */
+  .weg { text-decoration: line-through; text-decoration-color: var(--color-rood); text-decoration-thickness: 3px; }
+}

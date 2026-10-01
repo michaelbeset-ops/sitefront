@@ -1,0 +1,42 @@
+---
+import { site, url, wa, waMet } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="roe sticky top-0 z-40 bg-beton">
+    <div class="wrap flex h-16 items-center justify-between gap-4 pb-[5px]">
+      <a href={url('')} class="no-underline" aria-label={`${site.naam}, naar het begin`}>
+        <span class="bordje">JAPAN CAFE</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-9 text-sm">
+          <li><a href={url('#kaart')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">De kaart</a></li>
+          <li><a href={url('#binnen')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Binnen</a></li>
+          <li><a href={url('#nieuwstraat')} class="no-underline decoration-1 underline-offset-[6px] hover:underline">Tijden en reserveren</a></li>
+        </ul>
+      </nav>
+      <a href={waMet('')} class="knop !px-3.5 !py-2"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-ai bg-sumi text-beton-donker">
+    <div class="wrap grid gap-10 pb-10 pt-16 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <span class="bordje">JAPAN CAFE</span>
+        <p class="mt-5">Authentiek Japans café &amp; restaurant.</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('')} class="lijnlink">WhatsApp</a> of bel <a href={site.telHref} class="lijnlink whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={site.instagram} class="lijnlink">Instagram @japan_cafe_nl</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijnlink">Privacyverklaring</a><br />
+        <span class="text-xs">{site.google.score} op Google ({site.google.aantal} reviews)</span>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel, ter illustratie.</p>}
+  </footer>
+)}

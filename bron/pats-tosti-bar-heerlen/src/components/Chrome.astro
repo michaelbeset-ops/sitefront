@@ -1,0 +1,46 @@
+---
+import { site, url, wa, bestel, waMet } from '../data/site';
+import { krans } from '../data/krans';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-plafond bg-wand/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-center gap-2.5 no-underline">
+        <span class="block h-11 w-11 shrink-0" set:html={krans('')} aria-hidden="true" />
+        <span class="kop whitespace-nowrap text-xl font-extrabold uppercase leading-none tracking-wide">Pat's Tosti Bar</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-8 text-sm">
+          <li><a href={url('#kaart')} class="no-underline decoration-1 underline-offset-4 hover:underline">De kaart</a></li>
+          <li><a href={url('#zaal')} class="no-underline decoration-1 underline-offset-4 hover:underline">De zaal</a></li>
+          <li><a href={url('#pat')} class="no-underline decoration-1 underline-offset-4 hover:underline">Pat</a></li>
+          <li><a href={url('#bezoek')} class="no-underline decoration-1 underline-offset-4 hover:underline">Tijden en adres</a></li>
+        </ul>
+      </nav>
+      <a href={bestel()} class="knop !px-3.5 !py-2"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">Bestellen</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-donker bg-plafond text-mist">
+    <div class="wrap grid gap-10 pb-10 pt-16 text-sm md:grid-cols-12">
+      <div class="flex items-center gap-4 text-white md:col-span-5">
+        <span class="block h-20 w-20 shrink-0" set:html={krans('')} aria-hidden="true" />
+        <p class="kop text-2xl font-extrabold uppercase leading-[0.9]">Pat's<br />Tosti Bar</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet("Hoi Pat, ")} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={`mailto:${site.mail}`} class="lijn break-all">{site.mail}</a><br />
+        <a href={site.insta} class="lijn">Instagram @pats_tostibar</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-plafond-2 pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel, ter illustratie. De lauwerkrans is voor dit voorstel nagetekend van uw muur.</p>}
+  </footer>
+)}

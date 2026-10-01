@@ -1,0 +1,41 @@
+---
+import { site, url, wa, waMet, groet } from '../data/site';
+import Vlag from './Vlag.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-glas/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="raam whitespace-nowrap text-[1.85rem] leading-none text-rood no-underline" aria-label={`${site.naam}, naar het begin`}>Effe Anders</a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-8 text-sm font-medium">
+          <li><a href={url('#broodjes')} class="no-underline decoration-2 underline-offset-[6px] hover:text-rood hover:underline">Broodjes</a></li>
+          <li><a href={url('#warm')} class="no-underline decoration-2 underline-offset-[6px] hover:text-rood hover:underline">Warme maaltijden</a></li>
+          <li><a href={url('#markt')} class="no-underline decoration-2 underline-offset-[6px] hover:text-rood hover:underline">Open en route</a></li>
+        </ul>
+      </nav>
+      <a href={waMet(groet)} class="knop !px-3.5 !py-2.5"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-zwart bg-inkt text-grijs-op-zwart">
+    <Vlag h="16px" />
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="raam text-4xl leading-[.85] text-rood-licht">Effe Anders</p>
+        <p class="raam mt-2 text-xl leading-tight text-wit">Roti &bull; Bami &bull; Nasi</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet(groet)} class="text-wit underline underline-offset-2">WhatsApp</a> of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums text-wit underline underline-offset-2">{site.tel}</a><br />
+        <a href={site.instagram} class="text-wit underline underline-offset-2">Instagram {site.insta}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="text-wit underline underline-offset-2">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-zwart pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

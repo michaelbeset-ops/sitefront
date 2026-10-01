@@ -1,0 +1,160 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import { site, wa, waMet } from '../data/site';
+import interieur from '../assets/interieur.jpg';
+import nata from '../assets/nata.jpg';
+import tosti from '../assets/tosti.jpg';
+import terras from '../assets/terras.jpg';
+import raam from '../assets/raam.jpg';
+import gevel from '../assets/gevel.jpg';
+
+const tijden = [
+  { wd: 2, dag: 'Dinsdag', open: true },
+  { wd: 3, dag: 'Woensdag', open: true },
+  { wd: 4, dag: 'Donderdag', open: true },
+  { wd: 5, dag: 'Vrijdag', open: true },
+  { wd: 6, dag: 'Zaterdag', open: true },
+  { wd: 0, dag: 'Zondag', open: true },
+  { wd: 1, dag: 'Maandag', open: false },
+];
+const kaart: { kop: string; foto?: boolean; regels: { n: string; t?: string }[] }[] = [
+  { kop: 'Taartjes', regels: [{ n: 'Pastel de nata' }, { n: 'Portugese taartjes', t: 'huisgemaakt' }] },
+  { kop: 'Ontbijt en lunch', foto: true, regels: [{ n: 'Ontbijt' }, { n: 'Broodjes' }, { n: "Tosti's" }] },
+  { kop: 'Koffie', regels: [{ n: 'Galão', t: 'Portugese koffie' }, { n: 'Cappuccino' }, { n: 'Latte' }] },
+];
+---
+<Base
+  title={`${site.naam} | Portugese koffiebar aan het park, Arnhem`}
+  description="Portugese huisgemaakte taartjes, ontbijt en lunch. Pastel de nata, galão en een terras met uitzicht op het park aan de singel, in het Spijkerkwartier. Dinsdag t/m zondag 10.00 - 17.00."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+
+    <!-- De muur: grote handgeschilderde kop, en de roze kamer loopt door in de foto. -->
+    <section aria-labelledby="titel" class="grid pt-10 lg:grid-cols-12 lg:items-end lg:gap-x-12 lg:pt-14">
+      <h1 id="titel" class="px-5 text-4xl md:px-10 lg:col-span-8 lg:pr-0 lg:pl-[max(2.5rem,calc((100vw-88rem)/2+2.5rem))]">Pastel de nata <span class="block text-koraal">aan het park</span></h1>
+      <div class="order-3 px-5 pt-8 md:px-10 lg:order-none lg:col-span-4 lg:pb-4 lg:pl-0 lg:pt-0 lg:pr-[max(2.5rem,calc((100vw-88rem)/2+2.5rem))]">
+        <p class="max-w-[36ch]">Portugese huisgemaakte taartjes, ontbijt en lunch. In een wit hoekpand aan de Eusebiusbuitensingel, met het park aan de overkant.</p>
+        <a href={waMet('zijn er vandaag nog pastéis de nata?')} data-natavraag class="vraag mt-6 inline-block text-2xl">Zijn er vandaag nog pastéis de nata?</a>
+        <p class="mt-4 text-sm text-inkt-zacht">Dinsdag t/m zondag <span class="whitespace-nowrap tabular-nums">10 - 17 uur</span>, maandag dicht.</p>
+      </div>
+      <div class="order-2 mt-8 h-[clamp(15rem,27vw,27rem)] lg:order-none lg:col-span-12 lg:mt-12">
+        <Foto src={interieur} hero alt="Panorama van het interieur: roze muren, twee koraalrode fauteuils onder een gebogen trap, een witte deur, en achterin de lange tafel voor de petrolblauwe lambrisering met kleine schilderijtjes." sizes="100vw" class="object-[1%_60%] md:object-[50%_60%]" />
+      </div>
+    </section>
+
+    <!-- De lambrisering: de kaart als menubord in handletter. -->
+    <section id="kaart" aria-labelledby="kaart-titel" class="op-petrol bg-petrol text-roze">
+      <div class="rand rand-licht" style="--h:40px" aria-hidden="true"></div>
+      <div class="grid lg:grid-cols-12 lg:gap-x-12">
+        <div class="aspect-[5/4] overflow-hidden lg:col-span-5 lg:aspect-auto lg:min-h-[46rem]">
+          <Foto src={nata} alt="Pastéis de nata met poedersuiker op een schoteltje, op een blauw-wit tegelkleed met kaneelstokjes." sizes="(min-width: 1024px) 42vw, 100vw" class="object-[40%_72%]" />
+        </div>
+        <div class="min-w-0 px-5 pb-20 pt-14 md:px-10 lg:col-span-6 lg:col-start-7 lg:pl-0 lg:pb-24 lg:pt-20 lg:pr-[max(2.5rem,calc((100vw-88rem)/2+2.5rem))]">
+          <h2 id="kaart-titel" class="text-3xl">Taartjes, ontbijt, lunch</h2>
+          <div class="mt-10 space-y-9">
+            {kaart.map((g) => (
+              <div>
+                <h3 class="border-b border-lijn-licht pb-2 font-body text-sm font-semibold normal-case tracking-normal [-webkit-text-stroke:0]">{g.kop}</h3>
+                <div class:list={['mt-3', g.foto && 'flex items-start gap-6']}>
+                  <ul class="flex-1">
+                    {g.regels.map((r) => (
+                      <li class="flex items-baseline gap-3 py-1">
+                        <span class="hand text-2xl leading-none sm:whitespace-nowrap">{r.n}</span>
+                        {r.t && <span class="stip" aria-hidden="true"></span>}
+                        {r.t && <span class="text-right text-sm">{r.t}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                  {g.foto && (
+                    <figure class="w-[46%] max-w-[17rem]">
+                      <div class="aspect-[6/5] overflow-hidden">
+                        <Foto src={tosti} alt="Een gegrilde tosti met gesmolten kaas en een bakje ketchup op een bord met blauwe penseelstreepjes." sizes="(min-width: 1024px) 17rem, 46vw" />
+                      </div>
+                      <figcaption class="mt-2 text-xs">Tosti, op het bord met de streepjes.</figcaption>
+                    </figure>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <p class="mt-10 text-xs">[[AANLEVEREN: volledige kaart met prijzen]]</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={waMet('ik wil graag taartjes bestellen. Voor ... (dag), ... stuks.')} class="knop knop-licht"><Fragment set:html={wa} />Taartjes bestellen</a>
+            <p class="text-sm">via WhatsApp, of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het terras: het park aan de overkant. -->
+    <section id="terras" aria-labelledby="terras-titel" class="py-20 lg:py-28">
+      <div class="wrap grid gap-x-12 gap-y-12 lg:grid-cols-12">
+        <div class="aspect-[3/4] overflow-hidden lg:col-span-6 lg:col-start-7 lg:row-start-1 lg:aspect-auto lg:min-h-[44rem]">
+          <Foto src={terras} alt="Een latte in een hoog glas op een schoteltje met een roze servetje, op een houten terrastafel. Daarachter het fietspad en het park met kale bomen in de zon." sizes="(min-width: 1024px) 48vw, 100vw" class="object-[50%_62%]" />
+        </div>
+        <div class="flex flex-col lg:col-span-5 lg:col-start-1 lg:row-start-1">
+          <h2 id="terras-titel" class="text-3xl">Het park aan de overkant</h2>
+          <p class="mt-6 max-w-[34ch]">Een terras met uitzicht op het park aan de singel. Bij zon is het vaak vol.</p>
+          <figure class="mt-12 w-[78%] self-end lg:mt-auto">
+            <div class="aspect-[4/5] overflow-hidden">
+              <Foto src={raam} alt="Een latte macchiato op een schoteltje in de vensterbank, met laag zonlicht door het raam en de witte letters KOFFIEBAR in spiegelbeeld op het glas." sizes="(min-width: 1024px) 30vw, 70vw" class="object-[50%_70%]" />
+            </div>
+            <figcaption class="mt-3 text-sm text-inkt-zacht">Of binnen, in het raam.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Eusebiusbuitensingel 10: de gevel met de letters, en de tijden. -->
+    <section id="singel" aria-labelledby="singel-titel" class="bg-roze-diep py-20 lg:py-28">
+      <div class="wrap grid items-start gap-x-12 gap-y-14 lg:grid-cols-12">
+        <figure class="lg:col-span-5">
+          <div class="aspect-[3/4] overflow-hidden">
+            <Foto src={gevel} alt="De ingang van Bomboca: een witte gevel met krullen, BOMBOCA KOFFIEBAR met de hand op de kalklijst geschilderd, het BB-ruitje, een open deur met groene tegels, twee boompjes in potten en een krijtbord met 10 uur en 17 uur." sizes="(min-width: 1024px) 38vw, 100vw" class="object-[50%_30%]" />
+          </div>
+        </figure>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h2 id="singel-titel" class="text-[clamp(2.6rem,6.2vw,6.4rem)]">Eusebius&shy;buitensingel <span class="tabular-nums">10</span></h2>
+          <p class="mt-5">{site.postcode} {site.plaats}, in het Spijkerkwartier, aan de rand van het centrum.</p>
+          <p class="mt-2 text-sm"><a href={site.maps} class="lijn">Route in Google Maps</a></p>
+
+          <ul class="mt-12 border-t border-lijn" aria-label="Openingstijden">
+            {tijden.map((t) => (
+              <li data-wd={t.wd} class:list={['flex items-baseline justify-between gap-4 border-b border-lijn py-2.5', !t.open && 'text-inkt-zacht']}>
+                <span class="hand text-xl leading-tight">{t.dag}<span class="vandaag-teken ml-3 hidden align-middle font-body text-xs font-semibold normal-case tracking-normal text-petrol-diep [-webkit-text-stroke:0]">vandaag</span></span>
+                <span class="whitespace-nowrap text-sm tabular-nums">{t.open ? '10.00 - 17.00' : 'gesloten'}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={waMet('')} class="knop"><Fragment set:html={wa} />Stuur een WhatsApp</a>
+            <p class="text-sm">of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a></p>
+          </div>
+          <p class="mt-12 max-w-[44ch] text-xs text-inkt-zacht">"Knus en kleurrijk", schreef De Gelderlander. {site.google.score} op Google, uit {site.google.aantal} beoordelingen.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  import { wanneer, OPEN_DAGEN, nuInArnhem } from '../scripts/open';
+  import { waMet } from '../data/site';
+  const w = wanneer();
+  const vraag = document.querySelector<HTMLAnchorElement>('[data-natavraag]');
+  if (vraag && !w.vandaag) {
+    const t = `zijn er ${w.woord} pastéis de nata?`;
+    vraag.href = waMet(t);
+    vraag.textContent = t.charAt(0).toUpperCase() + t.slice(1);
+  }
+  const nu = nuInArnhem();
+  if (OPEN_DAGEN.includes(nu.wd) || nu.wd === 1) {
+    document.querySelector(`[data-wd="${nu.wd}"] .vandaag-teken`)?.classList.remove('hidden');
+  }
+</script>

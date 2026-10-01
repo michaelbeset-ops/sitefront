@@ -1,0 +1,47 @@
+---
+import { site, url, wa, waMet } from '../data/site';
+import { ruit } from '../data/ruit';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-lijn bg-roze/95 backdrop-blur-sm">
+    <div class="wrap flex h-16 items-center justify-between gap-4">
+      <a href={url('')} class="flex items-center gap-2.5 text-inkt no-underline">
+        <span class="block h-10 w-10 shrink-0" set:html={ruit} />
+        <span class="flex flex-col leading-none">
+          <span class="hand text-[1.95rem] leading-[.8]">Bomboca</span>
+          <span class="mt-1 text-[.6rem] font-semibold tracking-[.32em]">KOFFIEBAR</span>
+        </span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden md:block">
+        <ul class="flex gap-8 text-sm">
+          <li><a href={url('#kaart')} class="no-underline decoration-1 underline-offset-4 hover:underline">De kaart</a></li>
+          <li><a href={url('#terras')} class="no-underline decoration-1 underline-offset-4 hover:underline">Het terras</a></li>
+          <li><a href={url('#singel')} class="no-underline decoration-1 underline-offset-4 hover:underline">Tijden en route</a></li>
+        </ul>
+      </nav>
+      <a href={waMet('')} class="knop !px-3.5 !py-2"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-petrol bg-petrol-diep text-roze">
+    <div class="rand rand-licht opacity-80" style="--h:30px" aria-hidden="true"></div>
+    <div class="wrap grid gap-10 pb-10 pt-12 text-sm md:grid-cols-12">
+      <div class="flex items-center gap-4 md:col-span-5" style="--ruit-lijn:#0b3f4e">
+        <span class="block h-16 w-16 shrink-0 text-roze" set:html={ruit} />
+        <p class="hand text-[3.4rem] leading-[.8] text-roze">Bomboca</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet('')} class="lijn">WhatsApp</a> of bel <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={site.instagram} class="lijn">Instagram @bombocakoffiebar</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel en sfeerfoto's via Unsplash, ter illustratie.</p>}
+  </footer>
+)}

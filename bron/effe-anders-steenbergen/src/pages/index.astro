@@ -1,0 +1,236 @@
+---
+import Base from '../layouts/Base.astro';
+import Chrome from '../components/Chrome.astro';
+import Foto from '../components/Foto.astro';
+import Vlag from '../components/Vlag.astro';
+import { site, wa, waMet, groet } from '../data/site';
+import pand from '../assets/pand.jpg';
+import broodje from '../assets/broodje.jpg';
+import sfeer from '../assets/sfeer-roti.jpg';
+
+// Menukaart van effeanderssteenbergen.nl (PDF, 2022). Prijzen bewust weggelaten: de kaart is verouderd.
+const broodjes: { naam: string; bij?: string }[] = [
+  { naam: 'Kip Kerrie' }, { naam: 'Javaanse Kip' }, { naam: 'Tja Sieuw' }, { naam: 'Spek' },
+  { naam: 'Bakkeljauw' }, { naam: 'Bakkeljauw met Ei' }, { naam: 'Bakkeljauw met Kouseband' }, { naam: 'Pom' },
+  { naam: 'Garnalen' }, { naam: 'Garnalen met Kouseband' }, { naam: 'Dynamite', bij: 'kipkerrie, tja-sieuw, sambal' },
+  { naam: 'Ei' }, { naam: 'Saté' }, { naam: 'Afoe Afoe' }, { naam: 'Steak' },
+];
+const erbij: { naam: string; bij?: string }[] = [
+  { naam: 'Roti plaat' }, { naam: 'Bara' }, { naam: 'Bara gevuld', bij: 'naar eigen keuze' },
+  { naam: 'Portie Saté', bij: '3 stokjes' }, { naam: 'Chips' }, { naam: 'Extra zuur', bij: 'grote bak' },
+  { naam: 'Sambal', bij: 'kleine of grote bak' }, { naam: 'Pindasaus', bij: 'kleine of grote bak' },
+];
+const varianten: { naam: string; bij?: string }[] = [
+  { naam: 'Vega' }, { naam: 'Normaal', bij: '2 kluif' }, { naam: 'Kipfilet' }, { naam: 'Speciaal', bij: '3 kluif' },
+  { naam: 'Schotel', bij: '3 soorten vlees, bv. ovenkip, Javaanse kip, tja sieuw, of maak eigen keuze' },
+];
+const dagen = [
+  { wd: [4], dag: 'Donderdag', tijd: '12:00 - 21:00' },
+  { wd: [5], dag: 'Vrijdag', tijd: '12:00 - 21:00' },
+  { wd: [6], dag: 'Zaterdag', tijd: '12:00 - 21:00' },
+  { wd: [0, 1, 2, 3], dag: 'Zondag t/m woensdag', tijd: 'dicht' },
+];
+---
+<Base
+  title={`${site.naam} | Warme surinaamse belegde broodjes, Markt 6 Steenbergen`}
+  description="Roti, bami, nasi en warme surinaamse belegde broodjes aan de Markt in Steenbergen. Donderdag, vrijdag en zaterdag van 12:00 tot 21:00."
+>
+  <Chrome deel="kop" />
+  <main id="inhoud">
+    <!-- De ruit: het raam in reuzenletters, het pand eronder. -->
+    <section aria-labelledby="titel">
+      <div class="wrap pb-8 pt-7 lg:pb-10 lg:pt-9">
+        <div class="mt-3 xl:flex xl:items-end xl:justify-between xl:gap-10">
+          <h1 id="titel" class="-ml-[.04em] text-reus leading-[.8] text-rood sm:whitespace-nowrap xl:shrink-0">Effe Anders</h1>
+          <div class="mt-6 grid gap-6 sm:grid-cols-2 sm:items-end xl:mt-0 xl:mb-[.4rem] xl:block xl:max-w-[21rem]">
+            <p class="raam text-2xl leading-[.95]">Warme surinaamse belegde broodjes</p>
+            <div class="xl:mt-6">
+              <p class="text-sm text-inkt-zacht">Aan de Markt in Steenbergen. Donderdag, vrijdag en zaterdag <span class="whitespace-nowrap tabular-nums">12:00 - 21:00</span>.</p>
+              <a href={waMet(groet)} class="knop knop-rood mt-4"><Fragment set:html={wa} />Bestelling doorgeven</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative aspect-[4/3] sm:aspect-auto sm:h-[clamp(22rem,54svh,44rem)]">
+        <Foto src={pand} hero alt="Ons pand aan de Markt: rode belettering Effe Anders, Roti, Bami, Nasi op het raam, de Surinaamse vlag aan de gevel en het terras met rieten stoelen." sizes="100vw" class="absolute inset-0 object-[30%_50%] sm:object-[50%_34%]" />
+      </div>
+      <Vlag h="clamp(18px,1.8vw,26px)" />
+    </section>
+
+    <!-- De kaart: broodjes als borden-typografie, aan te vinken als bestelbriefje. -->
+    <section id="broodjes" aria-labelledby="broodjes-titel" class="wrap grid gap-12 py-16 lg:grid-cols-12 lg:gap-16 lg:py-24">
+      <div class="lg:col-span-7">
+        <h2 id="broodjes-titel" class="text-4xl">Belegde broodjes</h2>
+        <p class="mt-4 max-w-[46ch] text-inkt-zacht">Vink aan wat u wilt ophalen. Uw keuze staat dan klaar in een WhatsApp-bericht aan ons.</p>
+        <p class="mt-1 text-xs text-inkt-zacht">[[AANLEVEREN: actuele prijzen]]</p>
+        <ul class="mt-10">
+          {broodjes.map((b) => (
+            <li>
+              <label class="regel raam text-menu leading-[1.05]">
+                <span class="naam">{b.naam}{b.bij && <span class="font-[family-name:var(--font-body)] text-sm text-inkt-zacht"> {b.bij}</span>}</span>
+                <span class="stip" aria-hidden="true"></span>
+                <input type="checkbox" data-bestel={`Broodje ${b.naam}`} />
+              </label>
+            </li>
+          ))}
+        </ul>
+        <h3 class="mt-16 text-2xl">Erbij</h3>
+        <ul class="mt-5 gap-x-12 sm:columns-2">
+          {erbij.map((b) => (
+            <li class="break-inside-avoid">
+              <label class="regel raam text-lg leading-tight sm:text-xl">
+                <span class="naam">{b.naam}{b.bij && <span class="font-[family-name:var(--font-body)] text-xs text-inkt-zacht"> {b.bij}</span>}</span>
+                <span class="stip" aria-hidden="true"></span>
+                <input type="checkbox" data-bestel={b.naam + (b.bij ? ` (${b.bij})` : '')} />
+              </label>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="aspect-[4/5] lg:sticky lg:top-24 lg:aspect-[3/4]">
+          <Foto src={broodje} alt="Een broodje met stukjes kip in saus en plakjes komkommer op een wit bord." sizes="(min-width: 1024px) 38vw, 100vw" class="object-[50%_55%]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Hun eigen zin, van de menukaart. -->
+    <section aria-label="Slogan" class="bg-rood text-wit">
+      <p class="wrap raam py-14 text-4xl leading-[.88] lg:py-20">Eén keer Effe Anders, <br class="hidden md:block" />nooit meer ergens anders <span class="whitespace-nowrap">:)</span></p>
+    </section>
+
+    <!-- Warm: zwart, zoals hun kaart. -->
+    <section id="warm" aria-labelledby="warm-titel" class="op-zwart bg-inkt text-wit">
+      <div class="wrap grid gap-12 py-16 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-20 lg:py-24">
+        <h2 id="warm-titel" class="text-4xl lg:col-span-12">Warme maaltijden</h2>
+
+        <div class="relative -mx-5 aspect-[3/2] md:mx-0 lg:col-span-5 lg:aspect-auto">
+          <Foto src={sfeer} alt="Sfeerfoto: een opgevouwen platbrood naast schaaltjes curry en ui op een donker bord." sizes="(min-width: 1024px) 36vw, 100vw" class="absolute inset-0" />
+        </div>
+
+        <div class="lg:col-span-7">
+          <h3 class="text-3xl text-rood-licht">Roti</h3>
+          <ul class="mt-5 max-w-xl">
+            {['Roti incl. kerrie ei', 'Roti Vega'].map((r) => (
+              <li><label class="regel raam text-2xl leading-tight"><span class="naam">{r}</span><span class="stip" aria-hidden="true"></span><input type="checkbox" data-bestel={r} /></label></li>
+            ))}
+          </ul>
+          <h3 class="mt-14 text-3xl text-rood-licht">Soep</h3>
+          <label class="regel raam mt-5 max-w-xl text-2xl leading-tight"><span class="naam">Javaanse Saoto Soep</span><span class="stip" aria-hidden="true"></span><input type="checkbox" data-bestel="Javaanse Saoto Soep" /></label>
+          <p class="mt-2 max-w-[52ch] text-sm text-grijs-op-zwart">Kipfilet, taugé, kool, prei, selderij, mie, gebakken aardappel, gebakken uien/knoflook en gekookt ei.</p>
+        </div>
+
+        <div class="lg:col-span-7">
+          <table class="w-full max-w-2xl border-collapse">
+            <caption class="raam text-left text-3xl text-rood-licht">Bami of nasi</caption>
+            <thead>
+              <tr class="border-b border-lijn-zwart text-left">
+                <th scope="col" class="py-3 font-normal text-sm text-grijs-op-zwart"><span class="sr-only">Soort</span></th>
+                <th scope="col" class="raam w-20 py-3 text-center text-xl font-normal sm:w-24">Bami</th>
+                <th scope="col" class="raam w-20 py-3 text-center text-xl font-normal sm:w-24">Nasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {varianten.map((v) => (
+                <tr class="border-b border-lijn-zwart align-top">
+                  <th scope="row" class="py-3 pr-4 text-left font-normal">
+                    <span class="raam block text-2xl leading-tight">{v.naam}</span>
+                    {v.bij && <span class="block text-xs leading-snug text-grijs-op-zwart">{v.bij}</span>}
+                  </th>
+                  {['Bami', 'Nasi'].map((s) => (
+                    <td class="py-3 text-center"><label class="regel inline-flex justify-center"><span class="sr-only">{s} {v.naam}</span><input type="checkbox" data-bestel={`${s} ${v.naam}${v.bij && v.bij.length < 10 ? ` (${v.bij})` : ''}`} /></label></td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="self-start bg-rood p-7 sm:p-10 lg:col-span-5">
+          <h3 class="text-3xl">VATO Specials</h3>
+          <div class="mt-8">
+            <div>
+              <label class="regel raam text-2xl leading-tight"><span class="naam">Broodje Saté VATO</span><span class="stip" aria-hidden="true"></span><input type="checkbox" data-bestel="Broodje Saté VATO" /></label>
+              <p class="mt-1 text-sm">Met gebakken uitjes, paprika, sambal, taugé, zuur, pindasaus.</p>
+            </div>
+            <div class="mt-8">
+              <p class="raam text-2xl leading-tight">Nasi of Bami VATO</p>
+              <p class="mt-1 text-sm">Met Javaanse kip, pindasaus, tja sieuw, spek.</p>
+              <div class="mt-3 flex gap-8 text-sm">
+                <label class="regel"><span class="naam">Nasi</span><input type="checkbox" data-bestel="Nasi VATO" /></label>
+                <label class="regel"><span class="naam">Bami</span><input type="checkbox" data-bestel="Bami VATO" /></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Markt 6: tijden, route, terras. -->
+    <section id="markt" aria-labelledby="markt-titel" class="wrap grid gap-12 py-16 lg:grid-cols-12 lg:gap-16 lg:py-28">
+      <div class="lg:col-span-7">
+        <h2 id="markt-titel" class="-ml-[.04em] text-reus leading-[.8] sm:whitespace-nowrap">Markt 6</h2>
+        <p class="raam mt-4 text-2xl leading-tight text-inkt-zacht">{site.postcode} {site.plaats}</p>
+        <p class="mt-8 text-sm leading-relaxed">
+          <a href={site.maps} class="underline decoration-2 underline-offset-4 hover:text-rood">Route via Google Maps</a><br />
+          Of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline decoration-2 underline-offset-4 hover:text-rood">{site.tel}</a><br />
+          <a href={site.instagram} class="underline decoration-2 underline-offset-4 hover:text-rood">Instagram {site.insta}</a>
+        </p>
+      </div>
+      <div class="lg:col-span-5 lg:pt-4">
+        <ul class="max-w-md" data-week>
+          {dagen.map((d) => (
+            <li data-wd={d.wd.join(',')} class={`flex items-baseline gap-3 py-1.5 ${d.tijd === 'dicht' ? 'text-inkt-zacht' : ''}`}>
+              <span class="raam text-xl leading-tight">{d.dag}</span>
+              <span class="flex-1 translate-y-[-.3em] border-b-2 border-dotted border-lijn" aria-hidden="true"></span>
+              <span class="whitespace-nowrap text-sm font-semibold tabular-nums">{d.tijd}</span>
+              <span data-vandaag hidden class="raam text-lg leading-none text-rood">vandaag</span>
+            </li>
+          ))}
+        </ul>
+        <a href={waMet(groet)} class="knop knop-rood mt-10"><Fragment set:html={wa} />Bestelling doorgeven</a>
+        <p class="mt-8 text-xs text-inkt-zacht">{site.google.score} op Google, uit {site.google.aantal} reviews.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bestelbriefje: verschijnt zodra er iets is aangevinkt. -->
+  <div data-briefje hidden class="fixed inset-x-0 bottom-0 z-50 border-t-4 border-rood bg-inkt text-wit md:inset-x-auto md:bottom-6 md:right-6 md:w-[23rem] md:border-t-0 md:border-l-4">
+    <div class="flex items-center gap-4 px-5 py-3.5 md:py-4">
+      <p class="min-w-0 flex-1 text-sm leading-snug" aria-live="polite"><span data-aantal class="raam text-2xl leading-none text-ster">0</span> <span data-wat>gerechten</span><br /><button type="button" data-wis class="text-xs text-grijs-op-zwart underline underline-offset-2 hover:text-wit">wissen</button></p>
+      <a data-stuur href={waMet(groet)} class="knop knop-rood shrink-0 !px-4"><Fragment set:html={wa} />Naar WhatsApp</a>
+    </div>
+  </div>
+
+  <Chrome deel="voet" />
+</Base>
+
+<script>
+  import { waMet, groet } from '../data/site';
+
+  // Bestelbriefje: aangevinkte gerechten gaan als lijstje in het WhatsApp-bericht.
+  const vakjes = [...document.querySelectorAll<HTMLInputElement>('input[data-bestel]')];
+  const briefje = document.querySelector<HTMLElement>('[data-briefje]')!;
+  const aantal = briefje.querySelector<HTMLElement>('[data-aantal]')!;
+  const wat = briefje.querySelector<HTMLElement>('[data-wat]')!;
+  const stuur = briefje.querySelector<HTMLAnchorElement>('[data-stuur]')!;
+  const bijwerken = () => {
+    const keuze = vakjes.filter((v) => v.checked).map((v) => v.dataset.bestel!);
+    briefje.hidden = keuze.length === 0;
+    aantal.textContent = String(keuze.length);
+    wat.textContent = keuze.length === 1 ? 'gerecht' : 'gerechten';
+    const tekst = `${groet}\n${keuze.map((k) => `- ${k}`).join('\n')}\n\nNaam: \nOphalen om: `;
+    const link = keuze.length ? waMet(tekst) : waMet(groet);
+    stuur.href = link;
+    document.querySelectorAll<HTMLAnchorElement>('a.knop[href*="wa.me"]').forEach((a) => { if (a !== stuur) a.href = link; });
+  };
+  vakjes.forEach((v) => v.addEventListener('change', bijwerken));
+  briefje.querySelector('[data-wis]')!.addEventListener('click', () => { vakjes.forEach((v) => (v.checked = false)); bijwerken(); });
+  bijwerken();
+
+  // Vandaag markeren in de week (tijd in Nederland).
+  const wd = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 }[new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Amsterdam', weekday: 'short' }).format(new Date())];
+  document.querySelectorAll<HTMLElement>('[data-week] [data-wd]').forEach((li) => {
+    if (li.dataset.wd!.split(',').map(Number).includes(wd as number)) li.querySelector<HTMLElement>('[data-vandaag]')!.hidden = false;
+  });
+</script>

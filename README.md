@@ -96,3 +96,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Cato by cato, Maastricht | https://michaelbeset-ops.github.io/sitefront/cato-by-cato-maastricht/ | geen website, 4,8 uit 479, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Tuana Eethuis, Haarlem | https://michaelbeset-ops.github.io/sitefront/tuana-eethuis-haarlem/ | geen website, 4,7 uit 258, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
 | Patisserie by Barbara, Amsterdam | https://michaelbeset-ops.github.io/sitefront/patisserie-by-barbara/ | geen website, 4,8 uit 266 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Pat's Tosti Bar, Heerlen | https://michaelbeset-ops.github.io/sitefront/pats-tosti-bar-heerlen/ | alleen Facebook, 4,9 uit 217, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Bomboca, Arnhem | https://michaelbeset-ops.github.io/sitefront/bomboca-arnhem/ | alleen Facebook, 4,6 uit 427, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| Effe Anders, Steenbergen | https://michaelbeset-ops.github.io/sitefront/effe-anders-steenbergen/ | site "onder constructie", 4,5 uit 197, 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |
+| JAPAN CAFE, Arnhem | https://michaelbeset-ops.github.io/sitefront/japan-cafe-arnhem/ | geen website, 4,3 uit 51 (jong), 06/WhatsApp. | 2026-10-01 | demo, WhatsApp |

@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@import "@fontsource/shippori-mincho/latin-500.css";
+@import "@fontsource/zen-kaku-gothic-new/latin-400.css";
+@import "@fontsource/zen-kaku-gothic-new/latin-700.css";
+
+/* Alleen de Japanse tekens die op de site staan, als één klein subsetbestand (fontTools, uit Shippori Mincho 500). */
+@font-face { font-family: "Shippori Mincho"; font-weight: 500; font-display: swap; src: url("../fonts/shippori-mincho-jp-500.woff2") format("woff2"); unicode-range: U+3040-30FF, U+4E00-9FFF; }
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De zaal: koel beton, staal, licht hout, één indigo wand. */
+  --color-beton: #e5e5e1;
+  --color-beton-donker: #d3d4d0;
+  --color-staal: #50555c;   /* bijtekst; op beton ruim 6:1 */
+  --color-sumi: #1c1e21;    /* tekst en voet */
+  --color-ai: #172447;      /* indigo: noren, wand, knoppen */
+  --color-ai-diep: #0f1833;
+  --color-hout: #d9bd8f;    /* latwerk; als tekst alleen op indigo of sumi */
+  --color-wit: #fbfbf9;
+  --color-lijn: #1c1e2126;
+  --color-lijn-licht: #fbfbf933;
+
+  --font-mincho: "Shippori Mincho", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  --font-gothic: "Zen Kaku Gothic New", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(1.75rem, 1.4vw + 1.25rem, 2.4rem);
+  --text-3xl: clamp(2.4rem, 3.2vw + 1.3rem, 4.25rem);
+  --text-4xl: clamp(2.9rem, 5.4vw + 0.9rem, 6.4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-beton);
+    color: var(--color-sumi);
+    font-family: var(--font-gothic);
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  h1, h2, h3 { font-family: var(--font-mincho); font-weight: 500; line-height: 1.04; letter-spacing: -0.015em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { line-height: 1.2; letter-spacing: 0; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-ai); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-ai); outline-offset: 3px; }
+  .op-ai :focus-visible { outline-color: var(--color-hout); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 86rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .mincho { font-family: var(--font-mincho); font-weight: 500; }
+  .jp { font-family: var(--font-mincho); font-weight: 500; letter-spacing: .08em; }
+  .verticaal { writing-mode: vertical-rl; text-orientation: upright; letter-spacing: .18em; }
+
+  /* Het lichtbordje aan de indigo wand, nagetekend: wit, strakke kapitalen, indigo onderrand. */
+  .bordje { display: inline-block; background: var(--color-wit); color: var(--color-sumi); font-family: var(--font-gothic); font-weight: 700;
+    font-size: .8125rem; line-height: 1; letter-spacing: .14em; padding: .55rem .7rem .5rem; border-bottom: 4px solid #2c4aa0;
+    box-shadow: 0 0 0 1px #1c1e2122; white-space: nowrap; }
+
+  /* De roe waar de noren aan hangt: onderrand van de kop. */
+  .roe { box-shadow: inset 0 -5px 0 var(--color-hout); }
+
+  /* Noren: indigo doek, boven heel, onder in banen gespleten. */
+  .noren { background: var(--color-ai); color: var(--color-wit); }
+  .banen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .baan { background: var(--color-ai); color: var(--color-hout); display: flex; justify-content: center; padding-block: 1.25rem 1.75rem; }
+
+  /* Latwerk: dubbele houten latten in een rustig raster, zoals het plafond. */
+  .latwerk {
+    --vak: 168px;
+    background-color: var(--color-beton);
+    background-image:
+      linear-gradient(to right, #d9bd8f73 0 2px, transparent 2px 9px, #d9bd8f73 9px 11px, transparent 11px),
+      linear-gradient(to bottom, #d9bd8f73 0 2px, transparent 2px 9px, #d9bd8f73 9px 11px, transparent 11px);
+    background-size: var(--vak) var(--vak);
+    background-position: -6px -6px;
+  }
+  @media (max-width: 767px) { .latwerk { --vak: 104px; } }
+
+  /* Knop: hoekig en vlak. */
+  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 700; font-size: var(--text-sm); line-height: 1.2; padding: .85rem 1.25rem;
+    background: var(--color-ai); color: var(--color-wit); text-decoration: none; transition: background-color .25s ease, transform .25s ease; }
+  .knop:hover { background: var(--color-ai-diep); transform: translateY(-1px); }
+  .knop-hout { background: var(--color-hout); color: var(--color-ai-diep); }
+  .knop-hout:hover { background: var(--color-wit); }
+
+  .lijnlink { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .28em; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    transition: text-decoration-color .25s ease, text-underline-offset .25s ease; }
+  .lijnlink:hover { text-decoration-color: currentColor; text-underline-offset: .36em; }
+
+  /* Menukaart: gerecht ...... Japanse naam. */
+  .regel { display: flex; align-items: baseline; gap: .7rem; }
+  .regel .stip { flex: 1; min-width: 1.25rem; border-bottom: 2px dotted color-mix(in srgb, var(--color-sumi) 45%, transparent); transform: translateY(-.28em); }
+}

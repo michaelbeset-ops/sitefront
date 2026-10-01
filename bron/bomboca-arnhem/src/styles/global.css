@@ -1,0 +1,82 @@
+@import "tailwindcss";
+@import "@fontsource/sue-ellen-francisco/400.css";
+@import "@fontsource-variable/familjen-grotesk";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De roze kamer van Bomboca: roze muur, petrolblauwe lambrisering, koraalrode stoelen. */
+  --color-roze: #f4ddd8;        /* de muur: pagina */
+  --color-roze-diep: #ecc8c0;   /* schaduwkant van de muur */
+  --color-petrol: #0e5d73;      /* lambrisering, knoppen; wit erop 7,4:1, op roze 5,7:1 */
+  --color-petrol-diep: #0b3f4e; /* voet */
+  --color-inkt: #13363d;        /* tekst, op roze 10:1 */
+  --color-inkt-zacht: #4a5a5c;  /* bijtekst, op roze 5,6:1 */
+  --color-koraal: #b8402c;      /* de stoelen: alleen grote letters en details */
+  --color-lijn: #13363d29;
+  --color-lijn-licht: #f4ddd847;
+  --color-white: #ffffff;
+
+  --font-hand: "Sue Ellen Francisco", "Segoe Print", cursive;
+  --font-body: "Familjen Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: clamp(2.1rem, 1.6vw + 1.6rem, 3rem);
+  --text-3xl: clamp(3rem, 4.4vw + 1.6rem, 6rem);
+  --text-4xl: clamp(4.4rem, 9.6vw + 0.6rem, 10.5rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-roze);
+    color: var(--color-inkt);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  /* Koppen als de handgeschilderde letters in de kalklijst: hoog, smal, kapitalen, een iets vollere penseelstreek. */
+  h1, h2, h3 { font-family: var(--font-hand); font-weight: 400; text-transform: uppercase; line-height: .98; letter-spacing: .01em; -webkit-text-stroke: .018em currentColor; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-petrol); color: var(--color-white); }
+  :focus-visible { outline: 2px solid var(--color-petrol); outline-offset: 3px; }
+  .op-petrol :focus-visible { outline-color: var(--color-roze); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 88rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .hand { font-family: var(--font-hand); text-transform: uppercase; letter-spacing: .01em; -webkit-text-stroke: .018em currentColor; }
+
+  /* De rand van penseelstreepjes, zoals op hun Portugese bord. */
+  .rand { height: var(--h, 28px); background: url("/sitefront/bomboca-arnhem/rand.svg") left center / auto 100% repeat-x; }
+  .rand-licht { background-image: url("/sitefront/bomboca-arnhem/rand-licht.svg"); }
+
+  /* Knop: vlak petrol, als een geschilderd bordje. */
+  .knop { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; font-size: var(--text-sm); padding: .85rem 1.3rem; border-radius: 3px; background: var(--color-petrol); color: var(--color-white); text-decoration: none; transition: background-color .25s ease, transform .25s ease; }
+  .knop:hover { background: var(--color-petrol-diep); transform: translateY(-1px); }
+  .knop-licht { background: var(--color-roze); color: var(--color-petrol-diep); }
+  .knop-licht:hover { background: var(--color-white); }
+
+  /* De vraag als handgeschreven regel met een penseelstreep eronder. */
+  .vraag { font-family: var(--font-hand); text-transform: uppercase; letter-spacing: .01em; -webkit-text-stroke: .018em currentColor; text-decoration: underline; line-height: 1.22; text-decoration-thickness: .07em; text-underline-offset: .14em; text-decoration-skip-ink: none; text-decoration-color: var(--color-koraal); transition: text-underline-offset .25s ease, color .25s ease; }
+  .vraag:hover { color: var(--color-koraal); text-underline-offset: .26em; }
+
+  /* Menukaart: gerecht ...... toelichting */
+  .stip { flex: 1; min-width: 1.5rem; border-bottom: 2px dotted color-mix(in srgb, currentColor 55%, transparent); transform: translateY(-.25em); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; transition: text-decoration-thickness .2s ease; }
+  .lijn:hover { text-decoration-thickness: 2px; }
+}
