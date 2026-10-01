@@ -1,37 +1,41 @@
 ---
-import { site, url, wa, telIcoon } from '../data/site';
-import Logo from './Logo.astro';
+import { site, url, wa, waMet } from '../data/site';
+import { tegelTaart } from '../data/tegel';
 interface Props { deel: 'kop' | 'voet' }
 const { deel } = Astro.props;
+const groet = 'Goedendag Madame Marie, ';
 ---
 {deel === 'kop' ? (
-  <header class="sticky top-0 z-40 border-b border-lijn-licht bg-eik/95 text-kalk backdrop-blur-sm">
+  <header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-sm">
     <div class="wrap flex h-16 items-center justify-between gap-4">
-      <a href={url('')} class="no-underline"><Logo /></a>
+      <a href={url('')} class="flex items-center gap-3 no-underline" aria-label={`${site.naam}, naar het begin`}>
+        <span class="block h-9 w-9 shrink-0" set:html={tegelTaart} />
+        <span class="fell whitespace-nowrap text-lg leading-none sm:text-xl"><i>Madame</i> Marie</span>
+      </a>
       <nav aria-label="Hoofdmenu" class="hidden md:block">
-        <ul class="flex gap-7 text-sm font-semibold">
-          <li><a href={url('#taart')} class="no-underline transition-colors hover:text-korst">Appeltaart</a></li>
-          <li><a href={url('#plek')} class="no-underline transition-colors hover:text-korst">Is er plek?</a></li>
-          <li><a href={url('#route')} class="no-underline transition-colors hover:text-korst">Tijden en route</a></li>
+        <ul class="flex gap-8 text-sm">
+          <li><a href={url('#kaart')} class="no-underline decoration-1 underline-offset-4 hover:underline">De kaart</a></li>
+          <li><a href={url('#huis')} class="no-underline decoration-1 underline-offset-4 hover:underline">Het huis</a></li>
+          <li><a href={url('#steeg')} class="no-underline decoration-1 underline-offset-4 hover:underline">Tijden en route</a></li>
         </ul>
       </nav>
-      <a href={site.wa} class="btn btn-app !px-3.5 !py-2 text-sm"><Fragment set:html={wa} /><span class="max-[379px]:sr-only">WhatsApp</span></a>
+      <a href={waMet(groet)} class="knop !px-3.5 !py-2"><Fragment set:html={wa} /><span class="max-[359px]:sr-only">WhatsApp</span></a>
     </div>
   </header>
 ) : (
-  <footer class="bg-eik pb-10 pt-14 text-kalk/85">
-    <div class="wrap grid gap-8 text-sm md:grid-cols-12">
-      <div class="md:col-span-5">
-        <Logo class="text-kalk" />
-        <p class="mt-5">{site.straat}<br />{site.postcode} {site.plaats}</p>
-      </div>
+  <footer class="op-kobalt bg-kobalt-diep text-was">
+    <div class="plint" style="--tegel:56px" aria-hidden="true"></div>
+    <div class="wrap grid gap-10 pb-10 pt-14 text-sm md:grid-cols-12">
+      <p class="fell text-3xl leading-none text-papier md:col-span-5"><i>Madame</i><br />Marie</p>
       <p class="md:col-span-4">
-        <a href={site.wa} class="underline-offset-2 hover:underline">WhatsApp</a> of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline-offset-2 hover:underline">{site.tel}</a><br />
-        <span class="whitespace-nowrap">Do t/m zo</span> <span class="whitespace-nowrap tabular-nums">11.00 - 17.00</span><br />
-        <span class="text-kalk/75">KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span></span>
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={waMet(groet)} class="underline underline-offset-2">WhatsApp</a> of bel <a href={site.telHref} class="whitespace-nowrap tabular-nums underline underline-offset-2">{site.tel}</a>
       </p>
-      <p class="md:col-span-3 md:text-right"><a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a></p>
+      <p class="md:col-span-3 md:text-right">
+        KvK <span class="text-xs">[[AANLEVEREN: KvK-nummer]]</span><br />
+        <a href={url('privacy/')} class="underline underline-offset-2">Privacyverklaring</a>
+      </p>
     </div>
-    {site.voorstel && <p class="wrap mt-10 border-t border-lijn-licht pt-6 text-xs text-kalk/75">Foto's van uw Google-bedrijfsprofiel, ter illustratie.</p>}
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-xs">Foto's van uw Google-bedrijfsprofiel, ter illustratie. De tegels zijn voor dit voorstel getekend.</p>}
   </footer>
 )}
