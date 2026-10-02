@@ -142,3 +142,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Sportmassage Praktijk Barendrecht | https://michaelbeset-ops.github.io/sitefront/sportmassage-barendrecht/ | oude site niet mobiel, 5,0 uit 11, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Personal Trainingen Barendrecht | https://michaelbeset-ops.github.io/sitefront/personal-trainingen-barendrecht/ | domein stuurt door naar vreemde sites, 4,8 uit 8, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Lavizon Woninginrichting, Papendrecht | https://michaelbeset-ops.github.io/sitefront/lavizon-papendrecht/ | site staat op 'binnenkort', 4,5 uit 2, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Trimsalon Yvon, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/trimsalon-yvon-hia/ | geen website, 5,0 uit 7, 06/WhatsApp. | 2026-10-02 | demo premium |
