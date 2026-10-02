@@ -1,0 +1,228 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, waEersteLes, waMet, rooster } from '../data/site';
+import hero from '../assets/hero-kickboksen.jpg';
+import trap from '../assets/taekwondo-trap.jpg';
+import clinch from '../assets/kickboksen-clinch.jpg';
+import breektest from '../assets/breektest.jpg';
+import sensei from '../assets/sensei-examen.jpg';
+
+// De tien graden zoals op hun aanbodpagina. [naam, bandkleur, kleur van de slip(pen), aantal slippen]
+const graden: [string, string, string, number][] = [
+  ['Wit', '#f7f6f2', '', 0],
+  ['Geel', '#e7c43a', '', 0],
+  ['Oranje', '#dc7b2c', '', 0],
+  ['Groen', '#3f8a4c', '', 0],
+  ['Groen met blauwe slip', '#3f8a4c', '#2f5aa8', 1],
+  ['Blauw', '#2f5aa8', '', 0],
+  ['Blauw met bruine slip', '#2f5aa8', '#6b4327', 1],
+  ['Bruin met zwarte slip', '#6b4327', '#121314', 1],
+  ['Bruin met twee zwarte slippen', '#6b4327', '#121314', 2],
+  ['Zwart, 1e dan', '#121314', '', 0],
+];
+
+// Samengevat uit de zichtbare Google-reviews (geen citaten, geen namen).
+const reviews = [
+  'Streng maar eerlijk, met ruimte voor een grap. En er wordt hard getraind.',
+  'Respect, discipline en doorzettingsvermogen staan voorop, bij kinderen en volwassenen.',
+  'Na de les helpen de hogere banden je graag verder.',
+  'Aan het eind van de les vaak een korte terugblik van de sensei.',
+];
+
+const team = [
+  ['Wesley', 'Senpai, taekwondo'],
+  ['Rinaigel', 'Kickboks- en conditietrainer'],
+  ['Marvin', 'Senpai, zwarte band sinds 2012'],
+  ['Varma', 'Senpai'],
+  ['Gio', 'Senpai'],
+];
+---
+<Base title={`${site.naam} | Taekwondo en kickboksen in Ridderkerk`} description="Taekwondo en kickboksen in Bolnes, Ridderkerk. Lessen voor jeugd en volwassenen, van beginner tot zwarte band, op dinsdag en zaterdag aan het Scheldeplein.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Eerste scherm: één beeld over de volle breedte en hoogte, alles in het midden. -->
+    <section class:list={['held donker relative isolate flex flex-col overflow-hidden bg-nacht text-licht', site.voorstel && 'met-balk']} aria-labelledby="t-hero">
+      <Image src={hero} alt="Kickbokstraining in de sporthal: een hoge trap, scheenbeschermers, de bakstenen muur" widths={[640, 960, 1440, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 h-full w-full object-cover object-[42%_50%] contrast-[1.12]" />
+      <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,#10111299_0%,#101112b8_60%,#101112e6_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap flex flex-1 flex-col items-center justify-center pb-24 pt-32 text-center md:pb-28">
+        <p class="ui text-licht-zacht">{site.straat}, {site.wijk}</p>
+        <h1 id="t-hero" class="mt-8 text-3xl md:mt-10">Taekwondo en kickboksen <br class="hidden md:block" />in Ridderkerk.</h1>
+        <p class="mt-7 max-w-[31rem] text-licht-zacht md:mt-8">Les van sensei Martijn Kwikkers en zijn team, voor iedereen van 5&nbsp;tot&nbsp;74&nbsp;jaar. Van je eerste les tot de zwarte band.</p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-x-9 gap-y-5 md:mt-12">
+          <a href={waEersteLes} class="knop knop-rood">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+            App voor je eerste les
+          </a>
+          <a href="#lestijden" class="lijn text-sm">Lestijden</a>
+        </div>
+      </div>
+
+      <div class="wrap ui flex justify-between gap-6 pb-8 text-licht-zacht md:pb-10">
+        <a href="#taekwondo" class="lijn-in">Taekwondo</a>
+        <span class="hidden sm:inline">Dinsdag en zaterdag</span>
+        <a href="#kickboksen" class="lijn-in">Kickboksen</a>
+      </div>
+    </section>
+
+    <!-- 2. Taekwondo -->
+    <section id="taekwondo" aria-labelledby="t-tkd">
+      <div class="wrap grid gap-y-12 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+        <div class="rijs md:col-span-5">
+          <h2 id="t-tkd" class="text-2xl">Taekwondo.</h2>
+          <p class="mt-6 max-w-md text-grijs">Een Koreaanse verdedigingssport: hard, explosief en rechtlijnig, met veel high kicks. Een mix van traditionele houdingen en effectiviteit, en een goede basis voor kickboksen en MMA.</p>
+          <p class="mt-4 max-w-md text-grijs">Als beginner leer je eenvoudige zelfverdediging, de basistrappen en -stoten, afweren en veel voetenwerk.</p>
+        </div>
+        <figure class="rijs md:col-span-7" style="--d:.06s">
+          <Image src={trap} alt="Twee taekwondoka's met zwarte band op de mat, een trap in de zaal" widths={[480, 760, 1018]} sizes="(min-width: 1280px) 46rem, (min-width: 768px) 56vw, 100vw" class="aspect-[16/9] w-full object-cover grayscale" />
+        </figure>
+
+        <div class="rijs md:col-span-12 md:pt-10" style="--d:.04s">
+          <div class="grid gap-y-8 border-t border-lijn pt-10 md:grid-cols-12 md:gap-x-8">
+            <div class="md:col-span-5">
+              <h3 class="text-lg">Tien graden, van wit naar zwart.</h3>
+              <p class="mt-3 max-w-md text-grijs">We streven naar twee examens per jaar, als de leerlingen er klaar voor zijn. De groep is divers, in leeftijd en in niveau: zo leer je veel van elkaar.</p>
+            </div>
+            <div class="md:col-span-7">
+              <ol class="banden" aria-label="De tien graden in taekwondo">
+                {graden.map(([naam, kleur, slip, n]) => (
+                  <li title={naam}><span class="band" style={`--k:${kleur};--s:${slip || kleur}`} data-slip={n} aria-hidden="true"></span><span class="sr-only">{naam}</span></li>
+                ))}
+              </ol>
+              <p class="ui mt-4 flex justify-between text-grijs" aria-hidden="true"><span>Witte band</span><span>Zwart, 1e dan</span></p>
+              <p class="mt-6 text-sm text-grijs">Wit, geel, oranje, groen, groen met blauwe slip, blauw, blauw met bruine slip, bruin met zwarte slip, bruin met twee zwarte slippen en zwart.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Kickboksen -->
+    <section id="kickboksen" class="donker bg-nacht text-licht" aria-labelledby="t-kick">
+      <div class="wrap grid gap-y-12 py-24 md:grid-cols-12 md:items-end md:gap-x-8 lg:py-36">
+        <figure class="rijs md:col-span-6 lg:col-span-5">
+          <Image src={clinch} alt="Twee kickboksers in de clinch, een knie omhoog, in de sporthal" widths={[480, 800, 1200, 1547]} sizes="(min-width: 1280px) 31rem, (min-width: 768px) 46vw, 100vw" class="aspect-square w-full object-cover contrast-[1.15]" />
+        </figure>
+        <div class="rijs md:col-span-6 lg:col-span-6 lg:col-start-7" style="--d:.06s">
+          <h2 id="t-kick" class="text-2xl">Kickboksen, op de traditionele Thaise manier.</h2>
+          <div class="mt-8 max-w-lg space-y-4 text-licht-zacht">
+            <p>Ook bekend als Muay Thai. Anders dan bij regulier boksen gebruik je naast je vuisten ook knieën, ellebogen en benen, en mag je in de clinch doorstoten.</p>
+            <p>We hebben een vaste groep kickboksers van 10 tot 70 jaar, recreant of wedstrijdvechter. Ieder traint op zijn eigen niveau.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Lestijden (wow: vandaag en de volgende les gemarkeerd; elke les opent een ingevuld appje) -->
+    <section id="lestijden" aria-labelledby="t-tijden">
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+        <div class="rijs md:col-span-4">
+          <h2 id="t-tijden" class="text-2xl">Lestijden.</h2>
+          <p class="mt-6 max-w-xs text-grijs">Kies een les en stuur Martijn een appje. Twijfel je welke groep past? Vraag het gewoon.</p>
+          <p class="mt-8 text-sm"><span class="text-grijs">Sporthal aan het</span><br />{site.straat}, {site.postcode} {site.plaats}</p>
+        </div>
+        <div class="grid gap-y-14 md:col-span-8 lg:col-span-7 lg:col-start-6">
+          {rooster.map((d) => (
+            <div class="rijs dag" data-dag={d.nr}>
+              <h3 class="flex items-baseline justify-between gap-4 border-b border-inkt pb-4 text-xl">
+                {d.dag}
+                <span class="vandaag ui text-rood" hidden>Vandaag</span>
+              </h3>
+              <ul>
+                {d.lessen.map((l) => (
+                  <li class="les" data-van={l.van} data-tot={l.tot}>
+                    <a href={waMet(`Hallo Martijn, ik wil graag een keer meedoen met ${l.les.toLowerCase()} op ${d.dag.toLowerCase()} om ${l.van} (${l.groep.toLowerCase()}). Kan dat?`)} class="grid grid-cols-[5.75rem_1fr_auto] items-baseline gap-x-4 border-b border-lijn py-5 sm:grid-cols-[8rem_9rem_1fr_auto]">
+                      <span class="num text-sm">{l.van}<span class="hidden sm:inline">–{l.tot}</span></span>
+                      <span class="font-medium">{l.les}<span class="block text-sm font-normal text-grijs sm:hidden">{l.groep}</span></span>
+                      <span class="hidden text-sm text-grijs sm:block">{l.groep}</span>
+                      <span class="ui pijl text-grijs"><span class="status" hidden></span><span class="sr-only">Stuur een appje over deze les</span><span aria-hidden="true">App</span></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p class="text-sm text-grijs">Andere vraag? Bel of app even naar <a href={site.telHref} class="lijn num whitespace-nowrap text-inkt">{site.tel}</a>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. De les en het team -->
+    <section id="team" class="border-t border-lijn" aria-labelledby="t-team">
+      <figure class="rijs">
+        <Image src={breektest} alt="Sensei Martijn breekt bij een breektest een stapel tegels in de sporthal" widths={[640, 1024, 1560]} sizes="100vw" class="h-[64svh] max-h-[46rem] min-h-[20rem] w-full object-cover object-[45%_30%]" />
+      </figure>
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+        <div class="rijs md:col-span-5">
+          <h2 id="t-team" class="text-2xl">Respect voor elkaar geldt voor iedereen.</h2>
+          <p class="mt-6 max-w-md text-grijs">Ook voor de instructeurs. Of je nu wedstrijdvechter bent of voor het eerst op de mat staat: normen en waarden en de etiquette zitten in elke les verweven.</p>
+        </div>
+        <div class="rijs md:col-span-6 md:col-start-7" style="--d:.06s">
+          <p class="text-sm text-grijs">Uit de Google-reviews van leerlingen en ouders</p>
+          <ul class="mt-5">
+            {reviews.map((r) => <li class="border-t border-lijn py-4 text-lg leading-snug">{r}</li>)}
+          </ul>
+        </div>
+
+        <figure class="rijs md:col-span-7 md:pt-16">
+          <Image src={sensei} alt="Sensei Martijn Kwikkers in rood pak bij een breektest, met de Koreaanse vlag en het spandoek van de sportschool" widths={[480, 800, 1200, 1440]} sizes="(min-width: 1280px) 46rem, (min-width: 768px) 56vw, 100vw" class="aspect-[4/3] w-full object-cover object-[40%_50%]" />
+        </figure>
+        <div class="rijs md:col-span-5 md:pt-16 lg:col-span-4 lg:col-start-9" style="--d:.06s">
+          <h3 class="text-xl">Sensei Martijn Kwikkers</h3>
+          <p class="mt-4 text-grijs">Taekwondo sinds zijn twaalfde, kickboksen sinds zijn veertiende. Les gehad van een van de pioniers in het full contact taekwondo en karate, en van Koreaanse grootmeesters.</p>
+          <blockquote class="mt-6 border-l-2 border-rood pl-5 text-lg leading-snug">“Een harde, moderne, effectieve stijl. Maar toch houden we het traditionele in ere!”</blockquote>
+          <ul class="mt-10 text-sm">
+            {team.map(([n, r]) => (
+              <li class="flex justify-between gap-6 border-t border-lijn py-3"><span>{n}</span><span class="text-right text-grijs">{r}</span></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Markeer vandaag en de les die nu bezig is of als eerste komt (tijd in Nederland).
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const min = nu.getHours() * 60 + nu.getMinutes();
+  const m = (t: string) => { const [h, mm] = t.split(':').map(Number); return h * 60 + mm; };
+  document.querySelectorAll<HTMLElement>('.dag').forEach((dag) => {
+    if (Number(dag.dataset.dag) !== nu.getDay()) return;
+    dag.classList.add('is-vandaag');
+    dag.querySelector<HTMLElement>('.vandaag')!.hidden = false;
+    for (const les of dag.querySelectorAll<HTMLElement>('.les')) {
+      const van = m(les.dataset.van!), tot = m(les.dataset.tot!);
+      if (min >= tot) { les.classList.add('voorbij'); continue; }
+      const s = les.querySelector<HTMLElement>('.status')!;
+      s.textContent = min >= van ? 'Nu bezig' : 'Volgende';
+      s.hidden = false;
+      les.classList.add('volgende');
+      break;
+    }
+  });
+</script>
+
+<style>
+  .held { min-height: 100svh; }
+  .held.met-balk { min-height: calc(100svh - 2.125rem); }
+  .held h1 { font-weight: 300; }
+
+  .banden { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: .25rem; list-style: none; padding: 0; margin: 0; }
+  .band { display: block; height: 1.75rem; background: var(--k); box-shadow: inset 0 0 0 1px #1213141a; }
+  .band[data-slip="1"] { background: linear-gradient(90deg, var(--k) 0 64%, var(--s) 64% 78%, var(--k) 78%); }
+  .band[data-slip="2"] { background: linear-gradient(90deg, var(--k) 0 50%, var(--s) 50% 62%, var(--k) 62% 72%, var(--s) 72% 84%, var(--k) 84%); }
+
+  .les a { text-decoration: none; transition: background-color .35s var(--ease-zacht), padding .35s var(--ease-zacht); }
+  .les a:hover { background: var(--color-vlak); padding-inline: .75rem; }
+  .les .pijl { display: inline-flex; gap: .9rem; transition: color .3s var(--ease-zacht); }
+  .les a:hover .pijl { color: var(--color-rood); }
+  .les .status { color: var(--color-rood); }
+  .les.voorbij { opacity: .55; }
+  .les.volgende .pijl { color: var(--color-inkt); }
+</style>

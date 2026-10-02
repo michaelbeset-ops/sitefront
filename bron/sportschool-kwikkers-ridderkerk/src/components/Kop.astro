@@ -1,0 +1,41 @@
+---
+import { url, waEersteLes, site } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+---
+<header data-kop class:list={['kop top-0 z-40', 'sticky', thuis && 'is-over -mb-[4.75rem]']}>
+  <div class="wrap grid h-[4.75rem] grid-cols-[1fr_auto] items-center md:grid-cols-[1fr_auto_1fr]">
+    <nav aria-label="Hoofdmenu" class="hidden md:block">
+      <ul class="ui flex gap-8">
+        <li><a href={h('taekwondo')} class="lijn-in">Taekwondo</a></li>
+        <li><a href={h('kickboksen')} class="lijn-in">Kickboksen</a></li>
+        <li><a href={h('lestijden')} class="lijn-in">Lestijden</a></li>
+        <li><a href={h('team')} class="lijn-in">Team</a></li>
+      </ul>
+    </nav>
+    <a href={url('')} class="merk justify-self-start md:justify-self-center">
+      <b>KWIKKERS</b><small>Sportschool</small>
+    </a>
+    <p class="ui flex items-center justify-end gap-8">
+      <a href={site.telHref} class="lijn-in num hidden lg:inline">{site.tel}</a>
+      <a href={waEersteLes} class="lijn-in">WhatsApp</a>
+    </p>
+  </div>
+</header>
+
+<script>
+  const k = document.querySelector<HTMLElement>('[data-kop].is-over');
+  if (k) {
+    const zet = () => k.classList.toggle('vast', scrollY > 24);
+    zet();
+    addEventListener('scroll', zet, { passive: true });
+  }
+</script>
+
+<style>
+  .kop { color: var(--color-inkt); background: color-mix(in srgb, var(--color-papier) 95%, transparent); border-bottom: 1px solid var(--color-lijn); backdrop-filter: blur(6px); transition: background-color .4s var(--ease-zacht), color .4s var(--ease-zacht), border-color .4s var(--ease-zacht); }
+  .kop.is-over { color: var(--color-licht); background: transparent; border-bottom-color: var(--color-lijn-licht); backdrop-filter: none; }
+  .kop.is-over.vast { color: var(--color-inkt); background: color-mix(in srgb, var(--color-papier) 95%, transparent); border-bottom-color: var(--color-lijn); backdrop-filter: blur(6px); }
+  .kop.is-over:not(.vast) :focus-visible { outline-color: var(--color-licht); }
+</style>

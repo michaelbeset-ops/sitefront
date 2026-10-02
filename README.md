@@ -134,3 +134,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Damdorp Barbershop, Alblasserdam | https://michaelbeset-ops.github.io/sitefront/damdorp-barbershop-alblasserdam/ | geen website, 4,9 uit 11, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Schoenreparatieservice ROB, Alblasserdam | https://michaelbeset-ops.github.io/sitefront/rob-schoenreparatie-alblasserdam/ | geen website, 4,5 uit 31, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Rijschool Herman, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/rijschool-herman-ridderkerk/ | oude site niet mobiel, 5,0 uit 3, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Sportschool Kwikkers, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/sportschool-kwikkers-ridderkerk/ | site ligt plat (504), 4,8 uit 12, 06/WhatsApp. | 2026-10-02 | demo premium |
