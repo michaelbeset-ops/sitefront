@@ -1,57 +1,53 @@
 ---
-import { site, tijden, url, waMet } from '../data/site';
+import { site, url, tijden, uur, waOfferte } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Buitenschilderwerk', 'Binnenschilderwerk', 'Deuren en kozijnen', 'Trappen', 'Onderhoud', 'Nieuwbouw en verbouwing'];
 ---
-<footer id="contact" class="donker scroll-mt-20 bg-antraciet text-licht" aria-labelledby="t-contact">
-  <div class="wrap grid gap-y-16 pb-20 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-28 lg:pt-40">
-    <div class="lg:col-span-6">
-      <h2 id="t-contact" class="text-3xl">Vraag vrijblijvend een offerte aan.</h2>
-      <p class="mt-8 max-w-[30rem] text-lg leading-relaxed text-licht-zacht">Stuur een appje met wat er geschilderd moet worden, of bel direct.</p>
-      <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-        <a href={waMet('ik wil graag een offerte voor schilderwerk. Het gaat om ')} class="knop knop-licht">Stuur een WhatsApp</a>
-        <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
-      </p>
+<footer class="donker bg-inkt text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht"><b>RADI</b><small>Schilderwerken<br />Drechtsteden</small></a>
+      <p class="mt-7 max-w-xs">Binnen- en buitenschilderwerk, onderhoud en kleuradvies. Vanuit {site.plaats}, in de hele {site.werkgebied}.</p>
+      <a href={waOfferte} class="knop knop-groen knop-klein mt-7">Offerte aanvragen</a>
     </div>
-
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 text-[.9375rem] sm:grid-cols-2 lg:col-span-5 lg:col-start-8 lg:self-end">
-      <div>
-        <p class="ui text-licht-zacht">Bellen en WhatsApp</p>
-        <p class="mt-3"><a href={site.telHref} class="lijn num whitespace-nowrap">{site.tel}</a></p>
-      </div>
-      <div>
-        <p class="ui text-licht-zacht">Mail</p>
-        <p class="mt-3"><a href={`mailto:${site.mail}`} class="lijn [overflow-wrap:anywhere]">{site.mail}</a></p>
-      </div>
-      <div class="sm:col-span-2">
-        <p class="ui text-licht-zacht">Bereikbaar</p>
-        <dl class="mt-3 space-y-1">
-          {tijden.map(([d, t]) => (
-            <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn-licht pb-2">
-              <dt>{d}</dt>
-              <dd class="num whitespace-nowrap text-licht-zacht">{t} uur</dd>
-            </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-groen">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-groen">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-groen">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-groen">E-mail</a></li>
+        <li>{site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Bereikbaarheid</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-groen">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{uur(t.van)} - {uur(t.tot)}</td>
+            </tr>
           ))}
-        </dl>
-      </div>
-      <div class="sm:col-span-2">
-        <p class="ui text-licht-zacht">Werkgebied</p>
-        <p class="mt-3">Vanuit {site.plaats} in de {site.werkgebied}: Dordrecht en omgeving.</p>
-      </div>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="wrap overflow-hidden pb-10" aria-hidden="true">
-    <p class="voetmerk woordmerk">RADI<span class="text-groen">.</span></p>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-groen">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, ter illustratie. Reviews letterlijk van Google (stand 2 oktober 2026); de referentie van Fam. Mulders komt van uw vorige website.</p>}
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p class="num">{site.naam}, {site.plaats}. {site.google} op Google, uit {site.googleAantal} reviews.</p>
-    <p class="flex flex-wrap gap-x-6 gap-y-2">
-      <a href={url('privacy/')} class="lijn-in">Privacyverklaring</a>
-    </p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Alle foto's zijn van {site.kort} zelf, van het Google-bedrijfsprofiel. Teksten en gegevens van de vorige website en dat profiel.</p>}
 </footer>
-
-<style>
-  .voetmerk { font-size: clamp(4rem, 24vw, 22rem); font-weight: 300; letter-spacing: .12em; margin-right: -.12em; line-height: .76; margin-left: -.04em; }
-</style>

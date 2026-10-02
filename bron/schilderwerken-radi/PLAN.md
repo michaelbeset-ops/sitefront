@@ -1,16 +1,15 @@
-# Schilderwerken Radi Drechtsteden: ontwerpvoorstel (demomodus)
+# Schilderwerken Radi Drechtsteden: herbouw op het niveau van BRIEF-MICHAEL (2 okt 2026, demomodus)
 
-Oude site: WordPress (powerwebdesign.nl, 2020), domein schilderwerkenradidrechtsteden.nl lost niet meer op terwijl Google er
-nog naar linkt. Bezoekers van het Google-profiel komen dus op een dode link uit. Geen WhatsApp.
+Bronnen: oude site via web.archive.org (5 pagina's, aug 2020; incl. referentie Fam. Mulders), Google-profiel (4,3 uit 13;
+10x vijf sterren; 5 reviews leesbaar, 4 positief getoond; 12 van 22 foto's). Huisadres bewust NIET getoond.
 
-## Bronnen
-web.archive.org (5 pagina's, 5 aug 2020; foto's zijn niet gearchiveerd), Google-bedrijfsprofiel (4,3 uit 13, beperkte weergave:
-5 van 13 reviews leesbaar, 12 van 22 foto's). Geen Facebook/Instagram/Werkspot gevonden (profiel, oude site en Bing).
-
-## Keuzes (5 regels)
-- Letter: Albert Sans (variabel, self-hosted), koppen 400 met -0.035em, UI 11px hoofdletters met tracking.
-- Kleur: muurwit #f3f2ef, inkt #1e2124, antraciet #2c3034 (hun vaste lakkleur), logo-groen #7cc83e alleen als punt op antraciet.
-- Beeld: drieluik van hun eigen antraciet werk (deur, trap, kozijn) over de volle breedte tot de onderrand van het eerste scherm.
-- Opbouw: hero, diensten (haarlijnlijst), werk (trap ervoor/erna + woningen), werkwijze + Google-samenvatting, "maak de zin af"
-  (WhatsApp-bericht), contact.
-- Waarom: wat Radi het vaakst laat zien is strak antraciet lakwerk op wit; de site is dat ook: wit, één donkere kleur, rust.
+## Keuzes
+- Letter: Archivo Variable 800, iets breder (font-stretch 112%) als belettering op een bus; body Public Sans 17px.
+- Kleur: antraciet #23282c (hun lakkleur) + muurwit #f4f4f1; merkkleur logogroen #7cc83e als knop met donkere tekst,
+  #3a7419 voor groene tekst op licht. Strak: kleine vaste radius (6-8px).
+- Hero: hun eigen woning in de steigers met Radi-spandoek, volle hoogte, gradient; kop "Schilderwerk met een vaste hand."
+  (uit de Mulders-referentie). Rechts belkaart.
+- Secties: topbar + header, chips, 6 dienstkaarten met eigen foto's + advies-balk, cijfers (4,3 / 13 / 10 / 7),
+  voor/na-schuif trap + dakkapel ervoor/erna, 5 stappen, Over Radi (eigen foto + 3 kaders + Mulders-citaat),
+  4 Google-reviews, bereikbaarheid live + werkgebied (bedrijfsauto), offerteformulier naar WhatsApp, groene slotbalk, footer.
+- Wow-functie: voor/na-schuif van hun trap; formulier maakt een ingevuld WhatsApp-bericht aan Karim.

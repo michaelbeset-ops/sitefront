@@ -1,5 +1,5 @@
 # schilderwerken-radi
-Ontwerpvoorstel (Astro 7 + Tailwind 4). Bouwen: `PUBLIC_VOORSTEL=1 npx astro build`, bekijken: `npm run preview` (poort 4642).
+Ontwerpvoorstel (Astro 7 + Tailwind 4), herbouwd 2 okt 2026 (zie PLAN.md). Shots: `node tools/shots.mjs f`. Bouwen: `PUBLIC_VOORSTEL=1 npx astro build`, bekijken: `npm run preview` (poort 4684).
 Bronnen van foto's: src/assets/BRONNEN.txt. Feiten: src/data/site.ts (bronregel bovenaan).
 
 ## Ontbreekt (bij oplevering navragen)
