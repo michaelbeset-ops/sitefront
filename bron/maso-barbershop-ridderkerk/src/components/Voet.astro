@@ -1,99 +1,56 @@
 ---
-import { site, url, waDruk, waVraag } from '../data/site';
+import { site, url, tijden, chips, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
 ---
-<footer id="tijden" class="donker bg-nacht text-licht" aria-labelledby="t-tijden">
-  <div class="wrap grid gap-y-16 pb-20 pt-24 md:grid-cols-12 md:gap-x-8 lg:pb-28 lg:pt-36">
-    <div class="rijs md:col-span-5">
-      <h2 id="t-tijden" class="text-2xl">Zes dagen open, vrijdag tot acht uur.</h2>
-      <p class="mt-6 max-w-sm text-licht-zacht">Aan het Dillenburgplein in Ridderkerk. Twijfelt u of het druk is, stuur dan even een appje.</p>
-      <p class="mt-10"><a href={waDruk} class="knop knop-vol">Vraag of het druk is</a></p>
-    </div>
-
-    <div class="rijs md:col-span-7 lg:col-span-6 lg:col-start-7" style="--d:.05s">
-      <p class="flex items-center gap-3 text-sm" data-status aria-live="polite">
-        <span class="stip" aria-hidden="true"></span>
-        <span data-status-tekst>Openingstijden</span>
+<footer class="donker raat bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht"><b>MASO</b><small>Hair salon &amp; barbershop</small></a>
+      <p class="mt-6 max-w-xs">Kapper en barbier aan het Dillenburgplein in Ridderkerk. Knippen, fades, opscheren en lijntjes, voor jong en oud.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-merk" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={waHoi} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-merk" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
       </p>
-      <table class="mt-6 w-full text-left">
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {chips.slice(0, 7).map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-ijs">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-ijs">{site.tel}</a></li>
+        <li><a href={waHoi} class="no-underline transition-colors hover:text-ijs">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-ijs">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
         <caption class="sr-only">Openingstijden</caption>
-        <thead class="sr-only"><tr><th scope="col">Dag</th><th scope="col">Tijden</th></tr></thead>
         <tbody>
-          {site.tijden.map(([dag, nr, open, dicht]) => (
-            <tr class="dag border-b border-lijn-licht" data-dag={nr}>
-              <th scope="row" class="py-4 pr-6 font-normal">{dag}</th>
-              <td class={`num whitespace-nowrap py-4 text-right ${open ? '' : 'text-licht-zacht'}`}>{open ? `${open} tot ${dicht}` : 'Gesloten'}</td>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-ijs">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-
-    <div class="grid gap-12 border-t border-lijn-licht pt-14 text-sm sm:grid-cols-3 md:col-span-12 lg:grid-cols-12 lg:gap-x-8">
-      <div class="lg:col-span-4">
-        <p class="ui text-licht-zacht">Adres</p>
-        <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}</p>
-        <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
-      </div>
-      <div class="lg:col-span-4">
-        <p class="ui text-licht-zacht">Contact</p>
-        <p class="mt-4 space-y-1">
-          <a href={waVraag} class="lijn-in block w-fit">WhatsApp</a>
-          <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
-        </p>
-      </div>
-      <div class="lg:col-span-4">
-        <p class="ui text-licht-zacht">Volgen</p>
-        <p class="mt-4"><a href={site.instagram} class="lijn-in">Instagram</a></p>
-      </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-ijs">Privacyverklaring</a><span>Website door Sitefront</span></p>
     </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, ter illustratie; klanten bewust niet herkenbaar in beeld. Reviews letterlijk van Google (stand 2 oktober 2026).</p>}
   </div>
-
-  <div class="wrap overflow-hidden" aria-hidden="true">
-    <svg class="voetmerk" viewBox="0 0 1000 170" role="presentation" focusable="false"><text x="500" y="146" text-anchor="middle" textLength="1000" lengthAdjust="spacing">MASO</text></svg>
-  </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p>{site.naam}, {site.plaats}.</p>
-    <p class="flex flex-wrap gap-x-6 gap-y-2">
-      <a href={url('privacy/')} class="lijn-in">Privacyverklaring</a>
-    </p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Foto’s van uw Google-bedrijfsprofiel, ter illustratie. Klanten zijn bewust niet herkenbaar in beeld.</p>}
 </footer>
-
-<script>
-  // Vandaag in de tabel markeren en zeggen of de zaak nu open is (tijd in Nederland).
-  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
-  const dag = nu.getDay();
-  const min = nu.getHours() * 60 + nu.getMinutes();
-  const rijen = [...document.querySelectorAll<HTMLTableRowElement>('tr[data-dag]')];
-  const tijden = rijen.map((r) => {
-    const t = r.querySelector('td')?.textContent || '';
-    const m = t.match(/(\d\d):(\d\d) tot (\d\d):(\d\d)/);
-    return { nr: Number(r.dataset.dag), naam: r.querySelector('th')?.textContent || '', open: m ? +m[1] * 60 + +m[2] : null, dicht: m ? +m[3] * 60 + +m[4] : null, txt: m ? [m[1] + ':' + m[2], m[3] + ':' + m[4]] : null };
-  });
-  rijen.find((r) => Number(r.dataset.dag) === dag)?.classList.add('vandaag');
-  const v = tijden.find((t) => t.nr === dag);
-  const el = document.querySelector('[data-status]');
-  const tekst = document.querySelector('[data-status-tekst]');
-  if (v && el && tekst) {
-    let s = '';
-    if (v.open !== null && v.dicht !== null && min >= v.open && min < v.dicht) { s = `Nu open, vandaag tot ${v.txt![1]}`; el.classList.add('open'); }
-    else if (v.open !== null && min < v.open) s = `Nu gesloten, vandaag open vanaf ${v.txt![0]}`;
-    else {
-      for (let i = 1; i <= 7; i++) {
-        const k = tijden.find((t) => t.nr === (dag + i) % 7);
-        if (k && k.txt) { s = `Nu gesloten, ${i === 1 ? 'morgen' : k.naam.toLowerCase()} open vanaf ${k.txt[0]}`; break; }
-      }
-    }
-    tekst.textContent = s;
-  }
-</script>
-
-<style>
-  .voetmerk { display: block; width: 100%; height: auto; margin-top: 2rem; }
-  .voetmerk text { font-family: var(--font-sans); font-size: 190px; font-weight: 200; letter-spacing: .1em; fill: var(--color-licht); fill-opacity: .08; }
-  .stip { width: .5rem; height: .5rem; border-radius: 50%; background: var(--color-licht-zacht); }
-  [data-status].open .stip { background: var(--color-cognac-licht); box-shadow: 0 0 0 4px #d8a67633; }
-  .dag.vandaag th, .dag.vandaag td { color: var(--color-cognac-licht); }
-</style>
