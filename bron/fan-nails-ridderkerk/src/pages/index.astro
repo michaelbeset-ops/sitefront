@@ -1,0 +1,148 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, waAfspraak } from '../data/site';
+import hero from '../assets/hero.jpg';
+import studio from '../assets/studio.jpg';
+import geel from '../assets/geel-french.jpg';
+import vlinders from '../assets/vlinders.jpg';
+import blauw from '../assets/blauw.jpg';
+import groen from '../assets/groen.jpg';
+import strass from '../assets/rood-strass.jpg';
+import roze from '../assets/roze-french.jpg';
+import chroom from '../assets/chroom.jpg';
+import hart from '../assets/rood-hart.jpg';
+
+// Behandelingen: uit de "Services"-labels bij hun Google-reviews (acryl, kunstnagels, nagelverlenging, nagelontwerpen,
+// dip powder, nagels lakken, manicure en pedicure), de foto-onderschrift "biab met chroom" op hun profiel en de
+// dienstnamen op hun oude site (nieuwe set, opvullen, French met witte acryl, gellak). Geen prijzen: die zijn niet actueel gepubliceerd.
+const behandelingen = [
+  ['Acrylnagels', 'Nieuwe set of opvullen'],
+  ['Gellak en BIAB', 'Ook BIAB met chroom'],
+  ['Nagelverlenging', 'Kunstnagels, van naturel tot lang'],
+  ['French manicure', 'Klassiek wit of in kleur'],
+  ['Nail art', 'Een ontwerp op maat'],
+  ['Dip powder', 'Nagels met gekleurde poeder'],
+  ['Manicure', 'Nagels verzorgen en lakken'],
+  ['Pedicure', 'Ook met kleur op de teennagels'],
+];
+
+const werk = [
+  { src: geel, alt: 'Amandelvormige nagels met een gele French-rand en roze bloemen op twee nagels', bij: 'Gele French met bloemen' },
+  { src: vlinders, alt: 'Lange nagels met geschilderde vlinders in zwart, blauw glitter en goud', bij: 'Vlinders' },
+  { src: blauw, alt: 'Nagels in kobaltblauw en wit met gouden sterretjes', bij: 'Blauw met sterren' },
+  { src: groen, alt: 'Spitse nagels met een groen-gele swirl en een gouden lijn', bij: 'Groene swirl' },
+  { src: chroom, alt: 'Roze nagels met een parelmoerachtige chroomglans', bij: 'Roze chroom' },
+  { src: strass, alt: 'Rode nagels met zwarte lijnen en strass-steentjes', bij: 'Rood met strass' },
+  { src: roze, alt: 'Lange nude nagels met een felroze French-rand', bij: 'Roze French' },
+  { src: hart, alt: 'Rode nagels met op één nagel een rood lijnhartje', bij: 'Rood met een hartje' },
+];
+---
+<Base title={`${site.naam} | Nagelstudio in Ridderkerk`} description="Nagelstudio in Winkelcentrum De Ridderhof, Ridderkerk. Acryl, gellak en BIAB, nagelverlenging, nail art, manicure en pedicure. Afspraak via WhatsApp.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Eerste scherm: poedervlak met kop, hun eigen werk op volle hoogte ernaast -->
+    <section class="grid bg-vlak lg:min-h-[calc(100svh-4.5rem)] lg:grid-cols-12" aria-labelledby="t-hero">
+      <div class="uitlijn-l flex flex-col gap-12 pb-9 pr-5 pt-9 md:pr-10 md:pt-14 lg:col-span-7 lg:pb-12 lg:pr-16 lg:pt-12">
+        <div class="lg:my-auto lg:pb-10">
+          <h1 id="t-hero" class="text-hero">Nagels precies <br class="hidden sm:block" />zoals jij ze wilt.</h1>
+          <p class="mt-6 max-w-[28rem] text-grijs [text-wrap:balance] md:mt-8">Acryl, gellak en BIAB, nail art, manicure en pedicure. In {site.centrum}, Ridderkerk.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-9 gap-y-5 md:mt-10">
+            <a href={waAfspraak} class="knop knop-vol">Afspraak via WhatsApp</a>
+            <a href="#werk" class="lijn text-sm">Bekijk het werk</a>
+          </div>
+        </div>
+        <p class="ui hidden flex-wrap gap-x-10 gap-y-2 text-grijs sm:flex">
+          <span>{site.straat}, {site.plaats}</span>
+          <span>Ma t/m za 9 tot 17 uur</span>
+        </p>
+      </div>
+      <figure class="relative order-first h-[42svh] min-h-[17rem] md:h-[56svh] overflow-hidden lg:order-none lg:col-span-5 lg:h-auto lg:min-h-0">
+        <Image src={hero} alt="Amandelvormige nagels met een witte French-rand, een zilveren lijntje en twee nagels in zilverglitter, op wit satijn" widths={[480, 720, 900]} sizes="(min-width: 1024px) 42vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[50%_58%]" />
+      </figure>
+    </section>
+
+    <!-- 2. Behandelingen -->
+    <section id="behandelingen" aria-labelledby="t-beh">
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+        <div class="rijs md:col-span-5 md:sticky md:top-28 md:self-start">
+          <h2 id="t-beh" class="text-2xl">Van een strakke French tot nail art die je zelf bedenkt.</h2>
+          <p class="mt-6 max-w-sm text-grijs">Kom met een voorbeeld of een idee. We denken mee over vorm, lengte en kleur.</p>
+        </div>
+        <div class="md:col-span-7 lg:col-span-6 lg:col-start-7">
+          <ul>
+            {behandelingen.map(([t, d], i) => (
+              <li class="rijs grid gap-1 border-t border-lijn py-5 sm:py-6 first:border-t-0 first:pt-0 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8" style={`--d:${(i % 4) * 0.04}s`}>
+                <h3 class="text-xl">{t}</h3>
+                <p class="text-sm text-grijs sm:text-right">{d}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="rijs mt-2 border-t border-lijn pt-6 text-sm text-grijs">Prijzen en beschikbaarheid? Stuur even een appje.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Werk -->
+    <section id="werk" class="border-t border-lijn" aria-labelledby="t-werk">
+      <div class="wrap py-24 lg:py-36">
+        <div class="grid gap-y-6 md:grid-cols-12 md:items-end md:gap-x-8">
+          <h2 id="t-werk" class="rijs text-2xl md:col-span-6">Iedere keer wat anders.</h2>
+          <p class="rijs text-grijs md:col-span-5 md:col-start-8" style="--d:.05s">Een greep uit het werk van de studio, van subtiel tot uitgesproken. Meer op <a href={site.instagram} class="lijn text-inkt">Instagram</a>.</p>
+        </div>
+        <ul class="mt-14 grid grid-cols-2 gap-x-3 gap-y-8 md:mt-20 md:grid-cols-4 md:gap-x-6 md:gap-y-12">
+          {werk.map((w, i) => (
+            <li class="rijs" style={`--d:${(i % 4) * 0.06}s`}>
+              <figure>
+                <div class="overflow-hidden bg-vlak">
+                  <Image src={w.src} alt={w.alt} widths={[360, 540, 720]} sizes="(min-width: 1280px) 290px, (min-width: 768px) 23vw, 48vw" class="tegel aspect-[4/5] w-full object-cover" />
+                </div>
+                <figcaption class="ui mt-3 text-grijs">{w.bij}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Studio -->
+    <section id="studio" class="bg-vlak" aria-labelledby="t-studio">
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-36">
+        <figure class="rijs md:col-span-7">
+          <Image src={studio} alt="De studio: witte nageltafels met lampen, een stenen wand, pedicurestoelen achterin en bloemen op de toonbank" widths={[600, 900, 1200, 1600]} sizes="(min-width: 1280px) 700px, (min-width: 768px) 56vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+          <figcaption class="ui mt-3 text-grijs">De studio in {site.centrum}</figcaption>
+        </figure>
+        <div class="md:col-span-5 md:self-center lg:col-span-4 lg:col-start-9">
+          <h2 id="t-studio" class="rijs text-2xl">Iedere klant een eigen bakje.</h2>
+          <p class="rijs mt-6 text-grijs" style="--d:.05s">Met eigen vijltjes, schoon en netjes. Dat noemen klanten steeds weer, net als de koffie of thee die klaarstaat en de tijd die er voor je wordt genomen.</p>
+          <dl class="rijs mt-10 text-sm" style="--d:.1s">
+            <div class="grid gap-1 border-t border-lijn py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+              <dt class="text-grijs">Waar</dt>
+              <dd>Begane grond van {site.centrum}, aan het Sint Jorisplein.</dd>
+            </div>
+            <div class="grid gap-1 border-t border-lijn py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+              <dt class="text-grijs">Op Google</dt>
+              <dd><span class="num">{site.google.score} uit {site.google.aantal} reviews.</span> Klanten noemen hun nagels mooi en netjes, het personeel lief en vakkundig, en dat er met je wordt meegedacht.</dd>
+            </div>
+            <div class="grid gap-1 border-y border-lijn py-5 sm:grid-cols-[7rem_1fr] sm:gap-6">
+              <dt class="text-grijs">Taal</dt>
+              <dd>Nederlands en Engels</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .uitlijn-l { padding-left: max(1.25rem, calc((100vw - 80rem) / 2 + 1.25rem)); }
+  @media (min-width: 768px) { .uitlijn-l { padding-left: max(2.5rem, calc((100vw - 80rem) / 2 + 2.5rem)); } }
+  .text-hero { font-size: clamp(2.625rem, 5.2vw + .5rem, 5.75rem); line-height: 1; letter-spacing: -0.035em; }
+  .tegel { transition: transform 1.1s var(--ease-zacht); }
+  li:hover .tegel { transform: scale(1.03); }
+</style>

@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/plus-jakarta-sans/index.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Uit hun eigen zaak: wit marmer, het nachtblauwe plafond, cognac van de Chesterfield-banken (enige accent, spaarzaam). */
+  --color-papier: #f5f4f1;       /* marmerwit, pagina */
+  --color-vlak: #eae8e4;         /* rustig vlak */
+  --color-inkt: #12151c;         /* tekst */
+  --color-grijs: #585b62;        /* bijtekst, ruim AA op papier */
+  --color-lijn: #12151c1f;
+  --color-cognac: #8b5a34;       /* accent op papier */
+  --color-nacht: #0e121b;        /* het plafond, donker vlak */
+  --color-licht: #f5f4f1;
+  --color-licht-zacht: #a4a8b1;  /* bijtekst op nacht */
+  --color-lijn-licht: #f5f4f124;
+  --color-cognac-licht: #d8a676; /* accent op nacht */
+
+  --font-sans: "Plus Jakarta Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-micro: 0.6875rem;   /* 11px UI-hoofdletters */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 0.5vw + 1.2rem, 1.625rem);
+  --text-2xl: clamp(1.875rem, 1.9vw + 1.25rem, 3rem);
+  --text-3xl: clamp(2.5rem, 2.6vw + 1.1rem, 3.75rem);
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 400;
+    word-spacing: .03em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-weight: 300; line-height: 1.06; letter-spacing: -0.026em; word-spacing: .04em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.015em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-inkt); color: var(--color-papier); }
+  :focus-visible { outline: 2px solid var(--color-inkt); outline-offset: 4px; }
+  .donker :focus-visible { outline-color: var(--color-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .ui { font-size: var(--text-micro); line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk: MASO ruim gespatieerd, klein eronder wat ze zijn. */
+  .merk { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1; text-decoration: none; }
+  .merk b { font-weight: 500; letter-spacing: .42em; margin-right: -.42em; font-size: 1.25rem; }
+  .merk small { font-size: .5625rem; letter-spacing: .26em; text-transform: uppercase; margin-top: .5rem; font-weight: 500; color: var(--color-licht-zacht); }
+
+  .lijn { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn:hover { background-size: 0 1px; background-position: 100% 100%; }
+  .lijn-in { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn-in:hover { background-size: 100% 1px; }
+
+  /* Knop: strakke rechthoek; bij hover schuift cognac omhoog. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .75rem; min-height: 3.25rem; padding: 0 1.75rem; border: 1px solid currentColor; font-size: var(--text-micro); letter-spacing: .16em; text-transform: uppercase; font-weight: 600; text-decoration: none; position: relative; isolation: isolate; overflow: hidden; transition: color .4s var(--ease-zacht), border-color .4s var(--ease-zacht); cursor: pointer; }
+  .knop::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--color-inkt); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .45s var(--ease-zacht); }
+  .knop:hover { color: var(--color-papier); }
+  .knop:hover::before { transform: scaleY(1); }
+  .knop-vol { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
+  .knop-vol::before { background: var(--color-cognac); }
+  .knop-vol:hover { border-color: var(--color-cognac); color: #fff; }
+  .donker .knop-vol { background: var(--color-licht); color: var(--color-nacht); border-color: var(--color-licht); }
+  .donker .knop-vol::before { background: var(--color-cognac-licht); }
+  .donker .knop-vol:hover { color: var(--color-nacht); border-color: var(--color-cognac-licht); }
+  .knop svg { width: 1rem; height: 1rem; flex: none; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-zacht), transform 1.2s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}

@@ -129,3 +129,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Uw Schoenmaker Toon, Middelharnis | https://michaelbeset-ops.github.io/sitefront/schoenmaker-toon/ | geen website, 4,4 uit 64, 06/WhatsApp. | 2026-10-02 | demo premium |
 | J. Hoeksma Montage & Timmerwerken, Dordrecht | https://michaelbeset-ops.github.io/sitefront/hoeksma-montage-dordrecht/ | lege homepage, 5,0 uit 14, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Vloerfix, Papendrecht | https://michaelbeset-ops.github.io/sitefront/vloerfix-papendrecht/ | site uit ~2018, niet mobiel, 5,0 uit 8, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Fan Nails Studio, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/fan-nails-ridderkerk/ | geen werkende website, 4,7 uit 59, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Maso Hair Salon & Barbershop, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/maso-barbershop-ridderkerk/ | geen website, 4,7 uit 29, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Damdorp Barbershop, Alblasserdam | https://michaelbeset-ops.github.io/sitefront/damdorp-barbershop-alblasserdam/ | geen website, 4,9 uit 11, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Schoenreparatieservice ROB, Alblasserdam | https://michaelbeset-ops.github.io/sitefront/rob-schoenreparatie-alblasserdam/ | geen website, 4,5 uit 31, 06/WhatsApp. | 2026-10-02 | demo premium |
