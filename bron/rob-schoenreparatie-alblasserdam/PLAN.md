@@ -1,18 +1,16 @@
-# Schoenreparatieservice ROB, Alblasserdam: ontwerpvoorstel (demomodus, BRIEF-B23 + BRIEF-PREMIUM)
+# Schoenreparatieservice ROB, Alblasserdam: ontwerpvoorstel (demomodus, BRIEF-MICHAEL 02-10-2026, herbouw)
 
-- Concept: één balie in Makado voor drie vakken. Koel en nachtelijk (staal van sleutels, inkt, papierwit), bewust het
-  tegendeel van de lichte, leerbruine Schoenmaker Toon-demo.
-- Letter: Mona Sans (variabel, self-hosted, ook breedte-as): koppen 500 op 112% breedte, -0.035em; woordmerk ROB 700 op 125%.
-- Kleur: papier #f2f3f1, inkt #0f1316, grijs #565d64, nacht #0c1013; enig accent staalblauw #34536c / #a9c0d2 (vandaag in de tijden, focus, knop-hover).
-- Beeld: geen eigen foto's (Google heeft alleen Street View van de achterkant met auto's), dus Unsplash-sfeer: sleutelblanks
-  (hero, 100svh), losse sleutel, stomerijrek, leren schoen. Zie src/assets/BRONNEN.txt.
-- Opbouw: hero, Drie vakken één balie (+ fotopaar), Over Rob (donker, uit reviews), Openingstijden + WhatsApp-vraag, contact.
+- Letter: Archivo Variable 800 op 112% breedte voor koppen (stevig, werkplaats), Public Sans voor tekst (17px/1.6).
+- Kleur: gebroken wit #f5f1ea, zand #ebe3d6, bijna-zwart #1a1612; één merkkleur cognac #9a4a1c (leer, schoenpoets),
+  op donker amber #f0a96a. Strak: knoppen en kaarten 6px, geen pills (anders dan Fan Nails).
+- Beeld: nog steeds geen eigen foto's (Google: alleen Street View; Bing: geen foto's). Unsplash-sfeer: schoenmakerswerkbank
+  (hero), sleutelblanks, stomerijrek, poetsen, borstels, leer. Nergens gepresenteerd als hun werk (zie src/assets/BRONNEN.txt).
+- Opbouw: topbar (3 vinkjes + tel), sticky header met WhatsApp-knop, hero volle hoogte + reviewkaart, cijferrij (echte cijfers),
+  3 dienstkaarten met foto (klik = WhatsApp met dienst), werkwijze 4 stappen, donkere Over Rob met 3 kaders + citaat,
+  6 letterlijke 5-sterrenreviews, openingstijden live + adres + route, WhatsApp-berichtbouwer, slotbalk, footer 4 kolommen,
+  mobiele onderbalk Bellen | WhatsApp.
 
 ## Bronnen
-Google-bedrijfsprofiel (2-10-2026): naam, Makado Winkelcentrum 2951 EJ Alblasserdam, 06 12001330, 4,5 uit 31, openingstijden,
-31 reviews (thema "vakman"). Ruwe tekst in bron/. Geen website, geen social, profiel niet geclaimd.
-
-## Zelf gekozen
-- Openingstijden letterlijk overgenomen (ook de vreemde 16:24/16:28/18:33), met AANLEVEREN om ze te bevestigen.
-- WhatsApp-vraag (schoenen/sleutels/stomerij + vrije tekst) maakt een vooraf ingevuld bericht; verstuurt zelf niets.
-- Diensten bewust kaal gehouden met AANLEVEREN: nergens staat welke reparaties, sleutels of stomerijdiensten precies.
+Google-bedrijfsprofiel (2-10-2026): naam, Makado Winkelcentrum, 2951 EJ Alblasserdam, 06 12001330, 4,5 uit 31,
+openingstijden, reviews (bron/tab-Reviews.txt; sterren per review gecontroleerd 2-10-2026, bron/sterren.txt).
+Geen website, geen social, profiel niet geclaimd, geen straatnaam, e-mail of KvK.
