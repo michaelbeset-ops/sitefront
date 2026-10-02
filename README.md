@@ -145,3 +145,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Trimsalon Yvon, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/trimsalon-yvon-hia/ | geen website, 5,0 uit 7, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Hondentrimsalon Jacqueline, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/hondentrimsalon-jacqueline-ridderkerk/ | pagina uit 2010 niet mobiel, 5,0 uit 24, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Repti-Farm, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/repti-farm-ridderkerk/ | oude site niet mobiel, 4,7 uit 251, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Maximum Detailing, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/maximum-detailing-ridderkerk/ | domein weg, 4,9 uit 18, 06/WhatsApp. | 2026-10-02 | demo premium |
