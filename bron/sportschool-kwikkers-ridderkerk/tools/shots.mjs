@@ -2,7 +2,7 @@
 import { chromium } from 'playwright';
 import sharp from 'sharp';
 const pre = process.argv[2] || 'r1', pad = process.argv[3] || '';
-const base = 'http://localhost:4641/sitefront/sportschool-kwikkers-ridderkerk/' + pad;
+const base = 'http://localhost:4674/sitefront/sportschool-kwikkers-ridderkerk/' + pad;
 const b = await chromium.launch();
 for (const [w, h] of [[1440, 900], [390, 844], [320, 640]]) {
   const p = await (await b.newContext({ viewport: { width: w, height: h } })).newPage();

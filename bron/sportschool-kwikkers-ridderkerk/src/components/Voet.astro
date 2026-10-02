@@ -1,47 +1,71 @@
 ---
-import { site, url, waEersteLes } from '../data/site';
+import { Image } from 'astro:assets';
+import { site, url, waEersteLes, waGroep } from '../data/site';
+import logo from '../assets/logo.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const wa = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.6 11.6 0 0 0 4.4 3.9c1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>';
 ---
-<footer id="contact" class="donker bg-nacht text-licht" aria-labelledby="t-contact">
-  <div class="wrap flex flex-col items-center pb-20 pt-28 text-center lg:pb-28 lg:pt-40">
-    <h2 id="t-contact" class="rijs text-2xl">Eerste les? Stuur even een appje.</h2>
-    <p class="rijs mt-6 max-w-md text-licht-zacht" style="--d:.05s">Zeg welke les je wilt proberen, of vraag Martijn welke groep bij je past.</p>
-    <div class="rijs mt-10" style="--d:.1s"><a href={waEersteLes} class="knop knop-rood">WhatsApp {site.tel}</a></div>
+<!-- Slotbalk in merkkleur -->
+<section class="bg-rood text-wit" aria-labelledby="t-slot">
+  <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center md:py-14">
+    <h2 id="t-slot" class="kop text-[clamp(1.6rem,2vw+1rem,2.4rem)] !text-wit">Twijfel je welke groep bij je past?</h2>
+    <a href={waGroep} class="knop knop-wit shrink-0"><Fragment set:html={wa} />Vraag het Martijn</a>
   </div>
+</section>
 
-  <div class="wrap grid gap-12 border-t border-lijn-licht pb-16 pt-14 text-sm sm:grid-cols-3 lg:grid-cols-12 lg:gap-x-8">
+<footer class="donker bg-nacht text-licht-zacht" aria-label="Voettekst">
+  <div class="wrap grid gap-12 pb-14 pt-20 text-[0.9375rem] sm:grid-cols-2 lg:grid-cols-12 lg:gap-x-10">
     <div class="lg:col-span-4">
-      <p class="ui text-licht-zacht">Adres</p>
-      <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats} ({site.wijk})</p>
-      <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
-    </div>
-    <div class="lg:col-span-4">
-      <p class="ui text-licht-zacht">Lessen</p>
-      <p class="mt-4 num">Dinsdag 17:00 tot 20:00<br />Zaterdag 09:00 tot 12:00</p>
-    </div>
-    <div class="lg:col-span-4">
-      <p class="ui text-licht-zacht">Contact</p>
-      <p class="mt-4 space-y-1">
-        <a href={waEersteLes} class="lijn-in block w-fit">WhatsApp</a>
-        <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
-        <a href={site.facebook} class="lijn-in block w-fit">Facebook</a>
+      <a href={url('')} class="flex items-center gap-3 text-licht no-underline">
+        <Image src={logo} alt="" width={52} height={52} densities={[1, 2]} class="h-13 w-13" />
+        <span class="kop text-xl !text-licht">Sportschool Kwikkers</span>
+      </a>
+      <p class="mt-6 max-w-xs">Taekwondo en kickboksgym in Ridderkerk, Bolnes. Wij verzorgen lessen voor sporters uit Rotterdam en omstreken.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-full border border-lijn-licht text-licht transition-colors hover:border-licht" aria-label="Sportschool Kwikkers op Facebook"><svg viewBox="0 0 24 24" aria-hidden="true" class="h-4 w-4"><path fill="currentColor" d="M14 8V6.5c0-.7.2-1.2 1.2-1.2H17V2.2A23 23 0 0 0 14.4 2C11.9 2 10.4 3.5 10.4 6.2V8H8v3.4h2.4V22H14V11.4h2.7L17 8Z"/></svg></a>
+        <a href={waEersteLes} class="grid h-10 w-10 place-items-center rounded-full border border-lijn-licht text-licht transition-colors hover:border-licht [&_svg]:h-4 [&_svg]:w-4" aria-label="WhatsApp"><Fragment set:html={wa} /></a>
       </p>
     </div>
+    <div class="lg:col-span-2">
+      <p class="kop text-base !text-licht">Lessen</p>
+      <ul class="mt-5 space-y-2.5">
+        <li><a href={h('taekwondo')} class="lijn-in">Taekwondo</a></li>
+        <li><a href={h('kickboksen')} class="lijn-in">Kickboksen</a></li>
+        <li><a href={h('banden')} class="lijn-in">Banden en examens</a></li>
+        <li><a href={h('team')} class="lijn-in">Het team</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="kop text-base !text-licht">Contact</p>
+      <ul class="mt-5 space-y-2.5">
+        <li>{site.straat}<br />{site.postcode} {site.plaats} ({site.wijk})</li>
+        <li><a href={site.telHref} class="lijn-in num">{site.tel}</a></li>
+        <li><a href={waEersteLes} class="lijn-in">WhatsApp</a></li>
+        <li><a href={site.route} class="lijn-in">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="kop text-base !text-licht">Lestijden</p>
+      <dl class="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 num">
+        <dt>Dinsdag</dt><dd class="text-right text-licht">17:00 tot 20:00</dd>
+        <dt>Zaterdag</dt><dd class="text-right text-licht">09:00 tot 12:00</dd>
+        <dt>Overige dagen</dt><dd class="text-right">Geen les</dd>
+      </dl>
+    </div>
   </div>
-
-  <div class="wrap overflow-hidden" aria-hidden="true">
-    <svg class="voetmerk" viewBox="0 0 1000 130" role="presentation" focusable="false"><text x="500" y="112" text-anchor="middle" textLength="1000" lengthAdjust="spacing">KWIKKERS</text></svg>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs">
+    <p>© 2026 {site.naam}, {site.wijk}, {site.plaats}</p>
+    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p>{site.naam}, {site.wijk}, {site.plaats}. Google {site.google.score} uit {site.google.aantal} reviews.</p>
-    <p class="flex flex-wrap gap-x-6 gap-y-2">
-      <a href={url('privacy/')} class="lijn-in">Privacyverklaring</a>
-    </p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Foto’s van uw Google-bedrijfsprofiel, ter illustratie; leerlingen zijn zo bijgesneden dat ze niet herkenbaar zijn. Teksten en lestijden van sportschoolkwikkers.nl (archief, stand juni 2026).</p>}
+  {site.voorstel && <p class="wrap pb-10 text-xs">Foto’s van uw Google-bedrijfsprofiel en uw website (archief), ter illustratie; leerlingen zijn zo bijgesneden dat ze niet herkenbaar zijn. Teksten en lestijden van sportschoolkwikkers.nl (archief, stand juni 2026).</p>}
 </footer>
 
-<style>
-  .voetmerk { display: block; width: 100%; height: auto; margin-top: 1.5rem; }
-  .voetmerk text { font-family: var(--font-sans); font-stretch: 125%; font-size: 150px; font-weight: 300; fill: var(--color-licht); fill-opacity: .08; }
-</style>
+<!-- Mobiele onderbalk -->
+<div class="onderbalk fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn bg-wit/95 p-2.5 backdrop-blur md:hidden">
+  <a href={site.telHref} class="knop knop-inkt knop-klein">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Bellen
+  </a>
+  <a href={waEersteLes} class="knop knop-rood knop-klein"><Fragment set:html={wa} />WhatsApp</a>
+</div>

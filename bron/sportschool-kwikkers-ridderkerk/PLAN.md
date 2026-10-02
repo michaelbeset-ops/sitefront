@@ -1,11 +1,13 @@
-# Sportschool Kwikkers, Ridderkerk (Bolnes): ontwerpvoorstel (demomodus, BRIEF-B23 / BRIEF-PREMIUM)
+# Sportschool Kwikkers, Ridderkerk (Bolnes): ontwerpvoorstel v2 (BRIEF-MICHAEL, 02-10-2026)
 
-- Letter: Archivo (variabel, self-hosted, met breedte-as): koppen 300 op 112% breedte, -0.035em; woordmerk 125% breed, ruim gespatieerd.
-  Tekst 17px/1.6, UI 11px hoofdletters .18em. Niet gebruikt in ronde 1 (Sora, Urbanist, Plus Jakarta Sans, Mona Sans).
-- Kleur: zwart-wit zoals hun trainingsfoto's (papier #f3f2ef, inkt #121314, nacht #101112) + één accent: het rood van het pak
-  van de sensei en hun logo (#b3171f), alleen op de WhatsApp-knop, "vandaag/nu bezig" en het citaat.
-- Beeld: alleen eigen Google-profielfoto's, leerlingen onder de kin bijgesneden. Alleen de sensei staat in kleur (rood pak).
-- Opbouw: full-screen hero, symmetrisch gecentreerd (dojo: groet, rechte lijn), Taekwondo (met de tien bandkleuren als eigen
-  detail), Kickboksen (donker), Lestijden (wow: vandaag/nu bezig live; elke les opent een ingevuld appje), Respect + reviews +
-  team, contact/voet.
-- Waarom: hun site ligt plat en was een druk WordPress-thema; dit is rust, discipline en hun echte zaal, lessen en mensen.
+Referentie: ZBN/Slob/B-Advice. Rijk, lang, professioneel; demomodus zoals BRIEF-B17.
+
+- Letter: Archivo 800 (wdth 104, -0.035em) voor koppen; Public Sans voor tekst (17px/1.6).
+- Kleur: dojo-rood uit hun logo en het pak van de sensei (#c0141c) + bijna-zwart (#0f1011) + gebroken wit (#f6f5f2).
+  Afwisselend lichte en donkere secties. Afronding: knoppen pill, kaarten 14px, consistent.
+- Logo: hun echte yin-yang-merk (van spandoek en oude site), naast een strak woordmerk.
+- Secties: topbar met vinkjes + telefoon, witte pill-header, hero vol scherm (eigen kickboksfoto, geen gezichten),
+  stat-rij met echte cijfers, aanbod (3 fotokaarten), taekwondo + tien banden, kickboksen (donker, 4 kaders),
+  "zo begin je" (4 stappen), lestijden (wow: vandaag/nu bezig live, elke les opent een ingevuld appje),
+  sensei (donker, 3 kaders), team (foto's oude site), Google-reviews (letterlijk), contactblok + rode slotbalk,
+  donkere footer 4 kolommen, mobiele onderbalk Bellen | WhatsApp.
