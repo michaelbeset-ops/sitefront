@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/hanken-grotesk/index.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Werkbankgrijs uit hun eigen foto's, bijna-zwart, twee grijzen. Eén accent: het messing uit hun logo. */
+  --color-papier: #f1f0ed;      /* pagina */
+  --color-vlak: #e7e5e0;        /* rustig vlak achter een foto */
+  --color-inkt: #161719;        /* tekst, 16,9:1 op papier */
+  --color-grijs: #5e5d59;       /* bijtekst, 5,9:1 op papier */
+  --color-lijn: #1617191f;
+  --color-messing: #86683f;     /* accent uit het logo, 4,7:1 op papier; spaarzaam */
+  --color-nacht: #161719;       /* donker vlak */
+  --color-licht: #f1f0ed;
+  --color-licht-zacht: #a6a49e; /* bijtekst op nacht, 7,6:1 */
+  --color-lijn-licht: #f1f0ed24;
+  --color-messing-licht: #c9a978; /* accent op nacht, 8,6:1 */
+
+  --font-sans: "Hanken Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-micro: 0.6875rem;   /* 11px UI-hoofdletters */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 0.5vw + 1.2rem, 1.625rem);
+  --text-2xl: clamp(1.875rem, 1.9vw + 1.25rem, 3rem);
+  --text-3xl: clamp(2.375rem, 3.2vw + 1rem, 3.75rem);
+  --text-4xl: clamp(3.25rem, 13vw, 13rem);
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-weight: 300; line-height: 1.04; letter-spacing: -0.032em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.015em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-inkt); color: var(--color-papier); }
+  :focus-visible { outline: 2px solid var(--color-inkt); outline-offset: 4px; }
+  .donker :focus-visible { outline-color: var(--color-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .ui { font-size: var(--text-micro); line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk naar hun logo: JORIS groot en ruim, Uurwerkreparatie klein eronder. */
+  .merk { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; text-decoration: none; }
+  .merk b { font-weight: 300; letter-spacing: .5em; margin-right: -.5em; font-size: 1.375rem; }
+  .merk small { font-size: .5625rem; letter-spacing: .34em; margin-right: -.34em; text-transform: uppercase; margin-top: .45rem; font-weight: 500; color: var(--color-messing); }
+
+  .lijn { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn:hover { background-size: 0 1px; background-position: 100% 100%; }
+  .lijn-in { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn-in:hover { background-size: 100% 1px; }
+
+  /* Knop: strakke rechthoek. Vol = inkt; bij hover schuift messing omhoog. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .75rem; min-height: 3.25rem; padding: 0 1.75rem; border: 1px solid currentColor; font-size: var(--text-micro); letter-spacing: .16em; text-transform: uppercase; font-weight: 500; text-decoration: none; position: relative; isolation: isolate; overflow: hidden; transition: color .4s var(--ease-zacht), border-color .4s var(--ease-zacht); cursor: pointer; }
+  .knop::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--color-inkt); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .45s var(--ease-zacht); }
+  .knop:hover { color: var(--color-papier); }
+  .knop:hover::before { transform: scaleY(1); }
+  .knop-vol { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
+  .knop-vol::before { background: var(--color-messing); }
+  .knop-vol:hover { border-color: var(--color-messing); color: #fff; }
+  .donker .knop-vol { background: var(--color-licht); color: var(--color-nacht); border-color: var(--color-licht); }
+  .donker .knop-vol::before { background: var(--color-messing-licht); }
+  .donker .knop-vol:hover { color: var(--color-nacht); border-color: var(--color-messing-licht); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-zacht), transform 1.2s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
