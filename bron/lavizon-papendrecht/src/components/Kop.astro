@@ -1,67 +1,58 @@
 ---
-// Header: rustige witte balk, wordt bij scrollen half doorzichtig met een haarlijn.
-import { site, url, waMet } from '../data/site';
+import { site, url, waAanHuis } from '../data/site';
+import Icoon from './Icoon.astro';
 import Merk from './Merk.astro';
-const nav = [
-  ['Wat we doen', '#diensten'],
-  ['Traprenovatie', '#trappen'],
-  ['Bij u thuis', '#aan-huis'],
-  ['Contact', '#contact'],
-];
-const thuis = url('');
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['diensten', 'Diensten'], ['trappen', 'Traprenovatie'], ['werkwijze', 'Werkwijze'], ['over', 'Over Lavizon'], ['contact', 'Contact']];
 ---
-<header class="kop sticky top-0 z-40" data-kop>
-  <div class="wrap flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
-    <a href={thuis} class="text-[1.375rem]" aria-label={`${site.naam}, naar de homepage`}>
-      <Merk />
-    </a>
+<div class="bg-antraciet text-licht">
+  <div class="wrap flex h-10 items-center justify-between gap-6 text-[.8125rem]">
+    <ul class="flex items-center gap-6 overflow-hidden whitespace-nowrap">
+      <li class="flex items-center gap-1.5"><Icoon naam="vink" class="h-3.5 w-3.5 text-led" />Vrijblijvend bij u aan huis</li>
+      <li class="hidden items-center gap-1.5 sm:flex"><Icoon naam="vink" class="h-3.5 w-3.5 text-led" />Leveren én plaatsen</li>
+      <li class="hidden items-center gap-1.5 lg:flex"><Icoon naam="vink" class="h-3.5 w-3.5 text-led" />Verkooppunt Zonnelux raamdecoratie</li>
+    </ul>
+    <a href={site.telHref} class="num hidden items-center gap-1.5 font-semibold no-underline transition-colors hover:text-led md:flex"><Icoon naam="tel" class="h-3.5 w-3.5" />{site.tel}</a>
+  </div>
+</div>
+<header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-md">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-6">
+    <a href={url('')} class="no-underline" aria-label={`Lavizon woninginrichting, naar de homepage`}><Merk /></a>
     <nav aria-label="Hoofdmenu" class="hidden lg:block">
-      <ul class="ui flex gap-9">
-        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="lijn-in">{t}</a></li>)}
+      <ul class="flex gap-8 text-[.9375rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-walnoot">{t}</a></li>)}
       </ul>
     </nav>
-    <div class="flex items-center gap-7">
-      <a href={site.telHref} class="ui num lijn-in hidden xl:inline">{site.tel}</a>
-      <a href={waMet('ik heb een vraag. ')} class="knop knop-klein max-[359px]:hidden">WhatsApp</a>
-      <button type="button" class="ui lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>Menu</button>
+    <div class="flex items-center gap-4">
+      <a href={site.telHref} class="num hidden items-center gap-2 font-semibold no-underline transition-colors hover:text-walnoot xl:flex"><Icoon naam="tel" class="h-4 w-4 text-walnoot" />{site.tel}</a>
+      <a href={waAanHuis} class="knop knop-walnoot knop-klein hidden sm:inline-flex"><Icoon naam="wa" />Afspraak aan huis</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-[4px] bg-wit shadow-sm lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
     </div>
   </div>
-
-  <div id="menu" class="menu lg:hidden" hidden data-menu>
-    <nav aria-label="Menu" class="wrap flex min-h-full flex-col justify-between gap-10 pb-10 pt-8">
-      <ul class="space-y-1">
-        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="block py-1 text-[2.25rem] leading-tight tracking-[-.04em]" data-menu-link>{t}</a></li>)}
-      </ul>
-      <p class="space-y-3">
-        <a href={waMet('ik heb een vraag. ')} class="knop w-full">Stuur een WhatsApp</a>
-        <a href={site.telHref} class="knop knop-rand num w-full">Bel {site.tel}</a>
-      </p>
-    </nav>
-  </div>
+  <nav id="menu" aria-label="Menu" class="hidden border-t border-lijn bg-papier lg:hidden" data-menu>
+    <ul class="wrap py-4">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="flex items-center justify-between border-b border-lijn py-3.5 font-kop text-xl font-bold no-underline">{t}<Icoon naam="pijl" class="h-5 w-5 text-walnoot" /></a></li>)}
+      <li class="pt-5"><a href={waAanHuis} class="knop knop-walnoot w-full"><Icoon naam="wa" />Afspraak via WhatsApp</a></li>
+    </ul>
+  </nav>
 </header>
 
-<style>
-  .kop { background-color: var(--color-papier); transition: background-color .5s var(--ease-zacht), box-shadow .5s var(--ease-zacht); }
-  .kop.schaduw { background-color: color-mix(in srgb, var(--color-papier) 92%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 1px 0 var(--color-lijn); }
-  .menu { position: fixed; left: 0; right: 0; bottom: 0; top: 4rem; background: var(--color-papier); overflow-y: auto; }
-  .knop-rand { background: transparent; color: var(--color-inkt); box-shadow: inset 0 0 0 1px var(--color-inkt); }
-  .knop-rand:hover { background: var(--color-steen); }
-</style>
+<!-- Mobiele onderbalk -->
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2.5 border-t border-lijn bg-papier/95 p-2.5 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="knop knop-wit knop-klein shadow-sm"><Icoon naam="tel" />Bellen</a>
+  <a href={waAanHuis} class="knop knop-walnoot knop-klein"><Icoon naam="wa" />WhatsApp</a>
+</div>
 
 <script>
-  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
-  const zet = () => kop.classList.toggle('schaduw', scrollY > 8);
-  zet(); addEventListener('scroll', zet, { passive: true });
-  const knop = kop.querySelector<HTMLButtonElement>('[data-menu-knop]')!;
-  const menu = kop.querySelector<HTMLElement>('[data-menu]')!;
-  const open = (aan: boolean) => {
-    menu.style.top = kop.getBoundingClientRect().bottom + 'px';
-    menu.hidden = !aan;
-    knop.setAttribute('aria-expanded', String(aan));
-    knop.textContent = aan ? 'Sluiten' : 'Menu';
-    document.documentElement.style.overflow = aan ? 'hidden' : '';
-  };
-  knop.addEventListener('click', () => open(menu.hidden));
-  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => open(false)));
-  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { open(false); knop.focus(); } });
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
 </script>

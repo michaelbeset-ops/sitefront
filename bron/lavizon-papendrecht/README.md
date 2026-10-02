@@ -1,9 +1,9 @@
 # lavizon-papendrecht
-Ontwerpvoorstel (Astro 7 + Tailwind 4, DM Sans). Bouwen: `PUBLIC_VOORSTEL=1 npx astro build`, bekijken: `npm run preview` (poort 4656).
+Ontwerpvoorstel (Astro 7 + Tailwind 4, Schibsted Grotesk + Public Sans; v2 op niveau BRIEF-MICHAEL). Bouwen: `PUBLIC_VOORSTEL=1 npx astro build`, bekijken: `npm run preview` (poort 4694).
 Bronnen van foto's: src/assets/BRONNEN.txt. Feiten: src/data/site.ts (bronregels bovenaan).
 
 ## Ontbreekt (aanleveren door Lavizon)
-- Foto's van gelegde vloeren (laminaat, vinyl, tapijt), raamdecoratie, buitenzonwering en horren: nu alleen trappen en 1 woonkamer.
+- Foto's van gelegde vloeren, raamdecoratie, buitenzonwering en horren (nu: trappen, 1 woonkamer en 1 Unsplash-sfeerfoto). Meer Google-reviews met tekst.
 - Prijzen of richtprijzen (nergens gepubliceerd; de site noemt geen prijzen).
 - Adres bevestigen: Google zegt Wilgenhof 250, 3355 PD; KvK (Company.info) noemt postcode 3352 CA; lavizon.nl noemt Beukmolen 84, 3352 AD.
   Showroom of alleen aan huis? De site belooft geen showroom.

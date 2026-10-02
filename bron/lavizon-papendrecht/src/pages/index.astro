@@ -3,196 +3,408 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, tijden, waMet } from '../data/site';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, waMet, waAanHuis } from '../data/site';
 import woonkamer from '../assets/woonkamer.jpg';
+import raam from '../assets/raam.jpg';
+import vloer from '../assets/vloer.jpg';
+import buiten from '../assets/buitenzonwering.jpg';
 import tijdens from '../assets/trap-tijdens.jpg';
 import klaar from '../assets/trap-klaar.jpg';
-import eikenDraai from '../assets/eiken-2.jpg';
-import eikenRecht from '../assets/eiken-1.jpg';
-import eikenDetail from '../assets/eiken-3.jpg';
+import antraciet from '../assets/trap-antraciet.jpg';
+import eiken1 from '../assets/eiken-1.jpg';
+import eiken2 from '../assets/eiken-2.jpg';
+import eiken3 from '../assets/eiken-3.jpg';
+import eiken4 from '../assets/eiken-4.jpg';
+import eiken5 from '../assets/eiken-5.jpg';
+import donker from '../assets/trap-donker.jpg';
+import kamer from '../assets/kamer.jpg';
+
+const vraag = (o: string) => waMet(`Hallo Lavizon, ik heb een vraag over ${o}.`);
 
 const diensten = [
-  ['Vloeren', 'Alle soorten vloeren, geleverd en gelegd. Onder meer laminaat, vinyl en tapijt.'],
-  ['Traprenovatie', 'Uw trap opnieuw bekleed, als u wilt met verlichting onder de treden.'],
-  ['Binnenzonwering', 'Raamdecoratie op maat. Lavizon is verkooppunt van Zonnelux.'],
-  ['Buitenzonwering', 'Zonwering aan de buitenkant van het huis.'],
-  ['Insectenhorren', 'Geleverd en geplaatst.'],
+  { t: 'Vloeren', d: 'Alle soorten vloeren, geleverd en gelegd. Onder meer laminaat, vinyl en tapijt.', src: vloer, alt: 'Een houtlook vloer door een lichte woonkamer, met een grijze bank voor de tuindeuren', pos: '50% 60%', o: 'een nieuwe vloer' },
+  { t: 'Traprenovatie', d: 'Uw eigen trap opnieuw bekleed, als u wilt met ledverlichting onder de treden.', src: eiken4, alt: 'Een gerenoveerde trap met eiken treden, witte stootborden en lampjes onder elke trede', pos: '50% 50%', o: 'traprenovatie' },
+  { t: 'Binnenzonwering', d: 'Raamdecoratie op maat. Lavizon is verkooppunt van Zonnelux.', src: raam, alt: 'Witte houten jaloezieën voor hoge ramen in een lichte woonkamer', pos: '30% 50%', o: 'binnenzonwering en raamdecoratie' },
+  { t: 'Buitenzonwering', d: 'Zonwering aan de buitenkant van uw huis, voor koelte en minder fel licht binnen.', src: buiten, alt: 'Sfeerfoto: een uitvalscherm boven een raam aan een witte gevel', pos: '50% 50%', o: 'buitenzonwering', stock: true },
 ];
 
-const onderwerpen = [
-  ['Een vloer', 'een nieuwe vloer'],
-  ['Traprenovatie', 'traprenovatie'],
-  ['Raamdecoratie', 'raamdecoratie'],
-  ['Buitenzonwering', 'buitenzonwering'],
-  ['Insectenhorren', 'insectenhorren'],
+const stappen = [
+  ['Bel of app', 'Vertel kort wat u zoekt: een vloer, een trap, zonwering of horren. Een foto van de ruimte helpt alvast.'],
+  ['Bij u aan huis', 'Lavizon komt vrijblijvend langs, bekijkt de ruimte en informeert u over de mogelijkheden.'],
+  ['Uw keuze', 'U kiest materiaal en kleur. Bij een trap bijvoorbeeld eiken treden met witte stootborden en led.'],
+  ['Leveren en plaatsen', 'Lavizon levert en plaatst alles zelf. U hoeft niemand anders te regelen.'],
+];
+
+const trapFotos = [
+  { src: tijdens, alt: 'Een trap tijdens de renovatie: de onderste trede is al antraciet bekleed en zit in de lijmklemmen, de treden erboven zijn nog kaal.', label: 'Tijdens' },
+  { src: klaar, alt: 'Dezelfde trap klaar: antraciet treden en stootborden, een antraciet leuning en onder elke trede een warm lampje.', label: 'Klaar' },
+  { src: antraciet, alt: 'Een rechte trap in antraciet met lampjes in de stootborden.', label: 'Antraciet met led' },
+  { src: donker, alt: 'Een draaiende trap met antraciet treden en een lampje onder elke trede.', label: 'Draaiende trap' },
 ];
 ---
-<Base title="Lavizon Woninginrichting | Vloeren, traprenovatie en raamdecoratie in Papendrecht" description="Lavizon Woninginrichting uit Papendrecht levert en plaatst vloeren, traprenovaties, binnen- en buitenzonwering en insectenhorren. Kwaliteit in woninginrichting.">
+<Base title="Lavizon Woninginrichting | Vloeren, traprenovatie en zonwering in Papendrecht" description="Lavizon Woninginrichting uit Papendrecht levert en plaatst vloeren, traprenovaties, binnen- en buitenzonwering en insectenhorren. Vrijblijvend advies bij u aan huis.">
   <Kop />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: wit vlak met de kop, ernaast hun eigen woonkamerfoto over de volle hoogte. -->
-    <section class="hero grid lg:grid-cols-12" aria-labelledby="titel">
-      <div class="wrap flex flex-col pb-8 pt-10 md:pt-14 lg:col-span-5 lg:max-w-none lg:justify-between lg:pb-12 lg:pl-10 lg:pr-12 lg:pt-20 min-[1600px]:pl-[calc((100vw-90rem)/2+2.5rem)]">
-        <div>
-          <h1 id="titel" class="text-4xl">Vloeren, trappen en raam&shy;decoratie.</h1>
-          <p class="mt-6 max-w-[27rem] text-lg leading-relaxed text-grijs md:mt-8">Lavizon uit Papendrecht levert en plaatst vloeren, traprenovaties, zonwering en insectenhorren. Bij u aan huis.</p>
-          <p class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4 md:mt-10">
-            <a href={waMet('ik heb een vraag over ')} class="knop">Stuur een WhatsApp <span class="pijl" aria-hidden="true">→</span></a>
-            <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
-          </p>
+    <!-- 1. Hero: hun eigen woonkamerfoto op volle hoogte -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-antraciet text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={woonkamer} alt="" widths={[640, 960, 1400, 2000, 2400]} sizes="100vw" format="webp" quality={74} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d212440_0%,#1d2124c4_45%,#1d2124f5_100%)] md:bg-[linear-gradient(90deg,#1d2124f5_0%,#1d2124d6_40%,#1d212459_75%,#1d212426_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-16 pt-16 md:py-28 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Woninginrichting in Papendrecht</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Kwaliteit in <span class="text-led">woning&shy;inrichting.</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Vloeren, traprenovatie, binnen- en buitenzonwering en insectenhorren. Geleverd en geplaatst, met vrijblijvend advies bij u aan huis.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={waAanHuis} class="knop knop-walnoot"><Icoon naam="wa" />Plan een afspraak aan huis</a>
+            <a href="#trappen" class="knop knop-rand op-foto">Bekijk traprenovaties</a>
+          </div>
         </div>
-        <dl class="klein mt-10 hidden grid-cols-2 gap-x-8 border-t border-lijn pt-5 text-grijs lg:grid">
-          <div><dt class="sr-only">Adres</dt><dd>{site.straat}<br />{site.postcode} {site.plaats}</dd></div>
-          <div><dt class="sr-only">Open</dt><dd class="num">Ma tot vr {tijden[0][1]}<br />Za {tijden[1][1]}</dd></div>
-        </dl>
+        <div class="hidden text-right lg:col-span-4 lg:block">
+          <p class="flex items-center justify-end gap-2 text-[.9375rem] text-licht/90" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 8.00 tot 18.00 uur</span></p>
+          <p class="mt-2 flex items-center justify-end gap-2 text-[.9375rem]"><span class="flex text-led">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-50' : ''}`} />)}</span><b class="num">{site.google.score}</b> op Google</p>
+          <a href={site.telHref} class="num mt-3 inline-block font-kop text-[1.75rem] font-extrabold tracking-[-0.02em] no-underline transition-colors hover:text-led">{site.tel}</a>
+        </div>
       </div>
-      <figure class="hero-beeld relative min-h-0 flex-1 overflow-hidden bg-steen lg:col-span-7">
-        <Image src={woonkamer} alt="Lichte woonkamer met witte houten jaloezieën voor de hoge ramen, een eettafel en een houtlook vloer door de hele ruimte." widths={[640, 960, 1400, 2000]} sizes="(min-width: 1024px) 58vw, 100vw" format="webp" quality={74} loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[46%_60%]" />
-        <figcaption class="klein absolute bottom-4 right-5 text-wit/90 [text-shadow:0_1px_8px_rgb(0_0_0/.35)] md:bottom-6 md:right-8">Jaloezieën en vloer, foto van Lavizon</figcaption>
-      </figure>
     </section>
 
-    <!-- 2. Wat ze doen: hun eigen zin groot, de vijf onderdelen als rustige lijst. -->
-    <section id="diensten" class="wrap scroll-mt-16 py-28 lg:py-40" aria-labelledby="t-diensten">
-      <div class="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-5">
-          <h2 id="t-diensten" class="text-3xl">Nieuwbouwhuis of renovatie?</h2>
-          <p class="mt-7 max-w-[25rem] text-lg leading-relaxed text-grijs">Lavizon helpt u er een sfeervol geheel van te maken, met een mooie vloer, binnen- en buitenzonwering.</p>
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat Lavizon levert en plaatst">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-[4px] border border-lijn bg-papier px-3.5 py-2 text-sm font-medium no-underline transition-colors hover:border-walnoot hover:bg-walnoot hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-24" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Wat we doen</p>
+            <h2 id="t-diensten" class="mt-5 text-3xl">Nieuwbouwhuis of renovatie? Eén adres voor vloer, trap en zonwering.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Lavizon helpt u er een sfeervol geheel van te maken, met een mooie vloer, binnen- en buitenzonwering.</p>
         </div>
-        <ul class="border-t border-lijn lg:col-span-6 lg:col-start-7">
-          {diensten.map(([t, d], i) => (
-            <li class="rijs grid gap-y-1.5 border-b border-lijn py-7 md:grid-cols-[13rem_1fr] md:gap-x-8" style={`--d:${i * 0.06}s`}>
-              <h3 class="text-xl">{t}</h3>
-              <p class="text-grijs">{d}</p>
+        <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.o)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 390px, (min-width: 640px) 46vw, 92vw" format="webp" quality={72} class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                  {b.stock && <span class="absolute bottom-3 left-3 rounded-[4px] bg-antraciet/75 px-2 py-0.5 text-[.6875rem] text-licht">Sfeerfoto</span>}
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <h3 class="text-xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] bg-zand text-walnoot transition-colors group-hover:bg-walnoot group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
             </li>
           ))}
+          <li class="rijs" style="--d:.06s">
+            <a href={vraag('insectenhorren')} class="kaart group flex h-full flex-col justify-between gap-10 p-7 no-underline transition-shadow duration-300 hover:shadow-md">
+              <span class="grid h-16 w-16 place-items-center rounded-[6px] bg-zand text-walnoot"><Icoon naam="hor" class="h-8 w-8" /></span>
+              <div class="flex items-end justify-between gap-4">
+                <div>
+                  <h3 class="text-xl">Insectenhorren</h3>
+                  <p class="mt-2 text-grijs">Horren voor ramen en deuren, op maat geleverd en geplaatst. Ramen open, muggen buiten.</p>
+                </div>
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] bg-zand text-walnoot transition-colors group-hover:bg-walnoot group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+              </div>
+            </a>
+          </li>
+          <li class="rijs" style="--d:.12s">
+            <a href="#contact" class="donker group flex h-full flex-col justify-between gap-10 rounded-[6px] bg-antraciet p-7 text-licht no-underline shadow-md">
+              <span class="grid h-16 w-16 place-items-center rounded-[6px] bg-antraciet-2 text-led"><Icoon naam="huis" class="h-8 w-8" /></span>
+              <div>
+                <h3 class="text-xl">Vrijblijvend bij u aan huis</h3>
+                <p class="mt-2 text-licht-zacht">Benieuwd wat er bij u thuis mogelijk is? Lavizon komt langs en denkt mee.</p>
+                <span class="mt-6 inline-flex items-center gap-2 font-semibold text-led">Afspraak maken <Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+              </div>
+            </a>
+          </li>
         </ul>
       </div>
     </section>
 
-    <!-- 3. Traprenovatie: donker zoals hun treden. Tijdens en klaar, daarna een eiken trap. -->
-    <section id="trappen" class="donker scroll-mt-16 bg-antraciet py-28 text-licht lg:py-40" aria-labelledby="t-trap">
+    <!-- 5. Traprenovatie -->
+    <section id="trappen" class="donker bg-antraciet py-20 text-licht lg:py-24" aria-labelledby="t-trap">
       <div class="wrap">
-        <div class="grid gap-y-7 lg:grid-cols-12 lg:gap-x-8">
-          <h2 id="t-trap" class="text-3xl lg:col-span-6">Traprenovatie.</h2>
-          <p class="max-w-[30rem] text-lg leading-relaxed text-licht-zacht lg:col-span-5 lg:col-start-8 lg:self-end">Uw eigen trap, opnieuw bekleed. Op deze trap met verlichting onder elke trede.</p>
+        <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+          <div class="rijs lg:col-span-5">
+            <p class="eyebrow">Traprenovatie</p>
+            <h2 id="t-trap" class="mt-5 text-3xl">Uw eigen trap, als nieuw.</h2>
+            <p class="mt-6 text-lg text-licht-zacht">De trap blijft staan en krijgt nieuwe treden, stootborden en zijkanten. Zoals deze trap in eiken rustiek:</p>
+            <ul class="mt-8 grid gap-3">
+              {[
+                ['Treden', 'Eiken rustiek'],
+                ['Afwerking', 'Rubio Monocoat, kleur walnut'],
+                ['Stootborden en zijkanten', 'Witte panelen in RAL 9010'],
+                ['Verlichting', 'Led onder elke trede'],
+              ].map(([k, v]) => (
+                <li class="flex items-baseline justify-between gap-6 border-b border-lijn-licht pb-3"><span class="text-licht-zacht">{k}</span><b class="text-right font-semibold">{v}</b></li>
+              ))}
+            </ul>
+            <div class="mt-10 flex flex-wrap gap-3">
+              <a href={vraag('traprenovatie')} class="knop knop-walnoot"><Icoon naam="wa" />Trap bespreken</a>
+              <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+            </div>
+          </div>
+          <div class="rijs grid grid-cols-5 gap-3 md:gap-4 lg:col-span-7" style="--d:.08s">
+            <figure class="relative col-span-3 overflow-hidden rounded-[6px]">
+              <Image src={eiken2} alt="Een draaiende trap van bovenaf: eiken treden met een donkere afwerking en witte stootborden." widths={[500, 800, 1100]} sizes="(min-width: 1024px) 420px, 58vw" format="webp" quality={72} class="h-full w-full object-cover" />
+            </figure>
+            <div class="col-span-2 grid gap-3 md:gap-4">
+              <Image src={eiken1} alt="Dezelfde trap van onderaf: eiken treden met lampjes eronder langs een witte wand." widths={[300, 500, 700]} sizes="(min-width: 1024px) 280px, 38vw" format="webp" quality={72} class="aspect-square w-full rounded-[6px] object-cover" />
+              <Image src={eiken3} alt="Detail van twee eiken treden met het licht van de ledstrip eronder op de witte wand." widths={[300, 500, 700]} sizes="(min-width: 1024px) 280px, 38vw" format="webp" quality={72} class="aspect-square w-full rounded-[6px] object-cover object-[30%_50%]" />
+            </div>
+          </div>
         </div>
 
-        <div class="mt-16 grid grid-cols-2 gap-x-3 md:gap-x-8 lg:mt-24 lg:grid-cols-12">
-          <figure class="lg:col-span-5">
-            <div class="aspect-[3/4] overflow-hidden bg-[#2c3135]">
-              <Image src={tijdens} alt="Een trap tijdens de renovatie: de onderste trede is al antraciet bekleed en zit in de lijmklemmen, de treden erboven zijn nog kaal." widths={[400, 700, 1000]} sizes="(min-width: 1024px) 38vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover" />
-            </div>
-            <figcaption class="klein mt-4 text-licht-zacht">Tijdens</figcaption>
-          </figure>
-          <figure class="lg:col-span-5 lg:col-start-7 lg:mt-24">
-            <div class="aspect-[3/4] overflow-hidden bg-[#2c3135]">
-              <Image src={klaar} alt="Dezelfde trap klaar: antraciet treden en stootborden, een antraciet leuning langs de witte wand en onder elke trede een warm lampje." widths={[400, 700, 1000]} sizes="(min-width: 1024px) 38vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover" />
-            </div>
-            <figcaption class="klein mt-4 text-licht-zacht">Klaar</figcaption>
-          </figure>
+        <div class="mt-20 border-t border-lijn-licht pt-12 lg:mt-24">
+          <div class="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <h3 class="text-2xl">Van kale trap tot lichtlijn.</h3>
+            <p class="max-w-md text-licht-zacht">Eigen foto’s van Lavizon: dezelfde trap tijdens en na de renovatie, en twee andere trappen in antraciet.</p>
+          </div>
+          <ul class="mt-10 grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+            {trapFotos.map((f, i) => (
+              <li class="rijs" style={`--d:${i * 0.06}s`}>
+                <figure class="relative overflow-hidden rounded-[6px] bg-antraciet-2">
+                  <Image src={f.src} alt={f.alt} widths={[300, 500, 700]} sizes="(min-width: 1024px) 290px, 46vw" format="webp" quality={70} class="aspect-square w-full object-cover" />
+                  <figcaption class="absolute left-3 top-3 rounded-[4px] bg-antraciet/85 px-2.5 py-1 text-xs font-semibold text-licht">{i < 2 && <span class="mr-1 text-led">{i === 0 ? '1' : '2'}</span>}{f.label}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
         </div>
+      </div>
+    </section>
 
-        <div class="mt-28 grid gap-y-10 lg:mt-40 lg:grid-cols-12 lg:gap-x-8">
-          <figure class="lg:col-span-7">
-            <div class="aspect-square overflow-hidden bg-[#2c3135]">
-              <Image src={eikenDraai} alt="Een draaiende trap van bovenaf: eiken treden met een donkere afwerking en witte stootborden." widths={[500, 900, 1300]} sizes="(min-width: 1024px) 55vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover" />
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-24" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-5 text-3xl">Van eerste appje tot de laatste trede.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Lavizon bekijkt het bij u thuis, in uw eigen ruimte en uw eigen licht.</p>
+        </div>
+        <ol class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart relative p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] text-walnoot">0{i + 1}</p>
+              <h3 class="mt-6 text-xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Over Lavizon -->
+    <section id="over" class="bg-zand py-20 lg:py-24" aria-labelledby="t-over">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <figure class="rijs relative lg:col-span-6">
+          <Image src={kamer} alt="Een lichte woonkamer met hanglampen boven de eettafel, witte jaloezieën en tuindeuren achterin." widths={[600, 900, 1300]} sizes="(min-width: 1248px) 590px, (min-width: 1024px) 48vw, 92vw" format="webp" quality={72} class="aspect-[4/5] w-full rounded-[6px] object-cover object-[50%_50%] lg:aspect-[1/1]" />
+          <figcaption class="absolute bottom-4 left-4 right-4 flex items-center gap-3 rounded-[6px] bg-wit/95 p-4 shadow-md backdrop-blur sm:right-auto">
+            <span class="grid h-10 w-10 place-items-center rounded-[4px] bg-antraciet text-led"><Icoon naam="zon" class="h-6 w-6" /></span>
+            <span class="text-sm leading-snug"><b class="block font-semibold">Verkooppunt Zonnelux</b><span class="text-grijs">Raamdecoratie op maat</span></span>
+          </figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over Lavizon</p>
+          <h2 id="t-over" class="mt-5 text-3xl">Een sfeervol geheel, van vloer tot raam.</h2>
+          <p class="mt-6 text-lg text-grijs">Lavizon Woninginrichting uit Papendrecht levert en plaatst traprenovaties, alle soorten vloeren, binnenzonwering en insectenhorren, en ook zonwering voor buiten. Omdat alles uit één hand komt, passen vloer, trap en raamdecoratie bij elkaar.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] bg-walnoot text-wit"><Icoon naam="huis" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Advies bij u aan huis</h3><p class="mt-1 text-[.9375rem] text-grijs">Vrijblijvend, zodat u kleuren en materialen ziet waar ze komen.</p></div>
+            </li>
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] bg-walnoot text-wit"><Icoon naam="gereedschap" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Leveren én plaatsen</h3><p class="mt-1 text-[.9375rem] text-grijs">Lavizon levert het materiaal en plaatst het ook.</p></div>
+            </li>
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[4px] bg-walnoot text-wit"><Icoon naam="euro" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Eerlijke prijs</h3><p class="mt-1 text-[.9375rem] text-grijs">“Prima service en eerlijke prijs!” schrijft een klant op Google.</p></div>
+            </li>
+          </ul>
+          <a href={waAanHuis} class="knop knop-walnoot mt-9"><Icoon naam="wa" />Plan een afspraak aan huis</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Review -->
+    <section id="reviews" class="donker bg-antraciet py-20 text-licht lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Reviews</p>
+          <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          <a href={site.reviews} class="mt-9 inline-flex items-center gap-4 rounded-[6px] bg-wit px-5 py-4 text-inkt no-underline shadow-md transition-transform hover:-translate-y-0.5">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-[#e7a63a]">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-45' : ''}`} />)}</span></span>
+              <span class="block text-sm text-grijs">uit {site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <figure class="rijs lg:col-span-7">
+          <div class="relative rounded-[6px] bg-antraciet-2 p-8 md:p-12">
+            <span class="absolute -top-6 right-8 font-kop text-[7rem] leading-none text-led/30" aria-hidden="true">“</span>
+            <span class="flex text-led" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+            <blockquote class="mt-6 font-kop text-[clamp(2rem,2.6vw+1rem,3.25rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">Prima service en eerlijke prijs!</blockquote>
+            <figcaption class="mt-8 flex items-center gap-3 border-t border-lijn-licht pt-6 text-sm">
+              <Icoon naam="g" class="h-5 w-5" />
+              <span class="text-licht-zacht">Google review van een klant van Lavizon</span>
+            </figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 9. Openingstijden en adres -->
+    <section id="route" class="py-20 lg:py-24" aria-labelledby="t-route">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en adres</p>
+          <h2 id="t-route" class="mt-5 text-3xl">Zes dagen per week bereikbaar.</h2>
+          <p class="mt-6 text-lg text-grijs">Bel of app gerust, ook op zaterdagochtend. Dan plannen we een moment waarop Lavizon bij u langskomt.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="inline-flex items-center gap-2 rounded-[4px] bg-zand px-3 py-1.5 text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za open</span></p>
             </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van Lavizon</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-walnoot">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-[6px]">
+            <Image src={eiken5} alt="Eiken treden met lampjes eronder langs een witte wand" widths={[600, 900, 1300]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" format="webp" quality={72} class="h-full min-h-[18rem] w-full object-cover object-[50%_60%]" />
           </figure>
-          <div class="flex flex-col gap-12 lg:col-span-4 lg:col-start-9 lg:pt-2">
-            <div>
-              <h3 class="text-2xl">Eiken rustiek, RAL 9010.</h3>
-              <p class="mt-6 leading-relaxed text-licht-zacht">Zijkanten en stootborden met witte panelen in RAL 9010. Treden in eiken rustiek, afgewerkt met Rubio Monocoat in de kleur walnut. Onder de treden led-verlichting.</p>
-            </div>
-            <div class="grid grid-cols-2 gap-3 md:gap-6">
-              <div class="aspect-[4/5] overflow-hidden bg-[#2c3135]">
-                <Image src={eikenRecht} alt="Dezelfde trap van onderaf: eiken treden met lampjes eronder langs een witte wand." widths={[300, 600]} sizes="(min-width: 1024px) 15vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover" />
-              </div>
-              <div class="aspect-[4/5] overflow-hidden bg-[#2c3135]">
-                <Image src={eikenDetail} alt="Detail van twee eiken treden met het licht van de led-strip eronder op de witte wand." widths={[300, 600]} sizes="(min-width: 1024px) 15vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover object-[30%_50%]" />
-              </div>
-            </div>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-walnoot" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" class="pijl" /></a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. Bij u thuis: onderwerp kiezen, het bericht staat zichtbaar klaar, door naar WhatsApp. -->
-    <section id="aan-huis" class="scroll-mt-16 py-28 lg:py-40" aria-labelledby="t-huis">
-      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+    <!-- 10. Afspraak aan huis: bericht samenstellen -->
+    <section id="contact" class="bg-zand py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
         <div class="lg:col-span-5">
-          <h2 id="t-huis" class="text-3xl">Geheel vrijblijvend bij u aan huis.</h2>
-          <p class="mt-7 max-w-[25rem] text-lg leading-relaxed text-grijs">Benieuwd wat er bij u thuis mogelijk is? Lavizon komt langs en informeert u over de mogelijkheden.</p>
+          <p class="eyebrow">Afspraak aan huis</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Benieuwd wat er bij u thuis kan?</h2>
+          <p class="mt-6 text-lg text-grijs">Kies waar het om gaat, dan staat uw bericht klaar. Foto’s van de ruimte stuurt u daarna gewoon mee in WhatsApp.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waAanHuis} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[4px] bg-walnoot text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-walnoot" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[4px] bg-zand text-walnoot"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-grijs">Ma t/m vr 8.00 tot 18.00, za tot 14.00 uur</span></span><Icoon naam="pijl" class="h-5 w-5 text-walnoot" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[4px] bg-zand text-walnoot"><Icoon naam="mail" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Mail</b><span class="text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-walnoot" /></a></li>
+          </ul>
         </div>
-        <form class="lg:col-span-6 lg:col-start-7" data-huis novalidate>
-          <fieldset>
-            <legend class="klein text-grijs">Waar gaat het om?</legend>
-            <div class="keuzes mt-4">
-              {onderwerpen.map(([t, w], i) => <label><input type="checkbox" name="onderwerp" value={w} checked={i === 0} /><span>{t}</span></label>)}
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-huis novalidate aria-describedby="huis-uitleg">
+          <h3 class="text-2xl">Uw bericht aan Lavizon</h3>
+          <p id="huis-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp of uw mail zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Waar gaat het om? <span class="font-normal text-grijs">(meer mag)</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {[['Een vloer', 'een nieuwe vloer'], ['Traprenovatie', 'traprenovatie'], ['Raamdecoratie', 'raamdecoratie'], ['Buitenzonwering', 'buitenzonwering'], ['Insectenhorren', 'insectenhorren']].map(([t, w], i) => (
+                <label class="keuze"><input type="checkbox" name="onderwerp" value={w} class="sr-only" checked={i === 1} /><span>{t}</span></label>
+              ))}
             </div>
           </fieldset>
-          <div class="mt-9 grid gap-5 sm:grid-cols-2">
-            <label class="veld"><span class="klein text-grijs">Uw plaats</span><input name="plaats" autocomplete="address-level2" placeholder="bijv. Papendrecht" /></label>
-            <label class="veld"><span class="klein text-grijs">Uw naam</span><input name="naam" autocomplete="name" placeholder="optioneel" /></label>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Uw plaats</span><input name="plaats" autocomplete="address-level2" placeholder="Bijvoorbeeld Papendrecht" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer past het?</span>
+              <select name="deel" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                <option>Doordeweeks overdag</option>
+                <option>Zaterdagochtend</option>
+              </select>
+            </label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Uw naam <span class="font-normal text-grijs">(optioneel)</span></span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
           </div>
-          <div class="bericht mt-9">
-            <p class="klein text-grijs">Dit bericht gaat naar Lavizon</p>
-            <p class="mt-3 whitespace-pre-line text-lg leading-relaxed" aria-live="polite" data-huis-tekst></p>
+          <div class="mt-7 rounded-[6px] border-l-[3px] border-walnoot bg-papier px-5 py-4">
+            <p class="text-xs font-semibold uppercase tracking-[.16em] text-grijs">Voorbeeld van uw bericht</p>
+            <p class="mt-2 whitespace-pre-line" aria-live="polite" data-huis-tekst></p>
           </div>
-          <p class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <a href={waMet('ik ben benieuwd naar de mogelijkheden bij mij thuis.')} class="knop" data-huis-wa>Verstuur via WhatsApp <span class="pijl" aria-hidden="true">→</span></a>
-            <a href={`mailto:${site.mail}`} class="ui lijn" data-huis-mail>Of per mail</a>
-          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={waAanHuis} class="knop knop-walnoot" data-huis-wa><Icoon naam="wa" />Open in WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="link font-semibold" data-huis-mail>Of stuur het per mail</a>
+          </div>
         </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-walnoot text-wit" aria-label="Contact opnemen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Een nieuwe vloer of trap in gedachten?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje, dan komt Lavizon vrijblijvend langs.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waAanHuis} class="knop knop-wit"><Icoon naam="wa" />WhatsApp Lavizon</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
       </div>
     </section>
   </main>
   <Voet />
 </Base>
 
-<style>
-  .hero { min-height: calc(100svh - var(--balk, 0px) - 4rem); display: flex; flex-direction: column; }
-  @media (min-width: 768px) { .hero { min-height: calc(100svh - var(--balk, 0px) - 4.5rem); } }
-  @media (min-width: 1024px) { .hero { display: grid; height: calc(100svh - var(--balk, 0px) - 4.5rem); min-height: 40rem; max-height: 68rem; } }
-  .hero-beeld { min-height: 46svh; }
-
-  .keuzes { display: flex; flex-wrap: wrap; gap: .5rem; }
-  .keuzes label { position: relative; cursor: pointer; }
-  .keuzes input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
-  .keuzes span { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--color-lijn); font-size: var(--text-ui); transition: background-color .3s var(--ease-zacht), color .3s var(--ease-zacht), box-shadow .3s var(--ease-zacht); }
-  .keuzes label:hover span { box-shadow: inset 0 0 0 1px var(--color-inkt); }
-  .keuzes input:checked + span { background: var(--color-inkt); color: var(--color-papier); box-shadow: inset 0 0 0 1px var(--color-inkt); }
-  .keuzes input:focus-visible + span { outline: 2px solid var(--color-inkt); outline-offset: 3px; }
-  .veld { display: grid; gap: .35rem; }
-  .veld input { width: 100%; min-width: 0; background: transparent; border: 0; border-bottom: 1px solid var(--color-lijn); padding: .5rem 0; font: inherit; color: var(--color-inkt); transition: border-color .3s var(--ease-zacht); }
-  .veld input::placeholder { color: #8a8f95; }
-  .veld input:focus { outline: none; border-bottom-color: var(--color-inkt); }
-  .bericht { background: var(--color-wit); padding: 1.5rem 1.6rem 1.7rem; border-left: 2px solid var(--color-inkt); }
-</style>
-
 <script>
   // Zet de keuzes om in een kort WhatsApp- en mailbericht dat zichtbaar meeloopt.
-  const form = document.querySelector<HTMLFormElement>('[data-huis]')!;
-  const wa = form.querySelector<HTMLAnchorElement>('[data-huis-wa]')!;
-  const mail = form.querySelector<HTMLAnchorElement>('[data-huis-mail]')!;
-  const uit = form.querySelector<HTMLElement>('[data-huis-tekst]')!;
-  const basisWa = wa.href.split('?')[0];
-  const basisMail = mail.href.split('?')[0];
-  const lijst = (a: string[]) => a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' en ' + a[a.length - 1];
-  const maak = () => {
-    const keuze = [...form.querySelectorAll<HTMLInputElement>('input[name=onderwerp]:checked')].map((i) => i.value);
-    const plaats = (form.elements.namedItem('plaats') as HTMLInputElement).value.trim();
-    const naam = (form.elements.namedItem('naam') as HTMLInputElement).value.trim();
-    const over = keuze.length ? ` over ${lijst(keuze)}` : '';
-    const waar = plaats ? ` in ${plaats}` : '';
-    const tekst = `Hallo Lavizon, ik ben benieuwd naar de mogelijkheden${over} bij mij thuis${waar}. Kunt u een keer vrijblijvend langskomen?` + (naam ? `\n\nGroet, ${naam}` : '');
-    uit.textContent = tekst;
-    wa.href = `${basisWa}?text=${encodeURIComponent(tekst)}`;
-    mail.href = `${basisMail}?subject=${encodeURIComponent('Vrijblijvend langskomen')}&body=${encodeURIComponent(tekst)}`;
-  };
-  form.addEventListener('input', maak);
-  form.addEventListener('change', maak);
-  form.addEventListener('submit', (e) => e.preventDefault());
-  maak();
+  const form = document.querySelector<HTMLFormElement>('[data-huis]');
+  if (form) {
+    const wa = form.querySelector<HTMLAnchorElement>('[data-huis-wa]')!;
+    const mail = form.querySelector<HTMLAnchorElement>('[data-huis-mail]')!;
+    const uit = form.querySelector<HTMLElement>('[data-huis-tekst]')!;
+    const basisWa = wa.href.split('?')[0];
+    const basisMail = mail.href.split('?')[0];
+    const lijst = (a: string[]) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' en ' + a[a.length - 1]);
+    const veld = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value || '').trim();
+    const maak = () => {
+      const keuze = [...form.querySelectorAll<HTMLInputElement>('input[name=onderwerp]:checked')].map((i) => i.value);
+      const over = keuze.length ? ` voor ${lijst(keuze)}` : '';
+      const waar = veld('plaats') ? ` in ${veld('plaats')}` : '';
+      const regels = [`Hallo Lavizon, ik ben benieuwd naar de mogelijkheden${over} bij mij thuis${waar}. Kunt u een keer vrijblijvend langskomen?`];
+      if (veld('deel')) regels.push(`Het liefst: ${veld('deel').toLowerCase()}.`);
+      if (veld('naam')) regels.push(`Groet, ${veld('naam')}`);
+      const tekst = regels.join('\n\n');
+      uit.textContent = tekst;
+      wa.href = `${basisWa}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `${basisMail}?subject=${encodeURIComponent('Vrijblijvend langskomen')}&body=${encodeURIComponent(tekst)}`;
+    };
+    form.addEventListener('input', maak);
+    form.addEventListener('change', maak);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    maak();
+  }
 </script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.04em; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: 4px; background: var(--color-zand); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #e4dccf; }
+  .keuze input:checked + span { background: var(--color-walnoot); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-walnoot); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 4px; border: 1.5px solid #1d212433; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #1d212466; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-walnoot); }
+  .veld::placeholder { color: #807b74; }
+</style>

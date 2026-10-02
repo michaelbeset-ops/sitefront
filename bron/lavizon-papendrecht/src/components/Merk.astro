@@ -1,18 +1,25 @@
 ---
-// Woordmerk: "Lavizon" met de zon uit hun eigen logo, teruggebracht tot een cirkel met korte stralen.
-interface Props { class?: string; zon?: string; zonder?: boolean }
-const { class: cls = '', zon = '', zonder = false } = Astro.props;
+// Woordmerk: de zon uit hun eigen logo in een antraciet vlak, "Lavizon" zwaar en "woninginrichting" klein eronder.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
 const stralen = Array.from({ length: 12 }, (_, i) => i * 30);
 ---
-<span class:list={['merk inline-flex items-center gap-[.32em]', cls]}>
-  <span>Lavizon</span>
-  {!zonder && <svg viewBox="0 0 24 24" class:list={['zon', zon]} fill="none" stroke="currentColor" aria-hidden="true">
-    <circle cx="12" cy="12" r="4.2" stroke-width="1.5" />
-    {stralen.map((g) => <line x1="12" y1="2" x2="12" y2="4.6" stroke-width="1.5" stroke-linecap="round" transform={`rotate(${g} 12 12)`} />)}
-  </svg>}
+<span class:list={['merk', cls]}>
+  <span class="merk-teken" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="12" cy="12" r="4.2" stroke-width="1.6" />
+      {stralen.map((g) => <line x1="12" y1="2" x2="12" y2="4.6" stroke-width="1.6" stroke-linecap="round" transform={`rotate(${g} 12 12)`} />)}
+    </svg>
+  </span>
+  <span class="merk-tekst"><b>Lavizon</b><small>woninginrichting</small></span>
 </span>
 
 <style>
-  .merk { font-weight: 600; letter-spacing: -0.035em; line-height: 1; }
-  .zon { width: .9em; height: .9em; transform: translateY(-.3em); }
+  .merk { display: inline-flex; align-items: center; gap: .65rem; line-height: 1; white-space: nowrap; }
+  .merk-teken { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 4px; background: var(--color-antraciet); color: var(--color-led); }
+  .merk-teken svg { width: 1.55rem; height: 1.55rem; }
+  .merk-tekst b { display: block; font-family: var(--font-kop); font-weight: 800; font-size: 1.45rem; letter-spacing: -0.04em; }
+  .merk-tekst small { display: block; margin-top: .22rem; font-size: .62rem; letter-spacing: .24em; text-transform: uppercase; font-weight: 700; color: var(--color-walnoot); }
+  :global(.donker) .merk-teken { background: var(--color-antraciet-2); }
+  :global(.donker) .merk-tekst small { color: var(--color-led); }
 </style>

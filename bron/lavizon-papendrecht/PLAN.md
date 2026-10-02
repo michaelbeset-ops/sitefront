@@ -1,13 +1,19 @@
-# Lavizon Woninginrichting, Papendrecht: ontwerpvoorstel (demomodus)
+# Lavizon Woninginrichting, Papendrecht: ontwerpvoorstel v2 (demomodus, niveau BRIEF-MICHAEL)
 
-Geen website (lavizon.nl is een "binnenkort"-pagina met een oud adres). Google: Vloerenwinkel, 4,5 uit 2 reviews, 2 foto's.
-Facebook: traprenovatie, alle soorten vloeren, binnenzonwering, insectenhorren; Zonnelux-verkooppunt (raamdecoratie).
+Geen website (lavizon.nl is een "binnenkort"-pagina). Google: Vloerenwinkel, 4,5 uit 2 reviews. Facebook: traprenovatie,
+alle soorten vloeren, binnenzonwering, insectenhorren; Zonnelux-verkooppunt (raamdecoratie).
 
-## Keuzes (5 regels)
-- Letter: DM Sans (variabel, met optical size), koppen 400 met -0.04em, UI in zinsletters 13-15px (geen gespatieerde caps zoals Vloerfix).
-- Kleur: RAL 9010-wit #f6f5f1 (hun eigen stootborden), antraciet #202427 (hun donkere traptreden), twee grijzen. Geen accent: het licht
-  onder de treden op hun eigen foto's is het enige warme.
-- Beeld: hun eigen Google-foto (woonkamer met houten jaloezieën en houtlook vloer) als volle-hoogte beeld rechts; hun trapfoto's van Facebook.
-- Opbouw: hero (gesplitst vlak + beeld, 100svh), wat ze doen (hun eigen zin + haarlijnlijst), traprenovatie (donker, tijdens/klaar + eiken trap),
-  bij u aan huis (onderwerp kiezen, bericht zichtbaar, WhatsApp), contact.
-- Waarom: Lavizon komt bij mensen thuis; de site moet ogen als een net opgeleverd interieur: wit, antraciet, licht, rust.
+## Keuzes
+- Letter: Schibsted Grotesk 800 voor koppen (stevig, vakmanschap, nog niet gebruikt in de herbouw) + Public Sans voor tekst, 17px/1.6.
+- Kleur: walnoot #8b4a1f (de Rubio Monocoat walnut van hun eiken trap) als enige merkkleur; antraciet #1d2124 (hun
+  donkere treden) voor donkere secties; RAL 9010-wit #f7f5ef als pagina; zand #efe9df als lichte wisselsectie;
+  ledlicht #f0b46a als accent op donker (het licht onder hun treden).
+- Vorm: strak, kleine radius (6px), knoppen rechthoekig. Geen pills (anders dan ZBN/Fan Nails).
+- Beeld: hun eigen woonkamerfoto als volle hero; uitsneden daarvan voor raamdecoratie en vloer; hun trapfoto's (tijdens/klaar
+  als voor/na-schuif, eiken project als galerij). Eén Unsplash-sfeerfoto voor buitenzonwering.
+
+## Secties
+Topbar (3 vinkjes + tel) · header (merk, 5 links, tel, WhatsApp-knop) · hero 100svh · chips · diensten (6 kaarten: 4 foto,
+horren als icoonkaart, "bij u aan huis" donker) · cijferrij · traprenovatie donker (voor/na-schuif + eiken project) ·
+werkwijze 4 stappen · over Lavizon (foto + verhaal + 3 kaders) · review + Google-badge · openingstijden/route ·
+afspraak-aan-huis-composer (WhatsApp) · slotbalk walnoot · footer 4 kolommen · mobiele onderbalk Bellen | WhatsApp.

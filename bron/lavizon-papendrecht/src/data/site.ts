@@ -20,16 +20,27 @@ export const site = {
   wa: 'https://wa.me/31611374929',
   mail: 'info@lavizon.nl',
   kvk: '52448991',
-  google: '4,5',
-  googleAantal: 2,
+  google: { score: '4,5', aantal: 2 },
   maps: 'https://www.google.com/maps/search/?api=1&query=Lavizon+Woninginrichting+Wilgenhof+250+Papendrecht',
-  themeColor: '#f6f5f1',
+  reviews: 'https://www.google.com/maps/search/?api=1&query=Lavizon+Woninginrichting+Papendrecht',
+  themeColor: '#1d2124',
   voorstel: import.meta.env.PUBLIC_VOORSTEL === '1',
 };
-export const tijden: [string, string][] = [
-  ['Maandag tot en met vrijdag', '8.00 tot 18.00'],
-  ['Zaterdag', '8.00 tot 14.00'],
-  ['Zondag', 'Gesloten'],
+
+// dag: 0 = zondag (zoals Date.getDay). Minuten na middernacht voor de live status.
+export const tijden = [
+  { dag: 1, naam: 'Maandag', open: '8.00', dicht: '18.00', van: 480, tot: 1080 },
+  { dag: 2, naam: 'Dinsdag', open: '8.00', dicht: '18.00', van: 480, tot: 1080 },
+  { dag: 3, naam: 'Woensdag', open: '8.00', dicht: '18.00', van: 480, tot: 1080 },
+  { dag: 4, naam: 'Donderdag', open: '8.00', dicht: '18.00', van: 480, tot: 1080 },
+  { dag: 5, naam: 'Vrijdag', open: '8.00', dicht: '18.00', van: 480, tot: 1080 },
+  { dag: 6, naam: 'Zaterdag', open: '8.00', dicht: '14.00', van: 480, tot: 840 },
+  { dag: 0, naam: 'Zondag', open: '', dicht: '', van: 0, tot: 0 },
 ];
+
+// Alleen termen uit hun eigen bronnen (Facebook, lavizon.nl, Zonnelux, trapbericht).
+export const chips = ['Laminaat', 'Vinyl', 'Tapijt', 'Traprenovatie', 'Trapverlichting', 'Binnenzonwering', 'Raamdecoratie', 'Buitenzonwering', 'Insectenhorren'];
+
 export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
-export const waMet = (tekst: string) => `${site.wa}?text=${encodeURIComponent('Hallo Lavizon, ' + tekst)}`;
+export const waMet = (tekst: string) => `${site.wa}?text=${encodeURIComponent(tekst)}`;
+export const waAanHuis = waMet('Hallo Lavizon, ik wil graag een vrijblijvende afspraak bij mij thuis.');
