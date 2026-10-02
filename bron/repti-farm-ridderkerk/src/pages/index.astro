@@ -1,0 +1,441 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, voedseldieren, waMet, waVraag } from '../data/site';
+import hero from '../assets/hero.jpg';
+import baardagamen from '../assets/baardagamen.jpg';
+import pythonTerrarium from '../assets/python-terrarium.jpg';
+import gekko from '../assets/gekko.jpg';
+import pythonBloemen from '../assets/python-bloemen.jpg';
+import slang from '../assets/slang.jpg';
+import gekkoBloem from '../assets/gekko-bloem.jpg';
+import jongeAgamen from '../assets/jonge-agamen.jpg';
+import winkel from '../assets/winkel.jpg';
+import gangpad from '../assets/gangpad.jpg';
+import knaagdieren from '../assets/knaagdieren.jpg';
+import pand from '../assets/pand.jpg';
+
+const vraag = (o: string) => waMet(`Hallo Repti-Farm, ik heb een vraag over ${o}.`);
+
+const groepen = [
+  { t: 'Reptielen', d: 'U kunt bij ons reptielen kopen. Ze worden verzorgd in prachtige terraria.', src: baardagamen, alt: 'Drie baardagamen op rood zand in een terrarium van Repti-Farm', pos: '50% 45%', o: 'reptielen', w: [400, 600, 800] },
+  { t: 'Terraria en inrichting', d: 'Een uitgebreid assortiment aan inrichtingsartikelen om een terrarium goed in te richten.', src: pythonTerrarium, alt: 'Een gevlekte python opgerold onder de warmtelamp in een ingericht terrarium', pos: '50% 60%', o: 'een terrarium en de inrichting', w: [400, 600, 800] },
+  { t: 'Hond en kat', d: 'Royal Canin en KANJER voeding, speeltjes en Pet Plus kattenbakvulling met babypoeder.', src: gangpad, alt: 'Een gangpad in de winkel met schappen vol huisdierartikelen', pos: '50% 50%', o: 'voer voor mijn hond of kat', w: [450] },
+  { t: 'Knaagdieren, vogels en kippen', d: 'Hooi en stro van Vitakraft, hooi met paardenbloem of brandnetel, vogelvoer en kippenvoer.', src: knaagdieren, alt: 'Glazen verblijven met kleine knaagdieren in de winkel, met de voerschappen erachter', pos: '50% 60%', o: 'voer voor knaagdieren, vogels of kippen', w: [450] },
+];
+
+const stappen = [
+  ['Eerst informatie', 'Welk dier u ook wilt, weet waar u aan begint. Kom langs en vraag het gewoon.'],
+  ['Lees u in', 'Over veel dieren bestaan boeken, als eerste kennismaking. Ook die zijn bij Repti-Farm verkrijgbaar.'],
+  ['Dier en terrarium', 'Een terrarium aangepast aan de biotoop van het dier, met de inrichting die erbij hoort.'],
+  ['Voer en verzorging', 'Daarna haalt u hier de voedseldieren en het voer. Met vragen blijft u welkom.'],
+];
+
+const reviews = [
+  { n: 'Jean-Luc V.', w: '8 maanden geleden', t: 'Heel behulpzaam en vriendelijke winkel-eigenaar. Ben echt goed geholpen en heb heel goed advies en informatie gekregen. Meer winkels zouden hier een voorbeeld aan moeten nemen…', bron: 'Google review' },
+  { n: 'Patricia G.', w: '2 jaar geleden', t: 'Altijd lache bij en met hennie..gezellige winkel veel ervaring in reptielen en altijd goed advies … Veel voedseldieren voor mijn eigen dieren … en goede prijzen … Ga er graag heen', bron: 'Google review' },
+  { n: 'Silviano M.', w: '3 jaar geleden', t: 'Ik kwam alleen voor informatie, maar ben weg gegaan met een aanbetaling op een terrarium… Nu een paar maanden verder, zijn wij vaste klant en probeer ik alles daar te halen ondanks dat het 20 minuten rijden is.', bron: 'Google review' },
+];
+---
+<Base title="Repti-Farm | Dierenspeciaalzaak voor reptielen in Ridderkerk" description="Repti-Farm in Ridderkerk is gespecialiseerd in reptielen: dieren, terraria, inrichting en voedseldieren. En daarnaast alles voor hond, kat, knaagdier, vogel, vijver en aquarium.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen foto, een blauwtongskink onder de warmtelamp -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-kelder text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" format="webp" quality={76} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[68%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0f1c1433_0%,#0f1c14c7_42%,#0f1c14f7_100%)] md:bg-[linear-gradient(90deg,#0f1c14f7_0%,#0f1c14d9_36%,#0f1c1466_66%,#0f1c1414_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-16 pt-40 md:py-28 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Dierenspeciaalzaak in Ridderkerk</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Gespeciali&shy;seerd in <span class="text-lamp">reptielen.</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Reptielen, terraria, inrichting en voedseldieren. En daarnaast alles voor uw hond, kat, knaagdier, vogel, vijver en aquarium.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={waVraag} class="knop knop-groen"><Icoon naam="wa" />Vraag het via WhatsApp</a>
+            <a href="#kelder" class="knop knop-rand op-foto">Bekijk de kelder</a>
+          </div>
+          <div class="mt-8 space-y-1.5 text-[.9375rem] text-licht/90 lg:hidden">
+            <p class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Di t/m za open vanaf 10.00 uur</span></p>
+            <p class="flex items-center gap-2"><span class="flex text-lamp">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-60' : ''}`} />)}</span><b class="num">{site.google.score}</b> op Google · {site.google.aantal} reviews</p>
+          </div>
+        </div>
+        <div class="hidden text-right lg:col-span-4 lg:block">
+          <p class="flex items-center justify-end gap-2 text-[.9375rem] text-licht/90" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Di t/m za open vanaf 10.00 uur</span></p>
+          <p class="mt-2 flex items-center justify-end gap-2 text-[.9375rem]"><span class="flex text-lamp">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-60' : ''}`} />)}</span><b class="num">{site.google.score}</b> op Google <span class="text-licht/75">· {site.google.aantal} reviews</span></p>
+          <a href={site.telHref} class="num mt-3 inline-block font-kop text-[1.75rem] font-extrabold tracking-[-0.02em] no-underline transition-colors hover:text-lamp">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat u bij Repti-Farm vindt">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href={c === 'Voedseldieren' ? '#voer' : '#assortiment'} class="shrink-0 rounded-full border border-lijn bg-papier px-4 py-2 text-sm font-medium no-underline transition-colors hover:border-groen hover:bg-groen hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Assortiment -->
+    <section id="assortiment" class="py-20 lg:py-[5.5rem]" aria-labelledby="t-assortiment">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Assortiment</p>
+            <h2 id="t-assortiment" class="mt-5 text-3xl">Voor uw reptiel. En voor al uw andere huisdieren.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">In deze winkel vindt u behalve alle producten voor uw reptielen ook alles voor uw huisdier.</p>
+        </div>
+        <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          {groepen.slice(0, 2).map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.o)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={b.w} sizes="(min-width: 1024px) 390px, (min-width: 640px) 46vw, 92vw" format="webp" quality={72} class="aspect-[16/11] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <h3 class="text-xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen-zacht text-groen transition-colors group-hover:bg-groen group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+          <li class="rijs" style="--d:.12s">
+            <a href="#voer" class="donker group flex h-full flex-col justify-between gap-8 rounded-[14px] bg-kelder p-7 text-licht no-underline shadow-md">
+              <span class="grid h-16 w-16 place-items-center rounded-[14px] bg-kelder-2 text-lamp"><Icoon naam="krekel" class="h-8 w-8" /></span>
+              <div>
+                <h3 class="text-xl">Voedseldieren</h3>
+                <p class="mt-3 text-licht-zacht">{voedseldieren.join(', ')} en meer.</p>
+                <span class="mt-6 inline-flex items-center gap-2 font-semibold text-lamp">Vraag of het er is <Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+              </div>
+            </a>
+          </li>
+          {groepen.slice(2).map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.o)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={b.w} sizes="(min-width: 1024px) 390px, (min-width: 640px) 46vw, 92vw" format="webp" quality={80} class="aspect-[16/11] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <h3 class="text-xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen-zacht text-groen transition-colors group-hover:bg-groen group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+          <li class="rijs" style="--d:.12s">
+            <a href={vraag('de visafdeling')} class="kaart group flex h-full flex-col justify-between gap-8 p-7 no-underline transition-shadow duration-300 hover:shadow-md">
+              <span class="grid h-16 w-16 place-items-center rounded-[14px] bg-groen-zacht text-groen"><Icoon naam="vis" class="h-8 w-8" /></span>
+              <div class="flex items-end justify-between gap-4">
+                <div>
+                  <h3 class="text-xl">Visafdeling en vijver</h3>
+                  <p class="mt-2 text-grijs">Een speciaal ingerichte visafdeling. Van bodembedekking, warmte-elementen en pompen tot aquariumplanten.</p>
+                </div>
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen-zacht text-groen transition-colors group-hover:bg-groen group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="Repti-Farm in cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        {[
+          [site.google.score, 'gemiddeld op Google'],
+          [String(site.google.aantal), 'Google-reviews'],
+          ['2001', 'opgericht als Repti-Farm'],
+          ['20.00', 'vrijdag open tot'],
+        ].map(([g, l], i) => (
+          <div class={`px-2 ${i % 2 ? 'border-l border-lijn pl-6 lg:pl-10' : 'lg:pl-0'} ${i === 2 ? 'lg:border-l lg:border-lijn lg:pl-10' : ''}`}>
+            <dt class="text-sm text-grijs">{l}</dt>
+            <dd class="num -order-1 font-kop text-[clamp(2.5rem,3vw+1.2rem,3.75rem)] font-extrabold leading-none tracking-[-0.04em] text-groen">{g}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- 5. De kelder -->
+    <section id="kelder" class="donker bg-kelder py-20 text-licht lg:py-[5.5rem]" aria-labelledby="t-kelder">
+      <div class="wrap">
+        <div class="grid items-end gap-8 lg:grid-cols-12">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">De kelder</p>
+            <h2 id="t-kelder" class="mt-5 text-3xl">Een trapje af, en u staat tussen de terraria.</h2>
+          </div>
+          <div class="rijs lg:col-span-5" style="--d:.05s">
+            <p class="text-lg text-licht-zacht">Aan beide zijden van de kelder staan terraria, aangepast aan de biotoop van de dieren die erin verblijven. Een goed onderkomen voor hen, en een lust voor het oog.</p>
+            <a href={vraag('de dieren die nu in de kelder zitten')} class="knop knop-groen mt-7"><Icoon naam="wa" />Vraag welke dieren er nu zijn</a>
+          </div>
+        </div>
+
+        <div class="mt-14 grid grid-cols-2 gap-3 md:grid-cols-12 md:grid-rows-[15rem_15rem] md:gap-4 lg:grid-rows-[17rem_17rem]">
+          <figure class="rijs relative col-span-2 overflow-hidden rounded-[14px] md:col-span-6 md:row-span-2">
+            <Image src={gekko} alt="Een lichte, gevlekte gekko op rood zand in een terrarium" widths={[500, 800, 1100, 1600]} sizes="(min-width: 1248px) 590px, (min-width: 768px) 48vw, 92vw" format="webp" quality={74} class="aspect-[4/3] h-full w-full object-cover md:aspect-auto" />
+          </figure>
+          {[
+            { src: pythonBloemen, alt: 'Een python met een lichte tekening tussen roze en witte bloemen', pos: '50% 50%' },
+            { src: jongeAgamen, alt: 'Jonge agamen op een stuk hout onder de lamp, met een cactus op de voorgrond', pos: '50% 40%' },
+            { src: slang, alt: 'Close-up van een oranje-rode slang met een geschubde kop', pos: '50% 35%' },
+            { src: gekkoBloem, alt: 'Een gekko met een kuif boven de ogen tussen roze bloemen', pos: '50% 30%' },
+          ].map((f, i) => (
+            <figure class="rijs overflow-hidden rounded-[14px] md:col-span-3" style={`--d:${i * 0.05}s`}>
+              <Image src={f.src} alt={f.alt} widths={[400, 700, 900]} sizes="(min-width: 1248px) 290px, (min-width: 768px) 24vw, 46vw" format="webp" quality={72} class="aspect-square h-full w-full object-cover md:aspect-auto" style={`object-position:${f.pos}`} />
+            </figure>
+          ))}
+        </div>
+
+        </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-[5.5rem]" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Een reptiel kopen</p>
+            <h2 id="t-stappen" class="mt-5 text-3xl">Van eerste vraag tot eigen terrarium.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Boeken en ervaringen van deskundige liefhebbers helpen u op weg.</p>
+        </div>
+        <ol class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart relative p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2.5rem] font-extrabold leading-none tracking-[-0.04em] text-groen">0{i + 1}</p>
+              <h3 class="mt-6 text-xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Voedseldieren: even vragen of het er is -->
+    <section id="voer" class="bg-zand py-20 lg:py-[5.5rem]" aria-labelledby="t-voer">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Voedseldieren</p>
+          <h2 id="t-voer" class="mt-5 text-3xl">Wat natuurlijk niet mag ontbreken.</h2>
+          <p class="mt-6 text-lg text-grijs">Krekels of wormen nodig? Vraag even of het er is, dan staat het klaar als u komt.</p>
+          <ul class="mt-9 grid grid-cols-2 gap-x-8 border-t border-lijn">
+            {voedseldieren.map((v) => (
+              <li class="flex items-center gap-3 border-b border-lijn py-3.5 font-medium"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-groen" aria-hidden="true"></span>{v}{v === 'Dolalarven' && <span class="sr-only"> (rozenkeverlarven)</span>}</li>
+            ))}
+          </ul>
+          <p class="mt-4 text-sm text-grijs">Dolalarven zijn rozenkeverlarven. En verder: vraag het gerust.</p>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-voer novalidate aria-describedby="voer-uitleg">
+          <h3 class="text-2xl">Even checken of het er is</h3>
+          <p id="voer-uitleg" class="mt-2 text-grijs">Kies wat u nodig hebt. Er wordt niets verstuurd tot u zelf in WhatsApp op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat zoekt u? <span class="font-normal text-grijs">(meer mag)</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {voedseldieren.map((v, i) => (
+                <label class="keuze"><input type="checkbox" name="voer" value={v.toLowerCase()} class="sr-only" checked={i === 0} /><span>{v}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Voor welk dier? <span class="font-normal text-grijs">(optioneel)</span></span><input name="dier" placeholder="Bijvoorbeeld baardagaam" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer komt u?</span>
+              <select name="dag" class="veld mt-2" data-dagen>
+                <option value="">Weet ik nog niet</option>
+                <option>dinsdag</option><option>woensdag</option><option>donderdag</option><option>vrijdag</option><option>zaterdag</option>
+              </select>
+            </label>
+          </div>
+          <div class="mt-7 rounded-[10px] border-l-[3px] border-groen bg-papier px-5 py-4">
+            <p class="text-xs font-semibold uppercase tracking-[.16em] text-grijs">Uw bericht</p>
+            <p class="mt-2 whitespace-pre-line" aria-live="polite" data-voer-tekst>Hallo Repti-Farm, hebben jullie krekels op voorraad?</p>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={waMet('Hallo Repti-Farm, hebben jullie krekels op voorraad?')} class="knop knop-groen" data-voer-wa><Icoon naam="wa" />Open in WhatsApp</a>
+            <a href={site.telHref} class="link num font-semibold">Of bel {site.tel}</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. Over Repti-Farm -->
+    <section id="over" class="py-20 lg:py-[5.5rem]" aria-labelledby="t-over">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <figure class="rijs relative lg:col-span-6">
+          <Image src={winkel} alt="De toonbank van Repti-Farm, met schappen vol terrariumlampen, voer en accessoires" widths={[600, 900, 1300, 1600]} sizes="(min-width: 1248px) 590px, (min-width: 1024px) 48vw, 92vw" format="webp" quality={74} class="aspect-[4/5] w-full rounded-[14px] object-cover object-[40%_50%] lg:aspect-[1/1]" />
+          <figcaption class="absolute -bottom-6 right-4 hidden w-56 overflow-hidden rounded-[14px] bg-wit p-2 shadow-md sm:block lg:-right-6">
+            <Image src={pand} alt="De winkel aan de Prinses Margrietstraat 36 van buiten" widths={[450]} sizes="208px" format="webp" quality={80} class="aspect-[4/3] w-full rounded-[8px] object-cover" />
+            <span class="block px-1.5 pb-1 pt-2 text-xs leading-snug"><b class="block font-semibold">Prinses Margrietstraat 36</b><span class="text-grijs">Ridderkerk</span></span>
+          </figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over Repti-Farm</p>
+          <h2 id="t-over" class="mt-5 text-3xl">Een begrip in Ridderkerk.</h2>
+          <p class="mt-6 text-lg text-grijs">Repti-Farm is sinds 2001 een dierenspeciaalzaak in Ridderkerk, gespecialiseerd in reptielen. Klanten komen voor voer of een terrarium, en blijven voor een praatje met eigenaar Hennie.</p>
+          <blockquote class="mt-8 border-l-[3px] border-groen pl-5 font-kop text-xl font-bold leading-snug tracking-[-0.015em]">“Lieve eigenaar met een hart en passie voor zijn werk en dieren.”<span class="mt-2 block font-sans text-sm font-normal tracking-normal text-grijs">Uit een Google-review</span></blockquote>
+          <ul class="mt-9 grid gap-3">
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-wit"><Icoon naam="terrarium" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Veel ervaring in reptielen</h3><p class="mt-1 text-[.9375rem] text-grijs">Klanten noemen de kennis en de goede tips over hoe u het beste voor uw dieren zorgt.</p></div>
+            </li>
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-wit"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Eerlijk advies</h3><p class="mt-1 text-[.9375rem] text-grijs">Ook als er niets verkocht wordt. Tijd voor een praatje is er altijd.</p></div>
+            </li>
+            <li class="kaart flex items-start gap-4 p-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-wit"><Icoon naam="boek" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Niet in de winkel? Dan zoeken we het</h3><p class="mt-1 text-[.9375rem] text-grijs">Vraag ernaar, dan gaat Repti-Farm voor u op zoek.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section id="reviews" class="donker bg-kelder py-20 text-licht lg:py-[5.5rem]" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="inline-flex items-center gap-4 self-start rounded-[14px] bg-wit px-5 py-4 text-inkt no-underline shadow-md transition-transform hover:-translate-y-0.5 md:self-auto">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-60' : ''}`} />)}</span></span>
+              <span class="block text-sm text-grijs">uit {site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
+          {reviews.map((r, i) => (
+            <li class="rijs flex flex-col rounded-[14px] bg-kelder-2 p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.1rem] w-[1.1rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-licht/90">“{r.t}”</blockquote>
+              <p class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5 text-sm">
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-groen font-semibold text-wit" aria-hidden="true">{r.n.charAt(0)}</span>
+                <span><b class="block font-semibold text-licht">{r.n}</b><span class="text-licht-zacht">{r.bron}, {r.w}</span></span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10. Openingstijden, adres en contact -->
+    <section id="contact" class="py-20 lg:py-[5.5rem]" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Openingstijden en contact</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Kom langs aan de Prinses Margrietstraat.</h2>
+          <p class="mt-6 text-lg text-grijs">Dinsdag tot en met zaterdag open, op vrijdag tot 20.00 uur. Liever eerst iets vragen? Stuur een appje of bel.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waVraag} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-groen text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-groen" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-groen-zacht text-groen"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-groen" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-groen-zacht text-groen"><Icoon naam="mail" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Mail</b><span class="break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-groen" /></a></li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-6">
+          <div class="kaart p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="inline-flex items-center gap-2 rounded-full bg-zand px-3.5 py-1.5 text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Di t/m za open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van Repti-Farm</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-groen">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}{t.dag === 5 && <span class="ml-2 rounded-full bg-groen-zacht px-2 py-0.5 text-xs font-semibold text-groen">koopavond</span>}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-groen" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" class="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-groen text-wit" aria-label="Contact opnemen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Benieuwd wie er nu in de kelder woont?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje of kom gewoon kijken.</p>
+        </div>
+        <div class="flex shrink-0 flex-wrap gap-3">
+          <a href={vraag('de dieren die er nu zijn')} class="knop knop-wit"><Icoon naam="wa" />WhatsApp Repti-Farm</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Voedseldieren-check: keuzes worden een kort WhatsApp-bericht; de dagen volgen de echte openingstijden.
+  const form = document.querySelector<HTMLFormElement>('[data-voer]');
+  if (form) {
+    const wa = form.querySelector<HTMLAnchorElement>('[data-voer-wa]')!;
+    const uit = form.querySelector<HTMLElement>('[data-voer-tekst]')!;
+    const sel = form.querySelector<HTMLSelectElement>('[data-dagen]')!;
+    const basis = wa.href.split('?')[0];
+    const lijst = (a: string[]) => (a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' en ' + a[a.length - 1]);
+    const veld = (n: string) => String((form.elements.namedItem(n) as HTMLInputElement | null)?.value || '').trim();
+
+    // Volgende vijf openingsdagen (di t/m za), met vandaag alleen als de winkel nog open gaat of is.
+    const rooster: Record<number, [number, number]> = { 2: [600, 1080], 3: [600, 1080], 4: [600, 1080], 5: [600, 1200], 6: [600, 1020] };
+    const namen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+    const nu = new Date();
+    const deel = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', ...o }).format(nu);
+    const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel({ weekday: 'short' }));
+    const min = Number(deel({ hour: '2-digit', hourCycle: 'h23' })) * 60 + Number(deel({ minute: '2-digit' }));
+    const opties: [string, string][] = [];
+    for (let i = 0; i < 8 && opties.length < 4; i++) {
+      const d = (dag + i) % 7; const r = rooster[d];
+      if (!r || (i === 0 && min >= r[1] - 30)) continue;
+      const uur = `${r[1] / 60}.00`;
+      const label = i === 0 ? `Vandaag (open tot ${uur})` : i === 1 ? `Morgen, ${namen[d]}` : `${namen[d][0].toUpperCase()}${namen[d].slice(1)}${d === 5 ? ' (tot 20.00)' : ''}`;
+      opties.push([i === 0 ? 'vandaag' : i === 1 ? 'morgen' : namen[d], label]);
+    }
+    sel.replaceChildren(new Option('Weet ik nog niet', ''), ...opties.map(([w, l]) => new Option(l, w)));
+
+    const maak = () => {
+      const keuze = [...form.querySelectorAll<HTMLInputElement>('input[name=voer]:checked')].map((i) => i.value);
+      const wat = keuze.length ? lijst(keuze) : 'voedseldieren';
+      const voor = veld('dier') ? ` voor mijn ${veld('dier')}` : '';
+      let tekst = `Hallo Repti-Farm, hebben jullie ${wat}${voor} op voorraad?`;
+      if (veld('dag')) tekst += ` Dan kom ik ${veld('dag') === 'vandaag' || veld('dag') === 'morgen' ? veld('dag') : `${veld('dag')}`} langs.`;
+      uit.textContent = tekst;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    form.addEventListener('input', maak);
+    form.addEventListener('change', maak);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    maak();
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.045em; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: 999px; background: var(--color-zand); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #ddd5c4; }
+  .keuze input:checked + span { background: var(--color-groen); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-groen); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 10px; border: 1.5px solid #121c1633; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #121c1666; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-groen); }
+  .veld::placeholder { color: #737a74; }
+</style>
