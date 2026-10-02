@@ -1,0 +1,86 @@
+---
+// Header. Op de homepage ligt hij transparant over het volle beeld (licht), na het beeld wordt hij papier met inkt.
+import { site, url, waMet } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { overBeeld?: boolean }
+const { overBeeld = false } = Astro.props;
+const nav = [
+  ['Diensten', '#diensten'],
+  ['Werkwijze', '#werkwijze'],
+  ['Over', '#over'],
+  ['Uw vloer', '#uw-vloer'],
+  ['Contact', '#contact'],
+];
+const thuis = url('');
+---
+<header class:list={['kop sticky top-0 z-40', { 'over-beeld': overBeeld }]} data-kop>
+  <div class="wrap flex h-16 items-center justify-between gap-6 md:h-20">
+    <a href={thuis} class="flex items-center gap-3.5" aria-label={`${site.naam}, naar de homepage`}>
+      <Merk class="h-7 w-auto shrink-0" />
+      <span class="woordmerk text-[.875rem] font-normal" aria-hidden="true">VLOERFIX</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="ui flex gap-10">
+        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="lijn-in">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-7">
+      <a href={site.telHref} class="ui num lijn-in hidden xl:inline">{site.tel}</a>
+      <a href={waMet('ik heb een vraag over een dekvloer. ')} class="knop knop-kop knop-klein max-[359px]:hidden">WhatsApp</a>
+      <button type="button" class="ui lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>Menu</button>
+    </div>
+  </div>
+
+  <div id="menu" class="menu lg:hidden" hidden data-menu>
+    <nav aria-label="Menu" class="wrap flex min-h-full flex-col justify-between gap-10 pb-10 pt-8">
+      <ul class="space-y-1">
+        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="block py-1 text-[2.125rem] font-light leading-tight tracking-[-.035em]" data-menu-link>{t}</a></li>)}
+      </ul>
+      <p class="space-y-3">
+        <a href={waMet('ik heb een vraag over een dekvloer. ')} class="knop knop-vol w-full">Stuur een WhatsApp</a>
+        <a href={site.telHref} class="knop num w-full">Bel {site.tel}</a>
+      </p>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .kop { color: var(--color-inkt); background-color: color-mix(in srgb, var(--color-papier) 94%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: background-color .5s var(--ease-zacht), color .5s var(--ease-zacht), box-shadow .5s var(--ease-zacht); }
+  .kop.schaduw { box-shadow: 0 1px 0 var(--color-lijn); }
+  .knop-kop { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
+  .knop-kop::before { background: var(--color-papier) !important; }
+  .knop-kop:hover { color: var(--color-inkt); }
+
+  /* Over het beeld: geen vlak, lichte tekst; zodra het beeld voorbij is gewoon papier. */
+  .kop.over-beeld { margin-bottom: -4rem; }
+  @media (min-width: 768px) { .kop.over-beeld { margin-bottom: -5rem; } }
+  .kop.over-beeld:not(.vast):not(.open) { background-color: transparent; color: var(--color-licht); backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+  .kop.over-beeld:not(.vast):not(.open) .knop-kop { background: var(--color-licht); color: var(--color-inkt); border-color: var(--color-licht); }
+  .kop.over-beeld:not(.vast):not(.open) .knop-kop::before { background: var(--color-inkt) !important; }
+  .kop.over-beeld:not(.vast):not(.open) .knop-kop:hover { color: var(--color-licht); }
+  .kop.over-beeld:not(.vast):not(.open) :focus-visible { outline-color: var(--color-licht); }
+  .menu { position: fixed; left: 0; right: 0; bottom: 0; top: 4rem; background: var(--color-papier); color: var(--color-inkt); overflow-y: auto; }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
+  const beeld = document.querySelector<HTMLElement>('[data-beeld]');
+  const zet = () => {
+    kop.classList.toggle('schaduw', scrollY > 8);
+    if (beeld) kop.classList.toggle('vast', beeld.getBoundingClientRect().bottom <= kop.offsetHeight + 1);
+  };
+  zet(); addEventListener('scroll', zet, { passive: true }); addEventListener('resize', zet);
+  const knop = kop.querySelector<HTMLButtonElement>('[data-menu-knop]')!;
+  const menu = kop.querySelector<HTMLElement>('[data-menu]')!;
+  const open = (aan: boolean) => {
+    menu.style.top = kop.getBoundingClientRect().bottom + 'px';
+    menu.hidden = !aan;
+    kop.classList.toggle('open', aan);
+    knop.setAttribute('aria-expanded', String(aan));
+    knop.textContent = aan ? 'Sluiten' : 'Menu';
+    document.documentElement.style.overflow = aan ? 'hidden' : '';
+  };
+  knop.addEventListener('click', () => open(menu.hidden));
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => open(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { open(false); knop.focus(); } });
+</script>
