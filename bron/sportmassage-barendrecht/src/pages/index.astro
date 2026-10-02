@@ -3,159 +3,508 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, waMet } from '../data/site';
-import weg from '../assets/weg.jpg';
+import Icoon from '../components/Icoon.astro';
+import Merk from '../components/Merk.astro';
+import { site, tijden, uur, waMet } from '../data/site';
 import kuit from '../assets/kuit.jpg';
+import handdoek from '../assets/handdoek.jpg';
 import lopers from '../assets/lopers.jpg';
+import sport from '../assets/sport.jpg';
+import hotstone from '../assets/hotstone.jpg';
+import relax from '../assets/relax.jpg';
+import schouder from '../assets/schouder.jpg';
+import zwanger from '../assets/zwanger.jpg';
+import marathon from '../assets/marathon.jpg';
 
-// Behandelingen en duur: letterlijk van hun pagina Behandelingen.
+// Behandelingen en duur: letterlijk van hun pagina Behandelingen; de korte zin per kaart is van ons (zie rapport).
 const behandelingen = [
-  { naam: 'Sportmassage', duur: '30 of 50 minuten' },
-  { naam: 'Hot stone-massage', duur: '30 of 50 minuten' },
-  { naam: 'Full body relaxing massage', duur: '30 of 50 minuten' },
-  { naam: 'Ontspanningsmassage rug-schouder-nek', duur: '30 minuten' },
-  { naam: 'Zwangerschapsmassage', duur: '30 of 50 minuten', nieuw: true },
+  { naam: 'Sportmassage', duur: '30 of 50 min', tekst: 'Voor als je traint, een wedstrijd loopt of je spieren vastzitten.', foto: sport, pos: '50% 50%', alt: 'Handen kneden de kuit van iemand op een massagetafel met een blauwe handdoek.', wa: 'een sportmassage' },
+  { naam: 'Hot stone-massage', duur: '30 of 50 min', tekst: 'Massage met warme stenen, voor diepe ontspanning.', foto: hotstone, pos: '50% 60%', alt: 'Een rij zwarte stenen ligt op de rug van iemand op een massagetafel.', wa: 'een hot stone-massage' },
+  { naam: 'Full body relaxing massage', duur: '30 of 50 min', tekst: 'Van top tot teen, om helemaal tot rust te komen.', foto: relax, pos: '50% 62%', alt: 'Twee handen masseren een rug.', wa: 'een full body relaxing massage' },
+  { naam: 'Rug, schouder en nek', duur: '30 min', tekst: 'Ontspanningsmassage voor als je nek of rug helemaal vastzit.', foto: schouder, pos: '40% 40%', alt: 'Een behandelaar pakt de schouder van een vrouw in een wit shirt vast.', wa: 'een ontspanningsmassage rug-schouder-nek' },
+  { naam: 'Zwangerschapsmassage', duur: '30 of 50 min', tekst: 'Even ontspannen tijdens je zwangerschap. Meld vooraf hoe ver je bent.', foto: zwanger, pos: '50% 50%', alt: 'Handen in hartvorm op een zwangere buik.', wa: 'een zwangerschapsmassage', nieuw: true },
+  { naam: 'Op locatie', duur: 'Op aanvraag', tekst: 'Met complete behandeltafel naar sportevenementen, feesten, beurzen of kantoor.', foto: marathon, pos: '50% 40%', alt: 'Een groep hardlopers met startnummers op de weg tijdens een wedstrijd.', wa: 'ik wil graag massages op locatie aanvragen. Het gaat om ', locatie: true },
 ];
 
-// Gastenboek op sportmassagebarendrecht.nl (letterlijk, alleen emoji-tekens weggelaten) en één Google-review.
+// Werkwijze: alles uit hun eigen pagina's (Welkom, Behandelingen, Voorwaarden) en de Google-tijden.
+const stappen = [
+  { icoon: 'chat', titel: 'Appen of bellen', tekst: `Stuur een WhatsApp of bel <span class="num whitespace-nowrap">${site.tel}</span>. Overdag, 's avonds en op zaterdag.` },
+  { icoon: 'klembord', titel: 'Kosteloze intake', tekst: 'Samen met Andrea bepaal je welke behandeling het beste past bij je wensen.' },
+  { icoon: 'hart', titel: 'De massage', tekst: '30 of 50 minuten, in de praktijk in Barendrecht of op locatie.' },
+  { icoon: 'euro', titel: 'Afrekenen', tekst: 'Na afloop contant, zoveel mogelijk gepast. Je krijgt een kwitantie.' },
+];
+
+// Voorwaarden: samengevat van hun pagina Voorwaarden.
+const voorwaarden = [
+  'Geen medische behandelingen. Bij medische klachten eerst overleggen met je arts of specialist.',
+  'Medische klachten, medicijngebruik of (een wens tot) zwangerschap altijd vooraf melden.',
+  'Bij koorts, griep, trombose en een aantal andere aandoeningen mag je niet gemasseerd worden.',
+  'Annuleren kan tot 24 uur van tevoren, telefonisch of per mail. Daarna worden de kosten in rekening gebracht.',
+  'Je persoonlijke en medische gegevens gaan nooit zonder je schriftelijke toestemming naar derden.',
+  'Er worden geen erotische massages gegeven.',
+];
+
+// Google-reviews: letterlijk (beperkte weergave Google Maps, 2 oktober 2026). Naam als voornaam + initiaal.
+const reviews = [
+  { naam: 'Chris T.', wanneer: '9 jaar geleden', tekst: 'Andrea is erg vriendelijk en professioneel, een uitstekende sportmassage gehad en daarmee verlost van de kwaaltjes en pijntjes. Zeker voor herhaling vatbaar' },
+  { naam: 'Jacqueline', wanneer: '6 jaar geleden', tekst: 'Geweldig massage me rug en nek zat geen beweging meer in Andrea heeft me geweldig geholpen ben heel dankbaar dankjewel kom zeker terug' },
+  { naam: 'Stephan W.', wanneer: '3 jaar geleden', tekst: 'Ik heb hier een zeer goede massage ontvangen, absoluut een aanradar.' },
+];
+
+// Gastenboek op sportmassagebarendrecht.nl (letterlijk, alleen emoji-tekens weggelaten).
 const gastenboek = [
-  { wat: 'Marathon Rotterdam', tekst: 'Bedankt Andrea, dankzij jou marathon Rotterdam heerlijk uitgelopen! Geen kramp!!!!', wie: 'Ron Mak' },
-  { wat: 'New York', tekst: 'Mooie tijd gelopen in NY thanks voor de goede zorgen.', wie: 'Robert Plaisier, november 2024' },
+  { wat: 'Marathon Rotterdam', tekst: 'Bedankt Andrea, dankzij jou marathon Rotterdam heerlijk uitgelopen! Geen kramp!!!!', wie: 'Ron M.' },
+  { wat: 'New York', tekst: 'Mooie tijd gelopen in NY thanks voor de goede zorgen.', wie: 'Robert P., november 2024' },
   { wat: 'Vierdaagse', tekst: 'Vierdaagse weer uitgelopen!! Thanks voor de massages topper!!', wie: 'Francina en Robert, juli 2025' },
   { wat: 'Wintersport', tekst: 'Heerlijk na week skiën, ff de spieren laten losgooien. Ik kan er weer tegenaan.', wie: 'Vincent, januari 2024' },
   { wat: 'Zwangerschap', tekst: 'Zo genoten van zwangerschapsmassage, kan er weer even tegenaan.', wie: 'Lindsey, juli 2026' },
-  { wat: 'Rug en nek', tekst: 'Geweldig massage me rug en nek zat geen beweging meer in Andrea heeft me geweldig geholpen ben heel dankbaar dankjewel kom zeker terug', wie: 'Jacqueline, op Google' },
+  { wat: 'Cadeaubon', tekst: 'Blij met mijn kerstcadeau, een massagebon! Tot snel.', wie: 'Erwin' },
 ];
+
+const week = [...tijden.slice(1).map((d, i) => ({ ...d, i: i + 1 })), { ...tijden[0], i: 0 }];
+const wa = waMet('ik wil graag een afspraak maken. ');
+const opties = [
+  ['sportmassage', true],
+  ['hot stone-massage', true],
+  ['full body relaxing massage', true],
+  ['ontspanningsmassage rug-schouder-nek', false],
+  ['zwangerschapsmassage', true],
+] as const;
 ---
-<Base title="Sportmassage Praktijk Barendrecht | Andrea Noordam, Dorpsstraat-Oost 30" description="Sportmassage, hot stone, full body relaxing, rug-schouder-nek en zwangerschapsmassage door gediplomeerd masseur Andrea Noordam in Barendrecht. Ook op locatie en als cadeaubon.">
-  <Kop overBeeld />
+<Base title="Sportmassage Praktijk Barendrecht | Andrea Noordam, Dorpsstraat-Oost 30" description="Sportmassage, hot stone, full body relaxing, rug-schouder-nek en zwangerschapsmassage door gediplomeerd masseur Andrea Noordam in Barendrecht. Kosteloos intakegesprek, ook op locatie en als cadeaubon.">
+  <Kop />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: het asfalt na de finish over de volle breedte en hoogte, de kop er rustig op. -->
-    <section class="hero donker relative isolate flex flex-col overflow-hidden bg-asfalt text-licht" aria-labelledby="titel" data-beeld>
-      <Image src={weg} alt="" widths={[640, 960, 1400, 2000]} sizes="100vw" format="webp" quality={72} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_50%]" />
+    <!-- 1. Hero: hun eigen Google-foto over de volle breedte en hoogte. -->
+    <section class="hero donker relative isolate flex flex-col overflow-hidden bg-asfalt text-licht" aria-labelledby="titel">
+      <Image src={kuit} alt="Een masseur in witte kleding kneedt de kuit van een cliënt op de behandeltafel." widths={[640, 1000]} sizes="100vw" format="webp" quality={78} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_58%]" />
       <div class="hero-waas absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div class="wrap flex flex-1 flex-col justify-center pb-10 pt-32 md:pt-36">
-        <div class="max-w-[46rem]">
-          <h1 id="titel" class="text-4xl">Sportmassage in Barendrecht.</h1>
-          <p class="mt-7 max-w-[31rem] leading-relaxed text-licht/85 md:mt-9 md:text-lg">Gediplomeerd masseur Andrea Noordam, voor sport, ontspanning, hot stone en zwangerschap. Het intakegesprek is kosteloos.</p>
-          <p class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5 md:mt-12">
-            <a href={waMet('ik wil graag een afspraak maken. ')} class="knop knop-geel">Afspraak via WhatsApp</a>
-            <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
-          </p>
+      <div class="wrap flex flex-1 flex-col justify-center py-14 lg:py-12">
+        <div class="max-w-[44rem]">
+          <p class="eyebrow text-licht">Gediplomeerd masseur in Barendrecht</p>
+          <h1 id="titel" class="mt-6 text-4xl text-licht">Sportmassage en ontspanning in <span class="text-geel">Barendrecht</span>.</h1>
+          <p class="mt-6 max-w-[34rem] text-lg leading-relaxed text-licht/90 md:text-[1.3125rem]">Andrea Noordam masseert sporters, wandelaars, zwangere vrouwen en iedereen die even los wil. Het intakegesprek is kosteloos.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={wa} class="btn btn-geel"><Icoon naam="whatsapp" />Afspraak via WhatsApp</a>
+            <a href="#behandelingen" class="btn btn-rand-licht">Bekijk behandelingen</a>
+          </div>
         </div>
       </div>
-      <div class="wrap flex items-end justify-between gap-6 pb-8 text-licht/75 md:pb-10">
-        <p class="ui">{site.straat}, {site.plaats}</p>
-        <p class="ui hidden md:block">Ook op locatie</p>
-      </div>
-    </section>
-
-    <!-- 2. Behandelingen: rustige lijst met duur, de eigen profielfoto ernaast. -->
-    <section id="behandelingen" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-beh">
-      <div class="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-5">
-          <h2 id="t-beh" class="text-3xl">Behandelingen.</h2>
-          <p class="mt-8 max-w-[27rem] text-lg leading-relaxed text-grijs">Je wilt je lekker ontspannen of misschien zit je nek of rug helemaal vast. In een kosteloos intakegesprek bepaal je samen met Andrea welke behandeling het beste past.</p>
-          <figure class="mt-14 hidden aspect-[4/5] max-w-[26rem] overflow-hidden bg-steen lg:block">
-            <Image src={kuit} alt="Een masseur kneedt de kuit van een sporter op de behandeltafel." widths={[420, 700, 1000]} sizes="26rem" format="webp" quality={72} class="h-full w-full object-cover object-[45%_60%]" />
-          </figure>
-        </div>
-        <div class="lg:col-span-6 lg:col-start-7 lg:pt-3">
-          <ul class="border-t border-lijn">
-            {behandelingen.map((b) => (
-              <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-lijn py-7 md:py-8">
-                <h3 class="text-xl">{b.naam}{b.nieuw && <span class="ui ml-3 align-middle text-grijs">Nieuw</span>}</h3>
-                <p class="num text-grijs">{b.duur}</p>
-              </li>
-            ))}
+      <div class="wrap pb-8 lg:pb-10">
+        <div class="flex flex-wrap items-end justify-between gap-6 border-t border-lijn-licht pt-6">
+          <ul class="flex flex-wrap gap-x-7 gap-y-3 text-sm">
+            <li class="flex items-center gap-2"><span class="sterren"><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /></span><span><strong class="font-bold">{site.google}</strong> op Google · {site.googleAantal} reviews</span></li>
+            <li class="flex items-center gap-2"><span class="status-stip" data-open-stip aria-hidden="true"></span><span data-open-tekst>Ma t/m vr 10.00 tot 22.00, za tot 20.00</span></li>
+            <li class="flex items-center gap-2"><Icoon naam="pin" class="h-4.5 w-4.5 text-geel" />{site.straat}</li>
           </ul>
-          <p class="mt-10 max-w-[32rem] text-grijs">Combinaties van deze technieken kunnen ook, net als een deelmassage. Prijzen? Stuur even een appje.</p>
-          <p class="mt-4 max-w-[32rem] text-sm text-grijs">Niet iedereen mag zomaar gemasseerd worden, bijvoorbeeld bij koorts, griep of trombose. <a href="#voorwaarden" class="lijn text-inkt">Lees wat je vooraf moet melden</a>.</p>
-          <figure class="mt-14 aspect-[4/3] overflow-hidden bg-steen lg:hidden">
-            <Image src={kuit} alt="Een masseur kneedt de kuit van een sporter op de behandeltafel." widths={[420, 700, 1000]} sizes="100vw" format="webp" quality={72} class="h-full w-full object-cover object-[45%_62%]" />
-          </figure>
+          <a href={site.telHref} class="num hidden whitespace-nowrap font-display text-[1.75rem] font-extrabold tracking-[-.02em] hover:text-geel lg:block">{site.tel}</a>
         </div>
       </div>
     </section>
 
-    <!-- 3. Gastenboek: wat klanten zelf schreven, per gelegenheid. -->
-    <section id="gastenboek" class="scroll-mt-20 border-t border-lijn bg-wit py-28 lg:py-40" aria-labelledby="t-gast">
+    <!-- 2. Chips met alles wat ze doen. -->
+    <nav aria-label="Snel naar" class="border-b border-lijn bg-wit">
+      <ul class="wrap chips flex gap-2.5 overflow-x-auto py-4 lg:justify-center">
+        {['Sportmassage', 'Hot stone', 'Full body relaxing', 'Rug-schouder-nek', 'Zwangerschapsmassage', 'Op locatie', 'Cadeaubon'].map((c, i) => (
+          <li class="shrink-0"><a href={i === 6 ? '#cadeaubon' : i === 5 ? '#op-locatie' : '#behandelingen'} class="chip">{c}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <!-- 3. Behandelingen: zes fotokaarten. -->
+    <section id="behandelingen" class="py-20 lg:py-24" aria-labelledby="t-beh">
       <div class="wrap">
-        <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
-          <h2 id="t-gast" class="text-3xl lg:col-span-6">Na de finish.</h2>
-          <p class="max-w-[30rem] text-grijs lg:col-span-4 lg:col-start-9 lg:self-end">Het gastenboek van de praktijk telt 153 berichten. Een paar, zoals klanten ze zelf schreven.</p>
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow text-grijs">Behandelingen</p>
+            <h2 id="t-beh" class="mt-5 text-3xl">Welke massage past bij jou?</h2>
+          </div>
+          <p class="max-w-[30rem] text-grijs lg:col-span-5">Je wilt je lekker ontspannen of misschien zit je nek of rug helemaal vast. In een kosteloos intakegesprek bepaal je samen met Andrea welke behandeling het beste past.</p>
         </div>
-        <ul class="mt-16 border-t border-lijn lg:mt-24">
+        <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {behandelingen.map((b) => (
+            <li>
+              <a href={b.locatie ? waMet(b.wa) : waMet(`ik wil graag een afspraak voor ${b.wa}. `)} class="behkaart kaart group flex h-full flex-col overflow-hidden">
+                <div class="relative aspect-[3/2] overflow-hidden bg-zand">
+                  <Image src={b.foto} alt={b.alt} widths={[420, 640, 900]} sizes="(min-width: 1024px) 24rem, (min-width: 640px) 50vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                  <span class="num absolute left-4 top-4 rounded-full bg-wit/95 px-3 py-1 text-xs font-semibold shadow-sm">{b.duur}</span>
+                  {b.nieuw && <span class="absolute right-4 top-4 rounded-full bg-geel px-3 py-1 text-xs font-bold">Nieuw</span>}
+                </div>
+                <div class="flex flex-1 flex-col p-6">
+                  <h3 class="text-xl">{b.naam}</h3>
+                  <p class="mt-2 flex-1 text-grijs">{b.tekst}</p>
+                  <p class="mt-5 flex items-center gap-2 font-display text-sm font-bold text-oker">{b.locatie ? 'Vraag het aan' : 'Afspraak maken'}<Icoon naam="pijl" class="h-4 w-4 transition-transform group-hover:translate-x-1" /></p>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center text-grijs">Combinaties van deze technieken kunnen ook, net als een deelmassage. Vraag naar de prijzen via <a href={waMet('wat kost een massage van 30 of 50 minuten?')} class="font-semibold text-inkt underline decoration-geel decoration-2 underline-offset-4">WhatsApp</a>.</p>
+      </div>
+    </section>
+
+    <!-- 4. Werkwijze in vier stappen + wat je vooraf moet weten. -->
+    <section id="werkwijze" class="border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow text-grijs">Werkwijze</p>
+            <h2 id="t-werk" class="mt-5 text-3xl">Van eerste appje tot ontspannen naar huis.</h2>
+          </div>
+          <p class="max-w-[30rem] text-grijs lg:col-span-5">Vooraf aan elke massage is er een korte intake, zodat Andrea weet wat wel en niet kan.</p>
+        </div>
+        <ol class="stappen mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          {stappen.map((s, i) => (
+            <li class="relative">
+              <div class="flex items-center gap-4">
+                <span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-inkt text-geel"><Icoon naam={s.icoon} class="h-6 w-6" /></span>
+                <span class="num font-display text-sm font-bold text-grijs">0{i + 1}</span>
+              </div>
+              <h3 class="mt-6 text-xl">{s.titel}</h3>
+              <p class="mt-2 text-grijs" set:html={s.tekst} />
+            </li>
+          ))}
+        </ol>
+        <div id="voorwaarden" class="mt-14 grid gap-8 rounded-[var(--radius-lg)] bg-papier p-7 md:p-10 lg:grid-cols-12 lg:gap-10">
+          <div class="lg:col-span-4">
+            <h3 class="text-2xl">Goed om te weten</h3>
+            <p class="mt-3 text-grijs">Uit de voorwaarden van de praktijk. Twijfel je? Overleg met je arts of vraag het Andrea.</p>
+          </div>
+          <ul class="grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:col-span-8">
+            {voorwaarden.map((v) => <li class="flex gap-3 text-[.9375rem]"><Icoon naam="check" class="mt-0.5 h-5 w-5 shrink-0 text-oker" />{v}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Over Andrea en de praktijk. -->
+    <section id="over" class="donker bg-asfalt py-24 text-licht lg:py-32" aria-labelledby="t-over">
+      <div class="wrap">
+        <div class="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <figure class="relative lg:col-span-6">
+            <div class="aspect-[5/4] overflow-hidden rounded-[var(--radius-lg)] bg-inkt lg:aspect-[1/1]">
+              <Image src={handdoek} alt="Een been wordt gemasseerd, de cliënt ligt onder een witte handdoek." widths={[480, 760, 1000]} sizes="(min-width: 1024px) 36rem, 100vw" format="webp" quality={74} class="h-full w-full object-cover object-[62%_50%]" />
+            </div>
+            <figcaption class="absolute bottom-5 left-5 rounded-full bg-geel px-4 py-2 font-display text-sm font-bold text-inkt">Kosteloos intakegesprek</figcaption>
+          </figure>
+          <div class="lg:col-span-6">
+            <p class="eyebrow text-licht-zacht">Over de praktijk</p>
+            <h2 id="t-over" class="mt-5 text-3xl">Andrea Noordam, gediplomeerd masseur.</h2>
+            <p class="mt-6 text-lg leading-relaxed text-licht/90">Sportmassage Praktijk Barendrecht is hét adres in Barendrecht voor massages door een professionele massagetherapeut. Gediplomeerd masseur Andrea Noordam werkt met klassieke technieken: ontspannings-, sport- en hot stone-massage, en combinaties daarvan.</p>
+            <p class="mt-4 leading-relaxed text-licht-zacht">Lopers komen na de marathon van Rotterdam of New York, wandelaars na de Vierdaagse en wintersporters na een week skiën. Anderen komen gewoon omdat het druk is geweest.</p>
+            <ul class="mt-10 grid gap-4 sm:grid-cols-3">
+              {[
+                ['Vriendelijk en professioneel', 'Zo omschrijft een klant Andrea op Google.'],
+                ['Snel antwoord', '"reageert snel op een bericht", schrijft een andere.'],
+                ['Eerst een intake', 'Voor elke massage, zonder kosten.'],
+              ].map(([t, s]) => (
+                <li class="rounded-[var(--radius-md)] border border-lijn-licht bg-licht/[.04] p-5">
+                  <Icoon naam="check" class="h-5 w-5 text-geel" />
+                  <p class="mt-3 font-display font-bold leading-snug text-licht">{t}</p>
+                  <p class="mt-1.5 text-sm text-licht-zacht">{s}</p>
+                </li>
+              ))}
+            </ul>
+            <a href={wa} class="btn btn-geel mt-10"><Icoon naam="whatsapp" />Plan een afspraak</a>
+          </div>
+        </div>
+        <dl class="mt-16 grid grid-cols-2 gap-y-10 border-t border-lijn-licht pt-10 lg:grid-cols-4">
+          {[
+            [site.google, `op Google, uit ${site.googleAantal} reviews`],
+            [String(site.gastenboek), 'berichten in het gastenboek'],
+            ['5', 'soorten massage'],
+            ['30/50', 'minuten per behandeling'],
+          ].map(([n, t]) => (
+            <div class="pr-4">
+              <dt class="sr-only">{t}</dt>
+              <dd class="num font-display text-stat font-extrabold leading-none tracking-[-.04em] text-licht">{n}</dd>
+              <dd class="mt-2 text-sm text-licht-zacht">{t}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- 6. Reviews van Google en uit het gastenboek. -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow text-grijs">Reviews</p>
+            <h2 id="t-rev" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.googleReviews} class="kaart flex items-center gap-4 px-5 py-4 transition-shadow hover:shadow-md">
+            <Icoon naam="google" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><strong class="num font-display text-2xl font-extrabold">{site.google}</strong><span class="sterren"><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /></span></span>
+              <span class="block text-sm text-grijs">{site.googleAantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-14 grid gap-6 lg:grid-cols-3">
+          {reviews.map((r) => (
+            <li class="kaart flex flex-col p-7 lg:p-8">
+              <div class="flex items-center justify-between"><span class="sterren"><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /><Icoon naam="ster" /></span><Icoon naam="google" class="h-5 w-5" /></div>
+              <blockquote class="mt-5 flex-1 text-lg leading-relaxed">"{r.tekst}"</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-zand font-display font-bold">{r.naam[0]}</span>
+                <span class="leading-tight"><span class="block font-semibold">{r.naam}</span><span class="text-sm text-grijs">Google review · {r.wanneer}</span></span>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-20 grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h3 class="text-2xl lg:col-span-6">Uit het gastenboek, na de finish.</h3>
+          <p class="max-w-[30rem] text-grijs lg:col-span-6 lg:justify-self-end">Het gastenboek van de praktijk telt {site.gastenboek} berichten. Een paar, zoals klanten ze zelf schreven.</p>
+        </div>
+        <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {gastenboek.map((g) => (
-            <li class="grid gap-y-3 border-b border-lijn py-9 lg:grid-cols-12 lg:gap-x-8 lg:py-12">
-              <p class="ui flex items-center gap-4 text-grijs lg:col-span-3 lg:pt-3"><span class="streepje !w-4 !h-[.2rem]" aria-hidden="true"></span>{g.wat}</p>
-              <blockquote class="min-w-0 lg:col-span-7">
-                <p class="text-2xl leading-[1.2] tracking-[-.03em] max-md:hyphens-auto [overflow-wrap:anywhere]">{g.tekst}</p>
-              </blockquote>
-              <p class="text-sm text-grijs lg:col-span-2 lg:pt-3 lg:text-right">{g.wie}</p>
+            <li class="rounded-[var(--radius-md)] border border-lijn bg-wit/60 p-5 lg:p-6">
+              <p class="flex items-center gap-3 font-display text-xs font-bold uppercase tracking-[.14em] text-oker"><span class="streep !w-4 !h-1" aria-hidden="true"></span>{g.wat}</p>
+              <blockquote class="mt-3 [overflow-wrap:anywhere]">"{g.tekst}"</blockquote>
+              <p class="mt-3 text-sm text-grijs">{g.wie}</p>
             </li>
           ))}
         </ul>
       </div>
     </section>
 
-    <!-- 4. Op locatie: de weg vol lopers, groot en in zwart-wit. -->
-    <section id="op-locatie" class="donker relative isolate scroll-mt-20 overflow-hidden bg-asfalt text-licht" aria-labelledby="t-loc">
-      <Image src={lopers} alt="Zwart-witfoto: benen en loopschoenen van hardlopers tijdens een wedstrijd op de weg." widths={[640, 1000, 1400, 2000]} sizes="100vw" format="webp" quality={68} class="loc-foto absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%]" />
+    <!-- 7. Op locatie: de weg vol lopers, zwart-wit. -->
+    <section id="op-locatie" class="donker relative isolate overflow-hidden bg-asfalt text-licht" aria-labelledby="t-loc">
+      <Image src={lopers} alt="Zwart-witfoto: benen en loopschoenen van hardlopers tijdens een wedstrijd op de weg." widths={[640, 1000, 1400, 2000]} sizes="100vw" format="webp" quality={66} class="loc-foto absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%]" />
       <div class="loc-waas absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div class="wrap grid min-h-[88svh] content-end gap-y-10 py-24 lg:grid-cols-12 lg:gap-x-8 lg:py-32">
-        <div class="lg:col-span-6">
-          <h2 id="t-loc" class="text-3xl">Op locatie, met de behandeltafel mee.</h2>
+      <div class="wrap grid min-h-[36rem] content-end gap-10 py-20 lg:min-h-[38rem] lg:grid-cols-12 lg:gap-8 lg:py-24">
+        <div class="lg:col-span-7">
+          <p class="eyebrow text-licht">Op locatie</p>
+          <h2 id="t-loc" class="mt-5 text-3xl">Met de behandeltafel mee naar jouw evenement.</h2>
+          <p class="mt-6 max-w-[34rem] text-lg leading-relaxed text-licht/90">Andrea werkt ook buiten de praktijk, met een complete behandeltafel. De kosten zijn op aanvraag.</p>
+          <ul class="mt-8 flex flex-wrap gap-2.5">
+            {['Sportevenementen', 'Feesten', 'Beurzen', 'Verzorgingstehuizen', 'Op kantoor'].map((c) => <li class="rounded-full border border-licht/40 bg-inkt/30 px-4 py-2 text-sm backdrop-blur-sm">{c}</li>)}
+          </ul>
         </div>
-        <div class="lg:col-span-5 lg:col-start-8 lg:self-end">
-          <p class="text-lg leading-relaxed text-licht/85">Andrea werkt ook buiten de praktijk, met een complete behandeltafel: tijdens sportevenementen, feesten en beurzen, en bijvoorbeeld in verzorgingstehuizen of op kantoor. De kosten zijn op aanvraag.</p>
-          <p class="mt-9">
-            <a href={waMet('ik wil graag massages op locatie aanvragen. Het gaat om ')} class="knop">Vraag het aan via WhatsApp</a>
-          </p>
+        <div class="lg:col-span-4 lg:col-start-9 lg:self-end lg:justify-self-end">
+          <a href={waMet('ik wil graag massages op locatie aanvragen. Het gaat om ')} class="btn btn-geel"><Icoon naam="whatsapp" />Vraag het aan via WhatsApp</a>
         </div>
       </div>
     </section>
 
-    <!-- 5. Cadeaubon: de voorwaarden van hun eigen bon, rustig naast elkaar. -->
-    <section id="cadeaubon" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-bon">
-      <div class="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-5">
-          <h2 id="t-bon" class="text-3xl">Een massage cadeau geven.</h2>
-          <p class="mt-8 max-w-[28rem] text-lg leading-relaxed text-grijs">Een luxe bon: een voucher in een nette envelop. Voor een vrij te besteden bedrag of een complete behandeling.</p>
-          <p class="mt-10">
-            <a href={waMet('ik wil graag een cadeaubon bestellen voor ')} class="knop knop-vol">Bestel een bon via WhatsApp</a>
-          </p>
+    <!-- 8. Cadeaubon: een bon als beeld, de voorwaarden ernaast. -->
+    <section id="cadeaubon" class="py-20 lg:py-24" aria-labelledby="t-bon">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div class="min-w-0 lg:col-span-6">
+          <div class="bon" aria-hidden="true">
+            <div class="bon-kaart">
+              <div class="flex items-center gap-3">
+                <span class="grid h-11 w-11 place-items-center rounded-md bg-geel"><Merk class="h-4 w-auto text-inkt" /></span>
+                <span class="font-display text-xs font-bold uppercase tracking-[.2em] text-licht-zacht">Cadeaubon</span>
+              </div>
+              <p class="mt-auto font-display text-[clamp(1.75rem,3.4vw,2.75rem)] font-extrabold leading-none tracking-[-.035em] text-licht">Een massage<br />cadeau.</p>
+              <div class="mt-6 mr-[28%] border-t border-lijn-licht pt-4 text-xs text-licht-zacht">
+                <span>Sportmassage Praktijk Barendrecht · 1 jaar geldig</span>
+              </div>
+            </div>
+            <div class="bon-envelop"></div>
+          </div>
         </div>
-        <div class="lg:col-span-6 lg:col-start-7 lg:pt-3">
-          <dl class="border-t border-lijn">
+        <div class="lg:col-span-6">
+          <p class="eyebrow text-grijs">Cadeaubon</p>
+          <h2 id="t-bon" class="mt-5 text-3xl">Geef iemand een massage cadeau.</h2>
+          <p class="mt-6 text-lg leading-relaxed text-grijs">Een luxe bon: een voucher in een nette envelop. Voor een vrij te besteden bedrag of een complete behandeling.</p>
+          <dl class="mt-8 divide-y divide-lijn border-y border-lijn">
             {[
-              ['Versturen', 'Bon en factuur worden binnen 5 werkdagen verzonden. Verzend- en administratiekosten: € 5,35.'],
-              ['Afhalen', 'Haal je de bon zelf op, dan betaal je geen verzend- en administratiekosten.'],
-              ['Geldig', 'Een jaar na uitgifte. De bon werkt zodra de betaling binnen is.'],
-              ['Inwisselen', 'Alleen voor massages bij Sportmassage Praktijk Barendrecht, niet voor contant geld.'],
+              ['Versturen', 'Bon en factuur binnen 5 werkdagen. Verzend- en administratiekosten € 5,35.'],
+              ['Afhalen', 'Haal je de bon zelf op, dan betaal je geen verzendkosten.'],
+              ['Geldig', 'Een jaar na uitgifte, zodra de betaling binnen is.'],
+              ['Inwisselen', 'Alleen voor massages bij de praktijk, niet voor contant geld.'],
             ].map(([k, v]) => (
-              <div class="grid grid-cols-[6.5rem_1fr] gap-x-5 border-b border-lijn py-6 md:grid-cols-[9rem_1fr]">
-                <dt class="ui pt-1.5 text-grijs">{k}</dt>
-                <dd>{v}</dd>
+              <div class="grid grid-cols-[6.5rem_1fr] gap-x-5 py-4 sm:grid-cols-[8rem_1fr]">
+                <dt class="font-display font-bold">{k}</dt>
+                <dd class="text-grijs">{v}</dd>
               </div>
             ))}
           </dl>
-          <blockquote class="mt-12 max-w-[30rem]">
-            <p class="text-xl tracking-[-.02em]">Blij met mijn kerstcadeau, een massagebon! Tot snel.</p>
-            <footer class="mt-3 text-sm text-grijs">Erwin, in het gastenboek</footer>
-          </blockquote>
+          <a href={waMet('ik wil graag een cadeaubon bestellen voor ')} class="btn btn-inkt mt-9"><Icoon naam="cadeau" />Bestel een bon via WhatsApp</a>
         </div>
       </div>
     </section>
+
+    <!-- 9. Openingstijden en adres, vandaag gemarkeerd. -->
+    <section id="tijden" class="border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-tijd">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="eyebrow text-grijs">Openingstijden en adres</p>
+          <h2 id="t-tijd" class="mt-5 text-3xl">Langskomen in Barendrecht.</h2>
+          <ul class="mt-8 space-y-4 text-lg">
+            <li class="flex gap-3"><Icoon naam="pin" class="mt-1 h-5 w-5 shrink-0 text-oker" /><span>{site.straat}<br />{site.postcode} {site.plaats}</span></li>
+            <li class="flex gap-3"><Icoon naam="tel" class="mt-1 h-5 w-5 shrink-0 text-oker" /><a href={site.telHref} class="num whitespace-nowrap font-semibold hover:text-oker">{site.tel}</a></li>
+            <li class="flex gap-3"><Icoon naam="mail" class="mt-1 h-5 w-5 shrink-0 text-oker" /><a href={`mailto:${site.mail}`} class="break-all hover:text-oker">{site.mail}</a></li>
+          </ul>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={site.maps} class="btn btn-inkt">Plan je route <Icoon naam="pijl" /></a>
+            <a href="#op-locatie" class="btn btn-rand">Liever op locatie</a>
+          </div>
+        </div>
+        <div class="kaart min-w-0 border border-lijn p-5 sm:p-7 md:p-9 lg:col-span-7">
+          <div class="flex flex-wrap items-center justify-between gap-4">
+            <h3 class="text-xl">Openingstijden</h3>
+            <p class="status-pil" data-open-pil><span class="status-stip" data-open-stip aria-hidden="true"></span><span data-open-kort>Op afspraak</span></p>
+          </div>
+          <table class="num mt-6 w-full text-left">
+            <caption class="sr-only">Openingstijden per dag</caption>
+            <tbody>
+              {week.map((d) => (
+                <tr class="dagrij" data-dag={d.i}>
+                  <th scope="row" class="py-3 pl-3 font-medium">{d.dag} <span class="vandaag-label ml-2 rounded-full bg-geel px-2 py-0.5 text-xs font-bold">vandaag</span></th>
+                  <td class="whitespace-nowrap py-3 pr-3 text-right">{d.open ? `${uur(d.open)} tot ${uur(d.dicht!)}` : 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="mt-5 text-sm text-grijs">Een afspraak maak je via WhatsApp of telefoon.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Afspraak: kies je massage, het WhatsApp-bericht staat klaar. -->
+    <section id="contact" class="donker bg-asfalt py-24 text-licht lg:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow text-licht-zacht">Afspraak maken</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Plan je massage.</h2>
+          <p class="mt-6 max-w-[26rem] text-lg leading-relaxed text-licht/90">Kies wat je wilt, dan staat het bericht voor Andrea klaar in WhatsApp. Er gaat pas iets weg als je zelf op verzenden drukt.</p>
+          <ul class="mt-10 space-y-3">
+            <li><a href={site.telHref} class="contactrij"><span class="contacticoon"><Icoon naam="tel" /></span><span><span class="block text-sm text-licht-zacht">Bellen</span><span class="num font-display text-lg font-bold">{site.tel}</span></span></a></li>
+            <li><a href={`mailto:${site.mail}`} class="contactrij"><span class="contacticoon"><Icoon naam="mail" /></span><span class="min-w-0"><span class="block text-sm text-licht-zacht">Mailen</span><span class="block break-all font-display text-lg font-bold">{site.mail}</span></span></a></li>
+          </ul>
+        </div>
+        <form class="rounded-[var(--radius-lg)] bg-licht p-7 text-inkt md:p-10 lg:col-span-7" data-afspraak novalidate>
+          <p class="font-display text-xs font-bold uppercase tracking-[.16em] text-grijs">Jouw bericht aan Andrea</p>
+          <p class="zin mt-5 font-display text-2xl font-semibold leading-[1.5] tracking-[-.02em] md:text-[1.875rem]">
+            Hallo Andrea, ik wil graag een{' '}
+            <label class="sr-only" for="a-beh">Behandeling</label>
+            <span class="keus"><select id="a-beh" name="beh">{opties.map(([b, lang]) => <option value={b} data-lang={lang ? '1' : '0'}>{b}</option>)}</select></span>{' '}
+            van{' '}
+            <label class="sr-only" for="a-duur">Duur</label>
+            <span class="keus"><select id="a-duur" name="duur"><option>30 minuten</option><option selected>50 minuten</option></select></span>,
+            het liefst{' '}
+            <label class="sr-only" for="a-dag">Moment</label>
+            <span class="keus"><select id="a-dag" name="dag"><option>overdag</option><option>'s avonds</option><option>op zaterdag</option><option>wanneer het past</option></select></span>.
+          </p>
+          <p class="mt-4 min-h-[1.5rem] text-sm text-grijs" aria-live="polite" data-afspraak-noot></p>
+          <div class="mt-6 flex flex-wrap items-center gap-3 border-t border-lijn pt-7">
+            <a href={waMet('ik wil graag een sportmassage van 50 minuten, het liefst overdag.')} class="btn btn-wa" data-afspraak-wa><Icoon naam="whatsapp" />Stuur via WhatsApp</a>
+            <a href={site.telHref} class="btn btn-rand num">Of bel {site.tel}</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk in merkkleur. -->
+    <section class="bg-geel" aria-label="Afspraak">
+      <div class="wrap flex flex-wrap items-center justify-between gap-6 py-10 lg:py-12">
+        <p class="font-display text-2xl font-extrabold tracking-[-.03em] text-inkt md:text-[2rem]">Zin in een massage? Stuur Andrea een appje.</p>
+        <a href={wa} class="btn btn-inkt"><Icoon naam="whatsapp" />WhatsApp {site.tel}</a>
+      </div>
+    </section>
   </main>
-  <Voet afspraak />
+  <Voet />
 </Base>
 
 <style>
-  .hero { min-height: calc(100svh - var(--balk, 0px)); }
-  .hero-waas { background: linear-gradient(to right, rgb(23 25 27 / .62) 0%, rgb(23 25 27 / .38) 50%, rgb(23 25 27 / .12) 100%), linear-gradient(to bottom, rgb(23 25 27 / .45) 0%, rgb(23 25 27 / 0) 30%, rgb(23 25 27 / 0) 75%, rgb(23 25 27 / .35) 100%); }
-  @media (max-width: 767px) { .hero-waas { background: linear-gradient(to bottom, rgb(23 25 27 / .5), rgb(23 25 27 / .3) 55%, rgb(23 25 27 / .5)); } }
+  .hero { min-height: calc(100svh - 4.25rem - 4.5rem - var(--balk, 0px)); }
+  @media (min-width: 1024px) { .hero { min-height: calc(100svh - 4.75rem - 2.5rem - var(--balk, 0px)); } }
+  .hero-waas { background: linear-gradient(to bottom, rgb(21 23 26 / .78), rgb(21 23 26 / .68) 55%, rgb(21 23 26 / .85)); }
+  @media (min-width: 1024px) {
+    .hero-waas { background: linear-gradient(90deg, rgb(21 23 26 / .9) 0%, rgb(21 23 26 / .74) 40%, rgb(21 23 26 / .25) 75%, rgb(21 23 26 / .15) 100%), linear-gradient(to top, rgb(21 23 26 / .75) 0%, rgb(21 23 26 / 0) 30%); }
+  }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  :global(.is-open) .status-stip, .status-stip.open { background: #3ecf7a; box-shadow: 0 0 0 4px #3ecf7a33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .55rem; border-radius: 999px; padding: .35rem .9rem; background: var(--color-zand); font-size: var(--text-sm); font-weight: 600; }
+  .status-pil .status-stip { background: var(--color-grijs); }
+  .status-pil .status-stip.open { background: #1f9d55; box-shadow: 0 0 0 4px #1f9d5526; }
+  .dagrij th, .dagrij td { border-bottom: 1px solid var(--color-lijn); }
+  .dagrij.vandaag th, .dagrij.vandaag td { background: #eab52c1f; font-weight: 700; }
+  .dagrij.vandaag th { border-radius: 10px 0 0 10px; }
+  .dagrij.vandaag td { border-radius: 0 10px 10px 0; }
+  .vandaag-label { display: none; }
+  .dagrij.vandaag .vandaag-label { display: inline-block; }
+
+  .chips { scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px; background: var(--color-papier); border: 1px solid var(--color-lijn); padding: .55rem 1.05rem; font-family: var(--font-display); font-weight: 600; font-size: var(--text-sm); white-space: nowrap; transition: background-color .2s ease, border-color .2s ease; }
+  .chip::before { content: ''; width: .45rem; height: .45rem; border-radius: 2px; background: var(--color-geel); transform: skewX(-20deg); }
+  .chip:hover { background: var(--color-zand); border-color: #15171a40; }
+
+  .behkaart { transition: box-shadow .3s var(--ease-zacht), transform .3s var(--ease-zacht); }
+  .behkaart:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+  @media (min-width: 1024px) {
+    .stappen li:not(:last-child)::after { content: ''; position: absolute; top: 1.75rem; left: 5.5rem; right: -1rem; height: 1px; background: repeating-linear-gradient(90deg, var(--color-lijn) 0 6px, transparent 6px 12px); }
+  }
+
   :global(.loc-foto) { filter: grayscale(1) contrast(1.05); }
-  .loc-waas { background: linear-gradient(to top, rgb(23 25 27 / .88) 0%, rgb(23 25 27 / .55) 45%, rgb(23 25 27 / .2) 100%); }
+  .loc-waas { background: linear-gradient(to top, rgb(21 23 26 / .92) 0%, rgb(21 23 26 / .6) 50%, rgb(21 23 26 / .25) 100%); }
+  @media (max-width: 767px) { .loc-waas { background: linear-gradient(to top, rgb(21 23 26 / .92), rgb(21 23 26 / .72)); } }
+
+  .bon { position: relative; aspect-ratio: 5 / 4; max-width: 30rem; margin-inline: auto; }
+  .bon-envelop { position: absolute; inset: 14% 0 0 8%; border-radius: var(--radius-lg); background: var(--color-zand); box-shadow: var(--shadow-sm); }
+  .bon-envelop::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(155deg, transparent 49.6%, #15171a14 50%, transparent 50.4%), linear-gradient(25deg, transparent 49.6%, #15171a14 50%, transparent 50.4%); }
+  .bon-kaart { position: absolute; z-index: 1; inset: 0 12% 22% 0; display: flex; flex-direction: column; padding: clamp(1.25rem, 3vw, 2rem); border-radius: var(--radius-lg); background: var(--color-asfalt) linear-gradient(115deg, transparent 0 76%, #eab52c 76% 80%, transparent 80% 84%, #eab52c 84% 88%, transparent 88%); box-shadow: 0 24px 60px #15171a40; transform: rotate(-4deg); }
+
+  .contactrij { display: flex; align-items: center; gap: 1rem; border-radius: var(--radius-md); border: 1px solid var(--color-lijn-licht); padding: 1rem 1.15rem; transition: background-color .2s ease; }
+  .contactrij:hover { background: #f5f4f00d; }
+  .contacticoon { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 999px; background: var(--color-geel); color: var(--color-inkt); flex: none; }
+  .contacticoon :global(svg) { width: 1.2rem; height: 1.2rem; }
+
+  .keus { position: relative; display: inline-block; max-width: 100%; vertical-align: bottom; }
+  .keus select { appearance: none; -webkit-appearance: none; background: #eab52c2e; color: var(--color-inkt); font: inherit; letter-spacing: inherit; border: 0; border-bottom: 2px solid var(--color-geel); border-radius: 6px 6px 0 0; padding: 0 1.15em 0 .25em; max-width: 100%; field-sizing: content; cursor: pointer; text-overflow: ellipsis; transition: background-color .2s ease; }
+  .keus select:hover { background: #eab52c55; }
+  .keus::after { content: ''; position: absolute; right: .35em; top: 50%; width: .3em; height: .3em; border-right: 2px solid var(--color-inkt); border-bottom: 2px solid var(--color-inkt); transform: translateY(-75%) rotate(45deg); pointer-events: none; }
 </style>
+
+<script>
+  import { tijden, uur } from '../data/site';
+  // Live open/gesloten volgens de Google-tijden, in Nederlandse tijd.
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay();
+  const min = nu.getHours() * 60 + nu.getMinutes();
+  const t = tijden[dag];
+  const open = !!(t.open && min >= t.open && min < t.dicht!);
+  let lang: string;
+  let kort: string;
+  if (open) { lang = `Nu open, vandaag tot ${uur(t.dicht!)}`; kort = `Nu open tot ${uur(t.dicht!)}`; }
+  else if (t.open && min < t.open) { lang = `Vandaag open vanaf ${uur(t.open)}`; kort = `Open vanaf ${uur(t.open)}`; }
+  else {
+    let d = (dag + 1) % 7; while (!tijden[d].open) d = (d + 1) % 7;
+    const wanneer = d === (dag + 1) % 7 ? 'morgen' : tijden[d].dag.toLowerCase();
+    lang = `Nu gesloten, ${wanneer} open vanaf ${uur(tijden[d].open!)}`; kort = 'Nu gesloten';
+  }
+  document.querySelectorAll('[data-open-tekst]').forEach((e) => (e.textContent = lang));
+  document.querySelectorAll('[data-open-kort]').forEach((e) => (e.textContent = kort));
+  document.querySelectorAll('[data-open-stip]').forEach((e) => e.classList.toggle('open', open));
+  document.querySelector(`.dagrij[data-dag="${dag}"]`)?.classList.add('vandaag');
+
+  // Zet behandeling, duur en moment om in een kort WhatsApp-bericht.
+  const form = document.querySelector<HTMLFormElement>('[data-afspraak]');
+  if (form) {
+    const wa = form.querySelector<HTMLAnchorElement>('[data-afspraak-wa]')!;
+    const noot = form.querySelector<HTMLElement>('[data-afspraak-noot]')!;
+    const beh = form.querySelector<HTMLSelectElement>('#a-beh')!;
+    const duur = form.querySelector<HTMLSelectElement>('#a-duur')!;
+    const moment = form.querySelector<HTMLSelectElement>('#a-dag')!;
+    const basis = wa.href.split('?')[0];
+    const maak = () => {
+      // De ontspanningsmassage rug-schouder-nek bestaat alleen als 30 minuten.
+      const alleen30 = beh.selectedOptions[0].dataset.lang === '0';
+      duur.options[1].disabled = alleen30;
+      if (alleen30) duur.value = '30 minuten';
+      noot.textContent = alleen30 ? 'Deze massage duurt altijd 30 minuten.' : beh.value === 'zwangerschapsmassage' ? 'Zet er gerust bij hoe ver je bent.' : '';
+      const tekst = `Hallo Andrea, ik wil graag een ${beh.value} van ${duur.value}, het liefst ${moment.value}.`;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    form.addEventListener('change', maak);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    maak();
+  }
+</script>
