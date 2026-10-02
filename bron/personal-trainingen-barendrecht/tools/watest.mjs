@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage();
+await p.goto('http://localhost:4693/sitefront/personal-trainingen-barendrecht/', { waitUntil: 'networkidle' });
+await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); return null; }; });
+await p.click('text=Sterker worden'); await p.click('text=Small group (2 of 3)');
+await p.selectOption('select[name=wanneer]', 'Doordeweeks ’s avonds'); await p.fill('input[name=naam]', 'Test');
+await p.click('button:has-text("Open in WhatsApp")');
+console.log(decodeURIComponent(await p.evaluate(() => window.__u[0])));
+console.log(await p.evaluate(() => [...document.querySelectorAll('a[href*="wa.me"]')].length), 'wa-links;', await p.evaluate(() => document.body.innerHTML.includes('personaltrainingenbarendrecht.nl')) ? 'OUD DOMEIN GEVONDEN' : 'geen oud domein', await p.evaluate(() => document.body.innerText.includes('[[')) ? 'AANLEVEREN zichtbaar' : 'geen [[');
+await b.close();

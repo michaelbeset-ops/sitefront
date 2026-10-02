@@ -3,150 +3,345 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, waMet } from '../data/site';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, ook, reviews, waIntake, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
 import studio from '../assets/studio.jpg';
 import pand from '../assets/pand.jpg';
 import antoon from '../assets/antoon.jpg';
+import sTraining from '../assets/s-training.jpg';
+import sMedisch from '../assets/s-medisch.jpg';
+import sHardlopen from '../assets/s-hardlopen.jpg';
+import sVoeding from '../assets/s-voeding.jpg';
+
+const vraag = (t: string) => waMet(`Hallo Antoon, ik heb interesse in ${t.toLowerCase()}. Kunnen we een gratis intakegesprek plannen?`);
 
 const aanbod = [
-  ['Personal training', 'Eén op één of in een small group van maximaal drie, met je eigen vaste coach en een voeding- en trainschema op jouw doel afgestemd.'],
-  ['Medische fitness', 'In de speciaal ingerichte medische en obesitas studio. Ook voor astma- en COPD-patiënten en senioren.'],
-  ['Hardlopen', 'Eén op één of in een groep van maximaal zes. Van beginners tot trail running, met advies over voeding, loopkleding en blessurepreventie.'],
-  ['Size Less', 'Afvallen zonder streng dieet, pillen of poeders. De nadruk ligt op training; de voeding staat daarvoor in dienst.'],
+  { t: 'Personal training', icoon: 'halter', d: 'Eén op één of in een small group van maximaal drie, samen met je eigen vaste coach.', punten: ['Voeding- en trainschema op maat', 'Conditietest en body-analyse', 'Om de twee weken een evaluatie'], src: sTraining, alt: 'Een trainer begeleidt een sporter bij een oefening met een kettlebell', pos: '50% 45%' },
+  { t: 'Medische fitness', icoon: 'hart', d: 'Blijven sporten met een blijvende of tijdelijke beperking, in de speciaal ingerichte medische en obesitas studio.', punten: ['Schema op leeftijd, gezondheid en conditie', 'Eventueel in overleg met je fysiotherapeut', 'Ook bij astma, COPD en op latere leeftijd'], src: sMedisch, alt: 'Een begeleider corrigeert de houding van iemand die met lichte gewichtjes traint', pos: '50% 50%' },
+  { t: 'Hardlopen', icoon: 'doel', d: 'Persoonlijke hardlooptraining één op één of in een small group, voor beginners en gevorderden.', punten: ['Advies over voeding en loopkleding', 'Blessurepreventie', 'Balans-, coördinatie- en krachttraining'], src: sHardlopen, alt: 'Een hardloper op een lange weg tussen het gras', pos: '60% 55%' },
+  { t: 'Size Less', icoon: 'persoon', d: 'Afvallen zonder streng dieet, pillen of poeders. De nadruk ligt op training; de voeding staat daarvoor in dienst.', punten: ['Voedingsadvies precies op jou afgestemd', 'Elke week evalueren en bijstellen', 'Ook motivatie- en gedragstraining'], src: sVoeding, alt: 'Drie bakjes met een gezonde maaltijd van rijst, groente en bonen', pos: '50% 50%' },
 ];
-const ook = ['krachttraining', 'spieropbouw', 'conditietraining', 'bodyshaping', 'wedding-fit', 'afslankbegeleiding', 'voedingsadvies', 'MyLine'];
 
 const stappen = [
-  ['Intakegesprek', 'Geheel vrijblijvend en gratis.'],
-  ['Conditietest', ''],
-  ['Body-analyse', ''],
-  ['Plan van aanpak', ''],
+  ['Intakegesprek', 'Geheel vrijblijvend en gratis. We bespreken wat je wilt bereiken.'],
+  ['Conditietest', 'Waar sta je nu? Een nulmeting om straks je vooruitgang aan af te lezen.'],
+  ['Body-analyse', 'Onder meer je vetpercentage, als vertrekpunt voor je plan.'],
+  ['Plan van aanpak', 'Hoe we je doel gaan halen. Bij medische fitness eventueel samen met je fysiotherapeut.'],
   ['Voeding- en trainschema', 'Afgestemd op je conditie, lichaamsbouw, leeftijd, gezondheid en doel.'],
-  ['Evaluatie', 'Om de twee weken een evaluatiegesprek.'],
+  ['Evaluatie', 'Om de twee weken een evaluatiegesprek. Waar nodig stellen we bij.'],
 ];
 
-const opleidingen = [
-  ['Opleidingen', 'Fit!Vak A en B, LAPT, CIOS, NASM, Les Mills, MyLine'],
-  ['Specialisaties', 'Paramedische fitness, mental coaching, gedrag en motivatie'],
-  ['Erkenning', 'Erkend leerbedrijf SBB, niveau 4. Bij het RIVM geregistreerd als erkend GLI-trainingsbedrijf.'],
-];
+const opleidingen = ['Fit!Vak A en B', 'LAPT', 'CIOS', 'NASM', 'Les Mills', 'Paramedische fitness', 'Mental coaching', 'Gedrag en motivatie', 'Size Less', 'MyLine'];
+const [hoofdReview, ...andereReviews] = reviews;
 ---
-<Base title="Personal Trainingen Barendrecht | Personal training één op één, Zwolseweg 26" description="Personal training één op één of in een small group, medische fitness, hardlopen en Size Less. In de privéstudio aan de Zwolseweg 26 in Barendrecht. Gratis intakegesprek.">
-  <Kop overBeeld />
+<Base title={`${site.naam} | Personal trainer in Barendrecht`} description="Personal training één op één of in een small group, medische fitness, hardlopen en Size Less. In de privéstudio aan de Zwolseweg 26 in Barendrecht. Gratis intakegesprek. 4,8 op Google.">
+  <Kop />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: het wijnrood van hun gevel over de volle breedte en hoogte, hun eigen studio als staand beeld ernaast. -->
-    <section class="hero donker relative isolate overflow-hidden bg-wijn text-licht" aria-labelledby="titel" data-beeld>
-      <div class="hero-vlak absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div class="wrap hero-grid">
-        <div class="hero-tekst">
-          <h1 id="titel" class="text-4xl">Personal training, één op één.</h1>
-          <p class="mt-6 max-w-[31rem] leading-relaxed text-licht-zacht md:mt-8 md:text-lg">Met je eigen vaste coach, in de privéstudio aan de Zwolseweg in Barendrecht. Alleen, of in een small group van maximaal drie.</p>
-          <p class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 md:mt-11">
-            <a href={waMet('ik wil graag een gratis intakegesprek plannen.')} class="knop knop-licht">Plan een gratis intake</a>
-            <a href="#werkwijze" class="ui lijn whitespace-nowrap">Zo werkt het</a>
-          </p>
-        </div>
-        <figure class="hero-beeld">
-          <div class="hero-foto overflow-hidden bg-wijn-diep">
-            <Image src={studio} alt="De studio: een rek met dumbbells voor de spiegelwand, rechts een kabelstation." widths={[400, 685]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={76} loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[30%_50%]" />
+    <!-- 1. Hero: hun eigen studio op volle hoogte, met onderaan drie feiten uit hun stappenplan -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-9.25rem)] flex-col overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15131466_0%,#151314cc_45%,#151314f5_100%)] md:bg-[linear-gradient(90deg,#151314f7_0%,#151314d9_45%,#15131440_100%)]" aria-hidden="true"></div>
+      <div class="wrap flex flex-1 items-end pb-12 pt-20 md:items-center md:py-12">
+        <div class="max-w-[46rem]">
+          <p class="eyebrow">Personal trainer in Barendrecht</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Je doel halen met je eigen <span class="text-roze">privécoach.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Personal training één op één of in een small group van maximaal drie. In de privéstudio aan de Zwolseweg, met een voeding- en trainschema dat past bij jouw doel.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={waIntake} class="knop knop-rood"><Icoon naam="wa" />Plan een gratis intake</a>
+            <a href="#aanbod" class="knop knop-rand op-foto">Bekijk het aanbod</a>
           </div>
-          <figcaption class="ui mt-4 hidden justify-between text-licht-zacht lg:flex"><span>De studio</span><span class="num">Zwolseweg 26</span></figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- 2. Aanbod: waarom mensen stoppen, en wat ze hier kunnen doen, als rustige lijst. -->
-    <section id="aanbod" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-aanbod">
-      <div class="grid gap-y-12 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-5">
-          <h2 id="t-aanbod" class="text-3xl">Veel mensen beginnen eraan, en stoppen dan weer.</h2>
-          <p class="mt-8 max-w-[28rem] text-lg leading-relaxed text-grijs">Omdat ze niet weten hoe de oefeningen moeten, geen resultaat zien of een blessure krijgen door verkeerd trainen. Daar is personal training voor.</p>
-        </div>
-        <div class="lg:col-span-6 lg:col-start-7">
-          <ul class="border-t border-lijn">
-            {aanbod.map(([t, d]) => (
-              <li class="grid gap-y-2 border-b border-lijn py-8 md:grid-cols-[12rem_1fr] md:gap-x-8">
-                <h3 class="text-xl">{t}</h3>
-                <p class="text-grijs">{d}</p>
-              </li>
-            ))}
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 9.00 tot 21.00 uur</span></li>
           </ul>
-          <p class="mt-8 text-sm leading-relaxed text-grijs">Ook voor {ook.slice(0, -1).join(', ')} en {ook.at(-1)}.</p>
+        </div>
+      </div>
+      <div class="border-t border-lijn-licht bg-nacht/70 backdrop-blur-md">
+        <dl class="wrap grid grid-cols-3 divide-x divide-lijn-licht">
+          <div class="flex flex-col py-5 pr-3 md:py-7 md:pr-8"><dt class="order-last mt-1 text-xs text-licht-zacht md:text-sm">Intakegesprek, geheel vrijblijvend</dt><dd class="font-kop text-lg font-extrabold leading-none tracking-[-0.02em] md:text-[1.75rem]">Gratis</dd></div>
+          <div class="flex flex-col px-3 py-5 md:px-8 md:py-7"><dt class="order-last mt-1 text-xs text-licht-zacht md:text-sm">Of in een small group van max. 3</dt><dd class="font-kop text-lg font-extrabold leading-none tracking-[-0.02em] md:text-[1.75rem]">Eén op één</dd></div>
+          <div class="flex flex-col py-5 pl-3 md:py-7 md:pl-8"><dt class="order-last mt-1 text-xs text-licht-zacht md:text-sm">Een evaluatiegesprek over je voortgang</dt><dd class="num font-kop text-lg font-extrabold leading-none tracking-[-0.02em] md:text-[1.75rem]">Elke 2 weken</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 2. Aanbod -->
+    <section id="aanbod" class="py-20 lg:py-24" aria-labelledby="t-aanbod">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-6">
+            <p class="eyebrow">Aanbod</p>
+            <h2 id="t-aanbod" class="mt-5 text-3xl">Training op maat, voor elk doel.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-5 lg:col-start-8" style="--d:.05s">Veel mensen beginnen eraan en stoppen dan weer. Omdat ze niet weten hoe de oefeningen moeten, geen resultaat zien of een blessure krijgen door verkeerd trainen. Daar is personal training voor.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 lg:mt-16 lg:grid-cols-2 lg:gap-6">
+          {aanbod.map((a, i) => (
+            <li class="rijs" style={`--d:${(i % 2) * 0.06}s`}>
+              <a href={vraag(a.t)} class="kaart group grid h-full overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md sm:grid-cols-[42%_1fr]">
+                <div class="relative overflow-hidden">
+                  <Image src={a.src} alt={a.alt} widths={[480, 720, 960]} sizes="(min-width: 1248px) 250px, (min-width: 1024px) 20vw, (min-width: 640px) 40vw, 92vw" class="aspect-[16/10] h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-auto sm:absolute sm:inset-0" style={`object-position:${a.pos}`} />
+                </div>
+                <div class="flex flex-col p-6 md:p-7">
+                  <span class="grid h-11 w-11 place-items-center rounded-md bg-rood text-wit"><Icoon naam={a.icoon} class="h-6 w-6" /></span>
+                  <h3 class="mt-5 text-2xl">{a.t}</h3>
+                  <p class="mt-2 text-grijs">{a.d}</p>
+                  <ul class="mt-5 space-y-1.5 text-[.9375rem]">
+                    {a.punten.map((p) => <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-rood" />{p}</li>)}
+                  </ul>
+                  <span class="mt-6 inline-flex items-center gap-2 pt-1 text-[.9375rem] font-semibold text-rood">Vraag een intake aan<Icoon naam="pijl" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col gap-5 rounded-md bg-zand px-6 py-6 md:px-8 lg:flex-row lg:items-center lg:justify-between">
+          <p class="shrink-0 font-semibold">Ook voor</p>
+          <ul class="flex flex-wrap gap-2">
+            {ook.map((o) => <li class="rounded-sm bg-wit px-3 py-1.5 text-sm font-medium shadow-sm">{o}</li>)}
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- 3. Werkwijze: hun eigen stappenplan, groot gezet. -->
-    <section id="werkwijze" class="scroll-mt-20 border-t border-lijn bg-wit py-28 lg:py-40" aria-labelledby="t-werk">
-      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-4">
-          <h2 id="t-werk" class="text-3xl">Het stappenplan.</h2>
-          <p class="mt-8 max-w-[24rem] text-grijs">Zo werk je naar je doel toe. Je schema's, voeding en voortgang staan ook in je eigen app.</p>
+    <!-- 3. Werkwijze: hun eigen stappenplan -->
+    <section id="werkwijze" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-6">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-werk" class="mt-5 text-3xl">In zes stappen naar je doel.</h2>
+          </div>
+          <div class="rijs lg:col-span-5 lg:col-start-8" style="--d:.05s">
+            <p class="text-lg text-licht-zacht">Dit stappenplan volg je bij elke vorm van training. Je schema’s, voeding en voortgang staan ook in je eigen app.</p>
+          </div>
         </div>
-        <ol class="stappen lg:col-span-7 lg:col-start-6">
+        <ol class="mt-12 grid gap-px overflow-hidden rounded-md bg-lijn-licht sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
           {stappen.map(([t, d], i) => (
-            <li class="stap">
-              <span class="num stap-nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <div>
-                <h3 class="stap-kop">{t}</h3>
-                {d && <p class="mt-2 text-grijs">{d}</p>}
-              </div>
+            <li class="rijs bg-nacht-2 p-6 md:p-8" style={`--d:${(i % 3) * 0.06}s`}>
+              <p class="num font-kop text-[2.75rem] font-extrabold leading-none tracking-[-0.04em] text-roze">0{i + 1}</p>
+              <h3 class="mt-6 text-xl">{t}</h3>
+              <p class="mt-2 text-licht-zacht">{d}</p>
             </li>
           ))}
         </ol>
+        <div class="rijs mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <a href={waIntake} class="knop knop-rood"><Icoon naam="wa" />Begin met stap 1</a>
+          <p class="text-licht-zacht">Het intakegesprek is gratis en geheel vrijblijvend.</p>
+        </div>
       </div>
     </section>
 
-    <!-- 4. De studio: hun eigen pand met het logo op de gevel, met adres en tijden. -->
-    <section id="studio" class="scroll-mt-20 pb-28 pt-28 lg:pb-40 lg:pt-40" aria-labelledby="t-studio">
-      <div class="wrap">
-        <figure class="pand overflow-hidden bg-steen">
-          <Image src={pand} alt="Het pand aan de Zwolseweg 26: rood omlijste gevel met grote ramen en het bord Personal Trainingen Barendrecht." widths={[640, 960, 1290]} sizes="(min-width: 1440px) 1290px, 100vw" format="webp" quality={72} class="h-full w-full object-cover object-[40%_55%]" />
-        </figure>
-        <div class="mt-14 grid gap-y-12 lg:mt-20 lg:grid-cols-12 lg:gap-x-8">
-          <div class="lg:col-span-5">
-            <h2 id="t-studio" class="text-3xl">Zwolseweg 26, Barendrecht.</h2>
-            <p class="mt-8 max-w-[28rem] text-lg leading-relaxed text-grijs">De privéstudio is speciaal ingericht voor personal training, medische fitness en obesitas.</p>
-            <p class="mt-8"><a href={site.maps} class="ui lijn">Route in Google Maps ↗</a></p>
-          </div>
-          <div class="self-end lg:col-span-6 lg:col-start-7">
-          <dl class="border-t border-lijn">
-            {site.tijden.map(([d, t]) => (
-              <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-5">
-                <dt>{d}</dt>
-                <dd class="num whitespace-nowrap text-grijs">{t}</dd>
-              </div>
-            ))}
-          </dl>
-          <p class="pt-5 text-sm text-grijs">Andere tijd nodig? Bel of app even.</p>
+    <!-- 4. De studio -->
+    <section id="studio" class="py-20 lg:py-24" aria-labelledby="t-studio">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">De studio</p>
+          <h2 id="t-studio" class="mt-5 text-3xl">Een eigen studio, zonder drukte.</h2>
+          <p class="mt-6 text-lg text-grijs">Je traint niet tussen de drukte van een sportschool, maar in een privéstudio aan de Zwolseweg 26. Ingericht voor personal training, medische fitness en obesitas.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-zand text-rood"><Icoon naam="persoon" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Persoonlijke aandacht</h3><p class="mt-0.5 text-[.9375rem] text-grijs">Tijdens en buiten de sessies, schrijven klanten in hun reviews.</p></div>
+            </li>
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-zand text-rood"><Icoon naam="doel" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Begeleiding op maat</h3><p class="mt-0.5 text-[.9375rem] text-grijs">Afgestemd op je wensen, je gezondheid en je doel.</p></div>
+            </li>
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-zand text-rood"><Icoon naam="app" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Alles in je eigen app</h3><p class="mt-0.5 text-[.9375rem] text-grijs">Schema’s, voeding en voortgang altijd bij de hand.</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-5 lg:col-span-7">
+          <figure class="relative col-span-2 overflow-hidden rounded-md sm:col-span-3">
+            <Image src={studio} alt="De studio: een rek met dumbbells voor de spiegelwand, rechts een kabelstation" widths={[400, 685]} sizes="(min-width: 1248px) 420px, (min-width: 1024px) 34vw, 58vw" class="aspect-[4/3] h-full w-full object-cover object-[35%_50%] sm:aspect-[3/4]" />
+          </figure>
+          <div class="col-span-2 grid grid-cols-2 gap-4 sm:flex sm:flex-col">
+            <div class="donker flex flex-1 flex-col justify-between rounded-md bg-nacht p-5 text-licht md:p-6">
+              <Icoon naam="hart" class="h-7 w-7 text-roze" />
+              <p class="mt-6"><b class="block font-kop text-xl font-bold leading-tight">Medische en obesitas studio</b><span class="mt-2 block text-sm text-licht-zacht">Ook voor astma- en COPD-patiënten en senioren.</span></p>
+            </div>
+            <div class="rounded-md bg-rood p-5 text-wit md:p-6">
+              <p class="font-kop text-[clamp(1.75rem,2vw+1rem,2.75rem)] font-extrabold leading-none tracking-[-0.03em]">1 op 1</p>
+              <p class="mt-2 text-sm text-wit/90">of met z’n tweeën of drieën</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 5. Antoon: portret, achtergrond en opleidingen; daarna wat klanten in hun reviews schrijven. -->
-    <section id="antoon" class="scroll-mt-20 border-t border-lijn bg-wit py-28 lg:py-40" aria-labelledby="t-antoon">
-      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <figure class="lg:col-span-4">
-          <div class="portret overflow-hidden bg-steen">
-            <Image src={antoon} alt="Zwart-witportret van Antoon in een wit poloshirt." widths={[360, 500]} sizes="(min-width: 1024px) 26vw, 80vw" format="webp" quality={78} class="h-full w-full object-cover object-top" />
-          </div>
+    <!-- 5. Antoon -->
+    <section id="antoon" class="bg-zand py-20 lg:py-24" aria-labelledby="t-antoon">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <figure class="relative self-start lg:col-span-5">
+          <div class="absolute -bottom-4 -right-4 hidden h-2/3 w-2/3 rounded-md bg-rood sm:block" aria-hidden="true"></div>
+          <Image src={antoon} alt="Zwart-witportret van Antoon in een wit poloshirt" widths={[360, 500]} sizes="(min-width: 1024px) 440px, 92vw" class="relative aspect-[500/560] w-full rounded-md object-cover object-top shadow-md" />
         </figure>
-        <div class="lg:col-span-7 lg:col-start-6">
-          <h2 id="t-antoon" class="text-3xl">Antoon, oprichter en personal trainer.</h2>
-          <p class="mt-8 max-w-[34rem] text-lg leading-relaxed text-grijs">Vanaf zijn 25e actief in fitness en krachttraining, op wedstrijdniveau. Daarna voeding, trainingsschema's en duursport: marathons, triatlons, racefietsen en mountainbiken.</p>
-          <dl class="mt-12 border-t border-lijn">
-            {opleidingen.map(([k, v]) => (
-              <div class="grid gap-y-1 border-b border-lijn py-5 md:grid-cols-[10rem_1fr] md:gap-x-6">
-                <dt class="ui pt-1 text-grijs">{k}</dt>
-                <dd>{v}</dd>
-              </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pt-4">
+          <p class="eyebrow">Je trainer</p>
+          <h2 id="t-antoon" class="mt-5 text-3xl">Antoon, oprichter en personal trainer.</h2>
+          <p class="mt-6 text-lg text-grijs">Vanaf zijn 25e actief in fitness en krachttraining, op wedstrijdniveau. Daarna legde hij zich toe op voeding, trainingsschema’s en duursport: marathons, triatlons, racefietsen en mountainbiken.</p>
+          <blockquote class="mt-8 border-l-[3px] border-rood pl-5">
+            <p class="font-kop text-xl font-bold leading-snug tracking-[-0.01em]">“Ik ben nu fitter en sterker dan ik ooit ben geweest.”</p>
+            <footer class="mt-2 text-sm text-grijs">Brenda d. M., na een herniaoperatie, op Google</footer>
+          </blockquote>
+          <p class="mt-9 text-sm font-semibold">Opleidingen en specialisaties</p>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {opleidingen.map((o) => <li class="rounded-sm bg-wit px-3 py-1.5 text-sm font-medium shadow-sm">{o}</li>)}
+          </ul>
+          <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+            <li class="kaart flex gap-4 p-5"><Icoon naam="diploma" class="h-7 w-7 shrink-0 text-rood" /><p class="text-[.9375rem]"><b class="block font-semibold">Erkend leerbedrijf</b><span class="text-grijs">SBB, niveau 4</span></p></li>
+            <li class="kaart flex gap-4 p-5"><Icoon naam="hart" class="h-7 w-7 shrink-0 text-rood" /><p class="text-[.9375rem]"><b class="block font-semibold">Erkend GLI-trainingsbedrijf</b><span class="text-grijs">Geregistreerd bij het RIVM</span></p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-12">
+          <figure class="rijs donker flex flex-col rounded-md bg-rood p-7 text-wit md:p-10 lg:col-span-6">
+            <span class="flex items-start justify-between"><span class="flex text-wit" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span><span class="font-kop text-[7rem] font-extrabold leading-[.6] text-wit/25" aria-hidden="true">”</span></span>
+            <blockquote class="mt-6 flex-1 text-lg leading-relaxed md:text-xl md:leading-relaxed">“{hoofdReview.tekst}”</blockquote>
+            <figcaption class="mt-8 flex items-center gap-3 border-t border-wit/25 pt-5">
+              <span class="grid h-10 w-10 place-items-center rounded-md bg-wit/15 font-kop font-bold" aria-hidden="true">{hoofdReview.naam[0]}</span>
+              <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{hoofdReview.naam}</b><span class="text-wit/80">Google review, {hoofdReview.wanneer}</span></span>
+            </figcaption>
+          </figure>
+          <ul class="grid gap-5 lg:col-span-6">
+            {andereReviews.map((r, i) => (
+              <li class="rijs kaart flex flex-col p-6 md:p-7" style={`--d:${i * 0.06}s`}>
+                <span class="flex text-ster" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.0625rem] w-[1.0625rem]" />)}</span>
+                <blockquote class="mt-4 flex-1 leading-relaxed">“{r.tekst}”</blockquote>
+                <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                  <b class="whitespace-nowrap font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span>
+                  <Icoon naam="g" class="ml-auto h-5 w-5" />
+                </div>
+              </li>
             ))}
-          </dl>
-          <p class="mt-12 max-w-[34rem] leading-relaxed text-grijs">
-            <span class="text-inkt">Op Google, {site.google} uit {site.googleAantal} reviews.</span> Klanten schrijven over begeleiding die wordt afgestemd op hun wensen, over persoonlijke aandacht tijdens en buiten de sessies, en over weer fit en sterk worden na een hernia.
-          </p>
+          </ul>
+        </div>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 7. Openingstijden en locatie -->
+    <section id="route" class="border-t border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-route">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-route" class="mt-5 text-3xl">Zwolseweg 26, Barendrecht.</h2>
+          <p class="mt-6 text-lg text-grijs">Trainen kan op werkdagen van de ochtend tot de avond, en op zaterdagochtend.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van de studio</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-rood">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-md">
+            <Image src={pand} alt="De gevel van de studio aan de Zwolseweg 26, met het logo op het bord" widths={[600, 900, 1290]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full min-h-[18rem] w-full object-cover object-[40%_55%]" />
+          </figure>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-rood" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact: intake-aanvraag als WhatsApp-bericht -->
+    <section id="contact" class="bg-zand py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Gratis intake</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Plan je intakegesprek.</h2>
+          <p class="mt-6 text-lg text-grijs">Vertel kort wat je wilt bereiken en wanneer het je uitkomt. Wij maken er een WhatsApp-bericht van, Antoon neemt contact met je op.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waIntake} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-rood text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-zand text-rood"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-grijs">Ma t/m vr 9.00 tot 21.00, za tot 12.00 uur</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood" /></a></li>
+            <li><a href={site.maps} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-zand text-rood"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Langskomen</b><span class="text-grijs">{site.straat}, {site.plaats}</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Je aanvraag voor een intake</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot je in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat is je doel?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Afvallen', 'Sterker worden', 'Betere conditie', 'Hardlopen', 'Herstel of medische fitness', 'Wedding-fit'].map((b) => (
+                <label class="keuze"><input type="radio" name="doel" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Hoe wil je trainen?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Eén op één', 'Small group (2 of 3)', 'Weet ik nog niet'].map((b) => (
+                <label class="keuze"><input type="radio" name="vorm" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Wanneer past het?</span>
+              <select name="wanneer" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                <option>Doordeweeks overdag</option>
+                <option>Doordeweeks ’s avonds</option>
+                <option>Zaterdagochtend</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: ik wil weer fit worden na een blessure"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-rood"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Het intakegesprek is gratis.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-rood text-wit" aria-label="Gratis intake plannen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Zet vandaag de eerste stap.</h2>
+          <p class="mt-2 text-lg text-wit/90">Een gratis intakegesprek, geheel vrijblijvend.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waIntake} class="knop knop-wit"><Icoon naam="wa" />WhatsApp Antoon</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
         </div>
       </div>
     </section>
@@ -154,28 +349,35 @@ const opleidingen = [
   <Voet />
 </Base>
 
-<style>
-  .hero { min-height: calc(100svh - var(--balk, 0px)); display: flex; }
-  .hero-vlak { background:
-    radial-gradient(120% 90% at 85% 10%, #6a1016 0%, transparent 60%),
-    radial-gradient(90% 70% at 0% 100%, #3a070a 0%, transparent 70%); }
-  .hero-grid { display: flex; flex-direction: column; justify-content: flex-end; gap: 2.5rem; padding-top: 6rem; padding-bottom: 2.5rem; width: 100%; }
-  .hero-beeld { order: -1; flex: 1 1 auto; display: flex; flex-direction: column; min-height: 11rem; }
-  .hero-foto { flex: 1 1 auto; position: relative; }
-  .hero-foto :global(img) { position: absolute; inset: 0; }
-  @media (min-width: 1024px) {
-    .hero-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 2rem; align-items: end; padding-top: 8.5rem; padding-bottom: 4.5rem; }
-    .hero-tekst { grid-column: 1 / span 7; padding-bottom: .25rem; }
-    .hero-beeld { order: 0; grid-column: 8 / span 5; align-self: stretch; }
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Hallo Antoon, ik wil graag een gratis intakegesprek plannen.'];
+      if (v('doel')) r.push('Mijn doel: ' + v('doel'));
+      if (v('vorm')) r.push('Trainen: ' + v('vorm'));
+      if (v('wanneer')) r.push('Het liefst: ' + v('wanneer').toLowerCase());
+      if (v('wens')) r.push('Toelichting: ' + v('wens'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open('https://wa.me/31642090071?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+    });
   }
+</script>
 
-  .stappen { border-top: 1px solid var(--color-lijn); counter-reset: s; }
-  .stap { display: grid; grid-template-columns: 3.5rem 1fr; gap: 1rem; padding: 1.75rem 0; border-bottom: 1px solid var(--color-lijn); }
-  @media (min-width: 768px) { .stap { grid-template-columns: 6rem 1fr; gap: 2rem; } }
-  .stap-nr { color: var(--color-rood); font-size: var(--text-xl); line-height: 1.2; letter-spacing: -.02em; }
-  .stap-kop { font-size: var(--text-2xl); line-height: 1.1; }
-
-  .pand { aspect-ratio: 4 / 3; }
-  @media (min-width: 768px) { .pand { aspect-ratio: 1290 / 720; } }
-  .portret { aspect-ratio: 500 / 560; max-width: 500px; }
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .96; letter-spacing: -0.035em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: 3px; background: var(--color-zand); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: 3px; background: var(--color-zand); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #ded8d1; }
+  .keuze input:checked + span { background: var(--color-rood); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-rood); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 4px; border: 1.5px solid #15131433; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #15131466; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-rood); }
+  .veld::placeholder { color: #857d7f; }
 </style>

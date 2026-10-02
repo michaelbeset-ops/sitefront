@@ -1,16 +1,16 @@
-# Personal Trainingen Barendrecht: ontwerpvoorstel (demomodus)
+# Personal Trainingen Barendrecht: ontwerpvoorstel (demomodus, herbouw volgens BRIEF-MICHAEL 02-10-2026)
 
-Oude site: personaltrainingenbarendrecht.nl laadt niet meer (ERR_TOO_MANY_REDIRECTS; het webarchief ziet sinds 2026 alleen een
-botcontrole). Daarvoor: WordPress-thema uit 2016, "WELKOM BIJ", stockfoto's, contactformulier, ruim 10 plaatsnaampagina's.
+Oude site personaltrainingenbarendrecht.nl stuurt door naar vreemde sites: geen mailadres of link naar dat domein.
+
+- Letter: Archivo 800 (variabel, breedte 106%) voor koppen, Public Sans voor tekst (17px/1.6). Self-hosted.
+- Kleur: gevelrood #b3122a (helderder dan logo-rood #830000), bijna-zwart #151314 (rubbervloer, ijzer), gebroken wit #f6f4f1,
+  zand #ebe7e2; op donker #ff8f97. Strak: hoeken 3-4px, rechthoekige knoppen.
+- Opbouw: topbar 3 vinkjes, sticky header met "Gratis intake", hero op volle hoogte met hun eigen studio (poster weggeschilderd)
+  en onderbalk met 3 feiten, aanbod (4 kaarten met sfeerfoto + vinkjes, klik = WhatsApp), "ook voor"-chips, donker stappenplan
+  (6 stappen uit hun eigen site), studio met 3 kaders, Antoon (portret, citaat, opleidingen, SBB/RIVM), 4 letterlijke
+  Google-reviews, openingstijden live + pand + route, intake-aanvraag als WhatsApp-bericht, rode slotbalk, donkere footer,
+  mobiele onderbalk Bellen | WhatsApp.
 
 ## Bronnen
-Webarchief (Home dec 2025, Personal Trainingen/Hardlopen/Contact mrt 2025, Size Less dec 2025, Online Fitness dec 2023,
-pagina Antoon apr 2025), Google-bedrijfsprofiel (4,8 uit 8, ma-vr 9-21, za 9-12, zo dicht; 6 foto's), Facebook-profielfoto (logo).
-
-## Keuzes (5 regels)
-- Letter: Onest (variabel, self-hosted), koppen 400 met -0.035em, UI 11px hoofdletters met tracking.
-- Kleur: het wijnrood van hun logo en gevel (#4d0a0e vlak, #830000 detail) op gebroken wit #f5f2ee, inkt #1a1617.
-- Beeld: hun eigen studio (bijgesneden, zonder de poster van een ander merk), het pand met logo, zwart-witportret.
-- Opbouw: wijnrood eerste scherm met staande studiofoto, aanbod (haarlijnlijst), stappenplan, studio + tijden, Antoon +
-  reviews in één alinea, contact met doelkiezer die het WhatsApp-bericht invult.
-- Waarom: één op één in een eigen studio is het verschil met de sportschool; de site is daarom rustig, persoonlijk, één kleur.
+Webarchief (Home, Personal Trainingen, Medische fitness, Hardlopen, Size Less, Online Fitness, Contact, pagina Antoon),
+Google-bedrijfsprofiel (4,8 uit 8, ma-vr 9-21, za 9-12, zo dicht; reviews in scratchpad b23/ptb/google.txt). Foto's: src/assets/BRONNEN.txt.
