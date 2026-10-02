@@ -1,0 +1,130 @@
+---
+import { site, url, waMet } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { afspraak?: boolean }
+const { afspraak = false } = Astro.props;
+const behandelingen = [
+  ['sportmassage', true],
+  ['hot stone-massage', true],
+  ['full body relaxing massage', true],
+  ['ontspanningsmassage rug-schouder-nek', false],
+  ['zwangerschapsmassage', true],
+] as const;
+const voorwaarden = [
+  'Geen medische behandelingen. Bij medische klachten eerst overleggen met uw arts of specialist.',
+  'Medische klachten, medicijngebruik of (een wens tot) zwangerschap altijd vooraf melden.',
+  'Annuleren kan tot 24 uur van tevoren, telefonisch of per mail. Daarna worden de kosten in rekening gebracht.',
+  'Na afloop contant afrekenen, zoveel mogelijk gepast. U krijgt een kwitantie.',
+  'Uw persoonlijke en medische gegevens gaan nooit zonder uw schriftelijke toestemming naar derden.',
+  'Er worden geen erotische massages gegeven.',
+];
+---
+<footer id="contact" class="donker scroll-mt-20 bg-asfalt text-licht" aria-labelledby="t-contact">
+  {afspraak && (
+    <div class="wrap grid gap-y-14 pb-20 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-32 lg:pt-40">
+      <div class="min-w-0 lg:col-span-4">
+        <span class="streepje" aria-hidden="true"></span>
+        <h2 id="t-contact" class="mt-8 text-3xl">Een afspraak maken.</h2>
+        <p class="mt-8 max-w-[24rem] leading-relaxed text-licht-zacht">Kies wat je wilt, dan staat het bericht voor Andrea klaar in WhatsApp. Er gaat pas iets weg als je zelf op verzenden drukt.</p>
+      </div>
+      <form class="min-w-0 lg:col-span-7 lg:col-start-6" data-afspraak novalidate>
+        <p class="zin text-xl leading-[1.55] md:text-[1.75rem] xl:text-[2rem] tracking-[-.03em]">
+          Hallo Andrea, ik wil graag een{' '}
+          <label class="sr-only" for="a-beh">Behandeling</label>
+          <span class="keus"><select id="a-beh" name="beh">{behandelingen.map(([b, lang]) => <option value={b} data-lang={lang ? '1' : '0'}>{b}</option>)}</select></span>{' '}
+          van{' '}
+          <label class="sr-only" for="a-duur">Duur</label>
+          <span class="keus"><select id="a-duur" name="duur"><option>30 minuten</option><option selected>50 minuten</option></select></span>,
+          het liefst{' '}
+          <label class="sr-only" for="a-dag">Moment</label>
+          <span class="keus"><select id="a-dag" name="dag"><option>overdag</option><option>'s avonds</option><option>op zaterdag</option><option>wanneer het past</option></select></span>.
+        </p>
+        <p class="mt-5 min-h-[1.5rem] text-sm text-licht-zacht" aria-live="polite" data-afspraak-noot></p>
+        <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <a href={waMet('ik wil graag een sportmassage van 50 minuten, het liefst overdag.')} class="knop knop-geel" data-afspraak-wa>Stuur via WhatsApp</a>
+          <a href={site.telHref} class="ui num lijn whitespace-nowrap">Of bel {site.tel}</a>
+        </p>
+      </form>
+    </div>
+  )}
+
+  <div class:list={['wrap grid gap-y-12 pb-20 lg:grid-cols-12 lg:gap-x-8', afspraak ? 'border-t border-lijn-licht pt-20 lg:pt-24' : 'pt-24']}>
+    {!afspraak && <h2 id="t-contact" class="sr-only">Contact</h2>}
+    <div class="grid grid-cols-2 gap-x-8 gap-y-10 text-[.9375rem] lg:col-span-5">
+      <div>
+        <p class="ui text-licht-zacht">Praktijk</p>
+        <p class="mt-3">{site.straat}<br />{site.postcode} {site.plaats}</p>
+        <a href={site.maps} class="lijn mt-3 inline-block text-licht-zacht">Route ↗</a>
+      </div>
+      <div>
+        <p class="ui text-licht-zacht">Bellen en WhatsApp</p>
+        <p class="mt-3"><a href={site.telHref} class="lijn num whitespace-nowrap">{site.tel}</a></p>
+      </div>
+      <div class="col-span-2">
+        <p class="ui text-licht-zacht">Mail</p>
+        <p class="mt-3"><a href={`mailto:${site.mail}`} class="lijn [overflow-wrap:anywhere]">{site.mail}</a></p>
+      </div>
+      <div class="col-span-2">
+        <p class="ui text-licht-zacht">Tijden</p>
+        <dl class="num mt-3 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1">
+          <dt>Maandag tot en met vrijdag</dt><dd>10.00 tot 22.00</dd>
+          <dt>Zaterdag</dt><dd>10.00 tot 20.00</dd>
+          <dt>Zondag</dt><dd>gesloten</dd>
+        </dl>
+      </div>
+    </div>
+    <div id="voorwaarden" class="scroll-mt-24 lg:col-span-6 lg:col-start-7">
+      <p class="ui text-licht-zacht">Goed om te weten</p>
+      <ul class="mt-3 text-[.9375rem] text-licht-zacht">
+        {voorwaarden.map((v) => <li class="border-b border-lijn-licht py-3">{v}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap flex items-end gap-[2.2vw] overflow-hidden pb-10 pt-6" aria-hidden="true">
+    <Merk class="voetmerk-teken shrink-0 text-streep" />
+    <p class="voetmerk woordmerk">SPORTMASSAGE</p>
+  </div>
+
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
+    <p class="num">{site.naam}, {site.plaats}. {site.google} op Google, uit {site.googleAantal} reviews.</p>
+    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">De massagefoto komt van het Google-bedrijfsprofiel van de praktijk; de foto's van de weg zijn sfeerfoto's via Unsplash, ter illustratie. Teksten en gastenboekberichten van sportmassagebarendrecht.nl.</p>}
+</footer>
+
+<style>
+  .voetmerk { font-size: clamp(1.6rem, 8.2vw, 9.25rem); font-weight: 500; letter-spacing: .12em; margin-right: -.12em; line-height: .76; }
+  :global(.voetmerk-teken) { height: clamp(1.2rem, 5.9vw, 6.7rem); width: auto; }
+  .keus { position: relative; display: inline-block; max-width: 100%; vertical-align: bottom; }
+  .keus select { appearance: none; -webkit-appearance: none; background: transparent; color: var(--color-streep); font: inherit; letter-spacing: inherit; border: 0; border-bottom: 1px solid color-mix(in srgb, var(--color-streep) 50%, transparent); border-radius: 0; padding: 0 1.05em 0 0; max-width: 100%; field-sizing: content; cursor: pointer; text-overflow: ellipsis; transition: border-color .3s var(--ease-zacht); }
+  .keus select:hover, .keus select:focus-visible { border-bottom-color: var(--color-streep); }
+  .keus select:focus-visible { outline: 2px solid var(--color-licht); outline-offset: 4px; }
+  .keus::after { content: ''; position: absolute; right: .2em; top: 50%; width: .32em; height: .32em; border-right: 1.5px solid var(--color-streep); border-bottom: 1.5px solid var(--color-streep); transform: translateY(-75%) rotate(45deg); pointer-events: none; }
+  .keus option { color: #17191b; background: #fafaf9; }
+</style>
+
+<script>
+  // Zet behandeling, duur en moment om in een kort WhatsApp-bericht.
+  const form = document.querySelector<HTMLFormElement>('[data-afspraak]');
+  if (form) {
+    const wa = form.querySelector<HTMLAnchorElement>('[data-afspraak-wa]')!;
+    const noot = form.querySelector<HTMLElement>('[data-afspraak-noot]')!;
+    const beh = form.querySelector<HTMLSelectElement>('#a-beh')!;
+    const duur = form.querySelector<HTMLSelectElement>('#a-duur')!;
+    const dag = form.querySelector<HTMLSelectElement>('#a-dag')!;
+    const basis = wa.href.split('?')[0];
+    const maak = () => {
+      // De ontspanningsmassage rug-schouder-nek bestaat alleen als 30 minuten.
+      const alleen30 = beh.selectedOptions[0].dataset.lang === '0';
+      duur.options[1].disabled = alleen30;
+      if (alleen30) duur.value = '30 minuten';
+      noot.textContent = alleen30 ? 'Deze massage duurt altijd 30 minuten.' : beh.value === 'zwangerschapsmassage' ? 'Zet er gerust bij hoe ver je bent.' : '';
+      const tekst = `Hallo Andrea, ik wil graag een ${beh.value} van ${duur.value}, het liefst ${dag.value}.`;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    form.addEventListener('change', maak);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    maak();
+  }
+</script>

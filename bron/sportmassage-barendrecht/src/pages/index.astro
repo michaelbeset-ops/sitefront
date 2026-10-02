@@ -1,0 +1,161 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, waMet } from '../data/site';
+import weg from '../assets/weg.jpg';
+import kuit from '../assets/kuit.jpg';
+import lopers from '../assets/lopers.jpg';
+
+// Behandelingen en duur: letterlijk van hun pagina Behandelingen.
+const behandelingen = [
+  { naam: 'Sportmassage', duur: '30 of 50 minuten' },
+  { naam: 'Hot stone-massage', duur: '30 of 50 minuten' },
+  { naam: 'Full body relaxing massage', duur: '30 of 50 minuten' },
+  { naam: 'Ontspanningsmassage rug-schouder-nek', duur: '30 minuten' },
+  { naam: 'Zwangerschapsmassage', duur: '30 of 50 minuten', nieuw: true },
+];
+
+// Gastenboek op sportmassagebarendrecht.nl (letterlijk, alleen emoji-tekens weggelaten) en één Google-review.
+const gastenboek = [
+  { wat: 'Marathon Rotterdam', tekst: 'Bedankt Andrea, dankzij jou marathon Rotterdam heerlijk uitgelopen! Geen kramp!!!!', wie: 'Ron Mak' },
+  { wat: 'New York', tekst: 'Mooie tijd gelopen in NY thanks voor de goede zorgen.', wie: 'Robert Plaisier, november 2024' },
+  { wat: 'Vierdaagse', tekst: 'Vierdaagse weer uitgelopen!! Thanks voor de massages topper!!', wie: 'Francina en Robert, juli 2025' },
+  { wat: 'Wintersport', tekst: 'Heerlijk na week skiën, ff de spieren laten losgooien. Ik kan er weer tegenaan.', wie: 'Vincent, januari 2024' },
+  { wat: 'Zwangerschap', tekst: 'Zo genoten van zwangerschapsmassage, kan er weer even tegenaan.', wie: 'Lindsey, juli 2026' },
+  { wat: 'Rug en nek', tekst: 'Geweldig massage me rug en nek zat geen beweging meer in Andrea heeft me geweldig geholpen ben heel dankbaar dankjewel kom zeker terug', wie: 'Jacqueline, op Google' },
+];
+---
+<Base title="Sportmassage Praktijk Barendrecht | Andrea Noordam, Dorpsstraat-Oost 30" description="Sportmassage, hot stone, full body relaxing, rug-schouder-nek en zwangerschapsmassage door gediplomeerd masseur Andrea Noordam in Barendrecht. Ook op locatie en als cadeaubon.">
+  <Kop overBeeld />
+  <main id="inhoud">
+
+    <!-- 1. Eerste scherm: het asfalt na de finish over de volle breedte en hoogte, de kop er rustig op. -->
+    <section class="hero donker relative isolate flex flex-col overflow-hidden bg-asfalt text-licht" aria-labelledby="titel" data-beeld>
+      <Image src={weg} alt="" widths={[640, 960, 1400, 2000]} sizes="100vw" format="webp" quality={72} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_50%]" />
+      <div class="hero-waas absolute inset-0 -z-10" aria-hidden="true"></div>
+      <div class="wrap flex flex-1 flex-col justify-center pb-10 pt-32 md:pt-36">
+        <div class="max-w-[46rem]">
+          <h1 id="titel" class="text-4xl">Sportmassage in Barendrecht.</h1>
+          <p class="mt-7 max-w-[31rem] leading-relaxed text-licht/85 md:mt-9 md:text-lg">Gediplomeerd masseur Andrea Noordam, voor sport, ontspanning, hot stone en zwangerschap. Het intakegesprek is kosteloos.</p>
+          <p class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5 md:mt-12">
+            <a href={waMet('ik wil graag een afspraak maken. ')} class="knop knop-geel">Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
+          </p>
+        </div>
+      </div>
+      <div class="wrap flex items-end justify-between gap-6 pb-8 text-licht/75 md:pb-10">
+        <p class="ui">{site.straat}, {site.plaats}</p>
+        <p class="ui hidden md:block">Ook op locatie</p>
+      </div>
+    </section>
+
+    <!-- 2. Behandelingen: rustige lijst met duur, de eigen profielfoto ernaast. -->
+    <section id="behandelingen" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-beh">
+      <div class="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5">
+          <h2 id="t-beh" class="text-3xl">Behandelingen.</h2>
+          <p class="mt-8 max-w-[27rem] text-lg leading-relaxed text-grijs">Je wilt je lekker ontspannen of misschien zit je nek of rug helemaal vast. In een kosteloos intakegesprek bepaal je samen met Andrea welke behandeling het beste past.</p>
+          <figure class="mt-14 hidden aspect-[4/5] max-w-[26rem] overflow-hidden bg-steen lg:block">
+            <Image src={kuit} alt="Een masseur kneedt de kuit van een sporter op de behandeltafel." widths={[420, 700, 1000]} sizes="26rem" format="webp" quality={72} class="h-full w-full object-cover object-[45%_60%]" />
+          </figure>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pt-3">
+          <ul class="border-t border-lijn">
+            {behandelingen.map((b) => (
+              <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-lijn py-7 md:py-8">
+                <h3 class="text-xl">{b.naam}{b.nieuw && <span class="ui ml-3 align-middle text-grijs">Nieuw</span>}</h3>
+                <p class="num text-grijs">{b.duur}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-10 max-w-[32rem] text-grijs">Combinaties van deze technieken kunnen ook, net als een deelmassage. Prijzen? Stuur even een appje.</p>
+          <p class="mt-4 max-w-[32rem] text-sm text-grijs">Niet iedereen mag zomaar gemasseerd worden, bijvoorbeeld bij koorts, griep of trombose. <a href="#voorwaarden" class="lijn text-inkt">Lees wat je vooraf moet melden</a>.</p>
+          <figure class="mt-14 aspect-[4/3] overflow-hidden bg-steen lg:hidden">
+            <Image src={kuit} alt="Een masseur kneedt de kuit van een sporter op de behandeltafel." widths={[420, 700, 1000]} sizes="100vw" format="webp" quality={72} class="h-full w-full object-cover object-[45%_62%]" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Gastenboek: wat klanten zelf schreven, per gelegenheid. -->
+    <section id="gastenboek" class="scroll-mt-20 border-t border-lijn bg-wit py-28 lg:py-40" aria-labelledby="t-gast">
+      <div class="wrap">
+        <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
+          <h2 id="t-gast" class="text-3xl lg:col-span-6">Na de finish.</h2>
+          <p class="max-w-[30rem] text-grijs lg:col-span-4 lg:col-start-9 lg:self-end">Het gastenboek van de praktijk telt 153 berichten. Een paar, zoals klanten ze zelf schreven.</p>
+        </div>
+        <ul class="mt-16 border-t border-lijn lg:mt-24">
+          {gastenboek.map((g) => (
+            <li class="grid gap-y-3 border-b border-lijn py-9 lg:grid-cols-12 lg:gap-x-8 lg:py-12">
+              <p class="ui flex items-center gap-4 text-grijs lg:col-span-3 lg:pt-3"><span class="streepje !w-4 !h-[.2rem]" aria-hidden="true"></span>{g.wat}</p>
+              <blockquote class="min-w-0 lg:col-span-7">
+                <p class="text-2xl leading-[1.2] tracking-[-.03em] max-md:hyphens-auto [overflow-wrap:anywhere]">{g.tekst}</p>
+              </blockquote>
+              <p class="text-sm text-grijs lg:col-span-2 lg:pt-3 lg:text-right">{g.wie}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Op locatie: de weg vol lopers, groot en in zwart-wit. -->
+    <section id="op-locatie" class="donker relative isolate scroll-mt-20 overflow-hidden bg-asfalt text-licht" aria-labelledby="t-loc">
+      <Image src={lopers} alt="Zwart-witfoto: benen en loopschoenen van hardlopers tijdens een wedstrijd op de weg." widths={[640, 1000, 1400, 2000]} sizes="100vw" format="webp" quality={68} class="loc-foto absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%]" />
+      <div class="loc-waas absolute inset-0 -z-10" aria-hidden="true"></div>
+      <div class="wrap grid min-h-[88svh] content-end gap-y-10 py-24 lg:grid-cols-12 lg:gap-x-8 lg:py-32">
+        <div class="lg:col-span-6">
+          <h2 id="t-loc" class="text-3xl">Op locatie, met de behandeltafel mee.</h2>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8 lg:self-end">
+          <p class="text-lg leading-relaxed text-licht/85">Andrea werkt ook buiten de praktijk, met een complete behandeltafel: tijdens sportevenementen, feesten en beurzen, en bijvoorbeeld in verzorgingstehuizen of op kantoor. De kosten zijn op aanvraag.</p>
+          <p class="mt-9">
+            <a href={waMet('ik wil graag massages op locatie aanvragen. Het gaat om ')} class="knop">Vraag het aan via WhatsApp</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Cadeaubon: de voorwaarden van hun eigen bon, rustig naast elkaar. -->
+    <section id="cadeaubon" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-bon">
+      <div class="grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5">
+          <h2 id="t-bon" class="text-3xl">Een massage cadeau geven.</h2>
+          <p class="mt-8 max-w-[28rem] text-lg leading-relaxed text-grijs">Een luxe bon: een voucher in een nette envelop. Voor een vrij te besteden bedrag of een complete behandeling.</p>
+          <p class="mt-10">
+            <a href={waMet('ik wil graag een cadeaubon bestellen voor ')} class="knop knop-vol">Bestel een bon via WhatsApp</a>
+          </p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pt-3">
+          <dl class="border-t border-lijn">
+            {[
+              ['Versturen', 'Bon en factuur worden binnen 5 werkdagen verzonden. Verzend- en administratiekosten: € 5,35.'],
+              ['Afhalen', 'Haal je de bon zelf op, dan betaal je geen verzend- en administratiekosten.'],
+              ['Geldig', 'Een jaar na uitgifte. De bon werkt zodra de betaling binnen is.'],
+              ['Inwisselen', 'Alleen voor massages bij Sportmassage Praktijk Barendrecht, niet voor contant geld.'],
+            ].map(([k, v]) => (
+              <div class="grid grid-cols-[6.5rem_1fr] gap-x-5 border-b border-lijn py-6 md:grid-cols-[9rem_1fr]">
+                <dt class="ui pt-1.5 text-grijs">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <blockquote class="mt-12 max-w-[30rem]">
+            <p class="text-xl tracking-[-.02em]">Blij met mijn kerstcadeau, een massagebon! Tot snel.</p>
+            <footer class="mt-3 text-sm text-grijs">Erwin, in het gastenboek</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet afspraak />
+</Base>
+
+<style>
+  .hero { min-height: calc(100svh - var(--balk, 0px)); }
+  .hero-waas { background: linear-gradient(to right, rgb(23 25 27 / .62) 0%, rgb(23 25 27 / .38) 50%, rgb(23 25 27 / .12) 100%), linear-gradient(to bottom, rgb(23 25 27 / .45) 0%, rgb(23 25 27 / 0) 30%, rgb(23 25 27 / 0) 75%, rgb(23 25 27 / .35) 100%); }
+  @media (max-width: 767px) { .hero-waas { background: linear-gradient(to bottom, rgb(23 25 27 / .5), rgb(23 25 27 / .3) 55%, rgb(23 25 27 / .5)); } }
+  :global(.loc-foto) { filter: grayscale(1) contrast(1.05); }
+  .loc-waas { background: linear-gradient(to top, rgb(23 25 27 / .88) 0%, rgb(23 25 27 / .55) 45%, rgb(23 25 27 / .2) 100%); }
+</style>

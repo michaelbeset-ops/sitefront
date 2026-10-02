@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/manrope/index.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Asfalt en belijning: koel gebroken wit, bijna-zwart, twee grijzen. Eén accent: het geel van de streep op de weg. */
+  --color-papier: #f3f3f1;      /* pagina */
+  --color-wit: #fafaf9;         /* rustig vlak */
+  --color-steen: #e2e3e1;       /* beeldvlak achter foto's */
+  --color-inkt: #17191b;        /* tekst, op papier 16:1 */
+  --color-grijs: #565a5e;       /* bijtekst, op papier 6,5:1 */
+  --color-lijn: #17191b1f;
+  --color-asfalt: #26292c;      /* donkere vlakken */
+  --color-licht: #f3f3f1;
+  --color-licht-zacht: #a8acb0; /* bijtekst op asfalt, 6,9:1 */
+  --color-lijn-licht: #f3f3f126;
+  --color-streep: #e2b53e;      /* accent: alleen knop en streepjes, met inkt erop 9,6:1 */
+
+  --font-sans: "Manrope Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-micro: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: clamp(1.375rem, 0.6vw + 1.2rem, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.6vw + 1.2rem, 2.75rem);
+  --text-3xl: clamp(2.125rem, 2.4vw + 1.15rem, 3.75rem);
+  --text-4xl: clamp(2.75rem, 4.6vw + 1.1rem, 6.25rem);
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-md);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-weight: 500; line-height: 1.04; letter-spacing: -0.04em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.025em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-streep); color: var(--color-inkt); }
+  :focus-visible { outline: 2px solid var(--color-inkt); outline-offset: 4px; }
+  .donker :focus-visible { outline-color: var(--color-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .ui { font-size: var(--text-micro); line-height: 1.4; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+  .woordmerk { font-weight: 500; letter-spacing: .26em; margin-right: -.26em; white-space: nowrap; line-height: 1; }
+
+  .lijn { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px; text-decoration: none; transition: background-size .45s var(--ease-zacht); }
+  .lijn:hover { background-size: 0 1px; background-position: 100% 100%; }
+  .lijn-in { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; transition: background-size .45s var(--ease-zacht); }
+  .lijn-in:hover, a:hover .lijn-in { background-size: 100% 1px; }
+
+  /* Knop: rechthoek, dunne rand, vult zich bij hover. Geen pil, geen schaduw. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .75rem; min-height: 3.125rem; padding: 0 1.6rem; border: 1px solid currentColor; font-size: var(--text-micro); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; text-decoration: none; position: relative; isolation: isolate; overflow: hidden; transition: color .4s var(--ease-zacht); }
+  .knop::before { content: ''; position: absolute; inset: 0; z-index: -1; background: var(--color-inkt); transform: scaleY(0); transform-origin: 50% 100%; transition: transform .45s var(--ease-zacht); }
+  .knop:hover { color: var(--color-papier); }
+  .knop:hover::before { transform: scaleY(1); }
+  .knop-klein { min-height: 2.5rem; padding: 0 1.1rem; }
+  /* De gele knop: het enige vlak in de merkkleur. */
+  .knop-geel { background: var(--color-streep); color: var(--color-inkt); border-color: var(--color-streep); }
+  .knop-geel::before { background: var(--color-licht); }
+  .knop-geel:hover { color: var(--color-inkt); }
+  .knop-vol { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
+  .knop-vol::before { background: var(--color-streep); }
+  .knop-vol:hover { color: var(--color-inkt); border-color: var(--color-streep); }
+  .donker .knop:not(.knop-geel)::before { background: var(--color-licht); }
+  .donker .knop:not(.knop-geel):hover { color: var(--color-asfalt); }
+
+  /* Klein schuin geel streepje: de belijning, als enige ornament. */
+  .streepje { display: inline-block; width: 1.75rem; height: .3rem; background: var(--color-streep); transform: skewX(-24deg); }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease-zacht), transform 1.2s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
