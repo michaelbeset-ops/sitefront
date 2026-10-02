@@ -1,69 +1,386 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, waMet } from '../data/site';
+import Icoon from '../components/Icoon.astro';
+import { site, waMet, tijden, tijdTekst, reviews, werkgebied } from '../data/site';
 import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
 import laser from '../assets/laser.jpg';
+import mixer from '../assets/mixer.jpg';
 import slang from '../assets/slang.jpg';
+import slangKamer from '../assets/slang-kamer.jpg';
+import zandBinnen from '../assets/zand-binnen.jpg';
+import storten from '../assets/storten.jpg';
+import uitvlakkenHand from '../assets/uitvlakken-hand.jpg';
 import uitvlakken from '../assets/uitvlakken.jpg';
 import afgewerkt from '../assets/afgewerkt.jpg';
-import mixer from '../assets/mixer.jpg';
+import baan from '../assets/baan.jpg';
+import trap from '../assets/trap.jpg';
+import vloerverwarming from '../assets/vloerverwarming.jpg';
+import bus from '../assets/bus.jpg';
+
+const heroD = await getImage({ src: hero, widths: [960, 1440, 1600], format: 'webp', quality: 72 });
+const heroMob = await getImage({ src: heroM, widths: [480, 800, 1200], format: 'webp', quality: 68 });
 
 const diensten = [
-  ['Zandcement dekvloeren', 'Een verharde uitvlaklaag op de ruwe draagvloer van beton. Daarop komt de vloer die u kiest.'],
-  ['Op en over vloerverwarming', 'Een cementdekvloer op of over de vloerverwarming, met isolatie in de opbouw als dat nodig is.'],
-  ['Egaliseren', 'Bestaande vloeren egaliseren, zodat de nieuwe vloer er strak op komt te liggen.'],
+  { src: afgewerkt, titel: 'Zandcement dekvloer', tekst: 'De verharde uitvlaklaag op de betonnen draagvloer. Daarop komen tegels, parket, laminaat of een gietvloer.', alt: 'Een afgewerkte zandcement dekvloer in een lege woonkamer, tot aan de openslaande deuren.', pos: '50% 70%' },
+  { src: vloerverwarming, titel: 'Op en over vloerverwarming', tekst: 'Een cementdekvloer op of over de vloerverwarming, met isolatie in de opbouw als dat nodig is.', alt: 'De leidingen van de vloerverwarming liggen klaar, met de slang en een berg zandcement in de kamer.', pos: '50% 75%' },
+  { src: baan, titel: 'Egaliseren', tekst: 'Bestaande vloeren egaliseren, zodat de nieuwe vloer er strak op komt te liggen.', alt: 'Een strak afgewerkt deel van de vloer naast een baan die nog wordt afgetrokken.', pos: '50% 80%' },
 ];
 
-const reeks = [
-  { src: laser, alt: 'Een oranje rotatielaser op een statief, boven de vloerverwarmingsbuizen in een lege woonkamer.', tekst: 'De laser zet de hoogte uit, boven de vloerverwarming.', cls: 'lg:col-span-3' },
-  { src: slang, alt: 'De slang van de pomp boven een berg zandcement in een keuken.', tekst: 'Het zandcement komt via de slang naar binnen.', cls: 'lg:col-span-3 lg:mt-16' },
-  { src: uitvlakken, alt: 'Een half afgewerkte dekvloer met een geleider, de achterkamer is al strak.', tekst: 'Baan voor baan strak getrokken.', cls: 'lg:col-span-3 lg:mt-32' },
-  { src: afgewerkt, alt: 'De afgewerkte dekvloer door de hele kamer, tot aan de openslaande deuren.', tekst: 'Klaar voor tegels, parket of laminaat.', cls: 'lg:col-span-3 lg:mt-48' },
+const stappen = [
+  { n: '01', titel: 'Gegevens doorgeven', tekst: 'Oppervlakte, dikte, ondergrond, vloeropbouw, afwerking, gebruik, wensen en locatie.', icoon: 'liniaal' },
+  { n: '02', titel: 'Advies en prijs', tekst: 'Met die gegevens volgt een passend advies en een prijsopgave.', icoon: 'mail' },
+  { n: '03', titel: 'Hoogte uitzetten', tekst: 'De laser zet de hoogte van de nieuwe vloer uit, ook boven vloerverwarming.', icoon: 'laag' },
+  { n: '04', titel: 'Aanbrengen', tekst: 'Het zandcement wordt buiten gemengd en via de slang naar binnen gepompt.', icoon: 'route' },
+  { n: '05', titel: 'Strak afwerken', tekst: 'Baan voor baan afgetrokken, klaar voor de vloer die u kiest.', icoon: 'hand' },
+] as const;
+
+
+const galerij = [
+  { src: zandBinnen, alt: 'Laser op statief en een berg zandcement op de vloerverwarming, bij de openslaande deuren.', tekst: 'Klaar om te beginnen' },
+  { src: laser, alt: 'Een oranje rotatielaser op een statief boven de vloerverwarmingsbuizen in een lege woonkamer.', tekst: 'De laser zet de hoogte uit' },
+  { src: mixer, alt: 'De mixer met emmers en een berg zand op straat voor een rij huizen.', tekst: 'Mengen voor de deur' },
+  { src: slang, alt: 'De slang van de pomp boven een berg zandcement in een keuken.', tekst: 'Via de slang naar binnen' },
+  { src: slangKamer, alt: 'De pompslang ligt over de vloerverwarming door de hele kamer.', tekst: 'Over de vloerverwarming', pos: '50% 60%' },
+  { src: storten, alt: 'Een hoop zandcement midden in de kamer, achterin wordt al afgewerkt.', tekst: 'Storten en verdelen' },
+  { src: uitvlakkenHand, alt: 'Een vakman van Vloerfix op zijn knieën die de dekvloer in de keuken afwerkt.', tekst: 'Afwerken tot in de hoek' },
+  { src: uitvlakken, alt: 'De dekvloer is half af, een geleider ligt nog op de vloer.', tekst: 'Halverwege', pos: '50% 70%' },
+  { src: trap, alt: 'De nieuwe dekvloer loopt strak door tot aan de trap.', tekst: 'Strak tot aan de trap' },
 ];
 
-const over = [
-  ['Ervaring', 'Meer dan 25 jaar, met zandcement dekvloeren en egaliseren.'],
-  ['Klanten', 'Aannemers en particulieren.'],
-  ['Afspraken', 'Wij komen afspraken na.'],
-  ['Werk', 'Zorgvuldig en nauwkeurig.'],
-  ['Materiaal', 'Hoogwaardig materiaal, met specialistische technieken.'],
+const kaders = [
+  { titel: 'Ervaring', tekst: 'Meer dan 25 jaar ervaring met zandcement dekvloeren en het egaliseren van bestaande vloeren.' },
+  { titel: 'Betrouwbaarheid', tekst: 'Een klantenkring van vele tevreden aannemers en particulieren. Afspraken komen wij na.' },
+  { titel: 'Kwaliteit', tekst: 'Hoogwaardig materiaal in combinatie met specialistische technieken, voor een volwaardig eindproduct.' },
 ];
+
+const week = [...tijden.slice(1), tijden[0]];
+const tijdenJson = JSON.stringify(tijden.map((t) => [t.open ?? null, t.dicht ?? null]));
+const plaatsenJson = JSON.stringify(werkgebied.map((w) => [w.provincie, w.plaatsen]));
+const aantalPlaatsen = werkgebied.reduce((s, w) => s + w.plaatsen.length, 0);
 ---
-<Base title="Vloerfix | Zandcement dekvloeren en egaliseren, Papendrecht" description="Vloerfix uit Papendrecht legt zandcement dekvloeren, ook op vloerverwarming, en egaliseert bestaande vloeren. Voor aannemers en particulieren, met meer dan 25 jaar ervaring.">
+<Base title="Vloerfix | Zandcement dekvloeren en egaliseren, Papendrecht" description="Vloerfix uit Papendrecht legt zandcement dekvloeren, ook op en over vloerverwarming, en egaliseert bestaande vloeren. Voor aannemers en particulieren, met meer dan 25 jaar ervaring.">
   <Kop overBeeld />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: hun eigen dekvloer over de volle breedte en hoogte, kop en één actie erop. -->
-    <section class="hero donker relative isolate flex flex-col justify-end overflow-hidden bg-antraciet text-licht" aria-labelledby="titel" data-beeld>
-      <Image src={hero} alt="" widths={[640, 960, 1300]} sizes="100vw" format="webp" quality={74} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+    <!-- HERO: hun eigen werkfoto, laser en vakman op de vloerverwarming. -->
+    <section class="hero donker relative isolate flex flex-col justify-end overflow-hidden bg-antraciet text-wit" aria-labelledby="titel" data-beeld data-tijden={tijdenJson}>
+      <picture>
+        <source media="(min-width: 768px)" srcset={heroD.srcSet.attribute} sizes="100vw" />
+        <img src={heroMob.src} srcset={heroMob.srcSet.attribute} sizes="100vw" alt="Een vakman van Vloerfix trekt de dekvloer af bij de openslaande deuren, de laser staat op de vloerverwarming." class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%] md:object-[50%_45%]" width="1600" height="1200" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
       <div class="hero-waas absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div class="wrap grid gap-y-10 pb-10 pt-32 md:pb-16 lg:grid-cols-12 lg:gap-x-8 lg:pb-20">
-        <div class="lg:col-span-8">
-          <h1 id="titel" class="text-4xl">Zandcement dekvloeren en egaliseren.</h1>
-          <p class="mt-6 max-w-[34rem] leading-relaxed text-licht/85 md:mt-9 md:text-lg">Vloerfix is een klein bedrijf uit Papendrecht. Wim de Man en Cock Vielvoije leggen dekvloeren voor aannemers en particulieren, met meer dan 25 jaar ervaring.</p>
-          <p class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5 md:mt-11">
-            <a href={waMet('ik wil graag advies over een dekvloer. Het gaat om ')} class="knop knop-licht">Vraag advies via WhatsApp</a>
-            <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
-          </p>
+      <div class="wrap pb-10 pt-36 md:pb-14 lg:pb-16 lg:pt-44">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-8">
+            <p class="eyebrow !text-wit/90 before:!bg-rood-licht">Zandcement dekvloeren, Papendrecht</p>
+            <h1 id="titel" class="mt-5 text-4xl lg:text-[5.4rem]">Een goede dekvloer is een <span class="text-rood-licht">vak apart.</span></h1>
+            <p class="mt-6 max-w-[38rem] text-lg leading-relaxed text-wit/90 md:text-[1.3rem]">Wim de Man en Cock Vielvoije leggen zandcement dekvloeren, ook op en over vloerverwarming, en egaliseren bestaande vloeren. Voor aannemers en particulieren.</p>
+            <p class="mt-9 flex flex-wrap gap-3">
+              <a href={waMet('ik wil graag advies over een dekvloer. Het gaat om ')} class="knop knop-rood"><Icoon naam="wa" />Advies via WhatsApp</a>
+              <a href="#werkwijze" class="knop knop-rand">Zo werken we</a>
+            </p>
+          </div>
+          <div class="text-sm lg:col-span-4 lg:text-right">
+            <a href="#reviews" class="inline-flex items-center gap-2 lg:justify-end">
+              <span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+              <span><strong class="num">{site.google}</strong> op Google · {site.googleAantal} reviews</span>
+            </a>
+            <p class="mt-2 text-wit/85" data-status>Ma 11.00 tot 16.30, di t/m za 10.00 tot 16.00</p>
+            <a href={site.telHref} class="num mt-3 block font-[family-name:var(--font-kop)] text-2xl font-extrabold tracking-[-.01em] [font-stretch:110%] hover:text-rood-licht">{site.tel}</a>
+          </div>
         </div>
-        <p class="ui hidden self-end text-right text-licht/75 lg:col-span-4 lg:block">Zandcement dekvloer</p>
+        <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-wit/20 pt-6 text-[.95rem] text-wit/90">
+          {['Meer dan 25 jaar ervaring', 'Voor aannemers en particulieren', 'Wij komen afspraken na'].map((t) => <li class="flex items-center gap-2"><Icoon naam="check" class="h-4 w-4 text-rood-licht" />{t}</li>)}
+        </ul>
       </div>
     </section>
 
-    <!-- 2. Wat ze doen: rustige tekst naast een lijst met haarlijnen. -->
-    <section id="diensten" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-diensten">
-      <div class="grid gap-y-12 lg:grid-cols-12 lg:gap-x-8">
-        <h2 id="t-diensten" class="text-3xl lg:col-span-5">Een goede dekvloer is een vak apart.</h2>
-        <div class="lg:col-span-6 lg:col-start-7">
-          <p class="text-lg leading-relaxed text-grijs">De juiste verhouding tussen zand en cement, en een goede afwerking, bepalen hoe lang de vloer meegaat en wat u ermee kunt. Op de dekvloer komt de uiteindelijke vloer: tegels, parket, laminaat of een gietvloer.</p>
-          <ul class="mt-14 border-t border-lijn">
-            {diensten.map(([t, d]) => (
-              <li class="grid gap-y-2 border-b border-lijn py-8 md:grid-cols-[14rem_1fr] md:gap-x-8">
-                <h3 class="text-xl">{t}</h3>
-                <p class="text-grijs">{d}</p>
+    <!-- CIJFERS -->
+    <section class="border-b border-lijn bg-wit" aria-label="Vloerfix in cijfers">
+      <dl class="wrap grid grid-cols-2 lg:grid-cols-4">
+        {[
+          ['25+', 'jaar ervaring met dekvloeren'],
+          [site.google, `op Google, uit ${site.googleAantal} reviews`],
+          ['2', 'vakmannen: Wim en Cock'],
+          ['4', 'provincies in het werkgebied'],
+        ].map(([g, t], i) => (
+          <div class:list={['flex flex-col gap-1 py-7 lg:px-8 lg:py-9', { 'lg:pl-0': i === 0, 'max-lg:border-b border-lijn': i < 2, 'max-lg:border-r border-lijn': i % 2 === 0, 'pl-5 lg:pl-8': i % 2 === 1, 'lg:border-l lg:border-lijn': i > 0 }]}>
+            <dt class="order-2 text-sm text-grijs">{t}</dt>
+            <dd class="num order-1 font-[family-name:var(--font-kop)] text-4xl font-extrabold tracking-[-.03em] [font-stretch:112%] lg:text-5xl">{g}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- DIENSTEN -->
+    <section id="diensten" class="scroll-mt-24 py-20 lg:py-24" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Wat we doen</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Van ruwe draagvloer tot strakke afwerkvloer.</h2>
+          </div>
+          <p class="text-lg leading-relaxed text-grijs lg:col-span-5">De juiste verhouding tussen zand en cement en een goede afwerking bepalen hoe lang de vloer meegaat en wat u ermee kunt.</p>
+        </div>
+        <ul class="mt-14 grid gap-6 md:grid-cols-3">
+          {diensten.map((d, i) => (
+            <li class="rijs group" style={`--d:${i * 0.08}s`}>
+              <a href={waMet(`ik heb een vraag over: ${d.titel.toLowerCase()}. `)} class="flex h-full flex-col overflow-hidden rounded-lg bg-wit shadow-sm ring-1 ring-lijn transition-shadow duration-300 hover:shadow-md">
+                <div class="aspect-[4/3] overflow-hidden bg-steen">
+                  <Image src={d.src} alt={d.alt} widths={[400, 640, 900]} sizes="(min-width: 768px) 32vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${d.pos}`} />
+                </div>
+                <div class="flex flex-1 flex-col p-6 lg:p-7">
+                  <h3 class="text-xl">{d.titel}</h3>
+                  <p class="mt-3 flex-1 text-grijs">{d.tekst}</p>
+                  <span class="pijl-link mt-6 text-sm text-rood">Vraag ernaar <span><Icoon naam="pijl" class="h-4 w-4" /></span></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-6 grid gap-6 rounded-lg bg-steen/60 p-6 ring-1 ring-lijn md:grid-cols-2 lg:p-8">
+          <div>
+            <p class="text-sm font-semibold">Geschikt onder</p>
+            <ul class="mt-3 flex flex-wrap gap-2">{['Tegels', 'Parket', 'Laminaat', 'Gietvloer'].map((t) => <li class="chip">{t}</li>)}</ul>
+          </div>
+          <div>
+            <p class="text-sm font-semibold">Bijvoorbeeld voor</p>
+            <ul class="mt-3 flex flex-wrap gap-2">{['Begane grond woonhuis', 'Garage', 'Badkamer op de verdieping'].map((t) => <li class="chip">{t}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WERKWIJZE -->
+    <section id="werkwijze" class="scroll-mt-24 border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-werk" class="mt-4 text-3xl">Van eerste vraag tot vloer die klaarligt.</h2>
+          </div>
+          <p class="text-lg leading-relaxed text-grijs lg:col-span-5">Voor een passend advies heeft Vloerfix een paar gegevens nodig. Daarna gaat het zo.</p>
+        </div>
+        <ol class="stappen mt-12 grid gap-x-6 gap-y-8 sm:gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
+          {stappen.map((s, i) => (
+            <li class="rijs relative grid grid-cols-[3rem_1fr] gap-x-4 sm:block" style={`--d:${i * 0.07}s`}>
+              <div class="flex items-center gap-3">
+                <span class="grid h-12 w-12 shrink-0 place-items-center rounded-md bg-rood text-wit"><Icoon naam={s.icoon} class="h-6 w-6" /></span>
+                <span class="lijn-stap hidden h-px flex-1 bg-lijn lg:block" aria-hidden="true"></span>
+              </div>
+              <div>
+                <p class="num font-[family-name:var(--font-kop)] text-sm font-bold tracking-[.12em] text-rood sm:mt-5">{s.n}</p>
+                <h3 class="mt-1 text-lg">{s.titel}</h3>
+                <p class="mt-2 text-[.95rem] leading-relaxed text-grijs">{s.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- UW VLOER: hun eigen 8 adviesgegevens als WhatsApp-bericht (wow-functie). -->
+    <section id="advies" class="scroll-mt-24 py-20 lg:py-24" aria-labelledby="t-advies">
+      <div class="wrap">
+        <div class="grid overflow-hidden rounded-lg bg-wit shadow-md ring-1 ring-lijn lg:grid-cols-12">
+          <div class="donker bg-antraciet p-7 text-licht md:p-10 lg:col-span-5 lg:p-12">
+            <p class="eyebrow">Advies en prijs</p>
+            <h2 id="t-advies" class="mt-4 text-3xl">Vertel wat er moet gebeuren.</h2>
+            <p class="mt-5 leading-relaxed text-licht-zacht">Om tot een passend advies te komen heeft Vloerfix deze gegevens nodig. Vul in wat u weet: uw WhatsApp-bericht staat dan klaar.</p>
+            <ul class="mt-8 space-y-3 text-sm max-lg:hidden">
+              {['Vrijblijvend advies', 'Voor aannemers en particulieren', 'Liever bellen? Dat kan ook'].map((t) => <li class="flex items-center gap-2.5"><Icoon naam="check" class="h-4 w-4 text-rood-licht" />{t}</li>)}
+            </ul>
+            <div class="mt-10 rounded-md bg-antraciet-2 p-5 ring-1 ring-lijn-licht">
+              <p class="text-xs font-semibold uppercase tracking-[.14em] text-licht-zacht">Uw bericht</p>
+              <p class="mt-3 whitespace-pre-line text-sm leading-relaxed text-licht" aria-live="polite" data-voorbeeld>Hallo Vloerfix, ik wil graag advies over een dekvloer.</p>
+            </div>
+            <p class="mt-8 text-sm text-licht-zacht max-lg:hidden">Liever direct iemand spreken?</p>
+            <a href={site.telHref} class="num mt-1 max-lg:hidden lg:inline-block font-[family-name:var(--font-kop)] text-2xl font-extrabold [font-stretch:110%] hover:text-rood-licht">{site.tel}</a>
+          </div>
+
+          <form class="vloer p-7 md:p-10 lg:col-span-7 lg:p-12" data-vloer novalidate>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <div class="veld">
+                <label for="v-m2">Oppervlakte</label>
+                <div class="eenheid"><input id="v-m2" name="Oppervlakte" inputmode="decimal" autocomplete="off" placeholder="bijv. 45" data-eenheid="m²" /><span aria-hidden="true">m²</span></div>
+              </div>
+              <div class="veld">
+                <label for="v-dikte">Gemiddelde dikte</label>
+                <div class="eenheid"><input id="v-dikte" name="Gemiddelde dikte" inputmode="decimal" autocomplete="off" placeholder="bijv. 6" data-eenheid="cm" /><span aria-hidden="true">cm</span></div>
+              </div>
+              <div class="veld">
+                <label for="v-onder">Ondergrond</label>
+                <input id="v-onder" name="Ondergrond" autocomplete="off" placeholder="bijv. beton" />
+              </div>
+              <div class="veld">
+                <label for="v-plaats">Locatie</label>
+                <input id="v-plaats" name="Locatie" autocomplete="address-level2" placeholder="plaats, en hoe bereikbaar" />
+              </div>
+            </div>
+            <fieldset class="groep">
+              <legend>Vloeropbouw</legend>
+              <div class="keuzes">
+                <label><input type="checkbox" name="Vloeropbouw" value="isolatie" /><span>Isolatie</span></label>
+                <label><input type="checkbox" name="Vloeropbouw" value="vloerverwarming" /><span>Vloerverwarming</span></label>
+              </div>
+            </fieldset>
+            <fieldset class="groep">
+              <legend>Afwerking erop</legend>
+              <div class="keuzes">
+                {['Tegels', 'Parket', 'Laminaat', 'Gietvloer'].map((a) => <label><input type="radio" name="Vloerafwerking" value={a.toLowerCase()} /><span>{a}</span></label>)}
+              </div>
+            </fieldset>
+            <fieldset class="groep">
+              <legend>Gebruik</legend>
+              <div class="keuzes">
+                {['Begane grond woonhuis', 'Garage', 'Badkamer 1e verdieping'].map((a) => <label><input type="radio" name="Gebruik" value={a.toLowerCase()} /><span>{a}</span></label>)}
+              </div>
+            </fieldset>
+            <fieldset class="groep">
+              <legend>Speciale wensen</legend>
+              <div class="keuzes">
+                <label><input type="checkbox" name="Speciale wensen" value="slijtlaag" /><span>Slijtlaag</span></label>
+                <label><input type="checkbox" name="Speciale wensen" value="pleisteren" /><span>Pleisteren</span></label>
+              </div>
+            </fieldset>
+            <div class="mt-8 flex flex-wrap items-center gap-3 border-t border-lijn pt-8">
+              <a href={waMet('ik wil graag advies over een dekvloer.')} class="knop knop-rood" data-vloer-wa><Icoon naam="wa" />Stuur via WhatsApp</a>
+              <a href={`mailto:${site.mail}`} class="knop knop-rand" data-vloer-mail><Icoon naam="mail" />Of per mail</a>
+            </div>
+            <p class="mt-4 text-sm text-grijs" data-vloer-teller>Nog niets ingevuld. Een leeg bericht mag ook.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTEN: hun eigen fotogalerij -->
+    <section id="projecten" class="donker scroll-mt-24 bg-antraciet py-24 text-licht lg:py-32" aria-labelledby="t-proj">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-proj" class="mt-4 text-3xl">Eén woonkamer, van draagvloer tot dekvloer.</h2>
+          </div>
+          <p class="text-lg leading-relaxed text-licht-zacht lg:col-span-5">Foto's uit het eigen archief van Vloerfix. Klik op een foto om hem groot te bekijken.</p>
+        </div>
+        <ul class="mt-14 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 md:auto-rows-[11rem] lg:auto-rows-[14.5rem]">
+          {galerij.map((g, i) => (
+            <li class:list={['rijs', { 'col-span-2 md:row-span-2': i === 0 }]} style={`--d:${(i % 3) * 0.06}s`}>
+              <button type="button" class="foto-knop group relative block h-full w-full overflow-hidden rounded-lg bg-antraciet-2 text-left" data-groot={i}>
+                <Image src={g.src} alt={g.alt} widths={[400, 700, 1000]} sizes="(min-width: 768px) 25vw, 50vw" format="webp" quality={68} class:list={['h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]', i === 0 ? 'aspect-[4/3] md:aspect-auto' : 'aspect-square md:aspect-auto']} style={g.pos ? `object-position:${g.pos}` : undefined} />
+                <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-inkt/85 to-transparent p-4 pt-10 text-sm font-medium text-wit">{g.tekst}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <dialog class="lichtbak" data-lichtbak aria-label="Foto groot bekijken">
+        <form method="dialog"><button class="sluit" aria-label="Sluiten">×</button></form>
+        {galerij.map((g, i) => (
+          <figure hidden data-groot-foto={i}>
+            <Image src={g.src} alt={g.alt} widths={[800, 1200]} sizes="(min-width: 900px) 70vw, 100vw" format="webp" quality={74} loading="lazy" class="max-h-[80vh] w-auto rounded-md object-contain" />
+            <figcaption class="mt-3 text-sm text-licht-zacht">{g.tekst}</figcaption>
+          </figure>
+        ))}
+      </dialog>
+    </section>
+
+    <!-- OVER ONS -->
+    <section id="over" class="scroll-mt-24 py-20 lg:py-24" aria-labelledby="t-over">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div class="grid gap-4 lg:col-span-6">
+          <figure class="relative">
+            <div class="aspect-[4/3] overflow-hidden rounded-lg bg-steen">
+              <Image src={bus} alt="De rode bus van Vloerfix met de mixer op de aanhanger, geparkeerd in een woonstraat." widths={[480, 800, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover" />
+            </div>
+            <figcaption class="absolute bottom-4 left-4 rounded-md bg-rood px-4 py-2.5 font-[family-name:var(--font-kop)] text-sm font-bold text-wit shadow-md [font-stretch:110%]">Wim de Man en Cock Vielvoije</figcaption>
+          </figure>
+          <blockquote class="donker rounded-lg bg-antraciet p-6 text-licht lg:p-7">
+            <p class="font-[family-name:var(--font-kop)] text-xl font-bold leading-snug [font-stretch:108%]">“Je merkt dat de mannen ruim 30 jaar ervaring hebben.”</p>
+            <footer class="mt-3 flex items-center gap-2 text-sm text-licht-zacht"><Icoon naam="g" class="h-4 w-4" />Simon, Google review</footer>
+          </blockquote>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over Vloerfix</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Een klein bedrijf, gespecialiseerd in één ding.</h2>
+          <p class="mt-6 text-lg leading-relaxed text-grijs">Vloerfix is een klein bedrijf uit Papendrecht, gespecialiseerd in het leggen van zandcement dekvloeren en het egaliseren van bestaande vloeren. Wim de Man en Cock Vielvoije werken voor aannemers en particulieren.</p>
+          <ul class="mt-9 grid gap-3">
+            {kaders.map((k) => (
+              <li class="rounded-lg bg-wit p-5 shadow-sm ring-1 ring-lijn">
+                <h3 class="flex items-center gap-2.5 text-base"><span class="grid h-6 w-6 place-items-center rounded-sm bg-rood text-wit"><Icoon naam="check" class="h-3.5 w-3.5" /></span>{k.titel}</h3>
+                <p class="mt-2 pl-[2.125rem] text-[.95rem] text-grijs">{k.tekst}</p>
+              </li>
+            ))}
+          </ul>
+          <a href={waMet('ik wil graag vrijblijvend advies over een dekvloer. ')} class="knop knop-inkt mt-9"><Icoon naam="wa" />Vraag vrijblijvend advies</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="scroll-mt-24 border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p class="eyebrow">Ervaringen</p>
+            <h2 id="t-rev" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.googleUrl} class="flex items-center gap-4 self-start rounded-lg bg-cement px-5 py-4 ring-1 ring-lijn transition-shadow hover:shadow-md md:self-auto">
+            <Icoon naam="g" class="h-8 w-8" />
+            <span>
+              <span class="flex items-center gap-2"><strong class="num font-[family-name:var(--font-kop)] text-2xl font-extrabold">{site.google}</strong><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.googleAantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-3 md:mx-0 md:mt-14 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 md:pb-0" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs flex w-[85%] shrink-0 snap-start flex-col rounded-lg md:w-auto bg-cement p-7 ring-1 ring-lijn" style={`--d:${i * 0.08}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.1rem] w-[1.1rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.05rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <p class="mt-6 flex items-center justify-between border-t border-lijn pt-5">
+                <span class="flex items-center gap-3">
+                  <span class="grid h-10 w-10 place-items-center rounded-full bg-inkt font-[family-name:var(--font-kop)] font-bold text-wit">{r.naam[0]}</span>
+                  <span class="leading-tight"><span class="block font-semibold">{r.naam}</span><span class="text-xs text-grijs">Google review</span></span>
+                </span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- WERKGEBIED -->
+    <section id="werkgebied" class="scroll-mt-24 py-20 lg:py-24" aria-labelledby="t-gebied" data-plaatsen={plaatsenJson}>
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <p class="eyebrow">Werkgebied</p>
+            <h2 id="t-gebied" class="mt-4 text-3xl">Vanuit Papendrecht, in vier provincies.</h2>
+            <p class="mt-6 text-lg leading-relaxed text-grijs">Vloerfix werkt in Zuid-Holland, Utrecht, Noord-Brabant en Zeeland. Kijk of uw plaats erbij staat.</p>
+            <div class="zoek mt-8">
+              <label for="w-zoek" class="text-sm font-semibold">Uw plaats</label>
+              <div class="relative mt-2">
+                <Icoon naam="zoek" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-grijs" />
+                <input id="w-zoek" type="search" autocomplete="address-level2" placeholder="bijv. Dordrecht" class="h-14 w-full rounded-md border border-inkt/25 bg-wit pl-12 pr-4 shadow-sm outline-none transition focus:border-inkt" data-zoek />
+              </div>
+              <p class="mt-3 min-h-[3.25rem] text-[.95rem]" aria-live="polite" data-zoek-uit>{aantalPlaatsen} plaatsen met een eigen pagina op vloerfix.nl.</p>
+              <a href={waMet('ik wil graag advies over een dekvloer. ')} class="knop knop-rood mt-1 hidden" data-zoek-wa><Icoon naam="wa" />Vraag advies voor deze plaats</a>
+            </div>
+          </div>
+          <ul class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+            {werkgebied.map((w) => (
+              <li class="rounded-lg bg-wit p-6 shadow-sm ring-1 ring-lijn">
+                <h3 class="flex items-center justify-between text-lg">{w.provincie}<span class="num rounded-sm bg-steen px-2 py-0.5 font-[family-name:var(--font-sans)] text-xs font-semibold text-grijs">{w.plaatsen.length} plaatsen</span></h3>
+                <ul class="mt-4 flex flex-wrap gap-1.5">
+                  {w.plaatsen.slice(0, 9).map((p) => <li class="chip chip-klein">{p}</li>)}
+                  <li class="chip chip-klein chip-meer">+ {w.plaatsen.length - 9}</li>
+                </ul>
               </li>
             ))}
           </ul>
@@ -71,108 +388,45 @@ const over = [
       </div>
     </section>
 
-    <!-- 3. Werkwijze in hun eigen foto's: van draagvloer tot dekvloer, als een aflopende reeks. -->
-    <section id="werkwijze" class="scroll-mt-20 bg-wit py-28 lg:py-40" aria-labelledby="t-werk">
-      <div class="wrap">
-        <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
-          <h2 id="t-werk" class="text-3xl lg:col-span-6">Van draagvloer tot dekvloer.</h2>
-          <p class="max-w-[30rem] text-grijs lg:col-span-4 lg:col-start-9 lg:self-end">Eén woonkamer, vier momenten. Foto's uit het eigen archief van Vloerfix.</p>
-        </div>
-        <ol class="reeks mt-16 grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-8 lg:mt-24 lg:grid-cols-12">
-          {reeks.map((r, i) => (
-            <li class={r.cls}>
-              <figure>
-                <div class="aspect-[3/4] overflow-hidden bg-steen">
-                  <Image src={r.src} alt={r.alt} widths={[400, 700, 1000]} sizes="(min-width: 1024px) 23vw, 50vw" format="webp" quality={70} class="foto-zw h-full w-full object-cover" />
-                </div>
-                <figcaption class="mt-4 grid grid-cols-[1.75rem_1fr] text-sm leading-relaxed">
-                  <span class="num text-grijs">{i + 1}</span>
-                  <span>{r.tekst}</span>
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-
-    <!-- 4. Over: het eigen zwart-witbeeld van de mixer op straat, daaronder wie ze zijn. -->
-    <section id="over" class="scroll-mt-20 pb-28 lg:pb-40" aria-labelledby="t-over">
-      <figure class="over-beeld overflow-hidden bg-steen">
-        <Image src={mixer} alt="Zwart-witfoto: de mixer, emmers en een berg zand op straat voor een rij huizen." widths={[640, 1000, 1400, 1900]} sizes="100vw" format="webp" quality={70} class="h-full w-full object-cover object-[35%_60%]" />
-      </figure>
-      <div class="wrap mt-20 grid gap-y-12 lg:mt-28 lg:grid-cols-12 lg:gap-x-8">
+    <!-- CONTACT + OPENINGSTIJDEN -->
+    <section id="contact" class="donker scroll-mt-24 bg-antraciet-2 py-24 text-licht lg:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
         <div class="lg:col-span-5">
-          <h2 id="t-over" class="text-3xl">Wim de Man en Cock Vielvoije.</h2>
-          <p class="mt-8 max-w-[28rem] text-lg leading-relaxed text-grijs">Samen zijn zij Vloerfix: een klein bedrijf, gespecialiseerd in het leggen van zandcement dekvloeren en het egaliseren van bestaande vloeren.</p>
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-4xl lg:text-[4.25rem]">Laten we beginnen.</h2>
+          <p class="mt-6 max-w-md text-lg leading-relaxed text-licht-zacht">Voor meer informatie, advies of een prijs kunt u Vloerfix bellen, appen of mailen.</p>
+          <div class="mt-9 grid gap-3 sm:max-w-sm">
+            <a href={waMet('ik wil graag advies over een dekvloer. Het gaat om ')} class="knop knop-rood w-full"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-rand num w-full"><Icoon naam="tel" />Bel {site.tel}</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand w-full"><Icoon naam="mail" />{site.mail}</a>
+          </div>
         </div>
-        <dl class="border-t border-lijn lg:col-span-6 lg:col-start-7">
-          {over.map(([k, v]) => (
-            <div class="grid grid-cols-[6.5rem_1fr] gap-x-5 border-b border-lijn py-5 md:grid-cols-[10rem_1fr]">
-              <dt class="ui pt-1 text-grijs">{k}</dt>
-              <dd>{v}</dd>
+        <div class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          <div class="rounded-lg bg-antraciet p-6 ring-1 ring-lijn-licht sm:col-span-2 lg:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="klok" class="h-5 w-5 text-rood-licht" />Openingstijden</h3>
+              <p class="status rounded-full px-3 py-1 text-xs font-semibold" data-status-pil>Volgens Google</p>
             </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-
-    <!-- 5. Uw vloer: hun eigen lijst met gegevens voor een passend advies, als bericht naar WhatsApp. -->
-    <section id="uw-vloer" class="scroll-mt-20 border-t border-lijn bg-wit py-28 lg:py-40" aria-labelledby="t-vloer">
-      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <div class="lg:col-span-4">
-          <h2 id="t-vloer" class="text-3xl">Wat Vloerfix van uw vloer wil weten.</h2>
-          <p class="mt-8 max-w-[24rem] text-grijs">Om tot een passend advies te komen zijn deze gegevens nodig. Vul in wat u weet en stuur het als WhatsApp.</p>
+            <dl class="num mt-6 grid grid-cols-[1fr_auto] text-[.95rem]" data-week>
+              {week.map((t) => (
+                <div class="dagrij col-span-2 grid grid-cols-subgrid border-b border-lijn-licht py-2.5 last:border-0" data-dag={tijden.indexOf(t)}>
+                  <dt>{t.dag}</dt>
+                  <dd class="text-right">{t.open ? `${tijdTekst(t.open)} tot ${tijdTekst(t.dicht!)}` : 'Gesloten'}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+          <div class="rounded-lg bg-antraciet p-6 ring-1 ring-lijn-licht">
+            <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="pin" class="h-5 w-5 text-rood-licht" />Adres</h3>
+            <p class="mt-4 leading-relaxed text-licht-zacht">{site.naam}<br />{site.straat}<br />{site.postcode} {site.plaats}</p>
+            <a href={site.route} class="pijl-link mt-5 text-sm text-licht">Route plannen <span><Icoon naam="pijl" class="h-4 w-4" /></span></a>
+          </div>
+          <div class="rounded-lg bg-antraciet p-6 ring-1 ring-lijn-licht">
+            <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="tel" class="h-5 w-5 text-rood-licht" />Direct contact</h3>
+            <p class="mt-4 leading-relaxed text-licht-zacht">Bellen en WhatsApp<br /><a href={site.telHref} class="num text-licht hover:text-rood-licht">{site.tel}</a></p>
+            <p class="mt-3 text-sm text-licht-zacht">KvK {site.kvk}</p>
+          </div>
         </div>
-        <form class="vloer lg:col-span-7 lg:col-start-6" data-vloer novalidate>
-          <div class="rij">
-            <label for="v-m2" class="ui">Oppervlakte</label>
-            <div class="veld-eenheid"><input id="v-m2" name="Oppervlakte" inputmode="decimal" autocomplete="off" placeholder="bijv. 45" data-eenheid="m²" /><span aria-hidden="true">m²</span></div>
-          </div>
-          <div class="rij">
-            <label for="v-dikte" class="ui">Dikte</label>
-            <div class="veld-eenheid"><input id="v-dikte" name="Gemiddelde dikte" inputmode="decimal" autocomplete="off" placeholder="gemiddeld, of per ruimte" data-eenheid="cm" /><span aria-hidden="true">cm</span></div>
-          </div>
-          <div class="rij">
-            <label for="v-onder" class="ui">Ondergrond</label>
-            <input id="v-onder" name="Ondergrond" autocomplete="off" placeholder="bijv. beton" />
-          </div>
-          <div class="rij" role="group" aria-labelledby="g1">
-            <p id="g1" class="ui">Vloeropbouw</p>
-            <div class="keuzes">
-              <label><input type="checkbox" name="Vloeropbouw" value="isolatie" /><span>Isolatie</span></label>
-              <label><input type="checkbox" name="Vloeropbouw" value="vloerverwarming" /><span>Vloerverwarming</span></label>
-            </div>
-          </div>
-          <div class="rij" role="group" aria-labelledby="g2">
-            <p id="g2" class="ui">Afwerking</p>
-            <div class="keuzes">
-              {['Tegels', 'Parket', 'Laminaat', 'Gietvloer'].map((a) => <label><input type="radio" name="Vloerafwerking" value={a.toLowerCase()} /><span>{a}</span></label>)}
-            </div>
-          </div>
-          <div class="rij" role="group" aria-labelledby="g3">
-            <p id="g3" class="ui">Gebruik</p>
-            <div class="keuzes">
-              {['Begane grond woonhuis', 'Garage', 'Badkamer 1e verdieping'].map((a) => <label><input type="radio" name="Gebruik" value={a.toLowerCase()} /><span>{a}</span></label>)}
-            </div>
-          </div>
-          <div class="rij" role="group" aria-labelledby="g4">
-            <p id="g4" class="ui">Wensen</p>
-            <div class="keuzes">
-              <label><input type="checkbox" name="Speciale wensen" value="slijtlaag" /><span>Slijtlaag</span></label>
-              <label><input type="checkbox" name="Speciale wensen" value="pleisteren" /><span>Pleisteren</span></label>
-            </div>
-          </div>
-          <div class="rij">
-            <label for="v-plaats" class="ui">Locatie</label>
-            <input id="v-plaats" name="Locatie" autocomplete="address-level2" placeholder="plaats, en hoe bereikbaar" />
-          </div>
-          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
-            <a href={waMet('ik wil graag advies over een dekvloer.')} class="knop knop-vol" data-vloer-wa>Stuur via WhatsApp</a>
-            <a href={`mailto:${site.mail}`} class="ui lijn" data-vloer-mail>Of per mail</a>
-          </div>
-          <p class="mt-6 text-sm text-grijs" aria-live="polite" data-vloer-teller>Nog niets ingevuld. Een leeg bericht mag ook.</p>
-        </form>
       </div>
     </section>
   </main>
@@ -180,49 +434,87 @@ const over = [
 </Base>
 
 <style>
-  .hero { min-height: calc(100svh - var(--balk, 0px)); }
-  .hero-waas { background:
-    linear-gradient(to top, rgb(20 20 18 / .8) 0%, rgb(20 20 18 / .5) 45%, rgb(20 20 18 / .15) 75%, rgb(20 20 18 / .35) 100%); }
+  .hero { min-height: max(40rem, calc(100svh - 2.5rem)); }
+  .hero-waas { background: linear-gradient(to top, rgb(16 15 13 / .92) 0%, rgb(16 15 13 / .7) 45%, rgb(16 15 13 / .45) 75%, rgb(16 15 13 / .6) 100%); }
   @media (min-width: 1024px) {
     .hero-waas { background:
-      linear-gradient(to top, rgb(20 20 18 / .72) 0%, rgb(20 20 18 / .3) 45%, rgb(20 20 18 / 0) 75%, rgb(20 20 18 / .3) 100%),
-      linear-gradient(to right, rgb(20 20 18 / .3), transparent 60%); }
+      linear-gradient(to top, rgb(16 15 13 / .85) 0%, rgb(16 15 13 / .35) 40%, rgb(16 15 13 / 0) 65%, rgb(16 15 13 / .45) 100%),
+      linear-gradient(to right, rgb(16 15 13 / .82) 0%, rgb(16 15 13 / .55) 42%, rgb(16 15 13 / .05) 75%); }
   }
-  .over-beeld { aspect-ratio: 4 / 3; }
-  @media (min-width: 768px) { .over-beeld { aspect-ratio: 1907 / 877; } }
+  .hero h1 { line-height: .96; }
 
-  /* Oude telefoonfoto's: allemaal zwart-wit, zodat de reeks één geheel is; in kleur bij aanwijzen. */
-  :global(.foto-zw) { filter: grayscale(1) contrast(1.08) brightness(1.04); transition: filter .8s var(--ease-zacht), transform 1.2s var(--ease-zacht); }
-  .reeks figure:hover :global(.foto-zw) { filter: grayscale(0) contrast(1) brightness(1); }
+  .chip { display: inline-flex; align-items: center; min-height: 2.25rem; padding: 0 .9rem; border-radius: 999px; background: var(--color-wit); border: 1px solid var(--color-lijn); font-size: .9rem; }
+  .chip-klein { min-height: 1.9rem; padding: 0 .7rem; font-size: .82rem; background: var(--color-cement); }
+  .chip-meer { color: var(--color-grijs); font-weight: 600; }
 
-  .vloer { border-top: 1px solid var(--color-lijn); }
-  .rij { display: grid; gap: .6rem 2rem; padding: 1.35rem 0; border-bottom: 1px solid var(--color-lijn); }
-  @media (min-width: 768px) { .rij { grid-template-columns: 9.5rem 1fr; align-items: center; } }
-  .rij > .ui { color: var(--color-grijs); }
-  .rij input:not([type]), .veld-eenheid input { width: 100%; min-width: 0; background: transparent; border: 0; border-bottom: 1px solid transparent; padding: .35rem 0; font: inherit; color: var(--color-inkt); transition: border-color .3s var(--ease-zacht); }
-  .rij input:not([type])::placeholder, .veld-eenheid input::placeholder { color: #8a8780; }
-  .rij input:not([type]):focus, .veld-eenheid input:focus { outline: none; border-bottom-color: var(--color-inkt); }
-  .veld-eenheid { display: flex; align-items: baseline; gap: .75rem; }
-  .veld-eenheid span { color: var(--color-grijs); font-size: var(--text-sm); }
+  .stappen li:last-child .lijn-stap { display: none; }
+
+  .veld label, .groep legend { display: block; font-size: .9rem; font-weight: 600; margin-bottom: .45rem; }
+  .veld input, .eenheid { width: 100%; height: 3.25rem; border-radius: var(--radius-md); border: 1px solid #16151340; background: var(--color-wit); padding: 0 1rem; font: inherit; color: var(--color-inkt); transition: border-color .2s, box-shadow .2s; }
+  .veld input::placeholder { color: #8a857c; }
+  .veld input:focus, .eenheid:focus-within { outline: none; border-color: var(--color-inkt); box-shadow: 0 0 0 3px #c3191e26; }
+  .eenheid { display: flex; align-items: center; gap: .5rem; }
+  .eenheid input { border: 0; height: 100%; padding: 0; box-shadow: none !important; background: transparent; }
+  .eenheid span { color: var(--color-grijs); font-size: .9rem; }
+  .groep { margin-top: 1.5rem; border: 0; padding: 0; }
   .keuzes { display: flex; flex-wrap: wrap; gap: .5rem; }
   .keuzes label { position: relative; cursor: pointer; }
   .keuzes input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
-  .keuzes span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border: 1px solid var(--color-lijn); font-size: var(--text-sm); transition: background-color .35s var(--ease-zacht), color .35s var(--ease-zacht), border-color .35s var(--ease-zacht); }
+  .keuzes span { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.05rem; border-radius: var(--radius-md); border: 1px solid #16151333; background: var(--color-wit); font-size: .925rem; transition: background-color .2s, color .2s, border-color .2s; }
   .keuzes label:hover span { border-color: var(--color-inkt); }
-  .keuzes input:checked + span { background: var(--color-inkt); color: var(--color-papier); border-color: var(--color-inkt); }
-  .keuzes input:focus-visible + span { outline: 2px solid var(--color-inkt); outline-offset: 3px; }
+  .keuzes input:checked + span { background: var(--color-inkt); color: var(--color-wit); border-color: var(--color-inkt); }
+  .keuzes input:checked + span::before { content: '✓'; margin-right: .45rem; color: var(--color-rood-licht); font-weight: 700; }
+  .keuzes input:focus-visible + span { outline: 3px solid var(--color-rood); outline-offset: 2px; }
+
+  .lichtbak { margin: auto; max-height: 92vh; max-width: min(92vw, 70rem); background: transparent; border: 0; padding: 0; color: var(--color-licht); }
+  .lichtbak::backdrop { background: rgb(16 15 13 / .9); }
+  .lichtbak figure { display: flex; flex-direction: column; align-items: center; }
+  .sluit { position: fixed; top: 1rem; right: 1rem; width: 3rem; height: 3rem; border-radius: 999px; background: var(--color-wit); color: var(--color-inkt); font-size: 1.75rem; line-height: 1; cursor: pointer; }
+
+  .dagrij.vandaag { color: var(--color-wit); font-weight: 700; }
+  .dagrij.vandaag dt::after { content: 'vandaag'; margin-left: .6rem; padding: .1rem .5rem; border-radius: 999px; background: var(--color-rood); font-size: .7rem; font-weight: 700; vertical-align: .1em; }
+  .status { background: #f3f1ec1a; color: var(--color-licht-zacht); }
+  .status.open { background: #2f9e5a33; color: #8fe0ad; }
+  .status.dicht { background: #ff6a6126; color: var(--color-rood-licht); }
 </style>
 
 <script>
-  // Zet de ingevulde gegevens om in een kort WhatsApp- en mailbericht.
+  // Live open/gesloten volgens de Google-openingstijden.
+  const hero = document.querySelector<HTMLElement>('[data-tijden]')!;
+  const tijden: [string | null, string | null][] = JSON.parse(hero.dataset.tijden!);
+  const nl = (t: string) => t.replace(':', '.');
+  const nu = new Date();
+  const dag = nu.getDay();
+  const min = nu.getHours() * 60 + nu.getMinutes();
+  const m = (t: string) => +t.slice(0, 2) * 60 + +t.slice(3);
+  const [o, d] = tijden[dag];
+  const isOpen = !!(o && d && min >= m(o) && min < m(d));
+  let tekst = '';
+  if (isOpen) tekst = `Nu open, tot ${nl(d!)} uur`;
+  else {
+    for (let i = 0; i < 8; i++) {
+      const k = (dag + i) % 7; const [ko] = tijden[k];
+      if (!ko || (i === 0 && min >= m(ko))) continue;
+      const namen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      tekst = `Nu gesloten, ${i === 0 ? 'vandaag' : i === 1 ? 'morgen' : namen[k]} open vanaf ${nl(ko)} uur`;
+      break;
+    }
+  }
+  const st = document.querySelector<HTMLElement>('[data-status]');
+  if (st) st.innerHTML = isOpen ? `<strong>Nu open</strong>, vandaag tot ${nl(d!)} uur` : tekst;
+  const pil = document.querySelector<HTMLElement>('[data-status-pil]');
+  if (pil) { pil.textContent = isOpen ? 'Nu open' : 'Nu gesloten'; pil.classList.add(isOpen ? 'open' : 'dicht'); }
+  document.querySelector(`[data-dag="${dag}"]`)?.classList.add('vandaag');
+
+  // Advies-formulier: ingevulde gegevens worden een WhatsApp- en mailbericht, met live voorbeeld.
   const form = document.querySelector<HTMLFormElement>('[data-vloer]')!;
   const wa = form.querySelector<HTMLAnchorElement>('[data-vloer-wa]')!;
   const mail = form.querySelector<HTMLAnchorElement>('[data-vloer-mail]')!;
   const teller = form.querySelector<HTMLElement>('[data-vloer-teller]')!;
+  const voorbeeld = document.querySelector<HTMLElement>('[data-voorbeeld]')!;
   const basisWa = wa.href.split('?')[0];
   const basisMail = mail.href.split('?')[0];
   const maak = () => {
-    const regels: string[] = [];
     const velden = new Map<string, string[]>();
     form.querySelectorAll<HTMLInputElement>('input').forEach((i) => {
       const v = i.value.trim();
@@ -230,14 +522,49 @@ const over = [
       const e = i.dataset.eenheid ? ` ${i.dataset.eenheid}` : '';
       velden.set(i.name, [...(velden.get(i.name) ?? []), v + e]);
     });
-    velden.forEach((v, k) => regels.push(`${k}: ${v.join(' en ')}`));
+    const regels = [...velden].map(([k, v]) => `${k}: ${v.join(' en ')}`);
     const tekst = 'Hallo Vloerfix, ik wil graag advies over een dekvloer.' + (regels.length ? '\n\n' + regels.join('\n') : '');
     wa.href = `${basisWa}?text=${encodeURIComponent(tekst)}`;
     mail.href = `${basisMail}?subject=${encodeURIComponent('Advies dekvloer')}&body=${encodeURIComponent(tekst + '\n\nMet vriendelijke groet,\n')}`;
+    voorbeeld.textContent = tekst;
     teller.textContent = regels.length ? `${regels.length} van de 8 gegevens ingevuld.` : 'Nog niets ingevuld. Een leeg bericht mag ook.';
   };
   form.addEventListener('input', maak);
   form.addEventListener('change', maak);
   form.addEventListener('submit', (e) => e.preventDefault());
-  maak();
+
+  // Werkgebied: zoek uw plaats.
+  const gebied = document.querySelector<HTMLElement>('[data-plaatsen]')!;
+  const lijst: [string, string[]][] = JSON.parse(gebied.dataset.plaatsen!);
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/['’-]/g, ' ').replace(/\s+/g, ' ').trim();
+  const zoek = gebied.querySelector<HTMLInputElement>('[data-zoek]')!;
+  const uit = gebied.querySelector<HTMLElement>('[data-zoek-uit]')!;
+  const zwa = gebied.querySelector<HTMLAnchorElement>('[data-zoek-wa]')!;
+  const standaard = uit.textContent;
+  zoek.addEventListener('input', () => {
+    const q = norm(zoek.value);
+    zwa.classList.add('hidden');
+    if (q.length < 2) { uit.textContent = standaard; return; }
+    let hit: [string, string] | null = null; const bijna: string[] = [];
+    for (const [prov, pl] of lijst) for (const p of pl) {
+      const n = norm(p);
+      if (n === q) hit = [p, prov];
+      else if (n.startsWith(q) && bijna.length < 4) bijna.push(p);
+    }
+    if (!hit && bijna.length === 1) { const p = bijna[0]; hit = [p, lijst.find(([, l]) => l.includes(p))![0]]; }
+    if (hit) {
+      uit.innerHTML = `<strong>Ja, ${hit[0]} hoort bij het werkgebied</strong> (${hit[1]}).`;
+      zwa.href = `${zwa.href.split('?')[0]}?text=${encodeURIComponent(`Hallo Vloerfix, ik wil graag advies over een dekvloer in ${hit[0]}. Het gaat om `)}`;
+      zwa.classList.remove('hidden');
+    } else if (bijna.length) uit.textContent = `Bedoelt u ${bijna.join(', ')}?`;
+    else uit.textContent = 'Deze plaats staat niet in de lijst. Bel of app even, dan hoort u of Vloerfix er komt.';
+  });
+
+  // Lichtbak voor de projectfoto's.
+  const bak = document.querySelector<HTMLDialogElement>('[data-lichtbak]')!;
+  document.querySelectorAll<HTMLButtonElement>('[data-groot]').forEach((b) => b.addEventListener('click', () => {
+    bak.querySelectorAll<HTMLElement>('[data-groot-foto]').forEach((f) => { f.hidden = f.dataset.grootFoto !== b.dataset.groot; });
+    bak.showModal();
+  }));
+  bak.addEventListener('click', (e) => { if (e.target === bak) bak.close(); });
 </script>

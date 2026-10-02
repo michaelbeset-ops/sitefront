@@ -1,7 +1,9 @@
 ---
 import '../styles/global.css';
-import sansUrl from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
-import { site, url } from '../data/site';
+import kopUrl from '@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2?url';
+import sansUrl from '@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url';
+import Icoon from '../components/Icoon.astro';
+import { site, url, waMet } from '../data/site';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
@@ -16,6 +18,7 @@ const { title, description } = Astro.props;
     {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
     <meta name="theme-color" content={site.themeColor} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sansUrl} crossorigin />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="nl_NL" />
@@ -29,21 +32,26 @@ const { title, description } = Astro.props;
     <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>document.documentElement.classList.add('js')</script>
   </head>
-  <body class="min-h-dvh">
+  <body class="min-h-dvh pb-[4.5rem] lg:pb-0">
     {site.voorstel && (
-      <div class="relative z-50 bg-inkt text-licht" data-balk>
+      <div class="relative z-50 bg-rood text-wit" style="font-family: system-ui, sans-serif">
         <p class="wrap py-2 text-xs leading-snug">
           Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website.{" "}
-          <a href="https://www.sitefront.nl" class="lijn">sitefront.nl</a>
+          <a href="https://www.sitefront.nl" class="underline underline-offset-2">sitefront.nl</a>
         </p>
       </div>
     )}
-    {site.voorstel && <script is:inline set:html={`(function(){var b=document.querySelector("[data-balk]");var z=function(){document.documentElement.style.setProperty("--balk",b.offsetHeight+"px")};z();addEventListener("resize",z)})()`} />}
-    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-papier focus:px-4 focus:py-2">Naar de inhoud</a>
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
     <slot />
+
+    <!-- Mobiel: vaste onderbalk met bellen en WhatsApp. -->
+    <nav aria-label="Snel contact" class="onderbalk fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn bg-wit/95 p-2.5 backdrop-blur lg:hidden">
+      <a href={site.telHref} class="knop knop-rand knop-klein !min-h-12 text-inkt"><Icoon naam="tel" /> Bellen</a>
+      <a href={waMet('ik heb een vraag over een dekvloer. ')} class="knop knop-rood knop-klein !min-h-12"><Icoon naam="wa" /> WhatsApp</a>
+    </nav>
+
     <script>
-      // Zachte onthulling bij scrollen (op elke pagina).
-      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
       document.querySelectorAll('.rijs').forEach((el) => io.observe(el));
     </script>
   </body>
