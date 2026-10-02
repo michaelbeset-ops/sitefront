@@ -1,11 +1,15 @@
-// Test: wissel auto/motor, kies pakket, controleer WhatsApp-link.
+// Pakketkeuze en berichtformulier testen.
 import { chromium } from 'playwright';
-const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 390, height: 844 } });
-await p.goto('http://localhost:4644/sitefront/rijschool-herman-ridderkerk/');
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4692/sitefront/rijschool-herman-ridderkerk/', { waitUntil: 'networkidle' });
 const href = () => p.$eval('[data-pakket-knop]', (a) => decodeURIComponent(a.href));
 console.log('start:', await href());
-await p.click('[data-soort="motor"]'); console.log('motor:', await href());
-await p.click('[data-paneel="motor"] label:has-text("Pakket D")'); console.log('motor D:', await href(), await p.textContent('[data-pakket-knop]'));
-await p.click('[data-soort="auto"]'); await p.click('[data-paneel="auto"] label:has-text("Pakket A")'); console.log('auto A:', await href());
-console.log('panelen zichtbaar:', await p.$$eval('[data-paneel]', (els) => els.map((e) => e.dataset.paneel + '=' + !e.hidden).join(',')));
-await b.close();
+await p.click('[data-soort="motor"]');
+await p.click('[data-paneel="motor"] label.pakket >> nth=3');
+console.log('motor D:', await href(), '| zichtbaar:', await p.isVisible('[data-pakket-knop]'));
+await p.evaluate(() => { window.open = (u) => { window.__u = u; }; });
+await p.click('form[data-wa] label.keuze:has-text("Motor (A)")'); await p.click('form[data-wa] label.keuze:has-text("Een pakket")'); await p.selectOption('select[name=wanneer]', 'In het weekend');
+await p.fill('input[name=naam]', 'Sam'); await p.click('form[data-wa] button[type=submit]');
+console.log('form:', decodeURIComponent(await p.evaluate(() => window.__u)));
+console.log('errors:', errs.join(' | ') || 'geen'); await b.close();

@@ -1,6 +1,6 @@
 # rijschool-herman-ridderkerk
 
-Ontwerpvoorstel (Astro 7 + Tailwind 4, Host Grotesk). Build: `PUBLIC_VOORSTEL=1 npx astro build`, preview op poort 4644.
+Ontwerpvoorstel (Astro 7 + Tailwind 4, Archivo + Public Sans). Build: `PUBLIC_VOORSTEL=1 npx astro build`, preview op poort 4692.
 Screenshots: `node tools/shots.mjs <prefix>`, og-beeld: `node tools/og.mjs`, pakketkeuze testen: `node tools/test.mjs`.
 
 ## Ontbreekt / nakijken met de eigenaar

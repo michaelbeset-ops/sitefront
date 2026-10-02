@@ -3,150 +3,469 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, waIntake, waMet, tarieven } from '../data/site';
-import asfalt from '../assets/asfalt.jpg';
-import lesmotor from '../assets/lesmotor.jpg';
+import Icoon from '../components/Icoon.astro';
+import { site, chips, review, werkgebied, waIntake, waMet, tarieven } from '../data/site';
+import kruispunt from '../assets/kruispunt.jpg';
+import rijstroken from '../assets/rijstroken.jpg';
 import lesauto from '../assets/lesauto.jpg';
 import lesautoVoor from '../assets/lesauto-voor.jpg';
+import lesmotor from '../assets/lesmotor.jpg';
 
 const soorten = ['auto', 'motor'] as const;
-const eerste = tarieven.auto.pakketten[2];
-const waPakket = (soort: string, p: { naam: string; inhoud: string }) =>
-  waMet(`Hoi, ik heb interesse in ${soort}${p.naam.replace('Pakket', 'pakket')} (${p.inhoud}). Kunnen we een intakeles plannen?`);
+const sterren = [1, 2, 3, 4, 5];
+const pakketTekst = (soort: string, p: { naam: string; lessen: number; duur: number }) =>
+  `Hoi, ik heb interesse in ${soort}${p.naam.replace('Pakket', 'pakket')} (${p.lessen} lessen van ${p.duur} minuten). Kunnen we een intakeles plannen?`;
+const startPakket = tarieven.auto.pakketten[2];
+
+const extra = [
+  { icoon: 'l', t: 'Intakeles', d: 'Je rijdt eerst een intake. Daarna kunnen we aangeven welke opleiding bij je past; de keuze is aan jou.', p: 'Auto € 42,50, motor € 60,00' },
+  { icoon: 'toets', t: 'Tussentijdse toets', d: 'Verloopt als een echt praktijkexamen. Je weet wat je te wachten staat en kunt vrijstelling halen voor de bijzondere verrichtingen.', p: 'Auto € 210,00, motor € 205,00' },
+  { icoon: 'boek', t: 'Theorie-examen', d: 'Vanaf 16 jaar mag je theorie-examen doen. Het certificaat is 1,5 jaar geldig. Lesmateriaal is er op aanvraag.', p: 'CBR € 50,00' },
+  { icoon: 'kalender', t: 'Vanaf 16,5 jaar', d: 'Rijles en een tussentijdse toets mogen vanaf 16,5 jaar, examen vanaf 17. Tot je 18e rijd je met een begeleider (2toDrive).', p: 'Rijbewijs B' },
+];
+
+const stappen = [
+  ['Intakeles', 'Je rijdt een intake. Daarna adviseren we welke opleiding bij je past.'],
+  ['Pakket kiezen', 'Een pakket of losse lessen. Zonder intake een pakket kiezen kan ook.'],
+  ['Lessen', 'Auto 60 of 90 minuten, motor 100 minuten. Overdag, ’s&nbsp;avonds of in het weekend.'],
+  ['Tussentijdse toets', 'Een oefenexamen bij het CBR, zodat je weet wat je kunt verwachten.'],
+  ['Examen', 'Machtig ons op mijn.cbr.nl met ons rijschoolnummer. Dan vragen wij je examen aan.'],
+];
 ---
-<Base
-  title="Rijschool Herman | Auto- en motorrijles in Ridderkerk"
-  description="Rijlessen voor je auto- en motorrijbewijs in Ridderkerk en omgeving. Overdag, 's avonds of in het weekend. Pakketten en losse lessen, plan je intakeles via WhatsApp."
->
+<Base title="Rijschool Herman | Auto- en motorrijles in Ridderkerk" description="Auto- en motorrijschool in Ridderkerk. Rijles voor rijbewijs B en A, overdag, 's avonds of in het weekend. Pakketten vanaf € 750, intakeles via WhatsApp. 5,0 op Google.">
   <Kop />
   <main id="inhoud">
-    <!-- Eerste scherm: één beeld over de volle hoogte, kop en één actie. -->
-    <section class="donker relative isolate flex h-[calc(100svh-var(--balk))] min-h-[34rem] flex-col justify-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
-      <Image src={asfalt} alt="" widths={[640, 960, 1440, 1920]} sizes="100vw" quality={58} loading="eager" fetchpriority="high" class="absolute inset-0 -z-10 h-full w-full object-cover object-[0%_100%] md:object-[50%_100%]" />
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1c1d1f99_0%,#1c1d1f26_22%,#1c1d1f26_42%,#1c1d1ff2_80%)] md:bg-[linear-gradient(180deg,#1c1d1f99_0%,#1c1d1f1a_20%,#1c1d1f1a_50%,#1c1d1fcc_100%)]" aria-hidden="true"></div>
-      <div class="wrap grid pb-12 md:grid-cols-12 md:pb-16">
-        <div class="md:col-span-8 lg:col-span-7">
-          <h1 id="t-hero" class="text-4xl">Niet meer lessen dan nodig.</h1>
-          <p class="mt-7 max-w-md text-lg/relaxed text-licht/85">Rijlessen voor je auto- en motorrijbewijs in Ridderkerk en omgeving. Overdag, ’s avonds of in het weekend.</p>
-          <div class="mt-10 flex flex-wrap items-center gap-x-9 gap-y-5">
-            <a href={waIntake} class="knop knop-licht">Plan een intakeles</a>
-            <a href="#tarieven" class="lijn text-sm">Bekijk de tarieven</a>
+
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={kruispunt} alt="" widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" quality={62} loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#14171b59_0%,#14171bc4_45%,#14171bf5_100%)] md:bg-[linear-gradient(90deg,#14171bf5_0%,#14171bd9_40%,#14171b4d_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-24 pt-28 md:py-24 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Auto- en motorrijschool in Ridderkerk</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Niet meer lessen <span class="text-blauw-licht">dan nodig.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Rijles voor je rijbewijs B of A, in Ridderkerk en omgeving. Overdag, ’s&nbsp;avonds of in het weekend.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waIntake} class="knop knop-blauw"><Icoon naam="wa" />Plan een intakeles</a>
+            <a href="#tarieven" class="knop knop-rand op-foto">Bekijk de tarieven</a>
           </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-geel">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />100% aanbevolen op Facebook</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Rijbewijs B en A</li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:block">
+          <figure class="ml-auto w-full max-w-[20rem] rounded-lg bg-licht/10 p-2.5 shadow-md ring-1 ring-licht/20 backdrop-blur-md">
+            <Image src={lesautoVoor} alt="Voorkant van de lesauto met de gele HERMAN-plaat" widths={[440, 880]} sizes="300px" loading="eager" class="aspect-[16/11] w-full rounded-md object-cover object-[58%_50%]" />
+            <figcaption class="flex items-center justify-between gap-3 px-2 pb-1 pt-3 text-sm">
+              <span>De lesauto van Rijschool Herman</span>
+              <a href={site.telHref} class="num whitespace-nowrap font-semibold text-licht no-underline hover:text-blauw-licht">{site.tel}</a>
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <!-- Auto en motor -->
-    <section id="lessen" class="wrap py-28 lg:py-40" aria-labelledby="t-lessen">
-      <div class="grid gap-y-8 md:grid-cols-12 md:gap-x-8">
-        <h2 id="t-lessen" class="rijs text-3xl md:col-span-6">Auto of motor.</h2>
-        <p class="rijs max-w-md text-grijs md:col-span-5 md:col-start-8 md:pt-3" style="--d:.05s">Je leert voor rijbewijs B of A in Ridderkerk, Rotterdam, Barendrecht, Hendrik-Ido-Ambacht, Zwijndrecht en Dordrecht. Daarbuiten kan het op verzoek.</p>
-      </div>
-
-      <div class="mt-20 grid gap-y-10 md:grid-cols-12 md:gap-x-8 lg:mt-28">
-        <figure class="rijs md:col-span-7 md:col-start-6 md:row-start-1">
-          <Image src={lesauto} alt="De lesauto van Rijschool Herman, een grijze Volkswagen Golf met dakbord" widths={[440, 880]} sizes="(min-width: 768px) 55vw, 100vw" class="aspect-[16/9] w-full bg-vlak object-cover object-[62%_50%] md:aspect-[880/242]" />
-        </figure>
-        <div class="rijs md:col-span-4 md:row-start-1" style="--d:.05s">
-          <p class="ui text-grijs">Rijbewijs B</p>
-          <h3 class="mt-4 text-2xl">Auto</h3>
-          <p class="mt-5 text-grijs">Lessen van 60 of 90 minuten. We raden 90 minuten aan: je oefent langer achter elkaar, onthoudt de lesstof beter en bent sneller klaar.</p>
-          <p class="mt-4 text-grijs">Een tussentijdse toets laat je vooraf voelen hoe het praktijkexamen gaat. Vanaf 16,5 jaar mag je beginnen.</p>
-        </div>
-      </div>
-
-      <div class="mt-24 grid gap-y-10 md:grid-cols-12 md:gap-x-8 lg:mt-36">
-        <figure class="rijs md:col-span-5">
-          <Image src={lesmotor} alt="De lesmotor, een witte Honda, voor een bakstenen gevel" widths={[400, 720]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/5] w-full bg-vlak object-cover object-[50%_60%]" />
-        </figure>
-        <div class="rijs flex flex-col md:col-span-5 md:col-start-8" style="--d:.05s">
-          <p class="ui text-grijs">Rijbewijs A</p>
-          <h3 class="mt-4 text-2xl">Motor</h3>
-          <p class="mt-5 text-grijs">Lessen van 100 minuten. Eerst oefen je voor het examen voertuigbeheersing (AVB), daarna voor verkeersdeelneming (AVD). Tijdens dat examen zit je instructeur naast de examinator en hoor je de aanwijzingen via een ontvanger in je helm.</p>
-          <blockquote class="mt-auto border-t border-lijn pt-8 max-md:mt-12">
-            <p class="text-xl/snug">“Super goede instructeur. Mijn AVB- en AVD-examen allebei in één keer gehaald, met een minimaal aantal lessen. Uitleg is erg duidelijk en wordt goed voorgedaan.”</p>
-            <footer class="mt-4 text-sm text-grijs">Lars, review op Google</footer>
-          </blockquote>
-        </div>
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Lessen in het kort">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#lessen" class="shrink-0 rounded-md bg-ijs px-4 py-2 text-sm font-medium no-underline transition-colors hover:bg-blauw hover:text-wit">{c}</a>)}
       </div>
     </section>
 
-    <!-- Tarieven: pakket kiezen, bericht staat klaar -->
-    <section id="tarieven" class="bg-vlak py-28 lg:py-40" aria-labelledby="t-tarieven">
-      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-8">
-        <div class="md:col-span-4">
-          <h2 id="t-tarieven" class="rijs text-3xl">Tarieven</h2>
-          <p class="rijs mt-6 max-w-xs text-grijs" style="--d:.05s">Kies een pakket. Je bericht aan ons staat dan klaar in WhatsApp.</p>
-          <div class="rijs mt-10 inline-grid grid-cols-2 border border-inkt" role="radiogroup" aria-label="Rijbewijs" data-soort-keuze style="--d:.1s">
-            {soorten.map((s, i) => (
-              <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-soort={s} class="soort ui h-11 px-7">{tarieven[s].label}</button>
-            ))}
+    <!-- 3. Lessen -->
+    <section id="lessen" class="py-20 lg:py-24" aria-labelledby="t-lessen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Rijlessen</p>
+            <h2 id="t-lessen" class="mt-4 text-3xl">Auto of motor, je leert het in Ridderkerk.</h2>
           </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">In een lesauto en lesmotor die voldoen aan de CBR-eisen. Standaard schoon en van alle gemakken voorzien.</p>
         </div>
 
-        <div class="rijs md:col-span-8" style="--d:.1s">
-          {soorten.map((s, i) => (
-            <div data-paneel={s} hidden={i !== 0}>
-              <fieldset>
-                <legend class="sr-only">Pakketten {tarieven[s].label.toLowerCase()}</legend>
-                <ul class="border-t border-inkt">
-                  {tarieven[s].pakketten.map((p, j) => (
-                    <li class="border-b border-lijn">
-                      <label class="pakket grid cursor-pointer grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 py-6 sm:grid-cols-[8rem_1fr_auto]">
-                        <input type="radio" name={`pakket-${s}`} value={j} checked={j === 2} class="sr-only" data-naam={p.naam} data-inhoud={p.inhoud} />
-                        <span class="naam text-lg">{p.naam}</span>
-                        <span class="col-span-2 row-start-2 text-sm text-grijs sm:col-span-1 sm:row-start-1 sm:col-start-2">{p.inhoud}</span>
-                        <span class="num col-start-2 row-start-1 text-lg sm:col-start-3">€ {p.prijs}</span>
-                      </label>
-                    </li>
-                  ))}
+        <ul class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6">
+          <li class="rijs">
+            <a href={waMet('Hoi, ik wil graag autorijles. Kunnen we een intakeles plannen?')} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+              <div class="relative overflow-hidden bg-vlak">
+                <Image src={lesauto} alt="De lesauto, een grijze Volkswagen Golf met dakbord, op een parkeerterrein" widths={[440, 880]} sizes="(min-width: 1024px) 600px, 92vw" class="aspect-[880/300] w-full object-cover object-[50%_60%] transition-transform duration-700 group-hover:scale-[1.03]" />
+                <span class="absolute left-4 top-4 rounded-md bg-nacht px-3 py-1 text-sm font-semibold text-licht">Rijbewijs B</span>
+              </div>
+              <div class="flex flex-1 flex-col p-6 sm:p-8">
+                <div class="flex items-start justify-between gap-4">
+                  <h3 class="text-2xl">Autorijles</h3>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-ijs text-blauw transition-colors group-hover:bg-blauw group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+                <p class="mt-3 text-grijs">Lessen van 60 of 90 minuten. We raden 90 minuten aan: je oefent langer achter elkaar, onthoudt de lesstof beter en bent sneller klaar.</p>
+                <ul class="mt-6 grid gap-2 text-[.9375rem] sm:grid-cols-2">
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Losse les vanaf € 47,50</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Pakketten vanaf € 1.150</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Tussentijdse toets</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Vanaf 16,5 jaar</li>
                 </ul>
-              </fieldset>
-              <dl class="mt-12 grid gap-x-8 text-sm sm:grid-cols-2">
-                {tarieven[s].los.map(([wat, prijs]) => (
-                  <div class="flex justify-between gap-6 border-b border-lijn py-3">
-                    <dt class="text-grijs">{wat}</dt>
-                    <dd class="num">€ {prijs}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
+              </div>
+            </a>
+          </li>
+          <li class="rijs" style="--d:.06s">
+            <a href={waMet('Hoi, ik wil graag motorrijles. Kunnen we een intakeles plannen?')} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+              <div class="relative overflow-hidden bg-vlak">
+                <Image src={rijstroken} alt="" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 600px, 92vw" quality={60} class="aspect-[880/300] w-full object-cover object-[50%_45%] transition-transform duration-700 group-hover:scale-[1.03]" />
+                <span class="absolute left-4 top-4 rounded-md bg-nacht px-3 py-1 text-sm font-semibold text-licht">Rijbewijs A</span>
+              </div>
+              <div class="flex flex-1 flex-col p-6 sm:p-8">
+                <div class="flex items-start justify-between gap-4">
+                  <h3 class="text-2xl">Motorrijles</h3>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-ijs text-blauw transition-colors group-hover:bg-blauw group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+                <p class="mt-3 text-grijs">Lessen van 100 minuten. Eerst oefen je voor het examen voertuigbeheersing (AVB), daarna voor verkeersdeelneming (AVD).</p>
+                <ul class="mt-6 grid gap-2 text-[.9375rem] sm:grid-cols-2">
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Losse les € 80,00</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Pakketten vanaf € 750</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />AVB en AVD</li>
+                  <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />Theorie in pakket C en D</li>
+                </ul>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <ul class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:mt-6 lg:grid-cols-4 lg:gap-6">
+          {extra.map((e, i) => (
+            <li class="rijs kaart flex flex-col p-6 sm:p-7" style={`--d:${i * 0.05}s`}>
+              <span class="grid h-12 w-12 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam={e.icoon} class="h-6 w-6" /></span>
+              <h3 class="mt-6 text-xl">{e.t}</h3>
+              <p class="mt-2 flex-1 text-[.9375rem] text-grijs">{e.d}</p>
+              <p class="num mt-5 border-t border-lijn pt-4 text-sm font-semibold">{e.p}</p>
+            </li>
           ))}
-          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-4">
-            <a href={waPakket('auto', eerste)} class="knop knop-vol" data-pakket-knop><span>Vraag naar <span data-pakket-naam>pakket C</span></span></a>
-            <p class="text-sm text-grijs">Prijzen zoals op rijschoolherman.com.</p>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col pr-4"><dt class="text-sm text-grijs">Score op Google</dt><dd class="cijfer order-first text-blauw">{site.google.score}</dd></div>
+        <div class="flex flex-col pr-4 lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Aanbevolen op Facebook</dt><dd class="cijfer order-first">100%</dd></div>
+        <div class="flex flex-col pr-4 lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">AVB-motorexamen in één keer gehaald (CBR-cijfers via Clickdrive)</dt><dd class="cijfer order-first">97%</dd></div>
+        <div class="flex flex-col pr-4 lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Plaatsen in het werkgebied, daarbuiten op verzoek</dt><dd class="cijfer order-first">{werkgebied.length}</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Tarieven: pakket kiezen, bericht staat klaar -->
+    <section id="tarieven" class="bg-vlak py-20 lg:py-24" aria-labelledby="t-tarieven">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Tarieven</p>
+            <h2 id="t-tarieven" class="mt-4 text-3xl">Kies je pakket. Je bericht staat klaar.</h2>
+          </div>
+          <div class="rijs lg:col-span-5 lg:justify-self-end" style="--d:.05s">
+            <div class="inline-grid grid-cols-2 rounded-lg bg-wit p-1.5 shadow-sm" role="radiogroup" aria-label="Rijbewijs">
+              {soorten.map((s, i) => (
+                <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} data-soort={s} class="soort flex h-12 items-center justify-center gap-2 rounded-md px-6 font-semibold sm:px-8"><Icoon naam={s} class="h-5 w-5" />{tarieven[s].label} <span class="font-normal opacity-70">({tarieven[s].rijbewijs})</span></button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {soorten.map((s, i) => (
+          <div data-paneel={s} hidden={i !== 0}>
+            <fieldset class="mt-12 lg:mt-14">
+              <legend class="sr-only">Pakketten {tarieven[s].label.toLowerCase()}</legend>
+              <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+                {tarieven[s].pakketten.map((p, j) => (
+                  <label class="pakket kaart relative flex cursor-pointer flex-col p-6 transition-shadow hover:shadow-md sm:p-7">
+                    <input type="radio" name={`pakket-${s}`} value={j} checked={j === 2} class="sr-only" data-naam={p.naam} data-lessen={p.lessen} data-duur={p.duur} />
+                    <span class="flex items-center justify-between gap-3">
+                      <span class="font-kop text-lg font-bold [font-stretch:110%]">{p.naam}</span>
+                      <span class="bolletje" aria-hidden="true"></span>
+                    </span>
+                    <span class="mt-6 flex items-baseline gap-2"><span class="num font-kop text-[3.25rem] font-extrabold leading-none tracking-[-0.04em] [font-stretch:105%]">{p.lessen}</span><span class="text-grijs">lessen van {p.duur} min.</span></span>
+                    <span class="mt-1 text-sm text-grijs">{Math.round((p.lessen * p.duur) / 60)} uur rijles</span>
+                    <ul class="mt-5 flex-1 space-y-1.5 border-t border-lijn pt-5 text-[.9375rem]">
+                      {p.extra.map((x) => <li class="flex items-start gap-2"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-blauw" />{x}</li>)}
+                    </ul>
+                    <span class="num prijs mt-6 font-kop text-3xl font-extrabold tracking-[-0.03em] [font-stretch:105%]">€ {p.prijs}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <div class="mt-10 grid gap-8 lg:grid-cols-12 lg:gap-10">
+              <div class="kaart p-6 sm:p-8 lg:col-span-7">
+                <h3 class="text-xl">Losse lessen en examens, {tarieven[s].label.toLowerCase()}</h3>
+                <dl class="mt-4 grid gap-x-8 text-[.9375rem] sm:grid-cols-2">
+                  {tarieven[s].los.map(([wat, prijs]) => (
+                    <div class="flex justify-between gap-6 border-b border-lijn py-3">
+                      <dt class="text-grijs">{wat}</dt>
+                      <dd class="num font-semibold">€ {prijs}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              {i === 0 && (
+                <div class="donker flex flex-col justify-between gap-6 rounded-lg bg-nacht p-6 text-licht sm:p-8 lg:col-span-5 lg:row-span-1" data-samenvatting>
+                  <div>
+                    <p class="eyebrow">Jouw keuze</p>
+                    <p class="mt-3 font-kop text-2xl font-bold [font-stretch:110%]" data-keuze-tekst>Auto, pakket C</p>
+                    <p class="mt-2 text-licht-zacht">Wij maken er een WhatsApp-bericht van. Er gaat pas iets weg als je zelf op verzenden drukt.</p>
+                  </div>
+                  <a href={waMet(pakketTekst('auto', startPakket))} class="knop knop-blauw self-start" data-pakket-knop><Icoon naam="wa" />Vraag naar dit pakket</a>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        <p class="mt-8 text-sm text-grijs">Prijzen zoals op rijschoolherman.com. Afkortingen: AVB is voertuigbeheersing, AVD is verkeersdeelneming.</p>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-24" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo gaat het</p>
+            <h2 id="t-werkwijze" class="mt-4 text-3xl">Van intakeles tot rijbewijs.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">De duur van je opleiding bepaal je zelf. Wij zeggen eerlijk wat je nodig hebt.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-5">
+          {stappen.map(([t, d], i) => (
+            <li class={`rijs kaart p-5 sm:p-7 ${i === 4 ? 'col-span-2 lg:col-span-1' : ''}`} style={`--d:${i * 0.05}s`}>
+              <p class="num font-kop text-lg font-extrabold text-blauw">0{i + 1}</p>
+              <h3 class="mt-5 text-[1.0625rem] hyphens-auto sm:mt-8 sm:text-xl">{t}</h3>
+              <p class="mt-2 text-sm text-grijs sm:mt-3 sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div class="rijs mt-8 grid overflow-hidden rounded-lg bg-wit shadow-sm outline outline-1 -outline-offset-1 outline-lijn lg:grid-cols-12">
+          <div class="flex items-center justify-center bg-nacht px-6 py-10 lg:col-span-5">
+            <p class="kenteken" aria-hidden="true"><span class="nl">NL</span><span class="num">{site.cbr}</span></p>
+          </div>
+          <div class="flex flex-col justify-center gap-6 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8 lg:col-span-7 lg:px-10">
+            <div>
+              <h3 class="text-2xl" id="t-cbr">Machtig ons bij het CBR</h3>
+              <p class="mt-3 max-w-md text-[.9375rem] text-grijs">Log met DigiD in op mijn.cbr.nl en vul bij opleider ons rijschoolnummer <b class="num font-semibold text-inkt">{site.cbr}</b> in. De machtiging blijft geldig tot je geslaagd bent.</p>
+            </div>
+            <button type="button" class="knop knop-inkt knop-klein shrink-0" data-kopieer={site.cbr} aria-describedby="t-cbr"><Icoon naam="kopieer" /><span data-kopieer-tekst>Kopieer nummer</span></button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Werkwijze -->
-    <section id="werkwijze" class="wrap py-28 lg:py-40" aria-labelledby="t-werkwijze">
-      <div class="grid gap-y-10 md:grid-cols-12 md:gap-x-8">
-        <h2 id="t-werkwijze" class="rijs text-3xl md:col-span-7">De leerling staat centraal. Het is tenslotte jouw opleiding.</h2>
-        <div class="rijs space-y-5 text-grijs md:col-span-4 md:col-start-9 md:pt-3" style="--d:.05s">
-          <p>Elke les bouwen we zo op dat je er zoveel mogelijk uit haalt, en als het nodig is passen we de opleiding aan. Je lest nooit meer dan nodig om het examen te halen.</p>
-          <p>De lesauto en -motor voldoen aan de CBR-eisen en zijn altijd schoon. Lesmateriaal is er op aanvraag.</p>
+    <!-- 7. Over de rijschool -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] sm:min-h-[26rem] lg:col-span-5">
+          <Image src={lesmotor} alt="De lesmotor van Rijschool Herman, een witte Honda, voor een grijze bakstenen gevel" widths={[480, 720]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_62%]" />
+          <p class="absolute bottom-4 left-4 rounded-md bg-blauw px-4 py-1.5 text-sm font-semibold text-wit">De lesmotor</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over Rijschool Herman</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Het is tenslotte jouw opleiding.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Bij Rijschool Herman staat de leerling centraal. We bouwen elke les zo op dat je er zoveel mogelijk uit haalt, en passen de opleiding aan als dat nodig is. Het doel: dat je een veilige, sociaal verantwoorde en milieubewuste verkeersdeelnemer wordt. Dan haal je je examen ook.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="schild" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Niet meer lessen dan nodig</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Je lest nooit meer dan nodig om het examen te halen. Kwaliteit in de les staat voorop.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="glans" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Schone lesauto en lesmotor</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Volgens de CBR-eisen, standaard schoon en van alle gemakken voorzien.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="klok" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Lessen wanneer het jou uitkomt</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Overdag, in de avond of in het weekend.</p></div>
+            </li>
+          </ul>
+          <a href={waIntake} class="knop knop-blauw mt-8"><Icoon naam="wa" />Plan je intakeles</a>
         </div>
       </div>
+    </section>
 
-      <figure class="rijs mt-20 lg:mt-28">
-        <Image src={lesautoVoor} alt="Voorkant van de lesauto met de HERMAN-plaat" widths={[440, 880]} sizes="(min-width: 1024px) 880px, 100vw" class="aspect-[16/9] w-full max-w-[55rem] bg-vlak object-cover sm:aspect-[880/242]" />
-      </figure>
+    <!-- 8. Motorexamen -->
+    <section id="motor" class="py-20 lg:py-24" aria-labelledby="t-motor">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Motorrijbewijs</p>
+            <h2 id="t-motor" class="mt-4 text-3xl">Twee examens, je instructeur in je helm.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Naast theorie doe je twee praktijkexamens bij het CBR. De eerste lessen oefen je voor voertuigbeheersing, daarna voor het verkeer.</p>
+        </div>
+        <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          <article class="rijs kaart flex flex-col p-6 sm:p-8">
+            <div class="flex items-start justify-between gap-4">
+              <div><p class="eyebrow">Examen 1</p><h3 class="mt-3 text-xl">Voertuigbeheersing (AVB)</h3></div>
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam="motor" class="h-6 w-6" /></span>
+            </div>
+            <p class="mt-4 text-[.9375rem] text-grijs">Twaalf oefeningen in vier groepen, waarvan je er zeven uitvoert. Theorie heb je hiervoor nog niet nodig.</p>
+            <ul class="mt-5 space-y-2 border-t border-lijn pt-5 text-[.9375rem]">
+              {[['Lopen met de motor', 'achteruit parkeren'], ['Lage snelheid', 'langzame slalom'], ['Hogere snelheid', 'uitwijken, snelle slalom'], ['Remmen', 'noodstop vanaf 50 km/u']].map(([t, d], i) => (
+                <li class="flex gap-3"><span class="num font-kop font-extrabold text-blauw">{i + 1}</span><span><b class="font-semibold">{t}</b><span class="text-grijs">, {d}</span></span></li>
+              ))}
+            </ul>
+          </article>
+          <article class="rijs kaart flex flex-col p-6 sm:p-8" style="--d:.06s">
+            <div class="flex items-start justify-between gap-4">
+              <div><p class="eyebrow">Examen 2</p><h3 class="mt-3 text-xl">Verkeersdeelneming (AVD)</h3></div>
+              <span class="grid h-12 w-12 shrink-0 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam="helm" class="h-6 w-6" /></span>
+            </div>
+            <p class="mt-4 text-[.9375rem] text-grijs">Het examen duurt 55 minuten, met een rit van zo’n 35 minuten. De examinator rijdt in zijn eigen auto achter je aan. Naast hem zit je instructeur, die je de aanwijzingen geeft via een ontvanger in je helm. Direct na de rit hoor je of je geslaagd bent.</p>
+          </article>
+          <div class="rijs donker flex flex-col rounded-lg bg-nacht p-6 text-licht sm:p-8" style="--d:.12s">
+            <p class="cijfer text-blauw-licht">97%</p>
+            <p class="text-lg font-semibold">van de leerlingen haalt het AVB-examen in één keer.</p>
+            <p class="mt-2 flex-1 text-sm text-licht-zacht">CBR-slagingscijfers Q4 2015 tot en met Q2 2026, zoals op Clickdrive.</p>
+            <a href={waMet('Hoi, ik wil graag motorrijles. Kunnen we een intakeles plannen?')} class="knop knop-blauw knop-klein mt-6 self-start"><Icoon naam="wa" />Vraag naar motorles</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <div class="mt-20 grid gap-y-12 border-t border-inkt pt-12 md:grid-cols-12 md:gap-x-8 lg:mt-28">
-        <h3 class="rijs text-2xl md:col-span-4">Examen aanvragen</h3>
-        <ol class="rijs stappen space-y-6 text-grijs md:col-span-5" style="--d:.05s">
-          <li><span class="text-inkt">Theorie.</span> Vanaf 16 jaar mag je theorie-examen doen. Het certificaat is 1,5 jaar geldig.</li>
-          <li><span class="text-inkt">Machtigen.</span> Log met je DigiD in op mijn.cbr.nl en vul bij opleider ons rijschoolnummer in. Dan vragen wij je examen aan.</li>
-          <li><span class="text-inkt">Zelfreflectie.</span> Voor de tussentijdse toets en het praktijkexamen vul je het zelfreflectieformulier in en neem je het mee naar het CBR.</li>
-        </ol>
-        <div class="rijs md:col-span-3" style="--d:.1s">
-          <p class="ui text-grijs" id="t-cbr">CBR-rijschoolnummer</p>
-          <button type="button" class="cbr mt-3 flex flex-col items-start gap-2 text-left" data-kopieer={site.cbr} aria-describedby="t-cbr">
-            <span class="num text-3xl tracking-[-0.02em]">{site.cbr}</span>
-            <span class="ui text-grijs" data-kopieer-tekst>Kopieer</span>
-          </button>
+    <!-- 9. Reviews -->
+    <section id="reviews" class="bg-vlak py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat leerlingen zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-geel">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-12 lg:gap-6">
+          <figure class="rijs kaart relative flex flex-col p-7 sm:p-10 lg:col-span-7">
+            <span class="flex text-geel" role="img" aria-label="5 van 5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+            <blockquote class="mt-6 flex-1 font-kop text-[clamp(1.375rem,1.2vw+1rem,1.875rem)] font-semibold leading-snug tracking-[-0.015em]">“{review.tekst}”</blockquote>
+            <figcaption class="mt-8 flex items-center gap-3 border-t border-lijn pt-6">
+              <span class="grid h-11 w-11 place-items-center rounded-md bg-ijs font-kop font-bold text-blauw" aria-hidden="true">{review.naam[0]}</span>
+              <span class="flex-1 leading-snug"><b class="block font-semibold">{review.naam}</b><span class="text-sm text-grijs">Google review, motorrijbewijs</span></span>
+              <Icoon naam="g" class="h-6 w-6" />
+            </figcaption>
+          </figure>
+          <ul class="grid gap-5 lg:col-span-5">
+            <li class="rijs kaart flex items-center gap-4 p-5 sm:gap-5 sm:p-6" style="--d:.05s">
+              <span class="grid h-12 w-12 shrink-0 sm:h-14 sm:w-14 place-items-center rounded-md bg-papier"><Icoon naam="g" class="h-7 w-7" /></span>
+              <span class="min-w-0 flex-1"><b class="block font-semibold">Google</b><span class="text-sm text-grijs">{site.google.score} uit {site.google.aantal} beoordelingen</span></span>
+              <span class="num font-kop text-2xl font-extrabold sm:text-3xl">{site.google.score}</span>
+            </li>
+            <li class="rijs kaart flex items-center gap-4 p-5 sm:gap-5 sm:p-6" style="--d:.1s">
+              <span class="grid h-12 w-12 shrink-0 sm:h-14 sm:w-14 place-items-center rounded-md bg-[#1877f2] text-wit"><svg viewBox="0 0 24 24" class="h-7 w-7" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4a21 21 0 0 0-2.3-.1c-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z"/></svg></span>
+              <span class="min-w-0 flex-1"><b class="block font-semibold">Facebook</b><span class="text-sm text-grijs">Aanbevolen door 5 van 5</span></span>
+              <span class="num font-kop text-2xl font-extrabold sm:text-3xl">100%</span>
+            </li>
+            <li class="rijs kaart flex items-center gap-4 p-5 sm:gap-5 sm:p-6" style="--d:.15s">
+              <span class="grid h-12 w-12 shrink-0 sm:h-14 sm:w-14 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam="auto" class="h-7 w-7" /></span>
+              <span class="min-w-0 flex-1"><b class="block font-semibold">Clickdrive</b><span class="text-sm text-grijs">{site.google.score} uit 2 Google-reviews</span></span>
+              <span class="num font-kop text-2xl font-extrabold sm:text-3xl">{site.google.score}</span>
+            </li>
+          </ul>
+        </div>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Bekijk de reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 10. Werkgebied, lestijden en adres -->
+    <section id="route" class="py-20 lg:py-24" aria-labelledby="t-route">
+      <div class="wrap grid gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+        <div class="rijs md:col-span-2 lg:col-span-1 lg:pr-4">
+          <p class="eyebrow">Werkgebied en lestijden</p>
+          <h2 id="t-route" class="mt-4 text-[clamp(2rem,1.6vw+1.3rem,2.625rem)]">Les in Ridderkerk en omgeving.</h2>
+          <p class="mt-5 text-grijs">Daarbuiten kan het op verzoek. Vraag het gerust.</p>
+        </div>
+        <div class="rijs kaart p-6 sm:p-7" style="--d:.05s">
+          <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="pin" class="h-5 w-5 text-blauw" />Werkgebied</h3>
+          <ul class="mt-4 divide-y divide-lijn">
+            {werkgebied.map((w) => <li class="py-2">{w}</li>)}
+          </ul>
+        </div>
+        <div class="rijs kaart flex flex-col p-6 sm:p-7" style="--d:.1s">
+          <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="klok" class="h-5 w-5 text-blauw" />Lestijden</h3>
+          <ul class="mt-4 divide-y divide-lijn">
+            {['Overdag', 'In de avond', 'In het weekend'].map((t) => <li class="flex items-center gap-2 py-2"><Icoon naam="vink" class="h-4 w-4 text-blauw" />{t}</li>)}
+          </ul>
+          <p class="mt-4 flex-1 text-[.9375rem] text-grijs">Bel of app voor een tijd die jou past.</p>
+          <a href={waIntake} class="knop knop-blauw knop-klein mt-5 self-start"><Icoon naam="wa" />Tijd afspreken</a>
+        </div>
+        <div class="rijs donker flex flex-col rounded-lg bg-nacht p-6 text-licht sm:p-7" style="--d:.15s">
+          <h3 class="flex items-center gap-2.5 text-lg"><Icoon naam="route" class="h-5 w-5 text-blauw-licht" />Adres</h3>
+          <p class="mt-4 flex-1">{site.naam}<br />{site.straat}<br /><span class="text-licht-zacht">{site.postcode} {site.plaats}</span></p>
+          <a href={site.maps} class="knop knop-wit knop-klein mt-5 self-start">Route plannen<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Contact: WhatsApp-bericht samenstellen -->
+    <section id="contact" class="bg-vlak py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Intakeles plannen</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Laten we beginnen.</h2>
+          <p class="mt-6 text-lg text-grijs">Vul in wat je zoekt. Wij maken er een WhatsApp-bericht van en bellen of appen je zo snel mogelijk terug.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waIntake} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam="tel" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel} (motor) of {site.tel2}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-ijs text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Je bericht aan Rijschool Herman</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot je in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Rijbewijs</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Auto (B)', 'Motor (A)'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="soort" value={b} checked={i === 0} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-6">
+            <legend class="text-sm font-semibold">Ik wil graag</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Een intakeles', 'Een pakket', 'Losse lessen', 'Een tussentijdse toets', 'Iets anders vragen'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="wat" value={b} checked={i === 0} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Het liefst les</span>
+              <select name="wanneer" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                <option>Overdag</option>
+                <option>In de avond</option>
+                <option>In het weekend</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Opmerking <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: ik heb mijn theorie al gehaald"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-blauw"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Liever bellen? <a href={site.telHref} class="link num">{site.tel}</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 12. Slotbalk -->
+    <section class="bg-blauw text-wit" aria-label="Intakeles plannen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Klaar om te gaan rijden?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje, dan plannen we je intakeles.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waIntake} class="knop knop-wit"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
         </div>
       </div>
     </section>
@@ -155,24 +474,28 @@ const waPakket = (soort: string, p: { naam: string; inhoud: string }) =>
 </Base>
 
 <script>
-  // Auto/motor wisselen
+  // Auto/motor wisselen en pakketkeuze omzetten in een WhatsApp-bericht.
   const knoppen = document.querySelectorAll<HTMLButtonElement>('[data-soort]');
   const panelen = document.querySelectorAll<HTMLElement>('[data-paneel]');
+  const samenvatting = document.querySelector<HTMLElement>('[data-samenvatting]');
   const waKnop = document.querySelector<HTMLAnchorElement>('[data-pakket-knop]');
-  const waNaam = document.querySelector<HTMLElement>('[data-pakket-naam]');
+  const keuzeTekst = document.querySelector<HTMLElement>('[data-keuze-tekst]');
   let soort = 'auto';
   const bijwerken = () => {
     const gekozen = document.querySelector<HTMLInputElement>(`input[name="pakket-${soort}"]:checked`);
-    if (!gekozen || !waKnop || !waNaam) return;
+    if (!gekozen || !waKnop || !keuzeTekst) return;
     const naam = (gekozen.dataset.naam || '').replace('Pakket', 'pakket');
-    waNaam.textContent = naam;
-    const tekst = `Hoi, ik heb interesse in ${soort}${naam} (${gekozen.dataset.inhoud}). Kunnen we een intakeles plannen?`;
+    keuzeTekst.textContent = `${soort === 'auto' ? 'Auto' : 'Motor'}, ${naam}`;
+    const tekst = `Hoi, ik heb interesse in ${soort}${naam} (${gekozen.dataset.lessen} lessen van ${gekozen.dataset.duur} minuten). Kunnen we een intakeles plannen?`;
     waKnop.href = waKnop.href.split('?')[0] + '?text=' + encodeURIComponent(tekst);
   };
   knoppen.forEach((k) => k.addEventListener('click', () => {
     soort = k.dataset.soort || 'auto';
     knoppen.forEach((b) => b.setAttribute('aria-checked', String(b === k)));
     panelen.forEach((p) => (p.hidden = p.dataset.paneel !== soort));
+    // De samenvatting verhuist mee naar het zichtbare paneel.
+    const doel = document.querySelector<HTMLElement>(`[data-paneel="${soort}"] .grid.gap-8`);
+    if (samenvatting && doel && samenvatting.parentElement !== doel) doel.appendChild(samenvatting);
     bijwerken();
   }));
   document.querySelectorAll('input[name^="pakket-"]').forEach((r) => r.addEventListener('change', bijwerken));
@@ -183,19 +506,47 @@ const waPakket = (soort: string, p: { naam: string; inhoud: string }) =>
   cbr?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(cbr.dataset.kopieer || '');
-      if (cbrTekst) { cbrTekst.textContent = 'Gekopieerd'; setTimeout(() => (cbrTekst.textContent = 'Kopieer'), 2000); }
-    } catch { /* geen klembord: nummer staat er gewoon */ }
+      if (cbrTekst) { cbrTekst.textContent = 'Gekopieerd'; setTimeout(() => (cbrTekst.textContent = 'Kopieer nummer'), 2000); }
+    } catch { /* geen klembord: het nummer staat er gewoon */ }
+  });
+
+  // Contactformulier: bericht samenstellen en WhatsApp openen.
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  f?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(f);
+    const v = (n: string) => String(d.get(n) || '').trim();
+    const r = ['Hoi Rijschool Herman,'];
+    const rb = v('soort').startsWith('Motor') ? 'mijn motorrijbewijs (A)' : 'mijn autorijbewijs (B)';
+    const wat = v('wat') === 'Iets anders vragen' ? 'iets vragen' : v('wat').toLowerCase();
+    r.push(`Ik wil graag ${wat} voor ${rb}.`);
+    if (v('wanneer')) r.push('Het liefst les: ' + v('wanneer').toLowerCase());
+    if (v('wens')) r.push(v('wens'));
+    if (v('naam')) r.push('Groet, ' + v('naam'));
+    window.open('https://wa.me/31614660771?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
   });
 </script>
 
 <style>
-  .soort { transition: background-color .3s, color .3s; }
-  .soort[aria-checked='true'] { background: var(--color-inkt); color: var(--color-papier); }
-  .soort:not([aria-checked='true']):hover { background: #14151610; }
-  .pakket { position: relative; padding-left: 2rem; }
-  .pakket::before { content: ''; position: absolute; left: 0; top: 2.375rem; width: .9rem; height: .9rem; margin-top: -.45rem; background: var(--color-blauw); transform: rotate(-9deg) scale(0); transition: transform .35s var(--ease-zacht); }
-  .pakket:has(input:checked)::before { transform: rotate(-9deg) scale(1); }
-  .pakket:hover .naam { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-  .pakket:has(input:focus-visible) { outline: 2px solid var(--color-blauw-diep); outline-offset: 2px; }
-  .cbr:hover [data-kopieer-tekst] { color: var(--color-inkt); }
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.035em; }
+  .cijfer { font-family: var(--font-kop); font-stretch: 110%; font-size: clamp(2.75rem, 3vw + 1.5rem, 3.75rem); font-weight: 800; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-bottom: .5rem; }
+  .soort { transition: background-color .25s, color .25s; color: var(--color-grijs); }
+  .soort[aria-checked='true'] { background: var(--color-inkt); color: var(--color-licht); }
+  .soort:not([aria-checked='true']):hover { background: var(--color-papier); color: var(--color-inkt); }
+  .pakket .bolletje { width: 1.375rem; height: 1.375rem; border-radius: 999px; box-shadow: inset 0 0 0 2px #12151a33; transition: box-shadow .2s, background-color .2s; }
+  .pakket:has(input:checked) { outline: 2px solid var(--color-blauw); outline-offset: -2px; box-shadow: var(--shadow-md); }
+  .pakket:has(input:checked) .bolletje { background: var(--color-blauw); box-shadow: inset 0 0 0 4px #fff, 0 0 0 2px var(--color-blauw); }
+  .pakket:has(input:checked) .prijs { color: var(--color-blauw); }
+  .pakket:has(input:focus-visible) { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: var(--radius-md); background: var(--color-papier); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: var(--color-ijs); }
+  .keuze input:checked + span { background: var(--color-blauw); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-md); border: 1.5px solid #12151a33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #12151a66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #7b828c; }
+  .kenteken { display: inline-flex; align-items: stretch; border-radius: .5rem; background: #f4c430; color: #12151a; box-shadow: 0 0 0 3px #12151a, 0 0 0 5px #f4c430, 0 18px 40px -16px #000; overflow: hidden; font-family: var(--font-kop); font-stretch: 112%; font-weight: 800; font-size: clamp(2.25rem, 3vw + 1rem, 3.25rem); letter-spacing: .04em; line-height: 1; }
+  .kenteken .nl { display: flex; align-items: flex-end; padding: .5rem .45rem; background: #0b3fa8; color: #fff; font-size: .8rem; letter-spacing: .05em; }
+  .kenteken .num { padding: .7rem 1.1rem .6rem; }
 </style>

@@ -1,18 +1,16 @@
-# Rijschool Herman, Ridderkerk: ontwerpvoorstel (demomodus, BRIEF-B23 / BRIEF-PREMIUM)
+# Rijschool Herman, Ridderkerk: ontwerpvoorstel (demomodus, herbouw volgens BRIEF-MICHAEL 02-10-2026)
 
-- Concept: asfalt en belijning. Hun logo is HERMAN in dunne witte letters op grafiet, met één schuin blauw blokje achter de E.
-  De site is dat logo op schaal: grafiet, wit, en precies één blauw vlakje (het E-blokje) als enige accent.
-- Letter: Host Grotesk (variabel, self-hosted; nog nergens in ronde 1 gebruikt). Koppen 350 met -0.035em, tekst 17px/1.6,
-  UI 11px hoofdletters .16em. Woordmerk HERMAN ruim gespatieerd met het schuine blauwe E-blokje.
-- Kleur: papier #f2f2f0, inkt #141516, grijs #5b5c5e, grafiet #1c1d1f (hero-overlay, voet); accent logoblauw #1e94f7 alleen
-  als vlak (E-blokje, gekozen pakket, knop-hover), nooit als tekstkleur op wit (contrast).
-- Beeld: full-screen hero met Unsplash-foto van een witte bocht op donker asfalt (abstract, gespiegeld). Eigen foto's: de
-  Honda-lesmotor (Facebook-omslag) en de lesauto met HERMAN-plaat (huidige site), klein en scherp, nooit opgeblazen.
-- Opbouw: hero (100svh), Auto en motor (twee kolommen), Tarieven (schakelaar auto/motor, pakket kiezen = WhatsApp-bericht),
-  Werkwijze (leerling centraal + CBR-stappen + rijschoolnummer), Contact (donker). Geen stat-rij, geen icoonkaartjes.
+- Letter: Archivo (breedte-as, koppen 800 op 112% breed, als verkeersbord-letter) + Public Sans voor tekst (17px/1.6).
+- Kleur: koel gebroken wit #f3f4f6, asfalt-grafiet #14171b, één merkkleur logoblauw #0b63c9 (het schuine E-blokje
+  uit hun logo, op donker #6cb6ff); kentekengeel alleen voor sterren en het CBR-kenteken. Hoeken strak-afgerond (6-14px).
+- Opbouw: topbar (3 vinkjes + tel), sticky header met woordmerk H[E]RMAN en knop "Plan een intakeles", hero op volle hoogte
+  (luchtfoto kruispunt + kaart met hun eigen lesauto), chips, Auto/Motor-kaarten + 4 icoonkaarten, cijferrij, tarieven
+  (auto/motor-schakelaar, pakket kiezen = WhatsApp-bericht), werkwijze in 5 stappen + CBR-nummer als kenteken (kopieerbaar),
+  donkere over-sectie met hun lesmotor en 3 kaders, motorexamen AVB/AVD, reviews (1 letterlijke Google-review + scores
+  Google/Facebook/Clickdrive), werkgebied/lestijden/adres, WhatsApp-berichtbouwer, blauwe slotbalk, donkere footer,
+  mobiele onderbalk Bellen | WhatsApp.
 
 ## Bronnen
-rijschoolherman.com (home, wie zijn wij, rijlessen auto/motor, tarieven auto/motor, acties, 2ToDrive, links, contact),
-opgehaald 2-10-2026, tekst in bron/site-tekst.txt. Google-profiel 5,0 (3 reviews, 1 met tekst; niet geclaimd, geen
-openingstijden, geen eigen foto's). Facebook facebook.com/rijschool.herman (194 volgers, 100% aanbevolen uit 5).
-Clickdrive 5,0 (2) + CBR-slagingscijfers.
+rijschoolherman.com (alle pagina's, bron/site-tekst.txt, opgehaald 2-10-2026). Google 5,0 (3, één met tekst). Facebook
+100% aanbevolen (5). Clickdrive: 5,0 uit 2 Google-reviews en CBR-cijfers Q4 2015 t/m Q2 2026 (AVB eerste keer 97%).
+Foto's: src/assets/BRONNEN.txt.
