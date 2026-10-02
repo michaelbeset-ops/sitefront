@@ -1,19 +1,16 @@
-# Trimsalon Yvon, Hendrik-Ido-Ambacht: ontwerpvoorstel (demomodus)
+# Trimsalon Yvon, Hendrik-Ido-Ambacht: ontwerpvoorstel (demomodus, herbouw volgens BRIEF-MICHAEL 02-10-2026)
 
-Geen website (Google toont er geen). Actief: Google-reviews tot 6 maanden geleden met reactie van Yvon, Facebook-berichten
-tot 21 januari 2026. Let op: trimsalonyvon.nl (Zandeweer) en Instagram @trimsalon_yvon (Schijndel) zijn andere zaken.
+- Letter: Schibsted Grotesk 800 (koppen) + Public Sans (tekst, 17px/1.6). Self-hosted via fontsource.
+- Kleur: één merkkleur terracotta-roze #a4453f (het roze matje op de trimtafel en het rondje in hun logo, dieper gemaakt),
+  chocolade #2a1c18 (donkere secties, de bruine vachten), gebroken wit #fcf8f5, poeder #f7e9e4, zalm #f2b2a6 als accent op donker.
+  Zacht vierkant (knoppen 10px, kaarten 24px), niet pill. Bewust anders dan Fan Nails (bes, pill) en Jacqueline (groen, Gabarito).
+- Logo: hun eigen ronde logo (Facebook, 31 mei 2025), rond uitgesneden, + woordmerk.
+- Opbouw: topbar 3 vinkjes, sticky header, hero op volle hoogte (Jaxx op de trimtafel) met gradient, chips, 6 dienstkaarten
+  (eigen foto's, klik = WhatsApp), cijfers (5,0 / 7 / 2024 / 5), voor en na Neva, 4 stappen, donkere sectie Over Yvon met
+  3 kaders, galerij 7 honden, 5 letterlijke Google-reviews + scorekaart, snuffelmatten met eigen prijslijst, openingstijden
+  live + route, WhatsApp-berichtbouwer (naam hond, ras, behandeling, dag), slotbalk, donkere footer, mobiele onderbalk.
 
 ## Bronnen
-Google-profiel (adres, 06, ma-vr 9-17, 5,0 uit 7; 3 reviews leesbaar, de rest vraagt inloggen), Facebook-pagina
-(gediplomeerd + ABHB, geslaagd okt 2024, Neva, Jaxx, snuffelmatten met eigen prijslijst, Miranda Ambra), KvK via oozo.nl.
-
-## Concept
-De trimkamer van Yvon: kalkwitte muur, houten vloer, het oudroze matje op de trimtafel. De site is die kamer: warm wit,
-één oudroze vlak, en de honden zelf als enige decoratie. Geen pootjes of botjes.
-
-## Keuzes (5 regels)
-- Letter: Wix Madefor Display (variabel, self-hosted), koppen 500 met -0.035em, UI 12px hoofdletters.
-- Kleur: warm wit #f6f2ef, inkt #1f1b1a, grijs #625956, oudroze vlak #ecdcd7 (het matje), nacht #241e1d voor contact.
-- Beeld: full-screen hero gesplitst: oudroze vlak met kop + Jaxx op het roze matje (eigen Facebook-foto).
-- Opbouw: hero, Neva voor/na, wassen-föhnen-trimmen (Jaxx), Yvon + reviews + 4 honden, snuffelmatten met prijslijst, contact.
-- Wow: het WhatsApp-bericht als zin die je afmaakt (naam en ras van je hond), plus vandaag gemarkeerd in de tijden.
+Google-profiel (adres, 06, ma-vr 9-17, 5,0 uit 7; 5 reviews met tekst, bron/google-reviews.json), Facebook-pagina
+(gediplomeerd + ABHB, geslaagd okt 2024, Neva, Jaxx, rassen-week, snuffelmatten met prijslijst, Miranda Ambra, logo), KvK via oozo.nl.
+Foto's: src/assets/BRONNEN.txt.

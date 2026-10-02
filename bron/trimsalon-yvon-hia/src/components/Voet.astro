@@ -1,97 +1,62 @@
 ---
-import { site, url, waMet } from '../data/site';
-import Wa from './Wa.astro';
-const tijden = [
-  ['Maandag', '9.00 tot 17.00'],
-  ['Dinsdag', '9.00 tot 17.00'],
-  ['Woensdag', '9.00 tot 17.00'],
-  ['Donderdag', '9.00 tot 17.00'],
-  ['Vrijdag', '9.00 tot 17.00'],
-  ['Zaterdag', 'gesloten'],
-  ['Zondag', 'gesloten'],
-];
+import { Image } from 'astro:assets';
+import { site, url, tijden, waAfspraak } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Wassen en föhnen', 'Trimmen en knippen', 'Eerste puppytrimbeurt', 'Alle soorten vachten', 'Snuffelmatten en fleecetouwen'];
 ---
-<footer id="contact" class="donker scroll-mt-20 bg-nacht text-licht" aria-labelledby="t-contact">
-  <div class="wrap grid gap-y-16 pb-20 pt-24 lg:grid-cols-12 lg:gap-x-8 lg:pb-28 lg:pt-36">
-    <div class="lg:col-span-6">
-      <h2 id="t-contact" class="text-3xl">Een afspraak voor je hond.</h2>
-
-      <!-- Het bericht als een zin die je zelf afmaakt: naam en ras vullen het WhatsApp-bericht. -->
-      <form class="zin mt-10 max-w-[34rem] text-xl leading-[1.7] text-licht-zacht" data-zin>
-        <p>
-          Hallo Yvon, ik wil graag een afspraak maken voor
-          <label class="sr-only" for="z-naam">Naam van je hond</label><input id="z-naam" name="naam" autocomplete="off" placeholder="naam van je hond" class="veld" size="13" data-z-naam />,
-          een
-          <label class="sr-only" for="z-ras">Ras of soort vacht</label><input id="z-ras" name="ras" autocomplete="off" placeholder="ras" class="veld" size="9" data-z-ras />.
-        </p>
-      </form>
-      <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-        <a href={waMet('ik wil graag een afspraak maken voor mijn hond.')} class="knop knop-licht" data-z-wa><Wa />Stuur via WhatsApp</a>
-        <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <Image src={logo} alt="" width={88} height={88} />
+        <span><b>Trimsalon Yvon</b><small>Hendrik-Ido-Ambacht</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Hondentrimsalon aan de Paulusweg. Gediplomeerd hondentrimster, aangesloten bij de ABHB.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-mat" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waAfspraak} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-mat" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
       </p>
     </div>
-
-    <div class="grid grid-cols-1 gap-x-8 gap-y-10 text-[.9375rem] sm:grid-cols-2 lg:col-span-5 lg:col-start-8 lg:self-end">
-      <div>
-        <p class="ui text-licht-zacht">Open</p>
-        <dl class="num mt-4 space-y-1.5">
-          {tijden.map(([d, t]) => (
-            <div class:list={['flex justify-between gap-6', { 'text-licht-zacht': t === 'gesloten' }]} data-dag={d}>
-              <dt>{d}</dt><dd class="whitespace-nowrap">{t}</dd>
-            </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">In de salon</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h(c.startsWith('Snuffel') ? 'snuffelmatten' : 'behandelingen')} class="no-underline transition-colors hover:text-zalm">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-zalm">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-zalm">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-zalm">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-zalm">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
           ))}
-        </dl>
-      </div>
-      <div class="space-y-10">
-        <div>
-          <p class="ui text-licht-zacht">Salon</p>
-          <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}</p>
-          <a href={site.maps} class="lijn mt-3 inline-block text-licht-zacht">Route in Google Maps</a>
-        </div>
-        <div>
-          <p class="ui text-licht-zacht">Bellen en WhatsApp</p>
-          <p class="mt-4"><a href={site.telHref} class="lijn num whitespace-nowrap">{site.tel}</a></p>
-          <p class="mt-3"><a href={site.facebook} class="lijn text-licht-zacht">Facebook</a></p>
-        </div>
-      </div>
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="wrap overflow-hidden pb-8" aria-hidden="true">
-    <p class="voetmerk woordmerk">Trimsalon Yvon</p>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p class="num">© {jaar} {site.naam}, {site.plaats}. KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-zalm">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s en logo van de Facebook-pagina en het Google-bedrijfsprofiel van Trimsalon Yvon. Reviews letterlijk van Google (stand 2 oktober 2026).</p>}
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p class="num">{site.naam}, {site.plaats}. KvK {site.kvk}. {site.google} op Google, uit {site.googleAantal} reviews.</p>
-    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Alle foto's zijn van Trimsalon Yvon zelf, van de Facebook-pagina en het Google-bedrijfsprofiel. Teksten en gegevens van die pagina en dat profiel.</p>}
 </footer>
-
-<style>
-  .voetmerk { font-size: clamp(2.6rem, 11.4vw, 10.5rem); letter-spacing: -.045em; line-height: .8; color: var(--color-mat); }
-  .veld { field-sizing: content; min-width: 3ch; background: transparent; color: var(--color-licht); border: 0; border-bottom: 1px solid var(--color-licht-zacht); padding: 0 .15em; font: inherit; max-width: 100%; border-radius: 0; transition: border-color .3s var(--ease-zacht); }
-  .veld::placeholder { color: var(--color-licht-zacht); opacity: 1; }
-  .veld:focus { outline: none; border-bottom-color: var(--color-mat); }
-  .veld:focus-visible { outline: 2px solid var(--color-licht); outline-offset: 3px; }
-  [data-vandaag] { color: var(--color-licht); font-weight: 500; }
-</style>
-
-<script>
-  import { waMet } from '../data/site';
-  const naam = document.querySelector<HTMLInputElement>('[data-z-naam]')!;
-  const ras = document.querySelector<HTMLInputElement>('[data-z-ras]')!;
-  const wa = document.querySelector<HTMLAnchorElement>('[data-z-wa]')!;
-  const maat = (el: HTMLInputElement) => { el.size = Math.max(el.placeholder.length, el.value.length + 1); };
-  const zet = () => {
-    maat(naam); maat(ras);
-    const n = naam.value.trim(), r = ras.value.trim();
-    const voor = n ? n : 'mijn hond';
-    wa.href = waMet(`ik wil graag een afspraak maken voor ${voor}${r ? `, een ${r}` : ''}.`);
-  };
-  naam.addEventListener('input', zet); ras.addEventListener('input', zet);
-  document.querySelector('[data-zin]')!.addEventListener('submit', (e) => { e.preventDefault(); wa.click(); });
-  // Vandaag in de lijst iets nadrukkelijker.
-  const dag = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', timeZone: 'Europe/Amsterdam' }).format(new Date());
-  document.querySelectorAll<HTMLElement>('[data-dag]').forEach((el) => { if (el.dataset.dag!.toLowerCase() === dag) el.setAttribute('data-vandaag', ''); });
-</script>
