@@ -1,0 +1,145 @@
+---
+// Footer = langskomen: de week met vandaag gemarkeerd, één zin die een WhatsApp-bericht wordt, adres en parkeren.
+import { site, url, waMet, tijden } from '../data/site';
+import Merk from './Merk.astro';
+import Wa from './Wa.astro';
+interface Props { metPlanner?: boolean }
+const { metPlanner = true } = Astro.props;
+const uur = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}.${String(m % 60).padStart(2, '0')}`;
+const week = [1, 2, 3, 4, 5, 6, 0].map((i) => ({ i, ...tijden[i] }));
+const diensten = ['knippen', 'knippen en baard', 'de baard', 'scheren', 'een kinderkapsel'];
+---
+<footer id="langskomen" class="donker scroll-mt-20 bg-nacht text-licht" aria-labelledby="t-langs">
+  <div class="wrap grid gap-y-16 pb-20 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-28 lg:pt-40">
+    <div class="lg:col-span-6">
+      <h2 id="t-langs" class="text-3xl">Even appen hoe druk het is.</h2>
+      <p class="mt-7 max-w-[30rem] text-lg leading-relaxed text-licht-zacht">Zonder afspraak loopt u gewoon binnen. Wilt u niet lang wachten, vraag dan vooraf even hoe druk het is.</p>
+
+      {metPlanner ? (
+        <form class="zin mt-12" data-zin novalidate>
+          <p class="text-xl leading-[1.7]">
+            Ik wil <label class="sr-only" for="z-dag">Dag</label><select id="z-dag" data-dag>
+              {week.filter((d) => d.open !== undefined).map((d) => <option value={d.i}>{d.dag}</option>)}
+            </select> rond <label class="sr-only" for="z-tijd">Tijd</label><select id="z-tijd" data-tijd class="num">
+              {Array.from({ length: 20 }, (_, k) => 9 * 60 + k * 30).map((m) => <option value={m}>{uur(m)}</option>)}
+            </select> uur langskomen voor <label class="sr-only" for="z-wat">Wat</label><select id="z-wat" data-wat>
+              {diensten.map((d) => <option>{d}</option>)}
+            </select>.
+          </p>
+          <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <a href={waMet('hoe druk is het?')} class="knop knop-deur" data-zin-wa><Wa />Vraag het via WhatsApp</a>
+            <a href={site.telHref} class="ui num lijn whitespace-nowrap">Of bel {site.tel}</a>
+          </p>
+          <p class="mt-6 text-sm text-licht-zacht" aria-live="polite" data-zin-uit>WhatsApp opent met dit bericht. U verstuurt het zelf.</p>
+        </form>
+      ) : (
+        <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <a href={waMet('hoe druk is het nu?')} class="knop knop-deur"><Wa />Stuur een WhatsApp</a>
+          <a href={site.telHref} class="ui num lijn whitespace-nowrap">Of bel {site.tel}</a>
+        </p>
+      )}
+    </div>
+
+    <div class="grid gap-y-12 text-[.9375rem] lg:col-span-5 lg:col-start-8">
+      <div>
+        <p class="ui text-licht-zacht">Open</p>
+        <table class="mt-4 w-full">
+          <caption class="sr-only">Openingstijden</caption>
+          <tbody>
+            {week.map((d) => (
+              <tr class="border-b border-lijn-licht" data-rij={d.i}>
+                <th scope="row" class="py-2.5 text-left font-normal capitalize">{d.dag}<span class="vandaag ui ml-3 hidden text-licht-zacht">vandaag</span></th>
+                <td class="num whitespace-nowrap py-2.5 text-right">{d.open !== undefined ? `${uur(d.open)} tot ${uur(d.dicht!)}` : 'gesloten'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="grid grid-cols-2 gap-x-8">
+        <div>
+          <p class="ui text-licht-zacht">Adres</p>
+          <p class="mt-3">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <a href={site.maps} class="lijn mt-3 inline-block text-licht-zacht">Route ↗</a>
+        </div>
+        <div>
+          <p class="ui text-licht-zacht">Parkeren</p>
+          <p class="mt-3">Betaald parkeren in de straat.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap flex items-center gap-[2.2vw] overflow-hidden pb-10" aria-hidden="true">
+    <Merk class="voetmerk-teken shrink-0 text-licht-zacht" />
+    <p class="voetmerk">UMUT</p>
+  </div>
+
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
+    <p class="num">{site.naam}, {site.plaats}. KvK {site.kvk}. {site.google} op Google, uit {site.googleAantal} reviews.</p>
+    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Alle foto's komen van het Google-bedrijfsprofiel van {site.naam}; kentekens en het gezicht van een kind zijn vervaagd. Gegevens en tijden van dat profiel.</p>}
+</footer>
+
+<style>
+  .voetmerk { font-size: clamp(3rem, 19vw, 19rem); font-weight: 600; letter-spacing: .22em; margin-right: -.22em; line-height: .76; }
+  :global(.voetmerk-teken) { height: clamp(1.4rem, 7.5vw, 7.5rem); width: auto; }
+  tr.is-vandaag .vandaag { display: inline; }
+  tr.is-vandaag th, tr.is-vandaag td { color: var(--color-licht); font-weight: 600; }
+  tbody { color: var(--color-licht-zacht); }
+  .zin select { appearance: none; -webkit-appearance: none; background: transparent; color: var(--color-licht); font: inherit; border: 0; border-bottom: 1px solid var(--color-licht-zacht); border-radius: 0; padding: 0 1.1em 0 .1em; margin: 0 .15em; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - .55em) 55%, calc(100% - .3em) 55%; background-size: .25em .25em; background-repeat: no-repeat; transition: border-color .3s var(--ease-zacht); max-width: 100%; }
+  .zin select:hover { border-bottom-color: var(--color-licht); }
+  .zin select option { color: var(--color-inkt); background: var(--color-marmer); }
+</style>
+
+<script>
+  import { tijden, waMet } from '../data/site';
+  const nu = new Date();
+  const vandaag = nu.getDay();
+  document.querySelector(`[data-rij="${vandaag}"]`)?.classList.add('is-vandaag');
+
+  const form = document.querySelector<HTMLFormElement>('[data-zin]');
+  if (form) {
+    const dag = form.querySelector<HTMLSelectElement>('[data-dag]')!;
+    const tijd = form.querySelector<HTMLSelectElement>('[data-tijd]')!;
+    const wat = form.querySelector<HTMLSelectElement>('[data-wat]')!;
+    const wa = form.querySelector<HTMLAnchorElement>('[data-zin-wa]')!;
+    const uit = form.querySelector<HTMLElement>('[data-zin-uit]')!;
+    const uur = (m: number) => `${String(Math.floor(m / 60)).padStart(2, '0')}.${String(m % 60).padStart(2, '0')}`;
+    const minNu = nu.getHours() * 60 + nu.getMinutes();
+
+    // Vandaag bovenaan als het nog kan, anders de eerstvolgende open dag.
+    const t0 = tijden[vandaag];
+    const kanVandaag = t0.open !== undefined && minNu < t0.dicht! - 30;
+    if (kanVandaag) {
+      const o = document.createElement('option'); o.value = 'v'; o.textContent = 'vandaag';
+      dag.prepend(o); dag.value = 'v';
+    } else {
+      let i = (vandaag + 1) % 7; while (tijden[i].open === undefined) i = (i + 1) % 7;
+      dag.value = String(i);
+    }
+    const dagIndex = () => (dag.value === 'v' ? vandaag : Number(dag.value));
+    let eerder = false;
+    const vulTijden = () => {
+      const t = tijden[dagIndex()];
+      const vanaf = dag.value === 'v' ? Math.max(t.open!, Math.ceil((minNu + 15) / 30) * 30) : t.open!;
+      const oud = Number(tijd.value);
+      tijd.innerHTML = '';
+      for (let m = vanaf; m <= t.dicht! - 30; m += 30) { const o = document.createElement('option'); o.value = String(m); o.textContent = uur(m); tijd.append(o); }
+      const pas = eerder && [...tijd.options].some((o) => Number(o.value) === oud);
+      eerder = true;
+      tijd.value = pas ? String(oud) : (dag.value === 'v' ? String(vanaf) : String(Math.max(vanaf, 10 * 60)));
+    };
+    const maak = () => {
+      const d = dag.options[dag.selectedIndex].text;
+      const tekst = `ik wil ${d} rond ${uur(Number(tijd.value))} uur langskomen voor ${wat.value}. Hoe druk is het dan?`;
+      wa.href = waMet(tekst);
+      uit.textContent = `WhatsApp opent met: "Hallo Umut Barbershop, ${tekst}" U verstuurt het zelf.`;
+    };
+    dag.addEventListener('change', () => { vulTijden(); maak(); });
+    tijd.addEventListener('change', maak);
+    wat.addEventListener('change', maak);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    vulTijden(); maak();
+  }
+</script>

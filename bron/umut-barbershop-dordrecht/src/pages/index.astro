@@ -1,0 +1,135 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Wa from '../components/Wa.astro';
+import { site, waMet } from '../data/site';
+import gevel from '../assets/gevel.jpg';
+import hoek from '../assets/hero.jpg';
+import zaak from '../assets/zaak.jpg';
+import stoel1 from '../assets/stoel-1.jpg';
+import stoel2 from '../assets/stoel-2.jpg';
+import kinderen from '../assets/kinderen.jpg';
+import wand from '../assets/wand.jpg';
+
+// Eerste scherm: op een breed scherm de gevel recht van voren, op de telefoon het hoekpand van schuin.
+const breed = await getImage({ src: gevel, widths: [960, 1280, 1600], sizes: '100vw', format: 'webp', quality: 64 });
+const smal = await getImage({ src: hoek, widths: [480, 640, 800, 1100], sizes: '100vw', format: 'webp', quality: 56 });
+
+// De services die klanten in hun Google-reviews aanvinken en beschrijven.
+const stoel: [string, string?][] = [
+  ['Knippen met schaar'],
+  ['Haar millimeteren'],
+  ['Opscheren'],
+  ['Baard', 'bijwerken of scheren'],
+  ['Hoofd scheren'],
+  ['Wenkbrauwen'],
+  ['Oor- en neushaar', 'met wax, of traditioneel weggebrand'],
+  ['Hoofdmassage'],
+  ['Shampoo en conditioner'],
+  ['Kinderkapsels'],
+];
+---
+<Base title="Umut Barbershop | Barbier in de Paul Krugerstraat, Dordrecht" description="Umut Barbershop in Dordrecht: knippen, millimeteren, opscheren, baard en scheren, ook voor kinderen. Zonder afspraak binnenlopen, di t/m za 9.00 tot 19.00, maandag vanaf 13.00.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- Eerste scherm: hun eigen gevel over de volle breedte, kop en één actie op het marmerwit eronder. -->
+    <section class="hero grid grid-rows-[minmax(0,1fr)_auto]" aria-labelledby="titel">
+      <picture class="block min-h-0 overflow-hidden bg-ader">
+        <source media="(min-width: 768px)" srcset={breed.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <img src={smal.src} srcset={smal.srcSet.attribute} sizes="100vw" width={hoek.width} height={hoek.height} alt="De zaak van Umut Barbershop op de hoek: rode letters UMUT BARBER boven de ramen, een bankje voor de deur." class="h-full w-full object-cover object-[50%_48%] md:object-[50%_28%]" fetchpriority="high" loading="eager" decoding="async" />
+      </picture>
+      <div class="wrap grid gap-y-6 pb-8 pt-7 md:pb-12 md:pt-10 lg:grid-cols-12 lg:items-end lg:gap-x-8">
+        <h1 id="titel" class="text-4xl lg:col-span-7">Gewoon goed geknipt.</h1>
+        <div class="lg:col-span-4 lg:col-start-9">
+          <p class="max-w-[26rem] text-grijs md:text-lg">Barbier in de Paul Krugerstraat, Dordrecht. Knippen, baard en scheren, zonder afspraak.</p>
+          <p class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={waMet('hoe druk is het nu?')} class="knop knop-deur"><Wa />Hoe druk is het?</a>
+            <a href="#langskomen" class="ui lijn">Openingstijden</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- De zaak: wat de reviews samen zeggen, groot gezet, met het interieur ernaast. -->
+    <section id="zaak" class="scroll-mt-20 pb-28 pt-28 lg:pb-40 lg:pt-40" aria-labelledby="t-zaak">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
+        <h2 id="t-zaak" class="sr-only">De zaak</h2>
+        <p class="rijs text-2xl leading-[1.18] tracking-[-.025em] lg:col-span-9">Snel, vakkundig, voor een nette prijs. En in de stoel geen gepraat als u daar geen zin in heeft. <span class="text-grijs">Dat lezen we keer op keer in de reviews.</span></p>
+      </div>
+      <div class="wrap mt-16 grid gap-y-12 lg:mt-24 lg:grid-cols-12 lg:gap-x-8">
+        <figure class="rijs overflow-hidden bg-ader lg:col-span-8">
+          <Image src={zaak} alt="Het interieur: witte marmeren vloer, gestreepte wanden, drie kappersstoelen en een zithoek bij het raam." widths={[600, 900, 1105]} sizes="(min-width: 1024px) 64vw, 100vw" format="webp" quality={62} class="aspect-[1105/644] h-full w-full object-cover" />
+        </figure>
+        <div class="lg:col-span-3 lg:col-start-10 lg:self-end">
+          <h3 class="text-xl">Binnenlopen en aansluiten.</h3>
+          <p class="mt-4 text-grijs">Een afspraak is niet nodig: u sluit aan in de rij. Ondertussen staan er koffie, thee, frisdrank en gekoeld water klaar.</p>
+          <p class="mt-4 text-grijs">Op drukke momenten kan het wachten even duren.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- In de stoel: rustige lijst met haarlijnen, twee eigen werkfoto's ernaast. -->
+    <section id="stoel" class="scroll-mt-20 bg-wit py-28 lg:py-40" aria-labelledby="t-stoel">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5">
+          <h2 id="t-stoel" class="text-3xl">In de stoel.</h2>
+          <div class="mt-12 grid grid-cols-2 items-start gap-4 md:gap-6">
+            <figure class="rijs overflow-hidden bg-ader">
+              <Image src={stoel1} alt="Opgeschoren zijkant met twee getekende lijnen in de fade." widths={[360, 740]} sizes="(min-width: 1024px) 19vw, 45vw" format="webp" quality={60} class="aspect-[3/5] w-full object-cover" />
+            </figure>
+            <figure class="rijs mt-16 overflow-hidden bg-ader" style="--d:.12s">
+              <Image src={stoel2} alt="Strak achterover gekamd, kort uitlopend boven het oor." widths={[300, 580]} sizes="(min-width: 1024px) 19vw, 45vw" format="webp" quality={60} class="aspect-[3/5] w-full object-cover" />
+            </figure>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pt-3">
+          <ul class="border-t border-lijn md:grid md:grid-cols-2 md:gap-x-8">
+            {stoel.map(([t, d]) => (
+              <li class="border-b border-lijn py-5">
+                <h3 class="text-lg font-[550]">{t}</h3>
+                {d && <p class="mt-1 text-sm text-grijs">{d}</p>}
+              </li>
+            ))}
+          </ul>
+          <p class="mt-8 text-grijs">Prijzen? Stuur even een appje.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Kinderen: de deur met tekenfilmhelden, groot. -->
+    <section id="kinderen" class="scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-kind">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-4 lg:self-end lg:pb-4">
+          <h2 id="t-kind" class="text-3xl">Ook voor de jongste klanten.</h2>
+          <p class="mt-7 max-w-[24rem] text-lg leading-relaxed text-grijs">Zoon, kleinzoon: ze gaan hier net zo goed in de stoel. Met Donald Duck en Mickey op de deur en een speelgoedauto in de hoek.</p>
+        </div>
+        <figure class="rijs overflow-hidden bg-ader lg:col-span-7 lg:col-start-6">
+          <Image src={kinderen} alt="De kapper knipt een jongen; links een deur vol tekenfilmfiguren en een witte speelgoedauto." widths={[600, 900, 1200]} sizes="(min-width: 1024px) 55vw, 100vw" format="webp" quality={60} class="aspect-[4/5] w-full object-cover object-[50%_45%] md:aspect-[5/4]" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- Wax: de eigen productwand onder het verlichte Istanbul-paneel. -->
+    <section id="wax" class="scroll-mt-20 border-t border-lijn bg-wit" aria-labelledby="t-wax">
+      <div class="grid lg:grid-cols-2">
+        <figure class="overflow-hidden bg-ader">
+          <Image src={wand} alt="De productwand: stapels wax in rood, groen en wit, flessen en sprays, met erboven een verlicht paneel met de skyline van Istanbul." widths={[600, 1000, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" format="webp" quality={60} class="aspect-square h-full w-full object-cover" />
+        </figure>
+        <div class="wrap flex flex-col justify-center py-20 lg:max-w-[38rem] lg:px-16 lg:py-24 xl:px-24">
+          <h2 id="t-wax" class="text-3xl">Wax voor thuis.</h2>
+          <p class="mt-7 max-w-[26rem] text-lg leading-relaxed text-grijs">De wand bij de deur staat vol: wax van onder meer Abzehk en Novon, en verder shampoo, spray en styling.</p>
+          <p class="mt-10"><a href={waMet('hebben jullie nog wax van ')} class="ui lijn">Vraag of uw wax er is</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .hero { height: calc(100svh - var(--balk, 0px) - 4rem); min-height: 34rem; }
+  @media (min-width: 768px) { .hero { height: calc(100svh - var(--balk, 0px) - 5rem); min-height: 38rem; } }
+</style>

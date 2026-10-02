@@ -138,3 +138,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Schilderwerken Radi Drechtsteden, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/schilderwerken-radi/ | site bestaat niet meer, 4,3 uit 13, 06/WhatsApp. | 2026-10-02 | demo premium |
 | MrVie Detailing, Barendrecht | https://michaelbeset-ops.github.io/sitefront/mrvie-detailing-barendrecht/ | domein leeg (gereserveerd), 5,0 uit 3, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Stigter Timmer- en Montagebedrijf, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/stigter-timmerwerken-ridderkerk/ | site 404/leeg, 4,2 uit 5, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Umut Barbershop, Dordrecht | https://michaelbeset-ops.github.io/sitefront/umut-barbershop-dordrecht/ | geen website, 4,7 uit 136, 06/WhatsApp. | 2026-10-02 | demo premium |
