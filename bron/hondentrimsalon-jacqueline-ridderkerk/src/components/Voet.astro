@@ -1,0 +1,63 @@
+---
+// Donkere footer in vier kolommen: merk, behandelingen, contact, openingstijden. Onderregel met KvK en privacy.
+import { site, url, waMet, week, uur } from '../data/site';
+import Merk from './Merk.astro';
+const thuis = url('');
+const diensten = ['Was- en knipbeurt', 'Trimmen', 'Vachtverzorging voor de kat'];
+---
+<footer class="donker bg-inkt pb-24 text-licht-zacht md:pb-0">
+  <div class="h-1.5 bg-groen" aria-hidden="true"></div>
+  <div class="wrap grid gap-12 py-16 text-sm sm:grid-cols-2 lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="lg:col-span-4">
+      <a href={thuis} class="inline-flex items-center gap-3 text-licht">
+        <span class="grid h-12 w-12 place-items-center rounded-full bg-groen text-wit" aria-hidden="true"><Merk class="h-7 w-7" /></span>
+        <span class="leading-none">
+          <span class="voetmerk block text-[1.625rem]">Jacqueline</span>{" "}
+          <span class="wenk mt-1 block text-[.625rem] text-licht-zacht">Hondentrimsalon</span>
+        </span>
+      </a>
+      <p class="mt-6 max-w-[22rem] leading-relaxed">Al jarenlang een begrip in Ridderkerk en ver daarbuiten. Rijksgediplomeerd en lid van de ABHB.</p>
+    </div>
+    <div class="lg:col-span-2">
+      <h2 class="wenk text-licht">Behandelingen</h2>
+      <ul class="mt-5 space-y-2.5">
+        {diensten.map((d) => <li><a href={`${thuis}#behandelingen`} class="hover:text-licht">{d}</a></li>)}
+      </ul>
+    </div>
+    <div class="min-w-0 lg:col-span-3">
+      <h2 class="wenk text-licht">Contact</h2>
+      <ul class="mt-5 space-y-2.5">
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.telHref} class="num whitespace-nowrap hover:text-licht">{site.tel}</a></li>
+        <li><a href={waMet('ik wil graag een afspraak maken.')} class="hover:text-licht">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="hover:text-licht">hondentrimsalonjacqueline@<wbr />gmail.com</a></li>
+        <li><a href={site.maps} class="hover:text-licht">Route plannen ↗</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <h2 class="wenk text-licht">Openingstijden</h2>
+      <table class="mt-5 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {week.map((d) => (
+            <tr>
+              <th scope="row" class="py-1 pr-4 text-left font-normal">{d.kort}</th>
+              <td class="num whitespace-nowrap py-1 text-right">{d.open !== undefined ? `${uur(d.open)} tot ${uur(d.dicht!)}` : 'gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p class="num">© {new Date().getFullYear()} {site.naam}, {site.plaats}. KvK {site.kvk}.</p>
+      <p><a href={url('privacy/')} class="underline underline-offset-4 hover:text-licht">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto's van uw Google-bedrijfsprofiel en uw huidige pagina, en sfeerfoto's via Unsplash, ter illustratie. Reviews letterlijk van Google, soms ingekort.</p>}
+  </div>
+</footer>
+
+<style>
+  .voetmerk { font-family: var(--font-kop); font-weight: 800; letter-spacing: -.035em; }
+</style>

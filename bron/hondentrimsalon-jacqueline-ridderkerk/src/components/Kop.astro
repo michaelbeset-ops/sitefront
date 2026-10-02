@@ -1,0 +1,105 @@
+---
+// Topbar met drie vinkjes, witte header met woordmerk (schaar + Jacqueline), menu en de groene WhatsApp-knop.
+// Op de telefoon: hamburger en een vaste onderbalk met Bellen | WhatsApp.
+import { site, url, waMet } from '../data/site';
+import Merk from './Merk.astro';
+import Wa from './Wa.astro';
+const thuis = url('');
+const nav = [
+  ['Behandelingen', '#behandelingen'],
+  ['Werkwijze', '#werkwijze'],
+  ['Over Jacqueline', '#over'],
+  ['Reviews', '#reviews'],
+  ['Openingstijden', '#tijden'],
+];
+const vink = ['Rijksgediplomeerd', 'Lid van de ABHB', 'Voor hond en kat'];
+---
+<div class="bg-inkt text-licht">
+  <div class="wrap flex h-9 items-center justify-between gap-6 text-xs font-medium">
+    <ul class="flex gap-6 overflow-hidden">
+      {vink.map((v, k) => (
+        <li class={`flex shrink-0 items-center gap-2 ${k > 0 ? 'max-md:hidden' : ''} ${k > 1 ? 'max-lg:hidden' : ''}`}>
+          <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 text-munt" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5" /></svg>{v}
+        </li>
+      ))}
+    </ul>
+    <p class="flex shrink-0 items-center gap-5">
+      <span class="hidden items-center gap-1.5 sm:flex"><span class="text-ster" aria-hidden="true">★</span><span class="num">{site.google}</span> op Google</span>
+      <a href={site.telHref} class="num whitespace-nowrap hover:text-munt">{site.tel}</a>
+    </p>
+  </div>
+</div>
+
+<header class="kop sticky top-0 z-40 bg-wit" data-kop>
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
+    <a href={thuis} class="flex items-center gap-3 text-inkt">
+      <span class="grid h-11 w-11 place-items-center rounded-full bg-groen text-wit md:h-12 md:w-12" aria-hidden="true"><Merk class="h-6 w-6 md:h-7 md:w-7" /></span>
+      <span class="leading-none">
+        <span class="woordmerk block text-[1.5rem] md:text-[1.625rem]">Jacqueline</span>{" "}
+        <span class="wenk mt-1 block text-[.625rem] text-groen">Hondentrimsalon</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-7 text-[.9375rem] font-semibold">
+        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="navlink">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={site.telHref} class="knop knop-lijn knop-klein num hidden xl:inline-flex">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /></svg>{site.tel}
+      </a>
+      <a href={waMet('ik wil graag een afspraak maken.')} class="knop knop-groen knop-klein max-sm:hidden"><Wa />Afspraak</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-full border border-lijn lg:hidden" aria-expanded="false" aria-controls="menu" aria-label="Menu openen" data-menu-knop>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path data-streep d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="menu" class="menu lg:hidden" hidden data-menu>
+    <nav aria-label="Menu" class="wrap flex min-h-full flex-col justify-between gap-10 pb-28 pt-6">
+      <ul class="divide-y divide-lijn border-y border-lijn">
+        {[...nav, ['Afspraak maken', '#afspraak']].map(([t, h]) => <li><a href={`${thuis}${h}`} class="flex items-center justify-between py-4 font-kop text-2xl font-extrabold tracking-[-.02em]" data-menu-link>{t}<span class="text-groen" aria-hidden="true">→</span></a></li>)}
+      </ul>
+      <p class="text-grijs">{site.straat}, {site.plaats}<br />Ma, di, do, vr en za 8.30 tot 17.00</p>
+    </nav>
+  </div>
+</header>
+
+<!-- Vaste onderbalk op de telefoon -->
+<div class="onderbalk fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn bg-wit/95 p-2.5 backdrop-blur md:hidden">
+  <a href={site.telHref} class="knop knop-lijn knop-klein">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2" /></svg>Bellen
+  </a>
+  <a href={waMet('ik wil graag een afspraak maken.')} class="knop knop-groen knop-klein"><Wa />WhatsApp</a>
+</div>
+
+<style>
+  .kop { transition: box-shadow .3s var(--ease-zacht); }
+  .kop.schaduw { box-shadow: 0 1px 0 var(--color-lijn), 0 8px 24px -16px #16201d40; }
+  .woordmerk { font-family: var(--font-kop); font-weight: 800; letter-spacing: -.035em; }
+  .navlink { position: relative; padding-block: .4rem; transition: color .2s ease; }
+  .navlink::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--color-groen); transform: scaleX(0); transform-origin: left; transition: transform .3s var(--ease-zacht); }
+  .navlink:hover { color: var(--color-groen); }
+  .navlink:hover::after { transform: scaleX(1); }
+  .menu { position: fixed; left: 0; right: 0; bottom: 0; top: 4.5rem; background: var(--color-wit); color: var(--color-inkt); overflow-y: auto; }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
+  const zet = () => kop.classList.toggle('schaduw', scrollY > 40);
+  zet(); addEventListener('scroll', zet, { passive: true });
+  const knop = kop.querySelector<HTMLButtonElement>('[data-menu-knop]')!;
+  const streep = knop.querySelector('[data-streep]')!;
+  const menu = kop.querySelector<HTMLElement>('[data-menu]')!;
+  const open = (aan: boolean) => {
+    menu.style.top = kop.getBoundingClientRect().bottom + 'px';
+    menu.hidden = !aan;
+    knop.setAttribute('aria-expanded', String(aan));
+    knop.setAttribute('aria-label', aan ? 'Menu sluiten' : 'Menu openen');
+    streep.setAttribute('d', aan ? 'M6 6l12 12M18 6 6 18' : 'M4 7h16M4 12h16M4 17h16');
+    document.documentElement.style.overflow = aan ? 'hidden' : '';
+  };
+  knop.addEventListener('click', () => open(menu.hidden));
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => open(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { open(false); knop.focus(); } });
+</script>
