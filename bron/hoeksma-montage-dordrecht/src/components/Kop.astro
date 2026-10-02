@@ -1,0 +1,69 @@
+---
+import { site, url, waMet } from '../data/site';
+import Merk from './Merk.astro';
+const nav = [
+  ['Diensten', '#diensten'],
+  ['Werk', '#werk'],
+  ['Werkwijze', '#werkwijze'],
+  ['Over', '#over'],
+  ['Contact', '#contact'],
+];
+const thuis = url('');
+---
+<header class="kop sticky top-0 z-40" data-kop>
+  <div class="wrap flex h-16 items-center justify-between gap-6">
+    <a href={thuis} class="flex items-center gap-3" aria-label={`${site.naam}, naar de homepage`}>
+      <Merk class="size-7 shrink-0" />
+      <span class="leading-none" aria-hidden="true">
+        <span class="woordmerk block text-[.8125rem] font-medium">J. HOEKSMA</span>
+        <span class="mt-1.5 hidden whitespace-nowrap text-[.625rem] tracking-[.06em] text-grijs sm:block">Montage &amp; Timmerwerken</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="ui flex gap-9">
+        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="lijn-in">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-6">
+      <a href={site.telHref} class="ui num lijn-in hidden xl:inline">{site.tel}</a>
+      <a href={waMet('ik heb een vraag over ')} class="knop knop-vol knop-klein max-[359px]:hidden">WhatsApp</a>
+      <button type="button" class="ui lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>Menu</button>
+    </div>
+  </div>
+
+  <div id="menu" class="menu lg:hidden" hidden data-menu>
+    <nav aria-label="Menu" class="wrap flex min-h-full flex-col justify-between gap-10 pb-10 pt-8">
+      <ul class="space-y-1">
+        {nav.map(([t, h]) => <li><a href={`${thuis}${h}`} class="block py-1 text-[2.25rem] leading-tight tracking-[-.03em]" data-menu-link>{t}</a></li>)}
+      </ul>
+      <p class="space-y-3">
+        <a href={waMet('ik heb een vraag over ')} class="knop knop-vol w-full">Stuur een WhatsApp</a>
+        <a href={site.telHref} class="knop num w-full">Bel {site.tel}</a>
+      </p>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .kop { background-color: color-mix(in srgb, var(--color-papier) 94%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: box-shadow .4s var(--ease-zacht); }
+  .kop.schaduw { box-shadow: 0 1px 0 var(--color-lijn); }
+  .menu { position: fixed; left: 0; right: 0; bottom: 0; top: 4rem; background: var(--color-papier); overflow-y: auto; }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
+  const zetSchaduw = () => kop.classList.toggle('schaduw', scrollY > 8);
+  zetSchaduw(); addEventListener('scroll', zetSchaduw, { passive: true });
+  const knop = kop.querySelector<HTMLButtonElement>('[data-menu-knop]')!;
+  const menu = kop.querySelector<HTMLElement>('[data-menu]')!;
+  const zet = (open: boolean) => {
+    menu.style.top = kop.getBoundingClientRect().bottom + 'px';
+    menu.hidden = !open;
+    knop.setAttribute('aria-expanded', String(open));
+    knop.textContent = open ? 'Sluiten' : 'Menu';
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  };
+  knop.addEventListener('click', () => zet(menu.hidden));
+  menu.querySelectorAll('[data-menu-link]').forEach((a) => a.addEventListener('click', () => zet(false)));
+  addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menu.hidden) { zet(false); knop.focus(); } });
+</script>

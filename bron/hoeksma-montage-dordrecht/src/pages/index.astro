@@ -1,0 +1,260 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, url, waMet, offerteMail } from '../data/site';
+import { werk, paren, foto, soortNaam, type Soort } from '../data/werk';
+
+const diensten: { id: Soort; titel: string; tekst: string; beeld: string; alt: string }[] = [
+  { id: 'keukens', titel: 'Keukens', beeld: 'keuken-03', alt: werk.find((w) => w.n === 'keuken-03')!.alt,
+    tekst: 'Het plaatsen van de keuken, en het timmerwerk eromheen: een verlaagd plafond met verlichting, een nissenwand.' },
+  { id: 'badkamers', titel: 'Badkamers', beeld: 'badkamer-19', alt: werk.find((w) => w.n === 'badkamer-19')!.alt,
+    tekst: 'Badkamers en toiletruimtes, van de kale ruimte tot het tegelwerk, de nissen en de verlichting.' },
+  { id: 'timmerwerk', titel: 'Timmerwerk', beeld: 'timmerwerken-05', alt: werk.find((w) => w.n === 'timmerwerken-05')!.alt,
+    tekst: 'Diverse timmerwerken, zoals een tv-wand op maat, kastenwanden, binnenwanden met deuren en gevelbekleding.' },
+];
+const aantal = (s: Soort) => werk.filter((w) => w.soort === s).length;
+const breed = '(min-width: 1024px) 25vw, 50vw';
+---
+<Base title="J. Hoeksma Montage & Timmerwerken | Keukens, badkamers en timmerwerk in Dordrecht" description="Sinds 1996 plaatst J. Hoeksma uit Dordrecht keukens en badkamers en doet hij diverse timmerwerken. Uw verbouwing van A tot Z, met een strakke planning.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Eerste scherm: kop, één zin, één knop, en hun mooiste badkamer groot. -->
+    <section class="wrap hero grid gap-y-10 pb-4 pt-10 md:pt-14 lg:grid-cols-12 lg:gap-x-8 lg:pt-12" aria-labelledby="titel">
+      <div class="flex flex-col lg:col-span-5">
+        <h1 id="titel" class="text-4xl">Keukens en badkamers.</h1>
+        <p class="mt-7 max-w-[30rem] text-lg leading-relaxed text-grijs md:mt-9">Sinds 1996 plaatst Johan Hoeksma uit Dordrecht keukens en badkamers, en doet hij diverse timmerwerken. Uw verbouwing van A tot Z, met een strakke planning.</p>
+        <p class="mt-9 flex flex-wrap items-center gap-x-8 gap-y-5 md:mt-11">
+          <a href={waMet('ik wil graag een verbouwing met u bespreken. Het gaat om ')} class="knop knop-vol">Stuur een WhatsApp</a>
+          <a href="#werk" class="ui lijn">Bekijk het werk</a>
+        </p>
+        <p class="mt-auto hidden pt-12 text-sm leading-relaxed text-grijs lg:block">
+          <span class="text-inkt">Badkamer met eiken meubel</span><br />Dubbele waskom, verlichte nissen, lichtlijn in het plafond.
+        </p>
+      </div>
+      <figure class="hero-beeld relative -mx-5 overflow-hidden bg-steen md:mx-0 lg:col-span-7">
+        <Image src={foto('hero')} alt={werk.find((w) => w.n === 'hero')!.alt} widths={[640, 960, 1280, 1600, 2000]} sizes="(min-width: 1024px) 58vw, 100vw" format="webp" quality={72} loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[40%_50%]" />
+      </figure>
+    </section>
+
+    <!-- 2. Diensten: drie rustige regels, het beeld wisselt mee. -->
+    <section id="diensten" class="wrap scroll-mt-16 py-28 lg:py-40" aria-labelledby="t-diensten">
+      <div class="grid gap-y-12 lg:grid-cols-12 lg:gap-x-8">
+        <div class="lg:col-span-5">
+          <h2 id="t-diensten" class="text-3xl">Wat Johan voor u plaatst.</h2>
+          <ul class="mt-12 border-t border-lijn lg:mt-16" data-diensten>
+            {diensten.map((d, i) => (
+              <li class="border-b border-lijn">
+                <button type="button" class="dienst group grid w-full grid-cols-[1fr_auto] items-baseline gap-x-6 py-7 text-left" aria-pressed={i === 0 ? 'true' : 'false'} data-dienst={i}>
+                  <span class="text-2xl transition-colors duration-500">{d.titel}</span>
+                  <span class="ui num text-grijs">{String(aantal(d.id)).padStart(2, '0')} foto's</span>
+                  <span class="col-span-2 mt-3 max-w-[28rem] text-grijs">{d.tekst}</span>
+                </button>
+                <figure class="mb-8 aspect-[4/5] overflow-hidden bg-steen lg:hidden">
+                  <Image src={foto(d.beeld)} alt={d.alt} widths={[480, 800, 1100]} sizes="100vw" format="webp" quality={70} class="h-full w-full object-cover" />
+                </figure>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-10"><a href="#werk" class="ui lijn">Alle projectfoto's</a></p>
+        </div>
+        <div class="relative hidden lg:col-span-6 lg:col-start-7 lg:block">
+          <div class="sticky top-28 aspect-[4/5] overflow-hidden bg-steen">
+            {diensten.map((d, i) => (
+              <Image src={foto(d.beeld)} alt={i === 0 ? d.alt : ''} aria-hidden={i === 0 ? undefined : 'true'} widths={[600, 900, 1200]} sizes="45vw" format="webp" quality={72} class:list={['dienst-beeld absolute inset-0 h-full w-full object-cover', i === 0 && 'aan']} data-dienst-beeld={i} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Werk: strak raster, filter, lightbox. -->
+    <section id="werk" class="scroll-mt-16 bg-wit py-28 lg:py-40" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-8">
+          <h2 id="t-werk" class="text-3xl">Werk.</h2>
+          <div class="filters ui flex flex-wrap gap-x-7 gap-y-3" role="group" aria-label="Toon projectfoto's van" data-filters>
+            <button type="button" aria-pressed="true" data-filter="alles">Alles <span class="num text-grijs">{werk.length}</span></button>
+            {(['keukens', 'badkamers', 'timmerwerk'] as Soort[]).map((s) => (
+              <button type="button" aria-pressed="false" data-filter={s}>{s === 'timmerwerk' ? 'Timmerwerk' : s[0].toUpperCase() + s.slice(1)} <span class="num text-grijs">{aantal(s)}</span></button>
+            ))}
+          </div>
+        </div>
+        <p class="sr-only" aria-live="polite" data-filter-status></p>
+        <ul class="mt-12 grid grid-cols-2 gap-2 md:mt-16 md:gap-3 lg:grid-cols-4" data-raster>
+          {werk.map((w, i) => (
+            <li data-soort={w.soort} class:list={[i >= 12 && 'extra']}>
+              <a href={foto(w.n).src} class="tegel group relative block aspect-[4/5] overflow-hidden bg-steen" data-licht={i}>
+                <Image src={foto(w.n)} alt={w.alt} widths={[360, 560, 800]} sizes={breed} format="webp" quality={68} class="h-full w-full object-cover transition-transform duration-[1.2s] ease-[var(--ease-zacht)] group-hover:scale-[1.03]" />
+                <span class="tegel-label ui absolute bottom-0 left-0 bg-papier px-3 py-2">{soortNaam[w.soort]}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-12 text-center" data-meer-rij><button type="button" class="knop" data-meer>Toon alle {werk.length} foto's</button></p>
+      </div>
+    </section>
+
+    <!-- 4. Werkwijze: wat u na afloop niet meer ziet. -->
+    <section id="werkwijze" class="wrap scroll-mt-16 py-28 lg:py-40" aria-labelledby="t-werkwijze">
+      <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
+        <h2 id="t-werkwijze" class="text-3xl lg:col-span-6">Wat u na afloop niet meer ziet.</h2>
+        <p class="max-w-[34rem] text-lg leading-relaxed text-grijs lg:col-span-5 lg:col-start-8 lg:pt-3">Een verlaagd plafond, een nissenwand, de leidingen achter de tegels: veel werk zit erachter. Dezelfde plek, tijdens de bouw en bij oplevering.</p>
+      </div>
+      <ul class="mt-16 grid gap-x-8 gap-y-14 md:grid-cols-3 lg:mt-24">
+        {paren.map((p, i) => (
+          <li class="paar">
+            <figure>
+              <div class="relative aspect-[3/4] overflow-hidden bg-steen">
+                <Image src={foto(p.klaar)} alt={p.altK} widths={[480, 720, 960]} sizes="(min-width: 768px) 33vw, 100vw" format="webp" quality={70} class="paar-klaar absolute inset-0 h-full w-full object-cover" />
+                <Image src={foto(p.tijdens)} alt={p.altT} widths={[480, 720, 960]} sizes="(min-width: 768px) 33vw, 100vw" format="webp" quality={70} class="paar-tijdens absolute inset-0 h-full w-full object-cover" />
+              </div>
+              <figcaption class="mt-5 flex items-baseline justify-between gap-4 border-b border-lijn pb-5">
+                <span class="text-lg">{p.wat}</span>
+                <span class="wissel ui flex gap-1" role="group" aria-label={`${p.wat}: kies een foto`}>
+                  <button type="button" aria-pressed="false" data-stand="tijdens" data-paar={i}>Tijdens</button>
+                  <span aria-hidden="true" class="text-grijs">/</span>
+                  <button type="button" aria-pressed="true" data-stand="klaar" data-paar={i}>Opgeleverd</button>
+                </span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 5. Over: sinds 1996. -->
+    <section id="over" class="scroll-mt-16 border-t border-lijn" aria-labelledby="t-over">
+      <div class="wrap grid gap-y-14 py-28 lg:grid-cols-12 lg:gap-x-8 lg:py-40">
+        <div class="lg:col-span-6">
+          <h2 id="t-over" class="text-3xl">Sinds 1996, <span class="text-grijs">vanuit Dordrecht.</span></h2>
+          <p class="mt-10 max-w-[34rem] text-lg leading-relaxed text-grijs">Hoeksma Montage &amp; Timmerwerken is gespecialiseerd in het plaatsen van keukens, badkamers en diverse timmerwerken. We werken met een strakke planning en met gespecialiseerde vakmensen die klantgericht zijn en denken in oplossingen.</p>
+        </div>
+        <dl class="feiten self-end text-[.9375rem] lg:col-span-5 lg:col-start-8">
+          <div><dt class="ui text-grijs">Werktijden</dt><dd class="num">Maandag tot en met vrijdag, 08.00 tot 17.00 uur</dd></div>
+          <div><dt class="ui text-grijs">Materialen</dt><dd>Uitsluitend hoogwaardige materialen en producten</dd></div>
+          <div><dt class="ui text-grijs">Werkt samen met</dt><dd>ASWA Keukens, Sani-Dump, Stock4Rolls</dd></div>
+          <div><dt class="ui text-grijs">Opleiden</dt><dd>Leerbedrijf, erkend door SBB</dd></div>
+          <div><dt class="ui text-grijs">Op Google</dt><dd class="num">{site.google} uit {site.googleAantal} reviews</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+
+  <dialog class="licht" aria-label="Projectfoto" data-lichtbak>
+    <div class="flex h-full flex-col">
+      <div class="wrap flex h-16 shrink-0 items-center justify-between">
+        <p class="ui num" data-licht-teller></p>
+        <button type="button" class="ui lijn-in" data-licht-sluit>Sluiten</button>
+      </div>
+      <div class="relative min-h-0 flex-1 px-5 md:px-20">
+        <img alt="" class="mx-auto h-full w-auto max-w-full object-contain" data-licht-img />
+        <button type="button" class="licht-pijl left-1 md:left-5" aria-label="Vorige foto" data-licht-vorige>←</button>
+        <button type="button" class="licht-pijl right-1 md:right-5" aria-label="Volgende foto" data-licht-volgende>→</button>
+      </div>
+      <p class="wrap min-h-16 py-5 text-sm text-licht-zacht" data-licht-tekst></p>
+    </div>
+  </dialog>
+</Base>
+
+<style>
+  .hero-beeld { aspect-ratio: 4 / 3; }
+  @media (min-width: 1024px) { .hero-beeld { aspect-ratio: auto; height: clamp(30rem, calc(100svh - 4rem - var(--balk, 0px) - 7rem), 46rem); } }
+  @media (min-width: 768px) and (max-width: 1023px) { .hero-beeld { aspect-ratio: 16 / 10; } }
+
+  .dienst[aria-pressed='false'] > span:first-child { color: var(--color-grijs); }
+  .dienst:hover > span:first-child { color: var(--color-inkt); }
+  @media (max-width: 1023px) { .dienst > span:first-child { color: var(--color-inkt) !important; } .dienst { cursor: default; } }
+  .dienst-beeld { opacity: 0; transition: opacity .8s var(--ease-zacht); }
+  .dienst-beeld.aan { opacity: 1; }
+
+  .filters button { padding-bottom: 2px; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .45s var(--ease-zacht); }
+  .filters button:hover, .filters button[aria-pressed='true'] { background-size: 100% 1px; }
+  .filters button[aria-pressed='false'] { color: var(--color-grijs); }
+  [data-raster] li.uit, :global(.js) [data-raster]:not(.alles) li.extra { display: none; }
+  :global(html:not(.js)) [data-meer-rij] { display: none; }
+  .tegel-label { opacity: 0; transform: translateY(4px); transition: opacity .4s var(--ease-zacht), transform .4s var(--ease-zacht); }
+  .tegel:hover .tegel-label, .tegel:focus-visible .tegel-label { opacity: 1; transform: none; }
+
+  .paar-tijdens { opacity: 0; transition: opacity .7s var(--ease-zacht); }
+  .paar.tijdens .paar-tijdens { opacity: 1; }
+  .wissel button { padding-bottom: 2px; }
+  .wissel button[aria-pressed='true'] { background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; }
+  .wissel button[aria-pressed='false'] { color: var(--color-grijs); }
+  .wissel button:hover { color: var(--color-inkt); }
+  :global(html:not(.js)) .wissel { display: none; }
+
+  .feiten > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 1.5rem; padding: 1.15rem 0; border-top: 1px solid var(--color-lijn); }
+  .feiten > div:last-child { border-bottom: 1px solid var(--color-lijn); }
+  .feiten dt { padding-top: .2rem; }
+  @media (max-width: 479px) { .feiten > div { grid-template-columns: 1fr; gap: .4rem; } }
+
+  .licht { width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: var(--color-antraciet); color: var(--color-licht); }
+  .licht::backdrop { background: var(--color-antraciet); }
+  .licht :focus-visible { outline-color: var(--color-licht); }
+  .licht-pijl { position: absolute; top: 50%; translate: 0 -50%; width: 3rem; height: 3rem; font-size: 1.25rem; display: grid; place-items: center; transition: opacity .3s; }
+  .licht-pijl:hover { opacity: .7; }
+</style>
+
+<script>
+  // Diensten: het beeld rechts volgt de gekozen dienst.
+  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('[data-dienst]')];
+  const beelden = [...document.querySelectorAll<HTMLElement>('[data-dienst-beeld]')];
+  const kies = (i: number) => {
+    knoppen.forEach((k, j) => k.setAttribute('aria-pressed', String(i === j)));
+    beelden.forEach((b, j) => b.classList.toggle('aan', i === j));
+  };
+  knoppen.forEach((k, i) => { k.addEventListener('click', () => kies(i)); k.addEventListener('mouseenter', () => matchMedia('(hover: hover)').matches && kies(i)); });
+
+  // Werk: filter.
+  const filters = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const tegels = [...document.querySelectorAll<HTMLLIElement>('[data-raster] li')];
+  const status = document.querySelector('[data-filter-status]')!;
+  const raster = document.querySelector<HTMLElement>('[data-raster]')!;
+  const meerRij = document.querySelector<HTMLElement>('[data-meer-rij]')!;
+  document.querySelector('[data-meer]')!.addEventListener('click', () => {
+    raster.classList.add('alles'); meerRij.hidden = true;
+    (raster.querySelector('li.extra a') as HTMLElement | null)?.focus();
+  });
+  filters.forEach((f) => f.addEventListener('click', () => {
+    const s = f.dataset.filter!;
+    if (s !== 'alles') { raster.classList.add('alles'); meerRij.hidden = true; }
+    filters.forEach((g) => g.setAttribute('aria-pressed', String(g === f)));
+    tegels.forEach((t) => t.classList.toggle('uit', s !== 'alles' && t.dataset.soort !== s));
+    status.textContent = `${tegels.filter((t) => !t.classList.contains('uit')).length} foto's zichtbaar`;
+  }));
+
+  // Lightbox.
+  const bak = document.querySelector<HTMLDialogElement>('[data-lichtbak]')!;
+  const img = bak.querySelector<HTMLImageElement>('[data-licht-img]')!;
+  const tekst = bak.querySelector('[data-licht-tekst]')!;
+  const teller = bak.querySelector('[data-licht-teller]')!;
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-licht]')];
+  let nu = 0;
+  const zichtbaar = () => links.filter((a) => a.offsetParent !== null);
+  const toon = (a: HTMLAnchorElement) => {
+    const lijst = zichtbaar(); nu = lijst.indexOf(a);
+    const bron = a.querySelector('img')!;
+    img.removeAttribute('srcset'); img.src = a.href; img.alt = bron.alt;
+    tekst.textContent = bron.alt;
+    teller.textContent = `${nu + 1} / ${lijst.length}`;
+  };
+  links.forEach((a) => a.addEventListener('click', (e) => { e.preventDefault(); toon(a); bak.showModal(); document.documentElement.style.overflow = 'hidden'; }));
+  const stap = (d: number) => { const l = zichtbaar(); toon(l[(nu + d + l.length) % l.length]); };
+  bak.querySelector('[data-licht-vorige]')!.addEventListener('click', () => stap(-1));
+  bak.querySelector('[data-licht-volgende]')!.addEventListener('click', () => stap(1));
+  bak.querySelector('[data-licht-sluit]')!.addEventListener('click', () => bak.close());
+  bak.addEventListener('close', () => { document.documentElement.style.overflow = ''; links[links.indexOf(zichtbaar()[nu])]?.focus(); });
+  bak.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') stap(-1); if (e.key === 'ArrowRight') stap(1); });
+
+  // Werkwijze: tijdens / opgeleverd.
+  document.querySelectorAll<HTMLButtonElement>('[data-stand]').forEach((b) => b.addEventListener('click', () => {
+    const paar = b.closest('.paar')!;
+    paar.classList.toggle('tijdens', b.dataset.stand === 'tijdens');
+    paar.querySelectorAll('[data-stand]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+  }));
+</script>

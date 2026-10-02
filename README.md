@@ -127,3 +127,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | worp-advies-purmerend | https://michaelbeset-ops.github.io/sitefront/worp-advies-purmerend/ | batch 22 adviesbureaus | 2026-10-02 | demo |
 | Joris Uurwerkreparatie, Herten | https://michaelbeset-ops.github.io/sitefront/joris-uurwerkreparatie/ | kapotte layout, 4,5 uit 38, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Uw Schoenmaker Toon, Middelharnis | https://michaelbeset-ops.github.io/sitefront/schoenmaker-toon/ | geen website, 4,4 uit 64, 06/WhatsApp. | 2026-10-02 | demo premium |
+| J. Hoeksma Montage & Timmerwerken, Dordrecht | https://michaelbeset-ops.github.io/sitefront/hoeksma-montage-dordrecht/ | lege homepage, 5,0 uit 14, 06/WhatsApp. | 2026-10-02 | demo premium |
