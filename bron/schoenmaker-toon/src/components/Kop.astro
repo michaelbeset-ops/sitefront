@@ -1,0 +1,39 @@
+---
+import { site, url, waMet } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (a: string) => (thuis ? a : url(a));
+const nav = [
+  ['Diensten', '#diensten'],
+  ['Werkplaats', '#werkplaats'],
+  ['Langskomen', '#langskomen'],
+];
+---
+<header class="kop sticky top-0 z-40" data-kop>
+  <div class="wrap grid h-16 grid-cols-[1fr_auto] items-center gap-6 md:grid-cols-[1fr_auto_1fr]">
+    <a href={url('')} class="kopmerk justify-self-start text-[0.75rem] sm:text-[0.8125rem]" aria-label={`${site.naam}, naar de homepage`}>
+      <span class="woordmerk" aria-hidden="true">Schoenmaker Toon</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden md:block">
+      <ul class="ui flex gap-9">
+        {nav.map(([t, a]) => <li><a href={h(a)} class="lijn-in">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center justify-end gap-7 max-sm:gap-4">
+      <a href={site.telHref} class="ui lijn-in num hidden lg:inline">{site.tel}</a>
+      <a href={waMet('')} class="ui lijn-in whitespace-nowrap">WhatsApp <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .kop { background-color: color-mix(in srgb, var(--color-steen) 94%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: box-shadow .4s var(--ease-zacht); }
+  .kop.los { box-shadow: 0 1px 0 var(--color-lijn); }
+  @media (max-width: 380px) { .kopmerk .woordmerk { letter-spacing: .24em; margin-right: -.24em; } }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]')!;
+  const zet = () => kop.classList.toggle('los', scrollY > 8);
+  zet(); addEventListener('scroll', zet, { passive: true });
+</script>

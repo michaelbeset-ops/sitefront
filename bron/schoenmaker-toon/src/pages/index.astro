@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Wa from '../components/Wa.astro';
+import { site, tijden, waMet } from '../data/site';
+import bruin from '../assets/laarzen-bruin.jpg';
+import groen from '../assets/laarzen-groen.jpg';
+import winkel from '../assets/winkel.jpg';
+
+// Diensten: de etalage (maart 2026), aangevuld met wat Facebook en de reviews er letterlijk over zeggen.
+const diensten = [
+  { naam: 'Schoenreparaties', tekst: 'Nieuwe zolen, stikwerk en bandjes. Ook voor sneakers en tassen.', vraag: 'ik heb een vraag over een schoenreparatie.' },
+  { naam: 'Sleutelservice', tekst: 'Huis-, fiets- en scootersleutels, tot de sleutel van een skibox aan toe.', vraag: 'ik wil graag een sleutel laten bijmaken.' },
+  { naam: 'Lijsten', tekst: "Inlijsten van schilderijen, foto's, posters, borduurwerk en T-shirts.", vraag: 'ik wil graag iets laten inlijsten.' },
+  { naam: 'Naamplaten', tekst: 'Naamplaten en naambordjes.', vraag: 'ik heb een vraag over een naamplaat.' },
+  { naam: 'Onderhoudsproducten', tekst: 'Voor het onderhoud van uw schoenen.', vraag: 'ik zoek een onderhoudsproduct voor mijn schoenen.' },
+];
+---
+<Base title={`${site.naam} | Schoenmaker in ${site.plaats}`} description={`Uw ambachtelijk schoenmaker aan het ${site.straat} in ${site.plaats}: schoenreparaties, sleutelservice, naamplaten en lijsten.`}>
+  <Kop />
+  <main id="inhoud">
+    <!-- 1. Eerste scherm -->
+    <section class="wrap pt-12 md:pt-20 lg:pt-24" data-hero>
+      <h1 class="text-3xl">Uw ambachtelijk schoenmaker <span class="lg:block">in {site.plaats}.</span></h1>
+      <div class="mt-9 grid gap-y-12 md:mt-14 md:grid-cols-12 md:gap-x-8">
+        <div class="flex flex-col justify-between gap-12 md:col-span-4">
+          <div>
+          <p class="max-w-[30ch] text-lg text-grijs">Schoenreparaties, sleutelservice, naamplaten en lijsten. Aan het {site.straat}, van dinsdag tot en met vrijdag.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-5">
+            <a href={waMet('ik heb een vraag:')} class="knop knop-groen"><Wa /> Stuur een WhatsApp</a>
+            <a href={site.telHref} class="lijn text-sm">Of bel <span class="num whitespace-nowrap">{site.tel}</span></a>
+          </div>
+          </div>
+          <p class="ui hidden leading-relaxed text-grijs md:block">Uit de werkplaats van Toon</p>
+        </div>
+        <figure class="md:col-span-8">
+          <div class="overflow-hidden bg-nevel">
+            <Image src={groen} format="avif" quality={55} alt="Twee groene leren enkellaarzen met rits en houten hak, op de werkbank voor de vakken met hakken en zolen" widths={[480, 720, 960, 1200]} sizes="(min-width: 1312px) 784px, (min-width: 768px) 62vw, 100vw" class="aspect-[4/3] w-full object-cover object-[50%_62%] md:aspect-[5/4]" loading="eager" fetchpriority="high" />
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. Diensten -->
+    <section id="diensten" class="wrap py-28 md:py-40" aria-labelledby="diensten-kop">
+      <div class="grid gap-y-14 md:grid-cols-12 md:gap-x-8">
+        <div class="md:col-span-4">
+          <h2 id="diensten-kop" class="text-2xl rijs">Wat Toon voor u doet.</h2>
+          <p class="mt-6 max-w-[34ch] text-grijs rijs" style="--d:.08s">Toon is vakman in hart en nieren en had in zijn carrière diverse schoenmakerswinkels, in Nederland en België.</p>
+        </div>
+        <ul class="border-b border-lijn md:col-span-7 md:col-start-6">
+          {diensten.map((d, i) => (
+            <li class="rij grid gap-x-8 gap-y-2 border-t border-lijn py-7 sm:grid-cols-[17.5rem_1fr] md:py-8 rijs" style={`--d:${i * 0.05}s`}>
+              <h3 class="text-xl [overflow-wrap:normal]">{d.naam}</h3>
+              <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
+                <p class="text-grijs">{d.tekst}</p>
+                <a href={waMet(d.vraag)} class="vraag ui shrink-0 whitespace-nowrap" aria-label={`Vraag via WhatsApp over ${d.naam.toLowerCase()}`}><span class="lijn-in">Vraag het</span> <span aria-hidden="true">↗</span></a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Werkplaats en wat klanten schrijven -->
+    <section id="werkplaats" class="donker bg-leer text-licht" aria-labelledby="werkplaats-kop">
+      <div class="grid md:grid-cols-2">
+        <div class="relative min-h-[26rem] overflow-hidden md:min-h-[46rem]">
+          <Image src={bruin} format="avif" quality={55} alt="Een paar bruine leren veterlaarzen op de werkbank, met daarachter de vakken met zoolmateriaal" widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_78%]" />
+        </div>
+        <div class="flex flex-col justify-center px-4 py-20 sm:px-10 md:px-14 md:py-28 lg:px-20 xl:pr-[max(3rem,calc(50vw-38rem))]">
+          <h2 id="werkplaats-kop" class="max-w-[14ch] text-2xl rijs">Eerlijk over wat nog te maken is.</h2>
+          <ul class="mt-12 max-w-[34rem] border-b border-lijn-licht text-licht-zacht">
+            <li class="border-t border-lijn-licht py-5 rijs">Klanten schrijven dat Toon het eerlijk zegt als een reparatie geen zin meer heeft.</li>
+            <li class="border-t border-lijn-licht py-5 rijs" style="--d:.06s">Ze komen met schoenen, maar ook met sneakers, gympies, tassen en sleutels.</li>
+            <li class="border-t border-lijn-licht py-5 rijs" style="--d:.12s">En ze noemen hem een vakman, met verstand van leer.</li>
+          </ul>
+          <p class="mt-10 text-sm rijs" style="--d:.18s"><a href={site.google} class="lijn-in"><span class="num">{site.score}</span> op Google, {site.reviews} reviews <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Langskomen -->
+    <section id="langskomen" class="wrap py-28 md:py-40" aria-labelledby="langskomen-kop">
+      <div class="grid gap-y-14 md:grid-cols-12 md:gap-x-8">
+        <div class="md:col-span-4">
+          <h2 id="langskomen-kop" class="text-2xl rijs">Langskomen aan het Zandpad.</h2>
+          <p class="mt-6 text-grijs rijs" style="--d:.06s">{site.straat}, {site.postcode} {site.plaats}</p>
+          <dl class="mt-10 max-w-[26rem] border-b border-lijn text-sm rijs" style="--d:.1s" data-tijden>
+            {tijden.map((t, i) => (
+              <div class="flex justify-between gap-6 border-t border-lijn py-3" data-dag={i}>
+                <dt>{t.dag}</dt>
+                <dd class:list={['num whitespace-nowrap', !t.open && 'text-grijs']}>{t.open ? `${t.open[0]} - ${t.open[1]}` : 'Gesloten'}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="mt-4 min-h-[1.6em] text-sm text-grijs" aria-live="polite" data-status></p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-4">
+            <a href={waMet('ik wil graag langskomen met:')} class="knop knop-groen"><Wa /> Stuur een WhatsApp</a>
+            <a href={site.telHref} class="knop knop-rand">Bel <span class="num whitespace-nowrap">{site.tel}</span></a>
+          </div>
+          <p class="mt-7 text-sm"><a href={site.maps} class="lijn">Route in Google Maps</a></p>
+          <p class="aanleveren mt-10">[[AANLEVEREN: haalt Toon vanuit Middelharnis nog schoenen op, zoals vroeger in Barendrecht en Rhoon-Carnisselande?]]</p>
+        </div>
+        <figure class="md:col-span-7 md:col-start-6 md:pt-2">
+          <Image src={winkel} format="avif" quality={55} alt="De winkel aan het Zandpad 66, met op de etalage 'Uw ambachtelijk Schoenmaker' en de diensten" widths={[480, 720, 960, 1400]} sizes="(min-width: 1312px) 688px, (min-width: 768px) 54vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+        </figure>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .vraag { color: var(--color-grijs); transition: color .3s var(--ease-zacht); }
+  .rij:hover .vraag, .vraag:focus-visible { color: var(--color-inkt); }
+</style>
+
+<script>
+  import { tijden } from '../data/site';
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const vandaag = (nu.getDay() + 6) % 7;
+  const rij = document.querySelector<HTMLElement>(`[data-tijden] [data-dag="${vandaag}"]`);
+  if (rij) rij.classList.add('font-medium');
+  const status = document.querySelector<HTMLElement>('[data-status]');
+  const t = tijden[vandaag];
+  const min = (s: string) => { const [h, m] = s.split('.').map(Number); return h * 60 + m; };
+  const nuMin = nu.getHours() * 60 + nu.getMinutes();
+  if (status) {
+    if (t.open && nuMin >= min(t.open[0]) && nuMin < min(t.open[1])) status.textContent = `Vandaag open tot ${t.open[1]} uur.`;
+    else if (t.open && nuMin < min(t.open[0])) status.textContent = `Vandaag open vanaf ${t.open[0]} uur.`;
+    else {
+      for (let i = 1; i <= 7; i++) {
+        const n = tijden[(vandaag + i) % 7];
+        if (n.open) { status.textContent = `Nu gesloten. ${i === 1 ? 'Morgen' : n.dag} weer open vanaf ${n.open[0]} uur.`; break; }
+      }
+    }
+  }
+</script>
