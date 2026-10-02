@@ -3,145 +3,329 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import Wa from '../components/Wa.astro';
-import { site, tijden, waStandaard } from '../data/site';
-import hero from '../assets/hero-mes.jpg';
-import krullen from '../assets/ig-2.jpg';
-import scheiding from '../assets/ig-10.jpg';
-import achterover from '../assets/ig-3.jpg';
-import rood from '../assets/ig-12.jpg';
-import golven from '../assets/ig-11.jpg';
-import zaak from '../assets/ig-9.jpg';
-import karren from '../assets/ig-7.jpg';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, reviews, waStandaard, waMet } from '../data/site';
+import hero from '../assets/hero-tondeuse.jpg';
+import krullen from '../assets/w-krullen.jpg';
+import fade from '../assets/w-fade.jpg';
+import scheiding from '../assets/w-scheiding.jpg';
+import rodeMuur from '../assets/w-rode-muur.jpg';
+import contour from '../assets/w-contour.jpg';
+import golven from '../assets/w-golven.jpg';
+import zaakVloer from '../assets/w-zaak-vloer.jpg';
+import zaakStoelen from '../assets/w-zaak-stoelen.jpg';
+import kam from '../assets/sfeer-kam.jpg';
 import logo from '../assets/logo-wit.png';
 
-// Werk: foto's van hun Instagram @damdorpbarbershop. Bijschriften beschrijven alleen wat er te zien is.
-const klein = [
-  { src: scheiding, alt: 'Achterhoofd met een fade en een geschoren scheiding', bij: 'Fade met scheiding' },
-  { src: achterover, alt: 'Zijkant van een kapsel: kort opgeschoren, bovenop lang en naar achteren', bij: 'Naar achteren, kort opzij' },
+const vraag = (d: string) => waMet(`Hoi Damdorp, ik wil graag langskomen voor: ${d.toLowerCase()}. Wanneer komt het uit?`);
+
+// Foto's van hun Instagram @damdorpbarbershop. Titels beschrijven wat er op de foto te zien is.
+const diensten = [
+  { t: 'Fades', d: 'Strak verlopen, van laag tot hoog opgeschoren.', src: fade, alt: 'Achterhoofd van opzij met een strakke, verlopen fade', pos: '50% 40%' },
+  { t: 'Krullen', d: 'Krullen bovenop, kort en netjes verlopen opzij.', src: krullen, alt: 'Achterhoofd met krullen bovenop en een korte, verlopen zijkant', pos: '50% 35%' },
+  { t: 'Geschoren scheiding', d: 'Een strakke lijn als scheiding, ingezet met het mes.', src: scheiding, alt: 'Zijkant van een kapsel met een geschoren scheiding en een hoge fade', pos: '50% 45%' },
+  { t: 'Kort en klassiek', d: 'Bovenop wat langer, opzij en in de nek kort.', src: rodeMuur, alt: 'Achterhoofd met een korte, verlopen nek voor de rode muur van de zaak', pos: '55% 50%' },
+  { t: 'Baard en contouren', d: 'Haar en baard in één keer, met strakke lijnen.', src: contour, alt: 'Hoofd achterover in de stoel, met strak geschoren contouren bij oor en bakkebaard', pos: '50% 50%' },
+  { t: 'Waves', d: 'Heel kort geknipt, met golven in het haar.', src: golven, alt: 'Kort geknipt hoofd van bovenaf, met een golvend patroon in het haar', pos: '50% 60%' },
 ];
-const onder = [
-  { src: golven, alt: 'Kort geknipt hoofd van bovenaf, met een golvend patroon in het haar', bij: 'Golven, van boven' },
-  { src: rood, alt: 'Achterhoofd met een fade, op de achtergrond de rode muur van de zaak', bij: 'Fade, voor de rode muur' },
+
+const stappen = [
+  ['Stuur een appje', 'Zeg wat je wilt laten doen en wanneer het uitkomt. Bellen kan natuurlijk ook.'],
+  ['Kom naar het Makado', 'De zaak zit in Winkelcentrum Makado, midden in Alblasserdam.'],
+  ['Koffie en een praatje', 'Even zitten, iets drinken. Daarna samen kijken wat het wordt.'],
+  ['De stoel in', 'Knippen, fade, baard. Je loopt de deur uit zoals je het wilde.'],
 ];
 ---
-<Base title={`${site.naam} | Barbershop in het Makado-Center, Alblasserdam`} description="Damdorp Barbershop in het Makado-Center in Alblasserdam. Open van dinsdag tot en met zaterdag, vrijdag tot 21:00. Stuur een WhatsApp voor een plek in de stoel.">
+<Base title={`${site.naam} | Barbier in het Makado-Center, Alblasserdam`} description="Damdorp Barbershop in Winkelcentrum Makado, Alblasserdam. Fades, krullen, haar en baard. 4,9 op Google. Di t/m za open, vrijdag tot 21.00 uur. Afspraak via WhatsApp.">
   <Kop />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: volle hoogte, één beeld -->
-    <section class="donker relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-zwart text-licht" aria-labelledby="t-hero">
-      <Image src={hero} alt="" widths={[640, 1024, 1440, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[78%_50%] md:object-[60%_50%]" />
-      <div class="hero-sluier absolute inset-0 -z-10" aria-hidden="true"></div>
-      <div class="wrap pb-10 pt-40 md:pb-14">
-        <h1 id="t-hero" class="text-3xl" lang="en">Making people <br class="hidden sm:block" />look good.</h1>
-        <div class="mt-8 grid gap-10 md:mt-10 md:grid-cols-12 md:items-end md:gap-8">
-          <p class="max-w-[26rem] text-licht-zacht md:col-span-5">Barbershop in het Makado-Center in Alblasserdam. Stuur een appje en vraag wanneer u in de stoel kunt.</p>
-          <div class="flex flex-wrap items-center gap-x-9 gap-y-5 md:col-span-7 md:justify-end">
-            <a href={waStandaard} class="knop knop-vol"><Wa />Stuur een WhatsApp</a>
-            <a href="#tijden" class="lijn text-sm">Tijden en route</a>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1440, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#11111140_0%,#111111a6_40%,#111111f5_100%)] md:bg-[linear-gradient(90deg,#111111f7_0%,#111111d9_38%,#11111126_75%),linear-gradient(0deg,#111111cc_0%,#11111100_35%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-14 pt-32 md:pb-16 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Barbier in Alblasserdam</p>
+          <h1 id="t-hero" class="mt-6 text-hero" lang="en">Making people look <span class="text-rood-licht">good.</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Fades, krullen, haar en baard. In het Makado-Center, met een praatje en een kop koffie erbij.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waStandaard} class="knop knop-rood"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href="#diensten" class="knop knop-rand op-foto">Bekijk ons werk</a>
           </div>
         </div>
-        <p class="ui mt-14 flex flex-wrap justify-between gap-x-8 gap-y-2 border-t border-lijn-licht pt-5 text-licht-zacht md:mt-20">
-          <span>{site.straat}, {site.plaats}</span>
-          <span>Di t/m za open</span>
-        </p>
+        <div class="flex flex-col gap-3 text-[.9375rem] lg:col-span-4 lg:items-end lg:text-right">
+          <p class="flex items-center gap-2 lg:flex-row-reverse" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Di t/m za open</span></p>
+          <p class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</p>
+          <a href={site.telHref} class="num hidden font-kop text-[2rem] sm:block font-extrabold leading-none no-underline [font-stretch:85%] hover:text-rood-licht">{site.tel}</a>
+        </div>
       </div>
     </section>
 
-    <!-- 2. Werk -->
-    <section id="werk" aria-labelledby="t-werk">
-      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 lg:py-40">
-        <div class="rijs md:col-span-4 md:sticky md:top-28 md:self-start">
-          <h2 id="t-werk" class="text-2xl">Uit de stoel.</h2>
-          <p class="mt-6 max-w-xs text-grijs">Fades, krullen, een strakke scheiding. Een greep uit wat Damdorp op Instagram laat zien.</p>
-          <a href={site.instagram} class="lijn mt-8 inline-block text-sm">@damdorpbarbershop</a>
-        </div>
-        <div class="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 md:col-span-8 md:grid-cols-6">
-          <figure class="rijs col-span-2 md:col-span-4">
-            <Image src={krullen} alt="Achterhoofd met krullen bovenop en een korte, verlopen zijkant" widths={[400, 640]} sizes="(min-width: 768px) 45vw, 100vw" class="aspect-square w-full bg-vlak object-cover" />
-            <figcaption class="mt-3 text-xs text-grijs">Krullen, kort verlopen</figcaption>
-          </figure>
-          <div class="col-span-2 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 md:col-span-2 md:grid-cols-1 md:content-between">
-            {klein.map((f, i) => (
-              <figure class="rijs" style={`--d:${0.08 + i * 0.06}s`}>
-                <Image src={f.src} alt={f.alt} widths={[320, 640]} sizes="(min-width: 768px) 20vw, 50vw" class="aspect-square w-full bg-vlak object-cover" />
-                <figcaption class="mt-3 text-xs text-grijs">{f.bij}</figcaption>
-              </figure>
-            ))}
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat we doen">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn bg-papier px-4 py-2 text-sm font-semibold no-underline transition-colors hover:border-rood hover:bg-rood hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-28" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-5 text-3xl">Uit de stoel van Damdorp.</h2>
           </div>
-          {onder.map((f, i) => (
-            <figure class={`rijs md:col-span-3 ${i === 0 ? 'md:mt-10' : ''}`} style={`--d:${i * 0.06}s`}>
-              <Image src={f.src} alt={f.alt} widths={[320, 640]} sizes="(min-width: 768px) 32vw, 50vw" class="aspect-square w-full bg-vlak object-cover" />
-              <figcaption class="mt-3 text-xs text-grijs">{f.bij}</figcaption>
-            </figure>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Wat je hier ziet, komt van onze eigen Instagram. Tik op een kapsel en vraag via WhatsApp wanneer je terecht kunt.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-16 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden bg-nacht">
+                  <Image src={b.src} alt={b.alt} widths={[320, 480, 640]} sizes="(min-width: 1248px) 380px, (min-width: 1024px) 31vw, 46vw" class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[4/3.4]" style={`object-position:${b.pos}`} />
+                  <span class="num absolute left-0 top-0 bg-rood px-3 py-1.5 font-kop text-sm font-bold text-wit">0{i + 1}</span>
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-4 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.1875rem] uppercase sm:text-2xl">{b.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{b.d}</p>
+                  </div>
+                  <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-sm bg-papier text-rood transition-colors group-hover:bg-rood group-hover:text-wit sm:grid" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
           ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 bg-nacht px-6 py-6 text-licht sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Wat kost het?</b> <span class="text-licht-zacht">Klanten noemen de prijs schappelijk. Stuur een appje voor de actuele prijzen.</span></p>
+          <a href={waMet('Hoi Damdorp, wat kost knippen bij jullie?')} class="knop knop-rood knop-klein shrink-0"><Icoon naam="wa" />Vraag de prijzen</a>
         </div>
       </div>
     </section>
 
-    <!-- 3. De zaak -->
-    <section id="zaak" class="donker bg-zwart text-licht" aria-labelledby="t-zaak">
-      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:items-center md:gap-x-8 lg:py-40">
-        <figure class="rijs md:col-span-6">
-          <Image src={zaak} alt="Zwarte kappersstoelen op een zwart-wit geblokte vloer, met rode gereedschapskarren langs de muur" widths={[400, 640]} sizes="(min-width: 768px) 45vw, 100vw" class="aspect-[4/5] w-full object-cover" />
-          <figcaption class="mt-3 text-xs text-licht-zacht">Foto van @damdorpbarbershop</figcaption>
-        </figure>
-        <div class="rijs md:col-span-5 md:col-start-8" style="--d:.08s">
-          <Image src={logo} alt="Logo van Damdorp Barbershop: twee gekruiste scheermessen boven een scheerkom" widths={[160, 320]} sizes="10rem" class="h-auto w-28 md:w-36" />
-          <h2 id="t-zaak" class="mt-12 text-2xl">Een praatje, koffie, en dan de stoel in.</h2>
-          <p class="mt-6 max-w-md text-licht-zacht">Een kapperszaak voor heren met tijd voor een praatje en een kop koffie, voor een schappelijke prijs. Zo omschrijven klanten Damdorp op Google.</p>
-          <p class="mt-10 border-t border-lijn-licht pt-5 text-sm">De enige, echte Damdorp Barbershop.</p>
-          <p class="mt-2 text-xs text-licht-zacht"><span class="num">{site.google.score}</span> op Google uit {site.google.aantal} reviews, {site.facebookAanbevolen.pct} aanbevolen op Facebook ({site.facebookAanbevolen.aantal})</p>
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-x-6 gap-y-10 py-12 lg:grid-cols-4 lg:py-16">
+        <div class="flex flex-col"><dt class="mt-2 text-sm text-grijs">Score op Google</dt><dd class="cijfer order-first text-rood">{site.google.score}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Aanbevolen op Facebook, {site.facebookAanbevolen.aantal} beoordelingen</dt><dd class="cijfer order-first">{site.facebookAanbevolen.pct}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Knippen in Alblasserdam sinds</dt><dd class="cijfer order-first">2016</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Open op vrijdagavond tot</dt><dd class="cijfer order-first">21.00</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo werkt het</p>
+            <h2 id="t-stappen" class="mt-5 text-3xl">Van appje tot fris kapsel.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Geen ingewikkeld boekingssysteem. Gewoon even appen of bellen, dan spreken we een tijd af.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-px overflow-hidden bg-lijn lg:mt-16 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs bg-papier p-5 sm:p-8" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2.5rem] sm:text-[3.25rem] font-extrabold leading-none text-rood [font-stretch:75%]">0{i + 1}</p>
+              <h3 class="mt-6 text-lg uppercase sm:mt-8 sm:text-2xl">{t}</h3>
+              <p class="mt-2 text-sm text-grijs sm:mt-3 sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href={waStandaard} class="knop knop-rood"><Icoon naam="wa" />Stuur een appje</a>
+          <a href={site.telHref} class="link num font-semibold">Of bel {site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. De zaak -->
+    <section id="zaak" class="donker bg-nacht text-licht" aria-labelledby="t-zaak">
+      <div class="wrap grid items-center gap-12 py-20 lg:grid-cols-12 lg:gap-10 lg:py-28">
+        <div class="relative lg:col-span-6">
+          <figure class="relative">
+            <Image src={zaakVloer} alt="Zwarte kappersstoelen op een zwart-wit geblokte vloer, met rode gereedschapskarren langs de muur" widths={[480, 640]} sizes="(min-width: 1248px) 560px, (min-width: 1024px) 45vw, 92vw" class="aspect-[4/3.2] w-full max-w-[35rem] rounded-md object-cover" />
+            <figcaption class="mt-3 text-sm text-licht-zacht">Foto van @damdorpbarbershop</figcaption>
+          </figure>
+          <div class="absolute -bottom-6 right-0 hidden w-44 bg-rood p-5 text-wit shadow-md sm:block lg:right-4 xl:-right-2">
+            <p class="font-kop text-[3.25rem] font-extrabold leading-none [font-stretch:75%]">2016</p>
+            <p class="mt-2 text-sm leading-snug">Sinds dan knippen in Alblasserdam</p>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:pl-6">
+          <Image src={logo} alt="Logo van Damdorp Barbershop met twee gekruiste scheermessen" widths={[120, 240]} sizes="7rem" class="h-auto w-24" />
+          <p class="eyebrow mt-10">De zaak</p>
+          <h2 id="t-zaak" class="mt-5 text-3xl">De enige, echte Damdorp Barbershop.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Damdorp knipt heren in Alblasserdam, tegenwoordig in Winkelcentrum Makado. Zwart-witte tegels, zwarte stoelen, rode karren met gereedschap. En vooral: tijd voor een praatje.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-rood text-wit"><Icoon naam="kop" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Koffie en een praatje</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Zo omschrijven klanten het zelf: praatje, koffie en knippen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-rood text-wit"><Icoon naam="schaar" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Haar en baard</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Knippen, fade en baard in één afspraak, met strakke lijnen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-rood text-wit"><Icoon naam="euro" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Schappelijke prijs</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Een goede knipbeurt hoeft niet duur te zijn.</p></div>
+            </li>
+          </ul>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={waStandaard} class="knop knop-rood"><Icoon naam="wa" />Plan je afspraak</a>
+            <a href={site.instagram} class="link font-semibold">@damdorpbarbershop</a>
+          </div>
         </div>
       </div>
     </section>
 
     <div class="tegels" aria-hidden="true"></div>
 
-    <!-- 4. Tijden en route, met de dagkeuze voor WhatsApp -->
-    <section id="tijden" aria-labelledby="t-tijden">
-      <div class="wrap grid gap-y-16 py-24 md:grid-cols-12 md:gap-x-8 lg:py-40">
-        <div class="md:col-span-6 lg:col-span-5">
-          <h2 id="t-tijden" class="rijs text-2xl">Dinsdag tot en met zaterdag open.</h2>
-          <p class="rijs mt-6 max-w-sm text-grijs">Tik op een dag en vraag via WhatsApp of er plek is.</p>
-
-          <ul class="rijs mt-12 border-t border-lijn" data-dagen>
-            {tijden.map((t, i) => ({ ...t, i })).slice(1).concat({ ...tijden[0], i: 0 }).map((t) => (
-              <li class="border-b border-lijn">
-                {t.open ? (
-                  <button type="button" class="dag" data-dag={t.i} aria-pressed="false">
-                    <span class="dag-naam">{t.dag}<em data-vandaag hidden> vandaag</em></span>
-                    <span class="num whitespace-nowrap">{t.open} – {t.dicht}</span>
-                  </button>
-                ) : (
-                  <p class="dag dag-dicht" data-dag={t.i}>
-                    <span class="dag-naam">{t.dag}<em data-vandaag hidden> vandaag</em></span>
-                    <span>gesloten</span>
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
-
-          <a href={waStandaard} class="knop knop-vol rijs mt-10 w-full sm:w-auto" data-wa-dag><Wa /><span data-wa-tekst>Stuur een WhatsApp</span></a>
+    <!-- 7. Reviews -->
+    <section id="reviews" class="py-20 lg:py-28" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <div class="rijs flex flex-wrap gap-3 md:shrink-0 md:flex-nowrap" style="--d:.05s">
+            <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+              <Icoon naam="g" class="h-9 w-9" />
+              <span>
+                <span class="flex items-center gap-2"><b class="num font-kop text-3xl font-extrabold leading-none">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+                <span class="mt-1 block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+              </span>
+            </a>
+            <a href={site.facebook} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+              <span class="grid h-9 w-9 place-items-center rounded-full bg-[#1877f2] text-wit"><Icoon naam="fb" class="h-5 w-5" /></span>
+              <span>
+                <b class="num block font-kop text-3xl font-extrabold leading-none">{site.facebookAanbevolen.pct}</b>
+                <span class="mt-1 block text-sm text-grijs">aanbevolen, {site.facebookAanbevolen.aantal} op Facebook</span>
+              </span>
+            </a>
+          </div>
         </div>
+        <ul class="mt-12 grid gap-4 md:grid-cols-3 md:gap-5 lg:mt-16">
+          {reviews.map((r, i) => (
+            <li class={`rijs kaart flex flex-col p-7 md:p-8 ${i === 0 ? 'bg-nacht! text-licht outline-none!' : ''}`} style={`--d:${i * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class={`mt-6 flex-1 font-kop font-bold leading-snug [font-stretch:88%] ${i === 0 ? 'text-[1.625rem]' : 'text-[1.375rem]'}`}>“{r.tekst}”</blockquote>
+              <div class={`mt-8 flex items-center gap-3 border-t pt-5 ${i === 0 ? 'border-lijn-licht' : 'border-lijn'}`}>
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-rood font-kop font-bold text-wit" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class={i === 0 ? 'text-licht-zacht' : 'text-grijs'}>{r.bron}, {r.wanneer}</span></span>
+                {r.bron.startsWith('Google') ? <Icoon naam="g" class="h-5 w-5" /> : <span class="grid h-5 w-5 place-items-center rounded-full bg-[#1877f2] text-wit"><Icoon naam="fb" class="h-3.5 w-3.5" /></span>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle reviews op Google</a></p>
+      </div>
+    </section>
 
-        <div class="md:col-span-5 md:col-start-8 md:pt-2">
-          <figure class="rijs mb-14">
-            <Image src={karren} alt="Kappersstoelen op een geblokte vloer, met rode gereedschapskarren en een leren bank" widths={[400, 640]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[3/2] w-full bg-vlak object-cover" />
-            <figcaption class="mt-3 text-xs text-grijs">Foto van @damdorpbarbershop</figcaption>
+    <!-- 8. Openingstijden en locatie -->
+    <section id="route" class="bg-vlak py-20 lg:py-28" aria-labelledby="t-route">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-route" class="mt-5 text-3xl">Kom langs in het Makado.</h2>
+          <p class="mt-6 text-lg text-grijs">Midden in Alblasserdam, in Winkelcentrum Makado. Makkelijk te combineren met je boodschappen.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-2xl uppercase">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Di t/m za open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van de zaak</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-rood">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-md bg-nacht">
+            <Image src={zaakStoelen} alt="Zwarte kappersstoelen op een geblokte vloer, bij grote ramen" widths={[480, 640]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full min-h-[20rem] w-full object-cover" />
+            <figcaption class="absolute bottom-0 left-0 bg-nacht/90 px-4 py-2 text-sm text-licht">Foto van @damdorpbarbershop</figcaption>
           </figure>
-          <p class="ui text-grijs">Adres</p>
-          <p class="mt-5 text-xl" style="font-stretch: 85%; font-weight: 640; line-height: 1.15">{site.straat}<br />{site.postcode} {site.plaats}</p>
-          <p class="mt-3 text-grijs">In {site.centrum}.</p>
-          <p class="mt-6 flex flex-wrap gap-x-8 gap-y-3 text-sm">
-            <a href={site.maps} class="lijn">Route in Google Maps</a>
-            <a href={site.telHref} class="lijn num whitespace-nowrap">Bel {site.tel}</a>
-          </p>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-rood" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}, {site.centrum}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-          <p class="ui mt-16 text-grijs">Prijzen</p>
-          <p class="mt-5 text-sm text-grijs">Prijzen? Stuur even een appje.</p>
+    <!-- 9. Contact: WhatsApp-bericht samenstellen -->
+    <section id="contact" class="donker relative isolate overflow-hidden bg-nacht py-24 text-licht lg:py-32" aria-labelledby="t-contact">
+      <Image src={kam} alt="" widths={[800, 1600]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#111111f2_0%,#111111d9_50%,#111111b3_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Afspraak maken</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Plan je afspraak.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Kies wat je wilt laten doen en wanneer het uitkomt. Wij maken er een WhatsApp-bericht van; een voorbeeldfoto stuur je daarna gewoon mee.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waStandaard} class="flex items-center gap-4 bg-nacht-2 p-5 no-underline ring-1 ring-lijn-licht transition-colors hover:bg-[#262423]"><span class="grid h-12 w-12 place-items-center rounded-sm bg-rood text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-licht-zacht">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood-licht" /></a></li>
+            <li><a href={site.telHref} class="flex items-center gap-4 bg-nacht-2 p-5 no-underline ring-1 ring-lijn-licht transition-colors hover:bg-[#262423]"><span class="grid h-12 w-12 place-items-center rounded-sm bg-licht text-inkt"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-licht-zacht">Di t/m za, vrijdag tot 21.00 uur</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood-licht" /></a></li>
+            <li><a href={site.instagram} class="flex items-center gap-4 bg-nacht-2 p-5 no-underline ring-1 ring-lijn-licht transition-colors hover:bg-[#262423]"><span class="grid h-12 w-12 place-items-center rounded-sm bg-licht text-inkt"><Icoon naam="insta" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Instagram</b><span class="text-licht-zacht">@damdorpbarbershop</span></span><Icoon naam="pijl" class="h-5 w-5 text-rood-licht" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 text-inkt sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl uppercase sm:text-3xl">Je bericht aan Damdorp</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot je in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat wil je laten doen?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Knippen', 'Fade', 'Knippen en baard', 'Alleen baard', 'Weet ik nog niet'].map((b) => (
+                <label class="keuze"><input type="radio" name="dienst" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Welke dag?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {tijden.filter((t) => t.open).map((t) => (
+                <label class="keuze"><input type="radio" name="dag" value={t.naam} class="sr-only" /><span>{t.naam} <small class="num ml-1.5 font-normal opacity-70">tot {t.dicht}</small></span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Dagdeel</span>
+              <select name="deel" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                <option>Ochtend</option>
+                <option>Middag</option>
+                <option value="Avond">Avond (alleen vrijdag)</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-rood"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Zondag en maandag zijn we dicht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-rood text-wit" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(2rem,2.4vw+1.2rem,3rem)]">Tijd voor de kapper?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje, dan zetten we de koffie vast klaar.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waStandaard} class="knop knop-wit"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
         </div>
       </div>
     </section>
@@ -150,36 +334,37 @@ const onder = [
 </Base>
 
 <script>
-  import { tijden, waMet } from '../data/site';
-  const knop = document.querySelector<HTMLAnchorElement>('[data-wa-dag]');
-  const label = document.querySelector<HTMLElement>('[data-wa-tekst]');
-  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('button[data-dag]')];
-  const vandaag = new Date().getDay();
-  document.querySelectorAll<HTMLElement>(`[data-dag="${vandaag}"] [data-vandaag]`).forEach((el) => (el.hidden = false));
-  const kies = (i: number) => {
-    const t = tijden[i];
-    knoppen.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.dag) === i)));
-    const wanneer = i === vandaag ? `vandaag (${t.dag})` : t.dag;
-    if (knop) knop.href = waMet(`Hoi Damdorp, kan ik ${wanneer} langskomen om te knippen? Hoe laat komt het uit?`);
-    if (label) label.textContent = i === vandaag ? 'Vraag naar vandaag' : `Vraag naar ${t.dag}`;
-  };
-  let start = vandaag;
-  for (let n = 0; n < 7 && !tijden[start].open; n++) start = (start + 1) % 7;
-  kies(start);
-  knoppen.forEach((b) => b.addEventListener('click', () => kies(Number(b.dataset.dag))));
+  import { site } from '../data/site';
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Hoi Damdorp, ik wil graag langskomen.'];
+      if (v('dienst') && v('dienst') !== 'Weet ik nog niet') r.push('Voor: ' + v('dienst').toLowerCase());
+      const wanneer = [v('dag'), v('deel').toLowerCase()].filter(Boolean).join(', ');
+      if (wanneer) r.push('Het liefst: ' + wanneer);
+      r.push('Wanneer komt het uit?');
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open(site.wa + '?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+    });
+  }
 </script>
 
 <style>
-  .hero-sluier { background: #0d0d0d8c; }
-  @media (min-width: 768px) {
-    .hero-sluier { background: linear-gradient(90deg, #0d0d0de6 0%, #0d0d0d99 38%, #0d0d0d1a 70%), linear-gradient(0deg, #0d0d0dcc 0%, #0d0d0d00 45%); }
-  }
-  .dag { display: flex; width: 100%; align-items: baseline; justify-content: space-between; gap: 1.5rem; padding: 1rem .25rem; text-align: left; font: inherit; color: inherit; background: none; border: 0; }
-  button.dag { cursor: pointer; transition: background-color .3s var(--ease-zacht), padding .3s var(--ease-zacht); }
-  button.dag:hover { background: var(--color-vlak); }
-  button.dag[aria-pressed="true"] { background: var(--color-zwart); color: var(--color-wit); padding-inline: 1rem; }
-  .dag-naam { text-transform: capitalize; }
-  .dag-naam em { font-style: normal; font-size: var(--text-micro); letter-spacing: .16em; text-transform: uppercase; color: var(--color-rood); margin-left: .5rem; }
-  button.dag[aria-pressed="true"] .dag-naam em { color: var(--color-rood-licht); }
-  .dag-dicht { color: var(--color-grijs); }
+  .text-hero { font-size: var(--text-hero); line-height: .9; letter-spacing: -0.015em; }
+  .cijfer { font-family: var(--font-kop); font-weight: 850; font-stretch: 75%; font-size: clamp(3rem, 3vw + 1.75rem, 4.5rem); line-height: .9; font-variant-numeric: tabular-nums; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: 2px; background: var(--color-papier); }
+  .status-pil .status-stip { background: #8f8a83; }
+  .status-pil[data-open='true'] .status-stip { background: #2f9e67; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border-radius: 2px; background: var(--color-papier); box-shadow: inset 0 0 0 1px var(--color-lijn); font-size: .9375rem; font-weight: 600; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: var(--color-vlak); }
+  .keuze input:checked + span { background: var(--color-rood); color: #fff; box-shadow: none; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-rood); outline-offset: 2px; }
+  .veld { display: block; width: 100%; min-height: 3rem; border-radius: 2px; border: 1.5px solid #12121233; background: #fff; padding: .65rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #12121266; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-rood); }
 </style>

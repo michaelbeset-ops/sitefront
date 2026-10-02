@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://localhost:4682/sitefront/damdorp-barbershop-alblasserdam/');
+await p.evaluate(() => { window.open = (u) => { window.__u = u; }; });
+await p.click('text=Knippen en baard'); await p.click('label:has-text("Vrijdag")'); await p.selectOption('select[name=deel]', 'Avond'); await p.fill('input[name=naam]', 'Test');
+await p.click('button[type=submit]'); console.log(decodeURIComponent(await p.evaluate(() => window.__u)));
+console.log(await p.textContent('[data-status]'), errs);
+await p.goto('http://localhost:4682/sitefront/damdorp-barbershop-alblasserdam/privacy/'); await p.screenshot({ path: 'shots/privacy-1440.png', fullPage: true });
+await b.close();

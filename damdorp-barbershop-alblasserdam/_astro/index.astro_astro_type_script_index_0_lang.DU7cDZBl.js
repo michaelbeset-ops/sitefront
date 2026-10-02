@@ -1,0 +1,2 @@
+import{t as e}from"./site.77bwEP3F.js";var t=document.querySelector(`[data-wa]`);t&&t.addEventListener(`submit`,n=>{n.preventDefault();let r=new FormData(t),i=e=>String(r.get(e)||``).trim(),a=[`Hoi Damdorp, ik wil graag langskomen.`];i(`dienst`)&&i(`dienst`)!==`Weet ik nog niet`&&a.push(`Voor: `+i(`dienst`).toLowerCase());let o=[i(`dag`),i(`deel`).toLowerCase()].filter(Boolean).join(`, `);o&&a.push(`Het liefst: `+o),a.push(`Wanneer komt het uit?`),i(`naam`)&&a.push(`Groet, `+i(`naam`)),window.open(e.wa+`?text=`+encodeURIComponent(a.join(`
+`)),`_blank`,`noopener`)});

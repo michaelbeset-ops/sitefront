@@ -1,45 +1,63 @@
 ---
-import { site, url, waStandaard } from '../data/site';
+import { Image } from 'astro:assets';
+import { site, url, tijden, waStandaard } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo-wit.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Fades', 'Krullen', 'Geschoren scheiding', 'Kort en klassiek', 'Baard en contouren', 'Waves'];
 ---
-<footer class="donker bg-zwart text-licht" aria-label="Contact en gegevens">
-  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 pb-12 pt-24 text-sm lg:grid-cols-12 lg:gap-x-8 lg:pt-32">
-    <div class="col-span-2 sm:col-span-1 lg:col-span-4">
-      <p class="ui text-licht-zacht">Adres</p>
-      <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-licht-zacht">{site.centrum}</span></p>
-      <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
-    </div>
-    <div class="lg:col-span-3">
-      <p class="ui text-licht-zacht">Contact</p>
-      <p class="mt-4 space-y-1">
-        <a href={waStandaard} class="lijn-in block w-fit">WhatsApp</a>
-        <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <Image src={logo} alt="" widths={[64, 128]} sizes="52px" class="h-[3.25rem] w-auto" />
+        <span><b>DAMDORP</b><small>Barbershop</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Barbershop voor heren in {site.centrum}, Alblasserdam. Haar en baard, met een praatje en een kop koffie erbij.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
       </p>
     </div>
     <div class="lg:col-span-3">
-      <p class="ui text-licht-zacht">Volgen</p>
-      <p class="mt-4 space-y-1">
-        <a href={site.instagram} class="lijn-in block w-fit">Instagram</a>
-        <a href={site.facebook} class="lijn-in block w-fit">Facebook</a>
-      </p>
+      <p class="font-kop text-lg font-extrabold uppercase text-licht [font-stretch:80%]">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-rood-licht">{c}</a></li>)}
+      </ul>
     </div>
     <div class="lg:col-span-2">
-      <p class="ui text-licht-zacht">Open</p>
-      <p class="mt-4">Di t/m za<br /><span class="text-licht-zacht">Zo en ma gesloten</span></p>
+      <p class="font-kop text-lg font-extrabold uppercase text-licht [font-stretch:80%]">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel}</a></li>
+        <li><a href={waStandaard} class="no-underline transition-colors hover:text-rood-licht">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-rood-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop text-lg font-extrabold uppercase text-licht [font-stretch:80%]">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-rood-licht">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="wrap overflow-hidden" aria-hidden="true">
-    <svg class="voetmerk" viewBox="0 0 1000 170" role="presentation" focusable="false"><text x="500" y="150" text-anchor="middle" textLength="1000" lengthAdjust="spacingAndGlyphs">DAMDORP</text></svg>
+  <div class="tegels opacity-[.07]" aria-hidden="true"></div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}. KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Logo van uw Google-bedrijfsprofiel, foto’s van uw Instagram en sfeerfoto’s via Unsplash, ter illustratie. Reviews letterlijk van Google en Facebook (stand 2 oktober 2026).</p>}
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p>{site.naam}, {site.plaats}. KvK {site.kvk}</p>
-    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Logo van uw Google-bedrijfsprofiel, foto’s van uw Instagram en een sfeerfoto via Unsplash (bovenaan), ter illustratie.</p>}
 </footer>
-
-<style>
-  .voetmerk { display: block; width: 100%; height: auto; margin-top: 1rem; }
-  .voetmerk text { font-family: var(--font-sans); font-size: 190px; font-weight: 760; font-stretch: 75%; fill: var(--color-licht); fill-opacity: .09; }
-</style>

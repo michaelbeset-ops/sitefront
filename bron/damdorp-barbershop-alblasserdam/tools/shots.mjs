@@ -2,7 +2,7 @@
 import { chromium } from 'playwright';
 import sharp from 'sharp';
 const pre = process.argv[2] || 'r1', pad = process.argv[3] || '';
-const base = 'http://localhost:4635/sitefront/damdorp-barbershop-alblasserdam/' + pad;
+const base = 'http://localhost:4682/sitefront/damdorp-barbershop-alblasserdam/' + pad;
 const b = await chromium.launch();
 for (const [w, h] of [[1440, 900], [390, 844], [320, 640]]) {
   const p = await (await b.newContext({ viewport: { width: w, height: h } })).newPage();
@@ -13,6 +13,8 @@ for (const [w, h] of [[1440, 900], [390, 844], [320, 640]]) {
   await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 400) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 80)); } });
   await p.waitForTimeout(1500);
   await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(400);
+  // Voor de volledige pagina: sticky kop vast bovenaan, zodat hij niet midden in de geplakte delen opduikt.
+  await p.addStyleTag({ content: 'header.sticky{position:relative!important} body>div.fixed{display:none!important}' });
   const H = await p.evaluate(() => document.documentElement.scrollHeight);
   const delen = [];
   for (let y = 0; y < H; y += 4000) delen.push({ input: await p.screenshot({ fullPage: true, clip: { x: 0, y, width: w, height: Math.min(4000, H - y) } }), top: y, left: 0 });
