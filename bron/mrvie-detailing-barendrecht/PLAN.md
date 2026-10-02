@@ -1,19 +1,19 @@
-# MrVie Detailing, Barendrecht: ontwerpvoorstel (demomodus, BRIEF-B23 + BRIEF-PREMIUM)
+# MrVie Detailing, Barendrecht: ontwerpvoorstel v2 (BRIEF-MICHAEL, 02-10-2026)
 
-- Letter: Host Grotesk (variabel, self-hosted), koppen 300 met -0.035em, tekst 17px/1.6, UI 11px hoofdletters .16em.
-- Kleur: zwarte lak #0b0c0d, gebroken wit #ecebe7, twee grijzen; lichte secties op #eeede9. Geen accent: hun logo is zwart-wit.
-- Beeld: full-screen hero = Unsplash-sfeerfoto (zijruit en spiegel van een zwarte auto, uit het donker), verder alleen eigen
-  foto's: hun voor/na-collage uit elkaar gehaald, Vie aan het polijsten, vijf werkfoto's (Google + Instagram), hun logo.
-- Opbouw: hero, Pakketten (vergelijkingstabel, kies en app), Voor en na, Over Vie, Uit de praktijk, Contact/tijden.
-- Waarom: detailing = glans en precisie. Eén donker vlak waar de auto uit oplicht, daarna rust en een strakke "spec sheet"
-  zoals bij premium automerken, in plaats van een goedkope car-wash-look.
+- Letter: Schibsted Grotesk 800 (-0.04em) voor koppen, Hanken Grotesk voor tekst (17px/1.6). Self-hosted.
+- Kleur: zwarte lak #0d0e0c, gebroken wit #f5f4ef; merkkleur polijstgroen #c6f04a (de groene washandschoen en emmer op
+  hun eigen foto's), als tekst op licht #3d5c00. Strak: afronding 4-12px, geen pills. (Maximum Detailing: Saira/blauw.)
+- Opbouw: topbar met 3 vinkjes + tel, lichte header met hun logo en zwarte WhatsApp-knop, hero vol scherm met Vie aan het
+  polijsten (eigen foto) + pakketkaart, chips, 3 pakketten met vanaf-prijzen (combi "Voordelig" zoals op hun site),
+  voor/na (wow: per foto wisselen Voor/Na, 3 eigen collages), wat Vie doet (3 fotokaarten + combi-kaart), 4 stappen,
+  Over Vie (donker, hun verhaal, 3 kaders), 3 letterlijke Google-reviews, tijden live + route, WhatsApp-berichtbouwer
+  (pakket, auto, dag), groene slotbalk, donkere footer, mobiele onderbalk Bellen | WhatsApp.
 
 ## Bronnen
-Google-profiel (2-10-2026): adres, Bedrijventerrein Dierenstein, tijden, 5,0 uit 3 reviews, 9 foto's. mrvie.nl toont nu
-"Domeinnaam gereserveerd"; de Wayback-versie van 8-5-2026 (bron/site-.txt) bevat pakketten met vanaf-prijzen, "Over MrVie",
-info@mrvie.nl. Instagram @mrvie_detailing (bio "Een schone auto vertelt je veel"), YouTube @MrVieDetailing. Zie bron/.
+Google-profiel (2-10-2026), mrvie.nl via Wayback 8-5-2026 (pakketten, "Over MrVie"), Instagram @mrvie_detailing, YouTube.
+Zie bron/ en src/assets/BRONNEN.txt. Google-reviews: alleen de fragmenten uit bron/google.txt (volledige tekst niet
+opnieuw op te halen: Google Maps toont een beperkte weergave, Google-zoeken geeft een captcha).
 
-## Zelf gekozen
-- H1 = hun eigen Instagram-bio. Prijzen alleen zoals zij ze publiceerden (vanaf).
-- "Elke zaterdag aanwezig bij Edisonstraat 84a, Numansdorp" (oude site) weggelaten: botst met de Google-tijden; navragen.
-- Betaalmethodenlijst van de oude site weggelaten (komt uit het WordPress-thema, niet zeker).
+## Weggelaten
+- info@mrvie.nl (domein toont nu "Domeinnaam gereserveerd"), zaterdag Numansdorp (botst met Google-tijden),
+  betaalmethoden (WordPress-thema), Unsplash-hero (niet meer nodig: hero is nu hun eigen foto).

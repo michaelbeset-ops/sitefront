@@ -1,67 +1,61 @@
 ---
-import { site, url, waAfspraak } from '../data/site';
+import { Image } from 'astro:assets';
+import { site, url, tijden, pakketten, waAfspraak } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo-wit.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
 ---
-<footer id="contact" class="border-t border-lijn-licht bg-nacht text-licht" aria-labelledby="t-contact">
-  <div class="wrap grid gap-y-16 pb-20 pt-24 md:grid-cols-12 md:gap-x-8 lg:pb-28 lg:pt-36">
-    <div class="rijs md:col-span-6 lg:col-span-5">
-      <h2 id="t-contact" class="text-2xl">Plan uw beurt met een appje.</h2>
-      <p class="mt-6 max-w-sm text-licht-zacht">Doordeweeks ’s avonds, in het weekend overdag. Vragen? Stel ze gerust.</p>
-      <div class="mt-10 flex flex-wrap items-center gap-x-9 gap-y-5">
-        <a href={waAfspraak} class="knop knop-vol">WhatsApp {site.tel}</a>
-        <a href={site.telHref} class="lijn text-sm">Of bel</a>
-      </div>
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="inline-block" aria-label={`${site.naam}, naar de homepage`}>
+        <Image src={logo} widths={[200, 320]} sizes="160px" alt="" class="h-8 w-auto" />
+      </a>
+      <p class="mt-6 max-w-xs">Auto detailing op {site.terrein} in Barendrecht. Van een grondige handwas tot polijsten en quartz coating.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-groen hover:text-inkt" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.youtube} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-groen hover:text-inkt" aria-label="YouTube"><Icoon naam="yt" class="h-5 w-5" /></a>
+      </p>
     </div>
-
-    <div class="rijs md:col-span-6 lg:col-span-5 lg:col-start-8" style="--d:.06s">
-      <h3 class="ui text-licht-zacht">Openingstijden</h3>
-      <dl class="mt-5" data-tijden>
-        {site.tijden.map(([dag, van, tot], i) => (
-          <div class="dag flex justify-between gap-6 border-t border-lijn-licht py-3" data-dag={(i + 1) % 7}>
-            <dt>{dag}</dt>
-            <dd class="num whitespace-nowrap text-licht-zacht">{van}–{tot}</dd>
-          </div>
-        ))}
-      </dl>
+    <div class="lg:col-span-3">
+      <p class="font-kop font-bold text-licht">Pakketten</p>
+      <ul class="mt-4 space-y-2">
+        {pakketten.map((p) => <li><a href={h('pakketten')} class="no-underline transition-colors hover:text-groen">{p.naam}, <span class="num whitespace-nowrap">vanaf € {p.prijs}</span></a></li>)}
+        <li><a href={h('voor-na')} class="no-underline transition-colors hover:text-groen">Voor en na</a></li>
+      </ul>
     </div>
-
-    <div class="grid gap-12 border-t border-lijn-licht pt-14 text-sm sm:grid-cols-3 md:col-span-12">
-      <div>
-        <h3 class="ui text-licht-zacht">Adres</h3>
-        <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-licht-zacht">{site.terrein}</span></p>
-        <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
-      </div>
-      <div>
-        <h3 class="ui text-licht-zacht">Contact</h3>
-        <p class="mt-4 space-y-1">
-          <a href={waAfspraak} class="lijn-in block w-fit">WhatsApp</a>
-          <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
-          <a href={`mailto:${site.mail}`} class="lijn-in block w-fit break-all">{site.mail}</a>
-        </p>
-      </div>
-      <div>
-        <h3 class="ui text-licht-zacht">Volgen</h3>
-        <p class="mt-4 space-y-1">
-          <a href={site.instagram} class="lijn-in block w-fit">Instagram</a>
-          <a href={site.youtube} class="lijn-in block w-fit">YouTube</a>
-        </p>
-        <p class="mt-4 text-licht-zacht">Rolstoeltoegankelijke ingang en parkeerplaats.</p>
-      </div>
+    <div class="lg:col-span-2">
+      <p class="font-kop font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-groen">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-groen">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-groen">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop font-bold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-groen">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open} - {t.dicht}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="wrap"><div class="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p>{site.naam}, {site.plaats}. <span class="num">{site.google.score}</span> op Google ({site.google.aantal} reviews).</p>
-    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
-  </div></div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Foto’s van uw Google-bedrijfsprofiel en Instagram; de foto bovenaan is een sfeerfoto via Unsplash, ter illustratie. Pakketten en prijzen zoals op mrvie.nl (archief mei 2026).</p>}
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-groen">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel en Instagram, ter illustratie. Pakketten en prijzen zoals op mrvie.nl (archief mei 2026). Reviews letterlijk van Google (stand 2 oktober 2026).</p>}
+  </div>
 </footer>
-
-<script>
-  const d = new Date().getDay();
-  document.querySelector(`[data-tijden] [data-dag="${d}"]`)?.classList.add('vandaag');
-</script>
-
-<style>
-  .dag:global(.vandaag) dt::after { content: ' · vandaag'; color: var(--color-licht-zacht); }
-  .dag:global(.vandaag) dd { color: var(--color-licht); }
-</style>
