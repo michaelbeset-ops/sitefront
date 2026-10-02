@@ -1,42 +1,53 @@
 ---
-import { site, url, waMet } from '../data/site';
+import { site, url, diensten, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
 import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
 ---
-<footer id="contact" class="donker scroll-mt-20 bg-nacht text-licht" aria-labelledby="t-contact">
-  <div class="wrap grid gap-y-16 pb-20 pt-28 lg:grid-cols-12 lg:gap-x-8 lg:pb-32 lg:pt-40">
-    <div class="lg:col-span-6">
-      <h2 id="t-contact" class="text-3xl">Een vraag of een vrijblijvende offerte?</h2>
-      <p class="mt-8 max-w-[30rem] text-lg leading-relaxed text-licht-zacht">Stuur Marco een appje, met een foto van de plek als u die heeft. Bellen of mailen kan ook.</p>
-      <p class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-        <a href={waMet('ik wil graag een offerte voor ')} class="knop knop-licht">App Marco</a>
-        <a href={site.telHref} class="ui num lijn whitespace-nowrap">Bel {site.tel}</a>
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <Merk />
+        <span><b>STIGTER</b><small>Timmer- en Montagebedrijf</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Marco Stigter uit Ridderkerk. Timmerwerk in en rondom het huis, van dakkapel tot inloopkast en complete verbouwingen.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="Stigter op Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waOfferte} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
       </p>
     </div>
-
-    <dl class="grid grid-cols-1 gap-x-8 gap-y-10 text-[.9375rem] min-[420px]:grid-cols-2 lg:col-span-5 lg:col-start-8 lg:self-end">
-      <div>
-        <dt class="ui text-licht-zacht">Bellen en WhatsApp</dt>
-        <dd class="mt-3"><a href={site.telHref} class="lijn num whitespace-nowrap">{site.tel}</a></dd>
-      </div>
-      <div>
-        <dt class="ui text-licht-zacht">Adres</dt>
-        <dd class="mt-3">{site.straat}<br />{site.postcode} {site.plaats}</dd>
-        <dd class="mt-3"><a href={site.maps} class="lijn text-licht-zacht">Kaart ↗</a></dd>
-      </div>
-      <div>
-        <dt class="ui text-licht-zacht">Mail</dt>
-        <dd class="mt-3"><a href={`mailto:${site.mail}`} class="lijn [overflow-wrap:anywhere]">{site.mail}</a></dd>
-      </div>
-      <div>
-        <dt class="ui text-licht-zacht">Facebook</dt>
-        <dd class="mt-3"><a href={site.facebook} class="lijn">Stigter op Facebook ↗</a></dd>
-      </div>
-    </dl>
+    <div class="lg:col-span-3">
+      <p class="font-kop font-bold text-licht [font-stretch:110%]">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-hemel">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-kop font-bold text-licht [font-stretch:110%]">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-hemel">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-hemel">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors [overflow-wrap:anywhere] hover:text-hemel">{site.mail}</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop font-bold text-licht [font-stretch:110%]">Adres</p>
+      <ul class="mt-4 space-y-2">
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-hemel">Route plannen</a></li>
+        <li><a href={h('projecten')} class="no-underline transition-colors hover:text-hemel">Projecten bekijken</a></li>
+      </ul>
+    </div>
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p class="flex items-center gap-3"><Merk class="h-4 w-auto text-licht" /> <span class="num">{site.naam}, {site.plaats}. {site.google} op Google, uit {site.googleAantal} reviews.</span></p>
-    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-hemel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Alle foto's zijn van {site.kort} zelf: van timmerwerken-mstigter.nl en hun Facebook-pagina. Reviews letterlijk van Google (stand 2 oktober 2026).</p>}
   </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Alle foto's zijn van {site.kort} zelf: van timmerwerken-mstigter.nl en, de overkapping, van hun Facebook-pagina. Teksten en gegevens van die website, Facebook en het Google-bedrijfsprofiel.</p>}
 </footer>

@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs=[]; p.on('pageerror', e=>errs.push(e.message));
+await p.goto('http://localhost:4685/sitefront/stigter-timmerwerken-ridderkerk/', { waitUntil: 'networkidle' });
+await p.locator('[data-open="renovatie"]').click(); await p.waitForTimeout(1500);
+await p.screenshot({ path: 'shots/dialoog-1440.png' });
+console.log('open', await p.evaluate(()=>document.getElementById('p-renovatie').open));
+await p.keyboard.press('Escape'); console.log('closed', await p.evaluate(()=>!document.getElementById('p-renovatie').open));
+await p.locator('label.keuze:has-text("Laminaat")').click(); await p.fill('input[name=plaats]','Ridderkerk'); await p.fill('input[name=naam]','Test');
+const [pop] = await Promise.all([p.waitForEvent('popup'), p.click('form[data-wa] button[type=submit]')]);
+console.log(decodeURIComponent(pop.url()).slice(0,200)); console.log('errs', errs);
+await b.close();

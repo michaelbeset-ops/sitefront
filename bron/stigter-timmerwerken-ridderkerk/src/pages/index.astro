@@ -3,90 +3,323 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
-import { site, waMet } from '../data/site';
+import Icoon from '../components/Icoon.astro';
+import { site, diensten, reviews, waOfferte, waMet } from '../data/site';
 import hero from '../assets/hero.jpg';
-import dakkapel from '../assets/dakkapel-achter.jpg';
 import dakkapelVoor from '../assets/dakkapel-voor.jpg';
+import dakkapelAchter from '../assets/dakkapel-achter.jpg';
 import kozijn from '../assets/kozijn-werkplaats.jpg';
-import radiator from '../assets/radiatorknop.jpg';
+import steiger from '../assets/steiger.jpg';
 import bediening from '../assets/bediening.jpg';
-import kast from '../assets/schuifwandkast.jpg';
+import schuifwandkast from '../assets/schuifwandkast.jpg';
 import laminaat from '../assets/laminaat.jpg';
 import badkamer from '../assets/badkamer.jpg';
-import raam from '../assets/raambekleding.jpg';
+import raambekleding from '../assets/raambekleding.jpg';
 import keuken from '../assets/keuken.jpg';
-import overkapping from '../assets/overkapping.jpg';
+import keuken2 from '../assets/keuken-2.jpg';
 import kastRaam from '../assets/kast-raam.jpg';
 import wastafel from '../assets/wastafel.jpg';
-import keuken2 from '../assets/keuken-2.jpg';
-import douche from '../assets/douche-zit.jpg';
 import uitzicht from '../assets/uitzicht.jpg';
-import steiger from '../assets/steiger.jpg';
+import douche from '../assets/douche-zit.jpg';
+import radiatorknop from '../assets/radiatorknop.jpg';
 import apparatuur from '../assets/apparatuur.jpg';
+import overkapping from '../assets/overkapping.jpg';
+import overkapVoor from '../assets/overkap-voor.jpg';
+import overkapBouw from '../assets/overkap-bouw.jpg';
+import inloopkast from '../assets/inloopkast.jpg';
+import glaskast from '../assets/glaskast.jpg';
+import kastBruin from '../assets/kast-bruin.jpg';
+import regendouche from '../assets/regendouche.jpg';
+import radiatorZwart from '../assets/radiator-zwart.jpg';
+import toilet from '../assets/toilet.jpg';
+import toiletTegel from '../assets/toilet-tegel.jpg';
+import badmeubel from '../assets/badmeubel.jpg';
+import tegelsRuit from '../assets/tegels-ruit.jpg';
+import bus from '../assets/bus.jpg';
 
-// Diensten met hun eigen zin van de homepage; de overkapping komt van hun Facebook-pagina (november 2024).
-const werk = [
-  { t: 'Dakkapellen', d: 'Kwalitatief goede dakkapellen, traditioneel opgebouwd.', src: dakkapel, alt: 'Een nieuwe witte dakkapel over bijna de hele breedte van een pannendak, met een kleinere dakkapel ernaast.', wa: 'dakkapellen' },
-  { t: 'Kozijnen, ramen en deuren', d: 'Kozijnen worden altijd tot in de perfectie afgewerkt.', src: steiger, alt: 'Een steiger voor de gevel van een rijtjeshuis, met de ramen van de verdieping erachter.', wa: 'kozijnen, ramen of deuren' },
-  { t: 'Timmerwerk', d: 'Timmerwerk van hoogwaardige kwaliteit, in en rondom het huis.', src: kozijn, alt: 'Houten kozijnen in de werkplaats, nog in de grondverf.', wa: 'timmerwerk' },
-  { t: 'Stuc- en sauswerk', d: 'Met nauwkeurigheid gedaan, voor de beste resultaten.', src: bediening, alt: 'Een gestucte en gesauste witte muur met twee ronde bedieningsknoppen.', wa: 'stuc- en sauswerk' },
-  { t: 'Schuifwandkasten en inloopkasten', d: 'Alles kan perfect op maat worden ingepast.', src: kast, alt: 'Een witte schuifwandkast van vloer tot plafond, met een open middenvak met planken.', wa: 'een schuifwandkast of inloopkast' },
-  { t: 'Laminaat', d: 'Een laminaatvloer leggen, met materiaal van topkwaliteit.', src: laminaat, alt: 'Een lege, lichte kamer met een nieuwe laminaatvloer in eikenkleur.', wa: 'laminaat' },
-  { t: 'Badkamers en toiletten', d: 'Ingebouwd met de nieuwste technieken en snufjes.', src: badkamer, alt: 'Een witte betegelde badkamer met een zwart wastafelmeubel en een regendouche.', wa: 'een badkamer of toilet' },
-  { t: 'Raambekleding en hordeuren', d: 'Ook uw raambekleding en hordeuren worden verzorgd.', src: raam, alt: 'Een raam in een bakstenen gevel met witte raambekleding aan de binnenkant.', wa: 'raambekleding of hordeuren' },
-  { t: 'Verbouwingen', d: 'Voor al uw verbouwingen kunt u contact opnemen.', src: keuken, alt: 'Een nieuwe keuken onder een dakraam, met houten werkblad, inductiekookplaat en een donkere wand.', wa: 'een verbouwing' },
-  { t: 'Overkappingen', d: 'Zoals de grote overkapping van november 2024.', src: overkapping, alt: 'Een grote houten overkapping in aanbouw in een achtertuin, met planken en een afkortzaag op de voorgrond.', wa: 'een overkapping' },
+const vraag = (d: string) => waMet(`Hallo Marco, ik heb een vraag over ${d.toLowerCase()}. Kunt u een vrijblijvende offerte maken?`);
+
+// Negen diensten met hun eigen zin van de homepage (licht ingekort) en een eigen foto.
+const dienstKaarten = [
+  { t: 'Dakkapellen', d: 'Kwalitatief goede dakkapellen, traditioneel opgebouwd.', src: dakkapelAchter, alt: 'Een nieuwe witte dakkapel over bijna de hele breedte van een pannendak', pos: '50% 40%' },
+  { t: 'Kozijnen, ramen en deuren', d: 'Kozijnen worden altijd tot in de perfectie afgewerkt.', src: kozijn, alt: 'Nieuwe houten kozijnen met deuren, nog in de grondverf', pos: '50% 35%' },
+  { t: 'Timmerwerk', d: 'Timmerwerk van hoogwaardige kwaliteit, in en rondom het huis.', src: overkapVoor, alt: 'Een houten overkapping met balustrade in aanbouw in een achtertuin', pos: '50% 50%' },
+  { t: 'Stuc- en sauswerk', d: 'Met nauwkeurigheid gedaan, voor de beste resultaten.', src: bediening, alt: 'Een strak gestucte en gesauste witte muur met twee ronde bedieningsknoppen', pos: '40% 50%' },
+  { t: 'Schuifwand- en inloopkasten', d: 'Inbouwen is geen probleem: alles kan perfect op maat.', src: schuifwandkast, alt: 'Een witte schuifwandkast van vloer tot plafond met een open middenvak', pos: '50% 50%' },
+  { t: 'Laminaat', d: 'Een laminaatvloer leggen, met materiaal van topkwaliteit.', src: laminaat, alt: 'Een lichte kamer met een nieuwe laminaatvloer in eikenkleur', pos: '50% 60%' },
+  { t: 'Badkamers en toiletten', d: 'Ingebouwd met de nieuwste technieken en snufjes.', src: badkamer, alt: 'Een witte betegelde badkamer met een zwart wastafelmeubel en een regendouche', pos: '50% 55%' },
+  { t: 'Raambekleding en hordeuren', d: 'Ook uw raambekleding en hordeuren worden verzorgd.', src: raambekleding, alt: 'Een raam in een bakstenen gevel met witte raambekleding aan de binnenkant', pos: '50% 50%' },
+  { t: 'Verbouwingen', d: 'Van een nieuwe keuken tot een complete woning.', src: keuken, alt: 'Een nieuwe keuken met houten werkblad, inductiekookplaat en een donkere wand', pos: '50% 50%' },
+];
+
+// Projecten: verhalen uit hun eigen pagina Verbouwingen en hun Facebook-post (november 2024). Foto's van eigen werk.
+const projecten = [
+  {
+    id: 'renovatie', t: 'Renovatie woning', plaats: 'Ridderkerk', cover: dakkapelVoor, coverAlt: 'De voorgevel van een hoekwoning met een nieuwe witte dakkapel',
+    tekst: [
+      'Aan de voor- en achterkant zijn handgemaakte dakkapellen geplaatst. Beneden kwam een nieuwe keuken met luxe apparaten, de woonkamer kreeg vloerverwarming en alle muren en plafonds zijn gestuct en gesaust.',
+      'Een verdieping hoger de badkamer, met een draadloze speaker achter de spiegel. In de twee slaapkamers een schuifwandkast, in breedte en hoogte exact op maat en van twee kanten te openen.',
+    ],
+    fotos: [
+      { src: dakkapelVoor, alt: 'Voorgevel met een nieuwe witte dakkapel en een kleinere dakkapel op de zijkant' },
+      { src: dakkapelAchter, alt: 'Achterkant van de woning met een brede nieuwe dakkapel' },
+      { src: keuken2, alt: 'Een witte keuken met kookeiland en een betegelde achterwand' },
+      { src: schuifwandkast, alt: 'Een witte schuifwandkast van vloer tot plafond' },
+      { src: wastafel, alt: 'Een witte wastafel met een moderne kraan in de nieuwe badkamer' },
+    ],
+  },
+  {
+    id: 'appartement', t: 'Appartement vernieuwd', plaats: 'Ridderkerk', cover: uitzicht, coverAlt: 'De lege woonkamer van een appartement met een groot raam en uitzicht op bomen',
+    tekst: [
+      'Een oud appartement volledig vernieuwd tot een luxe appartement, van alle gemakken voorzien en keurig strak afgewerkt.',
+      'In de douche een zit onder de douchekop, met het oog op minder validen. De bediening van het zonnescherm opnieuw in de muur, met nieuwe knoppen. En de radiatorknop keurig uitgezaagd onder de vensterbank.',
+    ],
+    fotos: [
+      { src: uitzicht, alt: 'De woonkamer met een groot raam en uitzicht over het groen' },
+      { src: keuken, alt: 'De keuken met houten werkblad en een elektrische kookplaat' },
+      { src: apparatuur, alt: 'Twee inbouwovens in een witte keukenkast' },
+      { src: douche, alt: 'Een betegelde douche met een zitje onder de douchekop' },
+      { src: radiatorknop, alt: 'Een radiatorombouw met een uitgezaagde opening voor de radiatorknop' },
+      { src: laminaat, alt: 'Een kamer met een nieuwe laminaatvloer' },
+    ],
+  },
+  {
+    id: 'overkapping', t: 'Grote overkapping', plaats: 'November 2024', cover: overkapping, coverAlt: 'Een grote houten overkapping in aanbouw in een achtertuin',
+    tekst: [
+      'Een grote houten overkapping in een achtertuin: eerst het staanderwerk en de vloer, daarna de wanden, de balustrade en het dak.',
+    ],
+    fotos: [
+      { src: overkapping, alt: 'De overkapping in aanbouw, met planken en een afkortzaag op de voorgrond' },
+      { src: overkapVoor, alt: 'De voorkant van de overkapping met een houten balustrade' },
+      { src: overkapBouw, alt: 'Binnen in de overkapping tijdens de bouw, met de vloerbalken' },
+    ],
+  },
+  {
+    id: 'kasten', t: 'Kasten op maat', plaats: 'Schuifwand- en inloopkasten', cover: inloopkast, coverAlt: 'Een inloopkast met houten legplanken en een spotje in het plafond',
+    tekst: [
+      'Het inbouwen van schuifwandkasten en inloopkasten is geen probleem. Alles kan perfect op maat ingepast worden, ook onder een schuin dak of onder het raam.',
+    ],
+    fotos: [
+      { src: inloopkast, alt: 'Een inloopkast met houten legplanken tot onder het schuine dak' },
+      { src: glaskast, alt: 'Een schuifwandkast met matglazen deuren en spotjes erboven' },
+      { src: kastBruin, alt: 'Een schuifwandkast met donkere houten deuren en een open vak met planken' },
+      { src: kastRaam, alt: 'Witte inbouwkasten onder een raam in een slaapkamer' },
+    ],
+  },
+  {
+    id: 'badkamers', t: 'Badkamers en toiletten', plaats: 'Verschillende projecten', cover: regendouche, coverAlt: 'Een witte betegelde douche met een regendouche',
+    tekst: [
+      'Badkamers en toiletten worden met de nieuwste technieken en snufjes ingebouwd. Let vooral op de afwerking van alle hoeken en naden.',
+    ],
+    fotos: [
+      { src: badkamer, alt: 'Een witte badkamer met een zwart wastafelmeubel' },
+      { src: regendouche, alt: 'Een regendouche tegen witte tegels' },
+      { src: radiatorZwart, alt: 'Een zwarte designradiator naast het raam in een badkamer' },
+      { src: toilet, alt: 'Een hangtoilet in een licht betegelde ruimte' },
+      { src: toiletTegel, alt: 'Een hangtoilet tegen grote grijze tegels' },
+      { src: badmeubel, alt: 'Een wit badmeubel met spiegelkast' },
+      { src: tegelsRuit, alt: 'Een douche met zwart-witte tegels in ruitpatroon' },
+    ],
+  },
+  {
+    id: 'kozijnen', t: 'Kozijnen en ramen', plaats: 'Van werkplaats tot gevel', cover: steiger, coverAlt: 'Een steiger voor de gevel van een rijtjeshuis met nieuwe ramen',
+    tekst: [
+      'Kozijnen, ramen en deuren worden altijd tot in de perfectie afgewerkt. Ook de raambekleding en hordeuren worden verzorgd.',
+    ],
+    fotos: [
+      { src: steiger, alt: 'Een steiger voor de gevel, met de nieuwe ramen van de verdieping' },
+      { src: kozijn, alt: 'Nieuwe houten kozijnen met deuren, nog in de grondverf' },
+      { src: raambekleding, alt: 'Een raam met witte raambekleding in een bakstenen gevel' },
+    ],
+  },
+];
+
+const stappen = [
+  ['Stuur een appje', 'Vertel wat u wilt laten maken. Een foto van de plek helpt. Bellen of mailen kan ook.'],
+  ['Samen bekijken', 'Marco denkt mee over maat, materiaal en planning, en u krijgt een vrijblijvende offerte.'],
+  ['Op maat gemaakt', 'Of het nu een kast, kozijn of dakkapel is: alles wordt exact op maat ingepast.'],
+  ['Strak opgeleverd', 'Keurig en strak afgewerkt, tot in de hoeken en naden.'],
+];
+
+const details = [
+  { src: douche, alt: 'Een betegelde douche met een zitje van donkergrijze tegels onder de douchekop', t: 'Een zit onder de douchekop', d: 'Met het oog op minder validen.', pos: '50% 70%' },
+  { src: radiatorknop, alt: 'Een witte radiatorombouw met een keurig uitgezaagde opening voor de radiatorknop', t: 'De radiatorknop uitgezaagd', d: 'Keurig, onder de vensterbank.', pos: '50% 50%' },
+  { src: bediening, alt: 'Twee nieuwe ronde bedieningsknoppen in een strak gestucte muur', t: 'Bediening in de muur', d: 'Voor het zonnescherm, met nieuwe knoppen.', pos: '45% 50%' },
 ];
 ---
-<Base title="Stigter Timmer- en Montagebedrijf | Timmerwerk in en rondom het huis, Ridderkerk" description="Marco Stigter uit Ridderkerk: dakkapellen, kozijnen, schuifwandkasten, badkamers, laminaat en complete verbouwingen. Stuur een WhatsApp voor een vrijblijvende offerte.">
-  <Kop overBeeld />
+<Base title={`${site.naam} | Timmerwerk in en rondom het huis, Ridderkerk`} description="Marco Stigter uit Ridderkerk: dakkapellen, kozijnen, schuifwand- en inloopkasten, badkamers, laminaat en complete verbouwingen. Vrijblijvende offerte via WhatsApp.">
+  <Kop />
   <main id="inhoud">
 
-    <!-- 1. Eerste scherm: hun eigen dakkapel onder een open lucht. De lucht loopt door tot boven in beeld en draagt de kop. -->
-    <section class="hero relative isolate flex flex-col overflow-hidden bg-lucht" aria-labelledby="titel">
-      <div class="lucht flex flex-1 flex-col justify-end" data-beeld>
-        <div class="wrap grid gap-y-7 pb-6 pt-24 md:pt-28 lg:grid-cols-12 lg:items-end lg:gap-x-8 lg:pb-2">
-          <h1 id="titel" class="text-4xl lg:col-span-8">Timmerwerk in en rondom het huis.</h1>
-          <div class="lg:col-span-4 lg:pb-2">
-            <p class="max-w-[24rem] leading-relaxed">Marco Stigter uit Ridderkerk maakt dakkapellen, kozijnen en kasten op maat, bouwt badkamers in en verbouwt complete woningen.</p>
-            <p class="mt-6 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <a href={waMet('ik heb een vraag over ')} class="knop knop-vol">App Marco</a>
-              <a href="#werk" class="ui lijn">Bekijk het werk</a>
-            </p>
+    <!-- 1. Hero: hun eigen dakkapel op volle hoogte -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[800, 1300, 1900, 2600]} sizes="(min-width: 768px) 165vw, 400vw" loading="eager" fetchpriority="high" quality={68} class="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_55%] md:object-[85%_80%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0e131a40_0%,#0e131ab8_45%,#0e131af5_100%)] md:bg-[linear-gradient(90deg,#0e131af5_0%,#0e131ad0_38%,#0e131a40_75%,#0e131a10_100%)]" aria-hidden="true"></div>
+      <div class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-[linear-gradient(0deg,#0e131acc,transparent)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-20 pt-32 md:pb-24 md:pt-40 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Timmer- en montagebedrijf in Ridderkerk</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Timmerwerk in en <span class="text-hemel">rondom het huis.</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Marco Stigter maakt dakkapellen, kozijnen en kasten op maat, bouwt badkamers in en verbouwt complete woningen.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waOfferte} class="knop knop-blauw"><Icoon naam="wa" />Offerte via WhatsApp</a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Alles op maat ingepast</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Keurig en strak afgewerkt</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Vrijblijvende offerte</li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:flex lg:justify-end">
+          <div class="rounded-md bg-nacht/75 px-6 py-5 text-right ring-1 ring-licht/10 backdrop-blur-md">
+            <p class="flex items-center justify-end gap-2 text-[.9375rem]"><span class="flex text-ster">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-40' : ''}`} />)}</span><b class="num">{site.google.score}</b> op Google</p>
+            <p class="mt-1 text-sm text-licht-zacht">Direct contact met Marco</p>
+            <a href={site.telHref} class="num mt-1 block font-kop text-[2rem] font-extrabold tracking-[-0.02em] text-licht no-underline [font-stretch:112%] hover:text-hemel">{site.tel}</a>
           </div>
         </div>
-      </div>
-      <div class="dak relative shrink-0">
-        <Image src={hero} alt="Een nieuwe, brede witte dakkapel op een grijs pannendak, met een kleinere dakkapel ernaast en een blauwe lucht erboven." widths={[800, 1300, 1900, 2600]} sizes="(min-width: 768px) 100vw, 260vw" format="webp" quality={72} loading="eager" fetchpriority="high" class="dak-foto absolute inset-0 h-full w-full object-cover" />
       </div>
     </section>
 
-    <!-- 2. Het werk: hun eigen lijst, met de bijbehorende foto die meeschuift. Elke regel kan als appje naar Marco. -->
-    <section id="werk" class="wrap scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-werk">
-      <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
-        <h2 id="t-werk" class="text-3xl lg:col-span-6">Van dakkapel tot inloopkast.</h2>
-        <p class="max-w-[26rem] text-grijs lg:col-span-4 lg:col-start-9 lg:self-end">Alle foto's zijn van eigen werk. Kies wat u wilt laten maken en stuur het meteen als appje.</p>
+    <!-- 2. Diensten in het kort -->
+    <section class="border-b border-lijn bg-wit" aria-label="Diensten in het kort">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-2.5 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {diensten.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn px-3.5 py-2 text-sm font-medium no-underline transition-colors hover:border-blauw hover:bg-blauw hover:text-wit">{c}</a>)}
       </div>
-      <div class="mt-16 grid gap-y-12 lg:mt-24 lg:grid-cols-12 lg:gap-x-8">
-        <div class="hidden lg:col-span-5 lg:block">
-          <div class="sticky top-28 aspect-[4/5] overflow-hidden bg-steen" data-werkbeeld>
-            {werk.map((w, i) => (
-              <Image src={w.src} alt="" widths={[500, 800]} sizes="40vw" format="webp" quality={70} class:list={['werkfoto absolute inset-0 h-full w-full object-cover', { aan: i === 0 }]} data-i={i} />
-            ))}
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-24 lg:py-32" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-5 text-3xl">Van dakkapel tot inloopkast.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Negen vakgebieden, van klein timmerwerk tot een complete verbouwing. Alle foto's zijn van eigen werk. Klik op een dienst en stel uw vraag meteen via WhatsApp.</p>
+        </div>
+        <ul class="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-5">
+          {dienstKaarten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="dienst group relative block aspect-[16/9] sm:aspect-[4/3] overflow-hidden rounded-md bg-nacht text-licht no-underline">
+                <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1264px) 400px, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" style={`object-position:${b.pos}`} />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#0e131a1a_0%,#0e131a33_35%,#0e131af2_100%)]" aria-hidden="true"></span>
+                <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-6">
+                  <span>
+                    <span class="num block font-kop text-xs font-bold tracking-[.2em] text-hemel [font-stretch:118%]">0{i + 1}</span>
+                    <h3 class="mt-2 text-xl uppercase tracking-[.01em] [font-stretch:115%]">{b.t}</h3>
+                    <span class="mt-1.5 block text-[.9375rem] leading-snug text-licht/85">{b.d}</span>
+                  </span>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-licht/15 backdrop-blur transition-colors group-hover:bg-blauw" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Projecten: Werk dat blijft -->
+    <section id="projecten" class="donker bg-nacht py-24 text-licht lg:py-32" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-5 text-3xl uppercase [font-stretch:118%]">Werk dat blijft.</h2>
+            <p class="mt-6 max-w-xl text-lg text-licht-zacht">Een greep uit eigen werk. Klik op een project voor de foto's en het verhaal.</p>
+          </div>
+          <div class="flex gap-2" aria-hidden="true">
+            <button type="button" class="grid h-12 w-12 place-items-center rounded-sm border border-lijn-licht transition-colors hover:bg-licht hover:text-inkt" data-schuif="-1" tabindex="-1"><Icoon naam="links" class="h-5 w-5" /></button>
+            <button type="button" class="grid h-12 w-12 place-items-center rounded-sm bg-blauw transition-colors hover:bg-blauw-diep" data-schuif="1" tabindex="-1"><Icoon naam="pijl" class="h-5 w-5" /></button>
           </div>
         </div>
-        <ul class="werk border-t border-lijn lg:col-span-6 lg:col-start-7" data-werk>
-          {werk.map((w, i) => (
-            <li class="rij group grid grid-cols-[4.5rem_1fr] gap-x-5 border-b border-lijn py-6 md:grid-cols-[6rem_1fr] lg:grid-cols-1 lg:py-7" data-i={i}>
-              <div class="aspect-square overflow-hidden bg-steen lg:hidden">
-                <Image src={w.src} alt={w.alt} widths={[200, 300]} sizes="6rem" format="webp" quality={65} class="h-full w-full object-cover" />
+      </div>
+      <ul class="projecten mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 [scrollbar-width:none] md:gap-5 lg:mt-14" data-rail>
+        {projecten.map((p, i) => (
+          <li class="w-[82%] shrink-0 snap-start sm:w-[24rem] lg:w-[29rem]">
+            <button type="button" class="group block w-full text-left" data-open={p.id} aria-haspopup="dialog">
+              <span class="relative block aspect-[4/3] overflow-hidden rounded-md bg-nacht-2">
+                <Image src={p.cover} alt={p.coverAlt} widths={[480, 720, 960]} sizes="(min-width: 1024px) 464px, (min-width: 640px) 384px, 82vw" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <span class="absolute left-4 top-4 rounded-sm bg-nacht/80 px-2.5 py-1 text-xs font-semibold backdrop-blur">{p.fotos.length} foto's</span>
+              </span>
+              <span class="mt-5 flex items-baseline justify-between gap-4 border-b border-lijn-licht pb-4">
+                <span class="font-kop text-xl font-extrabold uppercase tracking-[-0.01em] [font-stretch:115%] group-hover:text-hemel">{p.t}</span>
+                <span class="num shrink-0 font-kop text-xs font-bold tracking-[.18em] text-hemel">0{i + 1}</span>
+              </span>
+              <span class="mt-3 block text-sm text-licht-zacht">{p.plaats}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <div class="wrap">
+        <div class="h-[3px] w-full bg-lijn-licht"><div class="h-full w-1/4 bg-hemel transition-[margin] duration-300" data-voortgang></div></div>
+      </div>
+
+      {projecten.map((p) => (
+        <dialog id={`p-${p.id}`} class="project m-auto max-h-[92dvh] w-[min(68rem,94vw)] overflow-hidden rounded-md bg-papier p-0 text-inkt" aria-labelledby={`pt-${p.id}`}>
+          <div class="grid max-h-[92dvh] overflow-y-auto lg:grid-cols-12">
+            <div class="bg-nacht p-2 lg:col-span-7">
+              <div class="grid grid-cols-2 gap-2">
+                {p.fotos.map((f, j) => (
+                  <Image src={f.src} alt={f.alt} widths={[480, 800]} sizes="(min-width: 1024px) 40vw, 92vw" loading="lazy" class={`w-full object-cover ${j === 0 ? 'col-span-2 aspect-[3/2]' : 'aspect-square'}`} />
+                ))}
               </div>
-              <div class="flex flex-col gap-x-8 gap-y-2 lg:flex-row lg:items-baseline lg:justify-between">
-                <div>
-                  <h3 class="text-xl">{w.t}</h3>
-                  <p class="mt-1.5 text-grijs">{w.d}</p>
-                </div>
-                <a href={waMet(`ik heb een vraag over ${w.wa}. `)} class="ui lijn-in shrink-0 self-start whitespace-nowrap lg:self-auto">App hierover<span class="sr-only">: {w.t}</span></a>
+            </div>
+            <div class="flex flex-col p-6 sm:p-8 lg:sticky lg:top-0 lg:col-span-5 lg:self-start lg:p-10">
+              <div class="flex items-start justify-between gap-4">
+                <p class="eyebrow">{p.plaats}</p>
+                <button type="button" class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-inkt text-licht transition-colors hover:bg-blauw" data-sluit><Icoon naam="kruis" class="h-5 w-5" /><span class="sr-only">Sluiten</span></button>
+              </div>
+              <h3 id={`pt-${p.id}`} class="mt-4 text-[clamp(1.75rem,1.6vw+1.1rem,2.5rem)] uppercase [overflow-wrap:normal] [font-stretch:112%]">{p.t}</h3>
+              <div class="mt-6 space-y-4 text-grijs">{p.tekst.map((t) => <p>{t}</p>)}</div>
+              <div class="pt-8">
+                <a href={waMet(`Hallo Marco, ik zag het project "${p.t}" op uw website. Zoiets wil ik ook graag laten maken.`)} class="knop knop-blauw w-full sm:w-auto"><Icoon naam="wa" />Zoiets wil ik ook</a>
+              </div>
+            </div>
+          </div>
+        </dialog>
+      ))}
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-24 lg:py-32" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-werkwijze" class="mt-5 text-3xl">Van eerste appje tot strakke oplevering.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Duidelijke afspraken en een goed overzicht van de werkzaamheden, van begin tot eind.</p>
+        </div>
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-md bg-lijn sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs bg-wit p-7 lg:p-8" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2.75rem] font-extrabold leading-none tracking-[-0.03em] text-blauw [font-stretch:118%]">0{i + 1}</p>
+              <h3 class="mt-8 text-xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. Details: het appartement in hun eigen woorden -->
+    <section class="bg-zaagsel py-24 lg:py-32" aria-labelledby="t-details">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Afwerking</p>
+            <h2 id="t-details" class="mt-5 text-3xl">Let op de kleinste details.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Uit het appartement dat volledig is vernieuwd: drie details die laten zien hoe er gewerkt wordt.</p>
+        </div>
+        <ul class="mt-14 grid gap-5 md:grid-cols-3 lg:mt-16">
+          {details.map((d, i) => (
+            <li class="rijs kaart overflow-hidden" style={`--d:${i * 0.06}s`}>
+              <Image src={d.src} alt={d.alt} widths={[400, 600, 800]} sizes="(min-width: 1264px) 390px, (min-width: 768px) 31vw, 92vw" class="aspect-[4/3] w-full object-cover" style={`object-position:${d.pos}`} />
+              <div class="flex gap-4 p-6">
+                <span class="num grid h-9 w-9 shrink-0 place-items-center rounded-sm bg-blauw font-kop text-sm font-bold text-wit">{i + 1}</span>
+                <div><h3 class="text-lg">{d.t}</h3><p class="mt-1 text-grijs">{d.d}</p></div>
               </div>
             </li>
           ))}
@@ -94,121 +327,188 @@ const werk = [
       </div>
     </section>
 
-    <!-- 3. Eén project groot: de renovatie in Ridderkerk, in hun eigen woorden. -->
-    <section id="renovatie" class="scroll-mt-20 bg-wit py-28 lg:py-40" aria-labelledby="t-renovatie">
-      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-8">
-        <figure class="lg:col-span-7">
-          <div class="aspect-[1200/795] overflow-hidden bg-steen">
-            <Image src={dakkapelVoor} alt="De voorgevel van een hoekwoning met een nieuwe witte dakkapel en een kleinere dakkapel op de zijkant." widths={[600, 900, 1200]} sizes="(min-width: 1024px) 55vw, 100vw" format="webp" quality={72} class="h-full w-full object-cover" />
-          </div>
-          <figcaption class="mt-4 text-sm text-grijs">Handgemaakte dakkapellen, aan de voor- en achterkant.</figcaption>
-        </figure>
-        <div class="lg:col-span-4 lg:col-start-9 lg:self-end">
-          <h2 id="t-renovatie" class="text-3xl">Renovatie, Ridderkerk.</h2>
-          <div class="mt-8 space-y-5 text-grijs">
-            <p>Voor en achter nieuwe dakkapellen. Beneden een nieuwe keuken en vloerverwarming in de woonkamer; alle muren en plafonds gestuct en gesaust.</p>
-            <p>Boven de badkamer, met een draadloze speaker achter de spiegel. En in de slaapkamers een schuifwandkast, in breedte en hoogte exact op maat, van twee kanten te openen.</p>
-          </div>
+    <!-- 7. Over Marco -->
+    <section id="marco" class="donker bg-nacht text-licht" aria-labelledby="t-marco">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[30rem] lg:col-span-5">
+          <Image src={bus} alt="De witte bus van Stigter Timmer- en Montagebedrijf met het S-logo op de zijkant" widths={[478]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[30%_50%]" />
+          <p class="absolute bottom-4 left-4 rounded-sm bg-blauw px-3.5 py-1.5 font-kop text-xs font-bold uppercase tracking-[.16em] text-wit [font-stretch:115%]">Ridderkerk</p>
         </div>
-      </div>
-      <div class="wrap mt-20 grid grid-cols-2 gap-x-4 gap-y-10 md:gap-x-8 lg:mt-28 lg:grid-cols-12">
-        <figure class="col-span-2 lg:col-span-5">
-          <div class="aspect-[1200/795] overflow-hidden bg-steen"><Image src={kastRaam} alt="Een slaapkamer onder het dak met witte inbouwkasten onder een raam met uitzicht op bomen." widths={[500, 800, 1200]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={70} class="h-full w-full object-cover" /></div>
-          <figcaption class="mt-4 text-sm text-grijs">Kasten op maat onder het raam.</figcaption>
-        </figure>
-        <figure class="lg:col-span-3 lg:col-start-7 lg:mt-24">
-          <div class="aspect-[4/5] overflow-hidden bg-steen"><Image src={wastafel} alt="Een witte wastafel met een moderne kraan, in een lichte badkamer." widths={[400, 700]} sizes="(min-width: 1024px) 23vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover" /></div>
-          <figcaption class="mt-4 text-sm text-grijs">Badkamer.</figcaption>
-        </figure>
-        <figure class="lg:col-span-3 lg:mt-48">
-          <div class="aspect-[4/5] overflow-hidden bg-steen"><Image src={keuken2} alt="Een witte keuken met kookeiland en een betegelde achterwand." widths={[400, 700]} sizes="(min-width: 1024px) 23vw, 50vw" format="webp" quality={70} class="h-full w-full object-cover object-[60%_50%]" /></div>
-          <figcaption class="mt-4 text-sm text-grijs">Keuken.</figcaption>
-        </figure>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-79rem)/2+2.5rem))]">
+          <p class="eyebrow">Over ons</p>
+          <h2 id="t-marco" class="mt-5 text-3xl uppercase [font-stretch:118%]">De vakman achter het werk.</h2>
+          <p class="mt-7 text-lg text-licht-zacht">Marco Stigter is eigenaar van Stigter Timmer- en Montagebedrijf in Ridderkerk. Van een dakkapel of overkapping tot een badkamer of inloopkast: hij let op de afwerking van alle hoeken en naden.</p>
+          <ul class="mt-9 grid gap-px overflow-hidden rounded-md bg-lijn-licht">
+            <li class="flex items-start gap-4 bg-nacht-2 px-5 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase [font-stretch:112%]">Duidelijke communicatie</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Klanten noemen het goede overzicht van de werkzaamheden.</p></div>
+            </li>
+            <li class="flex items-start gap-4 bg-nacht-2 px-5 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="maat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase [font-stretch:112%]">Denkt met u mee</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Flexibel, en alles exact op maat voor uw ruimte.</p></div>
+            </li>
+            <li class="flex items-start gap-4 bg-nacht-2 px-5 py-5">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="vink" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase [font-stretch:112%]">Netjes opgeleverd</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Mooi en netjes afgeleverd, schrijven klanten op Google.</p></div>
+            </li>
+          </ul>
+          <a href={waOfferte} class="knop knop-blauw mt-9"><Icoon naam="wa" />Plan een kennismaking</a>
+        </div>
       </div>
     </section>
 
-    <!-- 4. Het appartement: drie details uit hun eigen tekst, elk met de foto die het laat zien. -->
-    <section id="details" class="scroll-mt-20 py-28 lg:py-40" aria-labelledby="t-details">
-      <div class="wrap grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
-        <h2 id="t-details" class="text-3xl lg:col-span-6">Let op de kleinste details.</h2>
-        <p class="max-w-[28rem] text-grijs lg:col-span-4 lg:col-start-9 lg:self-end">Een oud appartement in Ridderkerk, volledig vernieuwd en keurig strak afgewerkt.</p>
-      </div>
-      <div class="wrap mt-16 grid gap-y-14 lg:mt-24 lg:grid-cols-12 lg:gap-x-8">
-        <figure class="lg:col-span-5">
-          <div class="aspect-[4/5] overflow-hidden bg-steen"><Image src={douche} alt="Een witte betegelde douche met een zitje van donkergrijze tegels onder de douchekop." widths={[500, 800, 1200]} sizes="(min-width: 1024px) 40vw, 100vw" format="webp" quality={72} class="h-full w-full object-cover object-[50%_70%]" /></div>
-          <figcaption class="detail"><span class="num">1</span><span>Een zit onder de douchekop, met het oog op minder validen.</span></figcaption>
-        </figure>
-        <div class="grid gap-y-14 lg:col-span-6 lg:col-start-7">
-          <figure>
-            <div class="aspect-[3/2] overflow-hidden bg-steen"><Image src={radiator} alt="Een witte radiatorombouw onder de vensterbank met een keurig uitgezaagde opening voor de radiatorknop." widths={[500, 800, 1200]} sizes="(min-width: 1024px) 45vw, 100vw" format="webp" quality={72} class="h-full w-full object-cover" /></div>
-            <figcaption class="detail"><span class="num">2</span><span>De radiatorknop, keurig uitgezaagd onder de vensterbank.</span></figcaption>
-          </figure>
-          <figure class="lg:w-2/3">
-            <div class="aspect-[3/2] overflow-hidden bg-steen"><Image src={apparatuur} alt="Twee inbouwovens in een witte keukenkast, met verlichting erboven." widths={[400, 700, 1000]} sizes="(min-width: 1024px) 30vw, 100vw" format="webp" quality={72} class="h-full w-full object-cover" /></div>
-            <figcaption class="detail"><span class="num">3</span><span>Een keuken met de nieuwste apparatuur en een elektrische kookplaat.</span></figcaption>
-          </figure>
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-24 lg:py-32" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Ervaringen</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map((n) => <Icoon naam="ster" class={`h-4 w-4 ${n === 5 ? 'opacity-30' : ''}`} />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
         </div>
+        <ul class="mt-14 grid gap-5 lg:mt-16 lg:grid-cols-12">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex flex-col p-7 md:p-9 lg:col-span-4" style={`--d:${i * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-6 flex-1 text-[1.1875rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-8 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-zaagsel font-kop font-bold text-blauw" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+          <li class="rijs flex flex-col justify-between gap-8 rounded-md bg-blauw p-7 text-wit md:p-9 lg:col-span-4" style="--d:.12s">
+            <div>
+              <p class="flex items-end gap-3"><b class="num font-kop text-[3.5rem] font-extrabold leading-none tracking-[-0.03em] [font-stretch:112%]">{site.google.score}</b><span class="pb-1.5 text-wit/85">uit {site.google.aantal} Google-reviews</span></p>
+              <p class="mt-6 text-lg leading-snug">Ook <b>Iris V.</b> en <b>Erik G.</b> gaven Stigter 5 sterren.</p>
+            </div>
+            <a href={site.reviews} class="knop knop-wit knop-klein self-start"><Icoon naam="g" class="h-5 w-5" />Alle reviews op Google</a>
+          </li>
+        </ul>
       </div>
-      <figure class="wrap mt-20 lg:mt-28">
-        <div class="uitzicht overflow-hidden bg-steen"><Image src={uitzicht} alt="De lege woonkamer van het appartement met een groot raam en uitzicht op bomen." widths={[640, 1000, 1200]} sizes="(min-width: 1280px) 1200px, 100vw" format="webp" quality={72} class="h-full w-full object-cover" /></div>
-        <figcaption class="mt-4 flex max-w-[1200px] flex-wrap justify-between gap-x-8 gap-y-3 text-sm text-grijs">
-          <span>De woonkamer van het appartement, met uitzicht over het groen.</span>
-          <a href={waMet('ik wil graag meer foto\'s zien van ')} class="ui lijn text-inkt">Meer foto's? App Marco</a>
-        </figcaption>
-      </figure>
     </section>
 
-    <!-- 5. Wat klanten zeggen, samengevat uit Google; geen citaten. -->
-    <section class="border-t border-lijn bg-wit py-24 lg:py-32" aria-labelledby="t-klanten">
-      <div class="wrap grid gap-y-8 lg:grid-cols-12 lg:gap-x-8">
-        <h2 id="t-klanten" class="text-2xl lg:col-span-4">Klanten over hun badkamer.</h2>
-        <p class="max-w-[40rem] text-xl leading-snug lg:col-span-7 lg:col-start-6">Prachtig en netjes afgeleverd, flexibel en goed meegedacht. Klanten noemen ook de duidelijke communicatie en het overzicht van de werkzaamheden.</p>
+    <!-- 9. Contact: offerte samenstellen voor WhatsApp -->
+    <section id="contact" class="bg-zaagsel py-24 lg:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-5 text-3xl uppercase [font-stretch:118%]">Laten we beginnen.</h2>
+          <p class="mt-7 text-lg text-grijs">Vertel kort wat u wilt laten maken. Wij zetten het in een WhatsApp-bericht aan Marco; foto's van de plek stuurt u daarna gewoon mee.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waOfferte} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-zaagsel text-blauw"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-zaagsel text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block text-grijs [overflow-wrap:anywhere]">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 shrink-0 text-blauw" /></a></li>
+            <li><a href={site.maps} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-zaagsel text-blauw"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">{site.straat}</b><span class="text-grijs">{site.postcode} {site.plaats}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw klus in het kort</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Waar gaat het om?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {[...diensten, 'Overkapping', 'Iets anders'].map((b) => (
+                <label class="keuze"><input type="radio" name="klus" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Plaats</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" placeholder="Bijvoorbeeld Ridderkerk" /></label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer?</span>
+              <select name="wanneer" class="veld mt-2">
+                <option value="">Weet ik nog niet</option>
+                <option>Zo snel mogelijk</option>
+                <option>Binnen 3 maanden</option>
+                <option>Later dit jaar</option>
+              </select>
+            </label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Omschrijving <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="4" class="veld mt-2" placeholder="Bijvoorbeeld: schuifwandkast in de slaapkamer, 2,40 m breed tot aan het plafond"></textarea></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-blauw"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Liever bellen? <a href={site.telHref} class="link num whitespace-nowrap">{site.tel}</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-blauw text-wit" aria-label="Offerte aanvragen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)] uppercase [font-stretch:118%]">Een klus in of rond het huis?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur Marco een appje voor een vrijblijvende offerte.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waOfferte} class="knop knop-wit"><Icoon naam="wa" />WhatsApp Marco</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
       </div>
     </section>
   </main>
   <Voet />
 </Base>
 
-<style>
-  .hero { min-height: calc(100svh - var(--balk, 0px)); }
-  .dak { height: 44svh; min-height: 17rem; }
-  @media (min-width: 768px) { .dak { height: clamp(20rem, 56svh, 46vw); } }
-  :global(.dak-foto) {
-    object-position: 63% 100%;
-    filter: saturate(.8);
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 16%);
-  }
-  @media (min-width: 768px) { :global(.dak-foto) { object-position: 50% 100%; } }
-
-  :global(.werkfoto) { opacity: 0; transition: opacity .6s var(--ease-zacht); }
-  :global(.werkfoto.aan) { opacity: 1; }
-  @media (min-width: 1024px) {
-    .werk .rij { transition: padding-left .45s var(--ease-zacht); }
-    .werk .rij.aan { padding-left: 1.25rem; }
-    .werk .rij.aan h3 { color: var(--color-inkt); }
-    .werk .rij:not(.aan) h3 { color: var(--color-grijs); }
-  }
-  .detail { display: grid; grid-template-columns: 1.75rem 1fr; margin-top: 1rem; font-size: var(--text-sm); line-height: 1.6; max-width: 30rem; }
-  .detail .num { color: var(--color-grijs); }
-  .uitzicht { aspect-ratio: 4 / 3; max-width: 1200px; }
-  @media (min-width: 768px) { .uitzicht { aspect-ratio: 1200 / 560; } }
-</style>
-
 <script>
-  // Werklijst: de foto links schuift mee met de regel die u aanwijst of met het toetsenbord bereikt.
-  const lijst = document.querySelector<HTMLElement>('[data-werk]');
-  const fotos = document.querySelectorAll<HTMLElement>('[data-werkbeeld] [data-i]');
-  if (lijst) {
-    const rijen = lijst.querySelectorAll<HTMLElement>('li[data-i]');
-    const zet = (i: string) => {
-      fotos.forEach((f) => f.classList.toggle('aan', f.dataset.i === i));
-      rijen.forEach((r) => r.classList.toggle('aan', r.dataset.i === i));
-    };
-    rijen.forEach((r) => {
-      r.addEventListener('mouseenter', () => zet(r.dataset.i!));
-      r.addEventListener('focusin', () => zet(r.dataset.i!));
+  // Projectenrail: pijlen en voortgangsbalk.
+  const rail = document.querySelector<HTMLElement>('[data-rail]');
+  const balk = document.querySelector<HTMLElement>('[data-voortgang]');
+  if (rail) {
+    const stap = () => (rail.querySelector('li')?.getBoundingClientRect().width || 400) + 20;
+    document.querySelectorAll<HTMLButtonElement>('[data-schuif]').forEach((b) => b.addEventListener('click', () => rail.scrollBy({ left: Number(b.dataset.schuif) * stap(), behavior: 'smooth' })));
+    const zet = () => { if (!balk) return; const max = rail.scrollWidth - rail.clientWidth; const f = max > 0 ? rail.scrollLeft / max : 0; balk.style.marginLeft = `${f * 75}%`; };
+    rail.addEventListener('scroll', zet, { passive: true }); zet();
+  }
+
+  // Projecten openen in een venster met alle foto's en het verhaal.
+  document.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((b) => b.addEventListener('click', () => {
+    const d = document.getElementById(`p-${b.dataset.open}`) as HTMLDialogElement | null;
+    d?.showModal();
+  }));
+  document.querySelectorAll<HTMLDialogElement>('dialog.project').forEach((d) => {
+    d.querySelector('[data-sluit]')?.addEventListener('click', () => d.close());
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+  });
+
+  // Offerteformulier: zet de keuzes om in een WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Hallo Marco, ik wil graag een vrijblijvende offerte.'];
+      if (v('klus')) r.push('Klus: ' + v('klus'));
+      if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+      if (v('wanneer')) r.push('Wanneer: ' + v('wanneer').toLowerCase());
+      if (v('wens')) r.push('Omschrijving: ' + v('wens'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open('https://wa.me/31621931500?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
     });
-    zet('0');
   }
 </script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.035em; }
+  .projecten { padding-inline: max(1.25rem, calc((100vw - 79rem) / 2 + 1.25rem)); scroll-padding-inline: max(1.25rem, calc((100vw - 79rem) / 2 + 1.25rem)); }
+  @media (min-width: 768px) { .projecten { padding-inline: max(2.5rem, calc((100vw - 79rem) / 2 + 2.5rem)); scroll-padding-inline: max(2.5rem, calc((100vw - 79rem) / 2 + 2.5rem)); } }
+  dialog.project::backdrop { background: #0e131acc; backdrop-filter: blur(4px); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 .95rem; border-radius: var(--radius-sm); border: 1px solid var(--color-lijn); background: var(--color-papier); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  .keuze span:hover { border-color: var(--color-blauw); }
+  .keuze input:checked + span { background: var(--color-blauw); border-color: var(--color-blauw); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #11161d33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #11161d66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #7a8089; }
+</style>

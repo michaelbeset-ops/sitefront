@@ -1,17 +1,16 @@
-# Stigter Timmer- en Montagebedrijf, Ridderkerk: ontwerpvoorstel (demomodus)
+# Stigter Timmer- en Montagebedrijf, Ridderkerk: ontwerpvoorstel (herbouw volgens BRIEF-MICHAEL, 02-10-2026)
 
-Oude site: BeTheme-WordPress uit 2015-2016 (titel "website", "Just another WordPress site", footer "© 2016 Joostfilms"),
-dienstpagina's alleen met fotogalerij, oud adres op de contactpagina, Engelse labels ("Name", "Review Title"). Geen WhatsApp.
+- Letter: Archivo (variabel, breedte-as) 800 op 112-118% breedte voor koppen, deels in hoofdletters zoals de belettering op
+  hun bus; Public Sans voor tekst (17px/1.6). Anders dan Fan Nails (Bricolage + DM Sans).
+- Kleur: gebroken wit #f4f3ef, zaagsel #e9e6de, bijna-zwart #0e131a/#11161d; merkkleur Stigter-blauw #1f4f9a (het blauw van
+  het S-logo op hun bus), op donker #93bdf5. Strak: 2-4px hoeken, geen pills.
+- Opbouw: topbar 3 vinkjes + tel, sticky header met S-logo en WhatsApp-knop, hero volle hoogte met hun dakkapel + Google/tel-
+  kaart, dienstchips, 9 dienstkaarten met eigen foto (klik = WhatsApp), projectenrail "Werk dat blijft" (6 projecten, venster
+  met alle foto's en verhaal), 4 stappen, 3 details uit het appartement, donkere "Over ons" met hun bus, 2 letterlijke
+  Google-reviews + scorekaart, contact met WhatsApp-offertebouwer, blauwe slotbalk, donkere footer in 4 kolommen, mobiele
+  onderbalk Bellen | WhatsApp.
+- Geen openingstijden-sectie: die staan nergens (Google, site, Facebook).
 
 ## Bronnen
-timmerwerken-mstigter.nl (Home, Projecten, Partners, Verbouwingen + 9 dienstpagina's, live en web.archive.org, 2 okt 2026),
-Facebook-pagina (intro, Klooslaan 3, post 1 nov 2024 "grote overkapping" met foto's), Google-profiel (Timmerman, 4,2 uit 5,
-geen openingstijden, niet geclaimd; reviewthema "badkamer" 2x; foto's alleen na inloggen, dus niet gebruikt).
-
-## Keuzes (5 regels)
-- Letter: Instrument Sans (variabel, self-hosted), koppen 450 met -0.032em, UI 11px hoofdletters met tracking.
-- Kleur: koel wit #f4f5f4, inkt #15191b, grijs #586064, nacht voor contact; enige accent = de lucht #addef7 uit hun eigen foto.
-- Beeld: hun eigen dakkapel (4928 px breed) onderin het eerste scherm, de lucht loopt als vlak door tot bovenin en draagt de kop.
-- Opbouw: hero, werk (eigen 9 diensten + overkapping, foto schuift mee, elke regel als appje), renovatie Ridderkerk, details
-  appartement (3 genummerde details uit hun eigen tekst), klanten (samenvatting Google), contact.
-- Waarom: dakkapellen zijn hun beste werk en hun beste foto; licht en open, totaal anders dan Hoeksma (warm beige, split) en Vloerfix (donker).
+timmerwerken-mstigter.nl (Home, Projecten, Verbouwingen; 2016), Facebook-pagina (adres, omslagfoto, overkapping nov 2024),
+Google-profiel (4,2 uit 5; 2 positieve reviews met tekst, 2x 5 sterren zonder tekst, 1x 1 ster). Foto's: src/assets/BRONNEN.txt.
