@@ -135,3 +135,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Schoenreparatieservice ROB, Alblasserdam | https://michaelbeset-ops.github.io/sitefront/rob-schoenreparatie-alblasserdam/ | geen website, 4,5 uit 31, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Rijschool Herman, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/rijschool-herman-ridderkerk/ | oude site niet mobiel, 5,0 uit 3, 06/WhatsApp. | 2026-10-02 | demo premium |
 | Sportschool Kwikkers, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/sportschool-kwikkers-ridderkerk/ | site ligt plat (504), 4,8 uit 12, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Schilderwerken Radi Drechtsteden, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/schilderwerken-radi/ | site bestaat niet meer, 4,3 uit 13, 06/WhatsApp. | 2026-10-02 | demo premium |
+| MrVie Detailing, Barendrecht | https://michaelbeset-ops.github.io/sitefront/mrvie-detailing-barendrecht/ | domein leeg (gereserveerd), 5,0 uit 3, 06/WhatsApp. | 2026-10-02 | demo premium |
+| Stigter Timmer- en Montagebedrijf, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/stigter-timmerwerken-ridderkerk/ | site 404/leeg, 4,2 uit 5, 06/WhatsApp. | 2026-10-02 | demo premium |

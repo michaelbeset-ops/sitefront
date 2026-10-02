@@ -1,0 +1,40 @@
+---
+import { url, waAfspraak, site } from '../data/site';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo-wit.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+---
+<header class="kop sticky top-0 z-40 -mb-[4.5rem] text-licht" data-kop>
+  <div class="wrap grid h-[4.5rem] grid-cols-[1fr_auto] items-center md:grid-cols-[1fr_auto_1fr]">
+    <a href={url('')} class="justify-self-start" aria-label={`${site.naam}, naar de homepage`}>
+      <Image src={logo} widths={[180, 300]} sizes="150px" alt="" loading="eager" class="h-[1.6rem] w-auto md:h-[1.85rem]" />
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden md:block">
+      <ul class="ui flex gap-9">
+        <li><a href={h('pakketten')} class="lijn-in">Pakketten</a></li>
+        <li><a href={h('voor-na')} class="lijn-in">Voor en na</a></li>
+        <li><a href={h('vie')} class="lijn-in">Over Vie</a></li>
+        <li><a href={h('contact')} class="lijn-in">Contact</a></li>
+      </ul>
+    </nav>
+    <p class="ui flex items-center justify-end gap-8">
+      <a href={site.telHref} class="lijn-in num hidden lg:inline">{site.tel}</a>
+      <a href={waAfspraak} class="lijn-in">WhatsApp</a>
+    </p>
+  </div>
+</header>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]');
+  if (kop) {
+    const zet = () => kop.classList.toggle('vast', window.scrollY > 24);
+    zet(); window.addEventListener('scroll', zet, { passive: true });
+  }
+</script>
+
+<style>
+  .kop { transition: background-color .4s, border-color .4s, backdrop-filter .4s; border-bottom: 1px solid transparent; }
+  .kop:global(.vast) { background: #0b0c0de6; border-bottom-color: var(--color-lijn-licht); backdrop-filter: blur(10px); }
+</style>

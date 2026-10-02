@@ -1,0 +1,67 @@
+---
+import { site, url, waAfspraak } from '../data/site';
+---
+<footer id="contact" class="border-t border-lijn-licht bg-nacht text-licht" aria-labelledby="t-contact">
+  <div class="wrap grid gap-y-16 pb-20 pt-24 md:grid-cols-12 md:gap-x-8 lg:pb-28 lg:pt-36">
+    <div class="rijs md:col-span-6 lg:col-span-5">
+      <h2 id="t-contact" class="text-2xl">Plan uw beurt met een appje.</h2>
+      <p class="mt-6 max-w-sm text-licht-zacht">Doordeweeks ’s avonds, in het weekend overdag. Vragen? Stel ze gerust.</p>
+      <div class="mt-10 flex flex-wrap items-center gap-x-9 gap-y-5">
+        <a href={waAfspraak} class="knop knop-vol">WhatsApp {site.tel}</a>
+        <a href={site.telHref} class="lijn text-sm">Of bel</a>
+      </div>
+    </div>
+
+    <div class="rijs md:col-span-6 lg:col-span-5 lg:col-start-8" style="--d:.06s">
+      <h3 class="ui text-licht-zacht">Openingstijden</h3>
+      <dl class="mt-5" data-tijden>
+        {site.tijden.map(([dag, van, tot], i) => (
+          <div class="dag flex justify-between gap-6 border-t border-lijn-licht py-3" data-dag={(i + 1) % 7}>
+            <dt>{dag}</dt>
+            <dd class="num whitespace-nowrap text-licht-zacht">{van}–{tot}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="grid gap-12 border-t border-lijn-licht pt-14 text-sm sm:grid-cols-3 md:col-span-12">
+      <div>
+        <h3 class="ui text-licht-zacht">Adres</h3>
+        <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-licht-zacht">{site.terrein}</span></p>
+        <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
+      </div>
+      <div>
+        <h3 class="ui text-licht-zacht">Contact</h3>
+        <p class="mt-4 space-y-1">
+          <a href={waAfspraak} class="lijn-in block w-fit">WhatsApp</a>
+          <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
+          <a href={`mailto:${site.mail}`} class="lijn-in block w-fit break-all">{site.mail}</a>
+        </p>
+      </div>
+      <div>
+        <h3 class="ui text-licht-zacht">Volgen</h3>
+        <p class="mt-4 space-y-1">
+          <a href={site.instagram} class="lijn-in block w-fit">Instagram</a>
+          <a href={site.youtube} class="lijn-in block w-fit">YouTube</a>
+        </p>
+        <p class="mt-4 text-licht-zacht">Rolstoeltoegankelijke ingang en parkeerplaats.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap"><div class="flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
+    <p>{site.naam}, {site.plaats}. <span class="num">{site.google.score}</span> op Google ({site.google.aantal} reviews).</p>
+    <p><a href={url('privacy/')} class="lijn-in">Privacyverklaring</a></p>
+  </div></div>
+  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Foto’s van uw Google-bedrijfsprofiel en Instagram; de foto bovenaan is een sfeerfoto via Unsplash, ter illustratie. Pakketten en prijzen zoals op mrvie.nl (archief mei 2026).</p>}
+</footer>
+
+<script>
+  const d = new Date().getDay();
+  document.querySelector(`[data-tijden] [data-dag="${d}"]`)?.classList.add('vandaag');
+</script>
+
+<style>
+  .dag:global(.vandaag) dt::after { content: ' · vandaag'; color: var(--color-licht-zacht); }
+  .dag:global(.vandaag) dd { color: var(--color-licht); }
+</style>
