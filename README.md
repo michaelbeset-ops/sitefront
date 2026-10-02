@@ -116,3 +116,12 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Van Wijgerden Transport B.V., Molenaarsgraaf | https://michaelbeset-ops.github.io/sitefront/van-wijgerden-transport/ | domein zonder website, 4,6 uit 8. | 2026-10-01 | demo, LinkedIn |
 | DiLAGO Hijs- en Heftechniek B.V., Papendrecht | https://michaelbeset-ops.github.io/sitefront/dilago-papendrecht/ | homepage leeg (serverfout), 4,8 uit 6. | 2026-10-01 | demo, LinkedIn/mail |
 | Smellies, Dordrecht (geurwax, webshop) | https://michaelbeset-ops.github.io/sitefront/smellies-dordrecht/ | Mijnwebwinkel-template, 5,0 uit 5, 06 op eigen site. | 2026-10-01 | demo, WhatsApp |
+| rossenaar-purmerend | https://michaelbeset-ops.github.io/sitefront/rossenaar-purmerend/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| matro-engineering | https://michaelbeset-ops.github.io/sitefront/matro-engineering/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| van-eekeres-administratie | https://michaelbeset-ops.github.io/sitefront/van-eekeres-administratie/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| artwyse-assen | https://michaelbeset-ops.github.io/sitefront/artwyse-assen/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| hettinga-heeg | https://michaelbeset-ops.github.io/sitefront/hettinga-heeg/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| ifokus-zuidvelde | https://michaelbeset-ops.github.io/sitefront/ifokus-zuidvelde/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| omnimac-eindhoven | https://michaelbeset-ops.github.io/sitefront/omnimac-eindhoven/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| xpertisewonen-hengelo | https://michaelbeset-ops.github.io/sitefront/xpertisewonen-hengelo/ | batch 22 adviesbureaus | 2026-10-02 | demo |
+| worp-advies-purmerend | https://michaelbeset-ops.github.io/sitefront/worp-advies-purmerend/ | batch 22 adviesbureaus | 2026-10-02 | demo |

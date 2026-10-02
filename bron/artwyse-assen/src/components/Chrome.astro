@@ -1,0 +1,44 @@
+---
+import { site, url, planMail } from '../data/site';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const tel = `<svg viewBox="0 0 24 24" class="h-[1em] w-[1em]" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"/></svg>`;
+const nav = [['#werk', 'Werk'], ['#hout', 'Houtbouw'], ['#projecten', 'Projecten'], ['#contact', 'Contact']];
+---
+{deel === 'kop' ? (
+  <header class="sticky top-0 z-40 border-b border-inkt bg-papier">
+    <div class="flex h-16 items-center justify-between gap-4 px-4 md:px-6">
+      <a href={url('')} class="flex items-center gap-3 no-underline" aria-label={`${site.naam}, naar de homepage`}>
+        <span class="grid h-8 w-8 place-items-center bg-inkt" aria-hidden="true"><span class="h-2 w-4 bg-riet"></span></span>
+        <span class="text-[1.35rem] font-semibold leading-none tracking-[-.02em]">Artwyse</span>
+        <span class="mono hidden border-l border-lijn pl-3 leading-tight text-grafiet sm:block">architecten<br />engineers</span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-8 text-[.98rem]">
+          {nav.map(([h, t]) => <li><a href={url(h)} class="no-underline underline-offset-[6px] decoration-1 transition-colors hover:text-mos hover:underline">{t}</a></li>)}
+        </ul>
+      </nav>
+      <a href={site.telHref} class="knop !px-3.5 !py-2.5 text-[.95rem]"><Fragment set:html={tel} /><span class="tabular-nums max-[379px]:sr-only">{site.tel}</span><span class="sr-only">bellen</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="op-inkt bg-inkt text-mist">
+    <div class="wrap grid gap-10 pb-10 pt-14 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="text-[1.6rem] font-semibold leading-none tracking-[-.02em] text-blad">Artwyse</p>
+        <p class="mono mt-2">Architecten · Engineers · Adviseurs</p>
+      </div>
+      <p class="md:col-span-4">
+        {site.straat}<br />{site.postcode} {site.plaats}<br />
+        <a href={site.telHref} class="lijn whitespace-nowrap tabular-nums">{site.tel}</a><br />
+        <a href={planMail} class="lijn break-all">{site.mail}</a>
+      </p>
+      <p class="md:col-span-3 md:text-right">
+        <a href={url('privacy/')} class="lijn">Privacyverklaring</a><br />
+        <span class="mono">KvK {site.kvk}</span><br />
+        <span class="mono">KIVI {site.kivi}</span>
+      </p>
+    </div>
+    {site.voorstel && <p class="wrap border-t border-lijn-licht pb-8 pt-6 text-sm">Foto's van uw eigen website, ter illustratie.</p>}
+  </footer>
+)}

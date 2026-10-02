@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@import "@fontsource-variable/radio-canada-big";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Het tekenblad: wit papier, potlood en inkt, met het riet-groen uit hun logo als enige kleur. */
+  --color-papier: #f2f1ec;     /* pagina */
+  --color-blad: #fafaf7;       /* stempel en kaders */
+  --color-inkt: #16181b;       /* tekst; op papier 16:1 */
+  --color-grafiet: #555a60;    /* bijtekst; op papier 6,3:1 */
+  --color-mos: #2c5a35;        /* links/hover; op papier 7,4:1 */
+  --color-riet: #a9c938;       /* logo-groen; alleen als vlak of op inkt (10:1) */
+  --color-lijn: #16181b2e;
+  --color-lijn-licht: #f2f1ec40;
+  --color-mist: #c9cbc4;       /* lichte tekst op inkt; 10:1 */
+
+  --font-sans: "Radio Canada Big Variable", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.45rem, 1vw + 1.15rem, 1.9rem);
+  --text-2xl: clamp(2rem, 2.6vw + 1.2rem, 3.4rem);
+  --text-3xl: clamp(2.45rem, 4.6vw + .6rem, 4.75rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 { font-weight: 500; line-height: 1.02; letter-spacing: -.025em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-riet); color: var(--color-inkt); }
+  :focus-visible { outline: 2px solid var(--color-mos); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 90rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .mono { font-family: var(--font-mono); font-size: .8125rem; letter-spacing: .01em; }
+
+  /* Knop: een ingekleurd vak uit de stempel, rechte hoeken, met een rietgroene onderrand. */
+  .knop { display: inline-flex; align-items: center; gap: .65rem; font-weight: 600; padding: .85rem 1.3rem; background: var(--color-inkt); color: var(--color-papier); text-decoration: none; transition: background-color .2s ease, box-shadow .2s ease; box-shadow: inset 0 -4px 0 var(--color-riet); }
+  .knop:hover { background: var(--color-mos); box-shadow: inset 0 -4px 0 var(--color-inkt); }
+
+  .lijn { text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 1px; transition: color .2s ease, text-decoration-thickness .2s ease; }
+  .lijn:hover { color: var(--color-mos); text-decoration-thickness: 2px; }
+  .op-inkt .lijn:hover { color: var(--color-riet); }
+
+  /* Ruitjespapier onder de schets: een fijne ruit van 24 px. */
+  .ruit { background-image: linear-gradient(#16181b12 1px, transparent 1px), linear-gradient(90deg, #16181b12 1px, transparent 1px); background-size: 24px 24px; background-position: -1px -1px; }
+
+  /* Stramienbol: de as-aanduiding op een bouwtekening. */
+  .bol { display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; border: 1px solid var(--color-inkt); border-radius: 999px; background: var(--color-papier); font-family: var(--font-mono); font-size: .75rem; font-weight: 500; line-height: 1; }
+
+  /* Projectfoto's: zwart-wit op het blad, in kleur zodra u erop wijst. */
+  .grijs img { filter: grayscale(1) contrast(1.05); transition: filter .35s ease; }
+  .grijs:hover img, .grijs:focus-within img { filter: none; }
+}

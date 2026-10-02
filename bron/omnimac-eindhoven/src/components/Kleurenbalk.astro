@@ -1,0 +1,17 @@
+---
+// Een drukkontrolestrook: volvlakken C M Y K, de overdrukken, rasters en een paskruis. Het detail uit de grafische markt.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const C = '#00a0e2', M = '#e4007c', Y = '#ffe500', K = '#121212';
+const vakken: string[] = [];
+for (const k of [C, M, Y, K]) vakken.push(k);
+vakken.push('#2e3192', '#e30613', '#009640'); // C+M, M+Y, C+Y
+for (const k of [C, M, Y, K]) for (const o of [0.75, 0.5, 0.25]) vakken.push(`color-mix(in srgb, ${k} ${o * 100}%, #f4f4f1)`);
+---
+<div class={`flex items-center gap-3 ${cls}`} aria-hidden="true">
+  <svg viewBox="0 0 20 20" class="h-4 w-4 shrink-0 text-inkt"><circle cx="10" cy="10" r="5.5" fill="none" stroke="currentColor" stroke-width="1" /><path d="M10 0v20M0 10h20" stroke="currentColor" stroke-width="1" /></svg>
+  <div class="flex h-4 min-w-0 flex-1 overflow-hidden">
+    {vakken.concat(vakken).map((c) => <span class="h-full min-w-3 flex-1" style={`background:${c}`}></span>)}
+  </div>
+  <svg viewBox="0 0 20 20" class="h-4 w-4 shrink-0 text-inkt"><circle cx="10" cy="10" r="5.5" fill="none" stroke="currentColor" stroke-width="1" /><path d="M10 0v20M0 10h20" stroke="currentColor" stroke-width="1" /></svg>
+</div>

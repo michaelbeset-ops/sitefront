@@ -1,0 +1,40 @@
+---
+// Drie gestapelde keien, nagetekend naar het iFokus-logo: matte paarsgrijze kiezels met een witte ader en een fijne korrel.
+// viewBox 0 0 400 520. `korrel` uit voor de kleine versies (logo, favicon).
+interface Props { class?: string; schaduw?: boolean; id?: string; korrel?: boolean }
+const { class: cls = '', schaduw = true, id = 'k', korrel = true } = Astro.props;
+const f = korrel ? `url(#${id}g)` : undefined;
+---
+<svg viewBox="0 0 400 520" class={cls} aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id={`${id}a`} cx="34%" cy="22%" r="85%">
+      <stop offset="0" stop-color="#a294ae" /><stop offset=".45" stop-color="#7b6a8e" /><stop offset="1" stop-color="#4b3d5d" />
+    </radialGradient>
+    <radialGradient id={`${id}b`} cx="38%" cy="20%" r="85%">
+      <stop offset="0" stop-color="#9789a4" /><stop offset=".5" stop-color="#706083" /><stop offset="1" stop-color="#433655" />
+    </radialGradient>
+    <radialGradient id={`${id}s`} cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#241d2b" stop-opacity=".32" /><stop offset="1" stop-color="#241d2b" stop-opacity="0" />
+    </radialGradient>
+    {korrel && (
+      <filter id={`${id}g`} x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" result="n" />
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .16 0" result="w" />
+        <feComposite in="w" in2="SourceGraphic" operator="in" result="wk" />
+        <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="wk" /></feMerge>
+      </filter>
+    )}
+  </defs>
+  {schaduw && <ellipse cx="204" cy="506" rx="182" ry="12" fill={`url(#${id}s)`} />}
+  <g filter={f}>
+    <!-- onderste kei: breed en plat -->
+    <path d="M22 426c-4-46 64-84 178-88 112-4 178 26 180 76 2 48-70 90-182 92C86 508 26 474 22 426Z" fill={`url(#${id}a)`} />
+    <!-- middelste kei: iets gekanteld -->
+    <path d="M76 282c-4-40 50-74 136-78 82-4 124 22 126 62 2 42-52 74-134 76-80 2-124-22-128-60Z" fill={`url(#${id}b)`} />
+    <!-- bovenste kei: eivorm -->
+    <path d="M136 150c-6-56 22-110 80-112 52-2 82 40 80 90-2 52-34 84-82 84-44 0-74-20-78-62Z" fill={`url(#${id}a)`} />
+  </g>
+  <path d="M46 408c46 30 126 52 222 42 40-4 70-14 94-28" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2.2" stroke-linecap="round" />
+  <path d="M88 264c44-24 122-36 196-18 22 6 38 14 48 22" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-linecap="round" />
+  <path d="M146 118c20 14 56 22 92 14 20-4 38-14 52-26" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="1.8" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "@fontsource/funnel-display/400.css";
+@import "@fontsource/funnel-display/500.css";
+@import "@fontsource/funnel-display/700.css";
+@import "@fontsource/martian-mono/400.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Het tekenvel van Matro: wit papier, potloodgrijs, inkt, het cyaan uit hun logo en de gele marker uit hun schetsen. */
+  --color-papier: #f5f6f3;     /* pagina */
+  --color-wit: #ffffff;
+  --color-inkt: #0d1014;       /* tekst; op papier 18:1 */
+  --color-potlood: #545b64;    /* bijtekst; op papier 6,4:1 */
+  --color-raster: #d5dadf;     /* kaderlijnen */
+  --color-cyaan: #00b5ec;      /* logo; alleen als vlak/lijn, nooit als tekst op wit */
+  --color-cyaan-diep: #006b96; /* links; op papier 5,6:1 */
+  --color-marker: #f6d02a;     /* gele marker; inkt erop 13:1 */
+  --color-lijn: #0d101426;
+
+  --font-display: "Funnel Display", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, Consolas, monospace;
+
+  --text-2xs: 0.66rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.9rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.45rem, .8vw + 1.2rem, 1.9rem);
+  --text-2xl: clamp(2.1rem, 2.6vw + 1.2rem, 3.6rem);
+  --text-3xl: clamp(2.75rem, 5.4vw + .5rem, 6.4rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-feature-settings: "ss01";
+  }
+  h1, h2, h3 { font-weight: 500; line-height: .98; letter-spacing: -.035em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-marker); color: var(--color-inkt); }
+  :focus-visible { outline: 2px solid var(--color-cyaan-diep); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 88rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .mono { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .02em; line-height: 1.5; }
+
+  /* Het tekenvel: dun inktkader met coördinaten langs de rand, zoals op hun eigen werktekeningen. */
+  .blad { position: relative; border: 1px solid var(--color-inkt); background: var(--color-wit); }
+  .coord { display: none; }
+  @media (min-width: 1024px) {
+    .coord { display: grid; position: absolute; font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-potlood); }
+    .coord-boven { left: 0; right: 0; top: -1.35rem; grid-template-columns: repeat(8, 1fr); }
+    .coord-links { top: 0; bottom: 0; left: -1.35rem; grid-template-rows: repeat(4, 1fr); }
+    .coord-boven span { text-align: center; border-left: 1px solid var(--color-raster); line-height: 1.35rem; }
+    .coord-boven span:first-child { border-left: 0; }
+    .coord-links span { display: flex; align-items: center; justify-content: center; border-top: 1px solid var(--color-raster); }
+    .coord-links span:first-child { border-top: 0; }
+  }
+
+  /* Knop: zwart blok met een cyaan balkje, zoals de balkjes in hun logo. Rechte hoeken. */
+  .knop { display: inline-flex; align-items: center; gap: .75rem; padding: .95rem 1.35rem .95rem 1.1rem; background: var(--color-inkt); color: var(--color-wit); font-weight: 500; font-size: 1.05rem; letter-spacing: -.005em; text-decoration: none; transition: background-color .2s ease, gap .2s ease; }
+  .knop::before { content: ""; width: 1.1rem; height: .32rem; background: var(--color-cyaan); transition: width .2s ease; }
+  .knop:hover { background: #22282f; }
+  .knop:hover::before { width: 1.6rem; }
+
+  .lijn { color: inherit; text-decoration: underline; text-decoration-color: var(--color-cyaan); text-decoration-thickness: 2px; text-underline-offset: 6px; transition: color .2s ease, text-decoration-color .2s ease; }
+  .lijn:hover { color: var(--color-cyaan-diep); text-decoration-color: currentColor; }
+
+  /* Titelhoek: de stempel rechtsonder op elke werktekening. */
+  .titel { display: grid; border: 1px solid var(--color-inkt); background: var(--color-wit); }
+  .titel > * { border-color: var(--color-inkt); padding: .55rem .75rem; }
+  .titel dt { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-potlood); line-height: 1.4; }
+  .titel dd { font-size: .98rem; line-height: 1.3; margin-top: .15rem; }
+
+  .marker { background: linear-gradient(transparent 58%, var(--color-marker) 58%, var(--color-marker) 92%, transparent 92%); padding-inline: .06em; }
+}

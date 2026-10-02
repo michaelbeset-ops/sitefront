@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@import "@fontsource/hedvig-letters-serif/400.css";
+@import "@fontsource/hedvig-letters-sans/400.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een opgeruimd kasboek: wit papier, zwarte inkt, grijze regels en het oranjegeel van hun logo. */
+  --color-papier: #fbfbf9;     /* pagina */
+  --color-wit: #ffffff;
+  --color-inkt: #15171b;       /* tekst; 17:1 */
+  --color-grafiet: #555b63;    /* bijtekst; 6,5:1 */
+  --color-regel: #dcdfe3;      /* kasboekregels */
+  --color-oranje: #faaf16;     /* het logo; alleen als vlak, inkt erop 10:1 */
+  --color-oranje-licht: #fff4dc;
+  --color-lijn: #15171b1f;
+
+  --font-serif: "Hedvig Letters Serif", Georgia, serif;
+  --font-sans: "Hedvig Letters Sans", "Helvetica Neue", Arial, sans-serif;
+
+  --text-xs: 0.8rem;
+  --text-sm: 0.9rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.2rem;
+  --text-xl: clamp(1.4rem, .8vw + 1.15rem, 1.8rem);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background-color: var(--color-papier); color: var(--color-inkt); font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.6; }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-oranje); color: var(--color-inkt); }
+  :focus-visible { outline: 2px solid var(--color-inkt); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 86rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 3rem; } }
+  .serif { font-family: var(--font-serif); }
+
+  .knop { display: inline-flex; align-items: center; gap: .6rem; padding: .9rem 1.4rem; background: var(--color-inkt); color: var(--color-wit); font-size: 1.05rem; text-decoration: none; border-radius: .5rem; transition: background-color .2s ease, color .2s ease; }
+  .knop:hover { background: var(--color-oranje); color: var(--color-inkt); }
+
+  .lijn { text-decoration: underline; text-decoration-color: var(--color-oranje); text-decoration-thickness: 2px; text-underline-offset: 6px; transition: text-decoration-color .2s ease; }
+  .lijn:hover { text-decoration-color: var(--color-inkt); }
+
+  /* De T-rekening: kolomkoppen, een zware lijn eronder en een lijn door het midden. */
+  .t-rek { position: relative; display: grid; }
+  @media (min-width: 768px) {
+    .t-rek { grid-template-columns: 1fr 1fr; }
+    .t-rek::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--color-inkt); transform: translateX(-1px); }
+  }
+  .t-rek ul li { border-bottom: 1px solid var(--color-regel); padding-block: .62rem; display: flex; justify-content: space-between; gap: 1rem; }
+  .totaal { border-top: 1px solid var(--color-inkt); border-bottom: 4px double var(--color-inkt); }
+}

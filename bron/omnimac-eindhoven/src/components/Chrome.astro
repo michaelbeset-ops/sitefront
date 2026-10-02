@@ -1,0 +1,37 @@
+---
+import { site, url, whatsapp, vraagMail } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { deel: 'kop' | 'voet' }
+const { deel } = Astro.props;
+const wa = `<svg viewBox="0 0 24 24" class="h-[1.1em] w-[1.1em]" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s1 2.6 1.1 2.7c.1.2 1.9 2.9 4.6 4 1.7.7 2.4.8 3.2.7.5-.1 1.5-.6 1.8-1.2.2-.6.2-1.1.1-1.2l-.4-.2Z"/></svg>`;
+---
+{deel === 'kop' ? (
+  <header class="border-b border-lijn">
+    <div class="wrap flex h-16 items-center justify-between gap-6 md:h-[4.75rem]">
+      <a href={url('')} class="flex items-center gap-2.5 no-underline" aria-label={`${site.naam}, naar de homepage`}>
+        <Merk class="h-6 w-9 text-inkt md:h-7 md:w-10" />
+        <span class="text-[1.2rem] font-bold leading-none tracking-[-.03em] md:text-[1.4rem]">Omnimac <span class="font-normal">Consultancy</span></span>
+      </a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-8 text-[.98rem]">
+          <li><a href={url('#diensten')} class="lijn no-underline hover:underline">Diensten</a></li>
+          <li><a href={url('#filemaker')} class="lijn no-underline hover:underline">FileMaker</a></li>
+          <li><a href={url('#support')} class="lijn no-underline hover:underline">Support</a></li>
+          <li><a href={url('#contact')} class="lijn no-underline hover:underline">Contact</a></li>
+        </ul>
+      </nav>
+      <a href={whatsapp} class="inline-flex items-center gap-2 text-[.98rem] font-medium no-underline transition-colors hover:text-rood"><Fragment set:html={wa} /><span class="max-[379px]:sr-only">WhatsApp</span></a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-inkt text-papier">
+    <div class="wrap grid gap-8 py-14 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <p class="flex items-center gap-2.5"><Merk class="h-7 w-10 text-papier" /><span class="text-[1.4rem] font-bold tracking-[-.03em]">Omnimac <span class="font-normal">Consultancy</span></span></p>
+      </div>
+      <p class="text-sm md:col-span-3">{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.telHref} class="lijn whitespace-nowrap hover:!text-geel">{site.tel}</a><br /><a href={vraagMail} class="lijn hover:!text-geel">{site.mail}</a></p>
+      <p class="mono text-papier/70 md:col-span-4 md:text-right">KvK {site.kvk}<br />Btw {site.btw}<br /><a href={url('privacy/')} class="lijn hover:!text-geel">Privacyverklaring</a></p>
+    </div>
+    {site.voorstel && <p class="wrap mono pb-8 text-papier/60">Schermafbeelding van uw eigen app FMS Controller, van omnimac.nl. Ontwerpvoorstel, ter illustratie.</p>}
+  </footer>
+)}

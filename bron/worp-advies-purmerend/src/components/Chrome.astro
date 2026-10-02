@@ -1,0 +1,30 @@
+---
+import { site, url, afspraakMail } from '../data/site';
+interface Props { deel: 'kop' | 'voet'; licht?: boolean }
+const { deel, licht = false } = Astro.props;
+---
+{deel === 'kop' ? (
+  <header class:list={['relative z-30', licht ? 'bg-nacht' : '']}>
+    <div class="wrap flex h-16 items-center justify-between gap-6 text-salie md:h-[5.25rem]">
+      <a href={url('')} class="kapitaal text-[1.25rem] leading-none no-underline md:text-[1.6rem]" aria-label={`${site.naam}, naar de homepage`}>Worp<span class="mx-[.08em] text-[1.25em] text-streep">/</span>Advies</a>
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-9 text-[.98rem]">
+          <li><a href={url('#administratie')} class="transition-colors hover:text-wit">Administratie</a></li>
+          <li><a href={url('#fiscaal')} class="transition-colors hover:text-wit">Fiscaal</a></li>
+          <li><a href={url('#juridisch')} class="transition-colors hover:text-wit">Juridisch</a></li>
+          <li><a href={url('#contact')} class="transition-colors hover:text-wit">Contact</a></li>
+        </ul>
+      </nav>
+      <a href={site.telHref} class="whitespace-nowrap text-[1rem] tabular-nums text-wit no-underline transition-colors hover:text-streep">{site.tel}</a>
+    </div>
+  </header>
+) : (
+  <footer class="bg-nacht text-salie">
+    <div class="wrap grid gap-8 py-14 md:grid-cols-12">
+      <p class="kapitaal text-[1.6rem] leading-none md:col-span-5">Worp<span class="mx-[.08em] text-[1.25em] text-streep">/</span>Advies</p>
+      <p class="text-sm md:col-span-4">{site.bv}<br />{site.straat}, {site.postcode} {site.plaats}<br /><a href={site.telHref} class="lijn whitespace-nowrap">{site.tel}</a> <span class="mx-1">/</span> <a href={afspraakMail} class="lijn">{site.mail}</a></p>
+      <p class="text-sm md:col-span-3 md:text-right"><a href={site.voorwaarden} class="lijn">Algemene voorwaarden</a><br /><a href={url('privacy/')} class="lijn">Privacyverklaring</a><br />KvK [[AANLEVEREN: KvK-nummer]]</p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs text-salie/80">Teksten van uw eigen website. Ontwerpvoorstel, ter illustratie.</p>}
+  </footer>
+)}
