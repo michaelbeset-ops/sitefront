@@ -1,124 +1,61 @@
 ---
-import { Image } from 'astro:assets';
-import { site, url, waAfspraak } from '../data/site';
-import pand from '../assets/pand.jpg';
-const beh = ['Acrylnagels', 'Gellak of BIAB', 'Nagelverlenging', 'French manicure', 'Nail art', 'Dip powder', 'Manicure', 'Pedicure', 'Manicure en pedicure'];
+import { site, url, tijden, chips, waAfspraak } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
 ---
-<footer id="contact" class="donker bg-nacht text-licht" aria-labelledby="t-contact">
-  <div class="wrap grid gap-y-16 pb-20 pt-24 md:grid-cols-12 md:gap-x-8 lg:pb-28 lg:pt-36">
-    <div class="rijs md:col-span-5">
-      <h2 id="t-contact" class="text-2xl">Plan je afspraak via WhatsApp.</h2>
-      <p class="mt-6 max-w-sm text-licht-zacht">Kies wat je wilt laten doen en wanneer het je uitkomt. Een voorbeeldfoto stuur je daarna gewoon mee.</p>
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken bg-nacht-2" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 4c2.6 0 4 2.9 4 7.2S13.9 20 12 20s-4-4.5-4-8.8S9.4 4 12 4Z"/><path d="M8.4 14.5c-2.4.2-4.2-.6-5.4-2 1.4-1 3.2-1.2 5-.7M15.6 14.5c2.4.2 4.2-.6 5.4-2-1.4-1-3.2-1.2-5-.7"/></svg>
+        </span>
+        <span><b>Fan Nails</b><small>studio</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Nagelstudio in {site.centrum}, Ridderkerk. Acryl, gellak en BIAB, nail art, manicure en pedicure.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-bes" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-bes" aria-label="Facebook"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4a21 21 0 0 0-2.3-.1c-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z"/></svg></a>
+      </p>
     </div>
-
-    <form class="rijs md:col-span-7 lg:col-span-6 lg:col-start-7" data-wa aria-describedby="wa-uitleg" style="--d:.05s">
-      <p id="wa-uitleg" class="ui text-licht-zacht">Je bericht aan Fan Nails</p>
-      <div class="mt-6 grid gap-x-8 sm:grid-cols-2">
-        <label class="veld sm:col-span-2"><span>Behandeling</span>
-          <select name="beh">
-            <option value="">Weet ik nog niet</option>
-            {beh.map((b) => <option>{b}</option>)}
-          </select>
-        </label>
-        <label class="veld"><span>Dag</span>
-          <select name="dag">
-            <option value="">Maakt niet uit</option>
-            {site.tijden.filter(([, t]) => t !== 'Gesloten').map(([d]) => <option>{d}</option>)}
-          </select>
-        </label>
-        <label class="veld"><span>Dagdeel</span>
-          <select name="deel">
-            <option value="">Maakt niet uit</option>
-            <option>Ochtend</option>
-            <option>Middag</option>
-          </select>
-        </label>
-        <label class="veld sm:col-span-2"><span>Wensen <em class="not-italic text-licht-zacht">(optioneel)</em></span><textarea name="wens" rows="2" placeholder="Bijvoorbeeld: kort, nude met een zilveren lijntje"></textarea></label>
-      </div>
-      <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-        <a href={waAfspraak} class="knop knop-vol" data-wa-knop>Open in WhatsApp</a>
-        <p class="text-sm text-licht-zacht">Zondag zijn we dicht.</p>
-      </div>
-    </form>
-
-    <div class="grid gap-12 border-t border-lijn-licht pt-14 text-sm sm:grid-cols-3 md:col-span-12 lg:grid-cols-12 lg:gap-x-8">
-      <div class="lg:col-span-3">
-        <p class="ui text-licht-zacht">Adres</p>
-        <p class="mt-4">{site.straat}<br />{site.postcode} {site.plaats}<br /><span class="text-licht-zacht">{site.centrum}, begane grond</span></p>
-        <a href={site.maps} class="lijn mt-4 inline-block">Route in Google Maps</a>
-      </div>
-      <div class="lg:col-span-3">
-        <p class="ui text-licht-zacht">Open</p>
-        <table class="mt-4 w-full max-w-[15rem]">
-          <caption class="sr-only">Openingstijden</caption>
-          <tbody>
-            {site.tijden.map(([d, t]) => (
-              <tr><th scope="row" class="py-0.5 pr-4 text-left font-normal">{d}</th><td class={`num py-0.5 text-right ${t === 'Gesloten' ? 'text-licht-zacht' : ''}`}>{t}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div class="lg:col-span-2">
-        <p class="ui text-licht-zacht">Contact</p>
-        <p class="mt-4 space-y-1">
-          <a href={waAfspraak} class="lijn-in block w-fit">WhatsApp</a>
-          <a href={site.telHref} class="lijn-in num block w-fit">{site.tel}</a>
-          <a href={site.instagram} class="lijn-in block w-fit">Instagram</a>
-          <a href={site.facebook} class="lijn-in block w-fit">Facebook</a>
-        </p>
-      </div>
-      <figure class="sm:col-span-3 lg:col-span-4 lg:col-start-9">
-        <Image src={pand} alt="De winkelpui van Fan Nails Studio met het uithangbord, de deuren open en de studio erachter" widths={[480, 800]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 70vw, 100vw" class="aspect-[16/10] w-full object-cover sm:max-w-md lg:max-w-none" />
-        <figcaption class="mt-3 text-xs text-licht-zacht">{site.straat}, {site.plaats}</figcaption>
-      </figure>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Behandelingen</p>
+      <ul class="mt-4 space-y-2">
+        {chips.slice(0, 7).map((c) => <li><a href={h('behandelingen')} class="no-underline transition-colors hover:text-roze">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-roze">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-roze">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-roze">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-roze">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </div>
-
-  <div class="wrap overflow-hidden" aria-hidden="true">
-    <svg class="voetmerk" viewBox="0 0 1000 130" role="presentation" focusable="false"><text x="500" y="112" text-anchor="middle" textLength="1000" lengthAdjust="spacing">FAN NAILS</text></svg>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-roze">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, ter illustratie. Reviews letterlijk van Google (stand 2 oktober 2026).</p>}
   </div>
-
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-3 border-t border-lijn-licht py-7 text-xs text-licht-zacht">
-    <p>{site.naam}, {site.plaats}.</p>
-    <p class="flex flex-wrap gap-x-6 gap-y-2">
-      <a href={site.instagram} class="lijn-in">Instagram</a>
-      <a href={site.facebook} class="lijn-in">Facebook</a>
-      <a href={url('privacy/')} class="lijn-in">Privacyverklaring</a>
-    </p>
-  </div>
-  {site.voorstel && <p class="wrap pb-8 text-xs text-licht-zacht">Foto’s van uw Google-bedrijfsprofiel, ter illustratie. Reviewsamenvatting op basis van uw Google-reviews (stand 2 oktober 2026).</p>}
 </footer>
-
-<script>
-  const f = document.querySelector<HTMLFormElement>('[data-wa]');
-  const k = document.querySelector<HTMLAnchorElement>('[data-wa-knop]');
-  if (f && k) {
-    const basis = k.href.split('?')[0];
-    const bouw = () => {
-      const d = new FormData(f);
-      const v = (n: string) => String(d.get(n) || '').trim();
-      const r = ['Hoi Fan Nails, ik wil graag een afspraak maken.'];
-      if (v('beh')) r.push('Behandeling: ' + v('beh'));
-      const wanneer = [v('dag'), v('deel').toLowerCase()].filter(Boolean).join(', ');
-      if (wanneer) r.push('Het liefst: ' + wanneer);
-      if (v('wens')) r.push('Wensen: ' + v('wens'));
-      k.href = basis + '?text=' + encodeURIComponent(r.join('\n'));
-    };
-    f.addEventListener('input', bouw);
-    f.addEventListener('change', bouw);
-    f.addEventListener('submit', (e) => { e.preventDefault(); bouw(); k.click(); });
-  }
-</script>
-
-<style>
-  .voetmerk { display: block; width: 100%; height: auto; margin-top: 2rem; }
-  .voetmerk text { font-family: var(--font-sans); font-size: 150px; font-weight: 200; letter-spacing: .1em; fill: var(--color-licht); fill-opacity: .1; }
-  .veld { display: block; padding-block: .25rem 1.5rem; }
-  .veld > span { display: block; font-size: var(--text-xs); color: var(--color-licht-zacht); }
-  .veld input, .veld select, .veld textarea { display: block; width: 100%; margin-top: .4rem; padding: .55rem 0; background: transparent; color: var(--color-licht); border: 0; border-bottom: 1px solid #f5f2f159; border-radius: 0; font: inherit; transition: border-color .3s; resize: vertical; }
-  .veld select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 10px) 55%, calc(100% - 5px) 55%; background-size: 5px 5px; background-repeat: no-repeat; }
-  .veld select option { color: #1b1819; }
-  .veld input::placeholder, .veld textarea::placeholder { color: #f5f2f173; }
-  .veld input:focus, .veld select:focus, .veld textarea:focus { outline: none; border-bottom-color: var(--color-messing-licht); }
-  .veld input:focus-visible, .veld select:focus-visible, .veld textarea:focus-visible { outline: 2px solid var(--color-licht); outline-offset: 4px; }
-</style>
