@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/gantari/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén merkkleur: het rood uit hun logo (huisje en "FIXT"). Bijna-zwart is een diepe versie van het petrol
+     uit hetzelfde logo. Gebroken wit en kalk als rustige ondergrond. */
+  --color-papier: #f5f3ef;      /* pagina */
+  --color-kalk: #ebe7e0;        /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #0f2129;        /* tekst, 16:1 op papier */
+  --color-grijs: #4f5d63;       /* bijtekst, 6,6:1 op papier */
+  --color-lijn: #0f21291f;
+  --color-rood: #d41217;        /* merkkleur, wit erop 5,0:1 */
+  --color-rood-diep: #ac0d11;   /* hover */
+  --color-nacht: #0f2129;       /* donkere secties */
+  --color-nacht-2: #18303a;     /* kaarten op nacht */
+  --color-licht: #f5f3ef;
+  --color-licht-zacht: #b4c0c4; /* bijtekst op nacht, 9:1 */
+  --color-lijn-licht: #f5f3ef22;
+  --color-vonk: #ff6a5c;        /* rood-accent op nacht, 6:1 */
+  --color-ster: #f2a516;        /* alleen sterren */
+
+  --font-kop: "Gantari Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, 1vw + 1.3rem, 2rem);
+  --text-3xl: clamp(2.25rem, 2.6vw + 1.3rem, 3.5rem);
+  --text-hero: clamp(2.6rem, 5.2vw + 0.6rem, 5.4rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .375rem;
+  --radius-lg: .5rem;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #0f21290f, 0 2px 8px #0f21290a;
+  --shadow-md: 0 14px 34px -14px #0f212940;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: 1; letter-spacing: -0.03em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-weight: 700; letter-spacing: -0.015em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-rood); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-vonk); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  /* Eyebrow met een kort rood streepje ervoor, als een maatlat. */
+  .eyebrow { display: inline-flex; align-items: center; gap: .75rem; font-family: var(--font-sans); font-size: .8125rem; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--color-rood); }
+  .eyebrow::before { content: ""; width: 1.75rem; height: 2px; background: currentColor; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-vonk); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk zoals hun logo: huisje met hamer, "PER" in inkt en "FIXT" in rood, eronder AANNEMERSBEDRIJF. */
+  .merk { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk img { width: 2.6rem; height: auto; }
+  .merk b { display: block; font-family: var(--font-kop); font-weight: 800; font-size: 1.6rem; letter-spacing: -0.01em; }
+  .merk b span { color: var(--color-rood); }
+  .merk small { display: block; margin-top: .3rem; font-size: .5625rem; letter-spacing: .42em; text-transform: uppercase; font-weight: 600; }
+  .donker .merk b span { color: var(--color-vonk); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-rood { background: var(--color-rood); color: #fff; box-shadow: 0 10px 22px -12px #d41217cc; }
+  .knop-rood:hover { background: var(--color-rood-diep); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-rood); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-kalk); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.1rem; font-size: .9375rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-rood); transition: color .2s; }
+  .link:hover { color: var(--color-rood); }
+  .donker .link { text-decoration-color: var(--color-vonk); }
+  .donker .link:hover { color: var(--color-vonk); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
