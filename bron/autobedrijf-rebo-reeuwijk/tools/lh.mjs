@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+import lighthouse from 'file:///C:/Users/Micha/AppData/Local/npm-cache/_npx/0f94ee7615faf582/node_modules/lighthouse/core/index.js';
+import fs from 'node:fs';
+const pad = process.argv[2] || '';
+const b = await chromium.launch({ args: ['--remote-debugging-port=9333'] });
+const r = await lighthouse('http://localhost:4772/sitefront/autobedrijf-rebo-reeuwijk/' + pad, { port: 9333, output: 'json', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'] });
+fs.writeFileSync('shots/lh' + (pad ? '-privacy' : '') + '.json', r.report);
+for (const [k, v] of Object.entries(r.lhr.categories)) console.log(k, Math.round(v.score * 100));
+for (const a of Object.values(r.lhr.audits)) if (a.score !== null && a.score < 0.9 && !['informative', 'notApplicable', 'manual'].includes(a.scoreDisplayMode)) console.log(' -', a.id, a.score, a.displayValue || '');
+await b.close();
