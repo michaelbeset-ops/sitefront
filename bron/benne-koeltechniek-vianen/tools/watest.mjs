@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+await p.goto('http://localhost:4787/sitefront/benne-koeltechniek-vianen/');
+await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); }; });
+await p.click('text=Mijn bedrijf'); await p.click('text=Koel- of vriescel');
+await p.selectOption('select[name=ruimtes]', '2'); await p.fill('input[name=plaats]', 'Vianen'); await p.fill('input[name=naam]', 'Test');
+await p.click('button[type=submit]');
+console.log(decodeURIComponent(await p.evaluate(() => window.__u[0])));
+const q = await b.newPage({ viewport: { width: 390, height: 844 } });
+await q.goto('http://www.bennekoeltechniek.nl/');
+console.log('oud: scrollWidth', await q.evaluate(() => document.documentElement.scrollWidth), 'viewport-meta', await q.evaluate(() => !!document.querySelector('meta[name=viewport]')), 'tel-links', await q.evaluate(() => document.querySelectorAll('a[href^="tel:"]').length));
+await q.screenshot({ path: 'shots/oud-390.png' });
+await b.close();
