@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:' + (process.env.PORT || 4770) + '/sitefront/gebhardt-schilderwerken-schiedam/');
+await p.click('a[data-dienst="Houtrotherstel"]'); await p.click('label.keuze:has-text("VvE")');
+await p.fill('input[name=naam]', 'Jan'); await p.fill('input[name=plaats]', 'Vlaardingen'); await p.fill('textarea[name=wens]', 'kozijnen voorkant');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('form[data-wa] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+await p.click('button[data-f=deuren]'); console.log('zichtbaar na filter:', await p.locator('[data-grid] > li:visible').count());
+await p.click('#tab-deur'); console.log('deur paneel zichtbaar:', await p.isVisible('#paneel-deur'));
+await b.close();
