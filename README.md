@@ -170,3 +170,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | G. Oudshoorn Grond- en Wegenbouw, Capelle a/d IJssel | https://michaelbeset-ops.github.io/sitefront/oudshoorn-grondverzet-capelle/ | niet mobiel, geen https, 5,0 uit 2, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Tegel- en Bouwbedrijf D. Hus, Maassluis | https://michaelbeset-ops.github.io/sitefront/tegel-bouwbedrijf-hus-maassluis/ | site uit 2015, niet mobiel, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Straatmakersbedrijf Ten Oever & Stierman, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/ten-oever-stierman-ridderkerk/ | niet mobiel, geen https, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Rijschool Spijkenisse XXL | https://michaelbeset-ops.github.io/sitefront/rijschool-xxl-spijkenisse/ | gedateerd template, 4,9 uit 257, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Arsam Auto's, Rhoon | https://michaelbeset-ops.github.io/sitefront/arsam-autos-rhoon/ | zelfgemaakte site, https kapot, 4,9 uit 44, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Tom Korbee Hoveniers, Nieuwerkerk a/d IJssel | https://michaelbeset-ops.github.io/sitefront/tom-korbee-hoveniers-nieuwerkerk/ | site uit 2005, niet mobiel, 06/WhatsApp. | 2026-10-03 | demo premium |

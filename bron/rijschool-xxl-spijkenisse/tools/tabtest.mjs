@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://localhost:4741/sitefront/rijschool-xxl-spijkenisse/');
+await p.click('#tab-motor'); console.log('motor zichtbaar', await p.isVisible('#paneel-motor'), 'auto', await p.isVisible('#paneel-auto'));
+let url = ''; await p.exposeFunction('vang', u => url = u); await p.evaluate(() => { window.open = (u) => { window.vang(u); return null; }; });
+await p.click('form .keuze:has-text("Motorrijlessen")'); await p.click('text=Nog niet'); await p.fill('input[name=naam]', 'Sam'); await p.click('button:has-text("Open in WhatsApp")'); await p.waitForTimeout(300);
+console.log(decodeURIComponent(url)); console.log('errs', errs.join('|'));
+await p.goto('http://localhost:4741/sitefront/rijschool-xxl-spijkenisse/privacy/'); await p.screenshot({ path: 'shots/privacy-1440.png' });
+console.log('privacy sw', await p.evaluate(() => document.documentElement.scrollWidth));
+await b.close();
