@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4711/sitefront/wk-rijopleidingen-hia/', { waitUntil: 'networkidle' });
+const lees = () => p.evaluate(() => [...document.querySelectorAll('[data-regels] li')].map(l => l.innerText.replace(/\s+/g, ' ')).join(' | ') + ' = ' + document.querySelector('[data-totaal]').textContent);
+console.log('auto', await lees());
+await p.check('input[name=eerder]'); await p.check('input[name=tt]'); console.log('auto eerder+tt', await lees());
+await p.click('label.keuze:has(input[value=motor])'); console.log('motor', await lees(), 'paneel', await p.evaluate(() => !document.querySelector('#paneel-motor').classList.contains('hidden')));
+await p.fill('[data-lessen]', '34'); await p.dispatchEvent('[data-lessen]', 'input'); console.log('motor34', await lees());
+await p.click('#tab-aanhanger'); console.log('aanh', await lees());
+await p.check('input[name=dag]'); console.log('aanh dag', await lees());
+console.log('errs', errs);
+await b.close();
