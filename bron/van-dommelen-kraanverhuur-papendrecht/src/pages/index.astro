@@ -1,0 +1,458 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, chips, waVraag, waMet } from '../data/site';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/p/*.jpg', { eager: true });
+const f = (n: string) => fotos[`../assets/p/${n}.jpg`].default;
+
+const vraag = (d: string) => waMet(`Goedendag Herman, ik wil graag de kraan met machinist inhuren voor ${d.toLowerCase()}.`);
+
+// Diensten: wat Herman zelf in zijn berichten beschrijft (grondverzet, saneren/bouwrijp, trilwerk als funderingsmachine).
+const diensten = [
+  { t: 'Grondverzet', d: 'Grond verzetten en ontgraven op infra- en bouwprojecten, zoals op de A15/N3.', src: f('a15'), alt: 'Gele Liebherr-rupskraan bovenop een gronddepot langs een infraproject', pos: '50% 50%' },
+  { t: 'Damwand en funderingswerk', d: 'Gekeurd als funderingsmachine, met een ICE 428B trilblok aan een jib.', src: f('denys-1'), alt: 'Liebherr R 924 met lange giek en trilblok, damwandplanken op de rijplaten ervoor', pos: '50% 38%' },
+  { t: 'Saneren en bouwrijp maken', d: 'Assisteren op locaties die gesloopt, gesaneerd en bouwrijp opgeleverd worden.', src: f('overschie-1'), alt: 'Rupskraan op een gronddepot naast een zeefinstallatie op een saneringslocatie in Overschie', pos: '60% 50%' },
+];
+
+// Projecten: letterlijk uit zijn eigen LinkedIn-berichten (en één bericht van een opdrachtgever). Jaartal = datum bericht.
+const projecten = [
+  { jaar: '2024', t: 'Trilwerk met de ICE 428B', wie: 'Project van Denys', d: 'Het nieuwe trilblok met jib en transportframe meteen ingezet.', fotos: ['hero', 'trilblok', 'denys-1', 'r924'], alt: 'Liebherr R 924 met trilblok trilt een damwandplank, olietanks op de achtergrond' },
+  { jaar: '2024', t: 'WarmtelinQ', wie: 'Inzet als machinist', d: 'Een opdrachtgever bedankte Herman voor zijn inzet bij WarmtelinQ.', fotos: [] as string[], alt: '' },
+  { jaar: '2021', t: 'Project A15/N3', wie: 'Martens en Van Oord, Strukton, Kaars Grondverzet', d: 'Grondverzet langs de A15, tot de laatste werkdag op het project.', fotos: ['a15'], alt: 'Rupskraan op een gronddepot langs de A15' },
+  { jaar: '2020', t: 'Sanering in Overschie', wie: 'Via A. van Zandwijk, voor BM bodem management', d: 'Gesloopt, gesaneerd en straks bouwrijp opgeleverd.', fotos: ['overschie-1', 'overschie-2'], alt: 'Rupskraan en zeefinstallatie tussen gronddepots in Overschie' },
+  { jaar: '2020', t: 'Waterfront Harderwijk', wie: 'Boskalis', d: 'Een periode meegewerkt op dit bijzondere project.', fotos: ['harderwijk'], alt: 'Liebherr-rupskraan bij een grote berg puin onder een blauwe lucht in Harderwijk' },
+  { jaar: '2018', t: 'Maasvlakte', wie: 'Namens Kaars Grondverzet Papendrecht', d: 'Met de machine assisteren op een schitterend project.', fotos: ['maasvlakte'], alt: 'Rupskraan met trilblok bij stalen buizen op de Maasvlakte' },
+  { jaar: '2018', t: 'Koningin Julianaplein, Den Haag', wie: 'Nieuwbouw', d: 'Met de kraan aan het werk voor de nieuwbouw op het plein.', fotos: [] as string[], alt: '' },
+];
+const lichtbak = await Promise.all(projecten.map(async (p) => ({
+  t: p.t, wie: p.wie,
+  fotos: await Promise.all(p.fotos.map(async (n) => (await getImage({ src: f(n), width: 1600, format: 'webp', quality: 80 })).src)),
+})));
+
+const stappen = [
+  ['Bel of app', 'Vertel wat er op de werf moet gebeuren, waar en wanneer.'],
+  ['Afstemmen', 'Planning, soort werk en of het trilblok mee moet.'],
+  ['Aan het werk', 'Herman bedient zijn eigen machine op uw project.'],
+  ['Klaar', 'Tot de laatste werkdag op het project, en dan door naar de volgende klus.'],
+];
+
+// Reacties: letterlijk onder Hermans openbare LinkedIn-berichten (emoji weggelaten, ingekort met …).
+const reacties = [
+  { t: 'Vakman met tot in de puntjes verzorgd materieel blij jou op de werf te hebben!', n: 'Marc R.', w: 'Denys', j: '2024' },
+  { t: 'Als het goed moet zijn moet bij Van Dommelen zijn. Knap voor elkaar Herman', n: 'Klaas H.', w: '', j: '2024' },
+  { t: '… Heel erg blij en tevreden met je fantastische inzet. Dank je wel!', n: 'Hans M.', w: 'Sanering Overschie', j: '2020' },
+  { t: 'Mooi werk Herman, op naar nog meer mooie klussen. En nog bedankt voor je inzet bij WarmtelinQ.', n: 'Jan J.', w: '', j: '2024' },
+  { t: 'Jij bedankt voor de altijd gezellige samenwerking Herman! En heel veel succes op je volgende project met die mooie Liebherr.', n: 'Hans de H.', w: 'Waterfront Harderwijk', j: '2020' },
+  { t: '… zie je ook elke keer tevreden kijken op je kraan als ik voorbij kom vakmannetje!', n: 'Cees v.d. B.', w: '', j: '2024' },
+];
+
+const soorten = ['Grondverzet', 'Damwand trillen', 'Funderingswerk', 'Saneren', 'Bouwrijp maken', 'Anders'];
+---
+<Base title={`${site.naam} | Graafkraan met machinist uit ${site.plaats}`} description={`Liebherr R 924 met machinist voor grondverzet, saneren, bouwrijp maken en damwand- en funderingswerk met trilblok. Vanuit ${site.plaats}, sinds ${site.sinds}.`}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: tekst op grafiet, rechts de eigen foto op volle hoogte -->
+    <section class="donker relative isolate overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <div class="absolute inset-0 -z-20 lg:left-[52%]">
+        <Image src={f('hero')} alt="Liebherr R 924 van Herman van Dommelen met trilblok en een damwandplank aan de giek, op rijplaten" widths={[480, 768, 960, 1152]} sizes="(min-width: 1024px) 48vw, 100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[30%_40%] lg:object-[35%_45%]" />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15161b59_0%,#15161bb3_42%,#15161bf7_78%)] lg:bg-[linear-gradient(90deg,#15161b_0%,#15161b_52%,#15161bb0_58%,#15161b00_72%)]" aria-hidden="true"></div>
+      <div class="wrap grid min-h-[calc(100svh-7.25rem)] items-end lg:grid-cols-12 lg:items-center">
+        <div class="pb-12 pt-44 sm:pt-72 lg:col-span-6 lg:py-24">
+          <p class="eyebrow"><b>Sinds {site.sinds}</b>Kraanverhuur · {site.plaats}</p>
+          <h1 id="t-hero" class="mt-7 text-hero">Graafkraan mét <span class="text-lavendel">machinist.</span></h1>
+          <p class="mt-6 max-w-xl text-[1.0625rem] text-licht/90 sm:text-lg md:text-[1.3125rem] md:leading-relaxed">Herman van Dommelen komt met zijn Liebherr R&nbsp;924 en bedient hem zelf. Voor grondverzet, saneren en bouwrijp maken, en met trilblok voor damwand- en funderingswerk.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#inzet" class="knop knop-paars">Inzet aanvragen<Icoon naam="pijl" /></a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+          <ul class="mt-10 grid gap-x-8 gap-y-2.5 text-[.9375rem] text-licht/90 sm:flex sm:flex-wrap">
+            <li class="flex items-center gap-2"><Icoon naam="schild" class="h-4 w-4 text-lavendel" />TCVT W4-03 machinist funderingsmachine</li>
+            <li class="flex items-center gap-2"><Icoon naam="tel" class="h-4 w-4 text-lavendel" /><a href={site.telHref} class="num font-semibold text-licht no-underline hover:text-lavendel">{site.tel}</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="absolute bottom-6 right-6 hidden items-center gap-3 bg-nacht/80 px-4 py-3 font-kop text-sm font-semibold uppercase tracking-[.08em] text-licht backdrop-blur-md schuin lg:flex" style="--s:10px">
+        <span class="h-2 w-2 bg-lavendel" aria-hidden="true"></span>Liebherr R 924 · trilblok ICE 428B
+      </p>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Werkzaamheden in het kort">
+      <div class="wrap flex items-center gap-2.5 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 border border-lijn bg-papier px-3.5 py-2 font-kop text-[.9375rem] font-semibold no-underline transition-colors hover:border-paars hover:bg-paars hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-28" aria-labelledby="t-dien">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><b>01</b>Diensten</p>
+            <h2 id="t-dien" class="mt-5 text-3xl">Eén machine, één machinist, de hele klus.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">U huurt de kraan en de vakman die hem bedient. Voor aannemers en grondverzetbedrijven die er een machine bij nodig hebben.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-3 lg:mt-14 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.t)} class="group relative flex aspect-[5/6] min-w-0 flex-col justify-end overflow-hidden bg-nacht text-licht no-underline schuin" style="--s:22px">
+                <Image src={b.src} alt={b.alt} widths={[480, 720, 960]} sizes="(min-width: 1280px) 400px, (min-width: 768px) 31vw, 92vw" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#15161b00_35%,#15161bc4_68%,#15161bf5_100%)]" aria-hidden="true"></span>
+                <span class="relative flex min-w-0 items-end justify-between gap-4 p-5 sm:p-6 lg:p-7">
+                  <span class="min-w-0">
+                    <span class="num font-kop text-sm font-semibold tracking-[.12em] text-lavendel">0{i + 1}</span>
+                    <span class="mt-1 block font-kop text-[1.5rem] font-bold leading-tight sm:text-[1.625rem]">{b.t}</span>
+                    <span class="mt-2 block text-[.9875rem] text-licht/85">{b.d}</span>
+                  </span>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center bg-paars text-wit transition-colors group-hover:bg-wit group-hover:text-paars" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="donker bg-nacht text-licht" aria-label="In het kort">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-14 lg:grid-cols-4 lg:py-16">
+        <div class="flex flex-col"><dt class="text-sm text-licht-zacht">Zelfstandig sinds</dt><dd class="num order-first font-kop text-[clamp(2.5rem,3vw+1.4rem,3.75rem)] font-bold leading-none text-lavendel">{site.sinds}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">Liebherr-rupsgraafmachine</dt><dd class="num order-first font-kop text-[clamp(2.5rem,3vw+1.4rem,3.75rem)] font-bold leading-none">R 924</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">TCVT-certificaat funderingsmachine</dt><dd class="num order-first font-kop text-[clamp(2.5rem,3vw+1.4rem,3.75rem)] font-bold leading-none">W4-03</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">Aanspreekpunt: eigenaar én machinist</dt><dd class="num order-first font-kop text-[clamp(2.5rem,3vw+1.4rem,3.75rem)] font-bold leading-none">1</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Materieel -->
+    <section id="materieel" class="py-20 lg:py-28" aria-labelledby="t-mat">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12 [&>*]:min-w-0">
+        <div class="rijs relative lg:col-span-5 lg:self-start">
+          <Image src={f('r924')} alt="Liebherr R 924 van Herman van Dommelen met de belettering Van Dommelen op de cabine-opbouw" widths={[480, 720, 960, 1152]} sizes="(min-width: 1280px) 500px, (min-width: 1024px) 40vw, 92vw" class="aspect-[4/5] w-full object-cover object-[50%_60%] schuin" style="--s:28px" />
+          <p class="absolute bottom-0 left-0 bg-paars px-4 py-2.5 font-kop text-sm font-bold uppercase tracking-[.08em] text-wit">Gekeurd als funderingsmachine</p>
+        </div>
+        <div class="lg:col-span-7 lg:pt-6">
+          <p class="eyebrow rijs"><b>02</b>Materieel</p>
+          <h2 id="t-mat" class="rijs mt-5 text-3xl">Verzorgd materieel, klaar voor trilwerk.</h2>
+          <p class="rijs mt-6 max-w-2xl text-lg text-grijs">De Liebherr R 924 is opgebouwd met Vibralics van Nijhuis Engineering uit Dronten en gekeurd als funderingsmachine. Daardoor mag er ook met een hoogfrequent trilblok aan gewerkt worden.</p>
+          <div class="mt-10 grid gap-5 sm:grid-cols-2">
+            <article class="kaart rijs p-6 md:p-7">
+              <span class="grid h-12 w-12 place-items-center bg-steen text-paars schuin" style="--s:8px"><Icoon naam="kraan" class="h-6 w-6" /></span>
+              <h3 class="mt-6 text-xl">Liebherr R 924</h3>
+              <ul class="mt-4 space-y-2.5 text-grijs">
+                <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-paars" />Rupsgraafmachine van Liebherr</li>
+                <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-paars" />Opgebouwd met Vibralics</li>
+                <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-paars" />Gekeurd als funderingsmachine</li>
+              </ul>
+            </article>
+            <article class="kaart rijs overflow-hidden" style="--d:.06s">
+              <Image src={f('trilblok')} alt="ICE 428B trilblok aan de jib van de Liebherr, boven de rijplaten" widths={[480, 800]} sizes="(min-width: 1024px) 330px, (min-width: 640px) 45vw, 92vw" class="aspect-[16/9] w-full object-cover object-[60%_55%]" />
+              <div class="p-6 md:p-7">
+                <h3 class="text-xl">Trilblok ICE 428B</h3>
+                <p class="mt-3 text-grijs">Met jib en transportframe, sinds augustus 2024 in gebruik. Voor het hoogfrequent trillen van damwand.</p>
+              </div>
+            </article>
+          </div>
+          <div class="rijs mt-5 flex items-center gap-4 bg-nacht p-5 text-licht schuin md:p-6" style="--s:16px">
+            <span class="grid h-12 w-12 shrink-0 place-items-center bg-paars text-wit"><Icoon naam="schild" class="h-6 w-6" /></span>
+            <p class="text-[.9875rem]"><b class="font-kop text-lg">TCVT-certificaat W4-03</b><br /><span class="text-licht-zacht">Herman is gecertificeerd machinist grote funderingsmachine.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Projecten: tijdlijn met lichtbak -->
+    <section id="projecten" class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-proj">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><b>03</b>Projecten</p>
+            <h2 id="t-proj" class="mt-5 text-3xl">Van de Maasvlakte tot Harderwijk.</h2>
+          </div>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-4 lg:col-start-9" style="--d:.05s">Een greep uit projecten waar Herman met zijn machine aan het werk was. Klik op een foto voor meer beelden.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-5">
+          {projecten.map((p, i) => p.fotos.length > 0 && (
+            <li class={`rijs ${i === 0 ? 'sm:col-span-2 lg:row-span-2' : ''}`} style={`--d:${(i % 3) * 0.05}s`}>
+              <button type="button" class={`project group ${i === 0 ? 'groot' : ''}`} data-project={i}>
+                <Image src={f(p.fotos[0])} alt={p.alt} widths={i === 0 ? [640, 960, 1280] : [400, 640]} sizes={i === 0 ? '(min-width: 1280px) 810px, (min-width: 1024px) 64vw, 92vw' : '(min-width: 1280px) 400px, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw'} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={i === 0 ? 'object-position:50% 30%' : ''} />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#15161b00_35%,#15161bb8_66%,#15161bf5_100%)]" aria-hidden="true"></span>
+                <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5 text-left sm:p-6">
+                  <span>
+                    <span class="num block font-kop text-sm font-bold tracking-[.1em] text-lavendel">{p.jaar} · <span class="font-semibold uppercase">{p.wie}</span></span>
+                    <span class={`mt-1 block font-kop font-bold leading-tight text-licht ${i === 0 ? 'text-3xl sm:text-4xl' : 'text-xl'}`}>{p.t}</span>
+                    {i === 0 && <span class="mt-2 block max-w-md text-licht/85">{p.d}</span>}
+                  </span>
+                  <span class="num flex shrink-0 items-center gap-1.5 bg-wit/15 px-2 py-1 text-xs font-semibold text-licht backdrop-blur-sm"><Icoon naam="foto" class="h-3.5 w-3.5" />{p.fotos.length}<span class="sr-only"> foto’s bekijken</span></span>
+                </span>
+              </button>
+            </li>
+          ))}
+          <li class="rijs flex flex-col justify-between gap-6 bg-nacht-2 p-6 schuin" style="--s:16px">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[.14em] text-lavendel">Ook aan het werk voor</p>
+              <ul class="mt-4 space-y-4">
+                {projecten.filter((p) => p.fotos.length === 0).map((p) => (
+                  <li class="border-l-2 border-paars pl-4"><b class="num font-kop text-lg">{p.jaar} · {p.t}</b><span class="block text-sm text-licht-zacht">{p.d}</span></li>
+                ))}
+              </ul>
+            </div>
+            <a href={site.linkedin} class="link inline-flex items-center gap-2 text-sm font-semibold">Meer op LinkedIn<Icoon naam="pijl" class="h-4 w-4" /></a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Werkwijze -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><b>04</b>Werkwijze</p>
+            <h2 id="t-stappen" class="mt-5 text-3xl">Zo huurt u Herman in.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Kort lijntje, direct met de machinist zelf.</p>
+        </div>
+        <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="kaart rijs relative p-7 lg:p-8" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-5xl font-bold leading-none text-paars">0{i + 1}</p>
+              <h3 class="mt-8 text-[1.375rem]">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+              {i < 3 && <Icoon naam="pijl" class="absolute right-6 top-8 hidden h-5 w-5 text-grijs/50 lg:block" />}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Over Herman -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[28rem] lg:col-span-5">
+          <Image src={f('overschie-2')} alt="De Liebherr van Herman bovenop een gronddepot, ernaast een zeefinstallatie" widths={[640, 800]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[78%_50%]" />
+          <p class="absolute bottom-4 left-4 bg-paars px-4 py-2 font-kop text-sm font-bold uppercase tracking-[.08em] text-wit">Streven naar perfectie</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-80rem)/2+2.5rem))]">
+          <p class="eyebrow"><b>05</b>Over Herman</p>
+          <h2 id="t-over" class="mt-5 text-3xl">De eigenaar zit zelf achter de knoppen.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Herman van Dommelen is eigenaar en machinist in de grond-, weg- en waterbouw. Sinds {site.sinds} werkt hij als zelfstandige vanuit {site.plaats}, voor aannemers en grondverzetbedrijven. Zijn visie: “streven naar perfectie”.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center bg-paars text-wit"><Icoon naam="mens" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Eén vaste machinist</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">U spreekt en krijgt Herman zelf, op elk project.</p></div>
+            </li>
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center bg-paars text-wit"><Icoon naam="glans" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Tot in de puntjes verzorgd</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Zo omschrijft een opdrachtgever zijn materieel.</p></div>
+            </li>
+            <li class="flex items-center gap-4 bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center bg-paars text-wit"><Icoon naam="schild" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Gecertificeerd voor funderingswerk</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">TCVT W4-03, machinist grote funderingsmachine.</p></div>
+            </li>
+          </ul>
+          <a href="#inzet" class="knop knop-paars mt-9">Inzet aanvragen<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Reacties -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-reacties">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><b>06</b>Reacties</p>
+            <h2 id="t-reacties" class="mt-5 text-3xl">Wat opdrachtgevers en collega’s zeggen.</h2>
+          </div>
+          <a href={site.linkedin} class="rijs kaart flex items-center gap-4 self-end p-5 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9" style="--d:.05s">
+            <span class="grid h-12 w-12 shrink-0 place-items-center bg-[#0a66c2] text-wit"><Icoon naam="in" class="h-6 w-6" /></span>
+            <span class="flex-1"><b class="block font-kop text-lg">Reacties op LinkedIn</b><span class="text-sm text-grijs">Onder de berichten van Herman, letterlijk overgenomen</span></span>
+            <Icoon naam="pijl" class="h-5 w-5 text-paars" />
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-4 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-5">
+          {reacties.map((r, i) => (
+            <li class="kaart rijs flex flex-col p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <svg viewBox="0 0 32 24" class="h-6 w-8 text-paars" fill="currentColor" aria-hidden="true"><path d="M0 24V14C0 6 4 1.5 12 0l1.5 3.5C9 5 7 8 7 11h6v13zm18 0V14c0-8 4-12.5 12-14l1.5 3.5C27 5 25 8 25 11h6v13z"/></svg>
+              <blockquote class="mt-4 flex-1 text-[1.0625rem] leading-relaxed">{r.t}</blockquote>
+              <p class="mt-6 flex items-center justify-between gap-3 border-t border-lijn pt-4 text-sm">
+                <span><b class="font-semibold">{r.n}</b>{r.w && <span class="text-grijs"> · {r.w}</span>}</span>
+                <span class="num text-grijs">{r.j}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10. Inzetplanner -->
+    <section id="inzet" class="bg-steen py-20 lg:py-28" aria-labelledby="t-inzet">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10 [&>*]:min-w-0">
+        <div class="lg:col-span-5">
+          <p class="eyebrow"><b>07</b>Inzet aanvragen</p>
+          <h2 id="t-inzet" class="mt-5 text-3xl">Machinist nodig op de werf?</h2>
+          <p class="mt-6 text-lg text-grijs">Vul in wat, waar en wanneer. U ziet meteen het bericht dat naar Herman gaat, en verstuurt het zelf via WhatsApp.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center bg-paars text-wit"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-paars" /></a></li>
+            <li><a href={waVraag} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center bg-steen text-paars"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="text-grijs">Stuur meteen een tekening of foto mee</span></span><Icoon naam="pijl" class="h-5 w-5 text-paars" /></a></li>
+            <li><a href={site.linkedin} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center bg-steen text-paars"><Icoon naam="in" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">LinkedIn</b><span class="text-grijs">Volg de projecten van Herman</span></span><Icoon naam="pijl" class="h-5 w-5 text-paars" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-inzet aria-describedby="in-uitleg">
+          <h3 class="text-2xl">Inzetplanner</h3>
+          <p id="in-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u zelf in WhatsApp op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Soort werk</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {soorten.map((b) => <label class="keuze"><input type="checkbox" name="werk" value={b} class="sr-only" /><span>{b}</span></label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Trilblok nodig?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Ja', 'Nee', 'Weet ik nog niet'].map((b, i) => <label class="keuze"><input type="radio" name="tril" value={b} class="sr-only" checked={i === 2} /><span>{b}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Vanaf</span><input type="date" name="start" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Hoe lang ongeveer</span>
+              <select name="duur" class="veld mt-2">
+                <option value="">Nog niet bekend</option>
+                <option value="één dag">Eén dag</option>
+                <option value="een paar dagen">Een paar dagen</option>
+                <option value="één week">Eén week</option>
+                <option value="twee tot vier weken">Twee tot vier weken</option>
+                <option value="langer dan een maand">Langer dan een maand</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Plaats van het project</span><input name="plaats" class="veld mt-2" placeholder="Bijvoorbeeld Papendrecht" /></label>
+            <label class="block"><span class="text-sm font-semibold">Bedrijf <span class="font-normal text-grijs">(optioneel)</span></span><input name="bedrijf" autocomplete="organization" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Wat moet er gebeuren? Tekeningen kunt u na het openen meesturen."></textarea></label>
+          </div>
+          <div class="mt-8 bg-nacht p-5 text-licht schuin" style="--s:14px">
+            <p class="flex items-center gap-2 text-xs font-semibold uppercase tracking-[.12em] text-lavendel"><Icoon naam="wa" class="h-4 w-4" />Uw bericht aan Herman</p>
+            <pre class="mt-3 whitespace-pre-wrap font-sans text-[.9375rem] leading-relaxed text-licht/90" data-voorbeeld aria-live="polite"></pre>
+          </div>
+          <button type="submit" class="knop knop-paars mt-6 w-full sm:w-auto"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-paars text-wit" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.875rem,2.2vw+1.2rem,2.75rem)]">Kraan met machinist inhuren?</h2>
+          <p class="mt-2 text-lg text-wit/90">Bel of app Herman direct.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+          <a href={waVraag} class="knop knop-rand op-foto"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <!-- Lichtbak voor projectfoto's -->
+  <dialog class="lichtbak" data-lichtbak aria-labelledby="lb-titel">
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 text-licht sm:px-6">
+        <p><span class="block text-xs font-semibold uppercase tracking-[.14em] text-lavendel" data-lb-wie></span><b id="lb-titel" class="font-kop text-xl font-bold" data-lb-titel></b></p>
+        <button type="button" class="grid h-11 w-11 place-items-center bg-nacht-2 text-licht hover:bg-paars" data-lb-dicht><span class="sr-only">Sluiten</span><Icoon naam="kruis" class="h-5 w-5" /></button>
+      </div>
+      <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+        <img alt="" class="max-h-full max-w-full object-contain" data-lb-img />
+        <button type="button" class="lb-pijl left-2 sm:left-4" data-lb-vorige><span class="sr-only">Vorige foto</span><Icoon naam="links" class="h-6 w-6" /></button>
+        <button type="button" class="lb-pijl right-2 sm:right-4" data-lb-volgende><span class="sr-only">Volgende foto</span><Icoon naam="pijl" class="h-6 w-6" /></button>
+      </div>
+      <p class="num px-4 py-3 text-center text-sm text-licht-zacht" data-lb-teller aria-live="polite"></p>
+    </div>
+  </dialog>
+  <script type="application/json" id="lb-data" set:html={JSON.stringify(lichtbak)}></script>
+</Base>
+
+<script>
+  // Lichtbak
+  const data: { t: string; wie: string; fotos: string[] }[] = JSON.parse(document.getElementById('lb-data')?.textContent || '[]');
+  const dlg = document.querySelector<HTMLDialogElement>('[data-lichtbak]');
+  const img = document.querySelector<HTMLImageElement>('[data-lb-img]');
+  let p = 0, n = 0;
+  const toon = () => {
+    if (!dlg || !img) return;
+    const pr = data[p];
+    img.src = pr.fotos[n];
+    img.alt = `${pr.t}, foto ${n + 1} van ${pr.fotos.length}`;
+    dlg.querySelector('[data-lb-titel]')!.textContent = pr.t;
+    dlg.querySelector('[data-lb-wie]')!.textContent = pr.wie;
+    dlg.querySelector('[data-lb-teller]')!.textContent = `${n + 1} / ${pr.fotos.length}`;
+    dlg.querySelectorAll<HTMLElement>('.lb-pijl').forEach((b) => (b.hidden = pr.fotos.length < 2));
+  };
+  const stap = (d: number) => { n = (n + d + data[p].fotos.length) % data[p].fotos.length; toon(); };
+  document.querySelectorAll<HTMLButtonElement>('[data-project]').forEach((b) => b.addEventListener('click', () => { p = Number(b.dataset.project); n = 0; toon(); dlg?.showModal(); }));
+  dlg?.querySelector('[data-lb-dicht]')?.addEventListener('click', () => dlg.close());
+  dlg?.querySelector('[data-lb-vorige]')?.addEventListener('click', () => stap(-1));
+  dlg?.querySelector('[data-lb-volgende]')?.addEventListener('click', () => stap(1));
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg?.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') stap(-1); if (e.key === 'ArrowRight') stap(1); });
+  let x0 = 0;
+  img?.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  img?.addEventListener('touchend', (e) => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) stap(dx < 0 ? 1 : -1); });
+
+  // Inzetplanner: bericht live opbouwen, pas versturen in WhatsApp zelf.
+  const form = document.querySelector<HTMLFormElement>('[data-inzet]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const datum = (s: string) => { if (!s) return ''; const d = new Date(s + 'T12:00:00'); return new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(d); };
+  const bericht = () => {
+    if (!form) return '';
+    const d = new FormData(form);
+    const v = (k: string) => String(d.get(k) || '').trim();
+    const werk = d.getAll('werk').map(String);
+    const r = ['Goedendag Herman, ik wil graag de kraan met machinist inhuren.'];
+    if (werk.length) r.push('Soort werk: ' + werk.join(', ').toLowerCase());
+    if (v('tril') && v('tril') !== 'Weet ik nog niet') r.push('Trilblok nodig: ' + v('tril').toLowerCase());
+    if (v('start')) r.push('Vanaf: ' + datum(v('start')));
+    if (v('duur')) r.push('Duur: ' + v('duur'));
+    if (v('plaats')) r.push('Project in: ' + v('plaats'));
+    if (v('wens')) r.push('Toelichting: ' + v('wens'));
+    if (v('naam')) r.push('Met vriendelijke groet, ' + v('naam') + (v('bedrijf') ? ', ' + v('bedrijf') : ''));
+    else if (v('bedrijf')) r.push('Met vriendelijke groet, ' + v('bedrijf'));
+    return r.join('\n');
+  };
+  const werkBij = () => { if (vb) vb.textContent = bericht(); };
+  const st = document.querySelector<HTMLInputElement>('input[name=start]');
+  if (st) st.min = new Date().toISOString().slice(0, 10);
+  form?.addEventListener('input', werkBij);
+  form?.addEventListener('change', werkBij);
+  werkBij();
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.open('https://wa.me/31610932937?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+  });
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .95; letter-spacing: -0.025em; }
+  .project { position: relative; display: block; width: 100%; height: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: var(--color-nacht-2); cursor: zoom-in; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%); }
+  .project.groot { aspect-ratio: 4 / 5; } @media (min-width: 640px) { .project.groot { aspect-ratio: 16 / 10; } } @media (min-width: 1024px) { .project.groot { aspect-ratio: auto; min-height: 100%; } }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.625rem; padding: 0 1rem; background: var(--color-steen); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #d9d6ce; }
+  .keuze input:checked + span { background: var(--color-paars); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-paars); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 2px; border: 1.5px solid #15161b33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; min-height: 3rem; }
+  .veld:hover { border-color: #15161b66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-paars); }
+  .veld::placeholder { color: #7b7e86; }
+  .lichtbak { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #0e0f13f2; }
+  .lichtbak::backdrop { background: #0e0f13cc; }
+  .lb-pijl { position: absolute; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 3rem; height: 3rem; background: #15161bcc; color: #fff; transition: background-color .2s; }
+  .lb-pijl:hover { background: var(--color-paars); }
+</style>

@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
+await p.goto('http://localhost:4768/sitefront/van-dommelen-kraanverhuur-papendrecht/', { waitUntil: 'networkidle' });
+await p.click('[data-project="0"]'); await p.waitForTimeout(700); await p.keyboard.press('ArrowRight'); await p.waitForTimeout(700);
+console.log(await p.textContent('[data-lb-titel]'), await p.textContent('[data-lb-teller]'));
+await p.screenshot({ path: 'shots/lichtbak.png' }); await p.keyboard.press('Escape');
+await p.click('label.keuze:has-text("Damwand trillen")'); await p.click('label.keuze:has-text("Ja")');
+await p.fill('input[name=start]', '2026-11-02'); await p.selectOption('select[name=duur]', 'Eén week');
+await p.fill('input[name=plaats]', 'Dordrecht'); await p.fill('input[name=bedrijf]', 'Bouwbedrijf X'); await p.fill('input[name=naam]', 'Jan');
+console.log(await p.textContent('[data-voorbeeld]'));
+await p.locator('[data-inzet]').screenshot({ path: 'shots/planner.png' });
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('[data-inzet] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()).slice(0, 80)); console.log('errs', errs.join('|'));
+await b.close();

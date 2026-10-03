@@ -1,0 +1,53 @@
+---
+import { site, url, chips, waVraag } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <Merk class="text-licht" />
+      <p class="mt-6 max-w-xs">Graafkraan met machinist voor grondverzet, saneren, bouwrijp maken en damwand- en funderingswerk. Vanuit {site.plaats}, sinds {site.sinds}.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.linkedin} class="grid h-10 w-10 place-items-center bg-nacht-2 text-licht transition-colors hover:bg-paars" aria-label="LinkedIn"><Icoon naam="in" class="h-5 w-5" /></a>
+        <a href={waVraag} class="grid h-10 w-10 place-items-center bg-nacht-2 text-licht transition-colors hover:bg-paars" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-kop text-lg font-bold text-licht">Werkzaamheden</p>
+      <ul class="mt-4 space-y-2">
+        {chips.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-lavendel">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-kop text-lg font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-lavendel">{site.tel}</a></li>
+        <li><a href={waVraag} class="no-underline transition-colors hover:text-lavendel">WhatsApp</a></li>
+        <li><a href={h('inzet')} class="no-underline transition-colors hover:text-lavendel">Inzet aanvragen</a></li>
+        <li>{site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 lg:col-span-3">
+      <p class="font-kop text-lg font-bold text-licht">Eerder aan het werk</p>
+      <ul class="mt-4 space-y-2">
+        <li>Maasvlakte</li>
+        <li>Waterfront Harderwijk</li>
+        <li>Rotterdam-Overschie</li>
+        <li>Project A15/N3</li>
+        <li>Den Haag, Koningin Julianaplein</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.handelsnaam}, {site.plaats} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-lavendel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s en citaten uit de openbare LinkedIn-berichten van Herman van Dommelen, ter illustratie.</p>}
+  </div>
+</footer>
