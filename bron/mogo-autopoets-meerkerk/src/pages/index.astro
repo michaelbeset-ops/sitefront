@@ -1,0 +1,490 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, reviews, waAfspraak, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import heroMobiel from '../assets/hero-mobiel.jpg';
+import heroDesk from '../assets/hero-desk.jpg';
+import pumaGlans from '../assets/puma-glans.jpg';
+import pumaZijkant from '../assets/puma-zijkant.jpg';
+import pumaVoor from '../assets/puma-voor.jpg';
+import vitoDof from '../assets/vito-dof.jpg';
+import vitoMotorkap from '../assets/vito-motorkap.jpg';
+import vitoZij from '../assets/vito-zij.jpg';
+import vitoKlaar from '../assets/vito-klaar.jpg';
+import vitoKlaar2 from '../assets/vito-klaar2.jpg';
+import q2Schuin from '../assets/q2-schuin.jpg';
+import q2Achter from '../assets/q2-achter.jpg';
+import q2Stoelen from '../assets/q2-stoelen.jpg';
+import q2Stuur from '../assets/q2-stuur.jpg';
+import camper from '../assets/camper.jpg';
+import camperAchter from '../assets/camper-achter.jpg';
+import camperCabine from '../assets/camper-cabine.jpg';
+import camperKeuken from '../assets/camper-keuken.jpg';
+import truck from '../assets/truck.jpg';
+import truckVoor from '../assets/truck-voor.jpg';
+import truckZij from '../assets/truck-zij.jpg';
+import deere from '../assets/deere.jpg';
+import deereVoor from '../assets/deere-voor.jpg';
+import deereCabine from '../assets/deere-cabine.jpg';
+import deereVloer from '../assets/deere-vloer.jpg';
+import bus from '../assets/bus.jpg';
+
+// Hero als <picture>: liggende uitsnede voor mobiel, staande voor desktop (scheelt veel kilobytes op de telefoon).
+const hm = await Promise.all([480, 800, 1100].map((w) => getImage({ src: heroMobiel, width: w, quality: 60, format: 'webp' })));
+const hd = await Promise.all([700, 1000, 1350].map((w) => getImage({ src: heroDesk, width: w, quality: 62, format: 'webp' })));
+const set = (a: { src: string; attributes: Record<string, any> }[], ws: number[]) => a.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+const vraag = (d: string) => waMet(`Hoi MoGo, ik heb een vraag over ${d.toLowerCase()}.`);
+
+const diensten = [
+  { t: 'Wassen en polijsten', d: 'Eerst grondig wassen, dan 1- of 2-staps polijsten tegen lichte krasjes en swirls.', src: vitoZij, alt: 'Witte Mercedes Vito in de wasplaats, net gewassen', pos: '50% 60%' },
+  { t: 'Lakbescherming en coating', d: 'Wax, een duurzame lakverzegeling of een keramische coating voor diepe glans.', src: pumaGlans, alt: 'Zwarte Ford Puma van dichtbij, de lak glanst als een spiegel', pos: '50% 55%' },
+  { t: 'Interieur dieptereiniging', d: 'Stofzuigen, stoomreinigen en vlekken uit de stoelen. Ook de kunststof delen.', src: q2Stoelen, alt: 'Schone stoelen en vloermatten in een Audi Q2', pos: '50% 50%' },
+  { t: 'Bedrijfsauto’s en bussen', d: 'Losse bussen of een heel wagenpark, ook met een servicepakket voor bedrijven.', src: vitoKlaar, alt: 'Witte Mercedes Vito met imperiaal, klaar en glanzend in de werkplaats', pos: '50% 55%' },
+  { t: 'Campers en vrachtwagens', d: 'Campers binnen en buiten, vrachtwagens gepolijst en in de wax.', src: camper, alt: 'Zwarte camperbus op een parkeerplaats, net gepoetst', pos: '50% 60%' },
+  { t: 'Bijzondere klussen', d: 'Een tractor klaar voor aflevering, een oldtimer of de cabine van een trein.', src: deere, alt: 'Groene John Deere-tractor in de werkplaats, glanzend gepoetst', pos: '50% 40%' },
+];
+
+const projecten = [
+  { id: 'puma', lijst: ['Keramische coating van JPD Products', 'Duurzame lakbescherming', 'Diepe glans'], t: 'Ford Puma', tag: 'Keramische coating', d: 'Voorzien van een hoogwaardige keramische coating van JPD Products. Het resultaat: duurzame lakbescherming, diepe glans en een professionele afwerking.', ig: 'https://www.instagram.com/p/DUlZgf4iDfw/',
+    fotos: [[pumaGlans, 'Achterkant van de Ford Puma met diepe glans op de lak'], [pumaZijkant, 'Zijkant van de Ford Puma met weerspiegeling van de straat in de lak'], [pumaVoor, 'Zwarte Ford Puma van voren, net gecoat'], [hero, 'Ford Puma voor een bakstenen bedrijfspand']] },
+  { id: 'vito', lijst: ['Gewassen', '2-staps gepolijst', 'Duurzame lakverzegeling'], t: 'Mercedes Vito', tag: '2-staps polijsten', d: 'Een doffe Vito weer tot leven gebracht. Gewassen, 2-staps gepolijst en daarna een duurzame lakverzegeling aangebracht.', ig: 'https://www.instagram.com/p/DHbAnSTiUtn/',
+    fotos: [[vitoMotorkap, 'Motorkap van de Vito tijdens het polijsten, met een microvezeldoek'], [vitoDof, 'De witte Vito van voren in de wasplaats'], [vitoKlaar, 'De Vito na de behandeling, schuin van voren'], [vitoKlaar2, 'De Vito na de behandeling, met glans op de motorkap']] },
+  { id: 'q2', lijst: ['Grondig gewassen en gepolijst', 'Interieur (stoom)gereinigd', 'Vlekken uit de stoelen', 'Lakbescherming'], t: 'Audi Q2', tag: 'Servicepakket 3', d: 'Volledig behandeld met servicepakket 3 voor bedrijven: grondig gewassen, het interieur gestoomd en gereinigd, vlekken uit de stoelen, gepolijst en een lakbescherming erop.', ig: 'https://www.instagram.com/p/CzbozxICTIW/',
+    fotos: [[q2Schuin, 'Witte Audi Q2 schuin van voren in een lichte werkplaats'], [q2Achter, 'Achterkant van de witte Audi Q2'], [q2Stuur, 'Schoon stuur en dashboard van de Audi Q2'], [q2Stoelen, 'Gereinigde stoelen en vloer van de Audi Q2']] },
+  { id: 'camper', lijst: ['1-staps gepolijst en in de wax', 'Kunststof ontvet en geïmpregneerd', 'Binnen alles met stoomextractie'], t: 'Camper', tag: 'Binnen en buiten', d: 'Gewassen, 1-staps gepolijst, in de wax gezet en alle kunststof ontvet en geïmpregneerd. Binnen alles gereinigd met stoomextractie, van kastjes en vloer tot de koelkast.', ig: 'https://www.instagram.com/p/CcQIO8Bs72p/',
+    fotos: [[camper, 'Zwarte camperbus van voren'], [camperAchter, 'Achterkant van de camper met fietsendrager'], [camperCabine, 'Gereinigde cabine van de camper'], [camperKeuken, 'Keukenblok en kastjes in de camper, schoon']] },
+  { id: 'deere', lijst: ['Volledig gereinigd', 'Lakdelen gepolijst', 'Interieur en kunststof aangepakt'], t: 'John Deere', tag: 'Klaar voor aflevering', d: 'Volledig gereinigd, de lakdelen gepolijst, het interieur aangepakt en alle kunststof schoongemaakt. Klaar voor aflevering aan de klant.', ig: 'https://www.instagram.com/p/DKKAp6EizVz/',
+    fotos: [[deere, 'Groene John Deere-tractor in de werkplaats'], [deereVoor, 'Voorkant van de John Deere met glanzende motorkap'], [deereCabine, 'Schone cabine van de tractor met stoel en stuur'], [deereVloer, 'Gereinigde vloer in de cabine van de tractor']] },
+  { id: 'truck', lijst: ['1-staps gepolijst', 'In de wax gezet'], t: 'Vrachtwagen', tag: 'Polijsten en wax', d: 'Een rode Volvo-trekker, 1-staps gepolijst en daarna in de wax gezet. Het resultaat mag er weer wezen.', ig: 'https://www.instagram.com/p/CY9ZZlXMw55/',
+    fotos: [[truck, 'Rode Volvo-vrachtwagen in een hal'], [truckVoor, 'Voorkant van de rode Volvo met glanzende grille'], [truckZij, 'Zijkant van de cabine, rood en glanzend']] },
+];
+
+const stappen = [
+  ['Stuur een appje', 'Vertel wat er moet gebeuren en stuur gerust een foto mee. Bellen kan natuurlijk ook.'],
+  ['Werkplaats of op locatie', 'U brengt de auto naar Meerkerk, of in overleg komt MoGo bij u langs.'],
+  ['Poetsen met aandacht', 'Wassen, polijsten, beschermen en binnen grondig reinigen. Met oog voor detail.'],
+  ['Weer als nieuw', 'Ophalen in Meerkerk, of hij staat klaar bij u voor de deur.'],
+];
+---
+<Base title={`${site.naam} | Auto poetsen en polijsten in Meerkerk`} description="MoGo Autopoetsbedrijf in Meerkerk: wassen, polijsten, lakverzegeling, keramische coating en interieurreiniging. In overleg op locatie. 4,8 op Google. Afspraak via WhatsApp.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: licht, tekst links, hun eigen glanzende Puma rechts op volle hoogte -->
+    <section class="relative bg-wit lg:grid lg:min-h-[calc(100svh-7rem)] lg:grid-cols-12" aria-labelledby="t-hero">
+      <div class="relative h-[34svh] min-h-[16rem] overflow-hidden bg-mist lg:order-2 lg:col-span-6 lg:h-auto">
+        <picture>
+          <source media="(min-width: 1024px)" srcset={set(hd, [700, 1000, 1350])} sizes="50vw" />
+          <source srcset={set(hm, [480, 800, 1100])} sizes="100vw" />
+          <img src={hm[1].src} width="1350" height="931" alt="Zwarte Ford Puma met keramische coating, glanzend voor een bakstenen bedrijfspand" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[50%_55%] lg:object-[50%_62%]" />
+        </picture>
+        <div class="absolute inset-x-0 bottom-0 h-1/3 bg-[linear-gradient(0deg,#0f121666,transparent)] lg:hidden" aria-hidden="true"></div>
+        <figure class="absolute bottom-6 left-6 hidden max-w-[17rem] rounded-md bg-wit/95 p-4 shadow-md backdrop-blur-md lg:block xl:bottom-10 xl:left-10">
+          <figcaption>
+            <span class="eyebrow text-[.6875rem]">Recent werk</span>
+            <span class="mt-2 block font-kop text-lg font-bold leading-tight">Ford Puma met een keramische coating</span>
+            <span class="mt-1 block text-sm text-grijs">Duurzame lakbescherming en diepe glans.</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="wrap relative flex items-center py-9 sm:py-12 lg:order-1 lg:col-span-6 lg:mr-0 lg:max-w-[39rem] lg:py-20 lg:pr-12 xl:pr-16">
+        <div>
+          <p class="eyebrow">Autopoetsbedrijf in Meerkerk</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Uw auto weer <span class="text-staal">als nieuw.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-grijs md:text-[1.3125rem] md:leading-relaxed">Polijsten en reinigen van nieuwe en gebruikte auto’s, binnen en buiten. In de werkplaats in Meerkerk of, in overleg, bij u op locatie.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waAfspraak} class="knop knop-staal"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href="#projecten" class="knop knop-rand">Bekijk ons werk</a>
+          </div>
+          <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-lijn pt-6 text-[.9375rem]">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="whitespace-nowrap"><b class="num font-kop">{site.google.score}</b> op Google, {site.google.aantal} reviews</span></li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr vanaf 8.30 uur</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-y border-lijn bg-mist" aria-label="Diensten in het kort">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-sm bg-wit px-4 py-2 text-sm font-medium no-underline shadow-sm transition-colors hover:bg-staal hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-28" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Van een snelle poetsbeurt tot een keramische coating.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Voor nieuwe en gebruikte auto’s, en net zo goed voor bussen, campers en vrachtwagens.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image quality={68} src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 380px, 46vw" class="aspect-[16/10] min-[380px]:aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[4/3]" style={`object-position:${b.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-4 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.0625rem] sm:text-xl">{b.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{b.d}</p>
+                  </div>
+                  <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-sm bg-staal-zacht text-staal transition-colors group-hover:bg-staal group-hover:text-wit sm:grid" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-md bg-mist px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-kop font-bold">Ook glascoating, of een boot of motor?</b> <span class="text-grijs">Prijs of planning weten? Stuur even een appje.</span></p>
+          <a href={waAfspraak} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Stel uw vraag</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="text-sm text-grijs">Score op Google</dt><dd class="cijfer text-staal">{site.google.score}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Google-reviews</dt><dd class="cijfer">{site.google.aantal}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Ingeschreven bij de KvK</dt><dd class="cijfer">2020</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Werkdagen per week open</dt><dd class="cijfer">5</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Projecten: kies een klus, blader door de foto's -->
+    <section id="projecten" class="donker bg-nacht py-24 text-licht lg:py-32" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-4 text-3xl">Uit de werkplaats.</h2>
+          </div>
+          <div class="rijs lg:col-span-4 lg:col-start-9" style="--d:.05s">
+            <p class="text-lg text-licht-zacht">Een paar klussen van de afgelopen tijd, met wat er precies is gedaan. Kies een project en blader door de foto’s.</p>
+          </div>
+        </div>
+
+        <div class="mt-12 lg:mt-14" data-proj>
+          <div role="tablist" aria-label="Projecten" class="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:flex-wrap md:px-0">
+            {projecten.map((p, i) => (
+              <button type="button" role="tab" id={`tab-${p.id}`} aria-controls={`paneel-${p.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="tab shrink-0">
+                <span class="font-kop font-bold">{p.t}</span><span class="tab-tag">{p.tag}</span>
+              </button>
+            ))}
+          </div>
+          {projecten.map((p, i) => (
+            <div role="tabpanel" id={`paneel-${p.id}`} aria-labelledby={`tab-${p.id}`} class="paneel mt-6 grid gap-6 lg:grid-cols-12 lg:gap-8" hidden={i !== 0}>
+              <div class="lg:col-span-8">
+                <div class="relative aspect-[4/3] overflow-hidden rounded-md bg-nacht-2">
+                  {p.fotos.map(([src, alt], j) => (
+                    <Image quality={68} src={src} alt={alt} widths={[480, 800, 1100]} sizes="(min-width: 1248px) 790px, (min-width: 1024px) 64vw, 92vw" loading="lazy" class="groot absolute inset-0 h-full w-full object-cover" data-groot={j} hidden={j !== 0} />
+                  ))}
+                </div>
+                <ul class="mt-3 grid grid-cols-4 gap-3" aria-label="Foto's">
+                  {p.fotos.map(([src, alt], j) => (
+                    <li><button type="button" class="duim block w-full overflow-hidden rounded-sm" data-duim={j} aria-pressed={j === 0 ? 'true' : 'false'} aria-label={`Toon foto ${j + 1}: ${alt}`}>
+                      <Image quality={68} src={src} alt="" widths={[160, 320]} sizes="(min-width: 1024px) 190px, 22vw" class="aspect-[4/3] w-full object-cover" />
+                    </button></li>
+                  ))}
+                </ul>
+              </div>
+              <div class="flex flex-col rounded-md bg-nacht-2 p-6 sm:p-8 lg:col-span-4">
+                <p class="eyebrow">{p.tag}</p>
+                <h3 class="mt-4 text-2xl">{p.t}</h3>
+                <p class="mt-4 text-licht-zacht">{p.d}</p>
+                <ul class="mt-6 grid gap-2.5 border-t border-lijn-licht pt-6 text-[.9375rem]">
+                  {p.lijst.map((x) => <li class="flex items-start gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-ijs" />{x}</li>)}
+                </ul>
+                <div class="mt-auto flex flex-wrap gap-3 pt-8">
+                  <a href={waMet(`Hoi MoGo, ik zag de ${p.t} op jullie site. Kunnen jullie zoiets ook voor mij doen?`)} class="knop knop-staal knop-klein"><Icoon naam="wa" />Zoiets ook?</a>
+                  <a href={p.ig} class="knop knop-rand knop-klein"><Icoon naam="insta" />Op Instagram</a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo werkt het</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Van appje tot glimmende auto.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Een afspraak maakt u via WhatsApp of telefoon. Op locatie kan in overleg.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart relative overflow-hidden p-5 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <span class="absolute inset-x-0 top-0 h-1 bg-staal" style={`transform:scaleX(${(i + 1) / 4});transform-origin:left`} aria-hidden="true"></span>
+              <p class="num font-kop text-lg font-extrabold text-staal">0{i + 1}</p>
+              <h3 class="mt-5 text-[1.0625rem] sm:mt-8 sm:text-xl">{t}</h3>
+              <p class="mt-2 text-sm text-grijs sm:mt-3 sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Over MoGo -->
+    <section id="over" class="bg-mist" aria-labelledby="t-over">
+      <div class="wrap grid gap-12 py-20 lg:grid-cols-12 lg:gap-12 lg:py-28">
+        <div class="relative lg:col-span-5">
+          <Image quality={68} src={vitoMotorkap} alt="Motorkap van een witte Mercedes Vito tijdens het polijsten, met een groene microvezeldoek" widths={[480, 800, 1000]} sizes="(min-width: 1248px) 470px, (min-width: 1024px) 38vw, 92vw" class="aspect-[4/5] w-full rounded-md object-cover object-[50%_40%] shadow-md" />
+          <p class="absolute -bottom-5 left-5 right-5 rounded-sm bg-inkt px-5 py-3.5 text-sm text-licht shadow-md sm:left-auto sm:right-6 sm:max-w-[16rem]">Midden in een klus: een Mercedes Vito, 2-staps gepolijst.</p>
+        </div>
+        <div class="pt-4 lg:col-span-6 lg:col-start-7 lg:pt-10">
+          <p class="eyebrow">Over MoGo</p>
+          <h2 id="t-over" class="mt-4 text-3xl">In de werkplaats, of gewoon bij u voor de deur.</h2>
+          <p class="mt-6 text-lg text-grijs">MoGo is gespecialiseerd in het polijsten en reinigen van nieuwe en gebruikte auto’s. Vanuit Meerkerk voor Groot-Ammers en omstreken, en in overleg op locatie door (bijna) heel Nederland.</p>
+          <p class="mt-4 text-lg text-grijs">Bijleren hoort erbij: in september volgden ze nog een Flextraining bij JPD Products. Je bent nooit uitgeleerd, zeggen ze zelf.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-start gap-4 rounded-md bg-wit px-5 py-4 shadow-sm">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-staal text-wit"><Icoon naam="pin" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">In overleg op locatie</h3><p class="mt-1 text-[.9375rem] text-grijs">Thuis of bij uw bedrijf. Klanten noemen het “service aan huis”.</p></div>
+            </li>
+            <li class="flex items-start gap-4 rounded-md bg-wit px-5 py-4 shadow-sm">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-staal text-wit"><Icoon naam="oog" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Oog voor detail</h3><p class="mt-1 text-[.9375rem] text-grijs">Zorgvuldig en kundig, dat komt in de reviews steeds terug.</p></div>
+            </li>
+            <li class="flex items-start gap-4 rounded-md bg-wit px-5 py-4 shadow-sm">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-staal text-wit"><Icoon naam="laptop" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Wachten kan ook</h3><p class="mt-1 text-[.9375rem] text-grijs">Een klant werkte in de wachtruimte gewoon door achter haar laptop.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="bg-wit py-20 lg:py-28" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col bg-papier p-6 md:w-auto md:p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-staal-zacht font-kop font-bold text-staal" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Openingstijden en locatie -->
+    <section id="route" class="py-20 lg:py-28" aria-labelledby="t-route">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-route" class="mt-4 text-3xl">Langs in Meerkerk, of wij bij u.</h2>
+          <p class="mt-6 text-lg text-grijs">De werkplaats zit aan de Gorinchemsestraat in Meerkerk. Op locatie werken kan in overleg.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van MoGo</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-staal">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num whitespace-nowrap py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-md">
+            <Image quality={68} src={bus} alt="De witte MoGo-bus met logo op een grasdijk, met blauwe lucht" widths={[600, 960]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full min-h-[18rem] w-full object-cover object-[50%_60%]" />
+            <figcaption class="absolute bottom-4 left-4 rounded-sm bg-wit/95 px-4 py-2 text-sm font-semibold shadow-sm">De MoGo-bus, voor werk op locatie</figcaption>
+          </figure>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-staal" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Contact: WhatsApp-bericht samenstellen -->
+    <section id="contact" class="border-t border-lijn bg-mist py-20 lg:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Afspraak maken</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Plan uw poetsbeurt.</h2>
+          <p class="mt-6 text-lg text-grijs">Kies wat voor voertuig het is en wat er moet gebeuren. Wij maken er een WhatsApp-bericht van; foto’s stuurt u daarna gewoon mee.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waAfspraak} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-staal text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-staal" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-staal-zacht text-staal"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-grijs">Ma t/m vr vanaf 8.30 uur</span></span><Icoon naam="pijl" class="h-5 w-5 text-staal" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-staal-zacht text-staal"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="text-grijs">mogoautopoets<wbr />@gmail.com</span></span><Icoon naam="pijl" class="h-5 w-5 shrink-0 text-staal" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw bericht aan MoGo</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Voertuig</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Auto', 'Bedrijfsbus', 'Camper', 'Vrachtwagen', 'Tractor of machine', 'Oldtimer', 'Anders'].map((b) => (
+                <label class="keuze"><input type="radio" name="voertuig" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Wat moet er gebeuren? <span class="font-normal text-grijs">(meerdere kan)</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Wassen en poetsen', 'Polijsten', 'Lakbescherming of coating', 'Interieur reinigen', 'Vlekken uit stoelen'].map((b) => (
+                <label class="keuze"><input type="checkbox" name="wat" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Waar?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <label class="keuze"><input type="radio" name="waar" value="In de werkplaats in Meerkerk" class="sr-only" checked /><span>Werkplaats Meerkerk</span></label>
+              <label class="keuze"><input type="radio" name="waar" value="Op locatie" class="sr-only" /><span>Op locatie</span></label>
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Merk en model <span class="font-normal text-grijs">(optioneel)</span></span><input name="model" class="veld mt-2" placeholder="Bijvoorbeeld: Ford Puma" /></label>
+            <label class="block" data-plaats hidden><span class="text-sm font-semibold">Plaats</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-staal"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Zaterdag en zondag zijn we dicht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-staal text-wit" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Toe aan een poetsbeurt?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje, dan plannen we het samen in.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waAfspraak} class="knop knop-wit"><Icoon naam="wa" />WhatsApp MoGo</a>
+          <a href={site.telHref} class="knop knop-rand op-donker num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Projecten: tabs en foto's wisselen.
+  const root = document.querySelector<HTMLElement>('[data-proj]');
+  if (root) {
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const kies = (t: HTMLButtonElement, focus = false) => {
+      tabs.forEach((x) => {
+        const aan = x === t;
+        x.setAttribute('aria-selected', String(aan));
+        x.tabIndex = aan ? 0 : -1;
+        const p = document.getElementById(x.getAttribute('aria-controls') || '');
+        if (p) p.hidden = !aan;
+      });
+      if (focus) t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => kies(t));
+      t.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          kies(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length], true);
+        }
+      });
+    });
+    root.querySelectorAll<HTMLElement>('[role=tabpanel]').forEach((p) => {
+      const groot = [...p.querySelectorAll<HTMLElement>('[data-groot]')];
+      const duimen = [...p.querySelectorAll<HTMLButtonElement>('[data-duim]')];
+      duimen.forEach((d) => d.addEventListener('click', () => {
+        const n = d.dataset.duim;
+        groot.forEach((g) => (g.hidden = g.dataset.groot !== n));
+        duimen.forEach((x) => x.setAttribute('aria-pressed', String(x === d)));
+      }));
+    });
+  }
+
+  // Contactformulier: maakt een WhatsApp-bericht, verstuurt zelf niets.
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    const plaats = f.querySelector<HTMLElement>('[data-plaats]');
+    f.addEventListener('change', () => { if (plaats) plaats.hidden = new FormData(f).get('waar') !== 'Op locatie'; });
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Hoi MoGo, ik wil graag een afspraak maken.'];
+      if (v('voertuig')) r.push('Voertuig: ' + v('voertuig') + (v('model') ? ` (${v('model')})` : ''));
+      else if (v('model')) r.push('Voertuig: ' + v('model'));
+      const wat = d.getAll('wat').map(String);
+      if (wat.length) r.push('Graag: ' + wat.join(', ').toLowerCase());
+      if (v('waar')) r.push('Waar: ' + v('waar') + (v('waar') === 'Op locatie' && v('plaats') ? ` in ${v('plaats')}` : ''));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open('https://wa.me/31621980563?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .96; letter-spacing: -0.04em; font-weight: 900; }
+  .cijfer { order: -1; font-family: var(--font-kop); font-variant-numeric: tabular-nums; font-size: clamp(2.75rem, 3vw + 1.5rem, 3.75rem); font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: #8f98a3; flex: none; }
+  [data-open='true'] .status-stip { background: #2f9e6a; box-shadow: 0 0 0 4px #2f9e6a33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: var(--radius-sm); background: var(--color-mist); }
+  .tab { display: flex; flex-direction: column; align-items: flex-start; gap: .15rem; padding: .8rem 1.1rem; border-radius: var(--radius-sm); background: var(--color-nacht-2); color: var(--color-licht); text-align: left; cursor: pointer; box-shadow: inset 0 0 0 1px #f6f7f91a; transition: background-color .2s, box-shadow .2s; }
+  .tab:hover { box-shadow: inset 0 0 0 1px #9fc0de80; }
+  .tab[aria-selected='true'] { background: var(--color-licht); color: var(--color-inkt); box-shadow: none; }
+  .tab-tag { font-size: .8125rem; color: var(--color-licht-zacht); }
+  .tab[aria-selected='true'] .tab-tag { color: var(--color-staal); }
+  .duim { opacity: .6; transition: opacity .2s; box-shadow: inset 0 0 0 0 transparent; }
+  .duim:hover, .duim[aria-pressed='true'] { opacity: 1; }
+  .duim[aria-pressed='true'] { outline: 2px solid var(--color-ijs); outline-offset: 2px; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-mist); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #dce3ea; }
+  .keuze input:checked + span { background: var(--color-staal); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-staal); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #0f121633; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #0f121666; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-staal); }
+  .veld::placeholder { color: #6b747e; }
+</style>

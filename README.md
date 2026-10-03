@@ -154,3 +154,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Rijschool Promoot, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/rijschool-promoot-ridderkerk/ | gedateerde schreeuwerige site, 4,9 uit 955, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Pitstop Car Polish, Gorinchem | https://michaelbeset-ops.github.io/sitefront/pitstop-carpolish-gorinchem/ | hosting opgeschort, 4,6 uit 22, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Krijgsman Hovenier, Numansdorp | https://michaelbeset-ops.github.io/sitefront/krijgsman-hovenier-numansdorp/ | gedateerde site, 5,0 uit 3, 06/WhatsApp. | 2026-10-03 | demo premium |
+| MoGo Autopoetsbedrijf, Meerkerk | https://michaelbeset-ops.github.io/sitefront/mogo-autopoets-meerkerk/ | domein weg, 4,8 uit 18, 06/WhatsApp. | 2026-10-03 | demo premium |

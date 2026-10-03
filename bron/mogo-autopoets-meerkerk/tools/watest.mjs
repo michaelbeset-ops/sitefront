@@ -1,0 +1,16 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4703/sitefront/mogo-autopoets-meerkerk/');
+await p.click('#tab-camper'); await p.waitForTimeout(200);
+console.log('camper zichtbaar', await p.isVisible('#paneel-camper'), 'puma verborgen', !(await p.isVisible('#paneel-puma')));
+await p.click('#paneel-camper [data-duim="3"]'); await p.waitForTimeout(200);
+console.log('groot 3 zichtbaar', await p.isVisible('#paneel-camper [data-groot="3"]'), 'groot 0 verborgen', !(await p.isVisible('#paneel-camper [data-groot="0"]')));
+await p.click('label.keuze:has-text("Camper")'); await p.click('label.keuze:has-text("Polijsten")'); await p.click('label.keuze:has-text("Interieur reinigen")');
+await p.click('label.keuze:has-text("Op locatie")'); await p.waitForTimeout(100);
+console.log('plaatsveld zichtbaar', await p.isVisible('[data-plaats]'));
+await p.fill('input[name=plaats]', 'Groot-Ammers'); await p.fill('input[name=model]', 'Fiat Ducato'); await p.fill('input[name=naam]', 'Sanne');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log('status:', await p.textContent('[data-status]'), '| errors:', errs.join(' | ') || 'geen');
+await b.close();
