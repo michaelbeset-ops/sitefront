@@ -189,3 +189,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Langedak Dakwerken, Delfgauw | https://michaelbeset-ops.github.io/sitefront/langedak-dakwerken-delfgauw/ | schuift op mobiel, kop valt weg, geen menu op mobiel, 4,7/12, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Autorijschool West, Rozenburg | https://michaelbeset-ops.github.io/sitefront/autorijschool-west-rozenburg/ | niet mobiel, tegenstrijdige prijzen en adressen, 4,0/8, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Airco Service Martin, Oosterhout | https://michaelbeset-ops.github.io/sitefront/airco-service-martin-oosterhout/ | 600px breed op mobiel, verouderde reviewwidget, tegenstrijdige openingstijden, 4,8/53, 06/WhatsApp. | 2026-10-03 | demo premium |
+| RCM Hofstede Loonbedrijf, Poeldijk | https://michaelbeset-ops.github.io/sitefront/rcm-hofstede-loonbedrijf-poeldijk/ | niet mobiel, "25 jaar actief" (nu 37), verouderde techniek, 5,0/2, 06/WhatsApp. | 2026-10-03 | demo premium |

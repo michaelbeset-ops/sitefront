@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const c = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await c.newPage();
+await p.goto('http://localhost:4788/sitefront/rcm-hofstede-loonbedrijf-poeldijk/', { waitUntil: 'networkidle' });
+await p.click('#tab-shovel'); console.log('shovel zichtbaar', await p.isVisible('#paneel-shovel'), 'graaf verborgen', !(await p.isVisible('#paneel-graaf')));
+await p.click('label.keuze:has-text("Egaliseren")'); await p.click('label.keuze:has-text("Afvoeren")');
+await p.fill('[name=plaats]', 'De Lier'); await p.selectOption('[name=wanneer]', 'Binnen een maand'); await p.fill('[name=naam]', 'Test BV');
+const [pop] = await Promise.all([c.waitForEvent('page'), p.click('button[value=wa]')]);
+console.log(decodeURIComponent(pop.url()));
+console.log(await p.evaluate(() => [...document.querySelectorAll('a[href*="wa.me"]')].length), 'wa-links');
+await b.close();

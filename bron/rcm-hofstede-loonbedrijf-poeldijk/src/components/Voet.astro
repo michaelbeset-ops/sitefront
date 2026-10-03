@@ -1,0 +1,61 @@
+---
+import { site, url, tijden, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
+import Logo from './Logo.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const kort = ['Grondverzet en graafwerk', 'Verkaveling voor de tuinbouw', 'Sloten en beschoeiingen', 'Egaliseren en grondbewerking', 'Leveren en afvoeren', 'Rijplaten en terreinen'];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="inline-block no-underline" aria-label="RCM Hofstede, naar de homepage">
+        <Logo licht class="h-9 w-auto" />
+        <span class="mt-1 block text-right text-[.625rem] font-semibold uppercase tracking-[.2em]">Loonbedrijf &amp; Grondverzet</span>
+      </a>
+      <p class="mt-6 max-w-xs">Loonwerk en grondverzet voor de land- en tuinbouw, sinds 1989 vanuit Poeldijk. VCA** gecertificeerd.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waOfferte} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {kort.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-ijs">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-ijs">{site.tel}</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-ijs">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-ijs">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-ijs">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.voluit} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-ijs">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw eigen website, Facebook-pagina en Google-bedrijfsprofiel, ter illustratie. Review letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>
