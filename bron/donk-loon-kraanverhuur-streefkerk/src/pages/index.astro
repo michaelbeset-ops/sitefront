@@ -1,0 +1,391 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, chips, waOfferte, waVraag, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import kraanPlaten from '../assets/kraan-platen.jpg';
+import bouwput from '../assets/bouwput.jpg';
+import sloot from '../assets/sloot.jpg';
+import inkuilen from '../assets/inkuilen.jpg';
+import sleepvoet from '../assets/sleepvoet.jpg';
+import kipper from '../assets/kipper.jpg';
+import valtra from '../assets/valtra.jpg';
+import kraanAvond from '../assets/kraan-avond.jpg';
+import mini from '../assets/mini.jpg';
+import bemesten from '../assets/bemesten.jpg';
+import klei from '../assets/klei.jpg';
+import kuilverdeler from '../assets/kuilverdeler.jpg';
+import baggeren from '../assets/baggeren.jpg';
+import kraanStad from '../assets/kraan-stad.jpg';
+import maart2026 from '../assets/maart2026.jpg';
+import hannes from '../assets/hannes.jpg';
+import teus from '../assets/teus.jpg';
+import greppelen from '../assets/greppelen.jpg';
+import zaaien from '../assets/zaaien.jpg';
+
+const vraag = (d: string) => waMet(`Goedendag, ik heb een vraag over ${d.toLowerCase()}.`);
+
+const diensten = [
+  { t: 'Grondverzet en bouwrijp maken', d: 'Ontgraven, aanvullen en terreinen bouwrijp maken voor de aannemerij.', src: bouwput, alt: 'Gele mobiele graafmachine naast een uitgegraven funderingssleuf met wapening', pos: '50% 55%' },
+  { t: 'Kraanverhuur', d: 'Mobiele graafmachines voor graaf-, laad- en hijswerk.', src: kraanPlaten, alt: 'Gele mobiele kraan met T. Donk-belettering tilt een rijplaat van een aanhanger', pos: '62% 50%' },
+  { t: 'Sloot- en oeverwerk', d: 'Sloten schonen, baggeren en greppelen in de polder.', src: sloot, alt: 'Graafmachine op een kade schoont een sloot langs een erf', pos: '50% 60%' },
+  { t: 'Inkuilen', d: 'Gras oprapen met de opraapwagen en de kuil verdelen.', src: inkuilen, alt: 'Groene Deutz-Fahr met opraapwagen op een gemaaid weiland, met koeien op de achtergrond', pos: '45% 60%' },
+  { t: 'Bemesten', d: 'Mest uitrijden met sleepslang of sleepvoetbemester.', src: sleepvoet, alt: 'Mesttank met een brede sleepvoetbemester achter een trekker op het erf', pos: '60% 60%' },
+  { t: 'Zand en grond', d: 'Handel in zand en grond, aan- en afgevoerd met eigen kippers.', src: kipper, alt: 'Groene trekker met een volgeladen rode kipper op een zandpad langs de dijk', pos: '50% 60%' },
+];
+
+const machines = [
+  { src: valtra, alt: 'Donkerrode Valtra-trekker op een betonnen erf', t: 'Valtra-trekker', groot: true, pos: '55% 60%' },
+  { src: kraanAvond, alt: 'Mobiele graafmachine met werklampen aan, naast een dumper, in de schemering', t: 'Mobiele kraan met dumper', pos: '40% 60%' },
+  { src: bemesten, alt: 'Trekker met sleepslangbemester en een grote haspel op het grasland', t: 'Sleepslang met haspel', pos: '50% 60%' },
+  { src: mini, alt: 'Minigraver aan de rand van een sloot met riet', t: 'Minigraver', pos: '50% 50%' },
+  { src: klei, alt: 'Graafmachine en trekker aan het werk op natte, kleiige grond', t: 'Graafwerk in de klei', pos: '50% 55%' },
+  { src: kuilverdeler, alt: 'Trekker met kuilverdeler op een kuilbult met gras', t: 'Kuilverdeler', pos: '50% 50%' },
+  { src: baggeren, alt: 'Trekker spuit bagger in een grote boog over het weiland', t: 'Bagger spuiten', pos: '50% 55%' },
+  { src: zaaien, alt: 'Groene trekker met een werktuig op een bewerkt perceel', t: 'Zaaien', pos: '50% 55%' },
+  { src: kraanStad, alt: 'Mobiele graafmachine met sorteergrijper op een bouwterrein', t: 'Bouwrijp maken', pos: '50% 45%' },
+];
+
+const stappen = [
+  ['Bel of app', 'Vertel wat er moet gebeuren, waar en wanneer. Foto’s van de plek helpen.'],
+  ['Samen doornemen', 'We bespreken de klus, de machines die nodig zijn en de planning.'],
+  ['Ingepland', 'U weet wanneer we komen. Bij loonwerk telt het weer mee.'],
+  ['Aan het werk', 'Met eigen machines en werktuigen, van kraan tot opraapwagen.'],
+];
+
+const tijdlijn = [
+  { jaar: '1961', t: 'Hannes Donk begint', d: 'Op 1 mei 1961 start Hannes met een 16 pk tractor en een bandenwagen, gekocht van bijna dertig jaar spaargeld.' },
+  { jaar: 'Jaren 70', t: 'De eerste kraan', d: 'Een Argenterio, aangedreven door de tractor ervoor. Kort daarna volgt de eerste mobiele kraan en het werk in de bouw.' },
+  { jaar: '1982', t: 'Dijkverbetering langs de Lek', d: 'Jarenlang werk aan de dijk, in de eigen woonomgeving.' },
+  { jaar: '1999', t: 'Teus neemt over', d: 'Zoon Teus, die altijd met zijn vader werkte, zet het bedrijf voort. Kleinzoon Hans werkt dan al mee.' },
+  { jaar: '2009', t: 'Hans aan het roer', d: 'Hans zet het loonbedrijf samen met zijn moeder voort, in de voetsporen van zijn vader en opa.' },
+];
+
+const werkKeuze = ['Grondverzet', 'Bouwrijp maken', 'Kraan huren', 'Sloot- of oeverwerk', 'Baggeren', 'Greppelen', 'Inkuilen', 'Bemesten', 'Zaaien', 'Zand of grond'];
+---
+<Base title={`${site.naam} | Loonbedrijf en kraanverhuur in Streefkerk`} description="Familiebedrijf uit Streefkerk sinds 1961. Agrarisch loonwerk, grondverzet, bouwrijp maken en kraanverhuur in de Alblasserwaard. Bel of app 06 16 25 22 07.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen kraan en trekker aan het werk -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600, 2200]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[30%_60%] md:object-[60%_62%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0f152240_0%,#0f1522a6_42%,#0f1522f5_100%)] md:bg-[linear-gradient(90deg,#0f1522eb_0%,#0f1522b3_38%,#0f152214_75%),linear-gradient(0deg,#0f1522b3_0%,#0f152200_35%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-20 pt-32 md:pb-24 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Loonbedrijf en kraanverhuur · Streefkerk</p>
+          <h1 id="t-hero" class="mt-6 text-hero uppercase">Grondverzet en loonwerk in de <span class="text-geel">Alblasserwaard</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Een familiebedrijf dat in 1961 begon met één tractor. Nu met graafmachines, trekkers en eigen werktuigen, voor agrariërs en aannemers.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#offerte" class="knop knop-blauw">Offerte aanvragen<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-2.5 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />Sinds 1961, derde generatie Donk</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />Land én bouw</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />WKA-verklaring beschikbaar</li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:block">
+          <figure class="ml-auto w-full max-w-[19rem] rounded-md bg-nacht/70 p-2.5 shadow-md ring-1 ring-licht/20 backdrop-blur-md">
+            <Image src={kraanPlaten} alt="Gele mobiele kraan met de blauwe belettering T. Donk, Loonbedrijf - Kraanverhuur" widths={[320, 600]} sizes="300px" loading="eager" class="aspect-[4/3] w-full rounded-sm object-cover object-[20%_60%]" />
+            <figcaption class="flex items-center justify-between gap-3 px-2 pb-1 pt-3 text-sm">
+              <span>Kraan huren?</span>
+              <a href={waMet('Goedendag, ik wil graag een kraan huren.')} class="flex items-center gap-1.5 whitespace-nowrap font-semibold text-licht no-underline hover:text-geel"><Icoon naam="wa" class="h-4 w-4" />Stuur een appje</a>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Werkzaamheden in het kort">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-2.5 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn bg-papier px-3.5 py-1.5 text-sm font-medium no-underline transition-colors hover:border-blauw hover:bg-blauw hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-28" aria-labelledby="t-dienst">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-dienst" class="mt-4 text-3xl">Van de bouwput tot het weiland.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Twee vakgebieden onder één dak: agrarisch loonwerk en grondverzet voor de bouw. Met eigen machines.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                  <span class="num absolute left-0 top-0 bg-nacht px-3 py-1.5 font-kop text-sm font-bold text-geel">0{i + 1}</span>
+                </div>
+                <div class="flex flex-1 items-start justify-between gap-4 p-5 sm:p-6">
+                  <div>
+                    <h3 class="text-xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 self-end place-items-center rounded-sm bg-klei text-blauw transition-colors group-hover:bg-blauw group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-md bg-klei px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Ook zaaien, greppelen en kuilverdelen.</b> <span class="text-grijs">Staat uw klus er niet tussen? Vraag het gewoon.</span></p>
+          <a href={waVraag} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Stel uw vraag</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="text-sm text-grijs">Opgericht door Hannes Donk</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-bold leading-none text-blauw">1961</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Jaar loonwerk in 2026</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-bold leading-none">65</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Generaties Donk</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-bold leading-none">3</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Vakgebieden: land en bouw</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-bold leading-none">2</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Machines -->
+    <section id="machines" class="donker bg-nacht py-24 text-licht lg:py-32" aria-labelledby="t-mach">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Machines en werk</p>
+            <h2 id="t-mach" class="mt-4 text-3xl">Eigen machines, eigen werktuigen.</h2>
+          </div>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-4 lg:col-start-9" style="--d:.05s">Graafmachines op banden en rupsen, trekkers en werktuigen voor het land. Foto’s uit de praktijk, op het erf en op de klus.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 lg:mt-14">
+          {machines.map((m, i) => (
+            <li class={`rijs group relative overflow-hidden rounded-sm bg-nacht-2 ${m.groot ? 'col-span-2 row-span-2 aspect-[4/3] md:aspect-auto' : 'aspect-[4/3]'}`} style={`--d:${(i % 4) * 0.05}s`}>
+              <Image src={m.src} alt={m.alt} widths={m.groot ? [600, 900, 1300] : [320, 480, 640]} sizes={m.groot ? '(min-width: 1248px) 600px, (min-width: 768px) 48vw, 92vw' : '(min-width: 1248px) 290px, (min-width: 768px) 23vw, 46vw'} class="tegel absolute inset-0 h-full w-full object-cover" style={`object-position:${m.pos}`} />
+              <p class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#0f1522e6,#0f152200)] px-3 pb-2.5 pt-8 text-sm font-semibold sm:px-4 sm:pb-3">{m.t}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Zo pakken we uw klus aan.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Korte lijnen: u heeft direct contact met het bedrijf zelf.</p>
+        </div>
+        <ol class="mt-12 grid gap-px overflow-hidden rounded-md bg-lijn sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs bg-wit p-6 sm:p-8" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2.75rem] font-bold leading-none text-blauw">0{i + 1}</p>
+              <h3 class="mt-8 text-xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Sinds 1961 -->
+    <section id="geschiedenis" class="donker bg-nacht text-licht" aria-labelledby="t-gesch">
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[30rem] lg:col-span-5">
+          <Image src={greppelen} alt="Trekker met een werktuig op een weiland, met bomen op de achtergrond" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_60%]" />
+          <figure class="absolute bottom-5 left-5 right-5 rounded-md bg-nacht/85 p-5 backdrop-blur-md sm:right-auto sm:max-w-sm">
+            <blockquote class="font-kop text-xl font-bold leading-snug">“Je moet vooruitkijken, want wat achter je ligt is geweest.”</blockquote>
+            <figcaption class="mt-3 text-sm text-licht-zacht">Hannes Donk, oprichter</figcaption>
+          </figure>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Sinds 1961</p>
+          <h2 id="t-gesch" class="mt-4 text-3xl">Drie generaties Donk.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Hannes Donk werkte als boerenknecht tot hij zijn eigen bedrijf begon. Zijn zoon Teus groeide mee in het vak en kleinzoon Hans staat nu in hun voetsporen, met veel plezier.</p>
+          <ol class="mt-10 border-l border-lijn-licht">
+            {tijdlijn.map((s) => (
+              <li class="relative pb-7 pl-7 last:pb-0">
+                <span class="absolute -left-[5px] top-2 h-[9px] w-[9px] bg-geel" aria-hidden="true"></span>
+                <p class="num font-kop text-lg font-bold text-geel">{s.jaar}</p>
+                <h3 class="mt-1 text-lg">{s.t}</h3>
+                <p class="mt-1 text-[.9375rem] text-licht-zacht">{s.d}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-10 flex gap-4">
+            <figure class="w-36 sm:w-44">
+              <Image src={hannes} alt="Portret van Hannes Donk met pet" widths={[200, 360]} sizes="176px" class="aspect-[4/3] w-full rounded-sm object-cover object-[50%_25%]" />
+              <figcaption class="mt-2 text-xs text-licht-zacht">Hannes Donk, 1920 tot 2007</figcaption>
+            </figure>
+            <figure class="w-36 sm:w-44">
+              <Image src={teus} alt="Portret van Teus Donk" widths={[200, 360]} sizes="176px" class="aspect-[4/3] w-full rounded-sm object-cover object-[55%_40%]" />
+              <figcaption class="mt-2 text-xs text-licht-zacht">Teus Donk, 1954 tot 2009</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Voor opdrachtgevers -->
+    <section id="opdrachtgevers" class="py-20 lg:py-28" aria-labelledby="t-opdr">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Voor opdrachtgevers</p>
+            <h2 id="t-opdr" class="mt-4 text-3xl">Voor de boer en voor de bouw.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Al sinds de jaren zeventig werkt het bedrijf naast de agrariërs ook voor de aannemerij.</p>
+        </div>
+        <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          <div class="rijs kaart p-7 sm:p-8">
+            <span class="grid h-12 w-12 place-items-center rounded-sm bg-klei text-blauw"><Icoon naam="trekker" class="h-7 w-7" /></span>
+            <h3 class="mt-6 text-2xl">Agrariërs</h3>
+            <ul class="mt-5 space-y-2.5">
+              {['Bemesten met sleepslang of sleepvoet', 'Gras oprapen en inkuilen', 'Kuilverdelen', 'Zaaien en greppelen', 'Baggeren en slootwerk'].map((x) => <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-blauw" />{x}</li>)}
+            </ul>
+          </div>
+          <div class="rijs kaart p-7 sm:p-8" style="--d:.06s">
+            <span class="grid h-12 w-12 place-items-center rounded-sm bg-klei text-blauw"><Icoon naam="kraan" class="h-7 w-7" /></span>
+            <h3 class="mt-6 text-2xl">Aannemers</h3>
+            <ul class="mt-5 space-y-2.5">
+              {['Grondverzet en bouwrijp maken', 'Mobiele kraan huren', 'Laad- en hijswerk', 'Aan- en afvoer van zand en grond'].map((x) => <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-blauw" />{x}</li>)}
+            </ul>
+            <div class="mt-7 grid gap-2.5 border-t border-lijn pt-6">
+              <a href={site.docs.wka} class="group flex items-center gap-3 no-underline"><Icoon naam="doc" class="h-5 w-5 text-blauw" /><span class="flex-1 font-semibold group-hover:text-blauw">WKA-verklaring</span><span class="num text-sm text-grijs">aug. 2026</span></a>
+              <a href={site.docs.kvk} class="group flex items-center gap-3 no-underline"><Icoon naam="doc" class="h-5 w-5 text-blauw" /><span class="flex-1 font-semibold group-hover:text-blauw">Uittreksel KvK</span><span class="num text-sm text-grijs">mrt. 2026</span></a>
+            </div>
+          </div>
+          <figure class="rijs relative min-h-[26rem] overflow-hidden rounded-md bg-nacht text-licht" style="--d:.12s">
+            <Image src={maart2026} alt="Trekker met bemester in de verte op een nat, groen weiland onder een grijze lucht" widths={[400, 700, 900]} sizes="(min-width: 1024px) 380px, 92vw" class="absolute inset-0 h-full w-full object-cover object-[50%_60%]" />
+            <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#0f1522f2_30%,#0f152200)] p-7 pt-24">
+              <p class="eyebrow eyebrow-licht">Uit het veld · maart 2026</p>
+              <p class="mt-3 font-kop text-2xl font-bold leading-tight">“We zijn bijna klaar met alle poepjes op het land leggen.”</p>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Contact en offerte -->
+    <section id="offerte" class="border-t border-lijn bg-klei py-20 lg:py-28" aria-labelledby="t-offerte">
+      <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Offerte en contact</p>
+          <h2 id="t-offerte" class="mt-4 text-3xl">Vertel ons over uw klus.</h2>
+          <p class="mt-6 text-lg text-grijs">Kies wat er moet gebeuren en waar. Wij maken er een WhatsApp-bericht of e-mail van; foto’s van de plek stuurt u daarna gewoon mee.</p>
+          <ul class="mt-10 grid grid-cols-1 gap-3">
+            <li><a href={waOfferte} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-klei text-blauw"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-klei text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block truncate text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+          <div class="mt-3 flex flex-col gap-4 rounded-md bg-nacht p-5 text-licht sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-geel" /><span><b class="font-semibold">{site.straat}, {site.plaats}</b><br /><span class="text-licht-zacht">In de Alblasserwaard</span></span></p>
+            <a href={site.maps} class="knop knop-wit knop-klein shrink-0">Route<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+        <form class="kaart min-w-0 p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Offerte aanvragen</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp of uw mailprogramma zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat moet er gebeuren? <span class="font-normal text-grijs">(meerdere mogelijk)</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {werkKeuze.map((b) => (
+                <label class="keuze"><input type="checkbox" name="werk" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">U bent</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Agrariër', 'Aannemer', 'Particulier', 'Anders'].map((b) => (
+                <label class="keuze"><input type="radio" name="wie" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Plaats of adres van de klus</span><input name="waar" class="veld mt-2" placeholder="Bijvoorbeeld: Streefkerk" /></label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer</span>
+              <select name="wanneer" class="veld mt-2">
+                <option value="">In overleg</option>
+                <option>Zo snel mogelijk</option>
+                <option>Binnen twee weken</option>
+                <option>Deze maand</option>
+                <option>Volgend seizoen</option>
+              </select>
+            </label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Omschrijving <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wat" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: sloot van 200 meter schonen, of een bouwkavel ontgraven"></textarea></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <button type="submit" class="knop knop-blauw"><Icoon naam="wa" />Open in WhatsApp</button>
+            <button type="button" class="knop knop-rand" data-mail><Icoon naam="mail" />Of per e-mail</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-blauw text-wit" aria-label="Contact opnemen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Een kraan of loonwerk nodig?</h2>
+          <p class="mt-2 text-lg text-wit/90">Bel of app, dan kijken we wanneer het kan.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waVraag} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    const bericht = () => {
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const werk = d.getAll('werk').map(String);
+      const r = ['Goedendag, ik wil graag een offerte aanvragen bij Loon- en Kraanverhuur T. Donk.'];
+      if (werk.length) r.push('Werk: ' + werk.join(', '));
+      if (v('wie')) r.push('Ik ben: ' + v('wie').toLowerCase());
+      if (v('waar')) r.push('Locatie: ' + v('waar'));
+      r.push('Wanneer: ' + (v('wanneer') || 'in overleg').toLowerCase());
+      if (v('wat')) r.push('Omschrijving: ' + v('wat'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      return r.join('\n');
+    };
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/31616252207?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+    });
+    f.querySelector('[data-mail]')?.addEventListener('click', () => {
+      location.href = 'mailto:info@loonbedrijfdonk.nl?subject=' + encodeURIComponent('Offerte-aanvraag') + '&body=' + encodeURIComponent(bericht());
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .95; letter-spacing: -0.01em; }
+  .tegel { transition: transform .9s var(--ease-zacht); }
+  li:hover > .tegel { transform: scale(1.04); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 .95rem; border-radius: var(--radius-sm); background: var(--color-papier); border: 1px solid var(--color-lijn); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  .keuze span:hover { border-color: var(--color-blauw); }
+  .keuze input:checked + span { background: var(--color-blauw); border-color: var(--color-blauw); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-md); border: 1.5px solid #0f152233; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #0f152266; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #6b7180; }
+</style>
