@@ -1,0 +1,46 @@
+---
+import { site, url, diensten, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken" aria-hidden="true"><Icoon naam="kwast" class="h-5 w-5" /></span>
+        <span><b>B.V.T.</b><small>Glas- &amp; schilderwerken</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Schilder- en afwerkingsbedrijf van {site.eigenaar} in {site.plaats}. Kwaliteit hoeft niet duur te zijn.</p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-vonk">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-vonk">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-vonk">WhatsApp</a></li>
+        <li><a href={h('offerte')} class="no-underline transition-colors hover:text-vonk">Offerte aanvragen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Adres</p>
+      <p class="mt-4">{site.eigenaar}<br />{site.straat}<br />{site.postcode} {site.plaats}</p>
+      <p class="mt-4">Werkgebied: {site.plaats} en omgeving</p>
+      <p class="mt-4"><a href={site.maps} class="link">Route plannen</a></p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-vonk">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Sfeerfoto’s via Unsplash, ter illustratie; het muurwerk komt uit uw eigen portfolio. Teksten deels van uw vorige website. Review letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>

@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage();
+await p.goto('http://localhost:4789/sitefront/bvt-glas-schilderwerken-oosterhout/');
+await p.click('text=Glas >> nth=-1').catch(()=>{});
+await p.locator('label.keuze', { hasText: 'Houtrot' }).click();
+await p.locator('label.keuze', { hasText: 'Buiten schilderen' }).click();
+await p.selectOption('select[name=wanneer]', 'Voor de winter');
+await p.fill('input[name=plaats]', 'Oosterhout'); await p.fill('input[name=naam]', 'Test');
+console.log(await p.textContent('[data-voorbeeld]'));
+const [pop] = await Promise.all([p.waitForEvent('popup'), p.click('form [type=submit]')]);
+console.log(decodeURIComponent(pop.url()).slice(0, 200));
+const pr = await b.newPage(); await pr.goto('http://localhost:4789/sitefront/bvt-glas-schilderwerken-oosterhout/privacy/'); console.log((await pr.textContent('main')).replace(/\s+/g,' ').slice(0,300));
+await b.close();
