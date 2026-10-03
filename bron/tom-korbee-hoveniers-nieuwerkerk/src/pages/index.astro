@@ -1,0 +1,605 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, onderdelen, reviews, waVraag, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import ontwerp3d from '../assets/ontwerp-3d.jpg';
+import aanleg from '../assets/aanleg.jpg';
+import onderhoud from '../assets/onderhoud.jpg';
+import vormsnoei from '../assets/vormsnoei.jpg';
+import border from '../assets/border.jpg';
+import waterkant from '../assets/waterkant.jpg';
+import vlonderG from '../assets/vlonder-g.jpg';
+import bord from '../assets/bord.jpg';
+import bus from '../assets/bus.jpg';
+import pPergola from '../assets/p-pergola.jpg';
+import pLounge from '../assets/p-lounge.jpg';
+import pVlonderWater from '../assets/p-vlonder-water.jpg';
+import pLigbedden from '../assets/p-ligbedden.jpg';
+import pVijver from '../assets/p-vijver.jpg';
+import pVijver2 from '../assets/p-vijver2.jpg';
+import pSteiger from '../assets/p-steiger.jpg';
+import pBloemen from '../assets/p-bloemen.jpg';
+import pSchaduw from '../assets/p-schaduw.jpg';
+import pAnemoon from '../assets/p-anemoon.jpg';
+import pGras from '../assets/p-gras.jpg';
+import pTulpen from '../assets/p-tulpen.jpg';
+import pAvond from '../assets/p-avond.jpg';
+import pLichtwand from '../assets/p-lichtwand.jpg';
+import pStrak from '../assets/p-strak.jpg';
+import pKunstgras from '../assets/p-kunstgras.jpg';
+import pGazon from '../assets/p-gazon.jpg';
+import pHout from '../assets/p-hout.jpg';
+import pBank from '../assets/p-bank.jpg';
+import pHof from '../assets/p-hof.jpg';
+import pTerras from '../assets/p-terras.jpg';
+import pHekwerk from '../assets/p-hekwerk.jpg';
+import pVoortuin from '../assets/p-voortuin.jpg';
+
+const diensten = [
+  { id: 'ontwerp', t: 'Tuinontwerp', d: 'Een creatief, vindingrijk en origineel ontwerp, van schets tot uitvoeringsplan.', src: ontwerp3d, alt: '3D-ontwerp van een tuin met overkapping, hagen, siergrassen en een grote tafel', pos: '45% 50%', naar: '#werkwijze' },
+  { id: 'aanleg', t: 'Tuinaanleg en renovatie', d: 'Bestrating, beplanting, houtwerk, vijvers, gazons, verlichting en beregening.', src: aanleg, alt: 'Aangelegde tuin met hardhouten vlonder, stalen pergola, strakke vijver en bomen in bakken', pos: '50% 55%', naar: '#werkwijze' },
+  { id: 'onderhoud', t: 'Tuinonderhoud', d: 'Eenmalig, tijdens het seizoen of wekelijks. Afgestemd op uw tuin en wensen.', src: onderhoud, alt: 'Vijver met een rand van vaste planten, siergrassen en een Japanse esdoorn tegen een houten schutting', pos: '50% 60%', naar: '#onderhoud' },
+  { id: 'bomen', t: 'Boomverzorging', d: 'Snoeiwerk aan bomen en het modelleren van struiken.', src: vormsnoei, alt: 'Voortuin met een in wolkvorm gesnoeide boom tussen buxusbollen', pos: '50% 40%', naar: '#contact' },
+];
+
+// Projectfoto's: alle van tomkorbee.nl (fotoboek) of hun Google-profiel. Categorie op basis van wat er op de foto staat.
+const fotos = [
+  { src: pVijver, c: 'water', alt: 'Strakke vijver met natuursteen rand en twee olijfbomen in zwarte bakken', top: true },
+  { src: pPergola, c: 'hout', alt: 'Houten overkapping met hekwerk en een kleurrijke border eromheen', top: true },
+  { src: pBloemen, c: 'groen', alt: 'Border vol vingerhoedskruid, rode spoorbloem en siergrassen', top: true },
+  { src: pAvond, c: 'licht', alt: 'Tuin bij avond met verlichte bomen en een verlicht terras', top: true },
+  { src: pLounge, c: 'hout', alt: 'Loungebank met groene kussens voor een donkere lamellenwand, met agapanthus ervoor', top: true },
+  { src: pKunstgras, c: 'bestrating', alt: 'Voortuin met kunstgras, klinkers en drie bomen in grote antraciet bakken', top: true },
+  { src: pVlonderWater, c: 'hout', alt: 'Hardhouten vlonder met trap en ligbed aan het water', top: true },
+  { src: pVijver2, c: 'water', alt: 'Vijver met natuurstenen wand, vlonder, pergola en wolkbomen', top: true },
+  { src: pBank, c: 'groen', alt: 'Golvende houten bank tussen bloeiende vaste planten', top: true },
+  { src: pStrak, c: 'bestrating', alt: 'Strakke tuin met natuursteen, grind, een olijfboom en keien', top: true },
+  { src: pLichtwand, c: 'licht', alt: 'Donkere houten wand met drie bakken met kronkeltakken, van onderen verlicht', top: true },
+  { src: pSteiger, c: 'water', alt: 'Houten vlonder aan de waterkant met een witte bloesemboom', top: true },
+  { src: vlonderG, c: 'hout', alt: 'Hardhouten vlonder met een trede, omzoomd door taxushagen', top: true },
+  { src: pHout, c: 'hout', alt: 'Verhoogd hardhouten terras met een schutting en lage hagen' },
+  { src: pLigbedden, c: 'hout', alt: 'Vlonder met twee ligstoelen tussen bakken met bomen' },
+  { src: pHekwerk, c: 'hout', alt: 'Hardhouten schutting met boogvormig latwerk boven de beplanting' },
+  { src: waterkant, c: 'water', alt: 'Tuin aan het water met een verhoogde plantenbak, paden van natuursteen en klinkers en zuilvormige coniferen' },
+  { src: border, c: 'groen', alt: 'Bloeiende border met tuinlamp, siergrassen en stapstenen naar de vijver' },
+  { src: pSchaduw, c: 'groen', alt: 'Schaduwborder met varens en gele sleutelbloemen' },
+  { src: pAnemoon, c: 'groen', alt: 'Witte herfstanemonen van dichtbij' },
+  { src: pTulpen, c: 'groen', alt: 'Witte tulpen in een verhoogde bak voor een muur met keien' },
+  { src: pGras, c: 'groen', alt: 'Pluimen van lampenpoetsersgras van dichtbij' },
+  { src: pGazon, c: 'bestrating', alt: 'Gestreept gemaaid gazon met een boom op stam en een schuurtje' },
+  { src: pHof, c: 'bestrating', alt: 'Stadstuin met grind, twee bolbomen, siergrassen en een berging' },
+  { src: pTerras, c: 'bestrating', alt: 'Terras van grijs hout met lage bakken, hagen en een tafel' },
+  { src: pVoortuin, c: 'bestrating', alt: 'Tuin met natuursteen pad, witte hortensia’s, een bank en jonge bomen' },
+];
+const fotoData = await Promise.all(fotos.map(async (f) => ({ ...f, groot: (await getImage({ src: f.src, width: 1400, format: 'webp' })).src })));
+const filters = [['alles', 'Uitgelicht'], ['hout', 'Hout en overkapping'], ['water', 'Water'], ['groen', 'Beplanting'], ['bestrating', 'Bestrating en gazon'], ['licht', 'Verlichting']];
+const aantal = (c: string) => (c === 'alles' ? fotos.filter((f) => f.top).length : fotos.filter((f) => f.c === c).length);
+
+// Hun eigen ontwerp- en aanlegtraject (tomkorbee.nl/ontwerp.html en aanleg.html), ingekort.
+const ontwerpStappen = [
+  ['Kennismaking', 'Tom komt langs en maakt een lijst van uw wensen en eisen. Samen kijken we naar de tuin en de mogelijkheden. Binnen een week krijgt u een offerte voor een schetsontwerp.'],
+  ['Inmeten', 'We meten de kavel en de woning in en leggen de situatie vast met foto’s, of werken met uw bouwtekeningen.'],
+  ['Schetsontwerp', 'Meestal 3 tot 4 weken na het inmeten bespreken we het ingekleurde schetsontwerp bij u thuis. Aanpassen kan dan nog.'],
+  ['Definitief ontwerp', 'We verwerken de wijzigingen en bespreken het definitieve schetsontwerp tot het helemaal naar uw wens is.'],
+  ['Werkplan en offerte', 'Het ontwerp wordt tot in detail uitgewerkt in een werkplan, met een definitieve offerte voor uitvoering en materialen.'],
+  ['Uw keuze', 'U bepaalt wie de tuin aanlegt. Kiest u voor ons, dan nemen wij de kosten van het schetsontwerp voor onze rekening.'],
+];
+const aanlegStappen = [
+  ['Opdracht', 'U komt langs bij ons bedrijf, maakt kennis met de hoveniers die uw tuin aanleggen en we nemen een conceptplanning door.'],
+  ['Planning', 'We stemmen de levering van materialen af met vaste leveranciers en onderaannemers en sturen u de definitieve planning.'],
+  ['Week vooraf', 'Tom bespreekt de laatste details met u en informeert de buren over wat er gaat gebeuren.'],
+  ['Uitvoering', 'Dagelijks contact over de voortgang. Werk dat later niet meer zichtbaar is, leveren we apart met u op.'],
+  ['Oplevering', 'Samen kijken we of alles naar tevredenheid is. Zo nodig spreken we meteen af wanneer we de laatste puntjes op de i zetten.'],
+];
+const volgorde = ['Uitzetten', 'Opruimen en snoeien', 'Grondwerk', 'Verlichting en beregening', 'Verharding', 'Bouwkundige werken', 'Grondverbetering', 'Beplanting', 'Gazon', 'Afwerking', 'Oplevering'];
+
+const contracten = [
+  ['Eenmalig', 'Eén onderhoudsbeurt, op een moment dat het u uitkomt.', 'kalender'],
+  ['Tijdens het seizoen', 'Vaste beurten in de maanden dat de tuin groeit.', 'zon'],
+  ['Wekelijks', 'Elke week, ook als u met vakantie bent.', 'blad'],
+];
+const taken = ['Snoeien', 'Maaien', 'Vegen', 'Schoffelen', 'Hagen knippen', 'Planten scheuren', 'Verticuteren', 'Bemesten', 'Vijveronderhoud', 'Bestrating onkruidvrij', 'Houtwerk herstellen'];
+---
+<Base title={`${site.naam} | Hovenier in Nieuwerkerk aan den IJssel`} description="Tom Korbee Hoveniers uit Nieuwerkerk aan den IJssel: tuinontwerp, tuinaanleg, tuinonderhoud en boomverzorging in de Zuidplas. Schetsontwerp gratis bij aanleg. Offerte aanvragen via WhatsApp of e-mail.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen tuin bij avond -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.5rem)] flex-col md:min-h-[calc(100svh-9.6rem)] overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image quality={68} src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_55%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#13201a59_0%,#13201ab3_50%,#13201af5_100%)] md:bg-[linear-gradient(90deg,#13201af2_0%,#13201ac2_45%,#13201a40_100%)]" aria-hidden="true"></div>
+      <div class="wrap flex flex-1 items-end pb-14 pt-24 md:items-center md:py-14">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Hovenier in Nieuwerkerk<span class="hidden sm:inline">&nbsp;aan den IJssel</span></p>
+          <h1 id="t-hero" class="mt-5 text-hero">Jarenlang genieten van <span class="text-messing">uw tuin.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Ontwerp, aanleg en onderhoud van tuinen, en boomverzorging. Volgens afspraak, secuur en netjes.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#contact" class="knop knop-messing">Offerte aanvragen<Icoon naam="pijl" /></a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2.5 text-[.9375rem] font-semibold text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num font-black text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 8.00 tot 17.00 uur</span></li>
+            <li><a href={site.telHref} class="num flex items-center gap-2 text-licht no-underline hover:text-messing"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="hidden border-t border-licht/15 bg-nacht/55 backdrop-blur-md md:block">
+        <ul class="wrap grid grid-cols-3 divide-x divide-licht/15">
+          <li class="flex items-center gap-4 py-6 pr-6"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-messing text-inkt"><Icoon naam="ontwerp" class="h-5 w-5" /></span><span class="text-[.9375rem] leading-snug"><b class="block font-extrabold text-licht">Schetsontwerp gratis</b><span class="text-licht-zacht">als wij uw tuin ook aanleggen</span></span></li>
+          <li class="flex items-center gap-4 px-6 py-6"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-licht/10 text-messing"><Icoon naam="praat" class="h-5 w-5" /></span><span class="text-[.9375rem] leading-snug"><b class="block font-extrabold text-licht">Dagelijks contact</b><span class="text-licht-zacht">tijdens de aanleg van uw tuin</span></span></li>
+          <li class="flex items-center gap-4 py-6 pl-6"><span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-licht/10 text-messing"><Icoon naam="gebouw" class="h-5 w-5" /></span><span class="text-[.9375rem] leading-snug"><b class="block font-extrabold text-licht">Particulier en zakelijk</b><span class="text-licht-zacht">onderhoud voor huis en bedrijf</span></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. Chips: wat ze doen -->
+    <section class="border-b border-lijn bg-zand" aria-label="Werkzaamheden">
+      <div class="wrap flex flex-wrap items-center gap-2.5 py-6">
+        <span class="mr-2 text-sm font-extrabold uppercase tracking-[.16em] text-grijs">Wij doen</span>
+        {['Tuinontwerp', 'Tuinaanleg', 'Renovatie', 'Tuinonderhoud', 'Boomverzorging', ...onderdelen].map((c) => (
+          <span class="rounded-md bg-papier px-3.5 py-1.5 text-[.9375rem] font-bold shadow-sm">{c}</span>
+        ))}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-24" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid items-end gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Onze diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Van eerste schets tot <span class="text-messing-diep">vaste onderhoudsbeurt.</span></h2>
+          </div>
+          <p class="text-lg text-grijs lg:col-span-5">Voor alle voorkomende werkzaamheden hebben we de vakkennis in huis. U kunt ons inschakelen voor het hele traject of voor één klus.</p>
+        </div>
+        <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          {diensten.map((d, i) => (
+            <li class="rijs" style={`--d:${(i % 2) * 0.08}s`}>
+              <a href={d.naar} class="group relative block aspect-[16/10] overflow-hidden rounded-lg bg-nacht text-licht no-underline sm:aspect-[16/11] lg:aspect-[3/4.3]">
+                <Image quality={68} src={d.src} alt={d.alt} widths={[480, 720, 1000]} sizes="(min-width: 1024px) 23vw, (min-width: 768px) 46vw, 92vw" class="tegel absolute inset-0 h-full w-full object-cover" style={`object-position:${d.pos}`} />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#13201a00_30%,#13201aeb_100%)]" aria-hidden="true"></span>
+                <span class="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-md bg-messing text-inkt transition-transform duration-300 group-hover:translate-x-1"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                <span class="absolute inset-x-0 bottom-0 block p-6">
+                  <span class="num text-sm font-extrabold text-messing">0{i + 1}</span>
+                  <span class="mt-1 block text-[1.625rem] font-black leading-tight tracking-[-0.03em]">{d.t}</span>
+                  <span class="mt-2 block text-[.9375rem] text-licht/85">{d.d}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <!-- Cijfers -->
+        <dl class="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-lijn lg:grid-cols-4">
+          {[
+            ['2005', 'Sinds dit jaar actief in de Zuidplas'],
+            ['1 week', 'Na de kennismaking: offerte voor het schetsontwerp'],
+            ['3-4 weken', 'Na het inmeten bespreken we het schetsontwerp'],
+            ['5,0', 'Gemiddelde score op Google'],
+          ].map(([n, t]) => (
+            <div class="bg-papier p-6 lg:p-8">
+              <dt class="sr-only">{t}</dt>
+              <dd class="num text-[clamp(2rem,2vw+1.4rem,3rem)] font-black leading-none tracking-[-0.04em]">{n}</dd>
+              <dd class="mt-3 text-[.9375rem] text-grijs">{t}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+
+    <!-- 4. Projecten: filterbare galerij met vergroting -->
+    <section id="projecten" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="grid items-end gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-4 text-3xl">Tuinen die we <span class="text-messing">aanlegden.</span></h2>
+          </div>
+          <p class="text-lg text-licht-zacht lg:col-span-5">Vlonders, vijvers, borders en verlichting: een greep uit ons fotoboek. Klik op een foto om hem groot te bekijken.</p>
+        </div>
+        <div class="-mx-5 mt-10 overflow-x-auto px-5 pb-2 md:mx-0 md:px-0" role="group" aria-label="Filter projecten">
+          <div class="flex gap-2 whitespace-nowrap">
+            {filters.map(([c, t], i) => (
+              <button type="button" class="filter" data-filter={c} aria-pressed={i === 0 ? 'true' : 'false'}>{t}<span class="num">{aantal(c)}</span></button>
+            ))}
+          </div>
+        </div>
+        <ul class="galerij mt-8" data-galerij data-modus="alles">
+          {fotoData.map((f, i) => (
+            <li data-c={f.c} data-top={f.top ? '' : undefined} class={f.top ? '' : 'hidden'}>
+              <button type="button" class="group relative block h-full w-full overflow-hidden rounded-md bg-nacht-2" data-groot={f.groot} data-alt={f.alt} data-i={i}>
+                <Image quality={68} src={f.src} alt={f.alt} widths={[400, 640]} sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw" class="tegel h-full w-full object-cover" />
+                <span class="absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-md bg-nacht/70 text-licht opacity-0 backdrop-blur transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true"><Icoon naam="plus" class="h-4 w-4" /></span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-10 flex flex-wrap items-center justify-between gap-4">
+          <p class="text-licht-zacht">Foto’s uit ons fotoboek en van ons Google-profiel.</p>
+          <button type="button" class="knop knop-rand" data-alles>Toon alle {fotos.length} foto’s</button>
+        </div>
+      </div>
+      <dialog class="lichtbak" data-lichtbak aria-label="Projectfoto">
+        <figure class="flex h-full flex-col items-center justify-center gap-4 p-4 md:p-10">
+          <img src="" alt="" class="max-h-[78vh] w-auto max-w-full rounded-md object-contain" data-lb-img />
+          <figcaption class="max-w-2xl text-center text-[.9375rem] text-licht-zacht" data-lb-tekst></figcaption>
+        </figure>
+        <button type="button" class="lb-knop right-4 top-4" data-lb-dicht aria-label="Sluiten"><Icoon naam="kruis" class="h-5 w-5" /></button>
+        <button type="button" class="lb-knop left-4 top-1/2 -translate-y-1/2" data-lb-vorige aria-label="Vorige foto"><Icoon naam="links" class="h-5 w-5" /></button>
+        <button type="button" class="lb-knop right-4 top-1/2 -translate-y-1/2" data-lb-volgende aria-label="Volgende foto"><Icoon naam="pijl" class="h-5 w-5" /></button>
+      </dialog>
+    </section>
+
+    <!-- 5. Werkwijze: ontwerp- en aanlegtraject -->
+    <section id="werkwijze" class="py-20 lg:py-24" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <div class="grid items-end gap-6 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-werkwijze" class="mt-4 text-3xl">Zo ontstaat <span class="text-messing-diep">uw tuinplan.</span></h2>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="inline-flex max-w-full rounded-md bg-zand p-1" role="tablist" aria-label="Traject">
+              <button type="button" role="tab" class="tab" id="tab-ontwerp" aria-controls="paneel-ontwerp" aria-selected="true" data-tab="ontwerp">Ontwerp <span class="num hidden sm:inline">6 stappen</span></button>
+              <button type="button" role="tab" class="tab" id="tab-aanleg" aria-controls="paneel-aanleg" aria-selected="false" tabindex="-1" data-tab="aanleg">Aanleg <span class="num hidden sm:inline">5 stappen</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="paneel-ontwerp" role="tabpanel" aria-labelledby="tab-ontwerp" class="mt-12 grid gap-10 lg:grid-cols-12" data-paneel="ontwerp">
+          <ol class="grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:col-span-7">
+            {ontwerpStappen.map(([t, d], i) => (
+              <li class="stap">
+                <span class="num stap-nr">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="text-xl">{t}</h3>
+                <p class="mt-2 text-[.9375rem] text-grijs">{d}</p>
+              </li>
+            ))}
+          </ol>
+          <figure class="lg:col-span-5">
+            <div class="relative overflow-hidden rounded-lg">
+              <Image quality={68} src={ontwerp3d} alt="3D-ontwerp van een tuin met overkapping, hagen, siergrassen en een grote tafel" widths={[480, 896]} sizes="(min-width: 1024px) 38vw, 92vw" class="aspect-[4/3] w-full object-cover object-[45%_50%]" />
+            </div>
+            <figcaption class="kaart -mt-10 ml-4 mr-4 relative p-5 sm:ml-8 sm:mr-0 sm:p-6">
+              <p class="flex items-start gap-3"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-messing text-inkt"><Icoon naam="ontwerp" class="h-5 w-5" /></span><span><b class="block font-extrabold">Schetsontwerp gratis bij aanleg</b><span class="text-[.9375rem] text-grijs">Laat u de tuin door ons aanleggen, dan nemen wij de kosten van het schetsontwerp voor onze rekening.</span></span></p>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div id="paneel-aanleg" role="tabpanel" aria-labelledby="tab-aanleg" class="mt-12 hidden" data-paneel="aanleg">
+          <ol class="grid gap-x-8 gap-y-2 sm:grid-cols-2 lg:grid-cols-5">
+            {aanlegStappen.map(([t, d], i) => (
+              <li class="stap">
+                <span class="num stap-nr">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="text-xl">{t}</h3>
+                <p class="mt-2 text-[.9375rem] text-grijs">{d}</p>
+              </li>
+            ))}
+          </ol>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <p class="text-sm font-extrabold uppercase tracking-[.16em] text-grijs">De uitvoering, in volgorde</p>
+            <ol class="volgorde mt-5">
+              {volgorde.map((v, i) => <li><span class="num">{i + 1}</span>{v}</li>)}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Onderhoud -->
+    <section id="onderhoud" class="bg-zand py-20 lg:py-24" aria-labelledby="t-onderhoud">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-14">
+        <div class="lg:col-span-5">
+          <div class="relative">
+            <Image quality={68} src={border} alt="Bloeiende border met tuinlamp, siergrassen en stapstenen naar de vijver" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 38vw, 92vw" class="aspect-[4/5] w-full rounded-lg object-cover object-[45%_50%]" />
+            <p class="absolute -bottom-6 left-6 right-6 rounded-md bg-nacht px-5 py-4 text-licht shadow-md sm:right-auto">
+              <span class="block text-2xl font-black tracking-[-0.03em]">“Onderhoud is behoud.”</span>
+            </p>
+          </div>
+        </div>
+        <div class="lg:col-span-7 lg:pt-4">
+          <p class="eyebrow">Tuinonderhoud</p>
+          <h2 id="t-onderhoud" class="mt-4 text-3xl">Het hele jaar door <span class="text-messing-diep">een mooie tuin.</span></h2>
+          <p class="mt-6 text-lg text-grijs">Voor particulieren en bedrijven onderhouden wij diverse tuinen. In overleg maken we een passend onderhoudscontract, afgestemd op uw tuin, uw vakanties en uw wensen.</p>
+          <ul class="mt-10 grid gap-4 sm:grid-cols-3">
+            {contracten.map(([t, d, ic]) => (
+              <li class="kaart p-5">
+                <span class="grid h-10 w-10 place-items-center rounded-md bg-zand text-messing-diep"><Icoon naam={ic} class="h-5 w-5" /></span>
+                <h3 class="mt-4 text-lg">{t}</h3>
+                <p class="mt-1.5 text-[.9375rem] text-grijs">{d}</p>
+              </li>
+            ))}
+          </ul>
+          <ul class="mt-8 flex flex-wrap gap-2">
+            {taken.map((t) => <li class="flex items-center gap-1.5 rounded-md bg-papier px-3 py-1.5 text-[.9375rem] font-semibold"><Icoon naam="vink" class="h-3.5 w-3.5 text-messing-diep" />{t}</li>)}
+          </ul>
+          <div class="mt-8 grid gap-4 sm:grid-cols-2">
+            <p class="flex items-start gap-3 rounded-md border border-lijn p-4"><Icoon naam="druppel" class="mt-0.5 h-5 w-5 shrink-0 text-messing-diep" /><span class="text-[.9375rem]"><b class="font-extrabold">In het voorjaar</b> sluiten we de sproei-installatie weer aan.</span></p>
+            <p class="flex items-start gap-3 rounded-md border border-lijn p-4"><Icoon naam="sneeuw" class="mt-0.5 h-5 w-5 shrink-0 text-messing-diep" /><span class="text-[.9375rem]"><b class="font-extrabold">In de winter</b> koppelen we hem af en maken de tuin winterklaar.</span></p>
+          </div>
+          <a href={waMet('Hallo Tom, ik heb interesse in tuinonderhoud.')} class="knop knop-inkt mt-10"><Icoon naam="wa" />Vraag naar onderhoud</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Over Tom -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] lg:col-span-5 lg:min-h-full">
+          <Image quality={68} src={bord} alt="Bord van Tom Korbee Hoveniers in een tuin, tussen lavendel en klimop" widths={[640, 910]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[45%_60%]" />
+          <figure class="absolute bottom-5 left-5 hidden w-60 overflow-hidden rounded-md bg-nacht shadow-md ring-4 ring-nacht sm:block">
+            <Image quality={68} src={bus} alt="De bus van Tom Korbee Hoveniers met aanhanger bij een aangelegde voortuin" widths={[480]} sizes="240px" class="aspect-[4/3] w-full object-cover object-[25%_50%]" />
+            <figcaption class="px-3 py-2 text-xs font-semibold text-licht-zacht">Onderweg in de Zuidplas</figcaption>
+          </figure>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(2.5rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over Tom Korbee</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Aan een half woord <span class="text-messing">genoeg.</span></h2>
+          <p class="mt-6 text-lg text-licht-zacht">Tom Korbee Hoveniers is een hoveniersbedrijf uit {site.plaats}. Tom komt zelf bij u langs, denkt mee en geeft advies. Tijdens het werk is hij uw vaste aanspreekpunt.</p>
+          <ul class="mt-10 grid gap-4">
+            {[
+              ['Volgens afspraak', 'We werken secuur en houden de werkplek altijd netjes, om de overlast zo klein mogelijk te houden.', 'kalender'],
+              ['Dagelijks contact', 'Tijdens de aanleg bespreekt Tom de voortgang, licht het werk toe en beantwoordt uw vragen.', 'praat'],
+              ['Vakwerk', 'Voor bestrating, beplanting, houtwerk, vijvers, verlichting en beregening hebben we de kennis en de contacten in huis.', 'schep'],
+            ].map(([t, d, ic]) => (
+              <li class="flex gap-4 rounded-md bg-nacht-2 p-5">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-messing text-inkt"><Icoon naam={ic} class="h-5 w-5" /></span>
+                <span><b class="block text-lg font-extrabold text-licht">{t}</b><span class="text-[.9375rem] text-licht-zacht">{d}</span></span>
+              </li>
+            ))}
+          </ul>
+          <a href={site.telHref} class="knop knop-messing mt-10"><Icoon naam="tel" />Bel Tom: <span class="num">{site.tel}</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews en referenties -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Ervaringen</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+            <Icoon naam="g" class="h-8 w-8" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num text-2xl font-black">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">Beoordeling op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="reviewrij -mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class:list={['kaart rijs flex w-[84%] shrink-0 snap-start flex-col p-6 md:w-auto md:p-7', i === 0 && 'outline-2 outline-messing']} style={`--d:${(i % 3) * 0.08}s`}>
+              <span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.1rem] w-[1.1rem]" />)}</span>
+              <blockquote class="mt-4 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-6 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-md bg-zand font-black text-messing-diep" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-extrabold">{r.naam}</b><span class="text-grijs">{r.wanneer ? `${r.bron}, ${r.wanneer}` : r.bron}</span></span>
+                {r.wanneer && <Icoon naam="g" class="h-5 w-5" />}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm text-grijs md:mt-8"><span class="md:hidden">Veeg voor meer ervaringen. </span>Referenties zoals klanten ze schreven op tomkorbee.nl.</p>
+      </div>
+    </section>
+
+    <!-- 10. Contact: aanvraag samenstellen -->
+    <section id="contact" class="border-t border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Offerte aanvragen</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Laten we <span class="text-messing-diep">beginnen.</span></h2>
+          <p class="mt-6 text-lg text-grijs">Vertel kort wat u voor ogen heeft. Daarna plannen we een kennismaking bij u thuis.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waVraag} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-messing text-inkt"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-extrabold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-messing-diep" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-zand text-messing-diep"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-extrabold">Bellen</b><span class="text-grijs">Ma t/m vr, 8.00 tot 17.00 uur</span></span><Icoon naam="pijl" class="h-5 w-5 text-messing-diep" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-zand text-messing-diep"><Icoon naam="mail" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-extrabold">E-mail</b><span class="text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-messing-diep" /></a></li>
+          </ul>
+          <div class="mt-8 rounded-lg bg-nacht p-6 text-licht md:p-7">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="flex items-center gap-2.5 font-extrabold"><Icoon naam="pin" class="h-5 w-5 text-messing" />Werkgebied: de Zuidplas</p>
+              <p class="status-pil text-sm font-bold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr</span></p>
+            </div>
+            <p class="mt-3 text-[.9375rem] text-licht-zacht">Vanuit {site.plaats} werken we in de Zuidplas en omgeving. Bel of app ons op werkdagen tussen 8.00 en 17.00 uur.</p>
+            <table class="mt-4 w-full text-[.9375rem]">
+              <caption class="sr-only">Bereikbaarheid</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn-licht last:border-0 data-[vandaag]:font-extrabold data-[vandaag]:text-messing">
+                    <th scope="row" class="py-1.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-1.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:self-start lg:p-10" data-aanvraag aria-describedby="aanvraag-uitleg">
+          <h3 class="text-2xl">Uw aanvraag</h3>
+          <p id="aanvraag-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u het bericht zelf verstuurt in WhatsApp of uw mailprogramma.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-extrabold">Waar kunnen we mee helpen?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Tuinontwerp', 'Aanleg of renovatie', 'Onderhoud', 'Boomverzorging'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="soort" value={b} class="sr-only" checked={i === 0} /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7" data-onderdelen>
+            <legend class="text-sm font-extrabold">Wat hoort erbij? <span class="font-normal text-grijs">(meerdere mogelijk)</span></legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {onderdelen.map((o) => <label class="keuze"><input type="checkbox" name="onderdeel" value={o} class="sr-only" /><span>{o}</span></label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7 hidden" data-frequentie>
+            <legend class="text-sm font-extrabold">Hoe vaak?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Eenmalig', 'Tijdens het seizoen', 'Wekelijks'].map((o) => <label class="keuze"><input type="radio" name="freq" value={o} class="sr-only" /><span>{o}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-extrabold">Welke tuin</span>
+              <select name="tuin" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                <option>Voortuin</option>
+                <option>Achtertuin</option>
+                <option>Voor- en achtertuin</option>
+                <option>Bedrijfstuin</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-extrabold">Plaats</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" placeholder="Bijvoorbeeld Nieuwerkerk" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-extrabold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-extrabold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: nieuw terras en een vijver in de achtertuin"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <button type="submit" name="via" value="wa" class="knop knop-messing"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <button type="submit" name="via" value="mail" class="knop knop-rand"><Icoon naam="mail" />Liever per e-mail</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-messing text-inkt" aria-label="Offerte aanvragen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.75rem)]">Plannen voor uw tuin?</h2>
+          <p class="mt-2 text-lg font-semibold text-inkt/80">Tom komt graag langs voor een kennismaking.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waVraag} class="knop knop-inkt"><Icoon naam="wa" />WhatsApp Tom</a>
+          <a href={site.telHref} class="knop knop-rand num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Projectgalerij: filter, alles tonen en vergroting.
+  const lijst = document.querySelector<HTMLElement>('[data-galerij]');
+  const items = lijst ? [...lijst.querySelectorAll<HTMLElement>('li')] : [];
+  const knoppen = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const alles = document.querySelector<HTMLButtonElement>('[data-alles]');
+  const toon = (c: string, allesTonen = false) => {
+    items.forEach((li) => li.classList.toggle('hidden', c === 'alles' ? !(allesTonen || li.hasAttribute('data-top')) : li.dataset.c !== c));
+    knoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.filter === c)));
+    if (alles) alles.hidden = c !== 'alles' || allesTonen;
+    lijst?.setAttribute('data-modus', c);
+  };
+  knoppen.forEach((k) => k.addEventListener('click', () => toon(k.dataset.filter || 'alles')));
+  alles?.addEventListener('click', () => toon('alles', true));
+
+  const lb = document.querySelector<HTMLDialogElement>('[data-lichtbak]');
+  const lbImg = document.querySelector<HTMLImageElement>('[data-lb-img]');
+  const lbTekst = document.querySelector<HTMLElement>('[data-lb-tekst]');
+  let huidige = 0;
+  const zichtbaar = () => items.filter((li) => !li.classList.contains('hidden')).map((li) => li.querySelector<HTMLButtonElement>('button')!);
+  const open = (b: HTMLButtonElement) => {
+    if (!lb || !lbImg || !lbTekst) return;
+    huidige = zichtbaar().indexOf(b);
+    lbImg.src = b.dataset.groot || ''; lbImg.alt = b.dataset.alt || ''; lbTekst.textContent = b.dataset.alt || '';
+    if (!lb.open) lb.showModal();
+  };
+  const stap = (d: number) => { const z = zichtbaar(); if (z.length) open(z[(huidige + d + z.length) % z.length]); };
+  lijst?.addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-groot]'); if (b) open(b); });
+  document.querySelector('[data-lb-dicht]')?.addEventListener('click', () => lb?.close());
+  document.querySelector('[data-lb-vorige]')?.addEventListener('click', () => stap(-1));
+  document.querySelector('[data-lb-volgende]')?.addEventListener('click', () => stap(1));
+  lb?.addEventListener('click', (e) => { if (e.target === lb || (e.target as HTMLElement).tagName === 'FIGURE') lb.close(); });
+  lb?.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') stap(1); if (e.key === 'ArrowLeft') stap(-1); });
+
+  // Werkwijze-tabs.
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+  const kies = (t: HTMLButtonElement) => {
+    tabs.forEach((x) => { const aan = x === t; x.setAttribute('aria-selected', String(aan)); x.tabIndex = aan ? 0 : -1; document.querySelector(`[data-paneel="${x.dataset.tab}"]`)?.classList.toggle('hidden', !aan); });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => kies(t));
+    t.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length]; kies(n); n.focus(); } });
+  });
+
+  // Aanvraag: bericht samenstellen voor WhatsApp of e-mail.
+  const f = document.querySelector<HTMLFormElement>('[data-aanvraag]');
+  if (f) {
+    const ond = f.querySelector<HTMLElement>('[data-onderdelen]');
+    const freq = f.querySelector<HTMLElement>('[data-frequentie]');
+    const wissel = () => { const s = (f.querySelector<HTMLInputElement>('input[name=soort]:checked')?.value) || ''; ond?.classList.toggle('hidden', s === 'Onderhoud' || s === 'Boomverzorging'); freq?.classList.toggle('hidden', s !== 'Onderhoud'); };
+    f.querySelectorAll('input[name=soort]').forEach((i) => i.addEventListener('change', wissel));
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const via = ((e as SubmitEvent).submitter as HTMLButtonElement | null)?.value || 'wa';
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const soort = v('soort');
+      const r = [`Hallo Tom, ik wil graag een offerte voor ${soort ? soort.toLowerCase() : 'mijn tuin'}.`];
+      const delen = d.getAll('onderdeel').map(String);
+      if (delen.length && soort !== 'Onderhoud' && soort !== 'Boomverzorging') r.push('Onderdelen: ' + delen.join(', ').toLowerCase());
+      if (soort === 'Onderhoud' && v('freq')) r.push('Hoe vaak: ' + v('freq').toLowerCase());
+      if (v('tuin')) r.push('Tuin: ' + v('tuin').toLowerCase());
+      if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+      if (v('wens')) r.push('Toelichting: ' + v('wens'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      const tekst = r.join('\n');
+      if (via === 'mail') window.location.href = `mailto:info@tomkorbee.nl?subject=${encodeURIComponent('Offerteaanvraag ' + (soort || 'tuin').toLowerCase())}&body=${encodeURIComponent(tekst)}`;
+      else window.open('https://wa.me/31624472784?text=' + encodeURIComponent(tekst), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .95; letter-spacing: -0.045em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .3rem .7rem; border-radius: .5rem; background: var(--color-nacht-2); }
+  .tegel { transition: transform .9s var(--ease-zacht); }
+  a:hover .tegel, button:hover > .tegel { transform: scale(1.04); }
+
+  .filter { display: inline-flex; align-items: center; gap: .55rem; min-height: 2.75rem; padding: 0 1rem; border-radius: .5rem; background: var(--color-nacht-2); color: var(--color-licht); font-weight: 700; font-size: .9375rem; cursor: pointer; transition: background-color .2s, color .2s; }
+  .filter span { font-size: .8125rem; color: var(--color-licht-zacht); }
+  .filter:hover { background: #283b30; }
+  .filter[aria-pressed='true'] { background: var(--color-messing); color: var(--color-inkt); }
+  .filter[aria-pressed='true'] span { color: var(--color-inkt); }
+  .galerij { display: grid; gap: .5rem; grid-template-columns: repeat(2, 1fr); }
+  .galerij li > button { aspect-ratio: 4 / 3; }
+  .galerij[data-modus='alles'] li:first-child { grid-column: span 2; }
+  @media (min-width: 640px) { .galerij { gap: .75rem; } }
+  @media (min-width: 1024px) {
+    .galerij { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .galerij[data-modus='alles'] li:first-child { grid-column: span 2; grid-row: span 2; }
+    .galerij li > button { aspect-ratio: auto; min-height: 13rem; }
+  }
+  .lichtbak { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #0c140fee; color: var(--color-licht); }
+  .lichtbak::backdrop { background: #0c140f99; }
+  .lb-knop { position: absolute; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: .5rem; background: var(--color-nacht-2); color: var(--color-licht); cursor: pointer; transition: background-color .2s, color .2s; }
+  .lb-knop:hover { background: var(--color-messing); color: var(--color-inkt); }
+
+  .tab { display: inline-flex; align-items: baseline; gap: .5rem; min-height: 2.75rem; padding: .65rem 1.1rem; border-radius: .4rem; font-weight: 800; cursor: pointer; color: var(--color-grijs); transition: background-color .2s, color .2s, box-shadow .2s; }
+  .tab span { font-size: .8125rem; font-weight: 600; }
+  .tab[aria-selected='true'] { background: var(--color-wit); color: var(--color-inkt); box-shadow: var(--shadow-sm); }
+  .stap { position: relative; padding: 1.5rem 0 1.25rem; border-top: 2px solid var(--color-lijn); }
+  .stap-nr { display: block; margin-bottom: .75rem; font-size: .875rem; font-weight: 900; letter-spacing: .08em; color: var(--color-messing-diep); }
+  .stap::before { content: ""; position: absolute; top: -2px; left: 0; width: 2.5rem; height: 2px; background: var(--color-messing); }
+  .volgorde { display: flex; flex-wrap: wrap; gap: .5rem; counter-reset: v; }
+  .volgorde li { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .8rem .4rem .45rem; border-radius: .5rem; background: var(--color-zand); font-weight: 700; font-size: .9375rem; }
+  .volgorde li span { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: .35rem; background: var(--color-inkt); color: var(--color-licht); font-size: .75rem; font-weight: 800; }
+  .volgorde li:last-child span { background: var(--color-messing); color: var(--color-inkt); }
+
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: .5rem; background: var(--color-zand); font-size: .9375rem; font-weight: 700; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #e2dac9; }
+  .keuze input:checked + span { background: var(--color-inkt); color: var(--color-licht); }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-messing-diep); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: .5rem; border: 1.5px solid #15201a33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #15201a66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-messing-diep); }
+  .veld::placeholder { color: #6f7a73; }
+</style>

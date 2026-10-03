@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4749/sitefront/tom-korbee-hoveniers-nieuwerkerk/');
+await p.click('[data-filter="water"]'); console.log('water zichtbaar:', await p.$$eval('[data-galerij] li:not(.hidden)', (l) => l.length));
+await p.click('[data-galerij] li:not(.hidden) button'); await p.click('[data-lb-volgende]');
+console.log('lichtbak:', await p.getAttribute('[data-lb-img]', 'src'), '|', await p.textContent('[data-lb-tekst]'));
+await p.click('[data-lb-dicht]');
+await p.click('[data-filter="alles"]'); await p.click('[data-alles]'); console.log('alles:', await p.$$eval('[data-galerij] li:not(.hidden)', (l) => l.length));
+await p.click('[data-tab="aanleg"]'); console.log('aanleg zichtbaar:', await p.isVisible('[data-paneel="aanleg"]'), 'ontwerp:', await p.isVisible('[data-paneel="ontwerp"]'));
+await p.click('label.keuze:has-text("Aanleg of renovatie")'); await p.click('label.keuze:has-text("Vijvers")'); await p.click('label.keuze:has-text("Verlichting")');
+await p.selectOption('select[name=tuin]', 'Achtertuin'); await p.fill('input[name=plaats]', 'Moordrecht'); await p.fill('input[name=naam]', 'Test');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[value=wa]')]);
+console.log(decodeURIComponent(np.url()));
+await p.click('label.keuze:has-text("Onderhoud")'); console.log('freq zichtbaar:', await p.isVisible('[data-frequentie]'), 'onderdelen:', await p.isVisible('[data-onderdelen]'));
+console.log('status:', await p.textContent('[data-status]'), errs.join('|'));
+await b.close();
