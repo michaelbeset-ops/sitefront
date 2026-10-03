@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4744/sitefront/aannemer-martin-de-groot-ouderkerk/');
+await p.click('label.keuze:has-text("Voegwerk")'); await p.click('label.keuze:has-text("Woning")');
+await p.selectOption('select[name=plaats]', 'Lekkerkerk'); await p.fill('input[name=naam]', 'Jan Jansen'); await p.fill('textarea[name=wens]', 'Gevel opnieuw voegen');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('form[data-wa] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await p.click('[data-filter=voegwerk]'); console.log('zichtbaar na filter', await p.locator('[data-galerij] > li:visible').count());
+await p.locator('[data-galerij] > li:visible button').first().click(); await p.waitForTimeout(400);
+console.log('lichtbak open', await p.evaluate(() => document.querySelector('dialog').open), await p.evaluate(() => document.querySelector('[data-lb-img]').naturalWidth));
+await b.close();
