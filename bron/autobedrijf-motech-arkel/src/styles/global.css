@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/exo-2/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Uit hun vlaggen aan de Vlietskade: marineblauw vlak, rode autolijn uit het logo, wit doek.
+     Lichte vlakken koel staalgrijs (de werkplaats), donkere secties marine in plaats van zwart. */
+  --color-papier: #f4f5f8;      /* pagina */
+  --color-staal: #e6e8ef;       /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #12162b;        /* tekst, 17:1 op papier */
+  --color-grijs: #535a70;       /* bijtekst, 6,4:1 op papier, 5,6:1 op staal */
+  --color-lijn: #12162b1f;
+  --color-rood: #c8102e;        /* merkkleur, wit erop 5,9:1 */
+  --color-rood-diep: #a00c24;   /* hover */
+  --color-marine: #1a2044;      /* donkere secties (vlag) */
+  --color-marine-2: #252c58;    /* kaarten op marine */
+  --color-marine-3: #11152e;    /* footer */
+  --color-licht: #f4f5f8;
+  --color-licht-zacht: #bcc2d8; /* bijtekst op marine, 9:1 */
+  --color-lijn-licht: #f4f5f824;
+  --color-roze: #ff8796;        /* rood-accent op marine, 6,9:1 */
+  --color-ster: #f2b233;        /* alleen sterren */
+
+  --font-kop: "Exo 2 Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, 1vw + 1.3rem, 2rem);
+  --text-3xl: clamp(2.125rem, 2.6vw + 1.2rem, 3.375rem);
+  --text-hero: clamp(2.6rem, 5.2vw + 0.6rem, 5.4rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .375rem;
+  --radius-lg: .5rem;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #12162b0f, 0 2px 8px #12162b0a;
+  --shadow-md: 0 14px 34px -14px #12162b40;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: 1.02; letter-spacing: -0.018em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-rood); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-roze); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  /* Eyebrow met een rood streepje ervoor, zoals de rode scheidingsstreepjes op hun vlag. */
+  .eyebrow { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-kop); font-size: .8125rem; line-height: 1.4; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; color: var(--color-rood); }
+  .eyebrow::before { content: ""; width: 1.6rem; height: 3px; background: currentColor; transform: skewX(-24deg); flex: none; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-roze); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .merk { display: inline-flex; flex-direction: column; align-items: flex-start; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk svg { display: block; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-md); font-family: var(--font-kop); font-weight: 700; font-size: 1.0625rem; letter-spacing: .01em; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:hover { transform: translateY(-1px); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-rood { background: var(--color-rood); color: #fff; box-shadow: 0 10px 22px -12px #c8102ecc; }
+  .knop-rood:hover { background: var(--color-rood-diep); }
+  .knop-marine { background: var(--color-marine); color: var(--color-licht); }
+  .knop-marine:hover { background: var(--color-rood); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-staal); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-marine); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-marine); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.15rem; font-size: .9375rem; }
+  @media (max-width: 380px) { .knop { white-space: normal; text-align: center; line-height: 1.2; padding-block: .6rem; } }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-rood); transition: color .2s; }
+  .link:hover { color: var(--color-rood); }
+  .donker .link { text-decoration-color: var(--color-roze); }
+  .donker .link:hover { color: var(--color-roze); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
