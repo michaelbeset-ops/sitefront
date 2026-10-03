@@ -1,0 +1,53 @@
+---
+import { site, url, tijden, chips, waOfferte } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="no-underline"><Merk donker /><span class="sr-only">, naar de homepage</span></a>
+      <p class="mt-7 max-w-xs">Timmerbedrijf van {site.eigenaar} uit Boskoop. Zolders, vlieringen, dakramen, dakkapellen, aanbouwen en schuren in de hele Randstad.</p>
+      <p class="mt-6"><a href={site.werkspot.url} class="link text-licht">{site.werkspot.score} uit {site.werkspot.aantal} reviews op Werkspot</a></p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Werkzaamheden</p>
+      <ul class="mt-4 grid grid-cols-1 gap-y-2">
+        {chips.slice(0, 8).map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-rood-licht">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-rood-licht">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-rood-licht">info@vanleeuwen-<wbr />timmerwerken.nl</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Telefonisch bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Telefonisch bereikbaar</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-rood-licht">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Niet bereikbaar'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw eigen website en uw Werkspot-profiel. Reviews letterlijk van Werkspot en Google (stand 3 oktober 2026); referenties van uw huidige website.</p>}
+  </div>
+</footer>
