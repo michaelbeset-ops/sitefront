@@ -1,0 +1,23 @@
+---
+// Kleine lijntekening van een legpatroon (64x64), in currentColor.
+interface Props { naam: string; class?: string }
+const { naam, class: cls = '' } = Astro.props;
+const id = `pt-${naam}`;
+const tegel: Record<string, { w: number; h: number; d: string }> = {
+  visgraat: { w: 16, h: 16, d: 'M0 8 8 0M8 16 16 8M8 0l8 8M0 8l8 8M4 4l4 4M12 12l-4-4M12 4l4 4M4 12l-4-4' },
+  hongaars: { w: 16, h: 8, d: 'M0 8 8 0l8 8M8 0v8M0 4l4-4M16 4l-4-4' },
+  weens: { w: 16, h: 24, d: 'M0 8 8 0l8 8M0 16l8-8 8 8M8 0v16M0 19h16M0 22h16' },
+  panelen: { w: 32, h: 32, d: 'M0 0h32v32H0zM16 0l16 16-16 16L0 16zM8 8h16v16H8z' },
+  eigen: { w: 24, h: 28, d: 'M12 0l12 7v14l-12 7L0 21V7zM12 0v28M0 7l24 14M24 7 0 21' },
+  planken: { w: 48, h: 16, d: 'M0 0h48M0 8h48M18 0v8M42 8v8M6 8v8' },
+};
+const t = tegel[naam] ?? tegel.planken;
+---
+<svg class={cls} viewBox="0 0 64 64" aria-hidden="true">
+  <defs>
+    <pattern id={id} width={t.w} height={t.h} patternUnits="userSpaceOnUse">
+      <path d={t.d} fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="square" />
+    </pattern>
+  </defs>
+  <rect width="64" height="64" fill={`url(#${id})`} />
+</svg>

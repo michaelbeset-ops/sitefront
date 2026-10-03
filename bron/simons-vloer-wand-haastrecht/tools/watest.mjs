@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4728/sitefront/simons-vloer-wand-haastrecht/');
+await p.click('[data-tab=weens]'); await p.selectOption('select[name=ruimte]', 'Hal'); await p.fill('[data-patroon-form] input[name=m2]', '35'); await p.fill('[data-patroon-form] input[name=plaats]', 'Gouda');
+let [np] = await Promise.all([ctx.waitForEvent('page'), p.click('[data-patroon-form] button[type=submit]')]);
+console.log(decodeURIComponent(np.url())); await np.close();
+console.log('paneel zichtbaar:', await p.isVisible('#paneel-weens'), await p.isHidden('#paneel-visgraat'));
+await p.click('label.keuze:has-text("Trap")'); await p.fill('[data-wa] input[name=m2]', '12'); await p.fill('[data-wa] input[name=naam]', 'Sanne'); await p.check('input[name=showroom]');
+[np] = await Promise.all([ctx.waitForEvent('page'), p.click('[data-wa] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();
