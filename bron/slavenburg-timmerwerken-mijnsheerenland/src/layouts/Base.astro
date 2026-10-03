@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+import kopUrl from '@fontsource/bai-jamjuree/files/bai-jamjuree-latin-700-normal.woff2?url';
+import sansUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import { site, url } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansUrl} crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:site_name" content={site.naam} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body class="min-h-dvh pb-[4.5rem] md:pb-0">
+    {site.voorstel && (
+      <div class="relative z-50 bg-groen text-wit">
+        <p class="wrap py-2 text-xs leading-snug" style="font-family: system-ui, sans-serif">
+          Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website.{" "}
+          <a href="https://www.sitefront.nl" class="font-bold underline underline-offset-2">sitefront.nl</a>
+        </p>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
+    <slot />
+    <script>
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.rijs').forEach((el) => io.observe(el));
+
+      // Openingstijden: vandaag markeren en live open/dicht tonen (Nederlandse tijd).
+      const nu = new Date();
+      const deel = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', ...o }).format(nu);
+      const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel({ weekday: 'short' }));
+      const min = Number(deel({ hour: '2-digit', hourCycle: 'h23' })) * 60 + Number(deel({ minute: '2-digit' }));
+      // Bereikbaar ma t/m vr 7.00 tot 19.00 uur (Google-profiel).
+      const werkdag = dag >= 1 && dag <= 5;
+      const open = werkdag && min >= 420 && min < 1140;
+      let tekst: string;
+      if (open) tekst = 'Nu bereikbaar, tot 19.00 uur';
+      else if (werkdag && min < 420) tekst = 'Vandaag bereikbaar vanaf 7.00 uur';
+      else { const morgenWerk = dag >= 0 && dag <= 4; tekst = morgenWerk ? 'Morgen weer bereikbaar vanaf 7.00 uur' : 'Maandag weer bereikbaar vanaf 7.00 uur'; }
+      document.querySelectorAll<HTMLElement>('[data-status]').forEach((el) => { el.textContent = tekst; el.closest('[data-status-wrap]')?.setAttribute('data-open', String(open)); });
+      document.querySelectorAll(`[data-dag="${dag}"]`).forEach((r) => r.setAttribute('data-vandaag', ''));
+    </script>
+  </body>
+</html>

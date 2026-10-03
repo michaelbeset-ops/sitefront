@@ -159,3 +159,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autohuis Centraal, Strijen | https://michaelbeset-ops.github.io/sitefront/autohuis-centraal-strijen/ | geen website, 4,7 uit 80, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Hondentrimsalon Esther, Krimpen a/d IJssel | https://michaelbeset-ops.github.io/sitefront/hondentrimsalon-esther-krimpen/ | gedateerde site, 5,0 uit 12, 06/WhatsApp. | 2026-10-03 | demo premium |
 | AutoService-Online, Strijen | https://michaelbeset-ops.github.io/sitefront/autoservice-online-strijen/ | domein geparkeerd, 4,8 uit 43, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Maarten Slavenburg Timmerwerken, Mijnsheerenland | https://michaelbeset-ops.github.io/sitefront/slavenburg-timmerwerken-mijnsheerenland/ | geen website, 5,0 uit 4, 06/WhatsApp. | 2026-10-03 | demo premium |
+| De Knapperd, Werkendam | https://michaelbeset-ops.github.io/sitefront/de-knapperd-werkendam/ | site uit 2012, niet mobiel, 4,9 uit 15, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Simons Vloer & Wand, Haastrecht | https://michaelbeset-ops.github.io/sitefront/simons-vloer-wand-haastrecht/ | site uit 2015, 4,8 uit 5, 06/WhatsApp. | 2026-10-03 | demo premium |
