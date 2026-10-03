@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4745/sitefront/ten-oever-stierman-ridderkerk/');
+await p.click('a[data-klus="Riolering"]'); await p.click('label.keuze:has-text("Bestrating")');
+await p.selectOption('select[name=wie]', 'VvE'); await p.fill('input[name=plaats]', 'Bolnes');
+await p.fill('#m2', '120'); await p.dispatchEvent('#m2', 'input'); await p.fill('textarea[name=wens]', 'achterpad opnieuw'); await p.fill('input[name=naam]', 'Sanne');
+console.log(await p.textContent('[data-m2-uit]'));
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+await b.close();
