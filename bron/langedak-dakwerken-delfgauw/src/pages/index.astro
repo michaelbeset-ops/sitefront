@@ -1,0 +1,447 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, materialen, reviews, waVraag } from '../data/site';
+import hero from '../assets/hero.jpg';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/p/*.jpg', { eager: true });
+const f = (n: string) => fotos[`../assets/p/${n}.jpg`].default;
+
+// Diensten: de lijst "Wij verzorgen en verwerken o.a." en de dienstteksten van hun site. Foto's van hun eigen projecten.
+const diensten = [
+  { t: 'Dakpannen', d: 'Een nieuwe pannenkap, of herstel van kapotte en verschoven pannen.', src: f('debree-1'), alt: 'Nieuw gelegde rode dakpannen op een pannenkap aan De Bree in Rotterdam', kies: 'Pannendak' },
+  { t: 'Leien en shingles', d: 'Leien daken en gevels, ambachtelijk gelegd.', src: f('meerdervoort-1'), alt: 'Leien dakvlak met een dakraam, Laan van Meerdervoort in Den Haag', kies: 'Leien of shingles' },
+  { t: 'Bitumineuze dakbedekking', d: 'Platte daken, aanbouwen en schuurdaken: nieuw of vervangen.', src: f('heinenoord-1'), alt: 'Dakdekker aan het werk op het platte dak van een aanbouw in Heinenoord', kies: 'Plat dak (bitumen)' },
+  { t: 'Lood, koper en zinkwerk', d: 'Goten, dakkapellen, balkons en aansluitingen.', src: f('hapsburgweg-1'), alt: 'Nieuw zinkwerk rond een dakkapel tussen de pannen, Hapsburgweg in Rotterdam', kies: 'Zink of lood' },
+  { t: 'Dakramen en lichtstraten', d: 'Velux dakramen, koepels, lichtstraten en dakdoorvoeren.', src: f('meerdervoort-2'), alt: 'Nieuw dakraam in een leien dak, met de werkladder er nog naast', kies: 'Leien of shingles' },
+  { t: 'Inspectie en onderhoud', d: 'Dakinspectie en adviesrapport, zodat uw dak langer meegaat.', src: f('debree-2'), alt: 'Zinken goot langs een rij nieuwe dakpannen', kies: 'Weet ik niet' },
+];
+
+// Projecten: de projectpagina's van hun site (titel letterlijk). Labels volgen uit de titel.
+const projecten = [
+  { t: 'Pannenkap Zuideindseweg', p: 'Delfgauw', tags: ['pannen'], f: ['zuideindseweg-1', 'zuideindseweg-2', 'zuideindseweg-3', 'zuideindseweg-4', 'bus'], alt: 'Woning aan de Zuideindseweg in Delfgauw met nieuwe pannenkap en steigers' },
+  { t: 'Dakleien Kalfjeslaan / Hazelaan', p: 'Delft', tags: ['leien'], f: ['kalfjeslaan-1', 'kalfjeslaan-2', 'kalfjeslaan-3', 'kalfjeslaan-4'], alt: 'Woning met nieuwe leien mansardekap en dakkapellen, Kalfjeslaan in Delft' },
+  { t: 'Pannenkap De Bree', p: 'Rotterdam', tags: ['pannen'], f: ['debree-1', 'debree-2', 'debree-3', 'debree-4'], alt: 'Nieuwe rode pannen op een kap aan De Bree in Rotterdam' },
+  { t: 'Zinkbalkon Javastraat', p: 'Den Haag', tags: ['zink'], f: ['javastraat-1', 'javastraat-2', 'javastraat-3'], alt: 'Nieuw zinken balkon met hekwerk aan de Javastraat in Den Haag' },
+  { t: 'Dakleien Laan van Meerdervoort', p: 'Den Haag', tags: ['leien'], f: ['meerdervoort-1', 'meerdervoort-2', 'meerdervoort-3', 'meerdervoort-4'], alt: 'Leien dak met dakraam aan de Laan van Meerdervoort in Den Haag' },
+  { t: 'Pannendak / Zinkwerk Hapsburgweg', p: 'Rotterdam', tags: ['pannen', 'zink'], f: ['hapsburgweg-1', 'hapsburgweg-2', 'hapsburgweg-3', 'hapsburgweg-4'], alt: 'Pannendak met nieuw zinkwerk rond een dakkapel, Hapsburgweg in Rotterdam' },
+  { t: 'Aanbouw- / schuurdak', p: 'Heinenoord', tags: ['renovatie'], f: ['heinenoord-1', 'heinenoord-2'], alt: 'Plat dak van een aanbouw in Heinenoord tijdens het werk' },
+  { t: 'Pannenkap Groenehilledijk', p: 'Rotterdam', tags: ['pannen'], f: ['groenehilledijk-1', 'groenehilledijk-2', 'groenehilledijk-3', 'groenehilledijk-4'], alt: 'Dakkapel tussen nieuwe rode pannen, Groenehilledijk in Rotterdam' },
+  { t: 'Dakleien Olafslaan', p: 'Delft', tags: ['leien'], f: ['olafslaan-1', 'olafslaan-2', 'olafslaan-3'], alt: 'Jaren-dertigwoning met nieuw leien dak aan de Olafslaan in Delft' },
+  { t: 'Zinkwerk keuken Resakhout', p: 'Zoetermeer', tags: ['zink'], f: ['resakhout-1', 'resakhout-2'], alt: 'Nieuw zinken dak op een keukenuitbouw aan het Resakhout in Zoetermeer' },
+  { t: 'Zinkwerk Hoyledesingel', p: 'Rotterdam', tags: ['zink'], f: ['hoyledesingel-1', 'hoyledesingel-2', 'hoyledesingel-3'], alt: 'Nieuw zinken dakvlak tussen de pannen aan de Hoyledesingel in Rotterdam' },
+  { t: 'Pannenkap Waalstraat', p: 'Vlaardingen', tags: ['pannen'], f: ['waalstraat-1', 'waalstraat-2'], alt: 'Nieuwe zwarte pannen op een witte gevel aan de Waalstraat in Vlaardingen' },
+  { t: 'Renovatie Chinalaan', p: 'Delft', tags: ['renovatie'], f: ['chinalaan-1'], alt: 'Dakdekker werkt aan de dakrand van een plat dak aan de Chinalaan in Delft' },
+  { t: 'Renovatie Rotterdamseweg', p: '', tags: ['renovatie'], f: ['rotterdamseweg-1'], alt: 'Plat dak naast een pannendak met nieuwe pannen en hulpstukken klaar voor gebruik' },
+];
+const filters = [['alle', 'Alle'], ['pannen', 'Pannen'], ['leien', 'Leien'], ['zink', 'Zinkwerk'], ['renovatie', 'Renovatie en aanbouw']];
+const tel = (k: string) => (k === 'alle' ? projecten.length : projecten.filter((p) => p.tags.includes(k)).length);
+
+const stappen = [
+  ['Uw vraag', 'Bel, app of mail. Een foto van het dak helpt ons al een eind op weg.'],
+  ['Inspectie en advies', 'Waar nodig kijken we eerst op het dak. Zo weet u direct wat uw mogelijkheden zijn.'],
+  ['Offerte', 'U krijgt een duidelijke offerte voor het werk dat nodig is.'],
+  ['Uitvoering', 'Vakkundig gelegd, met materialen waar de leverancier garantie op geeft.'],
+  ['Garantie en onderhoud', '10 jaar garantie. Hoe lang uw dak meegaat, 15 tot 30 jaar, hangt af van jaarlijks onderhoud.'],
+];
+
+const soorten = ['Pannendak', 'Plat dak (bitumen)', 'Leien of shingles', 'Zink of lood', 'Weet ik niet'];
+const kwesties = ['Lekkage', 'Renovatie of vervangen', 'Nieuw dak of aanbouw', 'Dakraam of lichtstraat', 'Goten of boeiboorden', 'Inspectie of onderhoud'];
+const tempo = ['Zo snel mogelijk', 'Binnen een paar weken', 'Ik oriënteer me'];
+---
+<Base title={`${site.naam} | Dakdekker in Delfgauw`} description="Langedak Dakwerken uit Delfgauw: pannen, leien, bitumen en zinkwerk voor particulier en bedrijf. 10 jaar garantie, VCA* gecertificeerd, 4,7 op Google. Vraag een offerte aan.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: eigen foto, leien gevel in Delft -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.5rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[58%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15181c4d_0%,#15181cb3_48%,#15181cf5_100%)] md:bg-[linear-gradient(90deg,#15181cf2_0%,#15181cc4_45%,#15181c33_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-20 pt-28 md:pb-24 lg:grid-cols-12 lg:pt-36">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Dakdekker in Delfgauw</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Specialist in <span class="text-blauw">daken</span>, op iedere hoogte.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Pannen, leien, zink of bitumen. Van nieuwe daken tot ambachtelijke renovatie, voor particulier en bedrijf.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#dakvraag" class="knop knop-blauw">Offerte aanvragen<Icoon naam="pijl" /></a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 7.00 tot 18.00 uur</span></li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:block">
+          <div class="ml-auto max-w-[19rem] rounded-lg bg-nacht/70 p-7 ring-1 ring-licht/15 backdrop-blur-md">
+            <Icoon naam="schild" class="h-9 w-9 text-blauw" />
+            <p class="num mt-5 font-kop text-[3.5rem] font-black leading-none tracking-[-0.04em]">10 jaar</p>
+            <p class="mt-2 text-licht/90">product- en uitvoeringsgarantie op ieder werk van Langedak.</p>
+            <a href={site.telHref} class="num mt-6 flex items-center gap-2 border-t border-licht/15 pt-5 font-semibold no-underline transition-colors hover:text-blauw"><Icoon naam="tel" class="h-4 w-4 text-blauw" />{site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Materialen -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat wij verwerken">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {materialen.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn bg-papier px-3.5 py-2 text-sm font-medium no-underline transition-colors hover:border-blauw hover:bg-blauw">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Thuis in alles wat met daken te maken heeft.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Wij werken met allerhande materialen en op iedere hoogte. Voor een nieuwe aanvraag kijken we waar nodig eerst op het dak.</p>
+        </div>
+        <ul class="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-12 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href="#dakvraag" data-kies={b.kies} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[240, 400, 640]} sizes="(min-width: 1024px) 380px, 46vw" class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[3/2]" />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-4 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.0625rem] hyphens-auto sm:text-xl">{b.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{b.d}</p>
+                  </div>
+                  <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-sm bg-mist text-inkt transition-colors group-hover:bg-blauw sm:grid" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="donker dakrand bg-nacht text-licht" aria-label="Langedak in cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 pb-12 pt-16 lg:grid-cols-4 lg:pb-14 lg:pt-20">
+        <div class="flex flex-col"><dt class="mt-2 text-sm text-licht-zacht">Jaar garantie op materiaal en uitvoering</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-black leading-none tracking-[-0.04em] text-blauw">10</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-licht-zacht">Jaar levensduur van de dakbedekking</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-black leading-none tracking-[-0.04em]">15-30</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-licht-zacht">Op Google, uit {site.google.aantal} reviews</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-black leading-none tracking-[-0.04em]">{site.google.score}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-licht-zacht">Gecertificeerd: veilig werken op hoogte</dt><dd class="order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-black leading-none tracking-[-0.04em]">VCA*</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Projecten met filter en fotodialoog -->
+    <section id="projecten" class="py-20" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-4 text-3xl">Van Delfgauw tot Den Haag en Rotterdam.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Pannenkappen, leien, zinkwerk en renovaties. Klik op een project voor meer foto's.</p>
+        </div>
+        <div class="mt-10 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]" role="group" aria-label="Filter projecten">
+          {filters.map(([k, t], i) => <button type="button" class="filter" data-filter={k} aria-pressed={i === 0 ? 'true' : 'false'}>{t}<span class="num">{tel(k)}</span></button>)}
+        </div>
+        <ul class="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4" data-projecten>
+          {projecten.map((p, i) => (
+            <li data-tags={p.tags.join(' ')} data-extra={i >= 8 ? '' : undefined} class="project">
+              <button type="button" class="group relative block aspect-[4/5] w-full overflow-hidden rounded-md bg-nacht text-left text-licht" data-open={`p${i}`}>
+                <Image src={f(p.f[0])} alt={p.alt} widths={[240, 320, 480]} sizes="(min-width: 1248px) 290px, (min-width: 1024px) 23vw, (min-width: 768px) 31vw, 46vw" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#15181c00_45%,#15181ce6_100%)]" aria-hidden="true"></span>
+                <span class="absolute inset-x-0 bottom-0 p-3.5 sm:p-5">
+                  <span class="block font-kop text-[.9375rem] font-extrabold leading-tight sm:text-lg">{p.t}</span>
+                  <span class="mt-1 flex items-center justify-between gap-2 text-xs text-licht/80 sm:text-sm"><span>{p.p}</span><span class="flex items-center gap-1"><Icoon naam="fotos" class="h-3.5 w-3.5" />{p.f.length}</span></span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 text-center"><button type="button" class="knop knop-inkt knop-klein" data-meer>Toon alle {projecten.length} projecten</button></p>
+      </div>
+      {projecten.map((p, i) => (
+        <dialog id={`p${i}`} class="projectdialoog" aria-labelledby={`p${i}-t`}>
+          <div class="flex items-start justify-between gap-6 border-b border-lijn p-5 sm:p-6">
+            <div>
+              <p class="eyebrow">{p.p || 'Project'}</p>
+              <h3 id={`p${i}-t`} class="mt-2 text-2xl">{p.t}</h3>
+            </div>
+            <button type="button" class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-mist transition-colors hover:bg-blauw" data-sluit><span class="sr-only">Sluiten</span><Icoon naam="kruis" class="h-5 w-5" /></button>
+          </div>
+          <ul class={`grid gap-3 p-5 sm:p-6 ${p.f.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+            {p.f.map((n, j) => (
+              <li><Image src={f(n)} alt={j === 0 ? p.alt : `${p.t}, foto ${j + 1}`} widths={[480, 800]} sizes="(min-width: 640px) 400px, 90vw" loading="lazy" class={`w-full rounded-sm object-cover ${p.f.length > 1 ? "aspect-[4/3]" : "max-h-[70vh]"}`} /></li>
+            ))}
+          </ul>
+          <div class="flex flex-wrap items-center justify-between gap-4 border-t border-lijn p-5 sm:p-6">
+            <p class="text-grijs">Iets vergelijkbaars nodig?</p>
+            <a href="#dakvraag" class="knop knop-blauw knop-klein" data-sluit>Offerte aanvragen</a>
+          </div>
+        </dialog>
+      ))}
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="border-t border-lijn bg-wit py-20" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Van eerste vraag tot garantie.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Zo weet u vooraf waar u aan toe bent.</p>
+        </div>
+        <ol class="mt-10 grid gap-px overflow-hidden rounded-md bg-lijn sm:grid-cols-2 lg:mt-12 lg:grid-cols-5">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs grid grid-cols-[3.25rem_1fr] gap-x-3 bg-wit p-5 sm:block sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[2rem] font-black leading-none tracking-[-0.04em] text-blauw sm:text-[2.5rem]">0{i + 1}</p>
+              <div><h3 class="text-lg sm:mt-6 sm:text-xl">{t}</h3>
+              <p class="mt-1.5 text-[.9375rem] text-grijs sm:mt-2.5 sm:text-base">{d}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Over Langedak -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[24rem] sm:min-h-[30rem] lg:col-span-5">
+          <Image src={f('chinalaan-1')} alt="Dakdekker van Langedak werkt aan de dakrand van een plat dak aan de Chinalaan in Delft" widths={[640, 960, 1200]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_35%]" />
+          <figure class="absolute bottom-5 right-5 hidden w-52 overflow-hidden rounded-md shadow-md ring-4 ring-nacht sm:block lg:w-60">
+            <Image src={f('kalfjeslaan-1')} alt="Afgeronde leien mansardekap met het bord van Langedak op het balkon, Kalfjeslaan in Delft" widths={[320, 480]} sizes="240px" class="aspect-[4/3] w-full object-cover" />
+          </figure>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-20 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over Langedak</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Opgericht door Berry de Lange.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Langedak dakwerken uit Delfgauw is een jong en dynamisch bedrijf, uitgegroeid tot een betrouwbare en vakkundige onderneming. We voelen ons uitstekend thuis op grote hoogte: bitumen, leien, shingles, zink, dakdoorvoeren en boeiboorden. Nieuwbouw en renovatie.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-inkt"><Icoon naam="afspraak" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Afspraak is afspraak</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Klanten noemen de vlotte communicatie en dat afspraken worden nagekomen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-inkt"><Icoon naam="druppel" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Snel bij lekkage</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Ook bij een spoedklus of een kapotte dakpan wordt u snel geholpen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-inkt"><Icoon naam="helm" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">VCA* gecertificeerd</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Veilig werken op hoogte, met 10 jaar garantie op materiaal en uitvoering.</p></div>
+            </li>
+          </ul>
+          <a href={waVraag} class="knop knop-blauw mt-8"><Icoon naam="wa" />Stel Berry uw vraag</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="bg-mist py-20" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-black">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-nacht font-kop font-extrabold text-blauw" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Contact met de Dakvraag (WhatsApp-bericht samenstellen) -->
+    <section id="contact" class="py-20" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact en offerte</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Wat speelt er met uw dak?</h2>
+          <p class="mt-6 text-lg text-grijs">Kies in vier stappen wat er aan de hand is. Wij zetten het in een bericht dat u via WhatsApp of e-mail verstuurt. Een foto van het dak kunt u er direct bij sturen.</p>
+          <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+            <li><a href={site.telHref} class="kaart flex items-center gap-3.5 p-4 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-blauw text-inkt"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bel Berry</b><span class="num whitespace-nowrap text-grijs">{site.tel}</span></span></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-3.5 p-4 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-mist"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block truncate text-grijs">{site.mail}</span></span></a></li>
+          </ul>
+          <div class="kaart mt-3 p-6">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Bereikbaar</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr</span></p>
+            </div>
+            <table class="mt-3 w-full">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-blauw-diep">
+                    <th scope="row" class="py-1.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-1.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div class="mt-5 flex flex-col gap-4 border-t border-lijn pt-5 sm:flex-row sm:items-center sm:justify-between">
+              <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-5 w-5 shrink-0 text-blauw-diep" /><span>{site.straat}<br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+              <a href={site.maps} class="link shrink-0 text-sm font-semibold">Route plannen</a>
+            </div>
+          </div>
+        </div>
+
+        <form id="dakvraag" class="kaart scroll-mt-28 p-6 sm:p-8 lg:col-span-7 lg:p-10" data-dakvraag aria-describedby="dv-uitleg">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <h3 class="text-2xl">Dakvraag in vier stappen</h3>
+            <span class="rounded-sm bg-mist px-3 py-1 text-sm font-semibold" data-voortgang>0 van 4</span>
+          </div>
+          <p id="dv-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u dat in WhatsApp of uw e-mail zelf doet.</p>
+          <fieldset class="mt-8">
+            <legend class="stap"><span>1</span>Wat voor dak?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {soorten.map((b) => <label class="keuze"><input type="radio" name="soort" value={b} class="sr-only" /><span>{b}</span></label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="stap"><span>2</span>Wat speelt er?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {kwesties.map((b) => <label class="keuze"><input type="radio" name="kwestie" value={b} class="sr-only" /><span>{b}</span></label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="stap"><span>3</span>Hoe snel?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {tempo.map((b) => <label class="keuze"><input type="radio" name="tempo" value={b} class="sr-only" /><span>{b}</span></label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="stap"><span>4</span>Waar en wie?</legend>
+            <div class="mt-3 grid gap-4 sm:grid-cols-2">
+              <label class="block"><span class="text-sm font-semibold">Plaats of postcode</span><input name="plaats" autocomplete="postal-code" class="veld mt-2" placeholder="Bijvoorbeeld Delfgauw" /></label>
+              <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            </div>
+          </fieldset>
+          <div class="mt-8 rounded-md bg-nacht p-5 text-licht">
+            <p class="text-xs font-semibold uppercase tracking-[.18em] text-blauw">Uw bericht</p>
+            <p class="mt-2 whitespace-pre-line text-[.9375rem] leading-relaxed text-licht/90" data-voorbeeld aria-live="polite">Goedendag Berry, ik heb een vraag over mijn dak.</p>
+          </div>
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <button type="submit" class="knop knop-blauw"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand" data-mail><Icoon naam="mail" />Liever per e-mail</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-blauw text-inkt" aria-label="Contact opnemen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Lekkage, renovatie of een nieuw dak?</h2>
+          <p class="mt-2 text-lg">Bel of app Berry, dan kijken we samen wat er nodig is.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-inkt num"><Icoon naam="tel" />{site.tel}</a>
+          <a href={waVraag} class="knop knop-rand"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Projecten: filter, "toon alle" en fotodialoog.
+  const lijst = document.querySelector<HTMLElement>('[data-projecten]');
+  const meer = document.querySelector<HTMLButtonElement>('[data-meer]');
+  const knoppen = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  let alles = false;
+  const toon = (k: string) => {
+    lijst?.querySelectorAll<HTMLElement>('.project').forEach((li) => {
+      const past = k === 'alle' || (li.dataset.tags || '').split(' ').includes(k);
+      li.hidden = !past || (k === 'alle' && !alles && li.hasAttribute('data-extra'));
+    });
+    if (meer) meer.parentElement!.hidden = k !== 'alle' || alles;
+  };
+  knoppen.forEach((b) => b.addEventListener('click', () => { knoppen.forEach((x) => x.setAttribute('aria-pressed', String(x === b))); toon(b.dataset.filter!); }));
+  meer?.addEventListener('click', () => { alles = true; toon('alle'); });
+  toon('alle');
+  document.querySelectorAll<HTMLButtonElement>('[data-open]').forEach((b) => b.addEventListener('click', () => (document.getElementById(b.dataset.open!) as HTMLDialogElement)?.showModal()));
+  document.querySelectorAll<HTMLDialogElement>('dialog').forEach((d) => {
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+    d.querySelectorAll('[data-sluit]').forEach((s) => s.addEventListener('click', () => d.close()));
+  });
+
+  // Dakvraag: keuzes samenvoegen tot een bericht voor WhatsApp of e-mail.
+  const f = document.querySelector<HTMLFormElement>('[data-dakvraag]');
+  if (f) {
+    const voorbeeld = f.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const voortgang = f.querySelector<HTMLElement>('[data-voortgang]')!;
+    const mail = f.querySelector<HTMLAnchorElement>('[data-mail]')!;
+    const bericht = () => {
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Goedendag Berry, ik heb een vraag over mijn dak.'];
+      if (v('soort')) r.push('Soort dak: ' + v('soort'));
+      if (v('kwestie')) r.push('Het gaat om: ' + v('kwestie'));
+      if (v('tempo')) r.push('Wanneer: ' + v('tempo'));
+      if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      const klaar = ['soort', 'kwestie', 'tempo'].filter((n) => v(n)).length + (v('plaats') || v('naam') ? 1 : 0);
+      voortgang.textContent = `${klaar} van 4`;
+      return r.join('\n');
+    };
+    const ververs = () => { const t = bericht(); voorbeeld.textContent = t; mail.href = `mailto:info@langedak.nl?subject=${encodeURIComponent('Dakvraag via de website')}&body=${encodeURIComponent(t)}`; };
+    f.addEventListener('input', ververs);
+    f.addEventListener('change', ververs);
+    f.addEventListener('submit', (e) => { e.preventDefault(); window.open('https://wa.me/31642286632?text=' + encodeURIComponent(bericht()), '_blank', 'noopener'); });
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+      const r = f.querySelector<HTMLInputElement>(`input[name=soort][value="${a.dataset.kies}"]`);
+      if (r) { r.checked = true; ververs(); }
+    }));
+    ververs();
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.035em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: var(--radius-sm); background: var(--color-mist); }
+  /* Schuine dakrand bovenaan de cijferband, zoals het dakje in hun logo. */
+  .dakrand { clip-path: polygon(0 1.25rem, 50% 0, 100% 1.25rem, 100% 100%, 0 100%); margin-top: -1px; }
+  @media (min-width: 768px) { .dakrand { clip-path: polygon(0 2.5rem, 50% 0, 100% 2.5rem, 100% 100%, 0 100%); } }
+  .filter { display: inline-flex; flex: none; align-items: center; gap: .55rem; min-height: 2.75rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-weight: 600; font-size: .9375rem; cursor: pointer; transition: background-color .2s, color .2s; }
+  .filter span { font-size: .8125rem; color: var(--color-grijs); }
+  .filter:hover { background: var(--color-mist); }
+  .filter[aria-pressed='true'] { background: var(--color-inkt); color: var(--color-licht); box-shadow: none; }
+  .filter[aria-pressed='true'] span { color: var(--color-blauw); }
+  .projectdialoog { width: min(56rem, calc(100vw - 1.5rem)); max-height: calc(100dvh - 1.5rem); margin: auto; padding: 0; border: 0; border-radius: var(--radius-lg); background: var(--color-wit); color: var(--color-inkt); box-shadow: var(--shadow-md); }
+  .projectdialoog::backdrop { background: #15181cd9; backdrop-filter: blur(4px); }
+  .stap { display: flex; align-items: center; gap: .65rem; font-family: var(--font-kop); font-weight: 800; font-size: 1.0625rem; }
+  .stap span { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: var(--radius-sm); background: var(--color-inkt); color: var(--color-blauw); font-size: .875rem; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-mist); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #d7dde2; }
+  .keuze input:checked + span { background: var(--color-blauw); color: var(--color-inkt); font-weight: 700; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw-diep); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #15181c33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #15181c66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw-diep); }
+  .veld::placeholder { color: #6f7882; }
+</style>

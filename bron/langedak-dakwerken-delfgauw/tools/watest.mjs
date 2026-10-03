@@ -1,0 +1,18 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4781/sitefront/langedak-dakwerken-delfgauw/');
+console.log('zichtbaar projecten', await p.locator('.project:visible').count());
+await p.click('[data-filter=zink]'); console.log('zink', await p.locator('.project:visible').count());
+await p.click('[data-filter=alle]'); await p.click('[data-meer]'); console.log('alle', await p.locator('.project:visible').count());
+await p.click('[data-open=p1]'); await p.waitForTimeout(500); console.log('dialoog open', await p.locator('#p1').evaluate((d) => d.open));
+await p.screenshot({ path: 'shots/_dialoog.png' }); await p.keyboard.press('Escape');
+await p.click('a[data-kies="Zink of lood"]'); await p.waitForTimeout(800);
+await p.click('label.keuze:has-text("Lekkage")'); await p.click('label.keuze:has-text("Zo snel mogelijk")');
+await p.fill('input[name=plaats]', 'Delfgauw'); await p.fill('input[name=naam]', 'Jan');
+console.log(await p.textContent('[data-voortgang]'), '|', await p.textContent('[data-voorbeeld]'));
+console.log('mail', decodeURIComponent(await p.getAttribute('[data-mail]', 'href')));
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('form[data-dakvraag] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log('status', await p.textContent('[data-status]'), errs.join('|'));
+await b.close();

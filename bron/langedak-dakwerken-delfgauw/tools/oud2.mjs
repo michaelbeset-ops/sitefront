@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 1, userAgent: 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36' });
+const p = await ctx.newPage();
+await p.goto('https://www.langedak.nl/', { waitUntil: 'networkidle' });
+await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 300) { scrollTo(0, y); await new Promise((r) => setTimeout(r, 250)); } });
+await p.waitForTimeout(2500);
+const r = await p.evaluate(() => { const h = [...document.querySelectorAll('h2')].find(e => /IMPRESSIE/i.test(e.innerText)); const y = h.getBoundingClientRect().top + scrollY; const imgs=[...document.querySelectorAll('img')].filter(i=>/Renovatie|Reno-|Zinkwerk/.test(i.src)).map(i=>{const r=i.getBoundingClientRect(); return [Math.round(r.top+scrollY), Math.round(r.width), Math.round(r.height), getComputedStyle(i).opacity, getComputedStyle(i.closest('.elementor-element')||i).visibility]}); return {y, imgs: imgs.slice(0,6), n: imgs.length}; });
+console.log(JSON.stringify(r));
+await p.evaluate((y) => scrollTo(0, y - 50), r.y); await p.waitForTimeout(1500);
+await p.screenshot({ path: 'bron/oud-390-projecten.png' });
+await p.evaluate((y) => scrollTo(0, y + 700), r.y); await p.waitForTimeout(1500);
+await p.screenshot({ path: 'bron/oud-390-projecten2.png' });
+await b.close();
