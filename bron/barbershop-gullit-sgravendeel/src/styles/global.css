@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Uit hun eigen pand: betonvloer en lichte wanden (papier/steen), zwarte stalen glaswanden en kozijnen (inkt),
+     en één merkkleur: het oker van de gele baksteengevel aan de Noord Voorstraat. */
+  --color-papier: #f2f0ec;      /* pagina, betonwit */
+  --color-steen: #e5e1da;       /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #141312;        /* tekst en stalen kaders, 17:1 op papier */
+  --color-grijs: #57534e;       /* bijtekst, 6,9:1 op papier */
+  --color-lijn: #1413121f;
+  --color-oker: #c99245;        /* merkkleur (knopvlak), inkt erop 7,6:1 */
+  --color-oker-licht: #ddb06a;  /* hover op knop, accent op nacht 9:1 */
+  --color-oker-diep: #85571b;   /* merkkleur als tekst op licht, 5,6:1 op papier */
+  --color-nacht: #141312;       /* donkere secties */
+  --color-nacht-2: #201e1c;     /* kaarten op nacht */
+  --color-licht: #f2f0ec;
+  --color-licht-zacht: #b9b2a8; /* bijtekst op nacht, 8,6:1 */
+  --color-lijn-licht: #f2f0ec26;
+  --color-ster: #e8a838;        /* alleen sterren */
+
+  --font-kop: "Big Shoulders Display Variable", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(1.875rem, 1vw + 1.5rem, 2.375rem);
+  --text-3xl: clamp(2.75rem, 3.4vw + 1.5rem, 4.75rem);
+  --text-hero: clamp(3.5rem, 6.4vw + 0.8rem, 7rem);
+
+  /* Strak, zoals hun stalen glaswanden: kleine hoeken. */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #1413120f, 0 2px 8px #1413120a;
+  --shadow-md: 0 14px 34px -14px #14131240;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: .92; letter-spacing: -0.012em; text-transform: uppercase; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-weight: 750; letter-spacing: 0; line-height: 1; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-oker); color: var(--color-inkt); }
+  :focus-visible { outline: 3px solid var(--color-oker-diep); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-oker-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 79rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .eyebrow { font-family: var(--font-sans); font-size: .8125rem; line-height: 1.4; letter-spacing: .2em; text-transform: uppercase; font-weight: 650; color: var(--color-oker-diep); display: inline-flex; align-items: center; gap: .75rem; }
+  .eyebrow::before { content: ""; width: 1.75rem; height: 2px; background: currentColor; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-oker-licht); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk: zwart kader met G (zoals hun stalen kozijnen), "Gullit" zwaar, "Barbershop" klein. */
+  .merk { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk-teken { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 2px; background: var(--color-inkt); color: var(--color-oker); font-family: var(--font-kop); font-weight: 800; font-size: 1.6rem; box-shadow: inset 0 0 0 3px var(--color-inkt), inset 0 0 0 4.5px var(--color-oker); }
+  .merk small { display: block; font-size: .625rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 650; color: var(--color-oker-diep); }
+  .merk b { display: block; margin-top: .2rem; font-family: var(--font-kop); font-weight: 800; font-size: 1.75rem; letter-spacing: .02em; text-transform: uppercase; line-height: .85; }
+  .donker .merk small { color: var(--color-oker-licht); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: 2px; font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-oker { background: var(--color-oker); color: var(--color-inkt); }
+  .knop-oker:hover { background: var(--color-oker-licht); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-oker); color: var(--color-inkt); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-steen); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: var(--color-licht); color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px var(--color-licht); }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.15rem; font-size: .9375rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-oker); transition: color .2s; }
+  .link:hover { color: var(--color-oker-diep); }
+  .donker .link:hover { color: var(--color-oker-licht); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  /* Stalen kozijn: dunne zwarte lijst met een smalle lichte rand ertussen, zoals de glaswanden in de zaak. */
+  .kozijn { position: relative; }
+  .kozijn::after { content: ""; position: absolute; inset: .55rem; border: 1.5px solid #f2f0ecb3; pointer-events: none; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}

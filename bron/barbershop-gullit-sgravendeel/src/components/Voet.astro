@@ -1,0 +1,60 @@
+---
+import { site, url, tijden, waAfspraak } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = [['Knippen en fades', 'knippen'], ['Scheren en baard', 'knippen'], ['Kinderen', 'knippen'], ['Haar- en baardproducten', 'store'], ['Niche parfum', 'store'], ['Kleding en accessoires', 'store']];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken" aria-hidden="true">G</span>
+        <span><small>Barbershop</small> <b>Gullit</b></span>
+      </a>
+      <p class="mt-6 max-w-xs">Oldschool barbershop in Casa Gullit, de concept store aan de Noord Voorstraat in <span class="whitespace-nowrap">{site.plaats}</span>. Knippen, fades en scheren.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-oker hover:text-inkt" aria-label="Instagram van Barbershop Gullit"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={waAfspraak} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-oker hover:text-inkt" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Barbershop en store</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map(([t, id]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-oker-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-oker-licht">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-oker-licht">WhatsApp</a></li>
+        <li>{site.straat}<br /><span class="whitespace-nowrap">{site.postcode}</span> <span class="whitespace-nowrap">{site.plaats}</span></li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-oker-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-oker-licht">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam} in Casa Gullit, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-oker-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, uw Instagram en uw eigen website, ter illustratie. Reviews letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>
