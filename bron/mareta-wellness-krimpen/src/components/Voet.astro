@@ -1,0 +1,55 @@
+---
+import { site, url, tijden, chips, waAfspraak } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="text-licht no-underline"><Merk /></a>
+      <p class="mt-6 max-w-xs">Massagepraktijk van {site.eigenaar} in {site.plaats}. Sinds 2008, op afspraak.</p>
+      <p class="mt-4 max-w-xs text-sm">Ook massage leren? <a href={site.imas} class="link">IMAS Trainingen</a> zit in hetzelfde pand.</p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Massages</p>
+      <ul class="mt-4 space-y-2">
+        {chips.slice(0, 7).map((c) => <li><a href={h('prijzen')} class="no-underline transition-colors hover:text-lila">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-lila">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-lila">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-lila">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-lila">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-lila">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 text-sm">Alleen op afspraak.</p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-lila">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van imastrainingen.nl (de praktijkruimte en het werk van IMAS en Mareta Wellness), ter illustratie. Reviews letterlijk van Google (stand 3 oktober 2026). Prijzen van de prijslijst per 15 maart 2026.</p>}
+  </div>
+</footer>
