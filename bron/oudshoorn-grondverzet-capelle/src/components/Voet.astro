@@ -1,0 +1,59 @@
+---
+import { site, url, tijden, chips, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken" aria-hidden="true"><span class="merk-go">GO</span></span>
+        <span><b>Gertjan Oudshoorn</b><small>Grond- en wegenbouw</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Grond- en wegenbouw, beschoeiingen, houtwerk en tuinaanleg. Voor particulieren en bedrijven in {site.werkgebied}.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waOfferte} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-blauw" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.04em] text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {chips.filter((_, i) => [0, 1, 3, 4, 6, 7, 10].includes(i)).map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-hemel">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.04em] text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-hemel">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-hemel">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-hemel">{site.mail}</a></li>
+        <li>{site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.04em] text-licht">Bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Bereikbaarheid</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-hemel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.handelsnaam}, {site.plaats} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-hemel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van gertjanoudshoorn.nl en de Facebookpagina van {site.naam}, ter illustratie. Google-score: stand 3 oktober 2026.</p>}
+  </div>
+</footer>

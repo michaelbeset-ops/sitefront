@@ -1,0 +1,473 @@
+---
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, plaatsen, waOfferte, waMet } from '../data/site';
+
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/p/*.jpg', { eager: true });
+const f = (n: string) => fotos[`../assets/p/${n}.jpg`].default;
+
+const vraag = (d: string) => waMet(`Goedendag Gertjan, ik wil graag een offerte aanvragen voor ${d.toLowerCase()}.`);
+
+// Diensten: de drie vakgebieden van hun site, uitgesplitst naar de vinkjes op hun homepage.
+const diensten = [
+  { t: 'Grondwerk en riolering', d: 'Ontgraven, ophogen en riolering aanleggen, met de machine of met de schop.', src: f('brainpark-1'), alt: 'Graafmachine en materiaal voor riolering bij een kantoorgebouw op het Brainpark', pos: '50% 60%' },
+  { t: 'Bestrating', d: 'Ook machinale bestrating: van parkeerplaats en brandgang tot oprit.', src: f('brainpark-2'), alt: 'Nieuw bestrate parkeerplaats met rechte banden langs een kantoorgebouw', pos: '50% 60%' },
+  { t: 'Beschoeiing en damwand', d: 'Een stevige oever langs sloot, vaart of vijver.', src: f('nesselande-5'), alt: 'Houten beschoeiing langs een sloot naast een nieuwbouwwoning in de polder', pos: '50% 55%' },
+  { t: 'Keerwanden en grondkering', d: 'Hoogteverschil netjes opvangen, met trap of zitrand erbij.', src: f('keerwand-1'), alt: 'Betonnen keerwand en trap in aanbouw naast een woning, minigraver op de achtergrond', pos: '40% 50%' },
+  { t: 'Vlonders en houtwerk', d: 'Vlonders, schuttingen, schuren en overkappingen, ook boven het water.', src: f('fagron-1'), alt: 'Lange hardhouten vlonder met inbouwspot langs het water', pos: '50% 55%' },
+  { t: 'Tuinaanleg en onderhoud', d: 'Advies, aanleg, renovatie en onderhoud, ook de voor- en najaarsbeurt.', src: f('gravenweg-1'), alt: 'Aangelegde tuin met verlichte zitkuil van hout, kunstgras en een tuinhuis', pos: '50% 55%' },
+];
+
+// Projecten: titels letterlijk van hun projectpagina's; categorie zoals zij ze indelen.
+const projecten = [
+  { id: 'tribune', t: 'Tribune Erasmiaans', cat: 'grond', fotos: ['tribune-1', 'tribune-2', 'tribune-3', 'tribune-4'], alt: 'Nieuwe zittribune van beton en hout op een schoolplein onder hoge bomen' },
+  { id: 'damwand', t: 'Damwand vervangen', cat: 'grond', fotos: ['damwand-2', 'damwand-1', 'damwand-3', 'damwand-4', 'damwand-5'], alt: 'Graafmachine op de oever bij het vervangen van een damwand' },
+  { id: 'keerwand', t: 'Keerwand Kralingen', cat: 'grond', fotos: ['keerwand-4', 'keerwand-2', 'keerwand-3', 'keerwand-1'], alt: 'Opgeleverde betonnen keerwand met trap naast een woning in Kralingen' },
+  { id: 'greenpack', t: 'Greenpack', cat: 'grond', fotos: ['greenpack-1', 'greenpack-2', 'greenpack-3', 'greenpack-4'], alt: 'Shovel en stenen bij het opnieuw bestraten van een overdekte parkeerplaats' },
+  { id: 'terras', t: 'Terras over het water', cat: 'water', fotos: ['terras-3', 'terras-1', 'terras-2', 'terras-4', 'terras-5'], alt: 'Houten terras in aanbouw boven de waterkant' },
+  { id: 'fagron', t: 'Vlonder bij kantoor Fagron', cat: 'water', fotos: ['fagron-2', 'fagron-1', 'fagron-3', 'fagron-4'], alt: 'Lange vlonder van hardhout langs de vijver bij een kantoor' },
+  { id: 'hillegersberg', t: 'Schoeiing Hillegersberg', cat: 'water', fotos: ['hillegersberg-1', 'hillegersberg-2', 'hillegersberg-3'], alt: 'Nieuwe beschoeiing langs een smalle vaart achter woningen in Hillegersberg' },
+  { id: 'nesselande', t: 'Schoeiing en zitkuil in Nesselande', cat: 'water', fotos: ['nesselande-1', 'nesselande-5', 'nesselande-2', 'nesselande-3', 'nesselande-4'], alt: 'Woning op een kavel aan het water met een rondom gesloten houten beschoeiing' },
+  { id: 'gravenweg', t: 'Tuin ’s-Gravenweg', cat: 'tuin', fotos: ['gravenweg-1', 'gravenweg-2', 'gravenweg-3', 'gravenweg-4'], alt: 'Tuin met verlichte zitkuil, kunstgras en een donker tuinhuis' },
+  { id: 'stolwijk', t: 'Stolwijk', cat: 'tuin', fotos: ['stolwijk-1', 'stolwijk-2', 'stolwijk-3', 'stolwijk-4'], alt: 'Grote siertuin met gazon, hagen en leibomen voor een vrijstaande woning' },
+];
+const cats = [['alles', 'Alles'], ['grond', 'Grond- en wegenbouw'], ['water', 'Beschoeiing en houtwerk'], ['tuin', 'Tuinen']];
+const catNaam = Object.fromEntries(cats);
+const catKort: Record<string, string> = { grond: 'Grondwerk', water: 'Beschoeiing en hout', tuin: 'Tuinen' };
+
+const lichtbak = await Promise.all(projecten.map(async (p) => ({
+  t: p.t, cat: catNaam[p.cat],
+  fotos: await Promise.all(p.fotos.map(async (n) => (await getImage({ src: f(n), width: 1600, format: 'webp', quality: 78 })).src)),
+})));
+
+const stappen = [
+  ['Vertel wat u wilt', 'Bel, app of mail. Een paar foto’s van de situatie helpen al veel.'],
+  ['Prijsopgave', 'U ontvangt een offerte met wat er gebeurt en wat het kost.'],
+  ['Uitvoering', 'Machinaal waar het kan, en waar nodig samen met andere zelfstandige vakmensen.'],
+  ['Oplevering', 'Het werk wordt netjes opgeleverd. Onderhoud nodig? Dat kan ook.'],
+];
+
+const materieel = [
+  { src: f('damwand-1'), t: 'Graafmachine op een ponton', d: 'Damwand vervangen vanaf het water', groot: true, pos: '45% 50%' },
+  { src: f('minigraver'), t: 'Minigraver', d: 'Ontgraven in een achtertuin', pos: '55% 50%' },
+  { src: f('dumper-1'), t: 'Rupsdumper', d: 'Zand aanvoeren door een smalle brandgang', pos: '50% 60%' },
+  { src: f('greenpack-1'), t: 'Shovel', d: 'Herbestraten in een parkeergarage', pos: '70% 60%' },
+  { src: f('terras-4'), t: 'Trilplaat', d: 'Nieuwe bestrating aftrillen', pos: '45% 70%' },
+];
+---
+<Base title={`${site.naam} | Grond- en wegenbouw in ${site.plaats}`} description={`Grondwerk, (machinale) bestrating, riolering, beschoeiingen, vlonders en tuinaanleg. Voor particulieren en bedrijven in ${site.werkgebied}. Sinds ${site.sinds}.`}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={f('hero')} alt="" widths={[640, 960, 1280, 1700, 2200]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[68%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#14171c40_0%,#14171cb8_45%,#14171cf5_100%)] md:bg-[linear-gradient(90deg,#14171cf2_0%,#14171ccc_40%,#14171c26_78%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-10 pb-16 pt-28 md:pb-20 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Grond- en wegenbouw · {site.plaats}</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Grondwerk, bestrating en <span class="text-hemel">beschoeiing.</span></h1>
+          <p class="mt-7 max-w-2xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Van riolering en machinale bestrating tot een nieuwe oever, vlonder of tuin. Voor particulieren en bedrijven in Capelle, Rotterdam en omstreken.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#offerte" class="knop knop-blauw">Offerte aanvragen<Icoon naam="pijl" /></a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+          <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-2.5 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Zelfstandig sinds {site.sinds}</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 7.00 tot 17.00 uur</span></li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:flex lg:justify-end">
+          <a href={site.telHref} class="group flex w-full max-w-[19rem] items-center gap-4 rounded-md bg-nacht/70 p-5 no-underline ring-1 ring-licht/20 backdrop-blur-md transition-colors hover:bg-blauw">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-blauw text-wit transition-colors group-hover:bg-wit group-hover:text-blauw"><Icoon naam="tel" class="h-6 w-6" /></span>
+            <span><span class="block text-sm text-licht/80">Direct Gertjan aan de lijn</span><b class="num block whitespace-nowrap font-kop text-2xl font-bold tracking-[.02em]">{site.tel}</b></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Werkzaamheden in het kort">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-2.5 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn bg-papier px-3.5 py-2 font-kop text-[.9375rem] font-semibold uppercase tracking-[.04em] no-underline transition-colors hover:border-blauw hover:bg-blauw hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-24" aria-labelledby="t-dien">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-dien" class="mt-5 text-3xl">Van de eerste schep tot de laatste tegel.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Grond- en wegenbouw, houtwerk en tuinen uit één hand. Klein of groot, particulier of zakelijk.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[480, 720, 960]} sizes="(min-width: 1280px) 390px, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw" class="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[4/3]" style={`object-position:${b.pos}`} />
+                  <span class="num absolute left-0 top-0 bg-nacht px-3 py-1.5 font-kop text-sm font-bold text-wit">0{i + 1}</span>
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div class="self-start">
+                    <h3 class="text-[1.375rem] uppercase tracking-[.01em]">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-steen text-blauw transition-colors group-hover:bg-blauw group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="donker bg-nacht text-licht" aria-label="In het kort">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-14 lg:grid-cols-4 lg:py-16">
+        <div class="flex flex-col"><dt class="text-sm text-licht-zacht">Zelfstandig ondernemer sinds</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-extrabold leading-none text-hemel">{site.sinds}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">Score op Google</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-extrabold leading-none">{site.google.score}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">Vakgebieden: grond, hout, tuin</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-extrabold leading-none">3</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="text-sm text-licht-zacht">Uur: start van de werkdag</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,4rem)] font-extrabold leading-none">7.00</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Projecten -->
+    <section id="projecten" class="py-20 lg:py-24" aria-labelledby="t-proj">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-proj" class="mt-5 text-3xl">Werk dat er staat.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Een greep uit uitgevoerde projecten, met de eigen foto’s van de klus. Klik op een project voor meer beelden.</p>
+        </div>
+        <div class="mt-10 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none]" role="group" aria-label="Filter projecten" data-filters>
+          {cats.map(([id, t], i) => <button type="button" class="filter" data-cat={id} aria-pressed={i === 0 ? 'true' : 'false'}>{t}<span class="num" data-telt={id}>{id === 'alles' ? projecten.length : projecten.filter((p) => p.cat === id).length}</span></button>)}
+        </div>
+        <ul class="mt-8 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5" data-projecten>
+          {projecten.map((p, i) => (
+            <li data-cat={p.cat} class={i === 0 || i === 7 ? 'col-span-2 row-span-2' : ''}>
+              <button type="button" class="project group" data-project={i}>
+                <Image src={f(p.fotos[0])} alt={p.alt} widths={i === 0 || i === 7 ? [600, 900, 1240] : [320, 480, 640]} sizes={i === 0 || i === 7 ? '(min-width: 1280px) 600px, (min-width: 1024px) 48vw, 92vw' : '(min-width: 1280px) 290px, (min-width: 1024px) 23vw, 46vw'} class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#14171c00_30%,#14171cb3_62%,#14171cf2_100%)]" aria-hidden="true"></span>
+                <span class="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-left text-wit sm:p-5">
+                  <span>
+                    <span class="block text-xs font-semibold uppercase tracking-[.14em] text-hemel">{catKort[p.cat]}</span>
+                    <span class={`mt-1 block font-kop font-bold uppercase leading-tight ${i === 0 || i === 7 ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl'}`} set:html={p.t.replace(/(’s-\S+)/, '<span class="whitespace-nowrap">$1</span>')}></span>
+                  </span>
+                  <span class="num hidden shrink-0 items-center gap-1.5 rounded-sm bg-wit/15 px-2 py-1 text-xs font-semibold backdrop-blur-sm sm:flex"><Icoon naam="foto" class="h-3.5 w-3.5" />{p.fotos.length}<span class="sr-only"> foto’s bekijken</span></span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-md bg-steen px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Een vergelijkbare klus in gedachten?</b> <span class="text-grijs">Stuur een paar foto’s, dan denkt Gertjan mee.</span></p>
+          <a href={waOfferte} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Foto’s sturen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Machinaal werk -->
+    <section id="materieel" class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-mat">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Machinaal werk</p>
+            <h2 id="t-mat" class="mt-5 text-3xl">Het juiste materieel op de juiste plek.</h2>
+          </div>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-4 lg:col-start-9" style="--d:.05s">Op een ponton, in een parkeergarage of in een smalle brandgang: zo ziet de klus eruit.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 md:gap-4 lg:mt-14 lg:grid-cols-4 lg:grid-rows-2">
+          {materieel.map((m, i) => (
+            <li class={`rijs relative overflow-hidden rounded-md bg-nacht-2 ${m.groot ? 'col-span-2 aspect-[4/3] lg:row-span-2 lg:aspect-auto' : 'aspect-[4/5] sm:aspect-[4/3]'}`} style={`--d:${(i % 4) * 0.05}s`}>
+              <Image src={m.src} alt={`${m.t}: ${m.d.toLowerCase()}`} widths={m.groot ? [640, 960, 1280] : [320, 480, 640]} sizes={m.groot ? '(min-width: 1024px) 620px, 92vw' : '(min-width: 1024px) 300px, 46vw'} class="absolute inset-0 h-full w-full object-cover" style={`object-position:${m.pos}`} />
+              <span class="absolute inset-0 bg-[linear-gradient(180deg,#14171c00_35%,#14171cbf_65%,#14171cf5_100%)]" aria-hidden="true"></span>
+              <p class="absolute inset-x-0 bottom-0 p-4 sm:p-5">
+                <b class={`block font-kop font-bold uppercase ${m.groot ? 'text-2xl' : 'text-lg'}`}>{m.t}</b>
+                <span class="mt-0.5 block text-sm text-licht-zacht">{m.d}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Werkwijze -->
+    <section class="py-20 lg:py-24" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-5 text-3xl">Zo pakken we het aan.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Duidelijk vooraf, strak in de uitvoering.</p>
+        </div>
+        <ol class="mt-12 grid gap-px overflow-hidden rounded-md bg-lijn outline outline-1 -outline-offset-1 outline-lijn sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs bg-wit p-7 lg:p-8" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-5xl font-extrabold leading-none text-blauw">0{i + 1}</p>
+              <h3 class="mt-8 text-[1.375rem] uppercase">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Over Gertjan -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[28rem] lg:col-span-5">
+          <Image src={f('nesselande-3')} alt="Twee vakmensen bouwen een houten zitkuil op een kavel aan het water in Nesselande" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[45%_50%]" />
+          <p class="absolute bottom-4 left-4 rounded-sm bg-blauw px-4 py-2 font-kop text-sm font-bold uppercase tracking-[.06em] text-wit">Sinds {site.sinds} zelfstandig</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-80rem)/2+2.5rem))]">
+          <p class="eyebrow">Over Gertjan</p>
+          <h2 id="t-over" class="mt-5 text-3xl">Vakman uit de grond- en wegenbouw.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Na vele jaren ervaring bij een bedrijf in de grond- en wegenbouw zette Gertjan Oudshoorn in {site.sinds} de stap naar zelfstandig ondernemerschap. Vanuit {site.plaats} voert hij (machinale) bestrating, rioleringswerk en schoeiingen uit, en legt hij tuinen aan en onderhoudt ze.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="mens" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Eén aanspreekpunt</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">U spreekt Gertjan zelf, van de eerste vraag tot de oplevering.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="team" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Samen met vakmensen</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Samenwerking met andere zelfstandigen, zodat ook uitgebreide projecten rond komen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="maat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg uppercase">Klein of groot</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Van een tuin of brandgang tot een parkeerplaats of schoolplein.</p></div>
+            </li>
+          </ul>
+          <a href="#offerte" class="knop knop-blauw mt-9">Offerte aanvragen<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Werkgebied + Google -->
+    <section class="bg-steen py-20 lg:py-24" aria-labelledby="t-gebied">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10 [&>*]:min-w-0">
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Werkgebied</p>
+          <h2 id="t-gebied" class="mt-5 text-3xl">Capelle, Rotterdam en omstreken.</h2>
+          <p class="mt-6 text-lg text-grijs">Gertjan werkt vanuit {site.plaats}. Uitgevoerde projecten liggen onder meer hier:</p>
+          <ul class="mt-8 flex flex-wrap gap-2.5">
+            {plaatsen.map((p) => <li class="flex items-center gap-2 rounded-sm bg-wit px-3.5 py-2 text-[.9375rem] font-medium shadow-sm"><Icoon naam="pin" class="h-4 w-4 text-blauw" />{p}</li>)}
+          </ul>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-5 lg:col-start-8">
+          <a href={site.reviews} class="kaart flex items-center gap-5 p-6 no-underline transition-shadow hover:shadow-md md:p-8">
+            <Icoon naam="g" class="h-12 w-12 shrink-0" />
+            <span class="flex-1">
+              <span class="flex items-center gap-3"><b class="num font-kop text-4xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span></span>
+              <span class="mt-1 block text-grijs">Gemiddelde score op Google</span>
+            </span>
+            <Icoon naam="pijl" class="h-5 w-5 text-blauw" />
+          </a>
+          <div class="kaart p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl uppercase">Bereikbaar</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Bereikbaarheid per dag</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-blauw">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Offerte -->
+    <section id="offerte" class="py-20 lg:py-24" aria-labelledby="t-offerte">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10 [&>*]:min-w-0">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Offerte aanvragen</p>
+          <h2 id="t-offerte" class="mt-5 text-3xl">Laten we beginnen.</h2>
+          <p class="mt-6 text-lg text-grijs">Beschrijf in een paar klikken wat er moet gebeuren. U kiest zelf of het als WhatsApp-bericht of als e-mail verstuurd wordt.</p>
+          <ul class="mt-10 grid grid-cols-1 gap-3 [&>li]:min-w-0">
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-blauw text-wit"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={waOfferte} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-steen text-blauw"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="text-grijs">Stuur meteen foto’s mee</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-steen text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block truncate text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-offerte aria-describedby="of-uitleg">
+          <h3 class="text-2xl uppercase">Uw aanvraag</h3>
+          <p id="of-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u zelf in WhatsApp of uw mailprogramma op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Soort klus</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Grondwerk', 'Bestrating', 'Riolering', 'Beschoeiing of damwand', 'Keerwand', 'Vlonder of houtwerk', 'Tuinaanleg', 'Tuinonderhoud'].map((b) => (
+                <label class="keuze"><input type="checkbox" name="klus" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Voor</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Particulier', 'Bedrijf of instelling'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="voor" value={b} class="sr-only" checked={i === 0} /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Plaats van de klus</span><input name="plaats" class="veld mt-2" placeholder="Bijvoorbeeld Capelle aan den IJssel" /></label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer</span>
+              <select name="wanneer" class="veld mt-2">
+                <option value="">Nog niet bekend</option>
+                <option>Zo snel mogelijk</option>
+                <option>Binnen een maand</option>
+                <option>Binnen drie maanden</option>
+                <option>Later dit jaar</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Ongeveer hoe groot <span class="font-normal text-grijs">(optioneel)</span></span><input name="maat" class="veld mt-2" placeholder="Bijvoorbeeld 40 m² of 25 meter oever" /></label>
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Wat moet er gebeuren? Foto’s kunt u na het openen meesturen."></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <button type="submit" name="via" value="wa" class="knop knop-blauw w-full sm:w-auto"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <button type="submit" name="via" value="mail" class="knop knop-rand w-full sm:w-auto"><Icoon naam="mail" />Per e-mail</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-blauw text-wit" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.875rem,2.2vw+1.2rem,2.75rem)]">Grondwerk of bestrating gepland?</h2>
+          <p class="mt-2 text-lg text-wit/90">Bel of app Gertjan voor een offerte op maat.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+          <a href={waOfferte} class="knop knop-rand op-foto"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <!-- Lichtbak voor projectfoto's -->
+  <dialog class="lichtbak" data-lichtbak aria-labelledby="lb-titel">
+    <div class="flex h-full flex-col">
+      <div class="flex items-center justify-between gap-4 px-4 py-3 text-licht sm:px-6">
+        <p><span class="block text-xs font-semibold uppercase tracking-[.14em] text-hemel" data-lb-cat></span><b id="lb-titel" class="font-kop text-xl font-bold uppercase" data-lb-titel></b></p>
+        <button type="button" class="grid h-11 w-11 place-items-center rounded-sm bg-nacht-2 text-licht hover:bg-blauw" data-lb-dicht><span class="sr-only">Sluiten</span><Icoon naam="kruis" class="h-5 w-5" /></button>
+      </div>
+      <div class="relative flex min-h-0 flex-1 items-center justify-center px-2 sm:px-16">
+        <img alt="" class="max-h-full max-w-full rounded-sm object-contain" data-lb-img />
+        <button type="button" class="lb-pijl left-2 sm:left-4" data-lb-vorige><span class="sr-only">Vorige foto</span><Icoon naam="links" class="h-6 w-6" /></button>
+        <button type="button" class="lb-pijl right-2 sm:right-4" data-lb-volgende><span class="sr-only">Volgende foto</span><Icoon naam="pijl" class="h-6 w-6" /></button>
+      </div>
+      <p class="num px-4 py-3 text-center text-sm text-licht-zacht" data-lb-teller aria-live="polite"></p>
+    </div>
+  </dialog>
+  <script type="application/json" id="lb-data" set:html={JSON.stringify(lichtbak)}></script>
+</Base>
+
+<script>
+  // Projectfilter
+  const knoppen = document.querySelectorAll<HTMLButtonElement>('[data-filters] [data-cat]');
+  const items = document.querySelectorAll<HTMLElement>('[data-projecten] > li');
+  knoppen.forEach((k) => k.addEventListener('click', () => {
+    const c = k.dataset.cat;
+    knoppen.forEach((b) => b.setAttribute('aria-pressed', String(b === k)));
+    items.forEach((li) => { li.hidden = c !== 'alles' && li.dataset.cat !== c; li.classList.toggle('vlak', c !== 'alles'); });
+  }));
+
+  // Lichtbak
+  const data: { t: string; cat: string; fotos: string[] }[] = JSON.parse(document.getElementById('lb-data')?.textContent || '[]');
+  const dlg = document.querySelector<HTMLDialogElement>('[data-lichtbak]');
+  const img = document.querySelector<HTMLImageElement>('[data-lb-img]');
+  let p = 0, n = 0;
+  const toon = () => {
+    if (!dlg || !img) return;
+    const pr = data[p];
+    img.src = pr.fotos[n];
+    img.alt = `${pr.t}, foto ${n + 1} van ${pr.fotos.length}`;
+    dlg.querySelector('[data-lb-titel]')!.textContent = pr.t;
+    dlg.querySelector('[data-lb-cat]')!.textContent = pr.cat;
+    dlg.querySelector('[data-lb-teller]')!.textContent = `${n + 1} / ${pr.fotos.length}`;
+  };
+  const stap = (d: number) => { n = (n + d + data[p].fotos.length) % data[p].fotos.length; toon(); };
+  document.querySelectorAll<HTMLButtonElement>('[data-project]').forEach((b) => b.addEventListener('click', () => { p = Number(b.dataset.project); n = 0; toon(); dlg?.showModal(); }));
+  dlg?.querySelector('[data-lb-dicht]')?.addEventListener('click', () => dlg.close());
+  dlg?.querySelector('[data-lb-vorige]')?.addEventListener('click', () => stap(-1));
+  dlg?.querySelector('[data-lb-volgende]')?.addEventListener('click', () => stap(1));
+  dlg?.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+  dlg?.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') stap(-1); if (e.key === 'ArrowRight') stap(1); });
+  let x0 = 0;
+  img?.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  img?.addEventListener('touchend', (e) => { const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) stap(dx < 0 ? 1 : -1); });
+
+  // Offerteformulier: bericht samenstellen, niets wordt automatisch verstuurd.
+  const form = document.querySelector<HTMLFormElement>('[data-offerte]');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const via = (e.submitter as HTMLButtonElement | null)?.value || 'wa';
+    const d = new FormData(form);
+    const v = (k: string) => String(d.get(k) || '').trim();
+    const klus = d.getAll('klus').map(String);
+    const r = ['Goedendag Gertjan, ik wil graag een offerte aanvragen.'];
+    if (klus.length) r.push('Soort klus: ' + klus.join(', '));
+    if (v('voor')) r.push('Voor: ' + v('voor').toLowerCase());
+    if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+    if (v('maat')) r.push('Omvang: ' + v('maat'));
+    if (v('wanneer')) r.push('Wanneer: ' + v('wanneer').toLowerCase());
+    if (v('wens')) r.push('Toelichting: ' + v('wens'));
+    if (v('naam')) r.push('Met vriendelijke groet, ' + v('naam'));
+    const tekst = r.join('\n');
+    if (via === 'mail') window.location.href = 'mailto:info@gertjanoudshoorn.nl?subject=' + encodeURIComponent('Offerteaanvraag' + (klus.length ? ': ' + klus.join(', ') : '')) + '&body=' + encodeURIComponent(tekst);
+    else window.open('https://wa.me/31654994512?text=' + encodeURIComponent(tekst), '_blank', 'noopener');
+  });
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .92; letter-spacing: -0.01em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: 3px; background: var(--color-steen); }
+  .status-pil .status-stip { background: #8c9097; }
+  .filter { display: inline-flex; align-items: center; gap: .6rem; flex: none; min-height: 2.875rem; padding: 0 1.1rem; border-radius: 3px; background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-family: var(--font-kop); font-weight: 700; font-size: 1rem; letter-spacing: .04em; text-transform: uppercase; cursor: pointer; transition: background-color .2s, color .2s; }
+  .filter span { font-family: var(--font-sans); font-size: .75rem; padding: .1rem .45rem; border-radius: 3px; background: var(--color-steen); color: var(--color-grijs); }
+  .filter:hover { background: var(--color-steen); }
+  .filter[aria-pressed='true'] { background: var(--color-inkt); color: #fff; box-shadow: none; }
+  .filter[aria-pressed='true'] span { background: var(--color-blauw); color: #fff; }
+  .project { position: relative; display: block; width: 100%; height: 100%; min-height: 12rem; overflow: hidden; border-radius: var(--radius-md); background: var(--color-nacht); cursor: zoom-in; aspect-ratio: 1 / 1; }
+  [data-projecten] > li.col-span-2 .project { aspect-ratio: auto; min-height: 100%; }
+  @media (max-width: 1023px) { [data-projecten] > li.col-span-2 .project { aspect-ratio: 4 / 3; } }
+  [data-projecten] > li.vlak { grid-column: span 1 / span 1; grid-row: span 1 / span 1; }
+  [data-projecten] > li.vlak .project { aspect-ratio: 1 / 1; }
+  [data-projecten] > li.vlak .project .text-2xl { font-size: 1.25rem; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.625rem; padding: 0 1rem; border-radius: 3px; background: var(--color-steen); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #dcd8cd; }
+  .keuze input:checked + span { background: var(--color-blauw); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 4px; border: 1.5px solid #14171c33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #14171c66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #7d8189; }
+  .lichtbak { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #0d0f13f2; }
+  .lichtbak::backdrop { background: #0d0f13cc; }
+  .lb-pijl { position: absolute; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 3px; background: #14171ccc; color: #fff; transition: background-color .2s; }
+  .lb-pijl:hover { background: var(--color-blauw); }
+</style>

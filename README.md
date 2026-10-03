@@ -167,3 +167,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Aannemersbedrijf Martin de Groot, Ouderkerk a/d IJssel | https://michaelbeset-ops.github.io/sitefront/aannemer-martin-de-groot-ouderkerk/ | site uit 2013, niet mobiel, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Autobedrijf Motech, Arkel | https://michaelbeset-ops.github.io/sitefront/autobedrijf-motech-arkel/ | site geeft kritieke fout, 4,8 uit 72, 06/WhatsApp. | 2026-10-03 | demo premium |
 | S&V Loodgieters, 's-Gravendeel | https://michaelbeset-ops.github.io/sitefront/sv-loodgieters-sgravendeel/ | oude site zonder https, 404's, 06/WhatsApp. | 2026-10-03 | demo premium |
+| G. Oudshoorn Grond- en Wegenbouw, Capelle a/d IJssel | https://michaelbeset-ops.github.io/sitefront/oudshoorn-grondverzet-capelle/ | niet mobiel, geen https, 5,0 uit 2, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Tegel- en Bouwbedrijf D. Hus, Maassluis | https://michaelbeset-ops.github.io/sitefront/tegel-bouwbedrijf-hus-maassluis/ | site uit 2015, niet mobiel, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Straatmakersbedrijf Ten Oever & Stierman, Ridderkerk | https://michaelbeset-ops.github.io/sitefront/ten-oever-stierman-ridderkerk/ | niet mobiel, geen https, 06/WhatsApp. | 2026-10-03 | demo premium |
