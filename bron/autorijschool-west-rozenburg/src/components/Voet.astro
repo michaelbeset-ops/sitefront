@@ -1,0 +1,56 @@
+---
+import { site, url, tijden, waProefles } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const links = [['Praktijklessen', 'opleidingen'], ['Theoriecursus', 'opleidingen'], ['Opfrislessen', 'opleidingen'], ['Faalangstexamen', 'opleidingen'], ['Prijzen en pakketten', 'prijzen'], ['Rijbewijsplanner', 'planner']];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url("")} class="merk text-licht">
+        <span class="dakbord"><b>WEST</b><i aria-hidden="true">L</i></span>
+        <span class="merk-tekst"><span>Autorijschool</span><small>Rozenburg</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Familiebedrijf in Rozenburg, opgericht in 1973. Rijles in Nissan Note-lesauto's met airco, theorie en opfrislessen.</p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Opleidingen</p>
+      <ul class="mt-4 space-y-2">
+        {links.map(([t, id]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-geel">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-geel">{site.tel}</a></li>
+        <li><a href={waProefles} class="no-underline transition-colors hover:text-geel">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-geel"><span class="sm:hidden">E-mail</span><span class="hidden [overflow-wrap:anywhere] sm:inline">{site.mail}</span></a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-geel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open} - {t.dicht}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-geel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Lesauto's en theorielokaal: foto's van de huidige website. Overige foto's zijn sfeerfoto's via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>

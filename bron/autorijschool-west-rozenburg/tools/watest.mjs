@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4790/sitefront/autorijschool-west-rozenburg/');
+await p.fill('input[name=geb]', '2010-03-14');
+await p.click('label.keuze:has-text("Pakket B")'); await p.fill('input[name=naam]', 'Sanne');
+console.log(await p.textContent('[data-advies]'));
+console.log((await p.$$eval('[data-mijlpaal]', e => e.map(x => x.textContent))).join(' | '));
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();
