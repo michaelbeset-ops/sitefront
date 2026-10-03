@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4715/sitefront/krijgsman-hovenier-numansdorp/');
+await p.click('[data-proj="3"]'); await p.click('[data-volgende]'); await p.click('[data-volgende]');
+console.log('viewer:', await p.textContent('[data-teller]'), '|', await p.textContent('[data-onder]'), '|', await p.getAttribute('[data-foto]', 'src'));
+await p.fill('[data-schuif]', '6'); await p.dispatchEvent('[data-schuif]', 'input');
+console.log('schuif:', await p.textContent('[data-onder]'));
+await p.click('label.keuze:has-text("Aanleg")'); await p.click('label.keuze:has-text("Onderhoudscontract")');
+await p.selectOption('select[name=contract]', 'Jaarcontract'); await p.fill('input[name=plaats]', 'Numansdorp'); await p.fill('input[name=naam]', 'Test');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[value=wa]')]);
+console.log(decodeURIComponent(np.url()));
+console.log('status:', await p.textContent('[data-status]'), errs.join('|'));
+await b.close();
