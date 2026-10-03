@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4723/sitefront/trimsalon-tanja-springvloed-lekkerkerk/');
+await p.click('[data-vn-knop] >> nth=0'); console.log('vn:', await p.getAttribute('[data-vn-knop] >> nth=0', 'aria-pressed'), await p.textContent('[data-vn-label] >> nth=0'));
+await p.click('label.keuze:has-text("Anti-verharing")'); await p.fill('input[name=ras]', 'Labrador'); await p.fill('input[name=hond]', 'Bo');
+await p.selectOption('select[name=dag]', 'Vrijdag'); await p.check('input[name=ophalen]'); await p.fill('input[name=naam]', 'Sanne');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();

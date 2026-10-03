@@ -1,0 +1,478 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, rassen, reviews, waAfspraak, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import fohnen from '../assets/fohnen.jpg';
+import pand from '../assets/pand-sneeuw.jpg';
+import tanja from '../assets/tanja.jpg';
+import salon from '../assets/salon.jpg';
+import maltVoor from '../assets/malt-voor.jpg';
+import maltNa from '../assets/malt-na.jpg';
+import poedelVoor from '../assets/poedel-voor.jpg';
+import poedelNa from '../assets/poedel-na.jpg';
+import spinVoor from '../assets/spinone-voor.jpg';
+import spinNa from '../assets/spinone-na.jpg';
+import sPoedel from '../assets/s-poedel.jpg';
+import sJack from '../assets/s-jackrussell.jpg';
+import sBorstel from '../assets/s-borstel.jpg';
+import a1 from '../assets/w-9903324.jpg';
+import a2 from '../assets/w-37163186.jpg';
+import a3 from '../assets/w-21962953.jpg';
+import a4 from '../assets/w-21963281.jpg';
+import a5 from '../assets/w-21962523.jpg';
+import a6 from '../assets/w-21963014.jpg';
+
+const vraag = (b: string) => waMet(`Hoi Tanja, ik wil graag een afspraak maken voor mijn hond: ${b.toLowerCase()}.`);
+
+const groot = [
+  { t: 'Knippen en scheren', d: 'De vacht inkorten met schaar of tondeuse, of een combinatie van beide.', src: sPoedel, alt: 'Een zwarte poedel met een krullende, net geknipte kop', pos: '50% 22%' },
+  { t: 'Plukken en strippen', d: 'Het dode haar eruit, met de hand of met een trimmesje. Wat overblijft is een korte, harde bovenvacht.', src: sJack, alt: 'Portret van een Jack Russell Terrier tegen een zachtroze achtergrond', pos: '50% 40%' },
+  { t: 'Anti-verharing', d: 'Voor kortharige honden die het hele jaar verharen. Eens per 6 weken, daarna laat uw hond thuis nagenoeg niets meer los.', src: sBorstel, alt: 'Een hand borstelt de lange, goudbruine vacht van een hond', pos: '50% 50%' },
+];
+
+const klein = [
+  { t: 'Wassen en drogen', i: 'druppel', d: 'Zachte shampoos: pH-neutraal, 100% biologisch, hypo-allergeen en dierproefvrij. Bij jeuk een medicinale shampoo.' },
+  { t: 'Ontwollen en borstelen', i: 'schaar', d: 'De losse, oude ondervacht eruit en de klitten weg, ook in de oksels, de liezen en achter de oren.' },
+  { t: 'Puppy kennismaken', i: 'pup', d: 'Vanaf ongeveer 8 weken even wennen aan de tafel, de föhn en de tondeuse. Hier zijn geen kosten aan verbonden.' },
+];
+
+const paren = [
+  { naam: 'Maltezer', bij: 'voor de trimbeurt en na de trimbeurt', voor: maltVoor, na: maltNa, altV: 'Een witte Maltezer met een lange, vervilte vacht op de trimtafel', altN: 'Dezelfde Maltezer na de trimbeurt, kort en netjes', pv: '50% 50%', pn: '50% 40%' },
+  { naam: 'Poedeltje', bij: 'voor de trimbeurt en na de trimbeurt', voor: poedelVoor, na: poedelNa, altV: 'Een poedel met een lange, verwarde vacht', altN: 'Dezelfde poedel na de trimbeurt, met een ronde kop en de tong uit de bek', pv: '50% 30%', pn: '50% 30%' },
+  { naam: 'Spinone Italiano', bij: 'na een "slootbad" en na het wassen bij ons in de trimsalon', voor: spinVoor, na: spinNa, altV: 'Een Spinone Italiano met een modderige, natte vacht op de trimtafel', altN: 'Dezelfde Spinone Italiano schoon en droog na het wassen', pv: '50% 50%', pn: '50% 50%' },
+];
+
+const stappen = [
+  ['Op de trimtafel', 'De eerste keer is dat even vreemd, maar dat went snel.'],
+  ['Doorkammen', 'De vacht wordt helemaal doorgekamd en eventuele klitten worden verwijderd.'],
+  ['Nagels en oren', 'De nagels worden geknipt en de haren in de oren worden verwijderd.'],
+  ['Trimmen en wassen', 'Getrimd passend bij het vachttype, daarna in bad en weer gedroogd.'],
+  ['In model', 'Volgens rasstandaard, of in overleg een model dat uw hond zo mooi mogelijk doet uitkomen.'],
+];
+
+const album = [
+  { src: a1, alt: 'Een witte terriër met een leesbril op de neus' },
+  { src: a2, alt: 'Een jonge Jack Russell met een rode halsband, van dichtbij' },
+  { src: a3, alt: 'Een witte pluizige hond met een blauwe strik op de trimtafel' },
+  { src: a4, alt: 'Een witte poedel in model geknipt, buiten op de tegels' },
+  { src: a5, alt: 'Twee Berner Sennenhonden naast elkaar in de trimsalon' },
+  { src: a6, alt: 'Een lichtbruine hond met een pluizige kop, van dichtbij' },
+];
+
+const tips = [
+  'Breng uw hond zo droog mogelijk: een natte hond is moeilijk te behandelen.',
+  'Breng uw hond nooit met een volle maag.',
+  'Laat uw hond goed uit voordat u komt. De behandeling neemt enige uren in beslag.',
+  'Heeft uw hond een medische of besmettelijke aandoening, zoals kennelhoest? Dan vernemen we dat graag.',
+  'Breng uw hond aangelijnd mee.',
+  'Wilt u uw hond vooraf zelf in bad doen? Overleg dat eerst, veel vachten zijn na een wasbeurt moeilijk te behandelen.',
+  'Kunt u niet op een afspraak komen, laat het dan zo vroeg mogelijk weten.',
+];
+---
+<Base title={`${site.naam} | Trimsalon in Lekkerkerk`} description="Gediplomeerd hondentrimster in Lekkerkerk, lid van de ABHB. Knippen, plukken, strippen, wassen en anti-verharing. 4,9 op Google. Afspraak via WhatsApp of 06 16 56 79 35.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: een hond op Tanja's eigen trimtafel -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[42%_30%] lg:left-[36%] lg:w-[64%] lg:object-[40%_35%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1c202340_0%,#1c2023b3_40%,#1c2023f5_100%)] md:bg-[linear-gradient(90deg,#1c2023f5_0%,#1c2023d9_45%,#1c202340_80%)] lg:bg-[linear-gradient(90deg,#1c2023_0%,#1c2023_36%,#1c2023b3_44%,#1c202300_62%),linear-gradient(0deg,#1c2023cc_0%,#1c202300_30%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-20 pt-40 md:pb-24 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">Hondentrimsalon in Lekkerkerk</p>
+          <h1 id="t-hero" class="mt-5 text-hero">De trimsalon met net dat <span class="text-vuur">beetje meer.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">De beste kwaliteit voor een betaalbare prijs, waar uw hond nog met veel liefde en geduld behandeld wordt.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waAfspraak} class="knop knop-oranje"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href="#voor-en-na" class="knop knop-rand op-foto">Bekijk voor en na</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m do 9.00 tot 17.00 uur</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Rassen -->
+    <section class="border-b border-lijn bg-wit" aria-labelledby="t-rassen">
+      <div class="wrap flex flex-col gap-4 py-6 lg:flex-row lg:items-center lg:gap-8">
+        <h2 id="t-rassen" class="shrink-0 font-sans text-sm font-semibold tracking-normal text-grijs">Extra gespecialiseerd in</h2>
+        <ul class="-mx-5 flex gap-2 overflow-x-auto px-5 [scrollbar-width:none] lg:mx-0 lg:flex-wrap lg:overflow-visible lg:px-0">
+          {rassen.map((r) => <li class="shrink-0 rounded-sm border border-lijn bg-papier px-3 py-1.5 text-sm font-medium">{r}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Behandelingen -->
+    <section id="behandelingen" class="py-20 lg:py-24" aria-labelledby="t-beh">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Behandelingen</p>
+            <h2 id="t-beh" class="mt-4 text-3xl">Iedere hond heeft een vacht-specifieke behandeling nodig.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Bij elke trimbeurt worden ook de oren schoongemaakt, de nagels geknipt en indien nodig de anaalklieren geleegd.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-3 lg:mt-14 lg:gap-6">
+          {groot.map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1248px) 380px, (min-width: 768px) 31vw, 92vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <p class="nr">0{i + 1}</p>
+                    <h3 class="mt-2 text-xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-steen text-oranje transition-colors group-hover:bg-oranje group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <ul class="mt-5 grid gap-5 md:grid-cols-3 lg:gap-6">
+          {klein.map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.t)} class="group flex h-full gap-4 rounded-md border border-lijn p-6 no-underline transition-colors hover:border-oranje hover:bg-wit">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-inkt text-vuur" aria-hidden="true"><Icoon naam={b.i} class="h-5 w-5" /></span>
+                <span>
+                  <span class="nr">0{i + 4}</span>
+                  <h3 class="mt-1 text-lg">{b.t}</h3>
+                  <span class="mt-1.5 block text-[.9375rem] text-grijs">{b.d}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-md bg-steen px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Alleen de nagels, de oren of een lekkere wasbeurt kan ook.</b> <span class="text-grijs">De prijs geeft Tanja in overleg door, passend bij de vacht en het formaat van uw hond.</span></p>
+          <a href={waMet('Hoi Tanja, wat kost een behandeling voor mijn hond? Het ras is: ')} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Vraag de prijs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Voor en na (wow): eigen trimfoto's, omdraaien -->
+    <section id="voor-en-na" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-vn">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="rijs lg:col-span-4">
+          <p class="eyebrow">Trimfoto’s</p>
+          <h2 id="t-vn" class="mt-4 text-3xl">Voor de trimbeurt, en erna.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Dit zijn wel wat extreme voorbeelden. Deze hondjes hadden helaas veel vervilte klitten, en dan zit er niets anders op dan ze goed kort te maken.</p>
+          <p class="mt-4 text-licht-zacht">Tik op een foto om de hond erna te zien.</p>
+          <a href={waAfspraak} class="knop knop-oranje mt-8"><Icoon naam="wa" />Plan een trimbeurt</a>
+        </div>
+        <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 lg:col-span-8 lg:gap-5">
+          {paren.map((p, i) => (
+            <li class="rijs" style={`--d:${i * 0.07}s`}>
+              <figure class="vn bg-licht p-2 pb-3 text-inkt" data-vn>
+                <button type="button" class="relative block aspect-square w-full overflow-hidden bg-steen text-left" aria-pressed="false" data-vn-knop>
+                  <Image src={p.voor} alt={p.altV} widths={[280]} sizes="280px" class="vn-voor absolute inset-0 h-full w-full object-cover" style={`object-position:${p.pv}`} />
+                  <Image src={p.na} alt={p.altN} widths={[280]} sizes="280px" class="vn-na absolute inset-0 h-full w-full object-cover" style={`object-position:${p.pn}`} />
+                  <span class="vn-label absolute left-2 top-2 rounded-sm bg-inkt px-2 py-1 text-xs font-semibold text-licht" data-vn-label>Voor</span>
+                  <span class="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-sm bg-wit px-2.5 py-1.5 text-xs font-semibold text-inkt shadow-sm"><Icoon naam="draai" class="h-3.5 w-3.5 text-oranje" /><span data-vn-actie>Toon na</span></span>
+                </button>
+                <figcaption class="px-1 pt-3">
+                  <span class="flex items-baseline justify-between gap-3"><b class="font-semibold">{p.naam}</b><span class="nr">Nr. 0{i + 1}</span></span>
+                  <span class="mt-0.5 block text-sm text-grijs">{p.bij}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Zo gaat een trimbeurt -->
+    <section class="py-20 lg:py-24" aria-labelledby="t-stappen">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow">In de trimsalon</p>
+          <h2 id="t-stappen" class="rijs mt-4 text-3xl">Wat er gebeurt met uw hond.</h2>
+          <ol class="mt-10 border-t border-lijn">
+            {stappen.map(([t, d], i) => (
+              <li class="rijs grid grid-cols-[3rem_1fr] gap-x-4 border-b border-lijn py-5 sm:grid-cols-[4rem_12rem_1fr] sm:items-baseline" style={`--d:${i * 0.05}s`}>
+                <span class="num font-kop text-xl font-extrabold text-oranje">0{i + 1}</span>
+                <h3 class="text-lg">{t}</h3>
+                <p class="col-start-2 mt-1 text-grijs sm:col-start-3 sm:mt-0">{d}</p>
+              </li>
+            ))}
+          </ol>
+          <p class="rijs mt-8 max-w-xl text-lg">Inmiddels zijn we enkele uren verder en kunt u uw hond komen halen. <span class="text-grijs">Vergeet niet te vertellen hoe mooi hij geworden is.</span></p>
+        </div>
+        <div class="rijs lg:col-span-5 lg:pt-6" style="--d:.08s">
+          <figure class="afdruk mx-auto max-w-[31.5rem] lg:ml-auto lg:mr-0">
+            <Image src={fohnen} alt="Tanja föhnt een zwarte poedel op de trimtafel in haar salon" widths={[500]} sizes="(min-width: 1024px) 400px, 92vw" class="aspect-[4/3] w-full object-cover" />
+            <figcaption class="flex items-baseline justify-between gap-3 px-1 pt-3 text-sm">
+              <span class="font-semibold">Tanja aan het werk</span><span class="nr">Nr. 04</span>
+            </figcaption>
+          </figure>
+          <p class="mx-auto mt-6 max-w-[31.5rem] text-[.9375rem] text-grijs lg:ml-auto lg:mr-0">Aan het einde van de dag wordt de trimsalon grondig gereinigd. De trimmaterialen worden gesteriliseerd, bad en trimtafel gereinigd met een goed desinfectiemiddel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Over Tanja -->
+    <section id="tanja" class="bg-steen py-20 lg:py-24" aria-labelledby="t-tanja">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-12">
+        <div class="rijs lg:col-span-5">
+          <figure class="afdruk mx-auto max-w-[32.5rem]">
+            <Image src={tanja} alt="Tanja tussen het riet met haar eigen honden, een zwarte en een Berner Sennenhond" widths={[518]} sizes="(min-width: 1024px) 500px, 92vw" class="aspect-[518/450] w-full object-cover" />
+            <figcaption class="flex items-baseline justify-between gap-3 px-1 pt-3 text-sm">
+              <span class="font-semibold">Tanja met haar eigen honden</span><span class="nr">Nr. 05</span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow">Over Tanja</p>
+          <h2 id="t-tanja" class="rijs mt-4 text-3xl">Trimster, fotograaf en helemaal gek op honden.</h2>
+          <div class="rijs mt-6 space-y-4 text-lg text-grijs" style="--d:.05s">
+            <p>Tanja Springvloed is officieel gediplomeerd hondentrimster en lid van de ABHB, dé vakvereniging voor gediplomeerde en erkende trimsalons.</p>
+            <p>Door haar eigen honden Meggy, Banjer en Sheila volgde ze de opleiding. Die drie kanjers staan nog altijd in haar logo. Naast het trimmen is Tanja fotograaf: veel kinderen, honden en paarden.</p>
+          </div>
+          <ul class="mt-9 grid gap-3 sm:grid-cols-3">
+            <li class="rijs kaart p-5" style="--d:.04s"><Icoon naam="diploma" class="h-7 w-7 text-oranje" /><h3 class="mt-4 text-[1.0625rem]">Gediplomeerd en ABHB-lid</h3><p class="mt-1 text-[.9375rem] text-grijs">Met de algemene leveringsvoorwaarden van de ABHB.</p></li>
+            <li class="rijs kaart p-5" style="--d:.08s"><Icoon naam="kruis" class="h-7 w-7 text-oranje" /><h3 class="mt-4 text-[1.0625rem]">ABHB EHBO-diploma</h3><p class="mt-1 text-[.9375rem] text-grijs">Naast het trimdiploma heeft Tanja haar EHBO-diploma van de ABHB.</p></li>
+            <li class="rijs kaart p-5" style="--d:.12s"><Icoon naam="huis" class="h-7 w-7 text-oranje" /><h3 class="mt-4 text-[1.0625rem]">Ophalen in overleg</h3><p class="mt-1 text-[.9375rem] text-grijs">Kunt u niet zelf brengen? Tanja haalt uw hond thuis op.</p></li>
+          </ul>
+        </div>
+      </div>
+      <div class="wrap mt-16 lg:mt-20">
+        <div class="flex flex-wrap items-baseline justify-between gap-3 border-b border-lijn pb-4">
+          <h3 class="text-xl">Uit het album van de trimsalon</h3>
+          <p class="text-[.9375rem] text-grijs">Foto’s: Tanja Springvloed</p>
+        </div>
+        <ul class="mt-6 grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-4">
+          {album.map((a, i) => (
+            <li class="rijs" style={`--d:${(i % 6) * 0.04}s`}>
+              <figure class="afdruk p-1.5">
+                <Image src={a.src} alt={a.alt} widths={[200]} sizes="(min-width: 1248px) 190px, (min-width: 768px) 15vw, 30vw" class="aspect-square w-full object-cover" />
+                <figcaption class="nr px-0.5 pt-1.5">Nr. {String(i + 6).padStart(2, '0')}</figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Tips -->
+    <section class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-tips">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="rijs lg:col-span-4">
+          <p class="eyebrow">Tips</p>
+          <h2 id="t-tips" class="mt-4 text-3xl">Goed voorbereid naar de trimsalon.</h2>
+          <figure class="mt-8 hidden max-w-[17rem] bg-licht p-2 pb-3 text-inkt lg:block">
+            <Image src={salon} alt="De trimsalon van binnen: een grijze trimtafel, een witte vakkenkast met handdoeken en shampoos en een blauwe wand" widths={[400]} sizes="260px" class="aspect-[4/3] w-full object-cover" />
+            <figcaption class="flex items-baseline justify-between gap-3 px-1 pt-3 text-sm"><span class="font-semibold">De trimsalon</span><span class="nr">Nr. 12</span></figcaption>
+          </figure>
+        </div>
+        <ol class="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
+          {tips.map((t, i) => (
+            <li class="rijs flex gap-4 border-t border-lijn-licht py-4" style={`--d:${(i % 2) * 0.05}s`}>
+              <span class="nr pt-1">0{i + 1}</span>
+              <p class="text-licht">{t}</p>
+            </li>
+          ))}
+          <li class="rijs flex gap-4 border-t border-lijn-licht py-4">
+            <span class="pt-0.5 text-vuur"><Icoon naam="pup" class="h-5 w-5" /></span>
+            <p class="text-licht-zacht">Puppy? Kom gewoon eens langs om kennis te maken. Wacht niet te lang met een afspraak, want meestal is er een wachttijd.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat baasjes zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-steen font-kop font-extrabold text-oranje" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Openingstijden en locatie -->
+    <section id="route" class="border-t border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-route">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-route" class="mt-4 text-3xl">Aan de Julianastraat in Lekkerkerk.</h2>
+          <p class="mt-6 text-lg text-grijs">Behandeling uitsluitend volgens afspraak, zodat Tanja alle aandacht aan uw hond kan besteden.</p>
+          <div class="mt-10 rounded-md border border-lijn bg-papier p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van de trimsalon</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-oranje">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 border-t border-lijn pt-5 text-[.9375rem] text-grijs">Voor afspraken is Tanja maandag tot en met zaterdag telefonisch bereikbaar.</p>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="afdruk">
+            <Image src={pand} alt="Het trimhuisje in de sneeuw, met het bord van Hondentrimsalon Tanja Springvloed en een zwarte hond op de tuintafel ervoor" widths={[499]} sizes="(min-width: 1024px) 499px, 92vw" class="mx-auto aspect-[3/2] w-full max-w-[31.2rem] object-cover" />
+            <figcaption class="flex items-baseline justify-between gap-3 px-1 pt-3 text-sm">
+              <span class="font-semibold">De trimsalon, op een winterse dag</span><span class="nr">Nr. 13</span>
+            </figcaption>
+          </figure>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-oranje" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Contact: WhatsApp-bericht samenstellen -->
+    <section id="contact" class="bg-steen py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Afspraak maken</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Plan de trimbeurt van uw hond.</h2>
+          <p class="mt-6 text-lg text-grijs">Vul in wat Tanja moet weten. Er staat dan meteen een net WhatsApp-bericht klaar; een foto van uw hond stuurt u er gewoon achteraan.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waAfspraak} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-oranje text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-oranje" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-steen text-oranje"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-grijs">Ma t/m za bereikbaar</span></span><Icoon naam="pijl" class="h-5 w-5 text-oranje" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-steen text-oranje"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 shrink-0 text-oranje" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw bericht aan Tanja</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat mag er gebeuren?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Volledige trimbeurt', 'Knippen of scheren', 'Plukken of strippen', 'Wassen en drogen', 'Anti-verharing', 'Nagels of oren', 'Puppy kennismaken'].map((b) => (
+                <label class="keuze"><input type="radio" name="beh" value={b} class="sr-only" /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Ras of kruising</span><input name="ras" class="veld mt-2" placeholder="Bijvoorbeeld: Labradoodle" /></label>
+            <label class="block"><span class="text-sm font-semibold">Naam van uw hond</span><input name="hond" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Voorkeursdag</span>
+              <select name="dag" class="veld mt-2">
+                <option value="">Maakt niet uit</option>
+                {tijden.filter((t) => t.open).map((t) => <option>{t.naam}</option>)}
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+            <label class="flex items-start gap-3 sm:col-span-2"><input type="checkbox" name="ophalen" class="vink mt-1" /><span>Ik kan mijn hond niet zelf brengen. Kan hij thuis opgehaald worden?</span></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-oranje"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Zaterdag en zondag is de salon dicht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk: kadobon -->
+    <section class="bg-oranje text-wit" aria-labelledby="t-kado">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div class="flex items-start gap-5">
+          <Icoon naam="cadeau" class="mt-1 hidden h-9 w-9 shrink-0 sm:block" />
+          <div>
+            <h2 id="t-kado" class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Leuk idee: geef eens een kadobon.</h2>
+            <p class="mt-2 text-lg text-wit/90">Voor alleen een was- en droogbeurt of een volledige behandeling.</p>
+          </div>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waMet('Hoi Tanja, ik wil graag een kadobon voor de trimsalon.')} class="knop knop-wit"><Icoon naam="wa" />Kadobon aanvragen</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Voor en na: tik om te wisselen.
+  document.querySelectorAll<HTMLElement>('[data-vn]').forEach((f) => {
+    const k = f.querySelector<HTMLButtonElement>('[data-vn-knop]');
+    const l = f.querySelector<HTMLElement>('[data-vn-label]');
+    const a = f.querySelector<HTMLElement>('[data-vn-actie]');
+    k?.addEventListener('click', () => {
+      const na = k.getAttribute('aria-pressed') !== 'true';
+      k.setAttribute('aria-pressed', String(na));
+      f.classList.toggle('is-na', na);
+      if (l) l.textContent = na ? 'Na' : 'Voor';
+      if (a) a.textContent = na ? 'Toon voor' : 'Toon na';
+    });
+  });
+
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Hoi Tanja, ik wil graag een afspraak maken voor mijn hond.'];
+      if (v('hond') || v('ras')) r.push('Hond: ' + [v('hond'), v('ras')].filter(Boolean).join(', '));
+      if (v('beh')) r.push('Behandeling: ' + v('beh'));
+      if (v('dag')) r.push('Het liefst op: ' + v('dag').toLowerCase());
+      if (d.get('ophalen')) r.push('Ik kan mijn hond niet zelf brengen. Kan hij thuis opgehaald worden?');
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open('https://wa.me/31616567935?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: 1; letter-spacing: -0.045em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: var(--radius-sm); background: var(--color-wit); }
+  .vn-na { opacity: 0; transition: opacity .5s var(--ease-zacht); }
+  .vn.is-na .vn-na { opacity: 1; }
+  .vn button:focus-visible { outline-offset: -3px; }
+  .vn.is-na [data-vn-label] { background: var(--color-oranje); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 .95rem; border-radius: var(--radius-sm); background: var(--color-steen); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #dbdad3; }
+  .keuze input:checked + span { background: var(--color-inkt); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-oranje); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #1c202333; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #1c202366; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-oranje); }
+  .veld::placeholder { color: #6f757a; }
+  .vink { width: 1.15rem; height: 1.15rem; accent-color: var(--color-oranje); flex: none; }
+</style>
