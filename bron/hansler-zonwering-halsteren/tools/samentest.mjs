@@ -1,0 +1,24 @@
+// Test de rolluik-samensteller: keuzes maken, voorbeeld screenshotten, WhatsApp-bericht uitlezen.
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 1000 } });
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+let geopend = '';
+await p.exposeFunction('vang', (u) => { geopend = u; });
+await p.addInitScript(() => { window.open = (u) => { window.vang(u); return null; }; });
+await p.goto('http://localhost:4783/sitefront/hansler-zonwering-halsteren/#samenstellen', { waitUntil: 'networkidle' });
+await p.fill('input[name=breedte]', '2400'); await p.fill('input[name=hoogte]', '1600');
+await p.click('label.keuze:has(input[value="Halfronde kast"])');
+await p.click('label.stip:has(input[name=kastkleur][value^="RAL 9010"])');
+await p.click('label.stip:has(input[name=lamelkleur][value^="RAL 9001"])');
+await p.selectOption('select[name=motor]', 'Somfy Solar');
+await p.selectOption('select[name=bediening]', 'Afstandsbediening (5 kanaals)');
+await p.click('label.keuze:has(input[value="Bediening links"])');
+await p.fill('[data-dicht]', '85'); await p.dispatchEvent('[data-dicht]', 'input');
+await p.fill('input[name=aantal]', '3'); await p.fill('input[name=naam]', 'Test, Halsteren');
+await p.locator('[data-voorbeeld]').scrollIntoViewIfNeeded(); await p.waitForTimeout(600);
+await p.locator('form[data-samen]').screenshot({ path: 'shots/samen-test.png' });
+await p.click('form[data-samen] button[type=submit]'); await p.waitForTimeout(300);
+console.log(decodeURIComponent(geopend.split('text=')[1] || 'GEEN'));
+console.log('mail:', (await p.getAttribute('[data-mail]', 'href')).slice(0, 80));
+console.log('errors:', errs.join(' | ') || 'geen');
+await b.close();
