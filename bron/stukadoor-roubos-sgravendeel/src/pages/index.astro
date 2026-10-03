@@ -1,0 +1,336 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, sterrenOnly, waVraag, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import wand from '../assets/wand.jpg';
+import plafond from '../assets/plafond.jpg';
+import klus from '../assets/klus.jpg';
+import muur from '../assets/muur.jpg';
+import strak from '../assets/strak.jpg';
+import textuur from '../assets/textuur.jpg';
+
+const vraag = (b: string) => waMet(`Hallo, ik heb een vraag over ${b}. Ik stuur een paar foto’s mee.`);
+
+const diensten = [
+  { t: 'Wanden', d: 'Van ruwe muur tot een strakke, vlakke wand.', src: wand, alt: 'Sfeerbeeld: een stukadoor zet een wand op met een spaan', pos: '40% 40%', w: 'stucwerk op mijn wanden' },
+  { t: 'Plafonds', d: 'Een glad plafond, zonder naden en scheuren.', src: plafond, alt: 'Sfeerbeeld: een ruimte met een plafond in de voorbereiding', pos: '50% 30%', w: 'stucwerk op mijn plafond' },
+  { t: 'Uw klus', d: 'Iets anders in gedachten? Stuur een foto en vraag het.', src: klus, alt: 'Sfeerbeeld: een kamer midden in een verbouwing', pos: '50% 50%', w: 'een stucklus' },
+];
+
+const stappen = [
+  ['Stuur een paar foto’s', 'Via WhatsApp: de muur of het plafond, en ongeveer hoe groot het is.'],
+  ['Even komen kijken', 'Waar nodig wordt de ruimte ter plekke bekeken en opgemeten.'],
+  ['Een duidelijke prijs', 'U weet vooraf waar u aan toe bent. Klanten noemen de prijs goed.'],
+  ['Strak opgeleverd', 'Een vlakke, gladde laag. Klaar voor de volgende stap in uw verbouwing.'],
+];
+
+const kaders = [
+  { i: 'hand', t: 'Enthousiast', q: 'Super enthousiaste stucadoor!', w: 'Corine' },
+  { i: 'waterpas', t: 'Betrouwbaar', q: 'Goede en betrouwbare stukadoor', w: 'Alex de L.' },
+  { i: 'wand', t: 'Veel ervaring', q: '… met veel ervaring', w: 'Alex de L.' },
+];
+
+const ruimtes = ['Woonkamer', 'Keuken', 'Slaapkamer', 'Hal of trapgat', 'Badkamer', 'Zolder', 'Hele woning', 'Anders'];
+const wanneer = ['Zo snel mogelijk', 'Binnen een maand', 'Over een paar maanden', 'Nog geen idee'];
+const ster5 = [1, 2, 3, 4, 5];
+---
+<Base title={`${site.naam} | Stukadoor in 's-Gravendeel`} description="Stukadoor uit 's-Gravendeel, Hoeksche Waard. Strak stucwerk voor wanden en plafonds. 5,0 op Google. Stuur foto's van uw klus via WhatsApp: 06 29 34 22 39.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-specie text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full -scale-x-100 object-cover object-[8%_50%] md:object-[30%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#17181a40_0%,#17181ad1_30%,#17181af2_70%)] md:bg-[linear-gradient(90deg,#17181af7_0%,#17181ae0_40%,#17181a4d_78%,#17181a1a_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-24 pt-32 md:py-24 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Stukadoor in 's-Gravendeel</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Strak stucwerk voor een <span class="text-vonk">goede prijs.</span></h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">{site.naam} uit <span class="whitespace-nowrap">{site.plaats}</span>. Stuur een paar foto’s van uw muur of plafond via WhatsApp en vraag wat het kost.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={waVraag} class="knop knop-oranje"><Icoon naam="wa" />Foto’s sturen via WhatsApp</a>
+            <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{ster5.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-vonk" />Alle {site.google.aantal} reviews vijf sterren</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-vonk" />Eenmanszaak uit de {site.regio}</li>
+          </ul>
+        </div>
+        <figure class="hidden self-end lg:col-span-4 lg:block">
+          <div class="ml-auto max-w-[20rem] border-l-[3px] border-vonk bg-specie/70 p-7 backdrop-blur-md">
+            <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{ster5.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+            <blockquote class="mt-4 font-kop text-[1.625rem] font-bold leading-[1.15] tracking-[-0.02em]">“Mooi werk en een goede prijs!”</blockquote>
+            <figcaption class="mt-5 flex items-center gap-2 text-sm text-licht-zacht"><Icoon naam="g" class="h-4 w-4" />Corine, Google review</figcaption>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. Cijfers -->
+    <section class="border-b border-lijn bg-wit" aria-label="In het kort">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col pr-4"><dt class="mt-2 text-sm text-grijs">Score op Google</dt><dd class="cijfer order-first text-oranje">{site.google.score}</dd></div>
+        <div class="flex flex-col pr-4 lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Reviews met vijf sterren</dt><dd class="cijfer order-first">3/3</dd></div>
+        <div class="flex flex-col pr-4 lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Jaar reviews op Google</dt><dd class="cijfer order-first">9+</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="mt-2 text-sm text-grijs">Eigenaar: een eenmanszaak</dt><dd class="cijfer order-first">1</dd></div>
+      </dl>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-24 lg:py-32" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-5 text-3xl">Wanden en plafonds, strak afgewerkt.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Stucwerk is het vak van Roubos. Twijfelt u of uw klus erbij hoort? Stuur een foto en vraag het gewoon.</p>
+        </div>
+        <ul class="mt-14 grid gap-4 md:grid-cols-3 lg:mt-16 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.07}s`}>
+              <a href={vraag(b.w)} class="group relative isolate flex aspect-[4/3] flex-col justify-end overflow-hidden bg-specie p-6 text-licht no-underline md:aspect-[3/4] lg:p-8">
+                <Image src={b.src} alt={b.alt} widths={[480, 720, 960]} sizes="(min-width: 1248px) 390px, (min-width: 768px) 31vw, 92vw" class="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                <span class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#17181a00_35%,#17181ae6_100%)]" aria-hidden="true"></span>
+                <span class="num font-kop text-sm font-bold text-vonk">0{i + 1}</span>
+                <h3 class="mt-2 text-[1.875rem] uppercase lg:text-[2.25rem]">{b.t}</h3>
+                <span class="mt-2 flex items-end justify-between gap-4">
+                  <span class="max-w-[17rem] text-[.9375rem] text-licht/85">{b.d}</span>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center bg-oranje text-wit transition-colors group-hover:bg-wit group-hover:text-oranje" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-6 flex flex-col items-start justify-between gap-5 border-l-[3px] border-oranje bg-gips px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Een kamer of een hele woning?</b> <span class="text-grijs">Stuur via WhatsApp een foto en de maten, dan kijkt Roubos mee.</span></p>
+          <a href={waVraag} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Stel uw vraag</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Werkwijze -->
+    <section id="werkwijze" class="bg-wit" aria-labelledby="t-stappen">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[18rem] sm:min-h-[26rem] lg:col-span-5">
+          <Image src={strak} alt="Sfeerbeeld: een lege kamer met witte wanden, een houten trap en een kruk" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[12%_50%]" />
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-28 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Werkwijze</p>
+          <h2 id="t-stappen" class="mt-5 text-3xl">Van foto tot strakke muur.</h2>
+          <ol class="mt-12 border-t border-lijn">
+            {stappen.map(([t, d], i) => (
+              <li class="rijs grid grid-cols-[3.5rem_1fr] gap-x-4 border-b border-lijn py-6 sm:grid-cols-[5rem_1fr_1.2fr] sm:items-baseline sm:gap-x-8" style={`--d:${i * 0.06}s`}>
+                <span class="num font-kop text-[1.75rem] font-bold leading-none text-oranje">0{i + 1}</span>
+                <h3 class="text-xl">{t}</h3>
+                <p class="col-start-2 mt-2 text-grijs sm:col-start-3 sm:mt-0">{d}</p>
+              </li>
+            ))}
+          </ol>
+          <a href={waVraag} class="knop knop-oranje mt-10"><Icoon naam="wa" />Begin met een foto</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Over -->
+    <section id="over" class="donker bg-specie text-licht" aria-labelledby="t-over">
+      <div class="wrap grid gap-14 py-24 lg:grid-cols-12 lg:gap-10 lg:py-32">
+        <figure class="relative self-start lg:col-span-5">
+          <Image src={muur} alt="Sfeerbeeld in zwart-wit: een stukadoor strijkt een wand glad met een spaan" widths={[480, 720, 960]} sizes="(min-width: 1248px) 470px, (min-width: 1024px) 38vw, 92vw" class="aspect-[4/5] w-full object-cover object-[60%_40%] grayscale" />
+          <figcaption class="absolute bottom-0 left-0 bg-oranje px-4 py-2 font-kop text-sm font-bold uppercase tracking-[.08em] text-wit">{site.plaats}</figcaption>
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7 lg:self-center">
+          <p class="eyebrow">Over Roubos</p>
+          <h2 id="t-over" class="mt-5 text-3xl">Een stukadoor waar klanten enthousiast over zijn.</h2>
+          <p class="mt-7 text-lg text-licht-zacht">{site.naam} is een eenmanszaak uit <span class="whitespace-nowrap">{site.plaats}</span>, ingeschreven bij de KvK als stukadoorsbedrijf. U belt of appt rechtstreeks met de vakman zelf. Dit is wat klanten op Google over hem schrijven:</p>
+          <ul class="mt-10 grid gap-px bg-lijn-licht">
+            {kaders.map((k) => (
+              <li class="flex items-start gap-5 bg-specie-2 p-5 sm:items-center sm:p-6">
+                <span class="grid h-12 w-12 shrink-0 place-items-center bg-oranje text-wit"><Icoon naam={k.i} class="h-6 w-6" /></span>
+                <div class="flex-1 sm:flex sm:items-baseline sm:justify-between sm:gap-6">
+                  <h3 class="shrink-0 whitespace-nowrap text-xl">{k.t}</h3>
+                  <p class="mt-1 text-licht-zacht sm:mt-0 sm:text-right">“{k.q}” <span class="whitespace-nowrap text-xs uppercase tracking-[.12em] text-licht-zacht/80">{k.w}</span></p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <a href={waVraag} class="knop knop-oranje mt-10"><Icoon naam="wa" />Stel uw vraag</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section id="reviews" class="bg-gips py-24 lg:py-32" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-bold">{site.google.score}</b><span class="flex text-ster">{ster5.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-14 grid gap-5 lg:mt-16 lg:grid-cols-12 lg:gap-6">
+          <figure class="rijs kaart flex flex-col justify-between p-8 sm:p-10 lg:col-span-7 lg:p-14">
+            <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{ster5.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+            <blockquote class="mt-8 font-kop text-[clamp(2rem,2.6vw+1.1rem,3.5rem)] font-bold leading-[1.05] tracking-[-0.03em]">“{reviews[0].tekst}”</blockquote>
+            <figcaption class="mt-10 flex items-center gap-3 border-t border-lijn pt-6">
+              <span class="grid h-11 w-11 place-items-center bg-oranje font-kop font-bold text-wit" aria-hidden="true">{reviews[0].naam[0]}</span>
+              <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{reviews[0].naam}</b><span class="text-grijs">Google review, {reviews[0].wanneer}</span></span>
+              <Icoon naam="g" class="h-5 w-5" />
+            </figcaption>
+          </figure>
+          <div class="grid gap-5 lg:col-span-5 lg:gap-6">
+            <figure class="rijs kaart flex flex-col p-8" style="--d:.06s">
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{ster5.map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 font-kop text-[1.625rem] font-bold leading-[1.15] tracking-[-0.02em]">“{reviews[1].tekst}”</blockquote>
+              <figcaption class="mt-8 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center bg-inkt font-kop font-bold text-licht" aria-hidden="true">{reviews[1].naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{reviews[1].naam}</b><span class="text-grijs">Google review, {reviews[1].wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </figcaption>
+            </figure>
+            <figure class="rijs kaart flex items-center gap-4 p-6" style="--d:.12s">
+              <span class="grid h-10 w-10 place-items-center bg-gips font-kop font-bold" aria-hidden="true">{sterrenOnly.naam[0]}</span>
+              <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{sterrenOnly.naam}</b><span class="text-grijs">Vijf sterren, {sterrenOnly.wanneer}</span></span>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{ster5.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+            </figure>
+            <a href={site.reviews} class="rijs flex items-center justify-between gap-4 bg-inkt px-6 py-5 font-kop font-bold uppercase tracking-[.06em] text-licht no-underline transition-colors hover:bg-oranje" style="--d:.18s">Bekijk de reviews op Google<Icoon naam="pijl" class="h-5 w-5" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Klus doorgeven (WhatsApp-bericht) -->
+    <section id="contact" class="donker relative isolate overflow-hidden bg-specie py-24 text-licht lg:py-32" aria-labelledby="t-contact">
+      <Image src={textuur} alt="" widths={[960, 1600]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#17181af2_0%,#17181acc_60%,#17181a99_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Klus doorgeven</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Vertel wat er gestuct moet worden.</h2>
+          <p class="mt-7 text-lg text-licht-zacht">Kies wat er moet gebeuren en deze pagina zet er een WhatsApp-bericht van. Foto’s voegt u daarna in WhatsApp gewoon toe.</p>
+          <ul class="mt-10 grid gap-px bg-lijn-licht">
+            <li><a href={waVraag} class="flex items-center gap-4 bg-specie-2 p-5 no-underline transition-colors hover:bg-[#2c2f33]"><span class="grid h-12 w-12 place-items-center bg-oranje text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-kop font-bold uppercase tracking-[.06em]">WhatsApp</b><span class="num text-licht-zacht">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-vonk" /></a></li>
+            <li><a href={site.telHref} class="flex items-center gap-4 bg-specie-2 p-5 no-underline transition-colors hover:bg-[#2c2f33]"><span class="grid h-12 w-12 place-items-center bg-licht text-inkt"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-kop font-bold uppercase tracking-[.06em]">Bellen</b><span class="num text-licht-zacht">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-vonk" /></a></li>
+            <li class="flex items-center gap-4 bg-specie-2 p-5"><span class="grid h-12 w-12 place-items-center bg-licht text-inkt"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-kop font-bold uppercase tracking-[.06em]">Gevestigd in</b><span class="text-licht-zacht">{site.plaats}, {site.regio}</span></span></li>
+          </ul>
+        </div>
+        <form class="bg-wit p-6 text-inkt sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw klus in het kort</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat moet er gestuct worden?</legend>
+            <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+              {['Wanden', 'Plafond', 'Wanden en plafond', 'Iets anders'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="wat" value={b} class="sr-only" checked={i === 0} /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Ruimte</span>
+              <select name="ruimte" class="veld mt-2">
+                <option value="">Kies een ruimte</option>
+                {ruimtes.map((r) => <option>{r}</option>)}
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Wanneer?</span>
+              <select name="wanneer" class="veld mt-2">
+                {wanneer.map((r) => <option>{r}</option>)}
+              </select>
+            </label>
+            <div class="sm:col-span-2">
+              <label for="m2" class="flex items-baseline justify-between text-sm font-semibold">Ongeveer hoeveel m²? <output for="m2" class="num font-kop text-xl font-bold text-oranje" data-m2-uit>20 m²</output></label>
+              <input id="m2" name="m2" type="range" min="5" max="200" step="5" value="20" class="schuif mt-3 w-full" />
+              <label class="mt-2 flex items-center gap-2 text-sm text-grijs"><input type="checkbox" name="onbekend" class="h-4 w-4 accent-[#b4461a]" />Weet ik nog niet</label>
+            </div>
+            <label class="block"><span class="text-sm font-semibold">Plaats van de klus</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" placeholder="Bijvoorbeeld 's-Gravendeel" /></label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 border-l-[3px] border-oranje bg-gips p-5">
+            <p class="text-xs font-semibold uppercase tracking-[.12em] text-grijs">Zo komt uw bericht binnen</p>
+            <p class="mt-2 whitespace-pre-line text-[.9375rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-oranje"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Foto’s stuurt u daarna mee.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. Slotbalk -->
+    <section class="bg-oranje text-wit" aria-label="Contact opnemen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.75rem)]">Een muur of plafond dat strak moet?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een paar foto’s en stel uw vraag.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waVraag} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  const uit = document.querySelector<HTMLElement>('[data-m2-uit]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const bericht = () => {
+    if (!f) return '';
+    const d = new FormData(f);
+    const v = (n: string) => String(d.get(n) || '').trim();
+    const r = ['Hallo, ik heb een stucklus.'];
+    const wat = v('wat'), ruimte = v('ruimte');
+    r.push('Wat: ' + [wat, ruimte && ruimte.toLowerCase()].filter(Boolean).join(', '));
+    r.push('Oppervlak: ' + (d.get('onbekend') ? 'weet ik nog niet' : 'ongeveer ' + v('m2') + ' m²'));
+    if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+    if (v('wanneer')) r.push('Wanneer: ' + v('wanneer').toLowerCase());
+    r.push('Ik stuur een paar foto’s mee.');
+    if (v('naam')) r.push('Groet, ' + v('naam'));
+    return r.join('\n');
+  };
+  const toon = () => {
+    if (!f) return;
+    const m = f.querySelector<HTMLInputElement>('#m2');
+    const onb = f.querySelector<HTMLInputElement>('[name=onbekend]');
+    if (m && uit) { uit.textContent = onb?.checked ? '?' : m.value + ' m²'; m.disabled = !!onb?.checked; }
+    if (vb) vb.textContent = bericht();
+  };
+  if (f) {
+    f.addEventListener('input', toon); f.addEventListener('change', toon); toon();
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/31629342239?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.045em; }
+  .cijfer { font-family: var(--font-kop); font-weight: 700; font-size: clamp(2.75rem, 3vw + 1.5rem, 4rem); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .keuze span { display: flex; align-items: center; justify-content: center; text-align: center; min-height: 3rem; height: 100%; padding: .4rem .75rem; background: var(--color-gips); font-size: .9375rem; font-weight: 500; line-height: 1.25; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #ddd8cf; }
+  .keuze input:checked + span { background: var(--color-inkt); color: #fff; box-shadow: inset 0 -3px 0 var(--color-oranje); }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-oranje); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: 2px; border: 1.5px solid #17181a40; background: #fff; padding: .75rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #17181a80; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-oranje); }
+  .veld::placeholder { color: #75777b; }
+  .schuif { accent-color: var(--color-oranje); height: 1.5rem; }
+  .schuif:disabled { opacity: .4; }
+</style>
