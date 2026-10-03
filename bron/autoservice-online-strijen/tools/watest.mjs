@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+await p.goto('http://localhost:4722/sitefront/autoservice-online-strijen/');
+await p.click('label.keuze:has-text("Grote beurt")'); await p.click('label.keuze:has-text("Er brandt een lampje")');
+await p.click('label.lampje:has-text("Motorstoring")'); await p.click('label.keuze:has-text("Graag ophalen")');
+await p.fill('input[name=kenteken]', 'ab-123-c'); await p.fill('input[name=auto]', 'Opel Astra'); await p.selectOption('select[name=dag]', 'Zaterdag'); await p.fill('input[name=naam]', 'Sanne');
+await p.locator('#afspraak').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200); await p.locator('[data-wb]').screenshot({ path: 'shots/werkbon.png' });
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();

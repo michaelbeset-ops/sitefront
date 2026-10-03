@@ -158,3 +158,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | WK Rijopleidingen, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/wk-rijopleidingen-hia/ | gedateerd template, 5,0 uit 92, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Autohuis Centraal, Strijen | https://michaelbeset-ops.github.io/sitefront/autohuis-centraal-strijen/ | geen website, 4,7 uit 80, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Hondentrimsalon Esther, Krimpen a/d IJssel | https://michaelbeset-ops.github.io/sitefront/hondentrimsalon-esther-krimpen/ | gedateerde site, 5,0 uit 12, 06/WhatsApp. | 2026-10-03 | demo premium |
+| AutoService-Online, Strijen | https://michaelbeset-ops.github.io/sitefront/autoservice-online-strijen/ | domein geparkeerd, 4,8 uit 43, 06/WhatsApp. | 2026-10-03 | demo premium |
