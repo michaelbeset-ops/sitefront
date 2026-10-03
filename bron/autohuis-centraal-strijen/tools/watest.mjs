@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); const p = await ctx.newPage();
+await p.goto('http://localhost:4721/sitefront/autohuis-centraal-strijen/');
+await p.click('[data-filter] button[data-soort="Cabrio"]'); console.log('cabrio zichtbaar', await p.locator('[data-aanbod] > li:visible').count());
+await p.click('text=Zoekopdracht doorgeven'); await p.click('label.keuze:has-text("Stationwagen")'); await p.selectOption('select[name=budget]', { index: 2 });
+await p.fill('input[name=naam]', 'Test');
+const [pop] = await Promise.all([ctx.waitForEvent('page'), p.click('button:has-text("Open in WhatsApp")')]);
+console.log(decodeURIComponent(pop.url()));
+await p.click('#t-verkopen'); await p.fill('input[name=vmodel]', 'Opel Corsa'); await p.fill('input[name=km]', '120000');
+const [pop2] = await Promise.all([ctx.waitForEvent('page'), p.click('button:has-text("Open in WhatsApp")')]);
+console.log(decodeURIComponent(pop2.url()));
+await b.close();

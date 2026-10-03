@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import { site, url, tijden, chips, waHallo } from '../data/site';
+import Icoon from './Icoon.astro';
+import logoLicht from '../assets/logo-licht.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-3">
+      <a href={url('')} class="inline-block" aria-label={`${site.naam}, naar de homepage`}>
+        <Image src={logoLicht} alt="" width={92} height={80} densities={[1, 2]} class="h-20 w-auto" />
+      </a>
+      <p class="mt-6 max-w-xs">In- en verkoop van occasions, onderhoud en reparatie van auto’s. Aan de Edisonweg in Strijen.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-brons" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-brons" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={site.marktplaats} class="grid h-10 place-items-center rounded-sm bg-nacht-2 px-3 text-xs font-semibold text-licht no-underline transition-colors hover:bg-brons">Marktplaats</a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Wat we doen</p>
+      <ul class="mt-4 space-y-2">
+        {chips.map((c, i) => <li><a href={h(i < 2 ? 'aanbod' : 'diensten')} class="no-underline transition-colors hover:text-goud">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-4">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-goud">{site.tel}</a></li>
+        <li><a href={waHallo} class="no-underline transition-colors hover:text-goud">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-goud">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-goud">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-goud">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num whitespace-nowrap py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-goud">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, Instagram en Marktplaats, en twee sfeerfoto’s van de werkplaats via Unsplash, ter illustratie. Kentekens onherkenbaar gemaakt. Reviews letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>

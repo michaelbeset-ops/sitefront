@@ -1,0 +1,457 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, reviews, waHallo, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import showroom from '../assets/showroom.jpg';
+import onderhoud from '../assets/onderhoud.jpg';
+import reparatie from '../assets/reparatie.jpg';
+import countryman from '../assets/mini-countryman.jpg';
+import asx from '../assets/mitsubishi-asx.jpg';
+import a3 from '../assets/audi-a3.jpg';
+import c1 from '../assets/citroen-c1.jpg';
+import up from '../assets/vw-up.jpg';
+import combo from '../assets/opel-combo.jpg';
+import eklasse from '../assets/mercedes-e.jpg';
+import slk from '../assets/mercedes-slk.jpg';
+import minicabrio from '../assets/mini-cabrio.jpg';
+import caddy from '../assets/vw-caddy.jpg';
+
+const diensten = [
+  { t: 'Occasions', d: 'Tweedehands auto’s, binnen in de showroom. Kom kijken en maak gerust een proefrit.', src: countryman, alt: 'Een witte Mini Countryman met TE KOOP-plaat in de showroom', href: '#aanbod', knop: 'Bekijk het aanbod', pos: '50% 60%' },
+  { t: 'Onderhoud en APK', d: 'Een onderhoudsbeurt of de APK, met uitleg over wat er aan de hand is.', src: onderhoud, alt: 'Sfeerfoto: een monteur buigt zich over de motorruimte van een auto', href: waMet('Hallo Autohuis Centraal, ik wil graag een afspraak voor onderhoud of APK.'), knop: 'Afspraak via WhatsApp', pos: '30% 30%' },
+  { t: 'Reparatie', d: 'Van bobines tot een voorlamp: vaak kunt u snel terecht.', src: reparatie, alt: 'Sfeerfoto: handen met een steeksleutel aan een motor', href: waMet('Hallo Autohuis Centraal, ik heb een vraag over een reparatie.'), knop: 'Vraag het via WhatsApp', pos: '50% 50%' },
+];
+
+// Voorbeelden uit hun eigen foto's (Google-profiel en Instagram). Geen prijzen of specificaties: alleen merk/model zoals zichtbaar.
+const aanbod = [
+  { naam: 'Mitsubishi ASX', soort: 'Gezinsauto', src: asx, pos: '50% 62%' },
+  { naam: 'Mini Cabrio', soort: 'Cabrio', src: minicabrio, pos: '50% 60%' },
+  { naam: 'Volkswagen Caddy', soort: 'Bedrijfswagen', src: caddy, pos: '50% 60%' },
+  { naam: 'Citroën C1', soort: 'Stadsauto', src: c1, pos: '50% 60%' },
+  { naam: 'Audi A3', soort: 'Gezinsauto', src: a3, pos: '50% 62%' },
+  { naam: 'Mercedes-Benz SLK', soort: 'Cabrio', src: slk, pos: '50% 60%' },
+  { naam: 'Opel Combo', soort: 'Bedrijfswagen', src: combo, pos: '50% 60%' },
+  { naam: 'Volkswagen up!', soort: 'Stadsauto', src: up, pos: '50% 55%' },
+];
+const soorten = ['Stadsauto', 'Gezinsauto', 'Cabrio', 'Bedrijfswagen'];
+const zoek = (n: string) => waMet(`Hallo Autohuis Centraal, ik zag de ${n} op jullie website. Hebben jullie zoiets op dit moment staan?`);
+
+const stappen = [
+  ['Kijk wat er staat', 'Het actuele aanbod staat op Marktplaats en Instagram. Of stuur een appje met wat u zoekt.'],
+  ['Kom langs en rij een rondje', 'Bekijk de auto in de showroom aan de Edisonweg en maak een proefrit.'],
+  ['Koffie en papierwerk', 'Met een kop koffie erbij regelen we de koop en de papieren.'],
+  ['Ophalen en rijden', 'Klanten kochten ’s ochtends en reden ’s middags weg. Na de koop kunt u gewoon terugkomen.'],
+];
+
+const themas = [['prijs', 7], ['koffie', 4], ['APK', 3], ['tevreden', 3], ['verkoper', 2]];
+---
+<Base title={`${site.naam} | Occasions, onderhoud en APK in Strijen`} description="Autobedrijf aan de Edisonweg in Strijen. In- en verkoop van occasions, onderhoud, APK en reparatie. 4,7 op Google uit 80 reviews. Bel of WhatsApp 06 52 38 07 27.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen showroom -->
+    <section class="donker relative isolate overflow-hidden bg-nacht text-licht lg:min-h-[calc(100svh-7rem)]" aria-labelledby="t-hero">
+      <div class="relative aspect-[4/3] sm:aspect-[16/10] lg:absolute lg:inset-y-0 lg:right-0 lg:aspect-auto lg:w-[60%]">
+        <Image src={hero} alt="Een zwarte BMW 3-serie Touring met een gele TE KOOP-plaat in de witte showroom van Autohuis Centraal" widths={[640, 960, 1280, 1700, 2200]} sizes="(min-width: 1024px) 60vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[40%_55%] lg:object-[30%_50%]" />
+        <div class="absolute inset-0 bg-[linear-gradient(180deg,#14131200_55%,#141312_100%)] lg:bg-[linear-gradient(90deg,#141312_0%,#141312cc_12%,#14131200_42%)]" aria-hidden="true"></div>
+        <p class="absolute right-5 top-5 hidden items-center gap-3 rounded-sm bg-nacht/80 py-2 pl-2 pr-4 text-sm backdrop-blur-md lg:flex"><span class="plaat">Te koop</span>In de showroom aan de Edisonweg</p>
+      </div>
+      <div class="wrap relative flex lg:min-h-[calc(100svh-7rem)] lg:items-center">
+        <div class="-mt-10 pb-16 sm:-mt-16 lg:mt-0 lg:w-[46%] lg:py-14">
+          <p class="eyebrow">Autobedrijf in Strijen</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Eerlijke verkoop <span class="text-goud">en onderhoud.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Occasions in de showroom aan de Edisonweg. Onderhoud, APK en reparatie voor uw auto. Loop gerust even binnen.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#aanbod" class="knop knop-brons">Bekijk het aanbod<Icoon naam="pijl" /></a>
+            <a href={waHallo} class="knop knop-rand op-donker"><Icoon naam="wa" />Stuur een WhatsApp</a>
+          </div>
+          <ul class="mt-10 grid gap-3 border-t border-lijn-licht pt-6 text-[.9375rem] text-licht/90 sm:flex sm:flex-wrap sm:gap-x-7">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 9.00 tot 17.00, za tot 14.00</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat we doen">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c, i) => <a href={i < 2 ? '#aanbod' : '#diensten'} class="shrink-0 rounded-sm bg-papier px-4 py-2 text-sm font-medium no-underline transition-colors hover:bg-inkt hover:text-licht">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Aanbod met filter -->
+    <section id="aanbod" class="py-20 lg:py-28" aria-labelledby="t-aanbod">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Uit de showroom</p>
+            <h2 id="t-aanbod" class="mt-4 text-3xl">Nette occasions, binnen gestald.</h2>
+          </div>
+          <div class="rijs lg:col-span-4 lg:col-start-9" style="--d:.05s">
+            <p class="text-lg text-grijs">Een greep uit het aanbod van de afgelopen maanden. Wat er nu staat, met prijs, ziet u op Marktplaats.</p>
+          </div>
+        </div>
+        <div class="mt-10 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap gap-2" role="group" aria-label="Filter op soort auto" data-filter>
+            <button type="button" class="filter" aria-pressed="true" data-soort="">Alles</button>
+            {soorten.map((s) => <button type="button" class="filter" aria-pressed="false" data-soort={s}>{s}</button>)}
+          </div>
+          <a href={site.marktplaats} class="link text-sm font-semibold">Actueel aanbod op Marktplaats</a>
+        </div>
+        <ul class="mt-8 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4" data-aanbod>
+          {aanbod.map((a, i) => (
+            <li class="rijs" data-soort={a.soort} style={`--d:${(i % 4) * 0.05}s`}>
+              <a href={zoek(a.naam)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden bg-vloer">
+                  <Image src={a.src} alt={`${a.naam} met TE KOOP-plaat`} widths={[320, 480, 640]} sizes="(min-width: 1248px) 285px, (min-width: 1024px) 23vw, 46vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${a.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-3 p-4 sm:p-5">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-[.14em] text-brons">{a.soort}</p>
+                    <h3 class="mt-1 text-[1rem] sm:text-lg">{a.naam}</h3>
+                  </div>
+                  <span class="hidden h-9 w-9 shrink-0 place-items-center rounded-sm bg-papier text-brons transition-colors group-hover:bg-brons group-hover:text-wit sm:grid" aria-hidden="true"><Icoon naam="wa" class="h-[1.125rem] w-[1.125rem]" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-md bg-nacht px-6 py-6 text-licht sm:flex-row sm:items-center md:px-8">
+          <p class="flex items-center gap-4 text-lg"><span class="plaat hidden sm:inline-flex">Gezocht</span><span><b class="font-semibold">Niet gevonden wat u zoekt?</b> <span class="text-licht-zacht">Laat weten wat voor auto u wilt, dan houden we het voor u in de gaten.</span></span></p>
+          <a href="#contact" class="knop knop-brons knop-klein shrink-0" data-tab-open="zoeken"><Icoon naam="zoek" />Zoekopdracht doorgeven</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Werkplaats (donker) -->
+    <section id="diensten" class="donker bg-nacht py-24 text-licht lg:py-28" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Verkoop en werkplaats</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Kopen, laten keuren, laten maken. Op één adres.</h2>
+          </div>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-4 lg:col-start-9" style="--d:.05s">In- en verkoop van occasions, onderhoud en reparatie van auto’s. Ook als u uw auto hier niet gekocht hebt.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-3 lg:mt-14 lg:gap-6">
+          {diensten.map((d, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={d.href} class="group flex h-full flex-col overflow-hidden rounded-md bg-nacht-2 no-underline ring-1 ring-lijn-licht transition-colors hover:ring-goud/60">
+                <div class="overflow-hidden">
+                  <Image src={d.src} alt={d.alt} widths={[400, 640, 900]} sizes="(min-width: 1248px) 380px, (min-width: 768px) 31vw, 92vw" class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${d.pos}`} />
+                </div>
+                <div class="flex flex-1 flex-col p-6 lg:p-7">
+                  <h3 class="text-xl">{d.t}</h3>
+                  <p class="mt-2 flex-1 text-licht-zacht">{d.d}</p>
+                  <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-goud">{d.knop}<Icoon naam="pijl" class="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-6 grid gap-5 rounded-md bg-licht p-6 text-inkt sm:grid-cols-[auto_1fr_auto] sm:items-center md:p-8">
+          <span class="grid h-12 w-12 place-items-center rounded-sm bg-brons text-wit"><Icoon naam="euro" class="h-6 w-6" /></span>
+          <p class="text-lg"><b class="font-semibold">Uw auto verkopen?</b> <span class="text-grijs">We kopen ook auto’s in. Stuur merk, model en kilometerstand, en een paar foto’s via WhatsApp.</span></p>
+          <a href="#contact" class="knop knop-inkt knop-klein" data-tab-open="verkopen"><Icoon naam="wa" />Auto aanbieden</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Een auto kopen</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Van appje tot sleutels.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Zo gaat het meestal bij ons. Zonder gedoe, met de tijd voor uw vragen.</p>
+        </div>
+        <ol class="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart relative overflow-hidden p-6 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[3.25rem] font-extrabold leading-none tracking-[-0.05em] text-brons-logo">0{i + 1}</p>
+              <h3 class="mt-6 text-xl">{t}</h3>
+              <p class="mt-2 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. Over ons -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[18rem] sm:min-h-[26rem] lg:col-span-6">
+          <Image src={showroom} alt="De showroom van Autohuis Centraal: een rij auto’s met gele TE KOOP-platen tegen een witte tegelwand" widths={[640, 1024]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          <p class="absolute bottom-4 left-4 flex items-center gap-3 rounded-sm bg-nacht/80 py-2 pl-2 pr-4 text-sm backdrop-blur-md"><span class="plaat">Te koop</span>De showroom</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-6 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over ons</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Een garage waar u zo binnenloopt.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Autohuis Centraal zit aan de Edisonweg in Strijen. In de showroom staan de occasions binnen, elke auto met een TE KOOP-plaat voorop. Voor onderhoud, APK en reparatie bent u hier ook aan het goede adres. Piet neemt de tijd voor uw vragen, en de koffie staat klaar.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-sm bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-brons text-wit"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Eerlijk en duidelijk</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Heldere communicatie en transparant handelen: dat noemen klanten het vaakst.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-sm bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-brons text-wit"><Icoon naam="klok" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Snel geholpen</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Een lampje dat brandt of een piepend geluid? Vaak kunt u snel terecht.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-sm bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-brons text-wit"><Icoon naam="schild" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Ook na de koop</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Is er na aankoop toch iets met de auto, dan wordt het netjes opgelost.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section id="reviews" class="bg-vloer py-20 lg:py-28" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+            <p class="mt-5 flex flex-wrap items-center gap-2 text-sm text-grijs">Vaak genoemd:
+              {themas.map(([t, n]) => <span class="rounded-sm bg-wit px-2.5 py-1 font-medium text-inkt">{t} <span class="num text-grijs">{n}</span></span>)}
+            </p>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-nacht font-kop font-bold text-goud" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 8. Openingstijden en route -->
+    <section id="route" class="py-20 lg:py-28" aria-labelledby="t-route">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-route" class="mt-4 text-3xl">Edisonweg 13, Strijen.</h2>
+          <p class="mt-6 text-lg text-grijs">Doordeweeks tot vijf uur open, op zaterdag tot twee uur. Op zondag zijn we dicht.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van Autohuis Centraal</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-brons">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num whitespace-nowrap py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}<span class="hidden sm:inline">{t.open ? ' uur' : ''}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-md">
+            <Image src={eklasse} alt="Een zilveren Mercedes-Benz E-klasse met TE KOOP-plaat, buiten geparkeerd" widths={[600, 900, 1300]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full min-h-[18rem] w-full object-cover object-[50%_60%]" />
+          </figure>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-brons" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Contact: WhatsApp-bericht samenstellen -->
+    <section id="contact" class="border-t border-lijn bg-wit py-20 lg:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Even overleggen?</h2>
+          <p class="mt-6 text-lg text-grijs">Bel of app ons. Of stel hiernaast uw bericht samen: een zoekopdracht, een afspraak voor de werkplaats, of uw auto aanbieden.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waHallo} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-brons text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-brons" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-sm bg-papier text-brons"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="text-grijs">Ma t/m vr 9.00 tot 17.00, za tot 14.00</span></span><Icoon naam="pijl" class="h-5 w-5 text-brons" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 shrink-0 place-items-center rounded-sm bg-papier text-brons"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="text-sm text-grijs [overflow-wrap:anywhere] sm:text-base">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 shrink-0 text-brons" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart bg-papier p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw bericht aan Autohuis Centraal</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <div class="mt-7 grid grid-cols-3 gap-1 rounded-sm bg-vloer p-1" role="tablist" aria-label="Waar gaat uw bericht over?">
+            <button type="button" role="tab" class="tab" aria-selected="true" aria-controls="p-zoeken" id="t-zoeken" data-tab="zoeken"><span class="sm:hidden">Zoeken</span><span class="hidden sm:inline">Auto zoeken</span></button>
+            <button type="button" role="tab" class="tab" aria-selected="false" aria-controls="p-werk" id="t-werk" data-tab="werk" tabindex="-1">Werkplaats</button>
+            <button type="button" role="tab" class="tab" aria-selected="false" aria-controls="p-verkopen" id="t-verkopen" data-tab="verkopen" tabindex="-1"><span class="sm:hidden">Verkopen</span><span class="hidden sm:inline">Auto verkopen</span></button>
+          </div>
+
+          <div id="p-zoeken" role="tabpanel" aria-labelledby="t-zoeken" class="paneel mt-7 grid gap-5 sm:grid-cols-2">
+            <fieldset class="sm:col-span-2">
+              <legend class="text-sm font-semibold">Soort auto</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {['Stadsauto', 'Gezinsauto', 'Stationwagen', 'Cabrio', 'Bedrijfswagen', 'Maakt niet uit'].map((b) => (
+                  <label class="keuze"><input type="radio" name="soort" value={b} class="sr-only" /><span>{b}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <label class="block"><span class="text-sm font-semibold">Budget</span>
+              <select name="budget" class="veld mt-2"><option value="">Weet ik nog niet</option><option>Tot € 5.000</option><option>€ 5.000 tot € 10.000</option><option>€ 10.000 tot € 15.000</option><option>Boven € 15.000</option></select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Schakeling</span>
+              <select name="bak" class="veld mt-2"><option value="">Maakt niet uit</option><option>Handgeschakeld</option><option>Automaat</option></select>
+            </label>
+          </div>
+
+          <div id="p-werk" role="tabpanel" aria-labelledby="t-werk" class="paneel mt-7 grid gap-5 sm:grid-cols-2" hidden>
+            <fieldset class="sm:col-span-2">
+              <legend class="text-sm font-semibold">Waarvoor</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {['APK', 'Onderhoudsbeurt', 'Reparatie', 'Iets anders'].map((b) => (
+                  <label class="keuze"><input type="radio" name="werk" value={b} class="sr-only" /><span>{b}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <label class="block"><span class="text-sm font-semibold">Merk en model</span><input name="model" class="veld mt-2" placeholder="Bijvoorbeeld: Peugeot 107" /></label>
+            <label class="block"><span class="text-sm font-semibold">Voorkeursdag</span>
+              <select name="dag" class="veld mt-2"><option value="">Maakt niet uit</option>{tijden.filter((t) => t.open).map((t) => <option>{t.naam}</option>)}</select>
+            </label>
+          </div>
+
+          <div id="p-verkopen" role="tabpanel" aria-labelledby="t-verkopen" class="paneel mt-7 grid gap-5 sm:grid-cols-2" hidden>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Merk en model</span><input name="vmodel" class="veld mt-2" placeholder="Bijvoorbeeld: Opel Corsa" /></label>
+            <label class="block"><span class="text-sm font-semibold">Bouwjaar</span><input name="jaar" inputmode="numeric" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Kilometerstand</span><input name="km" inputmode="numeric" class="veld mt-2" /></label>
+          </div>
+
+          <div class="mt-5 grid gap-5 sm:grid-cols-2">
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-brons"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs" data-hint>Foto’s stuurt u daarna gewoon mee in WhatsApp.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-brons text-wit" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Op zoek naar een nette occasion?</h2>
+          <p class="mt-2 text-lg text-wit/90">Kom langs aan de Edisonweg, of stuur een appje.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waHallo} class="knop knop-wit"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand op-donker num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Filter op soort auto.
+  const knoppen = document.querySelectorAll<HTMLButtonElement>('[data-filter] button');
+  const items = document.querySelectorAll<HTMLElement>('[data-aanbod] > li');
+  knoppen.forEach((k) => k.addEventListener('click', () => {
+    knoppen.forEach((x) => x.setAttribute('aria-pressed', String(x === k)));
+    const s = k.dataset.soort;
+    items.forEach((li) => { li.hidden = !!s && li.dataset.soort !== s; });
+  }));
+
+  // Tabs in het berichtformulier.
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+  const kies = (naam: string, focus = false) => tabs.forEach((t) => {
+    const aan = t.dataset.tab === naam;
+    t.setAttribute('aria-selected', String(aan)); t.tabIndex = aan ? 0 : -1;
+    const p = document.getElementById(t.getAttribute('aria-controls')!); if (p) p.hidden = !aan;
+    if (aan && focus) t.focus();
+  });
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => kies(t.dataset.tab!));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; kies(n.dataset.tab!, true);
+    });
+  });
+  document.querySelectorAll<HTMLElement>('[data-tab-open]').forEach((a) => a.addEventListener('click', () => kies(a.dataset.tabOpen!)));
+
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const tab = tabs.find((t) => t.getAttribute('aria-selected') === 'true')?.dataset.tab;
+      const r: string[] = [];
+      if (tab === 'zoeken') {
+        r.push('Hallo Autohuis Centraal, ik ben op zoek naar een auto.');
+        if (v('soort')) r.push('Soort: ' + v('soort'));
+        if (v('budget')) r.push('Budget: ' + v('budget'));
+        if (v('bak')) r.push('Schakeling: ' + v('bak'));
+      } else if (tab === 'werk') {
+        r.push('Hallo Autohuis Centraal, ik wil graag een afspraak voor de werkplaats.');
+        if (v('werk')) r.push('Waarvoor: ' + v('werk'));
+        if (v('model')) r.push('Auto: ' + v('model'));
+        if (v('dag')) r.push('Het liefst op: ' + v('dag'));
+      } else {
+        r.push('Hallo Autohuis Centraal, ik wil mijn auto aanbieden.');
+        if (v('vmodel')) r.push('Auto: ' + v('vmodel'));
+        if (v('jaar')) r.push('Bouwjaar: ' + v('jaar'));
+        if (v('km')) r.push('Kilometerstand: ' + v('km'));
+      }
+      if (v('wens')) r.push(v('wens'));
+      if (v('naam')) r.push('Groet, ' + v('naam'));
+      window.open('https://wa.me/31652380727?text=' + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.04em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: var(--radius-sm); background: var(--color-papier); }
+  .status-pil .status-stip { background: #8f8a83; }
+  .filter { min-height: 2.5rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .filter:hover { background: var(--color-vloer); }
+  .filter[aria-pressed='true'] { background: var(--color-inkt); color: var(--color-licht); box-shadow: none; }
+  .tab { min-height: 2.75rem; border-radius: .25rem; font-size: .9375rem; font-weight: 600; color: var(--color-grijs); cursor: pointer; transition: background-color .2s, color .2s; padding: 0 .5rem; }
+  .tab:hover { color: var(--color-inkt); }
+  .tab[aria-selected='true'] { background: var(--color-wit); color: var(--color-inkt); box-shadow: var(--shadow-sm); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: var(--color-vloer); }
+  .keuze input:checked + span { background: var(--color-brons); color: #fff; box-shadow: none; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-brons); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #14131233; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #14131266; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-brons); }
+  .veld::placeholder { color: #7d7871; }
+  [data-aanbod] > li[hidden] { display: none; }
+</style>
