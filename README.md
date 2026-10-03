@@ -174,3 +174,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Arsam Auto's, Rhoon | https://michaelbeset-ops.github.io/sitefront/arsam-autos-rhoon/ | zelfgemaakte site, https kapot, 4,9 uit 44, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Tom Korbee Hoveniers, Nieuwerkerk a/d IJssel | https://michaelbeset-ops.github.io/sitefront/tom-korbee-hoveniers-nieuwerkerk/ | site uit 2005, niet mobiel, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Loon- en Kraanverhuur T. Donk, Streefkerk | https://michaelbeset-ops.github.io/sitefront/donk-loon-kraanverhuur-streefkerk/ | kale WordPress-site, kop 'Homepage', 06/WhatsApp. | 2026-10-03 | demo premium |
+| Baan Woningstoffering, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/baan-woningstoffering-hia/ | https hangt, sinds 2021 niet bijgewerkt, "bijna 50 jaar" (nu 59), faxnummer, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Van Dommelen Kraanverhuur, Papendrecht | https://michaelbeset-ops.github.io/sitefront/van-dommelen-kraanverhuur-papendrecht/ | geen bruikbare site, alleen LinkedIn, 06/WhatsApp. | 2026-10-03 | demo premium |

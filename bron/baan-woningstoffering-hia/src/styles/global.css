@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/cabin/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Linnen en zand (de stalenwand en het jute-tapijt), warm bijna-zwart (hun loods).
+     Eén merkkleur: roest #a74320, letterlijk de footerkleur van hun site en het bruine vlak in hun logo.
+     Het blauw en rood uit het logo komen alleen terug in het logo-teken zelf. */
+  --color-papier: #f6f2eb;      /* pagina */
+  --color-zand: #ece5d9;        /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #1f1c19;        /* tekst */
+  --color-grijs: #5f584f;       /* bijtekst, 6,6:1 op papier */
+  --color-lijn: #1f1c191f;
+  --color-roest: #a74320;       /* merkkleur, wit erop 6,1:1 */
+  --color-roest-diep: #86331a;  /* hover */
+  --color-nacht: #1f1c19;       /* donkere secties */
+  --color-nacht-2: #2c2824;     /* kaarten op nacht */
+  --color-licht: #f6f2eb;
+  --color-licht-zacht: #bfb6aa; /* bijtekst op nacht */
+  --color-lijn-licht: #f6f2eb24;
+  --color-koper: #eda07c;       /* accent op nacht */
+  --color-ster: #e3a127;        /* alleen sterren */
+  --color-logo-blauw: #0a859f;
+  --color-logo-rood: #bf2e0c;
+  --color-logo-bruin: #974a2e;
+
+  --font-kop: "Cabin Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, 1vw + 1.3rem, 2rem);
+  --text-3xl: clamp(2.25rem, 2.6vw + 1.3rem, 3.5rem);
+  --text-hero: clamp(2.6rem, 5.2vw + 0.6rem, 5.4rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .375rem;
+  --radius-lg: .5rem;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #1f1c190f, 0 2px 8px #1f1c190a;
+  --shadow-md: 0 14px 34px -14px #1f1c1940;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: 1.02; letter-spacing: -0.022em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.01em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-roest); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-roest); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-koper); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .eyebrow { display: flex; align-items: center; gap: .75rem; font-family: var(--font-sans); font-size: .8125rem; line-height: 1.4; letter-spacing: .16em; text-transform: uppercase; font-weight: 650; color: var(--color-roest); }
+  .eyebrow::before { content: ""; width: 1.75rem; height: 2px; background: currentColor; flex: none; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-koper); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk: hun drie overlappende vlakken + BAAN / Woningstoffering, in de koppenletter. */
+  .merk { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk svg { width: 2.4rem; height: 2rem; flex: none; }
+  .merk b { display: block; font-family: var(--font-kop); font-weight: 700; font-size: 1.5rem; letter-spacing: .02em; }
+  .merk small { display: block; margin-top: .15rem; font-family: var(--font-kop); font-size: .95rem; font-weight: 500; letter-spacing: .005em; color: var(--color-grijs); }
+  .donker .merk small { color: var(--color-licht-zacht); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-roest { background: var(--color-roest); color: #fff; box-shadow: 0 10px 22px -12px #a74320; }
+  .knop-roest:hover { background: var(--color-roest-diep); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-roest); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-zand); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.1rem; font-size: .9375rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-roest); transition: color .2s; }
+  .link:hover { color: var(--color-roest); }
+  .donker .link { text-decoration-color: var(--color-koper); }
+  .donker .link:hover { color: var(--color-koper); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
