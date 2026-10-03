@@ -1,0 +1,61 @@
+---
+import { site, url, tijden, waAfspraak } from '../data/site';
+import Icoon from './Icoon.astro';
+import Logo from './Logo.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['APK', 'Onderhoud en airco', 'Motor en koppeling', 'Banden en uitlijnen', 'Diagnose en elektra', 'In- en verkoop'];
+---
+<footer class="donker golf bg-asfalt text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken text-geel"><Logo class="h-9 w-14" /></span>
+        <span><b>Arsam Auto's</b><small>Rhoon</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Garage en APK-keuringstation aan de Koperhoek in Rhoon. Onderhoud, reparatie, banden, airco en diagnose voor alle merken.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-md bg-asfalt-2 text-licht transition-colors hover:bg-geel hover:text-inkt" aria-label="Facebook"><svg viewBox="0 0 24 24" class="h-5 w-5" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.6l.4-3h-3V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4a21 21 0 0 0-2.3-.1c-2.3 0-3.9 1.4-3.9 4v2.2H7.8v3h2.6V21h3.1Z"/></svg></a>
+        <a href={waAfspraak} class="grid h-10 w-10 place-items-center rounded-md bg-asfalt-2 text-licht transition-colors hover:bg-geel hover:text-inkt" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-geel">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-geel">{site.tel}</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-geel">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-geel">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-bold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-bold data-[vandaag]:text-geel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.bv}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-geel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel (kentekens onherkenbaar gemaakt) en sfeerfoto’s via Unsplash bij de diensten, ter illustratie. Reviews letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>
