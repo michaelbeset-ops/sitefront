@@ -1,0 +1,55 @@
+---
+import { site, url, tijden, waAfspraak } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Lak polijsten en poetsen', 'Interieur reinigen', 'Bekleding en gehemelte', 'Velgen reinigen', 'Wassen en ontvetten', 'Bussen en bedrijfsauto’s'];
+---
+<footer class="donker bg-asfalt pb-[4.5rem] text-licht-zacht md:pb-0">
+  <div class="vlag h-3.5" style="--v1:#26272b;--v2:#111214" aria-hidden="true"></div>
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <span class="text-licht"><Merk licht /></span>
+      <p class="mt-6 max-w-xs">Autopoetsbedrijf op het industrieterrein van Gorinchem-Oost. Poetsen, polijsten en reinigen van personen- en bedrijfsauto’s.</p>
+      <p class="mt-5 flex items-center gap-2 text-sm"><span class="text-ster" aria-hidden="true">★</span><a href={site.reviews} class="no-underline hover:text-rood-licht"><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</a></p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.06em] text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-rood-licht">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.06em] text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-rood-licht">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-rood-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-kop text-lg font-bold uppercase tracking-[.06em] text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-rood-licht">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, ter illustratie (kentekens onherkenbaar gemaakt). Reviews letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>

@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4704/sitefront/pitstop-carpolish-gorinchem/');
+await p.click('label.keuze:has-text("Bus")'); await p.click('label.keuze:has-text("Lak polijsten")'); await p.click('label.keuze:has-text("Stickers verwijderen")');
+await p.fill('input[name=model]', 'Ford Transit'); await p.selectOption('select[name=wanneer]', 'Deze week'); await p.fill('input[name=naam]', 'Jan');
+console.log(await p.textContent('[data-voorbeeld]'));
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()).slice(0,200));
+console.log(await p.textContent('[data-status]'));
+await b.close();

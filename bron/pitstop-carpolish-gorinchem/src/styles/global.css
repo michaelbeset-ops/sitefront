@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+@import "@fontsource/barlow-condensed/latin-800-italic.css";
+@import "@fontsource/barlow-condensed/latin-700.css";
+@import "@fontsource/barlow/latin-400.css";
+@import "@fontsource/barlow/latin-500.css";
+@import "@fontsource/barlow/latin-600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Concept: de pitbox op het industrieterrein. Asfaltzwart en het witte golfplaat van hun loods,
+     één signaalrood uit het "STOP" van hun logo, geblokte vlag als detail. */
+  --color-papier: #f3f2ee;      /* pagina, wit golfplaat */
+  --color-beton: #e6e4de;       /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #111214;        /* tekst, 17:1 op papier */
+  --color-grijs: #5e5f63;       /* bijtekst, 5,7:1 op papier */
+  --color-lijn: #1112141f;
+  --color-rood: #d4231b;        /* merkkleur, wit erop 5,2:1 */
+  --color-rood-diep: #ad1a13;   /* hover */
+  --color-asfalt: #111214;      /* donkere secties */
+  --color-asfalt-2: #1c1d20;    /* kaarten op asfalt */
+  --color-licht: #f3f2ee;
+  --color-licht-zacht: #a9abb1; /* bijtekst op asfalt, 8:1 */
+  --color-lijn-licht: #f3f2ee22;
+  --color-rood-licht: #ff5a4a;  /* rood op asfalt, 6:1 */
+  --color-ster: #f5b301;        /* alleen sterren */
+
+  --font-kop: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Barlow", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.75rem, 1vw + 1.4rem, 2.25rem);
+  --text-3xl: clamp(2.5rem, 3vw + 1.4rem, 4.25rem);
+  --text-hero: clamp(3.1rem, 6.4vw + 0.6rem, 6.75rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .375rem;
+  --radius-lg: .5rem;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #1112140f, 0 2px 8px #1112140a;
+  --shadow-md: 0 14px 34px -14px #11121440;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2 { font-family: var(--font-kop); font-weight: 800; font-style: italic; text-transform: uppercase; line-height: .92; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-family: var(--font-kop); font-weight: 700; font-style: normal; text-transform: uppercase; letter-spacing: .01em; line-height: 1.1; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-rood); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-rood-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: .75rem; font-family: var(--font-kop); font-size: 1rem; line-height: 1.2; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; color: var(--color-rood); }
+  .eyebrow::before { content: ""; width: 1.75rem; height: .5rem; flex: none; background: conic-gradient(currentColor 25%, transparent 0 50%, currentColor 0 75%, transparent 0) 0 0 / .5rem .5rem; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-rood-licht); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Geblokte vlag */
+  .vlag { background: conic-gradient(var(--v1, #111214) 25%, var(--v2, #f3f2ee) 0 50%, var(--v1, #111214) 0 75%, var(--v2, #f3f2ee) 0) 0 0 / var(--vs, 14px) var(--vs, 14px); }
+
+  /* Woordmerk naar hun logo: PIT zwart, STOP rood, cursief, met geblokte vlag eronder. */
+  .merk { display: inline-flex; flex-direction: column; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk-woord { font-family: var(--font-kop); font-weight: 800; font-style: italic; font-size: 2rem; letter-spacing: -.01em; line-height: .8; }
+  .merk-woord span { color: var(--color-rood); }
+  .merk-vlag { display: block; height: 6px; width: 3.6rem; margin-top: 4px; --vs: 6px; transform: skewX(-14deg); }
+  .merk small { display: block; margin-top: 5px; font-family: var(--font-kop); font-weight: 700; font-size: .6875rem; letter-spacing: .2em; text-transform: uppercase; color: var(--color-grijs); }
+  .donker .merk small { color: var(--color-licht-zacht); }
+  .donker .merk-woord span { color: var(--color-rood-licht); }
+
+  /* Knoppen: schuin als een startnummer. */
+  .knop { display: inline-flex; align-items: center; justify-content: center; min-height: 3.25rem; padding: 0 1.75rem; transform: skewX(-12deg); border-radius: var(--radius-sm); font-family: var(--font-kop); font-weight: 700; font-size: 1.125rem; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), translate .25s var(--ease-zacht); }
+  .knop > span { display: inline-flex; align-items: center; gap: .6rem; transform: skewX(12deg); }
+  .knop:hover { translate: 0 -2px; }
+  .knop:active { translate: 0 1px; }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-rood { background: var(--color-rood); color: #fff; box-shadow: 0 10px 22px -12px #d4231bcc; }
+  .knop-rood:hover { background: var(--color-rood-diep); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-rood); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-beton); }
+  .knop-rand { box-shadow: inset 0 0 0 2px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 2px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 2px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.25rem; font-size: 1rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; text-decoration-color: var(--color-rood); transition: color .2s; }
+  .link:hover { color: var(--color-rood); }
+  .donker .link { text-decoration-color: var(--color-rood-licht); }
+  .donker .link:hover { color: var(--color-rood-licht); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
