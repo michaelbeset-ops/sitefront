@@ -150,3 +150,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Stukadoorsbedrijf F. Roubos, 's-Gravendeel | https://michaelbeset-ops.github.io/sitefront/stukadoor-roubos-sgravendeel/ | geen website, 5,0 uit 3, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Barbershop Gullit, 's-Gravendeel | https://michaelbeset-ops.github.io/sitefront/barbershop-gullit-sgravendeel/ | WordPress-crash, 4,9 uit 18, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Trimsalon Van de Witte Rekeltjes, Barendrecht | https://michaelbeset-ops.github.io/sitefront/trimsalon-witte-rekeltjes-barendrecht/ | site niet mobiel, 4,8 uit 19, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Perfect Zonwering, Zuid-Beijerland | https://michaelbeset-ops.github.io/sitefront/perfect-zonwering-zuid-beijerland/ | basic WordPress zonder https, 3,7 uit 7, 06/WhatsApp. | 2026-10-03 | demo premium |

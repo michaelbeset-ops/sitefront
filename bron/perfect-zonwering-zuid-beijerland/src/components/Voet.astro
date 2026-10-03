@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import { site, url, tijden, waAdvies } from '../data/site';
+import logo from '../assets/logo.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const lijst = ['Rolluiken', 'Screens', 'Knikarmschermen', 'Uitvalschermen', 'Markiezen', 'Terrasoverkapping', 'Reparatie en herstel'];
+---
+<footer class="donker bg-nacht text-lila">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="grid h-12 w-[4.6rem] place-items-center rounded-md bg-licht px-1.5"><Image src={logo} alt="" width={64} densities={[1, 2]} class="h-auto w-full" /></span>
+        <span><b>Perfect Zonwering</b><small>Zuid-Beijerland</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Sinds 1994 uw specialist in zonwering en rolluiken, binnen en buiten de Hoeksche Waard. Voor particulieren en bedrijven.</p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-licht">Producten</p>
+      <ul class="mt-4 space-y-2">
+        {lijst.map((c) => <li><a href={h('producten')} class="no-underline transition-colors hover:text-zalm">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-zalm">{site.tel}</a></li>
+        <li><a href={waAdvies} class="no-underline transition-colors hover:text-zalm">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-words no-underline transition-colors hover:text-zalm">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-zalm">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-bold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-bold data-[vandaag]:text-zalm">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-zalm">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s: eigen projectfoto’s van perfectzonwering.nl. Productgegevens van uw huidige website. Review letterlijk van Google (stand 3 oktober 2026).</p>}
+  </div>
+</footer>
