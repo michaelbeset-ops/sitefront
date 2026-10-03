@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4724/sitefront/hondentrimsalon-esther-krimpen/');
+await p.evaluate(() => { window.__u = []; window.open = (u) => { window.__u.push(u); }; });
+await p.locator('label.maat', { hasText: 'Boven 60 cm' }).click();
+console.log(await p.locator('[data-w-label]').textContent(), '|', await p.locator('[data-w-prijs]').textContent());
+await p.fill('input[name=ras]', 'Sint Bernard');
+await p.click('[data-wijzer] button[type=submit]');
+await p.locator('label.maat', { hasText: 'Kat' }).click();
+console.log(await p.locator('[data-w-label]').textContent(), '|', await p.locator('[data-w-prijs]').textContent(), await p.locator('[data-w-va]').isHidden());
+await p.locator('label.keuze', { hasText: 'Puppytraining' }).click();
+await p.fill('input[name=dier]', 'Bo, Australian shepherd'); await p.fill('input[name=naam]', 'Test');
+await p.click('[data-wa] button[type=submit]');
+for (const u of await p.evaluate(() => window.__u)) console.log(decodeURIComponent(u));
+await b.close();

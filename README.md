@@ -157,3 +157,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | MoGo Autopoetsbedrijf, Meerkerk | https://michaelbeset-ops.github.io/sitefront/mogo-autopoets-meerkerk/ | domein weg, 4,8 uit 18, 06/WhatsApp. | 2026-10-03 | demo premium |
 | WK Rijopleidingen, Hendrik-Ido-Ambacht | https://michaelbeset-ops.github.io/sitefront/wk-rijopleidingen-hia/ | gedateerd template, 5,0 uit 92, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Autohuis Centraal, Strijen | https://michaelbeset-ops.github.io/sitefront/autohuis-centraal-strijen/ | geen website, 4,7 uit 80, 06/WhatsApp. | 2026-10-03 | demo premium |
+| Hondentrimsalon Esther, Krimpen a/d IJssel | https://michaelbeset-ops.github.io/sitefront/hondentrimsalon-esther-krimpen/ | gedateerde site, 5,0 uit 12, 06/WhatsApp. | 2026-10-03 | demo premium |
