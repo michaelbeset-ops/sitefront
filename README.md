@@ -162,3 +162,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Maarten Slavenburg Timmerwerken, Mijnsheerenland | https://michaelbeset-ops.github.io/sitefront/slavenburg-timmerwerken-mijnsheerenland/ | geen website, 5,0 uit 4, 06/WhatsApp. | 2026-10-03 | demo premium |
 | De Knapperd, Werkendam | https://michaelbeset-ops.github.io/sitefront/de-knapperd-werkendam/ | site uit 2012, niet mobiel, 4,9 uit 15, 06/WhatsApp. | 2026-10-03 | demo premium |
 | Simons Vloer & Wand, Haastrecht | https://michaelbeset-ops.github.io/sitefront/simons-vloer-wand-haastrecht/ | site uit 2015, 4,8 uit 5, 06/WhatsApp. | 2026-10-03 | demo premium |
+| New Look Barber Shop, Sleeuwijk | https://michaelbeset-ops.github.io/sitefront/new-look-sleeuwijk/ | geen website, 4,7 uit 46, 06/WhatsApp. | 2026-10-03 | demo premium |
