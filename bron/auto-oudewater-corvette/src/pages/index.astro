@@ -1,0 +1,408 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, chips, reviews, waVraag, waMet } from '../data/site';
+import showroom from '../assets/showroom.jpg';
+import z06 from '../assets/z06.jpg';
+import pand from '../assets/c8-pand.jpg';
+import motorblok from '../assets/motorblok.jpg';
+import distributie from '../assets/distributie.jpg';
+import carbon from '../assets/carbon.jpg';
+import safetycar from '../assets/safetycar.jpg';
+
+const vraag = (b: string) => waMet(`Goedendag Auto-Oudewater, ik heb een vraag over ${b}.`);
+
+const diensten = [
+  { t: 'Onderhoud en reparatie', d: 'Snelle reparaties en oplossingen bij storingen, van een onderhoudsbeurt tot werk aan het motorblok.', src: motorblok, alt: 'Een opengewerkt V8-motorblok met krukas op een motorbok in de werkplaats', pos: '50% 45%', w: 'onderhoud of reparatie van mijn Corvette' },
+  { t: 'Onderdelen', d: 'Een groot aanbod van nieuwe en gebruikte Corvette-onderdelen, veel ervan direct uit voorraad.', src: distributie, alt: 'De distributieketting en het tandwiel aan de voorkant van een gedemonteerd motorblok', pos: '50% 50%', w: 'een onderdeel voor mijn Corvette' },
+  { t: 'Carstyling', d: 'Uw Corvette een eigen gezicht geven. In onze showroom staan voorbeelden van wat er kan.', src: carbon, alt: 'Een carbon achterspoiler op een grijze Corvette', pos: '50% 40%', w: 'carstyling voor mijn Corvette' },
+];
+
+
+const accessoires = [
+  ['Scissor doors', 'Een uniek systeem om de deuren van uw Corvette om te bouwen naar echte scissor doors.', 'C6 en C6 Z06'],
+  ['Wegklapbare kentekenhouder', 'Het voorste kenteken met één druk op de knop verbergen of laten verschijnen.', 'C6 en C6 Z06'],
+  ['Schaalmodellen', 'Altijd al een schaalmodel van uw Corvette willen hebben? We hebben een grote collectie.', 'Diverse Corvettes'],
+];
+---
+<Base title={`${site.naam} | Corvette-specialist in Oudewater`} description="Corvette-specialist in Oudewater: verkoop, onderhoud en reparatie, nieuwe en gebruikte onderdelen, carstyling, Corvette Experience en verhuur. Iepenweg 15. Bel of app 06 54 62 28 84.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen showroom op volle hoogte -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-asfalt text-licht" aria-labelledby="t-hero">
+      <Image src={showroom} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[22%_75%] md:object-[58%_60%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#11121400_0%,#11121466_30%,#111214f0_62%,#111214_100%)] md:bg-[linear-gradient(90deg,#111214f2_0%,#111214c4_40%,#11121422_78%),linear-gradient(0deg,#111214e6_0%,#11121400_38%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-10 pb-16 pt-32 md:pb-20 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Corvette-specialist in Oudewater</p>
+          <h1 id="t-hero" class="mt-6 text-hero">Alles voor uw <span class="text-geel">Corvette,</span> onder één dak.</h1>
+          <p class="mt-7 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Verkoop, onderhoud en reparatie, onderdelen en carstyling. Al ruim 20 jaar met de Corvette als specialisatie.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#aanbod" class="knop knop-geel">Bekijk ons aanbod<Icoon naam="pijl" /></a>
+            <a href={waVraag} class="knop knop-rand op-foto"><Icoon naam="wa" />WhatsApp ons</a>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2 text-[.9375rem] lg:col-span-4 lg:items-end lg:text-right">
+          <p class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 08.30 tot 18.00 uur</span></p>
+          <p class="flex items-center gap-2"><span class="flex text-geel">{[1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</p>
+          <a href={site.telHref} class="num mt-1 font-kop text-[2.5rem] leading-none tracking-[.02em] text-licht no-underline transition-colors hover:text-geel">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Wat we doen, in het kort">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#diensten" class="shrink-0 rounded-sm border border-lijn px-4 py-2 text-sm font-medium no-underline transition-colors hover:border-geel hover:bg-geel">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-16 lg:py-20" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkplaats en showroom</p>
+            <h2 id="t-diensten" class="mt-5 text-3xl">De technische ins en outs van de Corvette.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">In ruim 20 jaar is er veel knowhow opgebouwd. Voor u betekent dat snelle reparaties en een groot aanbod van onderdelen.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-3 lg:mt-14 lg:gap-6">
+          {diensten.map((b, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(b.w)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1280px) 390px, (min-width: 640px) 31vw, 92vw" class="aspect-[16/10] w-full object-cover transition-transform sm:aspect-[4/3] duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                  <span class="absolute left-0 top-5 bg-geel px-3 py-1 font-kop text-lg leading-none tracking-[.04em]">0{i + 1}</span>
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-5 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.875rem]">{b.t}</h3>
+                    <p class="mt-2 text-[.9375rem] text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-zand transition-colors group-hover:bg-geel" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- 4. Occasions: verwijzing naar hun echte, live voorraad -->
+    <section id="aanbod" class="donker bg-asfalt text-licht" aria-labelledby="t-aanbod">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] sm:min-h-[28rem] lg:col-span-7">
+          <Image src={z06} alt="Een gele Corvette Z06 met zwarte motorkap in de showroom, met schaalmodellen in de kast erachter" widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 58vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[60%_55%]" />
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-5 lg:px-14 lg:py-20 xl:pr-[max(3.5rem,calc((100vw-80rem)/2+2.5rem))]">
+          <p class="eyebrow">Occasions</p>
+          <h2 id="t-aanbod" class="mt-5 text-3xl">Op zoek naar <span class="text-geel">uw</span> Corvette?</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Ons aanbod wisselt steeds. Naast Corvettes staan er ook andere merken. De actuele voorraad, met foto's en gegevens, vindt u altijd op onze occasionpagina.</p>
+          <ul class="mt-8 grid gap-3">
+            <li><a href={site.aanbod} class="rij-link"><Icoon naam="vlag" class="h-6 w-6 text-geel" /><span class="flex-1"><b class="block">Bekijk de actuele voorraad</b><span class="text-sm text-licht-zacht">Alle occasions, live bijgewerkt</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+            <li><a href={waMet('Goedendag Auto-Oudewater, ik zoek een Corvette. Mijn wensen: ')} class="rij-link"><Icoon naam="praat" class="h-6 w-6 text-geel" /><span class="flex-1"><b class="block">Geef uw zoekwens door</b><span class="text-sm text-licht-zacht">Generatie, kleur, budget: app het ons</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+            <li><a href={waMet('Goedendag Auto-Oudewater, ik wil graag mijn huidige auto inruilen. Het gaat om: ')} class="rij-link"><Icoon naam="sleutel" class="h-6 w-6 text-geel" /><span class="flex-1"><b class="block">Inruil bespreken</b><span class="text-sm text-licht-zacht">Uw huidige auto meenemen in de koop</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Corvette Experience en verhuur: berichtbouwer -->
+    <section id="experience" class="relative isolate overflow-hidden bg-zand py-16 lg:py-20" aria-labelledby="t-exp">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Corvette Experience</p>
+          <h2 id="t-exp" class="mt-5 text-3xl">Meerijden in een Corvette.</h2>
+          <p class="mt-6 text-lg text-grijs">Altijd al eens willen meerijden in een echte sportwagen? Een ervaren instructeur neemt u mee voor een route over de openbare weg in Oudewater en omgeving. Of huur een Corvette voor een bruiloft, gala, evenement of promotie.</p>
+          <figure class="relative mt-10 overflow-hidden rounded-lg">
+            <Image src={safetycar} alt="De gele Safety Car-Corvette van Auto-Oudewater, met het Auto-Oudewater-logo op de voorbumper" widths={[480, 720, 960]} sizes="(min-width: 1024px) 460px, 92vw" class="aspect-[3/2] w-full object-cover object-[50%_60%]" />
+            <figcaption class="absolute bottom-0 left-0 bg-asfalt px-4 py-2 text-sm font-semibold text-licht">Onze eigen Safety Car</figcaption>
+          </figure>
+        </div>
+
+        <form class="kaart self-start p-6 sm:p-8 lg:col-span-7 lg:p-10" data-exp aria-describedby="exp-uitleg">
+          <div class="flex gap-2 rounded-md bg-zand p-1.5" role="radiogroup" aria-label="Wat wilt u?">
+            <label class="tab flex-1"><input type="radio" name="soort" value="rit" class="sr-only" checked /><span>Meerijden</span></label>
+            <label class="tab flex-1"><input type="radio" name="soort" value="huur" class="sr-only" /><span>Corvette huren</span></label>
+          </div>
+          <p id="exp-uitleg" class="mt-4 text-sm text-grijs">Stel uw aanvraag samen. Wij maken er een WhatsApp-bericht van; er wordt niets verstuurd tot u dat zelf doet.</p>
+
+          <div data-deel="rit">
+            <fieldset class="mt-7">
+              <legend class="text-sm font-semibold">Hoe lang?</legend>
+              <div class="mt-3 grid grid-cols-3 gap-2">
+                {[20, 40, 60].map((m, i) => (
+                  <label class="keuze"><input type="radio" name="duur" value={m} class="sr-only" checked={i === 0} /><span><b class="font-kop text-[2rem] font-normal leading-none">{m}</b> min</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <label class="mt-6 block"><span class="text-sm font-semibold">Aantal personen</span>
+              <select name="pers" class="veld mt-2">{[1, 2, 3, 4].map((n) => <option value={n}>{n} {n === 1 ? 'persoon' : 'personen'}</option>)}</select>
+            </label>
+            <div class="mt-7 flex items-end justify-between gap-4 border-t border-lijn pt-6">
+              <p class="text-sm text-grijs">Indicatie, op basis van € 60 per persoon per 20 minuten</p>
+              <p class="num whitespace-nowrap font-kop text-[3rem] leading-none" aria-live="polite" data-prijs>€ 60</p>
+            </div>
+          </div>
+
+          <div data-deel="huur" hidden>
+            <fieldset class="mt-7">
+              <legend class="text-sm font-semibold">Gelegenheid</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {['Bruiloft', 'Gala', 'Evenement', 'Promotie', 'Iets anders'].map((g, i) => (
+                  <label class="keuze"><input type="radio" name="gel" value={g} class="sr-only" checked={i === 0} /><span>{g}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <p class="mt-7 border-t border-lijn pt-6 text-sm text-grijs">Verhuur voor de hele dag, vanaf € 200. Welke Corvette beschikbaar is, stemmen we samen af.</p>
+          </div>
+
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Gewenste datum</span><input type="date" name="datum" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+          </div>
+          <button type="submit" class="knop knop-geel mt-8 w-full sm:w-auto"><Icoon naam="wa" />Aanvraag openen in WhatsApp</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. Accessoires -->
+    <section id="accessoires" class="py-16 lg:py-20" aria-labelledby="t-acc">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-10">
+        <div class="rijs relative lg:col-span-5">
+          <Image src={pand} alt="Een Corvette C8 voor het pand van Auto-Oudewater" widths={[400, 640, 800]} sizes="(min-width: 1024px) 440px, 92vw" class="aspect-[4/3] w-full rounded-lg object-cover object-[50%_60%] sm:aspect-[5/6] lg:aspect-[1/1]" />
+          <p class="absolute -bottom-5 right-5 bg-geel px-5 py-3 font-kop text-2xl leading-none shadow-md">Accessoires</p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="eyebrow">Accessoires</p>
+          <h2 id="t-acc" class="mt-5 text-3xl">Net even anders dan de rest.</h2>
+          <p class="mt-6 text-lg text-grijs">Naast onze occasions bieden we diverse accessoires aan. Prijzen op aanvraag.</p>
+          <ul class="mt-9 border-t border-lijn">
+            {accessoires.map(([t, d, v]) => (
+              <li class="grid gap-x-6 gap-y-1 border-b border-lijn py-5 sm:grid-cols-[1fr_auto]">
+                <div>
+                  <h3 class="text-[1.75rem]">{t}</h3>
+                  <p class="mt-1.5 text-[.9375rem] text-grijs">{d}</p>
+                </div>
+                <p class="text-sm font-semibold sm:pt-1.5 sm:text-right">{v}</p>
+              </li>
+            ))}
+          </ul>
+          <a href={vraag('een accessoire voor mijn Corvette')} class="knop knop-inkt mt-8"><Icoon naam="wa" />Prijs opvragen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Over ons -->
+    <section id="over" class="donker bg-asfalt text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="px-5 py-20 md:px-10 lg:order-2 lg:col-span-6 lg:px-14 lg:py-20 xl:pr-[max(3.5rem,calc((100vw-80rem)/2+2.5rem))]">
+          <p class="eyebrow">Over ons</p>
+          <h2 id="t-over" class="mt-5 text-3xl">Totaal Corvette, al ruim 20 jaar.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Auto-Oudewater is al ruim 20 jaar actief in de verkoop en reparatie van auto's, met de Corvette als specialisatie. Buiten op het terrein aan de Iepenweg staan de auto's klaar, binnen wacht een nette showroom.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-asfalt-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-geel text-inkt"><Icoon naam="sleutel" class="h-5 w-5" /></span>
+              <div><h3 class="text-[1.5rem]">Knowhow van de Corvette</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Snelle reparaties en oplossingen bij storingen.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-asfalt-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-geel text-inkt"><Icoon naam="tandwiel" class="h-5 w-5" /></span>
+              <div><h3 class="text-[1.5rem]">Onderdelen op voorraad</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Nieuw en gebruikt, zodat u niet lang hoeft te wachten.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-asfalt-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-sm bg-geel text-inkt"><Icoon naam="wa" class="h-5 w-5" /></span>
+              <div><h3 class="text-[1.5rem]">Ook na de koop bereikbaar</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Vragen of advies? Klanten noemen onze bereikbaarheid via WhatsApp top.</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="relative min-h-[20rem] sm:min-h-[28rem] lg:order-1 lg:col-span-6">
+          <Image src={pand} alt="Twee Corvettes C8, een rode en een zwarte, voor de glazen deuren van het pand aan de Iepenweg" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[40%_50%]" />
+          <p class="absolute bottom-4 left-4 bg-geel px-4 py-1.5 text-sm font-semibold text-inkt">{site.straat}, {site.plaats}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-16 lg:py-20" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-[2rem] font-normal leading-none">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}<Icoon naam="ster" class="h-4 w-4 opacity-25" /></span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-4" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${(i % 4) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-geel font-kop text-xl leading-none" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Contact, openingstijden en route -->
+    <section id="contact" class="bg-zand py-16 lg:py-20" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact en route</p>
+          <h2 id="t-contact" class="mt-5 text-3xl">Kom langs of app ons.</h2>
+          <p class="mt-6 text-lg text-grijs">Op {site.terrein} in Oudewater. Even bellen of appen voordat u komt is handig.</p>
+          <div class="kaart mt-9 p-6 md:p-7">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-[1.75rem]">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za open</span></p>
+            </div>
+            <table class="mt-3 w-full">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-bold">
+                    <th scope="row" class="py-2 pr-4 text-left font-[inherit]"><span class="vandaag-streep"></span>{t.naam}</th>
+                    <td class="num py-2 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="kaart mt-4 grid gap-4 p-6 text-[.9375rem] sm:grid-cols-2 md:p-7">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-5 w-5 shrink-0" /><span><b class="block font-semibold">{site.straat}</b><span class="text-grijs">{site.postcode} {site.plaats}</span><a href={site.maps} class="link mt-1 block font-semibold">Route plannen</a></span></p>
+            <p class="flex items-start gap-3"><Icoon naam="mail" class="mt-0.5 h-5 w-5 shrink-0" /><span class="min-w-0"><b class="block font-semibold">E-mail</b><a href={`mailto:${site.mail}`} class="text-grijs no-underline hover:text-inkt">info@<wbr />auto-oudewater.nl</a></span></p>
+          </div>
+        </div>
+
+        <form class="kaart self-start p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-[2.25rem]">Uw vraag aan Auto-Oudewater</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Wij maken er een WhatsApp-bericht van. Er wordt niets verstuurd tot u dat in WhatsApp zelf doet.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Waar gaat het over?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {['Een occasion', 'Onderhoud of reparatie', 'Een onderdeel', 'Carstyling of accessoire', 'Experience of verhuur'].map((b, i) => (
+                <label class="keuze"><input type="radio" name="onderwerp" value={b} class="sr-only" checked={i === 1} /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Uw Corvette <span class="font-normal text-grijs">(optioneel)</span></span>
+              <select name="gen" class="veld mt-2">
+                <option value="">Weet ik niet / geen</option>
+                {['C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C6 Z06', 'C7', 'C7 Z06', 'C8'].map((g) => <option>{g}</option>)}
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Uw vraag</span><textarea name="vraag" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: waarschuwingslampje sinds vorige week, wanneer kan ik langskomen?"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-geel"><Icoon naam="wa" />Open in WhatsApp</button>
+            <a href={site.telHref} class="link num font-semibold">Of bel {site.tel}</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-geel text-inkt" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(2.25rem,2.4vw+1.5rem,3.5rem)]">Iets met uw Corvette?</h2>
+          <p class="mt-1 text-lg">Stuur een appje met een foto erbij. Dan kijken we met u mee.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waVraag} class="knop knop-inkt"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const WA = 'https://wa.me/31654622884?text=';
+  const open = (r: string[]) => window.open(WA + encodeURIComponent(r.join('\n')), '_blank', 'noopener');
+
+  // Experience / verhuur
+  const e = document.querySelector<HTMLFormElement>('[data-exp]');
+  if (e) {
+    const prijs = e.querySelector<HTMLElement>('[data-prijs]');
+    const ververs = () => {
+      const d = new FormData(e);
+      const soort = String(d.get('soort'));
+      e.querySelectorAll<HTMLElement>('[data-deel]').forEach((el) => { el.hidden = el.dataset.deel !== soort; });
+      const bedrag = (Number(d.get('duur')) / 20) * 60 * Number(d.get('pers'));
+      if (prijs) prijs.textContent = '€ ' + bedrag;
+    };
+    e.addEventListener('change', ververs);
+    ververs();
+    e.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const d = new FormData(e);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const datum = v('datum') ? new Date(v('datum')).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
+      const r = v('soort') === 'rit'
+        ? ['Goedendag Auto-Oudewater, ik wil graag een Corvette Experience boeken.', `Meerijden: ${v('duur')} minuten, ${v('pers')} ${v('pers') === '1' ? 'persoon' : 'personen'}`]
+        : ['Goedendag Auto-Oudewater, ik wil graag een Corvette huren.', `Gelegenheid: ${v('gel')}`];
+      if (datum) r.push('Gewenste datum: ' + datum);
+      if (v('naam')) r.push('Met vriendelijke groet, ' + v('naam'));
+      open(r);
+    });
+  }
+
+  // Contactformulier
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    f.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const r = ['Goedendag Auto-Oudewater, ik heb een vraag over ' + v('onderwerp').toLowerCase() + '.'];
+      if (v('gen')) r.push('Corvette: ' + v('gen'));
+      if (v('vraag')) r.push(v('vraag'));
+      if (v('naam')) r.push('Met vriendelijke groet, ' + v('naam'));
+      open(r);
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .88; letter-spacing: .005em; }
+  .text-ster { color: #e9a800; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: var(--radius-sm); background: var(--color-zand); }
+  .vandaag-streep { display: none; }
+  tr[data-vandaag] .vandaag-streep { display: inline-block; width: .9rem; height: .2rem; margin-right: .5rem; vertical-align: middle; background: var(--color-geel); }
+  .rij-link { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; border-radius: var(--radius-md); background: var(--color-asfalt-2); text-decoration: none; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht); }
+  .rij-link:hover { background: var(--color-geel); color: var(--color-inkt); }
+  .rij-link:hover svg, .rij-link:hover span span { color: var(--color-inkt); }
+  .tab span { display: flex; justify-content: center; align-items: center; min-height: 2.75rem; border-radius: var(--radius-sm); font-weight: 650; cursor: pointer; transition: background-color .2s; }
+  .tab input:checked + span { background: var(--color-inkt); color: var(--color-licht); }
+  .tab input:focus-visible + span, .keuze input:focus-visible + span { outline: 3px solid var(--color-inkt); outline-offset: 2px; }
+  .keuze span { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; min-height: 2.75rem; padding: 0 1rem; border-radius: var(--radius-sm); border: 1.5px solid var(--color-lijn); background: #fff; font-size: .9375rem; font-weight: 550; cursor: pointer; transition: background-color .2s, border-color .2s; width: 100%; }
+  .keuze span:hover { border-color: var(--color-inkt); }
+  .keuze input:checked + span { background: var(--color-geel); border-color: var(--color-geel); }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #12131433; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #12131466; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-inkt); }
+  .veld::placeholder { color: #7a7d82; }
+</style>
