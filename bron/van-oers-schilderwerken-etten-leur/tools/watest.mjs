@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4797/sitefront/van-oers-schilderwerken-etten-leur/');
+await p.click('#tab-2'); await p.waitForTimeout(700);
+console.log('actief paneel:', await p.evaluate(() => document.querySelector('.paneel[data-actief]')?.id), await p.getAttribute('#tab-2', 'aria-selected'));
+await p.click('label.keuze:has-text("Buitenschilderwerk")'); await p.click('label.keuze:has-text("Houtrot")'); await p.click('label.keuze:has-text("Particulier")');
+await p.selectOption('select[name=wanneer]', { index: 2 });
+console.log('premie zichtbaar:', await p.isVisible('[data-premie]'));
+await p.fill('input[name=plaats]', 'Etten-Leur'); await p.fill('textarea[name=wens]', 'kozijnen voorkant'); await p.fill('input[name=naam]', 'Sanne de Wit');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log('winter-tekst:', await p.textContent('[data-winter]'));
+await b.close();

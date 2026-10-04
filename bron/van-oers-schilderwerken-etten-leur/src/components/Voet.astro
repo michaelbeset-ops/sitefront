@@ -1,0 +1,48 @@
+---
+import { site, url, diensten, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk" aria-label="Van Oers schilderwerken, naar de homepage">
+        <span class="merk-stip" aria-hidden="true"></span>
+        <span class="merk-blok"><b>VAN OERS</b> <small>schilderwerken</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Schildersbedrijf uit Etten-Leur voor particulieren en kleine bedrijven. Schilderwerk binnen en buiten, beglazing, wandafwerking en houtrotreparaties.</p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-blad">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Bedrijfsgegevens</p>
+      <ul class="mt-4 space-y-2">
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li class="num">KvK {site.kvk}</li>
+        <li><a href={site.maps} class="inline-flex items-center gap-2 no-underline transition-colors hover:text-blad"><Icoon naam="pin" class="h-4 w-4" />Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-blad">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-blad">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="whitespace-nowrap no-underline transition-colors hover:text-blad">{site.mail}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-blad">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Werkfoto’s en projectfoto’s van uw huidige website; sfeerfoto’s via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 4 oktober 2026).</p>}
+  </div>
+</footer>
