@@ -1,0 +1,236 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Zonnewijzer from '../components/Zonnewijzer.astro';
+import Offerte from '../components/Offerte.astro';
+import { site, chips, merken, reviews, fragmenten, waOfferte, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import rolluiken from '../assets/rolluiken.jpg';
+import garagedeur from '../assets/garagedeur.jpg';
+import garagedeurZwart from '../assets/garagedeur-zwart.jpg';
+import zonnescherm from '../assets/zonnescherm.jpg';
+import zonnescherm2 from '../assets/zonnescherm-2.jpg';
+import screens from '../assets/screens.jpg';
+import veranda from '../assets/veranda.jpg';
+import binnen from '../assets/binnen.jpg';
+
+const vraag = (p: string) => waMet(`Hallo Kurt, ik wil graag een vrijblijvende offerte voor ${p.toLowerCase()}. `);
+
+// Teksten: kort samengevat uit hun eigen productpagina's.
+const producten = [
+  { t: 'Zonneschermen', d: 'Beschutting en bescherming in iedere gewenste uitvoering, voor terras en gevel.', src: zonnescherm, alt: 'Terras met een uitgerold zonnescherm in groen-beige streepdoek, door KJS geplaatst', pos: '50% 40%', cls: 'lg:col-span-2', groot: true },
+  { t: 'Garagedeuren', d: 'Kanteldeur, sectionaaldeur of roldeur, met of zonder elektrische aandrijving. Vrijwel iedere RAL-kleur.', src: garagedeur, alt: 'Antraciet sectionaaldeur in een bakstenen garage, door KJS geplaatst', pos: '50% 55%', cls: 'lg:row-span-2' },
+  { t: 'Rolluiken', d: 'Voor inbraakbeveiliging, warmtewering, minder lawaai en koude-isolatie. Handmatig of elektrisch.', src: rolluiken, alt: 'Twee antraciet rolluikkasten boven ramen in een bakstenen gevel, met een zonnescherm erboven', pos: '50% 55%' },
+  { t: 'Screens', d: 'Weren ongeveer 85% van zonlicht en warmte, terwijl u naar buiten blijft kijken. Ook voor windgevoelige plekken.', src: screens, alt: 'Grote schuifpui op een dakterras met screens in de kozijnen', pos: '50% 45%' },
+  { t: "Veranda's en overkappingen", d: 'Serredak, veranda, schuifdak of carport. Ook verandazonwering voor boven- en zijkant.', src: veranda, alt: 'Sfeerbeeld: antraciet overkapping met loungeset in een tuin', pos: '50% 50%', sfeer: true },
+  { t: 'Binnenzonwering', d: 'Horizontale of verticale jaloezieën, verduisterende rol- of vouwgordijnen. Het volledige Verano-assortiment.', src: binnen, alt: 'Sfeerbeeld: zonlicht valt door een wit jaloezie', pos: '50% 50%', sfeer: true },
+];
+
+const stappen = [
+  { i: 'praat', t: 'U stelt uw vraag', d: 'Bel, app of mail. Of geef direct uw specificaties door.' },
+  { i: 'zon', t: 'Deskundig advies', d: 'Over de toepassingen en mogelijkheden van de verschillende producten en merken.' },
+  { i: 'doc', t: 'Vrijblijvende offerte', d: 'U ontvangt een geheel vrijblijvende offerte, zonder verplichtingen.' },
+  { i: 'meet', t: 'Meten en monteren', d: 'Meten, montage en eindafwerking door vakmensen. De montage is gratis.' },
+];
+---
+<Base title={`${site.naam} | Rolluiken, zonwering en garagedeuren in Ossendrecht`} description="Rolluiken, garagedeuren, zonwering, screens en veranda's uit Ossendrecht. Deskundig advies, vrijblijvende offerte en gratis montage. 4,6 op Google.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen werk (ritsscreen + knikarmscherm) op volle hoogte, met een rolluik dat bij het laden opengaat -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="Tuinkamer met een beige ritsscreen en een antraciet knikarmscherm, door KJS geplaatst" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[38%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15181b40_0%,#15181b8c_40%,#15181bf2_100%)] lg:bg-[linear-gradient(100deg,#15181bf0_0%,#15181bc4_38%,#15181b26_72%),linear-gradient(0deg,#15181b99_0%,#15181b00_35%)]" aria-hidden="true"></div>
+      <div class="rolluik" aria-hidden="true">{[8, 7, 6, 5, 4, 3, 2, 1, 0].map((i) => <span style={`--i:${i}`}></span>)}</div>
+      <div class="wrap relative z-10 grid w-full items-end gap-10 pb-16 pt-28 md:pb-20 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Rolluiken en zonwering in Ossendrecht</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Kies voor mooi én <span class="text-groen">functioneel.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Rolluiken, garagedeuren, zonwering en veranda's. KJS adviseert, meet in en monteert. De offerte is vrijblijvend, de montage gratis.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waOfferte} class="knop knop-groen"><Icoon naam="wa" />Offerte via WhatsApp</a>
+            <a href="#zonnewijzer" class="knop knop-rand op-foto"><Icoon naam="zon" /><span class="sm:hidden">Zonnewijzer</span><span class="hidden sm:inline">Waar staat de zon op uw huis?</span></a>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3 text-[.9375rem] text-licht/90 lg:col-span-4 lg:items-end lg:text-right">
+          <p class="flex items-center gap-2"><span class="flex text-zon">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google · {site.google.aantal} reviews</p>
+          <a href={site.telHref} class="num font-kop text-3xl font-bold tracking-tight text-licht no-underline transition-colors hover:text-groen lg:text-[2.5rem]">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Cijfers en merken -->
+    <section aria-label="In het kort" class="border-b border-lijn bg-wit">
+      <div class="wrap grid grid-cols-2 gap-y-8 py-10 md:grid-cols-4 md:py-12">
+        <div class="pr-4"><p class="num font-kop text-[2.5rem] font-bold leading-none tracking-tight">{site.google.score}<span class="text-groen-diep">/5</span></p><p class="mt-2 text-sm text-grijs">op Google, uit {site.google.aantal} reviews</p></div>
+        <div class="pr-4 md:border-l md:border-lijn md:pl-8"><p class="num font-kop text-[2.5rem] font-bold leading-none tracking-tight">{site.google.vijf}<span class="text-groen-diep">×</span></p><p class="mt-2 text-sm text-grijs">vijf sterren gekregen</p></div>
+        <div class="pr-4 md:border-l md:border-lijn md:pl-8"><p class="num font-kop text-[2.5rem] font-bold leading-none tracking-tight">100<span class="text-groen-diep">%</span></p><p class="mt-2 text-sm text-grijs">aanbevolen op Facebook</p></div>
+        <div class="md:border-l md:border-lijn md:pl-8"><p class="num font-kop text-[2.5rem] font-bold leading-none tracking-tight">€ 0</p><p class="mt-2 text-sm text-grijs">voor de montage</p></div>
+      </div>
+      <div class="border-t border-lijn">
+        <div class="wrap flex flex-wrap items-center gap-x-10 gap-y-3 py-6">
+          <p class="text-xs font-bold uppercase tracking-[.16em] text-grijs">Wij leveren onder andere</p>
+          <ul class="flex flex-wrap gap-x-8 gap-y-2 font-kop text-lg font-semibold tracking-tight text-inkt/80">
+            {merken.map((m) => <li>{m}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Producten: mozaïek met eigen foto's -->
+    <section id="producten" class="py-24 md:py-32" aria-labelledby="t-producten">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Wat wij leveren</p>
+            <h2 id="t-producten" class="mt-4 text-3xl">Voor binnen, buiten en de garage.</h2>
+          </div>
+          <p class="max-w-md text-grijs lg:col-span-5 lg:justify-self-end">Een compleet assortiment van diverse merken, zodat er altijd een passende oplossing is. Tik op een product voor een vrijblijvende offerte.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:auto-rows-[18rem] lg:grid-cols-3">
+          {producten.map((p, i) => (
+            <li class={`rijs ${p.cls ?? ''}`} style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(p.t)} class="group relative isolate flex h-full min-h-[19rem] flex-col justify-end overflow-hidden rounded-md bg-nacht p-6 text-licht no-underline lg:min-h-0 lg:p-7">
+                <Image src={p.src} alt={p.alt} widths={[480, 720, 960, 1280]} sizes={p.groot ? '(min-width: 1024px) 66vw, (min-width: 640px) 50vw, 100vw' : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw'} class="absolute inset-0 -z-20 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" style={`object-position:${p.pos}`} />
+                <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15181b00_30%,#15181bd9_100%)]" aria-hidden="true"></div>
+                {p.sfeer && <span class="absolute right-4 top-4 rounded-sm bg-nacht/70 px-2 py-1 text-[.6875rem] font-semibold uppercase tracking-[.12em] text-licht/85 backdrop-blur-sm">Sfeerbeeld</span>}
+                <span class="num text-xs font-bold tracking-[.16em] text-groen">0{i + 1}</span>
+                <h3 class={`mt-2 [overflow-wrap:normal] ${p.groot ? 'text-[2rem]' : 'text-[1.625rem]'}`}>{p.t}</h3>
+                <p class="mt-2 max-w-md pr-12 text-[.9375rem] leading-relaxed text-licht/85">{p.d}</p>
+                <span class="absolute bottom-6 right-6 grid h-10 w-10 place-items-center rounded-sm bg-groen text-inkt transition-transform duration-300 group-hover:translate-x-1 lg:bottom-7 lg:right-7"><Icoon naam="pijl" class="h-5 w-5" /></span>
+              </a>
+            </li>
+          ))}
+          <li class="rijs" style="--d:.12s">
+            <div class="flex h-full flex-col justify-between gap-6 rounded-md bg-groen p-6 text-inkt lg:p-7">
+              <div>
+                <h3 class="text-2xl">Ook leverbaar</h3>
+                <ul class="mt-4 flex flex-wrap gap-2">
+                  {chips.filter((c) => ['Uitvalschermen', 'Markiezen', 'Terrasoverkappingen', 'Carports'].includes(c)).map((c) => <li class="rounded-sm bg-inkt/10 px-3 py-1.5 text-sm font-semibold">{c}</li>)}
+                </ul>
+              </div>
+              <a href={waOfferte} class="knop knop-inkt self-start"><Icoon naam="wa" />Stel uw vraag</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Werkwijze -->
+    <section id="werkwijze" class="bg-steen py-24 md:py-28" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Zo werken we</p>
+            <h2 id="t-werkwijze" class="mt-4 text-3xl">Van eerste vraag tot de laatste schroef.</h2>
+          </div>
+          <p class="max-w-md text-grijs lg:col-span-5 lg:justify-self-end">Het meten, de montage en de eindafwerking gebeuren op de juiste wijze, zodat uw product in vorm en werking tot zijn recht komt.</p>
+        </div>
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-md bg-lijn sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map((s, i) => (
+            <li class="rijs flex flex-col bg-papier p-7 lg:p-8" style={`--d:${i * 0.08}s`}>
+              <div class="flex items-center justify-between">
+                <span class="num font-kop text-5xl font-bold tracking-tight text-inkt/15">0{i + 1}</span>
+                <span class="grid h-11 w-11 place-items-center rounded-sm bg-nacht text-groen"><Icoon naam={s.i} class="h-5 w-5" /></span>
+              </div>
+              <h3 class="mt-8 text-xl">{s.t}</h3>
+              <p class="mt-2 text-[.9375rem] text-grijs">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. Wow: zonnewijzer -->
+    <Zonnewijzer />
+
+    <!-- 6. Over KJS -->
+    <section id="over" class="donker bg-nacht py-24 text-licht md:py-32" aria-labelledby="t-over">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:items-center">
+        <div class="relative lg:col-span-6">
+          <div class="grid grid-cols-5 gap-3">
+            <figure class="col-span-3 overflow-hidden rounded-md">
+              <Image src={garagedeurZwart} alt="Nieuwe zwarte garagedeur in een rode bakstenen gevel" widths={[400, 640, 900]} sizes="(min-width: 1024px) 28vw, 60vw" class="aspect-[3/4] h-full w-full object-cover object-[50%_45%]" />
+            </figure>
+            <div class="col-span-2 flex flex-col gap-3">
+              <figure class="overflow-hidden rounded-md">
+                <Image src={zonnescherm2} alt="Terras met zonnescherm op staanders, glazen windscherm en bloeiende planten" widths={[320, 520]} sizes="(min-width: 1024px) 19vw, 40vw" class="aspect-[4/5] w-full object-cover object-[35%_50%]" />
+              </figure>
+              <figure class="flex flex-1 flex-col justify-end rounded-md bg-nacht-2 p-5">
+                <Icoon naam="lamellen" class="h-6 w-6 text-groen" />
+                <blockquote class="mt-3 text-[.9375rem] leading-snug text-licht">“Deze week weer een paar mooie garage deuren geplaatst”</blockquote>
+                <figcaption class="mt-2 text-xs text-licht-zacht">KJS op Facebook, september 2026</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:pl-6">
+          <p class="eyebrow">KJS in Ossendrecht</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Advies, montage én service als er later iets is.</h2>
+          <p class="mt-6 text-licht-zacht">Vanuit de vestiging aan het Hageland in Ossendrecht krijgen klanten deskundig advies over rolluiken, garagedeuren, zonwering en overkappingen. Daarna volgen het inmeten, de montage en de afwerking. En als er later iets is: toen een garagerolluik van KJS niet meer volledig openging, kwamen ze ondanks de drukte tussendoor langs en was het binnen no time gefixt, schreef een klant. De rekening? Service van de zaak, volgens Kurt.</p>
+          <ul class="mt-10 grid gap-3 sm:grid-cols-3">
+            <li class="rounded-md bg-nacht-2 p-5"><Icoon naam="praat" class="h-6 w-6 text-groen" /><p class="mt-4 font-semibold text-licht">Duidelijke uitleg</p><p class="mt-1 text-sm text-licht-zacht">“…mooie offerte en hele goede installatie…”</p></li>
+            <li class="rounded-md bg-nacht-2 p-5"><Icoon naam="sleutel" class="h-6 w-6 text-groen" /><p class="mt-4 font-semibold text-licht">Goeie vakman</p><p class="mt-1 text-sm text-licht-zacht">“…uitstekend werk aflevert tegen een correcte prijs.”</p></li>
+            <li class="rounded-md bg-nacht-2 p-5"><Icoon naam="vink" class="h-6 w-6 text-groen" /><p class="mt-4 font-semibold text-licht">Montage gratis</p><p class="mt-1 text-sm text-licht-zacht">Plus een geheel vrijblijvende offerte</p></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+            <Icoon naam="g" class="h-8 w-8" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl leading-none">{site.google.score}</b><span class="flex text-zon">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="mt-1 block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-12 grid gap-4 lg:grid-cols-12">
+          {reviews.map((r, i) => (
+            <figure class={`rijs kaart flex flex-col p-7 lg:p-9 lg:col-span-6`} style={`--d:${i * 0.08}s`}>
+              <span class="flex text-zon" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+              <blockquote class={`mt-5 flex-1 text-lg leading-relaxed`}>{r.tekst}</blockquote>
+              <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn pt-5 text-sm">
+                <span class="grid h-10 w-10 place-items-center rounded-sm bg-nacht font-kop font-bold text-groen">{r.naam[0]}</span>
+                <span><b>{r.naam}</b><span class="block text-grijs">Google review · {r.wanneer}</span></span>
+              </figcaption>
+            </figure>
+          ))}
+          {fragmenten.map((f, i) => (
+            <figure class="rijs flex flex-col justify-between rounded-md bg-steen p-7 lg:col-span-6 lg:p-9" style={`--d:${i * 0.08}s`}>
+              <blockquote class="font-kop text-xl font-semibold leading-snug tracking-tight md:text-2xl">“{f}”</blockquote>
+              <figcaption class="mt-5 flex items-center gap-2 text-sm text-grijs"><Icoon naam="g" class="h-4 w-4" />Uitgelicht in de Google-reviews</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact + offerte -->
+    <Offerte />
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-groen text-inkt" aria-label="Offerte aanvragen">
+      <div class="lamellen opacity-90"></div>
+      <div class="wrap flex flex-wrap items-center justify-between gap-6 py-12 md:py-14">
+        <p class="font-kop text-2xl font-bold tracking-tight md:text-[2.25rem] md:leading-tight">Vrijblijvende offerte, gratis montage.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href={waOfferte} class="knop knop-inkt"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>

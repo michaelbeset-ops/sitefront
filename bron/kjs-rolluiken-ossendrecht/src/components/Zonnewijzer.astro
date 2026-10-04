@@ -1,0 +1,227 @@
+---
+// Wow-functie: zonnewijzer. Berekent voor Ossendrecht (51,385 N, 4,333 O) wanneer de zon op een gevel of terras staat,
+// tekent de zonnebaan van boven gezien en sluit af met een ingevuld WhatsApp-bericht. Adviezen volgen hun eigen productteksten.
+import Icoon from './Icoon.astro';
+import { site } from '../data/site';
+const richtingen = [
+  ['NW', 315], ['N', 0], ['NO', 45],
+  ['W', 270], null, ['O', 90],
+  ['ZW', 225], ['Z', 180], ['ZO', 135],
+] as const;
+const plekken = [['terras', 'Terras of tuin'], ['ramen', 'Ramen woonkamer'], ['slaapkamer', 'Slaapkamer']];
+const seizoenen = [['juni', 'Zomer (21 juni)'], ['sept', 'Voor- en najaar']];
+---
+<section id="zonnewijzer" class="py-24 md:py-32" aria-labelledby="t-zon" data-zon={site.wa}>
+  <div class="wrap grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+    <div class="lg:col-span-5">
+      <p class="eyebrow">Zonnewijzer</p>
+      <h2 id="t-zon" class="mt-4 text-3xl">Waar staat de zon op uw huis?</h2>
+      <p class="mt-5 max-w-md text-grijs">Kies welke kant uw terras of raam op kijkt. U ziet direct hoe laat de zon erop staat en welke zonwering daarbij past.</p>
+
+      <fieldset class="min-w-0 mt-9">
+        <legend class="text-sm font-semibold">1. Welke kant kijkt het op?</legend>
+        <div class="mt-3 grid w-[13.5rem] grid-cols-3 gap-1.5">
+          {richtingen.map((r) => r ? (
+            <label class="zk">
+              <input type="radio" name="richting" value={r[1]} class="sr-only" checked={r[0] === 'ZW'} />
+              <span>{r[0]}</span>
+            </label>
+          ) : (
+            <span class="grid aspect-square place-items-center rounded-sm bg-steen text-grijs" aria-hidden="true">
+              <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>
+            </span>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="min-w-0 mt-7">
+        <legend class="text-sm font-semibold">2. Wat wilt u beschermen?</legend>
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          {plekken.map(([v, t], i) => (
+            <label class="zk zk-breed"><input type="radio" name="plek" value={v} class="sr-only" checked={i === 0} /><span>{t}</span></label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="min-w-0 mt-7">
+        <legend class="text-sm font-semibold">3. Wanneer?</legend>
+        <div class="mt-3 flex flex-wrap gap-1.5">
+          {seizoenen.map(([v, t], i) => (
+            <label class="zk zk-breed"><input type="radio" name="seizoen" value={v} class="sr-only" checked={i === 0} /><span>{t}</span></label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="donker rounded-md bg-nacht p-5 text-licht shadow-md sm:p-8 lg:col-span-7">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
+        <svg viewBox="-180 -180 360 360" class="mx-auto w-full max-w-[22rem]" role="img" aria-labelledby="zon-svg-t" data-kaart>
+          <title id="zon-svg-t">Zonnebaan van boven gezien, met uw huis in het midden</title>
+          <circle r="150" fill="#20252a" />
+          <path data-wig fill="#93c83e" fill-opacity=".13" d="" />
+          <circle r="100" fill="none" stroke="#f3f4f01f" />
+          <circle r="50" fill="none" stroke="#f3f4f01f" />
+          <path d="M0-150V150M-150 0H150" stroke="#f3f4f014" />
+          <g font-family="Inter Variable, system-ui, sans-serif" font-size="13" font-weight="700" fill="#b4bac0" text-anchor="middle">
+            <text y="-158">N</text><text x="166" y="5">O</text><text y="172">Z</text><text x="-166" y="5">W</text>
+          </g>
+          <path data-baan fill="none" stroke="#b4bac0" stroke-opacity=".45" stroke-width="2" stroke-dasharray="3 5" d="" />
+          <path data-baan-aan fill="none" stroke="#f0b23a" stroke-width="5" stroke-linecap="round" d="" />
+          <g data-huis>
+            <rect x="-26" y="-26" width="52" height="52" fill="#f3f4f0" />
+            <rect x="-30" y="-33" width="60" height="9" fill="#93c83e" />
+          </g>
+          <line data-straal stroke="#f0b23a" stroke-opacity=".5" stroke-width="1.5" x1="0" y1="0" x2="0" y2="0" />
+          <circle data-zonstip r="11" fill="#f0b23a" stroke="#15181b" stroke-width="3" />
+        </svg>
+
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[.16em] text-groen" data-kop>Zuidwesten · terras</p>
+          <p class="mt-3 font-kop text-[1.75rem] font-bold leading-tight tracking-tight" data-uren aria-live="polite">Zon van 11.45 tot 21.00 uur</p>
+          <p class="mt-2 text-sm text-licht-zacht" data-uren-sub></p>
+
+          <label class="mt-6 block text-sm font-semibold" for="zon-tijd">Schuif door de dag: <span class="num text-groen" data-tijd-label>15.00 uur</span></label>
+          <input id="zon-tijd" type="range" min="300" max="1350" step="15" value="900" class="zon-schuif mt-3 w-full" data-tijd />
+          <p class="mt-2 min-h-[2.75rem] text-sm text-licht-zacht" data-tijd-tekst></p>
+        </div>
+      </div>
+
+      <div class="mt-8 border-t border-lijn-licht pt-7">
+        <p class="text-sm font-semibold text-licht">Ons advies voor deze plek</p>
+        <ul class="mt-3 flex flex-wrap gap-2" data-producten></ul>
+        <p class="mt-4 text-[.9375rem] text-licht-zacht" data-advies></p>
+        <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <a href={site.wa} class="knop knop-groen" data-zon-wa><Icoon naam="wa" />Advies via WhatsApp</a>
+          <p class="text-xs text-licht-zacht">Berekend voor Ossendrecht, zonder bomen of buren.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .zk { position: relative; display: block; cursor: pointer; }
+  .zk span { display: grid; place-items: center; aspect-ratio: 1; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-family: var(--font-kop); font-weight: 700; font-size: 1.0625rem; transition: background-color .2s, color .2s, box-shadow .2s; }
+  .zk-breed span { aspect-ratio: auto; min-height: 2.75rem; padding: 0 1rem; font-family: var(--font-sans); font-weight: 600; font-size: .9375rem; }
+  .zk:hover span { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .zk input:checked + span { background: var(--color-inkt); color: var(--color-groen); box-shadow: none; }
+  .zk input:focus-visible + span { outline: 3px solid var(--color-groen-diep); outline-offset: 2px; }
+  .zon-schuif { accent-color: var(--color-groen); height: 1.75rem; }
+</style>
+
+<script>
+  const sec = document.querySelector<HTMLElement>('[data-zon]');
+  if (sec) {
+    const wa = sec.dataset.zon!;
+    const $ = <T extends Element>(s: string) => sec.querySelector<T>(s)!;
+    const LAT = 51.385, LON = 4.333, rad = Math.PI / 180;
+    const namen: Record<number, string> = { 0: 'noorden', 45: 'noordoosten', 90: 'oosten', 135: 'zuidoosten', 180: 'zuiden', 225: 'zuidwesten', 270: 'westen', 315: 'noordwesten' };
+    const plekNaam: Record<string, string> = { terras: 'terras', ramen: 'raam', slaapkamer: 'slaapkamerraam' };
+
+    // Zonnestand (vereenvoudigde formules, ruim nauwkeurig genoeg voor een indicatie).
+    function zon(utc: number) {
+      const d = utc / 864e5 - 10957.5;
+      const g = (357.529 + 0.98560028 * d) * rad;
+      const q = 280.459 + 0.98564736 * d;
+      const L = (q + 1.915 * Math.sin(g) + 0.02 * Math.sin(2 * g)) * rad;
+      const e = (23.439 - 3.6e-7 * d) * rad;
+      const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L));
+      const dec = Math.asin(Math.sin(e) * Math.sin(L));
+      const gmst = (18.697374558 + 24.06570982441908 * d) % 24;
+      const H = (gmst * 15 + LON) * rad - ra;
+      const la = LAT * rad;
+      const el = Math.asin(Math.sin(la) * Math.sin(dec) + Math.cos(la) * Math.cos(dec) * Math.cos(H));
+      let az = Math.atan2(-Math.sin(H), Math.tan(dec) * Math.cos(la) - Math.sin(la) * Math.cos(H)) / rad;
+      az = (az + 360) % 360;
+      return { el: el / rad, az };
+    }
+    // Lokale minuten (zomertijd, UTC+2) op 21 juni of 21 september 2026.
+    const dag = (s: string) => (s === 'juni' ? Date.UTC(2026, 5, 21) : Date.UTC(2026, 8, 21));
+    const op = (min: number, s: string) => zon(dag(s) + (min - 120) * 6e4);
+    const xy = (p: { el: number; az: number }) => { const r = 150 * (90 - Math.max(p.el, 0)) / 90; return [r * Math.sin(p.az * rad), -r * Math.cos(p.az * rad)]; };
+    const raakt = (p: { el: number; az: number }, f: number) => p.el > 2 && Math.abs(((p.az - f + 540) % 360) - 180) < 80;
+    const tijd = (m: number) => `${Math.floor(m / 60)}.${String(m % 60).padStart(2, '0')}`;
+    const kwartier = (m: number) => Math.round(m / 15) * 15;
+    const windstreek = (az: number) => namen[(Math.round(az / 45) * 45) % 360];
+
+    function lees() {
+      const v = (n: string) => (sec!.querySelector<HTMLInputElement>(`input[name="${n}"]:checked`)!).value;
+      return { f: Number(v('richting')), plek: v('plek'), seizoen: v('seizoen') };
+    }
+
+    function advies(plek: string, uren: number, start: number, f: number) {
+      const veel = uren >= 5, wat = uren >= 2;
+      if (plek === 'terras') {
+        if (veel) return { p: ['Zonnescherm', 'Overkapping met verandazonwering'], t: 'Veel zon op het terras. Een zonnescherm geeft schaduw wanneer u dat wilt. Wilt u ook buiten zitten als het weer niet meezit, dan is een overkapping met zonwering aan boven- of zijkant een optie.' };
+        if (wat) return { p: ['Zonnescherm', 'Veranda'], t: 'Een deel van de dag zon. Met een zonnescherm kiest u zelf: zon of schaduw. Een veranda vergroot het woonplezier, ook bij regen.' };
+        return { p: ['Veranda of terrasoverkapping'], t: 'Op deze kant komt weinig directe zon. Een veranda of terrasoverkapping maakt het terras bruikbaar, of het weer nu meezit of niet.' };
+      }
+      if (plek === 'ramen') {
+        if (veel) return { p: ['Screens', 'Uitvalschermen', 'Rolluiken'], t: 'Veel zon op het glas. Screens weren ongeveer 85% van zonlicht en warmte, terwijl u naar buiten blijft kijken. Ze hebben geen uitstekende delen, dus ook geschikt voor windgevoelige plekken.' };
+        if (wat) return { p: ['Screens', 'Binnenzonwering'], t: 'Een paar uur zon op het raam. Screens houden warmte buiten; jaloezieën of rolgordijnen binnen geven extra sfeer en privacy.' };
+        return { p: ['Binnenzonwering', 'Rolluiken'], t: 'Op deze kant komt weinig directe zon. Binnenzonwering of rolluiken zijn hier vooral voor privacy, isolatie en veiligheid.' };
+      }
+      const vroeg = wat && start < 8 * 60 && f > 0 && f < 180;
+      return { p: ['Rolluiken'], t: `${vroeg ? `Hier staat de zon al vanaf ca. ${tijd(kwartier(start))} uur op het raam. ` : ''}Rolluiken houden warmte buiten, verminderen lawaai en isoleren tegen kou. Handmatig of elektrisch bediend, in vele kleuren.` };
+    }
+
+    function teken() {
+      const { f, plek, seizoen } = lees();
+      // Baan en zon-uren
+      let d1 = '', d2 = '', eerste = -1, laatste = -1, n = 0, wasAan = false;
+      for (let m = 180; m <= 1410; m += 5) {
+        const p = op(m, seizoen);
+        if (p.el <= 0) { wasAan = false; continue; }
+        const [x, y] = xy(p);
+        d1 += `${d1 ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+        if (raakt(p, f)) { d2 += `${wasAan ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`; wasAan = true; n += 5; if (eerste < 0) eerste = m; laatste = m; }
+        else wasAan = false;
+      }
+      $('[data-baan]').setAttribute('d', d1);
+      $('[data-baan-aan]').setAttribute('d', d2);
+      $('[data-huis]').setAttribute('transform', `rotate(${f})`);
+      const a1 = (f - 90) * rad, a2 = (f + 90) * rad;
+      $('[data-wig]').setAttribute('d', `M0 0L${150 * Math.sin(a1)} ${-150 * Math.cos(a1)}A150 150 0 0 1 ${150 * Math.sin(a2)} ${-150 * Math.cos(a2)}Z`);
+
+      const uren = n / 60;
+      const seiz = seizoen === 'juni' ? 'Op 21 juni' : 'Op 21 september';
+      $('[data-kop]').textContent = `${namen[f][0].toUpperCase()}${namen[f].slice(1)} · ${plekNaam[plek]}`;
+      if (eerste < 0) {
+        $('[data-uren]').textContent = 'Geen directe zon';
+        $('[data-uren-sub]').textContent = `${seiz} staat de zon niet op deze kant.`;
+      } else {
+        const s = kwartier(eerste), e = kwartier(laatste);
+        $('[data-uren]').textContent = `Zon van ${tijd(s)} tot ${tijd(e)} uur`;
+        $('[data-uren-sub]').textContent = `${seiz}: zo'n ${uren < 1 ? 'klein uur' : `${Math.round(uren)} uur`} zon op uw ${plekNaam[plek]}.`;
+      }
+      const a = advies(plek, uren, eerste, f);
+      $('[data-producten]').innerHTML = a.p.map((p) => `<li class="rounded-sm bg-groen px-3 py-1.5 text-sm font-semibold text-inkt">${p}</li>`).join('');
+      $('[data-advies]').textContent = a.t;
+      const zonTekst = eerste < 0 ? 'er komt weinig directe zon' : `${seizoen === 'juni' ? 'in juni' : 'in september'} zon van ca. ${tijd(kwartier(eerste))} tot ${tijd(kwartier(laatste))} uur`;
+      const bericht = `Hallo Kurt, via de zonnewijzer op uw website: mijn ${plekNaam[plek]} ligt op het ${namen[f]} (${zonTekst}). Ik denk aan: ${a.p.join(' of ').toLowerCase()}. Kunt u mij adviseren en een vrijblijvende offerte maken?\n\nNaam:\nAdres/plaats:`;
+      $<HTMLAnchorElement>('[data-zon-wa]').href = `${wa}?text=${encodeURIComponent(bericht)}`;
+      tijdstip();
+    }
+
+    function tijdstip() {
+      const { f, seizoen } = lees();
+      const m = Number($<HTMLInputElement>('[data-tijd]').value);
+      const p = op(m, seizoen);
+      $('[data-tijd-label]').textContent = `${tijd(m)} uur`;
+      const stip = $('[data-zonstip]'), straal = $('[data-straal]');
+      if (p.el <= 0) {
+        stip.setAttribute('opacity', '0'); straal.setAttribute('opacity', '0');
+        $('[data-tijd-tekst]').textContent = 'De zon is nog niet op, of al onder.';
+        return;
+      }
+      const [x, y] = xy(p);
+      stip.setAttribute('cx', x.toFixed(1)); stip.setAttribute('cy', y.toFixed(1)); stip.setAttribute('opacity', '1');
+      straal.setAttribute('x2', x.toFixed(1)); straal.setAttribute('y2', y.toFixed(1)); straal.setAttribute('opacity', '1');
+      $('[data-tijd-tekst]').textContent = `De zon staat in het ${windstreek(p.az)}, ${Math.round(p.el)}° boven de horizon. ${raakt(p, f) ? 'Hij schijnt nu op deze kant.' : 'Deze kant ligt nu in de schaduw.'}`;
+    }
+
+    sec.querySelectorAll('input[type=radio]').forEach((i) => i.addEventListener('change', teken));
+    $('[data-tijd]').addEventListener('input', tijdstip);
+    teken();
+  }
+</script>
