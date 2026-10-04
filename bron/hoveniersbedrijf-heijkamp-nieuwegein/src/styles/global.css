@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/bitter/wght.css";
+@import "@fontsource-variable/source-sans-3/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén merkkleur uit hun eigen bord: de rood-oranje herfstboom en de roestrode letters van hun oude kop.
+     Bewust geen hoveniersgroen. Daarnaast warm bijna-zwart (aarde) en gebroken wit / zand. */
+  --color-papier: #f6f3ec;      /* pagina */
+  --color-zand: #ece4d6;        /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #1d1b17;        /* tekst, 15,5:1 op papier */
+  --color-grijs: #625b50;       /* bijtekst, 6:1 op papier, 5,3:1 op zand */
+  --color-lijn: #1d1b171f;
+  --color-roest: #a83a1c;       /* merkkleur, wit erop 6,4:1 */
+  --color-roest-diep: #86290f;  /* hover */
+  --color-nacht: #1d1b17;       /* donkere secties */
+  --color-nacht-2: #2a2722;     /* kaarten op nacht */
+  --color-licht: #f6f3ec;
+  --color-licht-zacht: #c4bcae; /* bijtekst op nacht, 9:1 */
+  --color-lijn-licht: #f6f3ec24;
+  --color-herfst: #f0a37f;      /* accent op nacht, 8,4:1 */
+  --color-winter: #3a6ea5;      /* alleen in het beeldmerk */
+  --color-ster: #e7a63a;        /* alleen sterren */
+
+  --font-kop: "Bitter Variable", Georgia, serif;
+  --font-sans: "Source Sans 3 Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, 1vw + 1.3rem, 2rem);
+  --text-3xl: clamp(2.125rem, 2.4vw + 1.25rem, 3.375rem);
+  --text-hero: clamp(2.6rem, 5vw + 0.6rem, 5.25rem);
+
+  --radius-sm: .375rem;
+  --radius-md: .625rem;
+  --radius-lg: .875rem;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #1d1b170f, 0 2px 8px #1d1b170a;
+  --shadow-md: 0 14px 34px -14px #1d1b173d;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: 1.04; letter-spacing: -0.022em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { letter-spacing: -0.012em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-roest); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-roest); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-herfst); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .eyebrow { font-family: var(--font-sans); font-size: .8125rem; line-height: 1.4; letter-spacing: .18em; text-transform: uppercase; font-weight: 700; color: var(--color-roest); }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-herfst); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk: beeldmerk (winterboom + herfstboom van hun bord), "Heijkamp" in Bitter, "hoveniersbedrijf" klein. */
+  .merk { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk svg { width: 2.75rem; height: 2.1rem; flex: none; }
+  .merk small { display: block; font-size: .625rem; letter-spacing: .26em; text-transform: uppercase; font-weight: 700; color: var(--color-roest); }
+  .merk b { display: block; margin-top: .3rem; font-family: var(--font-kop); font-weight: 700; font-size: 1.4375rem; letter-spacing: -0.02em; }
+  .donker .merk small { color: var(--color-herfst); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-weight: 700; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-roest { background: var(--color-roest); color: #fff; box-shadow: 0 10px 22px -12px #a83a1ccc; }
+  .knop-roest:hover { background: var(--color-roest-diep); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-roest); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-zand); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.1rem; font-size: .9375rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-roest); transition: color .2s; }
+  .link:hover { color: var(--color-roest); }
+  .donker .link { text-decoration-color: var(--color-herfst); }
+  .donker .link:hover { color: var(--color-herfst); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}

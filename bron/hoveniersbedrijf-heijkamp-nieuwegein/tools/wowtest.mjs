@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+const errs=[]; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://localhost:4795/sitefront/hoveniersbedrijf-heijkamp-nieuwegein/#voor-na', { waitUntil: 'networkidle' });
+const r = p.locator('[data-vn="0"] .vn-range'); await r.fill('20');
+console.log('pos', await p.evaluate(() => getComputedStyle(document.querySelector('[data-vn="0"]')).getPropertyValue('--pos')));
+await p.click('[data-paar="2"]'); console.log('zichtbaar', await p.evaluate(() => [...document.querySelectorAll('[data-vn]')].map(f => f.classList.contains('hidden') ? 0 : 1).join('')));
+await p.waitForTimeout(1500); console.log(await p.evaluate(() => [...document.querySelectorAll('[data-paar]')].map(b => b.getAttribute('aria-pressed')).join(','))); await p.screenshot({ path: 'shots/wow.png', clip: { x: 0, y: 0, width: 1440, height: 900 } });
+await p.locator('input[name=wie][value=Bedrijf]').check({force:true});
+await p.locator('input[name=wat][value=Tuinonderhoud]').check({force:true}); await p.fill('input[name=naam]', 'Test'); 
+const [pop] = await Promise.all([ctx.waitForEvent('page'), p.click('button:has-text("Open in WhatsApp")')]);
+console.log(decodeURIComponent(pop.url())); console.log('errs', errs.join('|'));
+await b.close();
