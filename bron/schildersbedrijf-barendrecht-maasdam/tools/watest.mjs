@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4765/sitefront/schildersbedrijf-barendrecht-maasdam/');
+await p.click('a[data-kies="Kitwerk"]');
+await p.click('label.keuze:has-text("Buitenschilderwerk")'); await p.click('label.keuze:has-text("Woning")');
+await p.fill('input[name=plaats]', 'Puttershoek'); await p.selectOption('select[name=wanneer]', 'Binnen drie maanden');
+await p.fill('input[name=naam]', 'Jan de Vries'); await p.fill('textarea[name=wens]', 'kozijnen voorkant');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();

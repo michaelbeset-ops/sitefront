@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/jost/wght.css";
+@import "@fontsource-variable/inter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Kalkwit en zandsteen als ondergrond, nachtblauw voor donkere vlakken.
+     Eén merkkleur: het kobaltblauw uit hun logo, bus-belettering en Facebook-omslag. */
+  --color-papier: #f6f4ef;      /* pagina */
+  --color-steen: #ebe7de;       /* lichte vlakken */
+  --color-wit: #ffffff;
+  --color-inkt: #0f1726;        /* tekst, 16:1 op papier */
+  --color-grijs: #4f5867;       /* bijtekst, 6,9:1 op papier */
+  --color-lijn: #0f17261f;
+  --color-kobalt: #0c4797;      /* merkkleur, wit erop 8,6:1 */
+  --color-kobalt-diep: #08336e; /* hover */
+  --color-kobalt-zacht: #dfe7f4;
+  --color-nacht: #0b1830;       /* donkere secties */
+  --color-nacht-2: #142649;     /* kaarten op nacht */
+  --color-licht: #f6f4ef;
+  --color-licht-zacht: #b7c1d3; /* bijtekst op nacht, 9:1 */
+  --color-lijn-licht: #f6f4ef24;
+  --color-hemel: #9ec2ff;       /* accent op nacht, 9,5:1 */
+  --color-ster: #f2b631;
+
+  --font-kop: "Jost Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;    /* 17px lopende tekst */
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, 1vw + 1.3rem, 2rem);
+  --text-3xl: clamp(2.25rem, 2.6vw + 1.3rem, 3.5rem);
+  --text-hero: clamp(2.75rem, 5.2vw + 0.6rem, 5.375rem);
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px #0f172610, 0 2px 8px #0f17260a;
+  --shadow-md: 0 14px 34px -14px #0f172640;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 6rem; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: 1.02; letter-spacing: -0.022em; text-wrap: balance; overflow-wrap: anywhere; }
+  h3 { font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-kobalt); color: #fff; }
+  :focus-visible { outline: 3px solid var(--color-kobalt); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-hemel); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  /* Eyebrow met een kort verfstreepje ervoor */
+  .eyebrow { display: flex; align-items: center; gap: .7rem; font-family: var(--font-kop); font-size: .875rem; line-height: 1.4; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; color: var(--color-kobalt); }
+  .eyebrow::before { content: ""; width: 1.75rem; height: 3px; border-radius: 2px; background: currentColor; flex: none; }
+  .donker .eyebrow, .eyebrow-licht { color: var(--color-hemel); }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Woordmerk zoals hun logo: klein gespatieerd SCHILDERSBEDRIJF boven een zwaar BARENDRECHT, met een kwast-streek. */
+  .merk { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; text-decoration: none; white-space: nowrap; }
+  .merk-teken { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-sm); background: var(--color-kobalt); color: #fff; flex: none; }
+  .merk small { display: block; font-family: var(--font-kop); font-size: .6875rem; letter-spacing: .3em; text-transform: uppercase; font-weight: 500; color: var(--color-grijs); }
+  .merk b { display: block; margin-top: .2rem; font-family: var(--font-kop); font-weight: 700; font-size: 1.375rem; letter-spacing: .02em; text-transform: uppercase; color: var(--color-kobalt); }
+  .donker .merk small { color: var(--color-licht-zacht); }
+  .donker .merk b { color: var(--color-licht); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-md); font-weight: 600; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-kobalt { background: var(--color-kobalt); color: #fff; box-shadow: 0 10px 22px -12px #0c4797cc; }
+  .knop-kobalt:hover { background: var(--color-kobalt-diep); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-licht); }
+  .knop-inkt:hover { background: var(--color-kobalt); }
+  .knop-wit { background: #fff; color: var(--color-inkt); }
+  .knop-wit:hover { background: var(--color-kobalt-zacht); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-licht); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .donker .knop-rand:hover, .knop-rand.op-foto:hover { background: #fff; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px #fff; }
+  .knop-klein { min-height: 2.75rem; padding: 0 1.1rem; font-size: .9375rem; }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; text-decoration-color: var(--color-kobalt); transition: color .2s; }
+  .link:hover { color: var(--color-kobalt); }
+  .donker .link { text-decoration-color: var(--color-hemel); }
+  .donker .link:hover { color: var(--color-hemel); }
+
+  .kaart { background: var(--color-wit); border-radius: var(--radius-sm); box-shadow: var(--shadow-sm); outline: 1px solid var(--color-lijn); outline-offset: -1px; }
+
+  /* Verfstreek onder een woord in de kop */
+  .streek { position: relative; white-space: nowrap; z-index: 0; }
+  .donker .streek::after { background: #2f6fd8; }
+  .streek::after { content: ""; position: absolute; left: -.04em; right: -.06em; bottom: .02em; height: .24em; z-index: -1; background: var(--color-kobalt); border-radius: 2px 8px 3px 10px / 6px 3px 8px 2px; transform: rotate(-1.2deg); opacity: .95; }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; } }
+}
