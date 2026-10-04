@@ -1,0 +1,363 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, chips, reviews, waOfferte } from '../data/site';
+import hero from '../assets/hero.jpg';
+import doorkijk from '../assets/doorkijk.jpg';
+import wilgenlaan from '../assets/wilgenlaan.jpg';
+import danielSnoei from '../assets/daniel-snoei.jpg';
+import danielHaag from '../assets/daniel-haag.jpg';
+import bilthoven1 from '../assets/bilthoven-1.jpg';
+import bilthoven2 from '../assets/bilthoven-2.jpg';
+import maarssenBoom from '../assets/maarssen-boom.jpg';
+import maarssenPergola from '../assets/maarssen-pergola.jpg';
+import zwembad from '../assets/zwembad.jpg';
+import lounge from '../assets/lounge.jpg';
+import patio from '../assets/patio.jpg';
+import beleving1 from '../assets/beleving-1.jpg';
+import beleving2 from '../assets/beleving-2.jpg';
+import beleving3 from '../assets/beleving-3.jpg';
+import ravestein from '../assets/ravestein.jpg';
+import lingehof from '../assets/lingehof.jpg';
+import kantoorGevel from '../assets/kantoor-gevel.jpg';
+import kantoorWater from '../assets/kantoor-water.jpg';
+import schoffel from '../assets/schoffel.jpg';
+
+// De vijf specialismen van hun homepage; de zinnen komen (ingekort) van hun pagina "Onze werkzaamheden".
+const diensten = [
+  { id: 'ontwerp', icoon: 'potlood', t: 'Ontwerp', kort: 'Het begint met úw idee.', d: 'In een persoonlijk gesprek bekijken we uw wensen en de mogelijkheden van uw tuin. Daarna bespreken we het ontwerp, de begroting en de financiële mogelijkheden.', src: doorkijk, alt: 'Doorkijk door een opening in de haag naar een rietgedekte villa met borders en gazon', pos: '50% 55%' },
+  { id: 'aanleg', icoon: 'spa', t: 'Aanleg', kort: 'Uw tuin ziet u ontstaan.', d: 'Aan de hand van de ontwerptekening leggen wij uw tuin aan. Al tijdens de aanleg ziet u hem ontstaan.', src: maarssenPergola, alt: 'Aangelegde tuin met leibomen, een rondbank om een boom en een pergola van groen', pos: '50% 50%' },
+  { id: 'bestraten', icoon: 'tegels', t: 'Bestraten', kort: 'Een pad, oprit of terras.', d: 'Natuursteen, gebakken steen of beton, en ook siertegels. Samen bepalen we wat past bij uw smaak én uw huis.', src: patio, alt: 'Strak bestraat terras onder een pergola met klimop en een overkapping', pos: '50% 50%' },
+  { id: 'renovatie', icoon: 'vernieuw', t: 'Renovatie', kort: 'Van kleine aanpassing tot complete opknapbeurt.', d: 'Verouderde tuin, uitgeputte grond of een boom die al het licht wegneemt: wij adviseren u en weten een oplossing. Ook voor een schutting, een verzakt pad of een boom kappen.', src: bilthoven1, alt: 'Gerenoveerde voortuin met strak gazon, bolvormige hagen en een boom voor een villa', pos: '50% 60%' },
+  { id: 'onderhoud', icoon: 'schaar', t: 'Onderhoud', kort: 'Volledig of gedeeltelijk.', d: 'Een vakkundige voor- en najaarsbeurt, gazon, bomen en struiken. U bespreekt precies welke werkzaamheden we doen, ook op contractbasis.', src: danielHaag, alt: 'Daniël Schop snoeit met een heggenschaar een buxushaag strak', pos: '50% 40%' },
+];
+
+const projecten = {
+  particulieren: [
+    { src: wilgenlaan, alt: 'Lange grasstrook tussen twee rijen knotwilgen', titel: 'Landelijke tuin', groot: true },
+    { src: zwembad, alt: 'Zwembad in een besloten tuin met een groene wand en hortensia’s', titel: 'Tuin met zwembad' },
+    { src: maarssenBoom, alt: 'Leiboom met rondbank, pergola en zuilen voor een vrijstaand huis', titel: 'Tuin met leibomen' },
+    { src: bilthoven2, alt: 'Ruim gazon met lange schaduwen voor een villa tussen hoge bomen', titel: 'Villatuin' },
+    { src: lounge, alt: 'Loungehoek op een houten vlonder onder een overkapping, met strakke haag', titel: 'Loungeterras' },
+  ],
+  bedrijven: [
+    { src: kantoorWater, alt: 'Kantoorpand achter een gazon met bomen aan de waterkant', titel: 'Bedrijfstuin aan het water' },
+    { src: kantoorGevel, alt: 'Leibomen in houten bakken op een terras voor een modern bedrijfspand', titel: 'Terras met leibomen' },
+  ],
+  zorg: [
+    { src: beleving2, alt: 'Slingerend grindpad met leuningen tussen paarse salvia en geraniums', titel: 'Belevingstuin', groot: true },
+    { src: beleving1, alt: 'Grindpaden met leuningen tussen vrouwenmantel en lavendel', titel: 'Belevingstuin' },
+    { src: beleving3, alt: 'Belevingstuin met grindpad, borders vol salvia en een pergola voor appartementen', titel: 'Belevingstuin' },
+    { src: ravestein, alt: 'Ingang met plantenbakken', titel: 'Entree' },
+    { src: lingehof, alt: 'Beplanting met lavendel en vaste planten bij een ingang', titel: 'Voortuin' },
+  ],
+};
+const tabs = [['particulieren', 'Particulieren', 'huis'], ['bedrijven', 'Bedrijven', 'gebouw'], ['zorg', 'Zorginstellingen', 'zorg']] as const;
+
+const stappen = [
+  ['Kennismaking', 'Wij komen vrijblijvend bij u langs en bekijken samen uw wensen en de mogelijkheden van de tuin.'],
+  ['Ontwerp en begroting', 'Uw ideeën worden uitgewerkt tot een ontwerp. Dat bespreken we met u, samen met de begroting.'],
+  ['Aanleg', 'We leggen de tuin aan volgens de tekening. Al tijdens het werk ziet u hem ontstaan.'],
+  ['Onderhoud', 'Tevreden? Dan zorgen we ook voor de verzorging daarna, los of op contractbasis.'],
+];
+---
+<Base title={`${site.naam} | Hovenier in Meteren`} description="Hoveniersbedrijf Daniël Schop uit Meteren: tuinontwerp, aanleg, bestrating, renovatie en onderhoud voor particulieren, bedrijven en zorginstellingen. 4,8 op Google. Vraag vrijblijvend een offerte aan.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen projectfoto (rietgedekte villa) op volle hoogte, tekst onderin -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.5rem)] flex-col justify-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 828, 1080, 1440, 1920]} quality={68} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b192226_0%,#1b192259_30%,#1b1922e0_62%,#1b1922f7_100%)] lg:bg-[linear-gradient(180deg,#1b19221a_0%,#1b192240_32%,#1b1922c7_62%,#1b1922f2_100%)]" aria-hidden="true"></div>
+      <div class="absolute inset-0 -z-10 hidden bg-[linear-gradient(90deg,#1b1922b3_0%,#1b192266_38%,#1b192200_62%)] lg:block" aria-hidden="true"></div>
+      <div class="wrap w-full pb-12 pt-40 md:pb-14">
+        <p class="eyebrow">Hovenier in Meteren</p>
+        <h1 id="t-hero" class="mt-5 max-w-[15ch] text-hero">Een tuin die past bij <span class="text-lila">úw huis.</span></h1>
+        <div class="mt-7 grid gap-8 lg:grid-cols-12 lg:items-end">
+          <p class="max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed lg:col-span-6">Ontwerp, aanleg, bestrating, renovatie en onderhoud. Voor grote en kleine tuinen, bedrijven en zorginstellingen.</p>
+          <div class="flex flex-wrap gap-3 lg:col-span-6 lg:justify-end">
+            <a href={waOfferte} class="knop knop-salie"><Icoon naam="wa" />Offerte via WhatsApp</a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk projecten</a>
+          </div>
+        </div>
+        <ul class="mt-10 grid gap-y-3 border-t border-licht/25 pt-6 text-[.9375rem] text-licht/90 sm:grid-cols-3 sm:gap-x-6">
+          <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+          <li class="flex items-center gap-2"><Icoon naam="hand" class="h-5 w-5 text-lila" />Vrijblijvend langs voor advies</li>
+          <li class="flex items-center gap-2 sm:justify-end"><Icoon naam="tel" class="h-4 w-4 text-lila" /><a href={site.telHref} class="num font-semibold text-licht no-underline hover:text-lila">{site.tel}</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. Voor wie: de drie doelgroepen van hun eigen site -->
+    <section class="border-b border-lijn bg-wit" aria-label="Voor wie wij werken">
+      <ul class="wrap grid divide-y divide-lijn md:grid-cols-3 md:divide-x md:divide-y-0">
+        <li class="flex gap-4 py-7 md:pr-8"><Icoon naam="huis" class="mt-1 h-7 w-7 flex-none text-salie" /><p><b class="font-kop text-xl font-extrabold">Particulieren</b><br /><span class="text-grijs">Grote en kleine tuinen, bij u thuis.</span></p></li>
+        <li class="flex gap-4 py-7 md:px-8"><Icoon naam="gebouw" class="mt-1 h-7 w-7 flex-none text-salie" /><p><b class="font-kop text-xl font-extrabold">Bedrijven</b><br /><span class="text-grijs">Bedrijfstuinen, aanleg en onderhoud.</span></p></li>
+        <li class="flex gap-4 py-7 md:pl-8"><Icoon naam="zorg" class="mt-1 h-7 w-7 flex-none text-salie" /><p><b class="font-kop text-xl font-extrabold">Zorginstellingen</b><br /><span class="text-grijs">Aanleg en onderhoud van tuinen bij zorginstellingen.</span></p></li>
+      </ul>
+    </section>
+
+    <!-- 3. Diensten: lijst links, grote foto rechts die meewisselt -->
+    <section id="diensten" class="py-24 lg:py-32" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Wat wij doen</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Van eerste idee tot <span class="text-salie">vaste verzorging.</span></h2>
+          </div>
+          <p class="max-w-md text-grijs lg:col-span-5 lg:justify-self-end">Van kleine aanpassingen tot complete renovatie: bij Hoveniersbedrijf Schop kunt u terecht voor alle klussen in uw tuin.</p>
+        </div>
+
+        <div class="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14" data-diensten>
+          <ol class="lg:col-span-5">
+            {diensten.map((d, i) => (
+              <li class="border-t border-lijn last:border-b">
+                <button type="button" class="dienst group flex w-full items-start gap-5 py-6 text-left" aria-controls={`foto-${d.id}`} aria-pressed={i === 0 ? 'true' : 'false'} data-dienst={d.id}>
+                  <span class="num pt-1.5 text-sm font-semibold text-grijs">0{i + 1}</span>
+                  <span class="min-w-0 flex-1">
+                    <span class="flex items-center justify-between gap-4">
+                      <span class="font-kop text-[2rem] font-extrabold leading-none transition-colors group-hover:text-salie group-aria-pressed:text-salie">{d.t}</span>
+                      <Icoon naam={d.icoon} class="h-6 w-6 flex-none text-grijs transition-colors group-aria-pressed:text-salie" />
+                    </span>
+                    <span class="mt-2 block font-semibold">{d.kort}</span>
+                    <span class="dienst-tekst mt-2 block text-grijs">{d.d}</span>
+                  </span>
+                </button>
+                <Image src={d.src} alt={d.alt} widths={[480, 800]} sizes="(min-width: 1024px) 1px, 100vw" class="mb-6 aspect-[16/9] w-full rounded-md object-cover lg:hidden" style={`object-position:${d.pos}`} />
+              </li>
+            ))}
+          </ol>
+          <div class="relative hidden lg:col-span-7 lg:block">
+            <div class="sticky top-28 aspect-[4/3.6] overflow-hidden rounded-lg bg-leem shadow-md">
+              {diensten.map((d, i) => (
+                <Image id={`foto-${d.id}`} src={d.src} alt={d.alt} widths={[800, 1200, 1600]} sizes="(min-width: 1280px) 690px, 56vw" class:list={['dienst-foto absolute inset-0 h-full w-full object-cover', i === 0 && 'aan']} style={`object-position:${d.pos}`} data-foto={d.id} />
+              ))}
+              <a href={waOfferte} class="knop knop-wit knop-klein absolute bottom-5 left-5 shadow-md"><Icoon naam="wa" />Vraag hiervoor een offerte</a>
+            </div>
+          </div>
+        </div>
+
+        <ul class="mt-14 flex flex-wrap gap-2" aria-label="Ook voor">
+          {chips.map((c) => <li class="rounded-sm border border-lijn bg-wit px-3.5 py-1.5 text-sm font-medium">{c}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Projecten: hun eigen fotogalerij, in hun eigen drie categorieën -->
+    <section id="projecten" class="bg-leem py-24 lg:py-32" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-4 max-w-[16ch] text-3xl">Tuinen waar het hele jaar van genoten wordt.</h2>
+          </div>
+          <div class="flex flex-wrap gap-2" role="tablist" aria-label="Kies een categorie">
+            {tabs.map(([id, t, ic], i) => (
+              <button type="button" role="tab" id={`tab-${id}`} aria-controls={`paneel-${id}`} aria-selected={i === 0 ? 'true' : 'false'} class="tab knop knop-klein" data-tab={id}><Icoon naam={ic} />{t}</button>
+            ))}
+          </div>
+        </div>
+        {Object.entries(projecten).map(([id, lijst], n) => (
+          <div id={`paneel-${id}`} role="tabpanel" aria-labelledby={`tab-${id}`} class:list={['mt-12 grid gap-3 md:gap-4', lijst.length > 2 ? 'grid-cols-2 md:grid-cols-4 md:grid-rows-2' : 'md:grid-cols-2', n > 0 && 'hidden']} data-paneel={id}>
+            {lijst.map((p) => (
+              <figure class:list={['group relative overflow-hidden rounded-md bg-nacht', p.groot ? 'col-span-2 aspect-[4/3] md:row-span-2 md:aspect-auto' : lijst.length > 2 ? 'aspect-[4/3.4] md:aspect-auto md:h-[15.5rem]' : 'aspect-[4/3] md:aspect-auto md:h-[31.75rem]']}>
+                <Image src={p.src} alt={p.alt} widths={p.groot || lijst.length < 3 ? [640, 960, 1280] : [400, 640]} sizes={p.groot || lijst.length < 3 ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#1b1922d9,#1b192200)] px-4 pb-3.5 pt-10 text-sm text-licht">
+                  <b class="block font-kop text-lg font-extrabold leading-tight">{p.titel}</b>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-24 lg:py-32" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <p class="eyebrow">Werkwijze</p>
+        <h2 id="t-werkwijze" class="mt-4 max-w-[24ch] text-3xl">Persoonlijk en betrokken, van gesprek tot onderhoud.</h2>
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-lg bg-lijn sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs flex flex-col bg-papier p-7 lg:p-8" style={`--d:${i * 0.08}s`}>
+              <span class="font-kop text-[3.5rem] font-extrabold leading-none text-salie">0{i + 1}</span>
+              <h3 class="mt-6 text-xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. Over Daniël -->
+    <section id="daniel" class="donker bg-nacht py-24 text-licht lg:py-32" aria-labelledby="t-daniel">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div class="relative lg:col-span-6">
+          <Image src={danielSnoei} alt="Daniël Schop met gehoorbescherming aan het snoeien, met paarse salvia op de voorgrond" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 45vw, 100vw" class="aspect-[4/4.4] w-full rounded-lg object-cover object-[60%_40%]" />
+          <Image src={schoffel} alt="Schoffel in de aarde tussen jonge planten" widths={[300, 500]} sizes="220px" class="absolute -bottom-8 -right-3 hidden aspect-square w-52 rounded-md object-cover shadow-md ring-8 ring-nacht md:block lg:-right-10" />
+        </div>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over het bedrijf</p>
+          <h2 id="t-daniel" class="mt-4 text-3xl">Daniël Schop: zelf in de tuin, van begin tot eind.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Vanuit Meteren werkt Hoveniersbedrijf Schop voor particulieren, bedrijven en zorginstellingen. Persoonlijk en betrokken zoeken we naar passende, duurzame en creatieve oplossingen voor uw situatie.</p>
+          <ul class="mt-10 divide-y divide-lijn-licht border-y border-lijn-licht">
+            {[['vink', 'Afspraak is afspraak', 'Klanten noemen het zelf: netjes werk en afspraken nagekomen.'], ['hand', 'Net iets meer', 'Een harde werker die meer doet dan hij moet doen.'], ['kalender', 'Ook voor daarna', 'Onderhoud op contractbasis, of één losse klus.']].map(([ic, k, d]) => (
+              <li class="flex gap-4 py-4"><span class="grid h-10 w-10 flex-none place-items-center rounded-sm bg-nacht-2 text-lila"><Icoon naam={ic} class="h-5 w-5" /></span><p><b class="text-licht">{k}</b><br /><span class="text-licht-zacht">{d}</span></p></li>
+            ))}
+          </ul>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={site.telHref} class="knop knop-salie"><Icoon naam="tel" />Bel Daniël</a>
+            <a href={waOfferte} class="knop knop-rand">Stuur een WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section id="reviews" class="py-24 lg:py-32" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen</h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+            <Icoon naam="g" class="h-8 w-8" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold leading-none">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-12 grid gap-4 lg:grid-cols-12">
+          {reviews.map((r, i) => (
+            <figure class:list={['rijs flex flex-col rounded-lg p-7 lg:p-9', i === 0 ? 'bg-salie text-wit lg:col-span-6 lg:row-span-2' : 'kaart lg:col-span-6']} style={`--d:${i * 0.08}s`}>
+              <span class="flex text-ster" role="img" aria-label={`${r.sterren} van 5 sterren`}>{Array.from({ length: r.sterren }).map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+              <blockquote class:list={['mt-5 font-kop font-bold leading-snug', i === 0 ? 'text-[2rem] lg:text-[2.6rem] lg:leading-[1.1]' : 'text-[1.5rem]']}>“{r.tekst}”</blockquote>
+              <figcaption class:list={['mt-auto flex items-center justify-between gap-4 pt-8 text-sm', i === 0 ? 'text-wit/85' : 'text-grijs']}>
+                <span><b class={i === 0 ? 'text-wit' : 'text-inkt'}>{r.naam}</b> · {r.wanneer}</span>
+                <span class="flex items-center gap-1.5"><Icoon naam="g" class="h-4 w-4" />Google review</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact met offerte-bouwer (eindigt in WhatsApp) -->
+    <section id="contact" class="border-t border-lijn bg-wit py-24 lg:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Offerte aanvragen</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Vertel ons over <span class="text-salie">uw tuin.</span></h2>
+          <p class="mt-6 text-lg text-grijs">Klik aan wat u zoekt. Wij zetten het in een WhatsApp-bericht; u verstuurt het zelf. Daarna komen we graag vrijblijvend langs.</p>
+          <ul class="mt-10 space-y-5">
+            <li><a href={site.telHref} class="group flex items-center gap-4 no-underline"><span class="grid h-12 w-12 place-items-center rounded-sm bg-leem text-salie"><Icoon naam="tel" class="h-5 w-5" /></span><span><span class="block text-sm text-grijs">Bellen of WhatsApp</span><b class="num text-lg group-hover:text-salie">{site.tel}</b></span></a></li>
+            <li><a href={`mailto:${site.mail}`} class="group flex items-center gap-4 no-underline"><span class="grid h-12 w-12 place-items-center rounded-sm bg-leem text-salie"><Icoon naam="mail" class="h-5 w-5" /></span><span class="min-w-0"><span class="block text-sm text-grijs">E-mail</span><b class="break-all text-lg group-hover:text-salie">{site.mail}</b></span></a></li>
+            <li><a href={site.maps} class="group flex items-center gap-4 no-underline"><span class="grid h-12 w-12 place-items-center rounded-sm bg-leem text-salie"><Icoon naam="pin" class="h-5 w-5" /></span><span><span class="block text-sm text-grijs">{site.straat}, {site.postcode} {site.plaats}</span><b class="text-lg group-hover:text-salie">Route plannen</b></span></a></li>
+          </ul>
+        </div>
+
+        <form class="rounded-lg bg-papier p-6 shadow-sm ring-1 ring-lijn sm:p-9 lg:col-span-7" data-offerte novalidate>
+          <fieldset>
+            <legend class="font-kop text-xl font-extrabold">1. Voor wie is de tuin?</legend>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {['Particulier', 'Bedrijf', 'Zorginstelling'].map((v, i) => <label class="keuze"><input type="radio" name="wie" value={v} checked={i === 0} class="sr-only" />{v}</label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-8">
+            <legend class="font-kop text-xl font-extrabold">2. Waar kunnen we mee helpen?</legend>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {['Ontwerp', 'Aanleg', 'Bestrating', 'Renovatie', 'Onderhoud', 'Losse klus'].map((v) => <label class="keuze"><input type="checkbox" name="werk" value={v} class="sr-only" />{v}</label>)}
+            </div>
+          </fieldset>
+          <fieldset class="mt-8">
+            <legend class="font-kop text-xl font-extrabold">3. Hoe groot is de tuin ongeveer?</legend>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {['Tot 50 m²', '50 tot 150 m²', 'Groter dan 150 m²', 'Weet ik niet'].map((v, i) => <label class="keuze"><input type="radio" name="maat" value={v} checked={i === 3} class="sr-only" />{v}</label>)}
+            </div>
+          </fieldset>
+          <div class="mt-8 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm font-semibold">Uw naam<input name="naam" autocomplete="name" class="veld" /></label>
+            <label class="block text-sm font-semibold">Plaats<input name="plaats" autocomplete="address-level2" class="veld" /></label>
+            <label class="block text-sm font-semibold sm:col-span-2">Wat heeft u in gedachten? <span class="font-normal text-grijs">(mag kort)</span><textarea name="wens" rows="3" class="veld"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
+            <p class="max-w-xs text-sm text-grijs">Er wordt niets opgeslagen. WhatsApp opent met uw bericht klaar.</p>
+            <button type="submit" class="knop knop-salie"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-salie text-wit" aria-label="Direct contact">
+      <div class="wrap flex flex-wrap items-center justify-between gap-6 py-10">
+        <p class="max-w-2xl font-kop text-[1.75rem] font-extrabold leading-tight md:text-[2.25rem]">Liever eerst even overleggen? Bel Daniël.</p>
+        <a href={site.telHref} class="knop knop-wit"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .dienst-tekst { display: block; }
+  @media (min-width: 1024px) {
+    .dienst-tekst { display: none; }
+    .dienst[aria-pressed='true'] .dienst-tekst { display: block; }
+  }
+  .dienst-foto { opacity: 0; transition: opacity .6s var(--ease-zacht), transform 1.2s var(--ease-zacht); transform: scale(1.03); }
+  .dienst-foto.aan { opacity: 1; transform: none; }
+  .tab { background: var(--color-wit); color: var(--color-inkt); box-shadow: inset 0 0 0 1px var(--color-lijn); }
+  .tab:hover { color: var(--color-salie); }
+  .tab[aria-selected='true'] { background: var(--color-inkt); color: var(--color-licht); box-shadow: none; }
+  .keuze { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s, box-shadow .2s; }
+  .keuze:hover { box-shadow: inset 0 0 0 1.5px var(--color-salie); }
+  .keuze:has(input:checked) { background: var(--color-salie); color: #fff; box-shadow: none; }
+  .keuze:has(input:focus-visible) { outline: 3px solid var(--color-salie); outline-offset: 2px; }
+  .veld { display: block; width: 100%; margin-top: .4rem; padding: .75rem .9rem; border-radius: var(--radius-sm); background: var(--color-wit); box-shadow: inset 0 0 0 1px var(--color-lijn); font-weight: 400; font-size: 1rem; }
+  .veld:focus { outline: 2px solid var(--color-salie); outline-offset: 0; }
+</style>
+
+<script>
+  import { waMet } from '../data/site';
+  // Diensten: foto rechts wisselt mee met de gekozen dienst (desktop).
+  const knoppen = document.querySelectorAll<HTMLButtonElement>('[data-dienst]');
+  const kies = (id: string) => {
+    knoppen.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.dienst === id)));
+    document.querySelectorAll<HTMLElement>('[data-foto]').forEach((f) => f.classList.toggle('aan', f.dataset.foto === id));
+  };
+  knoppen.forEach((k) => { k.addEventListener('click', () => kies(k.dataset.dienst!)); k.addEventListener('mouseenter', () => matchMedia('(hover: hover)').matches && kies(k.dataset.dienst!)); });
+
+  // Projecten: tabs.
+  const tabs = document.querySelectorAll<HTMLButtonElement>('[data-tab]');
+  tabs.forEach((t) => t.addEventListener('click', () => {
+    tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+    document.querySelectorAll<HTMLElement>('[data-paneel]').forEach((p) => p.classList.toggle('hidden', p.dataset.paneel !== t.dataset.tab));
+  }));
+
+  // Offerte-bouwer: zet de keuzes in een WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-offerte]');
+  f?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(f);
+    const werk = d.getAll('werk').map(String);
+    const regels = [
+      `Goedendag Daniël, ik wil graag een offerte voor mijn tuin.`,
+      `Voor: ${d.get('wie')}`,
+      `Gaat om: ${werk.length ? werk.join(', ').toLowerCase() : 'nog niet zeker, graag advies'}`,
+      `Grootte tuin: ${d.get('maat')}`,
+    ];
+    const plaats = String(d.get('plaats') || '').trim();
+    const wens = String(d.get('wens') || '').trim();
+    const naam = String(d.get('naam') || '').trim();
+    if (plaats) regels.push(`Plaats: ${plaats}`);
+    if (wens) regels.push(`Toelichting: ${wens}`);
+    if (naam) regels.push(`Groet, ${naam}`);
+    window.open(waMet(regels.join('\n')), '_blank', 'noopener');
+  });
+</script>

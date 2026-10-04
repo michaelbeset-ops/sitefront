@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await ctx.newPage();
+await p.goto('http://localhost:4806/sitefront/hoveniersbedrijf-schop-meteren/');
+await p.click('label.keuze:has-text("Bedrijf")'); await p.click('label.keuze:has-text("Bestrating")'); await p.click('label.keuze:has-text("Onderhoud")');
+await p.click('label.keuze:has-text("50 tot 150")'); await p.fill('input[name=naam]', 'Jan'); await p.fill('input[name=plaats]', 'Geldermalsen'); await p.fill('textarea[name=wens]', 'nieuw terras');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('form [type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+await p.click('[data-tab=zorg]'); console.log('zorg zichtbaar', await p.isVisible('#paneel-zorg'), 'part verborgen', !(await p.isVisible('#paneel-particulieren')));
+await p.click('[data-dienst=bestraten]'); console.log('foto aan', await p.getAttribute('[data-foto=bestraten]', 'class'));
+await b.close();
