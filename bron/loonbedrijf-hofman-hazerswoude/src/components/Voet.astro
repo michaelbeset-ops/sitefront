@@ -1,0 +1,53 @@
+---
+import { Image } from 'astro:assets';
+import { site, url, waVraag } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Grondbewerking', 'Slootonderhoud en baggeren', 'Tuinaanleg en snoeiwerk', 'Pothoeken en potkluiten', 'Beschoeiingen en bruggen', 'Verhuur van machines', 'Grond, zand en compost'];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="inline-block rounded-lg bg-wit px-4 py-3" aria-label={`${site.naam}, naar de homepage`}>
+        <Image src={logo} alt="R. Hofman Machineverhuur & Grondverzet" widths={[200, 400]} sizes="200px" class="h-14 w-auto" />
+      </a>
+      <p class="mt-6 max-w-xs">Loonbedrijf, machineverhuur en grondverzet aan de Middelweg in Hazerswoude-Dorp. Voor kwekers, gemeenten, verenigingen en particulieren.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waVraag} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-kop font-bold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c, i) => <li><a href={h(i === 5 ? 'machines' : i === 6 ? 'verkoop' : 'diensten')} class="no-underline transition-colors hover:text-rood-licht">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-kop font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel}</a></li>
+        <li><a href={waVraag} class="no-underline transition-colors hover:text-rood-licht">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-rood-licht">{site.mail}</a></li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-rood-licht">{site.straat}<br />{site.postcode} {site.plaats}</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-2">
+      <p class="font-kop font-bold text-licht">Snel naar</p>
+      <ul class="mt-4 space-y-2">
+        {[['machines', 'Machinepark'], ['verkoop', 'Verkoop'], ['projecten', 'Projecten'], ['over', 'Over ons'], ['contact', 'Offerte aanvragen']].map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-rood-licht">{t}</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.bv}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Facebookpagina en uw huidige website, ter illustratie. Reviews letterlijk van Google (stand 4 oktober 2026).</p>}
+  </div>
+</footer>

@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4796/sitefront/loonbedrijf-hofman-hazerswoude/');
+await p.click('[data-tab="werktuigen"]');
+console.log('zichtbaar werktuigen:', await p.isVisible('[data-paneel="werktuigen"]'), 'kranen:', await p.isVisible('[data-paneel="kranen"]'));
+await p.click('[data-paneel="werktuigen"] label:has-text("Spitmachine")');
+await p.click('[data-tab="platen"]'); await p.click('[data-paneel="platen"] label:has-text("Rijplaten")');
+console.log(await p.textContent('[data-teller]'), '|', decodeURIComponent(await p.getAttribute('[data-huur-knop]', 'href')));
+let u; p.context().on('page', async (np) => { u = np.url(); });
+await p.click('label:has-text("Sloot of baggeren")'); await p.fill('[name=waar]', 'Boskoop'); await p.fill('[name=naam]', 'Test');
+await p.click('button[type=submit]'); await p.waitForTimeout(1500); console.log('form ->', decodeURIComponent(u || 'geen'));
+await b.close();
