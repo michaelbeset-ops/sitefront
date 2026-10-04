@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4793/sitefront/jd-installatie-katwijk/');
+await p.fill('input[name=leeftijd]', '15'); await p.click('label.keuze:has-text("VR-ketel")');
+console.log(await p.textContent('[data-kop]'), '|', decodeURIComponent(await p.getAttribute('[data-check-wa]', 'href')));
+await p.fill('input[name=leeftijd]', '4'); await p.click('label.keuze:has-text("HR-ketel")'); await p.click('label.keuze:has-text("Jaarlijks onderhoud")');
+console.log(await p.textContent('[data-kop]'));
+await p.click('form[data-wa] label.keuze:has-text("Storing")'); await p.fill('input[name=naam]', 'Petra'); await p.fill('input[name=plaats]', '2221'); await p.fill('textarea[name=wens]', 'geen warm water');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('form[data-wa] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();
