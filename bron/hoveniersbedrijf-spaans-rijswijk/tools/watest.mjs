@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4791/sitefront/hoveniersbedrijf-spaans-rijswijk/');
+await p.click('label.keuze:has-text("Mijn huidige tuin renoveren")'); await p.click('label.keuze:has-text("Graag een groot contrast")');
+await p.click('label.keuze:has-text("Ik houd van tuinieren")'); await p.click('label.keuze:has-text("Achtertuin") >> nth=0');
+console.log(await p.textContent('[data-voorbeeld]'));
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('[data-planner] button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+console.log(await p.textContent('[data-status]'));
+await b.close();
