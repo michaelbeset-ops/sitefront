@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext(); const p = await ctx.newPage();
+await p.goto('http://localhost:4799/sitefront/marcel-lami-schilders-wassenaar/');
+await p.click('label.keuze:has-text("Binnenschilderwerk")'); await p.selectOption('select[name=maand]', '0');
+console.log('melding:', await p.textContent('[data-melding-tekst]'));
+await p.selectOption('select[name=maand]', '5'); console.log('melding juni:', await p.textContent('[data-melding-tekst]'));
+await p.click('label.keuze:has-text("Glas")'); console.log('glas:', await p.textContent('[data-melding-tekst]'));
+await p.click('label.keuze:has-text("Buitenschilderwerk")'); console.log('buiten:', await p.textContent('[data-melding-tekst]'));
+await p.click('label.keuze:has-text("Binnenschilderwerk")'); await p.selectOption('select[name=maand]', '11');
+await p.fill('input[name=naam]', 'Jan de Vries'); await p.fill('input[name=plaats]', 'Wassenaar'); await p.fill('textarea[name=wens]', 'woonkamer en hal');
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()));
+await b.close();

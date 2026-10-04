@@ -1,0 +1,398 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, diensten, reviews, waOfferte, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import schilderwerk from '../assets/schilderwerk.jpg';
+import glas from '../assets/glas.jpg';
+import behang from '../assets/behang.jpg';
+import onderhoud from '../assets/onderhoud.jpg';
+import winter from '../assets/winter.jpg';
+import hoogte from '../assets/hoogte.jpg';
+import pVoordeur from '../assets/p-voordeur.jpg';
+import pNoordwijk from '../assets/p-noordwijk.jpg';
+import pWestfield from '../assets/p-westfield.jpg';
+import pVilla from '../assets/p-villa.jpg';
+import pBlankelak from '../assets/p-blankelak.jpg';
+import marcelDjai from '../assets/marcel-djai.jpg';
+import anton from '../assets/anton.jpg';
+import piet from '../assets/piet.jpg';
+import djai from '../assets/djai.jpg';
+import pand from '../assets/pand.jpg';
+
+const vraag = (d: string) => waMet(`Goedendag, ik wil graag een vrijblijvende offerte voor ${d.toLowerCase()}.`);
+
+const kaarten = [
+  { t: 'Schilderwerk', d: 'Lak-, saus- en spuitwerk, binnen en buiten. Voor een monumentale woning net zo goed als een kantoor.', src: schilderwerk, alt: 'Wit gepleisterd herenhuis met groene voordeur en geschilderde kozijnen', pos: '50% 30%' },
+  { t: 'Glaswerk', d: 'Isolatie-, HR+++-, brandwerend en veiligheidsglas. Bij breuk plaatsen we direct een noodvoorziening.', src: glas, alt: 'Een kraan en de eigen spinhoogwerker bij het plaatsen van een nieuwe ruit in een appartementengebouw', pos: '50% 45%' },
+  { t: 'Behang', d: 'Arte, Dutch Wall Decor, Elitis en Little Greene, naadloos aangebracht. Ook renovlies in nieuwbouw.', src: behang, alt: 'Drie wandpanelen met een kleurrijk bloemenbehang in een lichte kamer', pos: '50% 40%' },
+  { t: 'Onderhoud en houtrot', d: 'Houtrotherstel met Repair Care en deelvervanging van kozijnen. Tijdig onderhoud voorkomt hoge kosten.', src: onderhoud, alt: 'Schilder op een ladder aan de witte gevel van een woning met rode pannen', pos: '50% 40%' },
+  { t: 'Winterschilder', d: '15% korting op de arbeid voor binnenschilderwerk, van november tot en met maart.', src: winter, alt: 'Serre met nieuw geschilderde kozijnen, lambrisering en lichtgroene wanden', pos: '50% 50%' },
+  { t: 'Hoogtewerk', d: 'Eigen spinhoogwerker tot 15,40 meter en eigen steigers. Past door een doorgang van 75 centimeter.', src: hoogte, alt: 'Blauwe spinhoogwerker op het gazon voor een witte villa', pos: '50% 45%' },
+];
+
+const projecten = [
+  { src: pVilla, alt: 'Villa met rode pannen in de steigers voor buitenschilderwerk', t: 'Buitenschilderwerk en houtrotherstel', groot: true, pos: '50% 50%' },
+  { src: pVoordeur, alt: 'Donkergroene voordeur met glanzende lak en wit kozijn', t: 'Voordeur in de lak', pos: '50% 40%' },
+  { src: pBlankelak, alt: 'Rode houten gevel en kozijnen van een woning met terras', t: 'Oude blanke lak verwijderd, nieuw systeem opgebouwd', pos: '50% 40%' },
+  { src: pWestfield, alt: 'Lange witte gang met de letters Westfield Mall of the Netherlands', t: 'Onderhoud in Westfield Mall of the Netherlands', pos: '50% 50%' },
+  { src: pNoordwijk, alt: 'Lichtgrijs gespoten kamer met een raam naar buiten', t: 'Appartement gespoten in Noordwijk', pos: '50% 50%' },
+];
+
+const tijdlijn = [
+  { jaar: '1932', t: 'Anton l’Ami begint', d: 'Glas-, behang- en schildersbedrijf A. l’Ami, midden in de crisistijd. Met een houten bakfiets.', src: anton, alt: 'Portret van Anton l’Ami in 1935, met hoed en leren jas' },
+  { jaar: '1953', t: 'De tweede generatie', d: 'Piet l’Ami gaat aan de slag. Later volgen werkplaatsen aan de Berkhei en de Van Starrenburglaan.', src: piet, alt: 'Zwart-witfoto van drie schilders in witte overalls' },
+  { jaar: '1989', t: 'Marcel komt erbij', d: 'Met zijn vakdiploma’s op zak start Marcel in het bedrijf van zijn opa. 27 jaar is hij er directeur.' },
+  { jaar: '2016', t: 'Een eigen onderneming', d: 'Op 1 oktober 2016 begint Marcel zijn eigen schildersbedrijf, met de ontzorg-optie erbij.' },
+  { jaar: '2025', t: 'Djaï neemt het stokje over', d: 'Djaï werkt sinds 2015 mee; sinds 2020 heet het bedrijf & Zn. Nu neemt hij geleidelijk de leiding over.', src: djai, alt: 'Portret van Djaï l’Ami' },
+];
+
+const stappen = [
+  ['Vertel ons over uw project', 'Bel, app of mail. Beschrijf kort wat er moet gebeuren: binnen of buiten, kozijnen of gevel.'],
+  ['Vrijblijvende offerte', 'U krijgt een voorstel op maat. Binnenwerk in de winter? Dan rekenen we 15% minder voor de arbeid.'],
+  ['Wij regelen het werk', 'Met eigen steigers en hoogwerker. Kiest u de ontzorg-optie, dan verplaatsen of bewaren we ook uw meubels.'],
+  ['Schoon opgeleverd', 'Na afloop ligt alles weer netjes. Met een meerjaren­onderhoudsplan komen we later terug om alles na te lopen.'],
+];
+
+const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+---
+<Base title={`${site.kort} | Schildersbedrijf in Wassenaar`} description="Familiebedrijf sinds 1932 in Wassenaar: binnen- en buitenschilderwerk, houtrotherstel, glas, behang en hoogtewerk met eigen spinhoogwerker. 15% winterkorting op binnenschilderwerk.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.25rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1440]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[78%_50%] md:object-[60%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0e173f40_0%,#0e173fb8_48%,#0e173ff5_100%)] md:bg-[linear-gradient(90deg,#0e173ff2_0%,#0e173fc7_40%,#0e173f33_72%,#0e173f1a_100%)]" aria-hidden="true"></div>
+      <div class="absolute inset-x-0 bottom-0 -z-10 hidden h-64 bg-[linear-gradient(0deg,#0e173ff2_0%,#0e173fcc_35%,#0e173f00_100%)] md:block" aria-hidden="true"></div>
+      <div class="wrap w-full pb-14 pt-32 md:pb-16 md:pt-28">
+        <div class="max-w-[46rem]">
+          <p class="eyebrow">Schildersbedrijf in Wassenaar · sinds 1932</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Vakwerk voor huizen met <em class="text-hemel">karakter</em>.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Schilder-, glas- en behangwerk, binnen en buiten. Van een monumentale gevel tot een strak gespoten interieur, door een familiebedrijf in de vierde generatie.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waOfferte} class="knop knop-blauw"><Icoon naam="wa" />Vrijblijvende offerte</a>
+            <a href="#projecten" class="knop knop-rand op-foto">Bekijk ons werk</a>
+          </div>
+        </div>
+        <div class="mt-12 flex flex-col gap-4 border-t border-lijn-licht pt-6 text-[.9375rem] text-licht/90 md:flex-row md:items-center md:justify-between">
+          <ul class="flex flex-wrap gap-x-7 gap-y-2">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Eigen spinhoogwerker en steigers</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-hemel" />Vrijblijvende offerte op maat</li>
+          </ul>
+          <a href={site.telHref} class="num flex items-center gap-2 font-semibold text-licht no-underline hover:text-hemel"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Diensten in het kort">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {diensten.map((c) => <a href="#diensten" class="shrink-0 rounded-md border border-lijn px-4 py-2 text-sm font-medium no-underline transition-colors hover:border-blauw hover:bg-blauw hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-24" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Onze diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Alles voor de jas van uw woning, onder één dak.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Voor particulieren, VvE’s, gemeenten, woningbouwcorporaties en aannemers. Eén woning of een groot vastgoedproject.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {kaarten.map((b, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(b.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={b.src} alt={b.alt} widths={[400, 600, 800]} sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${b.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <h3 class="text-2xl">{b.t}</h3>
+                    <p class="mt-2 text-grijs">{b.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-zand text-blauw transition-colors group-hover:bg-blauw group-hover:text-wit" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Cijfers -->
+    <section class="border-y border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="text-sm text-grijs">Opgericht door Anton l’Ami</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-bold leading-none tracking-[-0.03em] text-blauw">1932</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Generaties l’Ami</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-bold leading-none tracking-[-0.03em]">4</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Werkhoogte eigen hoogwerker</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-bold leading-none tracking-[-0.03em]">15,4 m</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Smalste doorgang die past</dt><dd class="num order-first font-kop text-[clamp(2.75rem,3vw+1.5rem,3.75rem)] font-bold leading-none tracking-[-0.03em]">75 cm</dd></div>
+      </dl>
+    </section>
+
+    <!-- 5. Projecten -->
+    <section id="projecten" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 id="t-projecten" class="mt-4 text-3xl">Van voordeur tot winkelcentrum.</h2>
+          </div>
+          <div class="rijs lg:col-span-4 lg:col-start-9" style="--d:.05s">
+            <p class="text-lg text-licht-zacht">Een greep uit het werk van de afgelopen tijd. Meer foto’s ziet u op Instagram.</p>
+            <a href={site.instagram} class="knop knop-rand knop-klein mt-6"><Icoon naam="insta" />@lamischilders</a>
+          </div>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 lg:mt-14">
+          {projecten.map((w, i) => (
+            <li class={`rijs group relative overflow-hidden rounded-lg bg-nacht-2 ${w.groot ? 'col-span-2 row-span-2 aspect-[4/3] md:aspect-auto' : 'aspect-square'}`} style={`--d:${(i % 4) * 0.05}s`}>
+              <Image src={w.src} alt={w.alt} widths={w.groot ? [600, 900, 1100] : [320, 480, 640]} sizes={w.groot ? '(min-width: 1248px) 580px, (min-width: 768px) 48vw, 92vw' : '(min-width: 1248px) 285px, (min-width: 768px) 23vw, 46vw'} class="tegel absolute inset-0 h-full w-full object-cover" style={`object-position:${w.pos}`} />
+              <p class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#0e173fe6,#0e173f00)] px-4 pb-3.5 pt-10 text-[.875rem] font-medium leading-snug md:text-[.9375rem]">{w.t}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Familiebedrijf -->
+    <section id="familie" class="bg-zand py-20 lg:py-24" aria-labelledby="t-familie">
+      <div class="wrap">
+        <div class="grid gap-12 lg:grid-cols-12 lg:gap-14">
+          <figure class="rijs relative self-start lg:col-span-6">
+            <Image src={marcelDjai} alt="Marcel en Djaï l’Ami in witte schildersoveralls naast hun blauwe bus" widths={[600, 955]} sizes="(min-width: 1024px) 580px, 92vw" class="aspect-[4/3] w-full rounded-lg object-cover object-[60%_40%] shadow-md lg:aspect-[5/5]" />
+            <figcaption class="absolute bottom-4 left-4 rounded-md bg-nacht/90 px-4 py-2 text-sm font-medium text-licht backdrop-blur">Djaï en Marcel l’Ami bij de bus met “&amp; Zn.” (2020)</figcaption>
+          </figure>
+          <div class="lg:col-span-6">
+            <p class="eyebrow">Familiebedrijf</p>
+            <h2 id="t-familie" class="mt-4 text-3xl">Vier generaties l’Ami, één vak.</h2>
+            <p class="mt-6 text-lg text-grijs">Marcel l’Ami begon in 1989 in het schildersbedrijf van zijn opa Anton. Sinds 2016 heeft hij zijn eigen onderneming, en inmiddels neemt zijn zoon Djaï geleidelijk de leiding over. Klantgerichtheid, kwaliteit, vakmanschap en vernieuwing, al generaties lang.</p>
+            <ul class="mt-9 grid gap-3">
+              <li class="kaart flex items-start gap-4 p-5">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="doos" class="h-5 w-5" /></span>
+                <div><h3 class="text-xl">Ontzorg-optie</h3><p class="mt-1 text-[.9375rem] text-grijs">Wij regelen alles rondom het werk: meubels verplaatsen of opslaan en de woning schoon opleveren.</p></div>
+              </li>
+              <li class="kaart flex items-start gap-4 p-5">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="kwast" class="h-5 w-5" /></span>
+                <div><h3 class="text-xl">A-merken en garantie</h3><p class="mt-1 text-[.9375rem] text-grijs">Hoogwaardige, weersbestendige verfsystemen en Repair Care voor houtrot.</p></div>
+              </li>
+              <li class="kaart flex items-start gap-4 p-5">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="kalender" class="h-5 w-5" /></span>
+                <div><h3 class="text-xl">Meerjaren&shy;onderhoudsplan</h3><p class="mt-1 text-[.9375rem] text-grijs">We komen terug om alles na te lopen, zodat uw woning in topstaat blijft.</p></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <ol class="mt-16 grid gap-4 sm:grid-cols-2 lg:mt-20 lg:grid-cols-5">
+          {tijdlijn.map((s, i) => (
+            <li class="rijs kaart flex overflow-hidden sm:flex-col" style={`--d:${i * 0.05}s`}>
+              {s.src ? (
+                <Image src={s.src} alt={s.alt!} widths={[320, 480]} sizes="(min-width: 1024px) 230px, (min-width: 640px) 46vw, 112px" class="w-28 shrink-0 object-cover object-[50%_22%] grayscale sm:aspect-[16/10] sm:w-full" />
+              ) : (
+                <p class="grid w-28 shrink-0 place-items-center bg-nacht font-kop text-[1.75rem] font-bold leading-none tracking-[-0.03em] text-hemel sm:aspect-[16/10] sm:w-full sm:text-[3.5rem]" aria-hidden="true">{s.jaar}</p>
+              )}
+              <div class="p-4 sm:p-5">
+                <p class="num font-kop text-lg font-bold text-blauw">{s.jaar}</p>
+                <h3 class="mt-1 text-xl">{s.t}</h3>
+                <p class="mt-2 text-[.9375rem] text-grijs">{s.d}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Werkwijze -->
+    <section id="werkwijze" class="py-20" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Zo pakken we uw project aan.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Van klein herstel tot een volledige renovatie: voor elk project dezelfde zorg.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-3 sm:gap-4 lg:mt-14 lg:grid-cols-4 lg:gap-5">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs border-t-2 border-blauw bg-wit p-4 shadow-sm sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-[1.75rem] font-bold leading-none text-blauw sm:text-[2rem]">0{i + 1}</p>
+              <h3 class="mt-4 text-lg hyphens-auto sm:mt-6 sm:text-xl">{t}</h3>
+              <p class="mt-2 break-words text-[.9375rem] text-grijs sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="donker bg-nacht py-20 text-licht" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="rijs">
+          <p class="eyebrow">Reviews</p>
+          <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+        </div>
+        <ul class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-3">
+          <li class="rijs flex flex-col justify-between rounded-lg bg-blauw p-7 md:p-8">
+            <div class="flex items-center gap-3"><span class="grid h-11 w-11 place-items-center rounded-md bg-wit"><Icoon naam="g" class="h-6 w-6" /></span><span class="font-semibold">Google-reviews</span></div>
+            <div class="mt-10">
+              <p class="num font-kop text-[4.5rem] font-bold leading-none tracking-[-0.03em]">{site.google.score}</p>
+              <p class="mt-3 flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</p>
+              <p class="mt-3 text-licht/90">Alle {site.google.aantal} reviews op Google geven vijf sterren.</p>
+            </div>
+            <a href={site.reviews} class="knop knop-wit knop-klein mt-8 self-start">Bekijk op Google<Icoon naam="pijl" /></a>
+          </li>
+          {reviews.map((r, i) => (
+            <li class="rijs flex flex-col rounded-lg bg-wit p-7 text-inkt md:p-8" style={`--d:${(i + 1) * 0.06}s`}>
+              <span class="flex text-ster" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 font-kop text-[1.3125rem] leading-snug">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-md bg-zand font-kop font-bold text-blauw" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 9. Contact + offerte-hulp -->
+    <section id="contact" class="py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="eyebrow">Offerte aanvragen</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Laten we uw project bespreken.</h2>
+          <p class="mt-6 text-lg text-grijs">Beschrijf kort uw project, dan nemen we zo snel mogelijk contact op met een voorstel op maat. Liever direct bellen? Dat kan natuurlijk ook.</p>
+          <ul class="mt-9 grid gap-3">
+            <li><a href={waOfferte} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-blauw text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp of bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-zand text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">E-mail</b><span class="break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+          <figure class="kaart mt-6 overflow-hidden">
+            <Image src={pand} alt="Het bedrijfspand aan de Hangarweg in Wassenaar met een blauwe bus ervoor" widths={[480, 720, 960]} sizes="(min-width: 1024px) 460px, 92vw" class="aspect-[16/9] w-full object-cover" />
+            <figcaption class="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+              <span class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-5 w-5 shrink-0 text-blauw" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></span>
+              <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+            </figcaption>
+          </figure>
+        </div>
+
+        <form class="kaart min-w-0 self-start p-6 sm:p-8 lg:col-span-7 lg:p-10" data-offerte aria-describedby="of-uitleg">
+          <h3 class="text-[1.75rem]">Offerte-hulp</h3>
+          <p id="of-uitleg" class="mt-2 text-grijs">Drie keuzes en u ziet meteen of de winterkorting voor u geldt. Er wordt niets verstuurd tot u in WhatsApp of uw mail zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Wat moet er gebeuren?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {[['Binnenschilderwerk', 'binnen'], ['Buitenschilderwerk', 'buiten'], ['Houtrotherstel', 'buiten'], ['Glas', 'glas'], ['Behang', 'binnen'], ['Werk op hoogte', 'buiten']].map(([b, s], i) => (
+                <label class="keuze"><input type="radio" name="werk" value={b} data-soort={s} class="sr-only" checked={i === 0} /><span>{b}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Voor</span>
+              <select name="voor" class="veld mt-2">
+                <option>Mijn woning</option>
+                <option>Een VvE</option>
+                <option>Een bedrijfspand</option>
+              </select>
+            </label>
+            <label class="block"><span class="text-sm font-semibold">Gewenste periode</span>
+              <select name="maand" class="veld mt-2">
+                <option value="">Zo snel mogelijk</option>
+                {maanden.map((m, i) => <option value={i}>{m[0].toUpperCase() + m.slice(1)}</option>)}
+              </select>
+            </label>
+          </div>
+          <p class="melding mt-6 flex items-start gap-3 rounded-md px-4 py-3.5 text-[.9375rem]" data-melding aria-live="polite"><Icoon naam="sneeuw" class="mt-0.5 h-5 w-5 shrink-0" /><span data-melding-tekst>Kies een periode van november tot en met maart: dan krijgt u 15% winterkorting op de arbeid voor binnenschilderwerk.</span></p>
+          <div class="mt-6 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Plaats</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" placeholder="Bijvoorbeeld Wassenaar" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Korte omschrijving <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="wens" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: kozijnen en dakkapel aan de achterkant, jaren-dertigwoning"></textarea></label>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <button type="submit" class="knop knop-blauw w-full sm:w-auto"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <button type="button" class="knop knop-rand w-full sm:w-auto" data-mail><Icoon naam="mail" />Of per e-mail</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-blauw text-wit" aria-label="Winterschilder">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.625rem)]">Deze winter binnen schilderen?</h2>
+          <p class="mt-2 text-lg text-wit/90">Van november tot en met maart 15% korting op de arbeid. Plan nu uw offerte.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waMet('Goedendag, ik wil graag een offerte voor binnenschilderwerk met de winterkorting.')} class="knop knop-wit"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-offerte]');
+  const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+  if (f) {
+    const melding = f.querySelector<HTMLElement>('[data-melding]')!;
+    const tekst = f.querySelector<HTMLElement>('[data-melding-tekst]')!;
+    const v = (n: string) => String(new FormData(f).get(n) || '').trim();
+    const soort = () => f.querySelector<HTMLInputElement>('input[name=werk]:checked')?.dataset.soort || '';
+    const winter = (m: string) => m !== '' && [10, 11, 0, 1, 2].includes(Number(m));
+    const update = () => {
+      const m = v('maand'), s = soort();
+      let t = 'Kies een periode van november tot en met maart: dan krijgt u 15% winterkorting op de arbeid voor binnenschilderwerk.';
+      let goed = false;
+      if (s === 'binnen' && winter(m)) { t = `Binnenwerk in ${maanden[Number(m)]}: u valt in de winterkorting van 15% op de arbeid.`; goed = true; }
+      else if (s === 'binnen' && m !== '') t = `In ${maanden[Number(m)]} geldt de winterkorting niet. Kunt u schuiven naar november tot en met maart, dan scheelt dat 15% op de arbeid.`;
+      else if (s === 'buiten') t = 'Buitenschilderwerk beschermt uw woning tegen weer en wind. Bij woningen ouder dan twee jaar betaalt u 9% btw over de arbeid.';
+      else if (s === 'glas') t = 'Glasbreuk of stormschade? Dan plaatsen we direct een noodvoorziening. Bel gerust meteen.';
+      if (v('voor') === 'Mijn woning' && s !== 'glas' && !t.includes('9%')) t += ' Woning ouder dan twee jaar: 9% btw over de arbeid.';
+      tekst.textContent = t;
+      melding.toggleAttribute('data-goed', goed);
+    };
+    f.addEventListener('change', update);
+    update();
+    const bericht = () => {
+      const r = ['Goedendag, ik wil graag een vrijblijvende offerte.'];
+      r.push('Werk: ' + v('werk') + ' (' + v('voor').toLowerCase() + ')');
+      const m = v('maand');
+      r.push('Periode: ' + (m === '' ? 'zo snel mogelijk' : maanden[Number(m)]) + (soort() === 'binnen' && winter(m) ? ', graag met de winterkorting' : ''));
+      if (v('plaats')) r.push('Plaats: ' + v('plaats'));
+      if (v('wens')) r.push('Omschrijving: ' + v('wens'));
+      if (v('naam')) r.push('Met vriendelijke groet, ' + v('naam'));
+      return r.join('\n');
+    };
+    f.addEventListener('submit', (e) => { e.preventDefault(); window.open('https://wa.me/31651343456?text=' + encodeURIComponent(bericht()), '_blank', 'noopener'); });
+    f.querySelector('[data-mail]')?.addEventListener('click', () => { location.href = 'mailto:info@marcellami.nl?subject=' + encodeURIComponent('Offerteaanvraag ' + v('werk').toLowerCase()) + '&body=' + encodeURIComponent(bericht()); });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.03em; }
+  .text-hero em { font-weight: 700; letter-spacing: -0.02em; }
+  .tegel { transition: transform .9s var(--ease-zacht); }
+  li:hover > .tegel { transform: scale(1.04); }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem; border-radius: var(--radius-md); border: 1px solid var(--color-lijn); background: var(--color-papier); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  .keuze span:hover { border-color: var(--color-blauw); }
+  .keuze input:checked + span { background: var(--color-blauw); border-color: var(--color-blauw); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-blauw); outline-offset: 2px; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-md); border: 1.5px solid #0f173333; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #0f173366; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #7c8193; }
+  .melding { background: var(--color-zand); color: var(--color-inkt); transition: background-color .3s, color .3s; }
+  .melding svg { color: var(--color-blauw); }
+  .melding[data-goed] { background: var(--color-blauw); color: #fff; }
+  .melding[data-goed] svg { color: #fff; }
+</style>
