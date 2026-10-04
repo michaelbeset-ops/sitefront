@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); const p = await ctx.newPage();
+await p.goto('http://localhost:4800/sitefront/dw-dakbedekking-vlijmen/');
+await p.click('a[data-kies="Renovatie"]');
+await p.click('label.keuze:has-text("Dakkapel")'); await p.fill('input[name=l]', '4,5'.replace(',', '.')); await p.fill('input[name=b]', '3');
+await p.click('label.keuze:has-text("Binnen een paar weken")'); await p.fill('input[name=naam]', 'Sanne'); await p.fill('input[name=plaats]', 'Nieuwkuijk');
+console.log(await p.textContent('[data-m2]'));
+console.log(await p.textContent('[data-bericht]'));
+await p.locator('[data-check]').screenshot({ path: 'shots/wow-390.png' });
+const [np] = await Promise.all([ctx.waitForEvent('page'), p.click('button[type=submit]')]);
+console.log(decodeURIComponent(np.url()).slice(0, 80));
+console.log((await p.getAttribute('[data-mail]', 'href')).slice(0, 60));
+console.log(await p.textContent('[data-status]'));
+await b.close();
