@@ -1,0 +1,49 @@
+---
+import { site, url, chips, plaatsen, waOfferte } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken" aria-hidden="true"><Icoon naam="roller" class="h-5 w-5" /></span>
+        <span><b>Van Herrewaarden</b><small>Schilderwerken</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Klein schildersbedrijf in Tiel, gespecialiseerd in onderhoudsschilderwerk. Binnen en buiten, voor particulieren, bedrijven en VvE's.</p>
+      <a href={waOfferte} class="knop knop-oranje knop-klein mt-6"><Icoon naam="wa" />Offerte aanvragen</a>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">
+        {chips.slice(0, 6).map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-oranje">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-oranje">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-oranje">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-oranje">E-mail</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-2">
+      <p class="font-semibold text-licht">Werkgebied</p>
+      <ul class="mt-4 space-y-2">
+        {plaatsen.map((p) => <li>{p}</li>)}
+        <li>en omgeving</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-oranje">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Projectfoto's van uw huidige website, sfeerfoto bovenaan via Unsplash, ter illustratie. Review letterlijk van Google (stand 4 oktober 2026).</p>}
+  </div>
+</footer>

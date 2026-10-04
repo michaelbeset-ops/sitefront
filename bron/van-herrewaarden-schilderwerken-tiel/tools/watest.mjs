@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4807/sitefront/van-herrewaarden-schilderwerken-tiel/', { waitUntil: 'networkidle' });
+await p.click('[data-tab="pui"]'); await p.click('#paneel-pui [data-naar="voor"]');
+console.log('pui zichtbaar', await p.isVisible('#paneel-pui'), 'stand', await p.getAttribute('#paneel-pui', 'data-stand'));
+await p.evaluate(() => { window.open = (u) => { window.__u = u; }; });
+await p.click('label:has-text("Houtrot herstellen")'); await p.fill('input[name=naam]', 'Test'); await p.fill('input[name=plaats]', 'Tiel');
+await p.click('button:has-text("Open in WhatsApp")');
+console.log(decodeURIComponent(await p.evaluate(() => window.__u)));
+await b.close();
