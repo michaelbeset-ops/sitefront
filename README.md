@@ -194,3 +194,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autobedrijf Abbas, Katwijk | https://michaelbeset-ops.github.io/sitefront/autobedrijf-abbas-katwijk/ | Joomla 3 zonder updates, titel "Home", geen belknop mobiel, ©2018, 4,2/33, 06/WhatsApp. | 2026-10-04 | demo premium |
 | JD Installatie en Onderhoud, Katwijk | https://michaelbeset-ops.github.io/sitefront/jd-installatie-katwijk/ | Joomla 1.5 met Flash, certificaatfout, niet mobiel, 4,3/12, 06/WhatsApp. | 2026-10-04 | demo premium |
 | Coloronderhoud, Etten-Leur | https://michaelbeset-ops.github.io/sitefront/color-onderhoud-etten-leur/ | niet mobiel, sinds 2016 niet bijgewerkt, kapotte foto's, 4,8/4, 06/WhatsApp. | 2026-10-04 | demo premium |
+| Mark de Moor Schilderwerken, Prinsenbeek | https://michaelbeset-ops.github.io/sitefront/mark-de-moor-schilderwerken-prinsenbeek/ | niet mobiel (tekst ~5px), PHP 5.6, ©2009, 5,0/11, 06/WhatsApp. | 2026-10-04 | demo premium |

@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import wapen from '../assets/wapen.png';
+import { site, url, tijden, waOfferte } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = ['Onderhoud binnen en buiten', 'Renoveren en houtrot', 'Advies en meerjarenplan', 'Wandbekleding', 'Oude schilderstechnieken', 'Spuitwerk en kitwerk'];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <Image src={wapen} alt="" width={104} height={104} />
+        <span><b>Mark de Moor</b><small>Schilderwerken</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">“{site.motto}.” Schildersbedrijf in {site.plaats}, ook actief in {site.werkgebied.slice(1, -1).join(', ')} en {site.werkgebied.at(-1)}.</p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Werkzaamheden</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map((c) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-goud">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-goud">{site.tel}</a></li>
+        <li><a href={waOfferte} class="no-underline transition-colors hover:text-goud">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-goud">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Bereikbaarheid</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-goud">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-goud">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw huidige website en sfeerfoto’s via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 4 oktober 2026).</p>}
+  </div>
+</footer>

@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4794/sitefront/mark-de-moor-schilderwerken-prinsenbeek/', { waitUntil: 'networkidle' });
+await p.evaluate(() => { window.open = (u) => { window.__u = u; }; });
+await p.click('.keuze:has-text("Buitenschilderwerk")'); await p.click('.keuze:has-text("Houtrot herstellen")');
+await p.selectOption('select[name=pand]', 'Rijwoning'); await p.fill('input[name=plaats]', 'Breda');
+await p.fill('textarea[name=wens]', 'Kozijnen voorkant'); await p.fill('input[name=naam]', 'Jan');
+await p.click('button:has-text("Open in WhatsApp")');
+console.log(decodeURIComponent(await p.evaluate(() => window.__u)));
+const s = p.locator('.vn-schuif'); await s.scrollIntoViewIfNeeded(); await s.fill('20');
+console.log('p=', await p.evaluate(() => document.querySelector('[data-vn]').style.getPropertyValue('--p')));
+await p.goto('http://localhost:4794/sitefront/mark-de-moor-schilderwerken-prinsenbeek/privacy/'); await p.screenshot({ path: 'shots/privacy-1440.png' });
+await b.close();
