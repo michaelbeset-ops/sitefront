@@ -1,0 +1,61 @@
+---
+import { site, url, tijden, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 text-licht lg:col-span-4">
+      <Merk licht />
+      <p class="mt-6 max-w-xs text-licht-zacht">Restaurant en eetcafé op het eiland De Woude. Twee minuten met de pont, vijf minuten lopen.</p>
+      <p class="mt-6 flex items-center gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 flex-none place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-limoen hover:text-inkt" aria-label="Salsuta op Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={site.instagram} class="grid h-10 w-10 flex-none place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-limoen hover:text-inkt" aria-label="Salsuta op Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Salsuta</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('kaart')} class="no-underline transition-colors hover:text-limoen">Menukaart</a></li>
+        <li><a href={h('route')} class="no-underline transition-colors hover:text-limoen">Zo kom je er</a></li>
+        <li><a href={h('keuken')} class="no-underline transition-colors hover:text-limoen">Pieter &amp; Ivette</a></li>
+        <li><a href={h('feesten')} class="no-underline transition-colors hover:text-limoen">Feesten</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-limoen">{site.tel}</a></li>
+        <li><a href={waHoi} class="num no-underline transition-colors hover:text-limoen">WhatsApp <span class="whitespace-nowrap">{site.mobiel}</span></a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-limoen">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Open</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-limoen">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-4 flex items-center gap-2"><Icoon naam="g" class="h-4 w-4" />{site.google.score} op Google, {site.google.aantal} reviews</p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.vol}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-limoen">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s, menukaart en tijden van jullie eigen website restaurant-salsuta.nl. Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

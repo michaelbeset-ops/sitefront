@@ -1,0 +1,47 @@
+---
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['kaart', 'Menukaart'], ['route', 'Zo kom je er'], ['keuken', 'Pieter & Ivette'], ['feesten', 'Feesten'], ['reserveren', 'Reserveren']];
+---
+<header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-md">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-3 md:h-[5rem]">
+    <Merk />
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9375rem] font-semibold">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="link no-underline hover:underline">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-4">
+      <a href={site.telHref} class="num hidden items-center gap-1.5 text-[.9375rem] font-semibold no-underline xl:flex"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+      <a href={waHoi} class="knop knop-limoen knop-klein hidden sm:inline-flex"><Icoon naam="wa" />Reserveren</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-full border border-lijn bg-wit lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu" aria-label="Menu" class="hidden border-t border-lijn bg-papier lg:hidden" data-menu>
+    <ul class="wrap py-4">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="flex items-center justify-between border-b border-lijn py-3.5 font-kop text-2xl no-underline">{t}<Icoon naam="pijl" class="h-5 w-5" /></a></li>)}
+      <li class="pt-5"><a href={waHoi} class="knop knop-limoen w-full"><Icoon naam="wa" />Reserveren via WhatsApp</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2.5 border-t border-lijn bg-papier/95 p-2.5 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="knop knop-rand knop-klein bg-wit"><Icoon naam="tel" />Bellen</a>
+  <a href={waHoi} class="knop knop-limoen knop-klein"><Icoon naam="wa" />WhatsApp</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>

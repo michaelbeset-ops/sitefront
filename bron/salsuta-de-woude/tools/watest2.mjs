@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4398/sitefront/salsuta-de-woude/#reserveren');
+await p.evaluate(() => { window.__open = []; window.open = (u) => { window.__open.push(u); }; });
+await p.fill('#z-datum', '2026-10-07'); await p.click('[data-zin] button[type=submit]');
+console.log('wo:', await p.textContent('[data-zin-melding]'), await p.evaluate(() => window.__open.length));
+await p.fill('#z-datum', '2026-10-09'); await p.selectOption('#z-tijd', '18.30'); await p.fill('#z-pers', '4'); await p.selectOption('#z-hoe', 'met de boot');
+await p.click('[data-zin] button[type=submit]');
+const u = await p.evaluate(() => window.__open[0]); console.log(decodeURIComponent(u));
+await p.locator('#reserveren').screenshot({ path: 'shots/wow-1440.png' });
+await p.click('#tab-hoofd'); console.log('tab hoofd zichtbaar:', await p.isVisible('#kaart-hoofd'), 'lunch:', await p.isVisible('#kaart-lunch'));
+await b.close();
