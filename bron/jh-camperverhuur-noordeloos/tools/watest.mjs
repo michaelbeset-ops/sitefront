@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const c = await b.newContext({ viewport: { width: 1440, height: 900 } }); const p = await c.newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message)); p.on('console', (m) => m.type() === 'error' && errs.push(m.text()));
+await p.goto('http://localhost:4812/sitefront/jh-camperverhuur-noordeloos/', { waitUntil: 'networkidle' });
+await p.selectOption('[data-start]', { index: 40 });
+await p.click('[data-plus]'); await p.click('[data-plus]');
+await p.fill('input[name=naam]', 'Test');
+console.log(await p.textContent('[data-vol]'));
+const [pop] = await Promise.all([c.waitForEvent('page'), p.click('[data-plan] button[type=submit]')]);
+console.log(decodeURIComponent(pop.url().split('text=')[1] || pop.url()));
+console.log('errors:', errs);
+await b.close();

@@ -1,0 +1,63 @@
+---
+import { site, url, tijden, waVraag } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht">
+        <span class="merk-teken" aria-hidden="true">JH</span>
+        <span><b>Camperverhuur</b><small>Noordeloos</small></span>
+      </a>
+      <p class="mt-6 max-w-xs">Verhuur van een volledig uitgeruste Carado V339 vanuit Noordeloos, in de {site.regio}. Van vrijdag tot vrijdag.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-indigo" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waVraag} class="grid h-10 w-10 place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-indigo" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Huren</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('camper')} class="no-underline transition-colors hover:text-lila">De Carado V339</a></li>
+        <li><a href={h('uitrusting')} class="no-underline transition-colors hover:text-lila">Uitrusting</a></li>
+        <li><a href={h('tarieven')} class="no-underline transition-colors hover:text-lila">Tarieven en prijs berekenen</a></li>
+        <li><a href={h('werkwijze')} class="no-underline transition-colors hover:text-lila">Zo werkt het</a></li>
+        <li><a href={h('vragen')} class="no-underline transition-colors hover:text-lila">Veelgestelde vragen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num no-underline transition-colors hover:text-lila">Huib: <span class="whitespace-nowrap">{site.tel}</span></a></li>
+        <li><a href={site.tel2Href} class="num no-underline transition-colors hover:text-lila">Jacco: <span class="whitespace-nowrap">{site.tel2}</span></a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-lila">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-lila">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} JH Camperverhuur B.V., {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-lila">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw Google-bedrijfsprofiel, Facebookpagina en verhuurprofiel, ter illustratie. Tarieven en gegevens van uw vorige website (2025). Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

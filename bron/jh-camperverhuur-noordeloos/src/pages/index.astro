@@ -1,0 +1,469 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, seizoenen, service, reviews, waVraag } from '../data/site';
+import hero from '../assets/hero.jpg';
+import buiten from '../assets/buiten.jpg';
+import keuken from '../assets/keuken.jpg';
+import bed from '../assets/bed.jpg';
+import zit from '../assets/zit.jpg';
+import badkamer from '../assets/badkamer.jpg';
+import cabine from '../assets/cabine.jpg';
+import terras from '../assets/terras.jpg';
+import reis from '../assets/reis.jpg';
+import camping from '../assets/camping.jpg';
+
+const chips = ['Half-integraal', 'Modeljaar 2022', '2 slaapplaatsen + kinderbed', 'Queensbed 195 x 140 cm', 'Douche en toilet', 'Airco in de cabine', 'Fietsendrager', 'Camper-navigatie', 'Rijbewijs B'];
+
+// Specificaties letterlijk van hun site (2025).
+const specs = [
+  ['Merk en type', 'Carado V339'],
+  ['Opbouw', 'Half-integraal'],
+  ['Modeljaar', '2022'],
+  ['Motor', 'Citroën 2.2 diesel, 140 pk'],
+  ['Transmissie', 'Handgeschakeld'],
+  ['Lengte x breedte', '6,86 x 2,14 m'],
+  ['Hoogte / stahoogte', '2,71 / 1,95 m'],
+  ['Zitplaatsen', '4'],
+  ['Slaapplaatsen', '2 + kinderbed vanaf 3 jaar'],
+  ['Bed', 'Queensbed, 195 x 140 cm'],
+];
+
+const fotos = [
+  { src: keuken, alt: 'Het keukenblok met driepitskookplaat en spoelbak, met een pan op het vuur' },
+  { src: bed, alt: 'Het queensbed achterin de camper, opgemaakt met kussens' },
+  { src: zit, alt: 'De zithoek met tafel, gedekt met thee en fruit' },
+  { src: badkamer, alt: 'De badkamer met wastafel en toilet' },
+  { src: cabine, alt: 'De cabine met de twee draaibare voorstoelen naar de tafel gedraaid' },
+];
+
+const uitrusting = [
+  { t: 'Onderweg', icoon: 'route', items: ['Airco in de cabine', 'Cruise control', 'Radio met achteruitrijcamera en camper-navigatie', 'Draaibare voorstoelen', 'Citroën mobiliteitsgarantie'] },
+  { t: 'Op de camping', icoon: 'sleutel', items: ['Luifel en fietsendrager', 'Twee gasflessen', 'Oprijblokken', 'Waterslang en gieter', '230V-aansluitsnoer'] },
+  { t: 'Binnen', icoon: 'bed', items: ['Douche- en toiletruimte', 'Koelkast met vriezer', 'Plissé hordeur', 'Raamverduistering en horren', 'Keukeninventaris met Nespresso-apparaat'] },
+];
+
+const inventaris = ['Aansteker', 'Aardappelmes', 'Afwasteil', '4 bekers', 'Bezem', 'Bestekbak', '4 bier- en frisglazen', 'Blikopener', '4 diepe borden', '4 ontbijtborden', 'Dunschiller', 'Dweil', 'Emmer', 'Fruit- en slaschaal', 'Groentelepel', 'Garde', 'Koekenpan', '10 kledinghangers', '4 koffiemokken', 'Kaasschaaf', 'Kurkentrekker en flesopener', '4 messen (messenset)', 'Nespresso-koffiezetapparaat', '4 pannenonderzetters', '4 schaaltjes', 'Schaar', 'Soeplepel', 'Spons', '4 theelepels', 'Thermoskan koffie', 'Thermoskan thee', 'Juslepel', 'Pannenlap', '2 vaatdoeken per week', 'Veger en blik', '4 vorken', 'Vergiet', 'Waslijn met knijpers', 'Waterkoker', '4 wijnglazen', 'Spatel'];
+
+const stappen = [
+  ['Vraag beschikbaarheid', 'Kies uw vrijdag en het aantal weken en stuur ons een appje. Bellen mag ook.'],
+  ['Reservering rond', 'U krijgt de factuur per e-mail. Na betaling via iDEAL of overschrijving is uw reservering definitief.'],
+  ['Ophalen op vrijdag', 'Vanaf 15.00 uur in Noordeloos, met een uitgebreide uitleg. Uw auto kunt u gratis bij ons parkeren.'],
+  ['Terugbrengen', 'Vrijdag vóór 10.00 uur, bezemschoon en met een leeg toilet. Laten schoonmaken kan voor € 125.'],
+];
+
+// Veelgestelde vragen: antwoorden van hun eigen site, huren.nl en het huurcontract.
+const vragen = [
+  ['Wat is de huurperiode?', 'De camper is te huur van vrijdag tot vrijdag, minimaal 7 dagen. Andere dagen op aanvraag. Ophalen vanaf 15.00 uur, terugbrengen vóór 10.00 uur.'],
+  ['Hoeveel kilometer mag ik rijden?', 'Per week zit er 1500 kilometer in de prijs. Daarboven betaalt u per extra kilometer.'],
+  ['Welk rijbewijs heb ik nodig?', 'Rijbewijs B is genoeg; een internationaal rijbewijs is niet nodig. U bent minimaal 24 jaar en heeft uw rijbewijs minstens 3 jaar.'],
+  ['Hoe zit het met verzekering en borg?', 'De camper is all-risk verzekerd, met 24 uur hulpdienst van de verzekeraar. Het eigen risico is € 1250. De borg van € 1250 betaalt u vooraf of bij het ophalen.'],
+  ['Mag mijn hond mee, en kan ik op wintersport?', 'Nee, huisdieren zijn niet toegestaan en roken in de camper ook niet. De camper is niet geschikt voor wintersport. U reist ermee binnen Europa.'],
+];
+---
+<Base title={`${site.naam} | Camper huren in Noordeloos`} description="Huur de Carado V339 bij JH Camperverhuur in Noordeloos, Alblasserwaard. Volledig uitgerust, all-risk verzekerd, 1500 km per week vrij. Van vrijdag tot vrijdag. Beschikbaarheid via WhatsApp.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen camper met luifel uit -->
+    <section class="donker relative isolate flex overflow-hidden bg-nacht text-licht md:min-h-[calc(100svh-7rem)] md:items-end lg:items-center" aria-labelledby="t-hero">
+      <div class="absolute inset-x-0 top-0 -z-20 h-[23rem] md:h-[60%] lg:inset-y-0 lg:left-[26%] lg:h-auto">
+        <Image src={hero} alt="" widths={[640, 960, 1280, 1600, 2048]} sizes="(min-width: 1024px) 74vw, 100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[60%_62%] lg:object-[52%_60%]" />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1c174700_0%,#1c174700_15rem,#1c1747_23rem)] md:bg-[linear-gradient(180deg,#1c174700_0%,#1c174700_30%,#1c1747_60%)] lg:bg-[linear-gradient(90deg,#1c1747_0%,#1c1747_30%,#1c1747cc_42%,#1c174766_56%,#1c174700_72%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-16 pt-[20.5rem] md:pb-20 md:pt-[24rem] lg:py-24 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Camperverhuur in Noordeloos</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Zonder zorgen lekker <span class="text-lila">op vakantie.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Huur onze Carado V339: compact van buiten, ruim van binnen. Volledig uitgerust en all-risk verzekerd, met 1500 km per week vrij.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waVraag} class="knop knop-indigo"><Icoon naam="wa" />Vraag beschikbaarheid</a>
+            <a href="#tarieven" class="knop knop-rand op-foto">Bereken uw prijs</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google</li>
+            <li class="flex items-center gap-2"><Icoon naam="kalender" class="h-4 w-4 text-lila" />Van vrijdag tot vrijdag</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Vrijdag en zaterdag open</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="De camper in het kort">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#camper" class="shrink-0 rounded-full bg-zand px-4 py-2 text-sm font-medium no-underline transition-colors hover:bg-indigo hover:text-wit">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. De camper -->
+    <section id="camper" class="py-20 lg:py-24" aria-labelledby="t-camper">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">De camper</p>
+            <h2 id="t-camper" class="mt-4 text-3xl">Compact van buiten, ruim van binnen.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Met 2,14 meter breed rijdt de Carado V339 ook door smalle straatjes. Binnen heeft u alles bij de hand, van bed en koelkast tot uw eigen douche en toilet.</p>
+        </div>
+
+        <div class="mt-12 grid gap-4 lg:mt-14 lg:grid-cols-12 lg:gap-5">
+          <figure class="rijs relative overflow-hidden rounded-lg lg:col-span-7 lg:row-span-2">
+            <Image src={buiten} alt="De Carado V339 met uitgedraaide luifel, een tafel en twee stoelen aan de bosrand" widths={[600, 900]} sizes="(min-width: 1248px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full min-h-[18rem] w-full object-cover object-[50%_60%]" />
+            <figcaption class="absolute bottom-4 left-4 rounded-full bg-wit/95 px-4 py-1.5 text-sm font-semibold">Carado V339, modeljaar 2022</figcaption>
+          </figure>
+          <div class="rijs kaart p-6 sm:p-8 lg:col-span-5 lg:row-span-2" style="--d:.06s">
+            <h3 class="text-xl">Specificaties</h3>
+            <dl class="mt-4">
+              {specs.map(([k, v]) => (
+                <div class="flex justify-between gap-6 border-b border-lijn py-2.5 last:border-0">
+                  <dt class="text-grijs">{k}</dt>
+                  <dd class="num text-right font-semibold">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+
+        <ul class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:mt-5 lg:grid-cols-5 lg:gap-5">
+          {fotos.map((f, i) => (
+            <li class={`rijs relative overflow-hidden rounded-md bg-zand ${i === 4 ? 'hidden sm:block' : ''}`} style={`--d:${i * 0.05}s`}>
+              <Image src={f.src} alt={f.alt} widths={[320, 480, 640]} sizes="(min-width: 1248px) 230px, (min-width: 1024px) 19vw, (min-width: 640px) 31vw, 46vw" class="tegel aspect-[4/3] w-full object-cover" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Uitrusting -->
+    <section id="uitrusting" class="donker bg-nacht text-licht" aria-labelledby="t-uit">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] sm:min-h-[26rem] lg:col-span-5">
+          <Image src={camping} alt="De camper op een camping in een heuvelachtig landschap" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[62%_50%]" />
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Uitrusting</p>
+          <h2 id="t-uit" class="mt-4 text-3xl">Alles aan boord.</h2>
+          <p class="mt-6 max-w-2xl text-lg text-licht-zacht">Van koffiemokken tot waslijn: de inventaris is compleet. Inclusief all-risk verzekering, 24 uur hulpdienst van de verzekeraar en gratis stalling van uw auto.</p>
+          <div class="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-6">
+            {uitrusting.map((g) => (
+              <div>
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-lila text-nacht"><Icoon naam={g.icoon} class="h-5 w-5" /></span>
+                <h3 class="mt-4 text-lg">{g.t}</h3>
+                <ul class="mt-3 space-y-2 text-[.9375rem] text-licht-zacht">
+                  {g.items.map((it) => <li class="flex gap-2"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-lila" />{it}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <details class="inventaris mt-10 rounded-md bg-nacht-2 px-5 py-4">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">Bekijk de complete inventarislijst<Icoon naam="plus" class="plus h-5 w-5 shrink-0 text-lila" /></summary>
+            <ul class="mt-4 columns-2 gap-6 text-sm text-licht-zacht sm:columns-3">
+              {inventaris.map((i) => <li class="py-0.5">{i}</li>)}
+            </ul>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Tarieven + prijs berekenen (wow) -->
+    <section id="tarieven" class="bg-zand py-20 lg:py-24" aria-labelledby="t-tarief">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Tarieven</p>
+          <h2 id="t-tarief" class="mt-4 text-3xl">Per week, van vrijdag tot vrijdag.</h2>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <table class="w-full">
+              <caption class="sr-only">Huurprijs per week per seizoen</caption>
+              <thead><tr class="text-left text-sm text-grijs"><th scope="col" class="pb-2 font-medium">Seizoen</th><th scope="col" class="pb-2 text-right font-medium">Per week</th></tr></thead>
+              <tbody>
+                {seizoenen.map((s) => (
+                  <tr class="border-t border-lijn">
+                    <th scope="row" class="py-3 pr-4 text-left font-[inherit]"><b class="block font-semibold">{s.naam}</b><span class="text-sm text-grijs">{s.periode}</span></th>
+                    <td class="num py-3 text-right font-kop text-xl font-semibold">€ {s.prijs}</td>
+                  </tr>
+                ))}
+                <tr class="border-t border-lijn"><th scope="row" class="py-3 pr-4 text-left font-[inherit] font-semibold">Servicebedrag</th><td class="num py-3 text-right font-kop text-xl font-semibold">€ {service}</td></tr>
+              </tbody>
+            </table>
+            <p class="mt-4 text-sm text-grijs">Gasfles, toiletvloeistof en -papier, pechhulp en het wassen van de buitenkant zitten in het servicebedrag. Vanaf 14 dagen aaneengesloten krijgt u korting.</p>
+          </div>
+        </div>
+
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-plan aria-describedby="plan-uitleg">
+          <p class="eyebrow">Prijs berekenen</p>
+          <h3 class="mt-3 text-2xl">Plan uw reis in drie keuzes</h3>
+          <p id="plan-uitleg" class="mt-2 text-grijs">U ziet direct de prijs per week en stuurt uw aanvraag met één tik via WhatsApp. Er wordt niets verstuurd tot u daar zelf op verzenden drukt.</p>
+          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Vertrek op vrijdag</span>
+              <select name="start" class="veld mt-2" data-start><option value="">Kies een vrijdag</option></select>
+            </label>
+            <div>
+              <span class="text-sm font-semibold" id="l-weken">Aantal weken</span>
+              <div class="mt-2 flex items-center gap-2" role="group" aria-labelledby="l-weken">
+                <button type="button" class="stap" data-min aria-label="Een week minder"><Icoon naam="min" class="h-5 w-5" /></button>
+                <output class="num grid h-12 flex-1 place-items-center rounded-xl bg-zand font-kop text-xl font-semibold" data-weken aria-live="polite">1</output>
+                <button type="button" class="stap" data-plus aria-label="Een week meer"><Icoon naam="plus" class="h-5 w-5" /></button>
+              </div>
+            </div>
+            <label class="block"><span class="text-sm font-semibold">Met</span>
+              <select name="wie" class="veld mt-2">
+                <option>2 personen</option>
+                <option>2 personen en een kind (vanaf 3 jaar)</option>
+                <option>1 persoon</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="mt-7 rounded-xl border border-lijn bg-papier p-5" data-uitkomst>
+            <p class="text-grijs" data-leeg>Kies een vrijdag, dan ziet u hier de huurprijs per week.</p>
+            <div class="hidden" data-vol>
+              <p class="text-sm text-grijs"><span data-periode></span></p>
+              <ul class="mt-3 space-y-1.5 text-[.9375rem]" data-regels></ul>
+              <p class="mt-4 flex items-baseline justify-between gap-4 border-t border-lijn pt-4"><span class="font-semibold">Huurprijs</span><span class="num font-kop text-3xl font-bold text-indigo" data-totaal></span></p>
+              <p class="mt-1 text-sm text-grijs">Plus servicebedrag (€ {service}). Indicatie op basis van de tarieven van 2025.</p>
+              <p class="mt-2 hidden text-sm font-semibold text-indigo" data-korting>Vanaf 14 dagen krijgt u korting op deze prijs.</p>
+            </div>
+          </div>
+
+          <label class="mt-5 block"><span class="text-sm font-semibold">Uw naam <span class="font-normal text-grijs">(optioneel)</span></span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+          <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-indigo"><Icoon naam="wa" />Vraag beschikbaarheid</button>
+            <a href={site.telHref} class="link num font-semibold">Of bel {site.tel}</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-24" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo werkt het</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Van appje tot vertrek.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">U haalt de camper op in Noordeloos, in de Alblasserwaard. Daarna kunt u overal in Europa heen.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart p-6 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-lg font-bold text-indigo">0{i + 1}</p>
+              <h3 class="mt-5 text-xl sm:mt-8">{t}</h3>
+              <p class="mt-2 text-grijs sm:mt-3">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Over Huib en Jacco -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 lg:pl-[max(2.5rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over ons</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Huib en Jacco de Jong, uit Noordeloos.</h2>
+          <p class="mt-6 max-w-2xl text-lg text-licht-zacht">JH Camperverhuur is van Huib en Jacco. Vanuit Noordeloos verhuren zij hun Carado V339. In 2022 gingen de eerste huurders ermee op pad.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-lila text-nacht"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Advies op maat</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Wij adviseren u graag. Stel uw vraag gerust via WhatsApp.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-lila text-nacht"><Icoon naam="sleutel" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Duidelijke uitleg voor vertrek</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Plus een handleiding en instructievideo’s voor onderweg.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-lila text-nacht"><Icoon naam="auto" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Gratis uw auto stallen</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Uw auto kunt u tijdens de reis gratis bij ons parkeren.</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="relative min-h-[20rem] sm:min-h-[26rem] lg:col-span-5">
+          <Image src={reis} alt="De Carado V339 met fietsen achterop op een grasveld aan het water" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[45%_50%]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat huurders zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-bold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-3">
+          <figure class="rijs relative min-h-[16rem] overflow-hidden rounded-md">
+            <Image src={terras} alt="Een campingtafel naast de camper met een fles rosé, twee glazen en een plankje met hapjes" widths={[480, 720, 900]} sizes="(min-width: 1024px) 380px, 92vw" class="absolute inset-0 h-full w-full object-cover" />
+          </figure>
+          {reviews.map((r, i) => (
+            <div class="rijs kaart flex flex-col p-6 md:p-8" style={`--d:${(i + 1) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-zand font-kop font-bold text-indigo" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Vragen + contact -->
+    <section id="vragen" class="bg-zand py-20 lg:py-24" aria-labelledby="t-vragen">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">Goed om te weten</p>
+          <h2 id="t-vragen" class="mt-4 text-3xl">Veelgestelde vragen.</h2>
+          <div class="mt-10 space-y-3">
+            {vragen.map(([v, a], i) => (
+              <details class="vraag kaart px-6 py-1" open={i === 0}>
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-kop text-lg font-semibold">{v}<Icoon naam="plus" class="plus h-5 w-5 shrink-0 text-indigo" /></summary>
+                <p class="pb-5 text-grijs">{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+        <div id="contact" class="flex flex-col gap-4 lg:col-span-5 lg:pt-24">
+          <div class="kaart p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-xl">Openingstijden</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Vrijdag en zaterdag open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-indigo">
+                    <th scope="row" class="py-2 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <a href={waVraag} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-indigo text-wit"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp Huib</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-indigo" /></a>
+          <a href={site.tel2Href} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-zand text-indigo"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bel Jacco</b><span class="num text-grijs">{site.tel2}</span></span><Icoon naam="pijl" class="h-5 w-5 text-indigo" /></a>
+          <a href={site.maps} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-zand text-indigo"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">{site.straat}</b><span class="text-grijs">{site.postcode} {site.plaats}</span></span><Icoon naam="pijl" class="h-5 w-5 text-indigo" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-indigo text-wit" aria-label="Beschikbaarheid vragen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Zin in een roadtrip?</h2>
+          <p class="mt-2 text-lg text-wit/90">Stuur een appje met uw vrijdag, dan hoort u of de camper vrij is.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waVraag} class="knop knop-wit"><Icoon naam="wa" />WhatsApp ons</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { seizoenen } from '../data/site';
+  const f = document.querySelector<HTMLFormElement>('[data-plan]');
+  if (f) {
+    const sel = f.querySelector<HTMLSelectElement>('[data-start]')!;
+    const out = f.querySelector<HTMLOutputElement>('[data-weken]')!;
+    const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+    const lang = (d: Date) => `vrijdag ${d.getDate()} ${maanden[d.getMonth()]} ${d.getFullYear()}`;
+    const kort = (d: Date) => `${d.getDate()} ${maanden[d.getMonth()].slice(0, 3)}`;
+    const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const plus = (d: Date, n: number) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+
+    // De eerstvolgende 52 vrijdagen, vanaf morgen.
+    let d = plus(new Date(), 1); d.setHours(12, 0, 0, 0);
+    while (d.getDay() !== 5) d = plus(d, 1);
+    for (let i = 0; i < 52; i++) {
+      const v = plus(d, i * 7);
+      sel.add(new Option(lang(v).replace(/^vrijdag /, ''), iso(v)));
+    }
+    sel.selectedIndex = 1;
+
+    const seizoen = (x: Date) => {
+      const md = (x.getMonth() + 1) * 100 + x.getDate();
+      return seizoenen.find((s) => {
+        const van = s.van[0] * 100 + s.van[1], tot = s.tot[0] * 100 + s.tot[1];
+        return van <= tot ? md >= van && md <= tot : md >= van || md <= tot;
+      })!;
+    };
+    const eur = (n: number) => '€ ' + n.toLocaleString('nl-NL');
+    let weken = 1;
+    const reken = () => {
+      out.value = String(weken);
+      const leeg = f.querySelector<HTMLElement>('[data-leeg]')!, vol = f.querySelector<HTMLElement>('[data-vol]')!;
+      if (!sel.value) { leeg.classList.remove('hidden'); vol.classList.add('hidden'); return null; }
+      const start = new Date(sel.value + 'T12:00:00');
+      const eind = plus(start, weken * 7);
+      let totaal = 0;
+      const regels: string[] = [];
+      for (let w = 0; w < weken; w++) {
+        const s = seizoen(plus(start, w * 7));
+        totaal += s.prijs;
+        regels.push(`<li class="flex justify-between gap-4"><span>Week ${w + 1}, vanaf ${kort(plus(start, w * 7))} <span class="text-grijs">(${s.naam.toLowerCase()})</span></span><span class="num whitespace-nowrap">${eur(s.prijs)}</span></li>`);
+      }
+      f.querySelector('[data-periode]')!.textContent = `Ophalen ${lang(start)} vanaf 15.00 uur, terugbrengen ${lang(eind)} vóór 10.00 uur.`;
+      f.querySelector('[data-regels]')!.innerHTML = regels.join('');
+      f.querySelector('[data-totaal]')!.textContent = eur(totaal);
+      f.querySelector('[data-korting]')!.classList.toggle('hidden', weken < 2);
+      leeg.classList.add('hidden'); vol.classList.remove('hidden');
+      return { start, eind, totaal };
+    };
+    sel.addEventListener('change', reken);
+    reken();
+    f.querySelector('[data-min]')!.addEventListener('click', () => { weken = Math.max(1, weken - 1); reken(); });
+    f.querySelector('[data-plus]')!.addEventListener('click', () => { weken = Math.min(8, weken + 1); reken(); });
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const r = reken();
+      const data = new FormData(f);
+      const naam = String(data.get('naam') || '').trim();
+      const regels = ['Hallo Huib, is de Carado V339 nog vrij in deze periode?'];
+      if (r) {
+        regels.push(`Van ${lang(r.start)} tot ${lang(r.eind)} (${weken} ${weken === 1 ? 'week' : 'weken'}).`);
+        regels.push(`Prijs volgens de site: ${eur(r.totaal)} plus servicebedrag.`);
+      } else regels.push('Ik heb nog geen vaste datum.');
+      regels.push(`We zijn met ${String(data.get('wie')).toLowerCase()}.`);
+      if (naam) regels.push('Groet, ' + naam);
+      window.open('https://wa.me/31614065328?text=' + encodeURIComponent(regels.join('\n')), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: 1; letter-spacing: -0.025em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: #3fbf7f; box-shadow: 0 0 0 4px #3fbf7f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: 999px; background: var(--color-zand); }
+  .tegel { transition: transform .9s var(--ease-zacht); }
+  li:hover > .tegel { transform: scale(1.04); }
+  .veld { display: block; width: 100%; border-radius: .75rem; border: 1.5px solid #16142b33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #16142b66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-indigo); }
+  .stap { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 999px; background: var(--color-indigo); color: #fff; cursor: pointer; transition: background-color .2s; }
+  .stap:hover { background: var(--color-indigo-diep); }
+  summary::-webkit-details-marker { display: none; }
+  :global(.plus) { transition: transform .3s var(--ease-zacht); }
+  details[open] > summary :global(.plus) { transform: rotate(45deg); }
+</style>
