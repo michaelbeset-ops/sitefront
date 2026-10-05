@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4399/sitefront/comedor-lunchroom-nijmegen/', { waitUntil: 'networkidle' });
+const lees = () => p.evaluate(() => ({ tel: [...new Set([...document.querySelectorAll('[data-v-tel]')].map(a => a.getAttribute('href')))], wa: [...new Set([...document.querySelectorAll('[data-v-wa]')].map(a => decodeURIComponent(a.getAttribute('href'))))], plaats: [...new Set([...document.querySelectorAll('[data-v-tekst=plaats]')].map(e => e.textContent))] }));
+console.log('start', JSON.stringify(await lees()));
+await p.locator('#zaken [data-kies=arnhem]').first().click();
+console.log('na klik', JSON.stringify(await lees()));
+await p.locator('#zaken').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200);
+await p.locator('#zaken').screenshot({ path: 'shots/wow-1440.png' });
+await p.reload({ waitUntil: 'networkidle' }); console.log('na reload', JSON.stringify(await lees()));
+await p.locator('[data-kies=nijmegen]').first().click();
+await p.locator('[role=tab]', { hasText: 'Kapsalon' }).click(); console.log('tab ok', await p.locator('#paneel-schotels').isVisible());
+console.log('errs', errs);
+await b.close();

@@ -1,0 +1,49 @@
+---
+import { site, url, vestigingen, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-pui text-licht-zacht">
+  <div class="luifel" aria-hidden="true"></div>
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 text-licht lg:col-span-4">
+      <Merk class="h-12 w-auto" />
+      <p class="mt-6 max-w-xs text-licht-zacht">Ontbijt, lunch en diner. Elke dag van 10.00 tot 22.00 uur, in Nijmegen en Arnhem.</p>
+      <p class="mt-6 flex items-center gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 flex-none place-items-center rounded-sm bg-pui-2 text-licht transition-colors hover:bg-rood" aria-label="Comedor op Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 flex-none place-items-center rounded-sm bg-pui-2 text-licht transition-colors hover:bg-rood" aria-label="Comedor op Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    {vestigingen.map((v) => (
+      <div class="lg:col-span-3">
+        <p class="font-kop text-xl text-licht">{v.plaats}</p>
+        <ul class="mt-4 space-y-2">
+          <li>{v.straat}<br />{v.postcode} {v.plaats}</li>
+          <li><a href={v.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{v.tel}</a></li>
+          <li><a href={waHoi(v)} class="no-underline transition-colors hover:text-rood-licht">WhatsApp</a> · <a href={v.maps} class="no-underline transition-colors hover:text-rood-licht">Route</a></li>
+          <li>Elke dag<br /><span class="num whitespace-nowrap">10.00 - 22.00</span></li>
+        </ul>
+      </div>
+    ))}
+    <div class="col-span-2 sm:col-span-1 lg:col-span-2">
+      <p class="font-kop text-xl text-licht">Snel naar</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('kaart')} class="no-underline transition-colors hover:text-rood-licht">Menukaart</a></li>
+        <li><a href={h('zaken')} class="no-underline transition-colors hover:text-rood-licht">Vestigingen</a></li>
+        <li><a href={h('ons')} class="no-underline transition-colors hover:text-rood-licht">Over ons</a></li>
+        <li><a href={h('reviews')} class="no-underline transition-colors hover:text-rood-licht">Reviews</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, Nijmegen en Arnhem</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van jullie Google-bedrijfsprofielen en jullie eigen website. Menukaart en verhaal van comedorlunchroom.nl, reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

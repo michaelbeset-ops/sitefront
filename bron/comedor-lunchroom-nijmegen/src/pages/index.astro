@@ -1,0 +1,246 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Schakel from '../components/Schakel.astro';
+import { site, nij, vestigingen, kaart, reviews, waHoi } from '../data/site';
+import heteKip from '../assets/hete-kip-nijmegen.jpg';
+import vitrine from '../assets/vitrine-nijmegen.jpg';
+import toonbank from '../assets/toonbank-nijmegen.jpg';
+import soep from '../assets/soep-nijmegen.jpg';
+import broodjeKip from '../assets/broodje-kip-arnhem.jpg';
+import interieur from '../assets/interieur-arnhem.jpg';
+import burger from '../assets/burger-arnhem.jpg';
+import msemmen from '../assets/msemmen-arnhem.jpg';
+import pand from '../assets/pand-arnhem.jpg';
+
+// "Hardlopers op de kaart zijn de broodjes hete kip en gamba, de huisgemaakte soepen en een Marokkaans ontbijtje." (Over ons)
+const hardlopers = [
+  ['Broodje hete kipfilet', '11', true], ['Broodje gamba’s', '12', false], ['Harira, Marokkaanse soep', '6', false], ['Marokkaans ontbijt', '11', false],
+] as const;
+const [groot, ...rest] = reviews;
+const fotoStrip = [
+  { src: broodjeKip, alt: 'Broodje kip met patat en saus op een wit bord', t: 'Broodje kip met patat', cls: 'col-span-2 md:col-span-5 md:row-span-2 aspect-[4/3] md:aspect-auto md:h-full' },
+  { src: msemmen, alt: 'Gevulde msemmen met een bakje saus', t: 'Msemmen', cls: 'md:col-span-4 aspect-square md:aspect-[4/3]' },
+  { src: soep, alt: 'Kom huisgemaakte soep', t: 'Huisgemaakte soep', cls: 'md:col-span-3 aspect-square md:aspect-[4/5]' },
+  { src: burger, alt: 'Burger met patat en mayonaise', t: 'Burger met patat', cls: 'hidden md:block md:col-span-7 aspect-[16/9]' },
+];
+---
+<Base title="Comedor Lunchroom | Ontbijt, lunch en diner in Nijmegen en Arnhem" description="Broodjes hete kip, kapsalon, msemmen en Marokkaans ontbijt. Comedor Lunchroom aan de Van Welderenstraat in Nijmegen en de Johan de Wittlaan in Arnhem, elke dag van 10.00 tot 22.00 uur.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- HERO: licht, onder de luifel; eigen foto van het broodje hete kip en een stukje van hun echte kaart -->
+    <section class="relative overflow-hidden">
+      <div class="wrap grid items-stretch gap-y-10 pb-14 md:grid-cols-12 md:gap-x-10 md:pb-0 md:pt-0">
+        <div class="order-2 flex flex-col justify-center md:order-1 md:col-span-6 md:py-20 lg:col-span-6 lg:py-24">
+          <h1 class="text-hero rijs">Vers vlees, <span class="text-rood">eigen kruiden.</span></h1>
+          <p class="mt-6 max-w-md text-lg text-grijs rijs" style="--d:.08s">Ontbijt, lunch en diner in Nijmegen en Arnhem. Elke dag van 10.00 tot 22.00 uur.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4 rijs" style="--d:.16s">
+            <a href="#kaart" class="knop knop-inkt">Bekijk de kaart<Icoon naam="pijl" /></a>
+            <a href={nij.telHref} data-v-tel class="link inline-flex items-center gap-2 font-bold no-underline"><Icoon naam="tel" class="h-4 w-4 text-rood" /><span>Bel <span data-v-tekst="plaats">Nijmegen</span></span></a>
+          </div>
+
+          <div class="mt-8 flex items-center gap-3 md:hidden"><span class="text-sm font-semibold text-grijs">Jouw zaak:</span><Schakel /></div>
+          <div class="donker mt-12 max-w-md bg-zwart p-6 text-licht rijs md:p-7" style="--d:.24s">
+            <p class="font-kop text-xl">Hardlopers <span class="text-licht-zacht">op de kaart</span></p>
+            <ul class="mt-4 space-y-2.5 text-[.9375rem] font-semibold uppercase tracking-[.02em]">
+              {hardlopers.map(([n, p, s]) => (
+                <li class="regel"><span class="n inline-flex items-center gap-1.5">{n}{s && <Icoon naam="peper" class="h-3.5 w-3.5 text-rood-licht" />}</span><span class="p num">{p}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div class="relative order-1 -mx-5 md:order-2 md:col-span-6 md:mx-0 md:-mr-10 lg:-mr-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
+          <Image src={heteKip} alt="Broodje met heet gekruide stukjes kipfilet, van dichtbij" widths={[480, 800, 1200, 1600]} sizes="(min-width: 768px) 50vw, 100vw" loading="eager" fetchpriority="high" class="aspect-[4/3] h-full w-full object-cover object-[50%_80%] md:aspect-auto md:min-h-[44rem]" />
+          <p class="absolute bottom-4 left-5 bg-papier px-3 py-1.5 text-xs font-bold md:left-6">Broodje hete kip, Van Welderenstraat</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VITRINE: alles ligt vers klaar, je kijkt mee -->
+    <section class="donker relative bg-zwart text-licht" aria-labelledby="vitrine-kop">
+      <Image src={vitrine} alt="De vitrine in Nijmegen met bakken vol verse groente, sauzen en gekruid vlees" widths={[640, 1024, 1600]} sizes="100vw" class="h-[26rem] w-full object-cover opacity-80 md:h-[34rem]" />
+      <div class="absolute inset-0 bg-gradient-to-t from-zwart via-zwart/40 to-transparent"></div>
+      <div class="wrap absolute inset-x-0 bottom-0 pb-10 md:pb-14">
+        <blockquote class="max-w-3xl">
+          <p id="vitrine-kop" class="font-kop text-3xl leading-[1.05]">“Je kan meekijken waar er wordt gekookt en dat is altijd fijn.”</p>
+          <footer class="mt-4 text-sm text-licht-zacht">Mohamed, Google-review Comedor Nijmegen</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- MENUKAART: hun echte kaart (februari 2026), zwart zoals het origineel, met de grote krul -->
+    <section id="kaart" class="donker relative overflow-hidden bg-zwart pb-24 pt-20 text-licht md:pb-32 md:pt-28" aria-labelledby="kaart-kop">
+      <div class="krul -right-40 top-10 h-[46rem] w-[40rem]" aria-hidden="true"></div>
+      <div class="wrap relative">
+        <div class="grid gap-y-6 md:grid-cols-12 md:items-end md:gap-x-8">
+          <h2 id="kaart-kop" class="text-3xl md:col-span-7">Alles van de kaart.</h2>
+          <p class="max-w-md text-licht-zacht md:col-span-5">Prijzen in euro. Broodjes en wraps komen met patat, schotels met salade en patat. <span class="inline-flex items-center gap-1 whitespace-nowrap text-licht"><Icoon naam="peper" class="h-4 w-4 text-rood-licht" />= pittig</span></p>
+        </div>
+
+        <div class="mt-12 flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none]" role="tablist" aria-label="Onderdelen van de kaart" data-tabs>
+          {kaart.map((k, i) => (
+            <button type="button" role="tab" id={`tab-${k.id}`} aria-controls={`paneel-${k.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}
+              class="flex-none rounded-full border border-lijn-licht px-5 py-2.5 text-[.9375rem] font-bold text-licht-zacht transition-colors hover:text-licht aria-selected:border-rood aria-selected:bg-rood aria-selected:text-wit">{k.tab}</button>
+          ))}
+        </div>
+
+        {kaart.map((k, i) => (
+          <div role="tabpanel" id={`paneel-${k.id}`} aria-labelledby={`tab-${k.id}`} class="mt-10 columns-1 gap-x-14 md:columns-2 lg:columns-3" hidden={i !== 0} tabindex="0">
+            {k.groepen.map((g) => (
+              <div class="mb-10 break-inside-avoid">
+                <h3 class="text-2xl italic">{g.t}</h3>
+                {g.noot && <p class="mt-1 text-xs font-semibold text-licht-zacht">{g.noot}</p>}
+                <ul class="mt-4 space-y-3">
+                  {g.items.map((it) => (
+                    <li>
+                      <p class="regel text-[.9375rem] font-semibold uppercase tracking-[.02em]">
+                        <span class="n inline-flex items-center gap-1.5">{it.n}{it.s && <><Icoon naam="peper" class="h-3.5 w-3.5 text-rood-licht" /><span class="sr-only">(pittig)</span></>}</span>
+                        <span class="p num">{it.p}</span>
+                      </p>
+                      {it.o && <p class="mt-0.5 max-w-[30ch] text-sm leading-snug text-licht-zacht">{it.o}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        ))}
+        <p class="mt-4 text-sm text-licht-zacht">Taart of iets uit de vitrine? Vraag wat er vandaag ligt. <a href={waHoi(nij)} data-v-wa class="link font-bold text-licht">App Comedor <span data-v-tekst="plaats">Nijmegen</span></a></p>
+
+        <div class="mt-16 grid grid-cols-2 gap-3 md:grid-cols-12 md:grid-rows-[auto_auto] md:gap-5">
+          {fotoStrip.map((f) => (
+            <figure class:list={['relative overflow-hidden', f.cls]}>
+              <Image src={f.src} alt={f.alt} widths={[480, 800, 1200]} sizes="(min-width: 768px) 45vw, 100vw" class="h-full w-full object-cover" />
+              <figcaption class="absolute bottom-0 left-0 bg-zwart/85 px-3 py-1.5 text-xs font-bold">{f.t}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- OVER ONS: Amin en Gokhan, uit hun eigen Over ons-pagina -->
+    <section id="ons" class="py-24 md:py-32" aria-labelledby="ons-kop">
+      <div class="wrap grid gap-y-12 md:grid-cols-12 md:gap-x-10">
+        <div class="relative md:col-span-6 lg:col-span-7">
+          <Image src={pand} alt="De pui van Comedor aan de Johan de Wittlaan in Arnhem, met rode luifel en terrasje" widths={[640, 1024, 1200]} sizes="(min-width: 768px) 55vw, 100vw" class="aspect-[8/7] w-full object-cover" />
+          <p class="mt-3 text-xs text-grijs">De eerste Comedor, Johan de Wittlaan 271 in Arnhem.</p>
+        </div>
+        <div class="md:col-span-6 md:pt-6 lg:col-span-5">
+          <h2 id="ons-kop" class="text-3xl">Twee jeugdvrienden uit Klarendal.</h2>
+          <p class="mt-6 text-grijs">Amin Bouraarassi en Gokhan Caliskan zagen in de Randstad veel van dit soort zaken. Midden in de coronacrisis openden ze op 13 juli de eerste Comedor in Arnhem. Inmiddels staat er ook een aan de Van Welderenstraat in Nijmegen.</p>
+          <blockquote class="mt-10 border-l-4 border-rood pl-6">
+            <p class="font-kop text-2xl leading-tight">“Bij ons bestel je geen snacks of frietje. We werken altijd met vers vlees, dat we volgens geheim recept kruiden.”</p>
+            <footer class="mt-3 text-sm font-semibold text-grijs">Gokhan</footer>
+          </blockquote>
+          <p class="mt-10 flex items-start gap-3 text-sm text-grijs"><Icoon naam="ster" class="mt-0.5 h-4 w-4 flex-none text-rood" />Winnaar gemeente Arnhem bij de Nederlandse Horeca Prijzen 2022, categorie lunchroom / broodjeszaak.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VESTIGINGEN (wow): kies je zaak, alle knoppen op de pagina gaan mee -->
+    <section id="zaken" class="donker relative overflow-hidden bg-pui py-24 text-licht md:py-32" aria-labelledby="zaken-kop">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 id="zaken-kop" class="text-3xl">Twee keer Comedor.</h2>
+          <div class="flex flex-col items-start gap-2">
+            <Schakel donker />
+            <p class="text-xs text-licht-zacht">Je keuze geldt voor alle bel- en appknoppen op deze site.</p>
+          </div>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:grid-cols-2">
+          {vestigingen.map((v) => (
+            <article data-kaart-v={v.id} data-actief={v.id === 'nijmegen' ? '' : undefined} class="zaak group relative grid overflow-hidden bg-pui-2 sm:grid-cols-[2fr_3fr]">
+              <Image src={v.id === 'nijmegen' ? toonbank : interieur} alt={v.id === 'nijmegen' ? 'Toonbank en vitrine van Comedor Nijmegen' : 'Zithoek met groene bank bij Comedor Arnhem'} widths={[400, 700]} sizes="(min-width: 1024px) 20vw, (min-width: 640px) 40vw, 100vw" class="aspect-[4/3] h-full w-full object-cover sm:aspect-auto" />
+              <div class="flex flex-col p-6 md:p-8">
+                <h3 class="text-3xl">{v.plaats}</h3>
+                <p class="mt-3">{v.straat}<br />{v.postcode} {v.plaats}</p>
+                <p class="mt-3 text-sm text-licht-zacht" data-status-wrap><span class="stip-status mr-2 inline-block h-2 w-2 rounded-full bg-licht-zacht align-middle" aria-hidden="true"></span><span data-status>Elke dag 10.00 - 22.00</span></p>
+                <p class="mt-1 text-sm text-licht-zacht">Maandag t/m zondag 10.00 - 22.00</p>
+                <p class="mt-4 text-sm text-licht">{v.id === 'nijmegen' ? 'Alleen hier: de smash burger.' : 'Winnaar gemeente Arnhem, Horeca Prijzen 2022.'}</p>
+                <div class="mt-auto flex flex-wrap gap-2 pt-7">
+                  <a href={v.telHref} class="knop knop-rood knop-klein"><Icoon naam="tel" /><span class="num">{v.tel}</span></a>
+                  <a href={waHoi(v)} class="knop knop-rand knop-klein" aria-label={`WhatsApp Comedor ${v.plaats}`}><Icoon naam="wa" />App</a>
+                  <a href={v.maps} class="knop knop-rand knop-klein" aria-label={`Route naar Comedor ${v.plaats}`}><Icoon naam="pin" />Route</a>
+                </div>
+              </div>
+              <button type="button" data-kies={v.id} aria-pressed={v.id === 'nijmegen' ? 'true' : 'false'} class="kies absolute right-4 top-4 rounded-full bg-zwart/80 px-3 py-1.5 text-xs font-bold">
+                <span class="aan">Jouw Comedor</span><span class="uit">Kies {v.plaats}</span>
+              </button>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS: letterlijk van Google -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="reviews-kop">
+      <div class="wrap">
+        <div class="grid gap-y-10 md:grid-cols-12 md:gap-x-10">
+          <div class="md:col-span-5">
+            <h2 id="reviews-kop" class="text-3xl">Wat er over Comedor gezegd wordt.</h2>
+            <p class="mt-5 flex items-center gap-2 text-sm text-grijs"><Icoon naam="g" class="h-4 w-4" />{vestigingen[0].google.score} in Nijmegen ({vestigingen[0].google.aantal}) en {vestigingen[1].google.score} in Arnhem ({vestigingen[1].google.aantal}) op Google</p>
+          </div>
+          <figure class="md:col-span-7">
+            <blockquote><p class="text-2xl font-semibold leading-snug">“{groot.tekst}”</p></blockquote>
+            <figcaption class="mt-4 text-sm text-grijs"><span class="text-rood" aria-label="5 sterren">★★★★★</span> {groot.naam}, {groot.waar} · {groot.wanneer}</figcaption>
+          </figure>
+        </div>
+        <div class="mt-16 grid gap-x-10 gap-y-10 border-t border-lijn pt-10 sm:grid-cols-2 lg:grid-cols-4">
+          {rest.slice(0, 4).map((r) => (
+            <figure>
+              <blockquote><p class="text-[.9875rem]">“{r.tekst}”</p></blockquote>
+              <figcaption class="mt-3 text-xs text-grijs"><span class="text-rood" aria-label="5 sterren">★★★★★</span> {r.naam}, {r.waar}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOT: de luifel -->
+    <section class="bg-rood text-wit">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center">
+        <p class="font-kop text-3xl leading-none">Honger? Tot 22.00 uur open.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href={nij.telHref} data-v-tel class="knop knop-licht"><Icoon naam="tel" /><span>Bel <span data-v-tekst="plaats">Nijmegen</span></span></a>
+          <a href={waHoi(nij)} data-v-wa class="knop knop-inkt"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .zaak { outline: 2px solid transparent; transition: outline-color .25s, opacity .25s; }
+  .zaak :global(img) { transition: opacity .25s, filter .25s; }
+  .zaak:not([data-actief]) :global(img) { opacity: .55; filter: grayscale(.6); }
+  .zaak[data-actief] { outline-color: var(--color-rood-licht); }
+  .zaak .aan { display: none; }
+  .zaak[data-actief] .aan { display: inline; }
+  .zaak[data-actief] .uit { display: none; }
+  .zaak[data-actief] .kies { background: var(--color-rood); }
+  [data-open='true'] .stip-status { background: #5fd39a; box-shadow: 0 0 0 3px #5fd39a33; }
+</style>
+
+<script>
+  const lijst = document.querySelector<HTMLElement>('[data-tabs]');
+  if (lijst) {
+    const tabs = [...lijst.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+    const zet = (t: HTMLButtonElement, focus = false) => {
+      tabs.forEach((x) => { const on = x === t; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute('aria-controls')!)!.hidden = !on; });
+      if (focus) t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => zet(t));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { e.preventDefault(); zet(tabs[(i + d + tabs.length) % tabs.length], true); }
+      });
+    });
+  }
+</script>

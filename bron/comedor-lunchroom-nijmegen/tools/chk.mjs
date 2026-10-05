@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await p.goto('https://comedorlunchroom.nl/vestigingen/', { waitUntil: 'networkidle' });
+console.log('tel links', await p.evaluate(()=>[...document.querySelectorAll('a[href^="tel"],a[href*="wa.me"],a[href*="maps"]')].map(a=>a.href)));
+await p.screenshot({ path: 'bron/site/vestigingen-m.png', fullPage: true });
+await p.goto('https://comedorlunchroom.nl/menu/', { waitUntil: 'networkidle' });
+await p.screenshot({ path: 'bron/site/menu-m.png' });
+console.log('menu imgs rendered', await p.evaluate(()=>[...document.querySelectorAll('.entry-content img, main img')].map(i=>i.getBoundingClientRect().width+'x'+i.getBoundingClientRect().height)));
+const r = await fetch('https://comedorlunchroom.nl/wp-content/uploads/2026/02/1.jpg'); console.log('orig bytes', (await r.arrayBuffer()).byteLength);
+console.log('http', (await fetch('http://comedorlunchroom.nl', {redirect:'manual'})).status);
+await b.close();

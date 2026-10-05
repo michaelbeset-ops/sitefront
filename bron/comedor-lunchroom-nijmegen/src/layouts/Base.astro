@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+import kopUrl from '@fontsource/lilita-one/files/lilita-one-latin-400-normal.woff2?url';
+import sansUrl from '@fontsource-variable/albert-sans/files/albert-sans-latin-wght-normal.woff2?url';
+import { site, url, vestigingen, waHoi } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const vData = Object.fromEntries(vestigingen.map((v) => [v.id, { plaats: v.plaats, straat: v.straat, postcode: v.postcode, tel: v.tel, telHref: v.telHref, wa: waHoi(v), maps: v.maps }]));
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansUrl} crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:site_name" content={site.naam} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body class="min-h-dvh pb-[4.5rem] md:pb-0">
+    {site.voorstel && (
+      <div class="relative z-50 bg-rood text-wit">
+        <p class="wrap py-2 text-xs leading-snug" style="font-family: system-ui, sans-serif">
+          Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website.{" "}
+          <a href="https://www.sitefront.nl" class="font-bold underline underline-offset-2">sitefront.nl</a>
+        </p>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
+    <slot />
+    <script define:vars={{ vData }}>
+      window.__v = vData;
+    </script>
+    <script>
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.rijs').forEach((el) => io.observe(el));
+
+      // Beide zaken zijn elke dag open van 10.00 tot 22.00 (eigen site, Google, Instagram). Live status in Nederlandse tijd.
+      const nu = new Date();
+      const deel = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', ...o }).format(nu);
+      const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel({ weekday: 'short' }));
+      const min = Number(deel({ hour: '2-digit', hourCycle: 'h23' })) * 60 + Number(deel({ minute: '2-digit' }));
+      const open = min >= 600 && min < 1320;
+      const tekst = open ? 'Nu open, tot 22.00 uur' : min < 600 ? 'Gesloten, vandaag open vanaf 10.00 uur' : 'Gesloten, morgen open vanaf 10.00 uur';
+      document.querySelectorAll<HTMLElement>('[data-status]').forEach((el) => { el.textContent = tekst; el.closest('[data-status-wrap]')?.setAttribute('data-open', String(open)); });
+      document.querySelectorAll(`[data-dag="${dag}"]`).forEach((r) => r.setAttribute('data-vandaag', ''));
+
+      // Vestigingkiezer: één keuze stuurt alle bel-, WhatsApp-, route- en adreslinks op de pagina.
+      type V = { plaats: string; straat: string; postcode: string; tel: string; telHref: string; wa: string; maps: string };
+      const data = (window as unknown as { __v: Record<string, V> }).__v;
+      const kies = (id: string, bewaar = true) => {
+        const v = data[id]; if (!v) return;
+        document.documentElement.dataset.vestiging = id;
+        document.querySelectorAll<HTMLButtonElement>('[data-kies]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.kies === id)));
+        document.querySelectorAll<HTMLAnchorElement>('[data-v-tel]').forEach((a) => (a.href = v.telHref));
+        document.querySelectorAll<HTMLAnchorElement>('[data-v-wa]').forEach((a) => (a.href = v.wa));
+        document.querySelectorAll<HTMLAnchorElement>('[data-v-maps]').forEach((a) => (a.href = v.maps));
+        document.querySelectorAll<HTMLElement>('[data-v-tekst]').forEach((el) => (el.textContent = v[el.dataset.vTekst as keyof V]));
+        document.querySelectorAll<HTMLElement>('[data-kaart-v]').forEach((el) => el.toggleAttribute('data-actief', el.dataset.kaartV === id));
+        if (bewaar) { try { localStorage.setItem('comedor-vestiging', id); } catch {} }
+      };
+      document.querySelectorAll<HTMLButtonElement>('[data-kies]').forEach((b) => b.addEventListener('click', () => kies(b.dataset.kies!)));
+      let start = 'nijmegen'; try { start = localStorage.getItem('comedor-vestiging') || start; } catch {}
+      kies(start, false);
+    </script>
+  </body>
+</html>
