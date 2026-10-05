@@ -1,0 +1,60 @@
+---
+import { site, url, tijden, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <Merk licht />
+      <p class="mt-6 max-w-xs">Het modewinkeltje in Spijkenisse, sinds 2015. Dameskleding, eigen sieraden en persoonlijk advies.</p>
+      <p class="mt-6 flex items-center gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 flex-none place-items-center rounded-full bg-nacht-2 text-licht transition-colors hover:bg-flamingo" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <span class="text-xs">Ook op Facebook: Fancy Bird Spijkenisse</span>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">In de winkel</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('winkel')} class="no-underline transition-colors hover:text-fel">Dameskleding</a></li>
+        <li><a href={h('jewels')} class="no-underline transition-colors hover:text-fel">Fancy Jewels</a></li>
+        <li><a href={h('live')} class="no-underline transition-colors hover:text-fel">Fancy Bird Live</a></li>
+        <li><a href={h('vraag')} class="no-underline transition-colors hover:text-fel">Iets gezien?</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-fel">{site.tel}</a></li>
+        <li><a href={waHoi} class="no-underline transition-colors hover:text-fel">WhatsApp</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-fel">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-fel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-fel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van jullie Instagram en sfeerfoto’s via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

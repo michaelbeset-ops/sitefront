@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://localhost:4391/sitefront/fancy-bird-spijkenisse/', { waitUntil: 'networkidle' });
+await p.click('.keus:text-is("Blouse")'); await p.fill('input[name=maat]', '40'); await p.fill('input[name=welke]', 'de roze uit de post'); await p.check('input[name=verzenden]');
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.click('.keus:text-is("Sieraad")'); console.log(await p.textContent('[data-bericht]'));
+await p.click('.keus:text-is("Blouse")');
+await p.locator('#vraag').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200); await p.screenshot({ path: 'shots/wow-1440.png' });
+console.log('jsonld', await p.locator('script[type="application/ld+json"]').count(), 'robots', await p.getAttribute('meta[name=robots]', 'content'), errs);
+await b.close();
