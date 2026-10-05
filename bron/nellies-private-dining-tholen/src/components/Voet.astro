@@ -1,61 +1,29 @@
 ---
-import { site, url, tijden, waHoi } from '../data/site';
-import Icoon from './Icoon.astro';
+import { site, url, waHoi } from '../data/site';
 import Merk from './Merk.astro';
-interface Props { thuis?: boolean }
-const { thuis = true } = Astro.props;
-const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
 const jaar = new Date().getFullYear();
 ---
-<footer class="donker bg-gevel-2 text-licht-zacht">
-  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
-    <div class="col-span-2 text-licht lg:col-span-4">
+<footer class="border-t border-lijn bg-nacht text-zacht">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[.875rem] md:grid-cols-12 md:py-20">
+    <div class="text-ivoor md:col-span-6">
       <Merk />
-      <p class="mt-6 max-w-xs text-licht-zacht">Genieten van verrassende gerechten in een huiselijke ambiance. Aan de Oudelandsedijk op Tholen.</p>
-      <p class="mt-6 flex items-center gap-3">
-        <a href={site.facebook} class="grid h-10 w-10 flex-none place-items-center rounded-sm bg-gevel text-licht transition-colors hover:bg-blauw" aria-label="Nellie's op Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
-        <a href={site.instagram} class="grid h-10 w-10 flex-none place-items-center rounded-sm bg-gevel text-licht transition-colors hover:bg-blauw" aria-label="Nellie's op Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
-      </p>
+      <p class="mt-6 max-w-xs">Genieten van verrassende gerechten in een huiselijke ambiance.</p>
     </div>
-    <div class="lg:col-span-3">
-      <p class="font-semibold text-licht">Bij Nellie's</p>
-      <ul class="mt-4 space-y-2">
-        <li><a href={h('werkwijze')} class="no-underline transition-colors hover:text-hemel">Zo gaat het</a></li>
-        <li><a href={h('menu')} class="no-underline transition-colors hover:text-hemel">Wat er op tafel stond</a></li>
-        <li><a href={h('agenda')} class="no-underline transition-colors hover:text-hemel">Agenda</a></li>
-        <li><a href={h('tafel')} class="no-underline transition-colors hover:text-hemel">Tafel aanvragen</a></li>
-      </ul>
+    <div class="md:col-span-3">
+      <p class="label label-messing">Contact</p>
+      <p class="mt-4"><a href={site.telHref} class="link num">{site.tel}</a></p>
+      <p class="mt-1"><a href={waHoi} class="link">WhatsApp</a></p>
+      <p class="mt-1"><a href={`mailto:${site.mail}`} class="link">nelliesprivatedining<wbr />@kpnmail.nl</a></p>
     </div>
-    <div class="lg:col-span-2">
-      <p class="font-semibold text-licht">Contact</p>
-      <ul class="mt-4 space-y-2">
-        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-hemel">{site.tel}</a></li>
-        <li><a href={waHoi} class="no-underline transition-colors hover:text-hemel">WhatsApp</a></li>
-        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-hemel">nelliesprivatedining<wbr />@kpnmail.nl</a></li>
-        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
-      </ul>
-    </div>
-    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
-      <p class="font-semibold text-licht">Openingstijden</p>
-      <table class="mt-4 w-full max-w-[16rem]">
-        <caption class="sr-only">Openingstijden</caption>
-        <tbody>
-          {tijden.map((t) => (
-            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-hemel">
-              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
-              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <a href={site.reviews} class="mt-5 inline-flex items-center gap-2 text-xs no-underline hover:text-hemel"><Icoon naam="ster" class="h-3.5 w-3.5 text-ster" />{site.google.score} op Google, {site.google.aantal} reviews</a>
+    <div class="md:col-span-3">
+      <p class="label label-messing">Volg ons</p>
+      <p class="mt-4"><a href={site.instagram} class="link">Instagram</a></p>
+      <p class="mt-1"><a href={site.facebook} class="link">Facebook</a></p>
     </div>
   </div>
-  <div class="border-t border-lijn-licht">
-    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
-      <p>© {jaar} {site.vol}, {site.plaats}</p>
-      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-hemel">Privacyverklaring</a><span>Website door Sitefront</span></p>
-    </div>
-    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s en teksten van jullie eigen Facebook- en Instagramberichten. Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} {site.vol}, {site.plaats}</p>
+    <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-messing">Privacyverklaring</a><span>Website door Sitefront</span></p>
   </div>
+  {site.voorstel && <p class="wrap pb-24 text-xs md:pb-8">Foto’s en teksten van jullie eigen Facebook- en Instagramberichten. Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
 </footer>

@@ -29,7 +29,7 @@ export const site = {
   reviews: "https://www.google.com/maps/search/?api=1&query=Nellie's+Private+Dining+Oudelandsedijk+6+Tholen",
   google: { score: '4,9', aantal: 20 },
   prijs: '€ 74,50',
-  themeColor: '#353b40',
+  themeColor: '#12100e',
   voorstel: import.meta.env.PUBLIC_VOORSTEL === '1',
 };
 
