@@ -1,0 +1,322 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, agenda, waHoi, waMet } from '../data/site';
+
+import barBord from '../assets/bar-bord.jpg';
+import dinerbank from '../assets/dinerbank.jpg';
+import motor from '../assets/motor.jpg';
+import muur from '../assets/muur.jpg';
+import zaal from '../assets/zaal.jpg';
+import terras from '../assets/terras.jpg';
+import nem from '../assets/nothing-else-matters.jpg';
+
+const dagVol: Record<string, string> = { Za: 'zaterdag', Zo: 'zondag', Do: 'donderdag', Vr: 'vrijdag' };
+const maandVol: Record<string, string> = { okt: 'oktober', nov: 'november', dec: 'december' };
+const wanneer = (o: (typeof agenda)[number]) => `${dagVol[o.dag]} ${o.nr} ${maandVol[o.maand]}`;
+const kaartTekst = (o: (typeof agenda)[number], n = 2) => `Hoi Toon en Elly! Ik wil graag ${n} kaarten voor ${o.act} op ${wanneer(o)}.`;
+const quizTekst = (o: (typeof agenda)[number], n = 4) => `Hoi Toon en Elly! Wij willen ons opgeven voor de pubquiz op ${wanneer(o)}, met een team van ${n} personen.`;
+const vraagTekst = (o: (typeof agenda)[number]) => `Hoi Toon en Elly! Zijn er al kaarten voor ${o.act} op ${wanneer(o)}?`;
+const eerst = agenda[0];
+
+const awards = ['Beste café van Brabant', 'Vakjury Award: beste café/bar van Nederland', 'Vakjury Award: Creativiteitsprijs', 'Publieksprijs: beste café gemeente Steenbergen', 'Gold Award, klantwaardering 9,59'];
+
+const titel = 'Kaffee de Bonnefooi | Café met live muziek in Dinteloord';
+const omschrijving = 'Kaffee de Bonnefooi, Stoofdijk 26 in Dinteloord: café met podium en terras sinds 1996. Tributebands, pubquiz en platenbeurs. Kaarten via WhatsApp 06 13048210.';
+const ld = {
+  '@context': 'https://schema.org', '@type': 'BarOrPub', name: site.naam, telephone: '+31613048210', email: site.mail,
+  address: { '@type': 'PostalAddress', streetAddress: site.straat, postalCode: site.postcode, addressLocality: site.plaats, addressCountry: 'NL' },
+  openingHours: ['Th 19:00-02:00', 'Fr 14:00-04:00', 'Sa 14:00-04:00', 'Su 14:00-02:00'], sameAs: [site.facebook],
+};
+---
+<Base title={titel} description={omschrijving}>
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <Kop />
+  <main id="inhoud">
+
+    <!-- HERO: links de kop op asfalt, rechts hun eigen bar met het Texaco-bord, het letterbord hangt over de naad -->
+    <section class="relative grid grid-cols-[minmax(0,1fr)] bg-asfalt lg:min-h-[calc(100svh-6.75rem)] lg:max-h-[58rem] lg:grid-cols-12">
+      <div class="relative z-10 flex flex-col justify-center px-5 pb-12 pt-12 sm:px-10 lg:col-span-5 lg:py-16 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:pr-6">
+        <h1 class="text-hero">And still <span class="text-rood-neon">rockin'</span>.</h1>
+        <p class="mt-7 max-w-md text-lg text-licht/85 md:text-xl">Kaffee de Bonnefooi: café met podium aan de Stoofdijk in Dinteloord. Sinds 1996.</p>
+        <p class="mt-8"><a href="#agenda" class="link text-lg font-bold">Wie er binnenkort speelt</a></p>
+      </div>
+      <figure class="relative h-[min(52svh,26rem)] lg:col-span-7 lg:h-auto">
+        <Image src={barBord} alt="De bar van Kaffee de Bonnefooi met een wit Texaco-bord en de naam Kaffee de Bonnefooi, eromheen neon en Route 66-borden" quality={72} widths={[480, 800, 1100, 1500]} sizes="(min-width: 1024px) 58vw, 100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[50%_45%]" />
+        <div class="absolute inset-0 bg-gradient-to-r from-asfalt/70 via-transparent to-transparent max-lg:hidden" aria-hidden="true"></div>
+      </figure>
+
+      <!-- Het letterbord: wie er de volgende keer op het podium staat (verlopen avonden springen automatisch door) -->
+      <div class="relative z-20 px-5 sm:px-10 lg:absolute lg:bottom-10 lg:left-[calc(41.666%+2rem)] lg:w-[25rem] lg:px-0">
+        <div class="letterbord -mt-16 lg:mt-0" data-volgende>
+          <p class="text-xs font-bold uppercase tracking-[.16em] text-grijs">Volgende keer op het podium</p>
+          <p class="mt-3 font-kop text-xl uppercase leading-none text-rood" data-v-datum>{eerst.dag} {eerst.nr} {eerst.maand}{eerst.tijd && ` · ${eerst.tijd}`}</p>
+          <p class="rails mt-2 font-kop text-[1.55rem] sm:text-[1.9rem] uppercase leading-[1.15]" data-v-act>{eerst.act}</p>
+          <p class="mt-2 text-sm text-grijs" data-v-wat>{eerst.wat}</p>
+          <a href={waMet(kaartTekst(eerst))} class="knop knop-inkt knop-klein mt-5 w-full" data-v-knop><Icoon naam="wa" />Kaarten via WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- AGENDA: wow-functie, kaarten per avond via WhatsApp -->
+    <section id="agenda" class="pb-24 pt-24 md:pb-28 lg:pt-28">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-10">
+          <h2 class="rijs text-3xl lg:col-span-6">Op het podium</h2>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-5 lg:col-start-8 lg:pt-3">Kaarten haal je aan de bar of bestel je via WhatsApp.</p>
+        </div>
+
+        <ol class="mt-14 border-t border-lijn-licht" data-agenda>
+          {agenda.map((o) => (
+            <li class="group grid grid-cols-[4.5rem_1fr] items-start gap-x-5 gap-y-5 border-b border-lijn-licht py-8 md:grid-cols-[7rem_1fr_auto] md:items-center md:gap-x-8" data-datum={o.datum}>
+              <p class="leading-none">
+                <span class="block font-kop text-[2.75rem] text-rood-neon md:text-[3.75rem]">{o.nr}</span>
+                <span class="mt-2 block text-sm font-bold uppercase tracking-[.08em] text-licht-zacht">{o.dag} {o.maand}</span>
+              </p>
+              <div class="min-w-0">
+                <h3 class="font-kop text-2xl uppercase">{o.act}</h3>
+                <p class="mt-2 text-licht-zacht">{o.wat}</p>
+                <p class="num mt-1 text-sm font-bold text-licht">{o.tijd && <span>{o.actie === 'gratis' ? o.tijd : `Aanvang ${o.tijd}`} · </span>}{o.prijs}</p>
+              </div>
+              <div class="col-span-2 flex flex-wrap items-center gap-3 md:col-span-1 md:justify-end">
+                {o.actie === 'kaarten' && (
+                  <>
+                    <label class="flex items-center gap-2 text-sm text-licht-zacht">
+                      <span>Kaarten</span>
+                      <select class="veld !min-h-[2.75rem] !w-auto !py-1.5 pr-8 text-base" data-aantal data-soort="kaarten">
+                        {[1, 2, 3, 4, 5, 6].map((n) => <option value={n} selected={n === 2}>{n}</option>)}
+                      </select>
+                    </label>
+                    <a href={waMet(kaartTekst(o))} class="knop knop-rood knop-klein" data-wa data-act={o.act} data-wanneer={wanneer(o)}><Icoon naam="wa" />Kaarten appen</a>
+                  </>
+                )}
+                {o.actie === 'quiz' && (
+                  <>
+                    <label class="flex items-center gap-2 text-sm text-licht-zacht">
+                      <span>Team van</span>
+                      <select class="veld !min-h-[2.75rem] !w-auto !py-1.5 pr-8 text-base" data-aantal data-soort="quiz">
+                        {[2, 3, 4, 5, 6].map((n) => <option value={n} selected={n === 4}>{n}</option>)}
+                      </select>
+                    </label>
+                    <a href={waMet(quizTekst(o))} class="knop knop-rood knop-klein" data-wa data-act={o.act} data-wanneer={wanneer(o)}><Icoon naam="wa" />Team opgeven</a>
+                  </>
+                )}
+                {o.actie === 'gratis' && <p class="text-sm font-bold text-licht">Gewoon binnenlopen</p>}
+                {o.actie === 'vraag' && <a href={waMet(vraagTekst(o))} class="knop knop-rand knop-klein"><Icoon naam="wa" />Vraag naar kaarten</a>}
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="mt-8 hidden text-lg text-licht-zacht" data-agenda-leeg>Nieuwe data volgen op <a href={site.events} class="link">onze Facebookpagina</a>.</p>
+
+        <p class="rijs mt-12 max-w-3xl text-licht-zacht">Eerder dit jaar stonden onder meer Bon Scotch (AC/DC), Exile (Rolling Stones), The Number 9 Blacktops en Old Smokey op het podium. Daartussen: platenbeurs, bierquiz, Beer &amp; BBQ, mosselavond en het WK op groot scherm. <a href={site.events} class="link font-bold text-licht">Alle evenementen op Facebook</a></p>
+      </div>
+    </section>
+
+    <!-- HET CAFÉ: editoriaal, licht emaille -->
+    <section id="cafe" class="licht overflow-hidden py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+          <figure class="rijs lg:col-span-7">
+            <Image src={dinerbank} alt="Rode diner-bank met tafel, Corona-koelkist en een wand vol elpees en oude foto's" quality={72} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 55vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+          </figure>
+          <div class="flex flex-col justify-center lg:col-span-5">
+            <h2 class="rijs text-3xl">Route 66, aan de Stoofdijk</h2>
+            <p class="rijs mt-6 text-lg text-grijs">Platen aan de muur, emaille borden, neon en een motor tussen de flessen. Kaffee de Bonnefooi bestaat sinds 1996. Achter de bar: Toon en Elly de Bruijn.</p>
+            <blockquote class="rijs mt-10 border-l-4 border-rood pl-6">
+              <p class="font-kop text-2xl leading-[1.15] text-rood">“Alsof je ergens langs route 66 in een café zit ipv in een klein Brabants dorpje.”</p>
+              <footer class="mt-3 text-sm text-grijs">Niels H., Google-review</footer>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="mt-16 grid gap-6 md:grid-cols-12 md:gap-8 lg:mt-24">
+          <figure class="rijs md:col-span-7 md:h-full">
+            <Image src={motor} alt="Een motor op een verhoging tussen neon, Route 66-borden en Las Vegas-borden" quality={70} widths={[480, 800, 1100]} sizes="(min-width: 768px) 55vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover md:aspect-auto md:h-full" />
+          </figure>
+          <div class="grid gap-6 md:col-span-5 md:gap-8">
+            <div class="rijs emaille p-7 md:p-8" style="--d:.1s">
+              <p class="font-kop text-xl leading-tight">Nederlandse Horecaprijzen 2023/2024</p>
+              <ul class="mt-4 space-y-1.5 text-[.9375rem] font-bold">
+                {awards.map((a) => <li class="flex gap-2.5"><Icoon naam="ster" class="mt-1 h-3.5 w-3.5 flex-none" />{a}</li>)}
+              </ul>
+            </div>
+            <figure class="rijs" style="--d:.2s">
+              <Image src={muur} alt="Een wand vol borden, beeldjes, een contrabas en Route 66-borden boven een oude kast" quality={70} widths={[400, 700]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bandavond: plafond met "Nothing else matters" en het Texaco-bord -->
+    <figure class="relative bg-asfalt">
+      <Image src={nem} alt="Het plafond tijdens een bandavond: een industriële lamp, de tekst Nothing Else Matters en het Texaco-bord boven de bar" quality={70} widths={[640, 1000, 1600]} sizes="100vw" class="h-[13rem] w-full object-cover object-[50%_60%] md:h-[26rem]" />
+      <figcaption class="absolute bottom-3 right-4 rounded-sm bg-asfalt/75 px-2 py-1 text-[.6875rem] text-licht">Een bandavond in de Bonnefooi</figcaption>
+    </figure>
+
+    <!-- TERRAS -->
+    <section id="terras" class="licht py-24 md:py-32">
+      <div class="wrap grid items-center gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">En achter het café: het terras</h2>
+          <p class="rijs mt-6 text-lg text-grijs">Gekleurd, in tropische sfeer, met schaduw en zon. Het ligt langs een fietsroute, dus stap gerust even af.</p>
+          <blockquote class="rijs mt-8 text-grijs">
+            <p class="text-lg italic">“Gezellig gekleurd terras met zowel schaduw als zon.”</p>
+            <footer class="mt-2 text-sm">Annemiek K., Google-review</footer>
+          </blockquote>
+        </div>
+        <figure class="rijs lg:col-span-8">
+          <Image src={terras} alt="Het terras achter het café met loungebanken, rode kussens, parasols, groen en een Bud-bord" quality={72} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 64vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-10">
+          <div class="lg:col-span-7">
+            <h2 class="rijs text-3xl">“Uitbaters zijn ook 10 puntuhhh”</h2>
+            <p class="rijs mt-4 text-sm text-licht-zacht">wilfred k., Google-review</p>
+          </div>
+          <p class="rijs flex items-center gap-2.5 text-licht-zacht lg:col-span-4 lg:col-start-9 lg:justify-end lg:pt-4"><Icoon naam="g" class="h-5 w-5" /><span class="num">{site.google.score} op Google, {site.google.aantal} reviews</span></p>
+        </div>
+        <div class="mt-14 columns-1 gap-10 md:columns-2 lg:columns-3">
+          {reviews.map((r, i) => (
+            <figure class="rijs mb-10 break-inside-avoid border-l-4 border-rood pl-6" style={`--d:${(i % 3) * 0.08}s`}>
+              <p class="flex gap-0.5 text-lamp" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+              <blockquote class="mt-3 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm text-licht-zacht">{r.naam} · Google · {r.wanneer}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- BESLOTEN FEEST -->
+    <section id="feest" class="bg-rood py-24 text-wit md:py-28">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Feestje in de Bonnefooi?</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-wit/90">De Bonnefooi gaat regelmatig een avond dicht voor een besloten feest. App ons je datum, dan hoor je of die nog vrij is.</p>
+          <blockquote class="rijs mt-10">
+            <p class="font-kop text-2xl leading-[1.15]">“Super leuke plek om een feestje te houden”</p>
+            <footer class="mt-3 text-sm text-wit/80">Angela T., Google-review</footer>
+          </blockquote>
+        </div>
+        <form class="rijs grid content-start gap-5 sm:grid-cols-2 lg:col-span-5 lg:col-start-8" data-feest>
+          <label class="grid gap-2 text-sm font-bold">Datum
+            <input type="date" name="datum" class="veld" />
+          </label>
+          <label class="grid gap-2 text-sm font-bold">Aantal gasten
+            <input type="number" name="gasten" min="1" inputmode="numeric" placeholder="bijv. 50" class="veld" />
+          </label>
+          <label class="grid gap-2 text-sm font-bold sm:col-span-2">Wat vier je?
+            <input type="text" name="wat" placeholder="Verjaardag, jubileum, afscheid..." class="veld" />
+          </label>
+          <a href={waMet('Hoi Toon en Elly! Ik wil graag een besloten feest geven in de Bonnefooi. Kan dat?')} class="knop knop-inkt sm:col-span-2" data-feest-knop><Icoon naam="wa" />Vraag het via WhatsApp</a>
+          <p class="text-xs text-wit/80 sm:col-span-2">Dit opent WhatsApp met je bericht klaar. Er wordt niets verstuurd of opgeslagen.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- BEZOEK -->
+    <section id="bezoek" class="py-24 md:py-32">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs lg:col-span-6">
+          <Image src={zaal} alt="De lange bar en de zaal van Kaffee de Bonnefooi met lampjes, neon en borden aan het plafond" quality={70} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 48vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+        </figure>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <h2 class="rijs text-3xl">Stoofdijk 26, Dinteloord</h2>
+          <p class="rijs mt-5 flex items-center gap-2.5 text-lg font-bold" data-status-wrap>
+            <span class="stip h-2.5 w-2.5 flex-none rounded-full bg-licht-zacht" aria-hidden="true"></span>
+            <span data-status>Donderdag t/m zondag open</span>
+          </p>
+          <table class="rijs mt-6 w-full max-w-sm text-lg">
+            <caption class="sr-only">Openingstijden</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr data-dag={t.dag} class="border-b border-lijn-licht text-licht-zacht data-[vandaag]:font-bold data-[vandaag]:text-licht">
+                  <th scope="row" class="py-2 pr-6 text-left font-normal">{t.naam}</th>
+                  <td class="num py-2 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="rijs mt-5 max-w-sm text-sm text-licht-zacht">Wijken de tijden af, bijvoorbeeld bij een besloten feest of een voetbalavond, dan staat dat op <a href={site.facebook} class="link text-licht">Facebook</a>.</p>
+          <div class="rijs mt-8 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop knop-rood"><Icoon naam="pin" />Route plannen</a>
+            <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  [data-open='true'] .stip { background: #5fd39a; box-shadow: 0 0 0 4px #5fd39a33; }
+</style>
+
+<script>
+  // Agenda: verlopen avonden verbergen (Nederlandse datum), letterbord vullen met de eerstvolgende avond,
+  // en het WhatsApp-bericht aanpassen aan het gekozen aantal.
+  const vandaag = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Amsterdam' }).format(new Date());
+  const rijen = [...document.querySelectorAll<HTMLElement>('[data-datum]')];
+  rijen.forEach((r) => { if ((r.dataset.datum || '') < vandaag) r.remove(); });
+  const over = document.querySelectorAll('[data-datum]');
+  if (!over.length) document.querySelector('[data-agenda-leeg]')?.classList.remove('hidden');
+  const wa = 'https://wa.me/31613048210?text=';
+  const bord = document.querySelector<HTMLElement>('[data-volgende]');
+  const eerste = over[0] as HTMLElement | undefined;
+  if (bord && eerste) {
+    const zet = (sel: string, t: string) => { const el = bord.querySelector(sel); if (el) el.textContent = t; };
+    const dag = eerste.querySelector('p span:last-child')?.textContent || '';
+    const nr = eerste.querySelector('p span:first-child')?.textContent || '';
+    const [d, m] = dag.split(' ');
+    const tijd = (eerste.querySelector('.num span')?.textContent || '').replace(/^Aanvang /, '').replace(' · ', '');
+    zet('[data-v-datum]', `${d} ${nr} ${m}${tijd ? ' · ' + tijd : ''}`);
+    zet('[data-v-act]', eerste.querySelector('h3')?.textContent || '');
+    zet('[data-v-wat]', eerste.querySelector('h3 + p')?.textContent || '');
+    const k = eerste.querySelector<HTMLAnchorElement>('a[href*="wa.me"]');
+    const bk = bord.querySelector<HTMLAnchorElement>('[data-v-knop]');
+    if (bk) { if (k) { bk.href = k.href; bk.lastChild!.textContent = k.textContent?.includes('Team') ? 'Team opgeven via WhatsApp' : k.textContent?.includes('Vraag') ? 'Vraag naar kaarten' : 'Kaarten via WhatsApp'; } else { bk.href = '#agenda'; bk.lastChild!.textContent = 'Gratis toegang, kom langs'; } }
+  } else if (bord) bord.parentElement?.remove();
+
+  document.querySelectorAll<HTMLSelectElement>('[data-aantal]').forEach((s) => {
+    const a = s.closest('li')?.querySelector<HTMLAnchorElement>('[data-wa]');
+    if (!a) return;
+    s.addEventListener('change', () => {
+      const n = s.value, act = a.dataset.act, w = a.dataset.wanneer;
+      const t = s.dataset.soort === 'quiz'
+        ? `Hoi Toon en Elly! Wij willen ons opgeven voor de pubquiz op ${w}, met een team van ${n} personen.`
+        : `Hoi Toon en Elly! Ik wil graag ${n} ${n === '1' ? 'kaart' : 'kaarten'} voor ${act} op ${w}.`;
+      a.href = wa + encodeURIComponent(t);
+    });
+  });
+
+  // Besloten feest: bericht samenstellen uit de ingevulde velden.
+  const f = document.querySelector<HTMLFormElement>('[data-feest]');
+  const fk = document.querySelector<HTMLAnchorElement>('[data-feest-knop]');
+  if (f && fk) {
+    const maak = () => {
+      const d = (f.elements.namedItem('datum') as HTMLInputElement).value;
+      const g = (f.elements.namedItem('gasten') as HTMLInputElement).value.trim();
+      const w = (f.elements.namedItem('wat') as HTMLInputElement).value.trim();
+      const datum = d ? new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(d + 'T12:00')) : '';
+      const regels = ['Hoi Toon en Elly! Ik wil graag een besloten feest geven in de Bonnefooi.'];
+      if (datum) regels.push(`Datum: ${datum}`);
+      if (g) regels.push(`Aantal gasten: ongeveer ${g}`);
+      if (w) regels.push(`Gelegenheid: ${w}`);
+      regels.push('Kan dat?');
+      fk.href = wa + encodeURIComponent(regels.join('\n'));
+    };
+    f.addEventListener('input', maak);
+    f.addEventListener('submit', (e) => { e.preventDefault(); maak(); window.open(fk.href, '_blank'); });
+  }
+</script>

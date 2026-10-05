@@ -1,0 +1,26 @@
+// Test: kaarten-aantal in WhatsApp-bericht, feestformulier, en verlopen avonden (klok op 20 okt 2026).
+import { chromium } from 'playwright';
+const U = 'http://localhost:4396/sitefront/kaffee-de-bonnefooi-dinteloord/';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto(U, { waitUntil: 'networkidle' });
+const sel = p.locator('[data-aantal]').first(); await sel.selectOption('4');
+console.log(decodeURIComponent(await p.locator('[data-wa]').first().getAttribute('href')));
+await p.locator('[data-soort=quiz]').selectOption('6');
+console.log(decodeURIComponent(await p.locator('[data-wa]').nth(1).getAttribute('href')));
+await p.fill('input[name=datum]', '2026-12-12'); await p.fill('input[name=gasten]', '60'); await p.fill('input[name=wat]', 'Verjaardag');
+console.log(decodeURIComponent(await p.getAttribute('[data-feest-knop]', 'href')));
+console.log('bord:', (await p.textContent('[data-volgende]')).replace(/\s+/g, ' '));
+console.log('status:', await p.textContent('#bezoek [data-status]'), 'jsonld', await p.locator('script[type="application/ld+json"]').count(), 'robots', await p.getAttribute('meta[name=robots]', 'content'), errs);
+const q = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await q.clock.setFixedTime(new Date('2026-10-20T15:00:00+02:00'));
+await q.goto(U, { waitUntil: 'networkidle' });
+console.log('20 okt rijen:', await q.locator('[data-datum]').count(), '| bord:', (await q.textContent('[data-volgende]')).replace(/\s+/g, ' '), '| knop:', decodeURIComponent(await q.getAttribute('[data-v-knop]', 'href')));
+await q.clock.setFixedTime(new Date('2026-10-23T23:30:00+02:00')); await q.reload({ waitUntil: 'networkidle' });
+console.log('vr 23.30:', await q.textContent('#bezoek [data-status]'));
+await q.clock.setFixedTime(new Date('2026-10-24T03:00:00+02:00')); await q.reload({ waitUntil: 'networkidle' });
+console.log('za 03.00:', await q.textContent('#bezoek [data-status]'));
+await q.clock.setFixedTime(new Date('2026-12-01T12:00:00+01:00')); await q.reload({ waitUntil: 'networkidle' });
+console.log('1 dec rijen:', await q.locator('[data-datum]').count(), 'leeg zichtbaar:', await q.locator('[data-agenda-leeg]').isVisible(), 'bord:', await q.locator('[data-volgende]').count());
+await p.locator('#agenda').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200); await p.screenshot({ path: 'shots/wow-1440.png' });
+await b.close();
