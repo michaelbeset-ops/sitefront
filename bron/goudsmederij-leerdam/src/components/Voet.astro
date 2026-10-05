@@ -1,0 +1,62 @@
+---
+import { site, url, tijden, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-leisteen text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <Merk licht />
+      <p class="mt-6 max-w-xs">Atelier en juwelier aan de Kerkstraat in Leerdam. Handgemaakte sieraden, trouwringen, gedenksieraden en reparaties.</p>
+      <p class="mt-6 flex items-center gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 flex-none place-items-center rounded-full bg-leisteen-2 text-licht transition-colors hover:bg-granaat" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 flex-none place-items-center rounded-full bg-leisteen-2 text-licht transition-colors hover:bg-granaat" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">In het atelier</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('maken')} class="no-underline transition-colors hover:text-fel">Trouwringen</a></li>
+        <li><a href={h('maken')} class="no-underline transition-colors hover:text-fel">Gedenksieraden</a></li>
+        <li><a href={h('maken')} class="no-underline transition-colors hover:text-fel">Van oud naar nieuw</a></li>
+        <li><a href={h('werk')} class="no-underline transition-colors hover:text-fel">Ons werk</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-fel">{site.tel}</a></li>
+        <li><a href={waHoi} class="no-underline transition-colors hover:text-fel">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-fel">{site.mail}</a></li>
+        <li>{site.straat}, {site.postcode} {site.plaats}</li>
+        <li><a href={site.afspraak} class="no-underline transition-colors hover:text-fel">Afspraak maken</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[17rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-fel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 max-w-[17rem] text-xs">Wo t/m vr op afspraak. Op zaterdag kunt u ook zonder afspraak een reparatie afgeven of ophalen.</p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-fel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s en filmbeelden van uw eigen website, Instagram en Google-bedrijfsprofiel. Reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

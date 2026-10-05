@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+await p.goto('http://localhost:4393/sitefront/goudsmederij-leerdam/', { waitUntil: 'networkidle' });
+await p.selectOption('#a-wat', 'een gedenksieraad'); await p.selectOption('#a-metaal', 'rood goud'); await p.selectOption('#a-steen', 'met een edelsteen');
+await p.fill('#a-budget', 'rond de 800 euro'); await p.fill('#a-datum', '2026-12-12');
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.locator('#ontwerpen').scrollIntoViewIfNeeded(); await p.waitForTimeout(1500); await p.screenshot({ path: 'shots/wow-1440.png' });
+console.log('robots', await p.getAttribute('meta[name=robots]', 'content'), 'status', await p.textContent('[data-status]'), errs);
+const links = await p.evaluate(() => [...new Set([...document.querySelectorAll('a')].map(a => a.href))]); console.log(links.join('\n'));
+await b.close();

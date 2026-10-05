@@ -1,0 +1,48 @@
+---
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['atelier', 'Atelier'], ['maken', 'Trouwen'], ['werk', 'Ons werk'], ['over', 'Over ons'], ['bezoek', 'Bezoek']];
+---
+<header class="sticky top-0 z-40 border-b border-lijn bg-kalk/95 backdrop-blur-md">
+  <div class="wrap flex h-[4.75rem] items-center justify-between gap-3">
+    <Merk />
+    <nav aria-label="Hoofdmenu" class="hidden xl:block">
+      <ul class="flex gap-7 whitespace-nowrap text-[.9375rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-granaat">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href={waHoi} class="hidden h-11 w-11 place-items-center rounded-full text-inkt transition-colors hover:bg-taupe-licht hover:text-granaat sm:grid" aria-label="WhatsApp Goudsmederij Leerdam"><Icoon naam="wa" class="h-5 w-5" /></a>
+      <a href={site.telHref} class="num hidden items-center gap-2 px-2 text-[.9375rem] font-semibold no-underline transition-colors hover:text-granaat whitespace-nowrap lg:flex"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+      <a href={site.afspraak} class="knop knop-granaat knop-klein hidden sm:inline-flex"><Icoon naam="agenda" />Afspraak maken</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-full bg-wit shadow-sm xl:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu" aria-label="Menu" class="hidden border-t border-lijn bg-kalk xl:hidden" data-menu>
+    <ul class="wrap py-4">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="flex items-center justify-between border-b border-lijn py-3.5 font-kop text-2xl no-underline">{t}<Icoon naam="pijl" class="h-5 w-5 text-granaat" /></a></li>)}
+      <li class="pt-5"><a href={site.afspraak} class="knop knop-granaat w-full"><Icoon naam="agenda" />Afspraak maken</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2.5 border-t border-lijn bg-kalk/95 p-2.5 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="knop knop-wit knop-klein shadow-sm"><Icoon naam="tel" />Bellen</a>
+  <a href={waHoi} class="knop knop-granaat knop-klein"><Icoon naam="wa" />WhatsApp</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>
