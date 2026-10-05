@@ -1,0 +1,61 @@
+---
+import { url, site, waVraag } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo.svg';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['rijbewijzen', 'Rijbewijzen'], ['oefenterrein', 'Oefenterrein'], ['prijzen', 'Prijzen'], ['reviews', 'Reviews'], ['contact', 'Contact']];
+---
+<div class="bg-nacht text-licht">
+  <div class="wrap flex h-10 items-center justify-between gap-6 text-[.8125rem]">
+    <ul class="flex items-center gap-6 overflow-hidden whitespace-nowrap">
+      <li class="flex items-center gap-1.5"><Icoon naam="vink" class="h-3.5 w-3.5 text-oranje" />Meer dan 40 jaar in het vak</li>
+      <li class="hidden items-center gap-1.5 sm:flex"><Icoon naam="vink" class="h-3.5 w-3.5 text-oranje" />KNMV-gecertificeerde motorinstructeurs</li>
+      <li class="hidden items-center gap-1.5 lg:flex"><Icoon naam="vink" class="h-3.5 w-3.5 text-oranje" />Eigen motor-oefenterrein in Arkel</li>
+    </ul>
+    <a href={site.telHref} class="num hidden items-center gap-1.5 font-semibold no-underline hover:text-oranje-diep md:flex"><Icoon naam="tel" class="h-3.5 w-3.5" />{site.tel}</a>
+  </div>
+</div>
+<header class="sticky top-0 z-40 border-b border-lijn bg-wit/95 backdrop-blur-md">
+  <div class="wrap flex h-[4.75rem] items-center justify-between gap-6">
+    <a href={url('')} class="shrink-0" aria-label={`${site.naam}, naar de homepage`}>
+      <img src={logo.src} alt={site.naam} width="142" height="50" class="h-[50px] w-auto" />
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9375rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-roest">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={waVraag} class="hidden items-center gap-2 font-semibold no-underline transition-colors hover:text-roest xl:inline-flex"><Icoon naam="wa" class="h-5 w-5" />Snel antwoord</a>
+      <a href={h('aanmelden')} class="knop knop-oranje knop-klein hidden sm:inline-flex">Aanmelden<Icoon naam="pijl" /></a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-md bg-vlak lg:hidden" aria-expanded="false" aria-controls="menu" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu" aria-label="Menu" class="hidden border-t border-lijn bg-wit lg:hidden" data-menu>
+    <ul class="wrap py-4">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="flex items-center justify-between border-b border-lijn py-3.5 font-kop text-2xl font-bold uppercase no-underline">{t}<Icoon naam="pijl" class="h-5 w-5 text-roest" /></a></li>)}
+      <li class="pt-5"><a href={h('aanmelden')} class="knop knop-oranje w-full">Aanmelden of proefles plannen<Icoon naam="pijl" /></a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- Mobiele onderbalk -->
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-[1fr_1fr_1.25fr] gap-1.5 border-t max-[359px]:[&_svg]:hidden border-lijn bg-wit/95 p-2.5 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="knop knop-wit knop-klein px-1.5 shadow-sm outline outline-1 outline-lijn"><Icoon naam="tel" />Bellen</a>
+  <a href={waVraag} class="knop knop-wit knop-klein px-1.5 shadow-sm outline outline-1 outline-lijn"><Icoon naam="wa" />WhatsApp</a>
+  <a href={h('aanmelden')} class="knop knop-oranje knop-klein px-1.5">Aanmelden</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>

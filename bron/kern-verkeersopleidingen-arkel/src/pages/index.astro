@@ -1,0 +1,524 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, locaties, rijbewijzen, reviews, waVraag } from '../data/site';
+import hero from '../assets/hero.jpg';
+import auto from '../assets/auto.jpg';
+import avb from '../assets/avb.jpg';
+import avb2 from '../assets/avb2.jpg';
+import dijk from '../assets/dijk.jpg';
+import vloot from '../assets/vloot.jpg';
+import kegels from '../assets/kegels.jpg';
+import theorie from '../assets/theorie.jpg';
+import uitleg from '../assets/uitleg.jpg';
+import terreinMotor from '../assets/terrein-motor.jpg';
+import tank from '../assets/tank.jpg';
+import instructeur from '../assets/instructeur.jpg';
+
+const kiezen = [
+  { id: 'auto', t: 'Auto', code: 'B', icoon: 'auto' },
+  { id: 'motor', t: 'Motor', code: 'A', icoon: 'motor' },
+  { id: 'bromfiets', t: 'Bromfiets', code: 'AM', icoon: 'brommer' },
+  { id: 'aanhanger', t: 'Aanhanger', code: 'BE', icoon: 'aanhanger' },
+];
+
+const kaarten = [
+  { kies: 'auto', optie: '', code: 'Rijbewijs B', t: 'Auto', d: 'Persoonlijke rijlessen op maat, met de RIS-methode en zo veel mogelijk een vaste instructeur.', tag: '2toDrive vanaf 16,5 jaar', src: auto, alt: 'Drie witte lesauto’s van KERN met lesbord op het dak, voor een rode loods', pos: '50% 60%' },
+  { kies: 'motor', optie: '', code: 'Rijbewijs A1, A2, A', t: 'Motor', d: 'KNMV-instructeurs die les geven vanaf de motor, met communicatie in de helm.', tag: 'Proefles 1,5 uur', src: dijk, alt: 'Een instructeur en een leerling met KERN-hesje rijden op motoren over een dijkweg', pos: '50% 55%' },
+  { kies: 'motor', optie: 'spoed', code: 'Spoedopleiding', t: 'Motorspoed in 4 dagen', d: 'AVB en AVD in vier dagen: 21,5 uur les en beide examens.', tag: 'Intake verplicht', src: avb2, alt: 'Een leerling op een motor neemt een bocht tussen de kegels, de instructeur kijkt toe', pos: '50% 45%' },
+  { kies: 'aanhanger', optie: '', code: 'Rijbewijs BE', t: 'Aanhanger', d: 'Je BE-rijbewijs in 1 dag, met vooraf een intakeles. Een theorie-examen is niet nodig.', tag: 'Dagopleiding', src: vloot, alt: 'Het wagenpark van KERN van boven: aanhanger, lesauto’s, scooters en motoren', pos: '50% 30%' },
+  { kies: 'bromfiets', optie: '', code: 'Rijbewijs AM', t: 'Bromfiets', d: 'Opgeleid door een KNMV-motorinstructeur, veilig oefenen op ons eigen terrein.', tag: 'ALL-IN pakket', src: kegels, alt: 'Oefenkegels in oranje, blauw en wit op het oefenterrein', pos: '50% 50%' },
+  { kies: '', optie: '', code: 'Theorie', t: 'Theorie', d: 'iTheorie online, Verjo-boeken of privéles thuis. Wij kunnen je examen reserveren.', tag: 'Ook bij dyslexie', src: theorie, alt: 'Een hand vult een examenformulier in naast een tablet', pos: '50% 50%' },
+];
+
+const auto_ = rijbewijzen.find((r) => r.id === 'auto')!;
+const prijzen = [
+  { t: 'Auto', code: 'Rijbewijs B', icoon: 'auto', rijen: [['Startpakket: 5 uur les + RIS-boek', '€ 372,-'], ['Aanvullend pakket 10 uur', '€ 730,-'], ['Pakket 30 uur + praktijkexamen', '€ 2.513,-'], ['Losse les, 60 minuten', '€ 75,-'], ['Praktijkexamen B', '€ 331,-']] },
+  { t: 'Motor', code: 'Rijbewijs A', icoon: 'motor', rijen: [['Proefles / intakeles, 1,5 uur', '€ 94,-'], ['Motorpakket 10 uur', '€ 720,-'], ['Motorpakket 20 uur', '€ 1.400,-'], ['Spoed AVB + AVD in 4 dagen', '€ 2.106,50'], ['Losse les, 60 minuten', '€ 76,-']] },
+  { t: 'Aanhanger', code: 'Rijbewijs BE', icoon: 'aanhanger', rijen: [['Dagopleiding: 6,5 uur les + BE-examen', '€ 899,50'], ['Losse les, 60 minuten', '€ 87,-'], ['BE-examen', '€ 360,-']] },
+];
+const dagenAlle = [['Ma', 'maandag'], ['Di', 'dinsdag'], ['Wo', 'woensdag'], ['Do', 'donderdag'], ['Vr', 'vrijdag'], ['Za', 'zaterdag']];
+---
+<Base title={`${site.naam} | Rijschool voor auto, motor, bromfiets en aanhanger`} description="Rijschool met een eigen motor-oefenterrein in Arkel. Auto (B), motor (A), bromfiets (AM) en aanhanger (BE). KNMV-gecertificeerde instructeurs, 4,8 op Google. Meld je direct aan.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun eigen oefenterrein in Arkel -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7.5rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600, 2048]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0f163899_0%,#0f1638d9_38%,#0f1638f5_100%)] lg:bg-[linear-gradient(90deg,#0f1638f7_0%,#0f1638d9_38%,#0f163840_68%,#0f163800_100%)]" aria-hidden="true"></div>
+      <div class="wrap w-full pb-14 pt-20 md:pb-16 lg:pb-16 lg:pt-20">
+        <div class="max-w-[48rem]">
+          <p class="eyebrow">Verkeersopleidingen in de Alblasserwaard</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Leer niet alleen slagen. Leer <span class="text-oranje">rijden.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Auto, motor, bromfiets en aanhanger bij KERN Verkeersopleidingen: al meer dan 40 jaar vakbekwaam, met een eigen motor-oefenterrein in Arkel.</p>
+          <p class="mt-8 text-sm font-semibold uppercase tracking-[.14em] text-licht/80">Voor welk rijbewijs wil jij slagen?</p>
+          <ul class="mt-3 grid max-w-[40rem] grid-cols-2 gap-2.5 sm:grid-cols-4">
+            {kiezen.map((k) => (
+              <li>
+                <a href="#aanmelden" data-kies={k.id} class="kies-tegel group">
+                  <Icoon naam={k.icoon} class="h-7 w-7 text-oranje transition-colors group-hover:text-inkt" />
+                  <span class="mt-3 block font-kop text-xl font-bold uppercase leading-none">{k.t}</span>
+                  <span class="mt-1 block text-xs opacity-80">Rijbewijs {k.code}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Rijles ma t/m za vanaf 7.00 uur</span></li>
+            <li><a href={site.telHref} class="num font-semibold text-licht no-underline hover:text-oranje-diep">{site.tel}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Opleidingen in het kort">
+      <div class="wrap flex items-center gap-x-2.5 gap-y-2.5 overflow-x-auto py-5 [scrollbar-width:none] lg:flex-wrap lg:justify-center lg:overflow-visible">
+        {['2toDrive vanaf 16,5 jaar', 'Automaat', 'ADHD, autisme en faalangst', 'Motor A1, A2 en A', 'Motorspoed in 4 dagen', 'Aanhanger in 1 dag'].map((c) => <a href="#rijbewijzen" class="shrink-0 rounded-sm bg-vlak px-3.5 py-2 text-sm font-medium no-underline transition-colors hover:bg-oranje">{c}</a>)}
+      </div>
+    </section>
+
+    <!-- 3. Rijbewijzen -->
+    <section id="rijbewijzen" class="py-20 lg:py-24" aria-labelledby="t-rij">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Rijbewijzen</p>
+            <h2 id="t-rij" class="mt-4 text-3xl">Van je eerste les tot je examen.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Kies je rijbewijs: de kaart brengt je direct naar het aanmeldformulier, met jouw keuze al ingevuld.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {kaarten.map((k, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={k.kies ? '#aanmelden' : '#contact'} data-kies={k.kies || undefined} data-optie={k.optie || undefined} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="relative overflow-hidden">
+                  <Image src={k.src} alt={k.alt} widths={[400, 600, 800]} sizes="(min-width: 1248px) 390px, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw" class="aspect-[16/9] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${k.pos}`} />
+                  <span class="absolute left-3 top-3 rounded-sm bg-wit/95 px-2.5 py-1 text-xs font-semibold">{k.tag}</span>
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-[.14em] text-roest">{k.code}</p>
+                    <h3 class="mt-2 font-kop text-[1.75rem] uppercase">{k.t}</h3>
+                    <p class="mt-2 text-grijs">{k.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-vlak text-inkt transition-colors group-hover:bg-oranje" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Oefenterrein -->
+    <section id="oefenterrein" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-terrein">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Eigen motor-oefenterrein</p>
+          <h2 id="t-terrein" class="mt-4 text-3xl">Oefenen zonder verkeer om je heen.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Je motorlessen beginnen op ons eigen terrein aan de Vlietskade in Arkel. Alle oefeningen staan standaard uitgezet met kegels, dus de les gaat over jou. Ook je AVB-examen doe je hier: de examinator van het CBR komt naar ons toe.</p>
+          <ul class="mt-9 grid gap-3">
+            <li class="flex items-start gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-oranje text-inkt"><Icoon naam="kegel" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg font-bold">Examen in je vertrouwde omgeving</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">De examenoefeningen staan op de plek waar jij ze gewend bent.</p></div>
+            </li>
+            <li class="flex items-start gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-oranje text-inkt"><Icoon naam="praat2" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg font-bold">Les vanaf de motor</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">De instructeur rijdt mee, ook als het regent. Via het systeem in je helm praat je terug.</p></div>
+            </li>
+            <li class="flex items-start gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-oranje text-inkt"><Icoon naam="helm" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg font-bold">Kleding en helm in alle maten</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Gratis te gebruiken tijdens je lessen. Eerst investeren hoeft niet.</p></div>
+            </li>
+          </ul>
+        </div>
+        <div class="grid grid-cols-2 gap-3 md:gap-4 lg:col-span-7">
+          <figure class="col-span-2 overflow-hidden rounded-lg">
+            <Image src={avb} alt="Een leerling op een motor slalomt tussen de kegels op het oefenterrein" widths={[640, 960, 1300]} sizes="(min-width: 1248px) 680px, (min-width: 1024px) 55vw, 92vw" class="aspect-[16/9] w-full object-cover object-[50%_45%]" />
+          </figure>
+          <figure class="overflow-hidden rounded-lg">
+            <Image src={terreinMotor} alt="Een groen-witte motor op het oefenterrein, met kegels op de achtergrond" widths={[400, 640]} sizes="(min-width: 1024px) 330px, 45vw" class="aspect-[4/3] w-full object-cover object-[45%_60%]" />
+          </figure>
+          <figure class="overflow-hidden rounded-lg">
+            <Image src={tank} alt="Close-up van een blauwe lesmotor met het KERN-logo op de tank" widths={[400, 640]} sizes="(min-width: 1024px) 330px, 45vw" class="aspect-[4/3] w-full object-cover object-[60%_50%]" />
+          </figure>
+          <p class="col-span-2 flex flex-wrap items-center justify-between gap-3 text-[.9375rem] text-licht-zacht">
+            <span class="flex items-center gap-2"><Icoon naam="pin" class="h-5 w-5 text-oranje-diep" />{site.straat}, {site.plaats} <span class="text-licht-zacht/80">(GPS: {site.gps})</span></span>
+            <a href={site.maps} class="link font-semibold text-licht">Route plannen</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Over KERN -->
+    <section id="over" class="py-20 lg:py-24" aria-labelledby="t-over">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-14">
+        <figure class="relative lg:col-span-6">
+          <Image src={uitleg} alt="Een instructeur met fluorgele helm geeft uitleg aan een leerling, allebei op een motor" widths={[640, 960, 1300]} sizes="(min-width: 1248px) 600px, (min-width: 1024px) 48vw, 92vw" class="aspect-[4/3] w-full rounded-lg object-cover object-[45%_40%]" />
+          <figcaption class="absolute -bottom-6 right-4 max-w-[17rem] rounded-md bg-oranje px-5 py-4 text-inkt shadow-md md:right-8">
+            <span class="block font-kop text-2xl font-bold uppercase leading-none">Ruim 40 jaar in het vak</span>
+            <span class="mt-1 block text-sm">en dat merk je!</span>
+          </figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over KERN</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Al meer dan 40 jaar een begrip in de Alblasserwaard.</h2>
+          <p class="mt-6 text-lg text-grijs">KERN is de rijschool van Arjan Koppelaar. Onze instructeurs geven les met persoonlijke aandacht en betrokkenheid. Het kantoor zit in Hardinxveld-Giessendam; we rijden in de hele regio, van Sliedrecht, Giessenburg en Werkendam tot Almkerk, Nieuwendijk en ons motorpark in Arkel.</p>
+          <p class="mt-8 text-sm font-semibold uppercase tracking-[.14em] text-grijs">Onze vier KERNwaarden</p>
+          <ul class="mt-3 grid grid-cols-1 gap-2.5 min-[400px]:grid-cols-2">
+            {[['K', 'Kwaliteit'], ['E', 'Enthousiasme'], ['R', 'Rust'], ['N', 'Nauwkeurigheid']].map(([l, w]) => (
+              <li class="kaart flex items-center gap-4 px-4 py-3"><span class="font-kop text-4xl font-bold leading-none text-roest">{l}</span><span class="text-[.9375rem] font-semibold">{w}</span></li>
+            ))}
+          </ul>
+          <ul class="mt-8 grid gap-x-6 gap-y-3 text-[.9375rem] sm:grid-cols-2">
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-roest" />Gespecialiseerd in ADHD, autisme en faalangst</li>
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-roest" />Automaat leren rijden zonder extra kosten</li>
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-roest" />De instructeur haalt je op: thuis, school of werk</li>
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-1 h-4 w-4 shrink-0 text-roest" />Geslaagd met uren over? Die krijg je terug</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Prijzen -->
+    <section id="prijzen" class="bg-vlak py-20 lg:py-24" aria-labelledby="t-prijzen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Prijzen</p>
+            <h2 id="t-prijzen" class="mt-4 text-3xl">Wat kost je rijbewijs?</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Een pakket lest goedkoper dan losse lessen. Ben je bij ons geslaagd en heb je uren over, dan betalen we die terug.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {prijzen.map((p, i) => (
+            <li class="rijs kaart flex flex-col p-5 sm:p-6 md:p-8" style={`--d:${i * 0.06}s`}>
+              <div class="flex items-center justify-between gap-4">
+                <div><p class="text-xs font-semibold uppercase tracking-[.14em] text-roest">{p.code}</p><h3 class="mt-1.5 font-kop text-[2rem] uppercase [overflow-wrap:normal]">{p.t}</h3></div>
+                <span class="grid h-12 w-12 place-items-center rounded-md bg-vlak"><Icoon naam={p.icoon} class="h-6 w-6" /></span>
+              </div>
+              <table class="mt-6 w-full flex-1 text-sm sm:text-[.9375rem]">
+                <caption class="sr-only">Prijzen {p.t}</caption>
+                <tbody>
+                  {p.rijen.map(([o, b], j) => (
+                    <tr class="border-t border-lijn">
+                      <th scope="row" class={`py-3 pr-4 text-left font-normal ${j === 0 ? 'font-semibold' : ''}`}>{o}</th>
+                      <td class={`num whitespace-nowrap py-3 text-right font-semibold ${j === 0 ? 'text-roest' : ''}`}>{b}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <a href="#aanmelden" data-kies={p.t.toLowerCase()} class="knop knop-inkt knop-klein mt-6 w-full whitespace-normal text-center">Aanmelden voor {p.t.toLowerCase()}<Icoon naam="pijl" /></a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 text-sm text-grijs">Prijzen vanaf 01-01-2026, wijzigingen voorbehouden. Theorie-leermiddelen en -examens regelen we ook; vraag ernaar via <a href={waVraag} class="link font-semibold text-inkt">WhatsApp</a>.</p>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Ervaringen</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat leerlingen zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-3xl font-bold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-4 flex-1 leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-6 flex items-center gap-3 border-t border-lijn pt-4">
+                <span class="grid h-10 w-10 place-items-center rounded-md bg-vlak font-kop text-lg font-bold text-roest" aria-hidden="true">{r.naam[0].toUpperCase()}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">{r.bron === 'Google' ? 'Google-review' : 'Facebook-recensie'}, {r.wanneer}</span></span>
+                {r.bron === 'Google' ? <Icoon naam="g" class="h-5 w-5" /> : <Icoon naam="fb" class="h-5 w-5 text-[#1877f2]" />}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-center"><a href={site.reviews} class="link font-semibold">Alle reviews op Google</a><a href={`${site.facebook}reviews`} class="link font-semibold">Recensies op Facebook</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Aanmelden: in vier stappen naar een ingevuld bericht -->
+    <section id="aanmelden" class="donker bg-nacht py-20 text-licht lg:py-24" aria-labelledby="t-aanmelden">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-12">
+        <div class="lg:col-span-12 grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow">Aanmelden of proefles</p>
+            <h2 id="t-aanmelden" class="mt-4 text-3xl">Meld je aan in één minuut.</h2>
+          </div>
+          <p class="text-lg text-licht-zacht lg:col-span-4 lg:col-start-9">Kies je rijbewijs, je opleiding en de dagen dat je kunt. Wij nemen zo spoedig mogelijk contact met je op om je eerste les te plannen.</p>
+        </div>
+        <div class="lg:col-span-4">
+          <ol class="space-y-4 text-[.9375rem]" aria-label="Zo werkt het">
+            {['Kies rijbewijs en opleiding', 'Geef je beschikbare dagen door', 'Verstuur via WhatsApp of e-mail', 'Wij nemen contact met je op'].map((s, i) => (
+              <li class="flex items-center gap-4"><span class="num grid h-9 w-9 shrink-0 place-items-center rounded-md bg-nacht-2 font-kop text-lg font-bold text-oranje-diep">{i + 1}</span>{s}</li>
+            ))}
+          </ol>
+          <figure class="mt-9 hidden overflow-hidden rounded-lg lg:block">
+            <Image src={instructeur} alt="Een instructeur met fluorgele helm en headset op de motor" widths={[400, 640]} sizes="340px" class="aspect-[4/3] w-full object-cover object-[45%_40%]" />
+          </figure>
+          <p class="mt-9 text-[.9375rem] text-licht-zacht">Liever direct contact? Bel <a href={site.telHref} class="num link font-semibold text-licht">{site.tel}</a> of stuur een <a href={waVraag} class="link font-semibold text-licht">WhatsApp</a>.</p>
+        </div>
+
+        <form class="aanmeld rounded-lg bg-wit p-6 text-inkt shadow-md sm:p-8 lg:col-span-8 lg:p-10" data-aanmeld novalidate>
+          <div class="flex items-center justify-between gap-4">
+            <p class="text-sm font-semibold text-grijs" aria-live="polite"><span data-stap-tekst>Stap 1 van 4</span></p>
+            <button type="button" class="hidden items-center gap-1.5 text-sm font-semibold text-grijs hover:text-inkt" data-terug><Icoon naam="terug" class="h-4 w-4" />Terug</button>
+          </div>
+          <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-vlak" aria-hidden="true"><div class="h-full w-1/4 rounded-full bg-oranje transition-[width] duration-500" data-balk></div></div>
+
+          <!-- Stap 1 -->
+          <fieldset class="stap mt-8" data-stap="1">
+            <legend class="font-kop text-3xl font-bold uppercase">Welk rijbewijs?</legend>
+            <div class="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
+              {rijbewijzen.map((r) => (
+                <label class="tegel">
+                  <input type="radio" name="rijbewijs" value={r.id} class="sr-only" />
+                  <span class="tegel-in">
+                    <Icoon naam={r.id === 'bromfiets' ? 'brommer' : r.id} class="h-8 w-8" />
+                    <b class="mt-4 block font-kop text-xl uppercase leading-none sm:text-[1.375rem]">{r.t}</b>
+                    <small class="mt-1 block text-[.8125rem] text-grijs">{r.code}</small>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- Stap 2 -->
+          <fieldset class="stap mt-8" data-stap="2">
+            <legend class="font-kop text-3xl font-bold uppercase">Welke opleiding?</legend>
+            {rijbewijzen.map((r) => (
+              <div class="mt-6 grid gap-3 sm:grid-cols-2" data-groep={r.id}>
+                {r.opties.map((o) => (
+                  <label class="optie">
+                    <input type="radio" name={`optie-${r.id}`} value={o.t} data-id={o.id} class="sr-only" />
+                    <span class="optie-in">
+                      <span class="flex items-start justify-between gap-3"><b class="font-semibold">{o.t}</b>{o.prijs && <span class="num whitespace-nowrap text-sm font-semibold text-roest">{o.prijs}</span>}</span>
+                      <span class="mt-1 block text-sm text-grijs">{o.d}</span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ))}
+          </fieldset>
+
+          <!-- Stap 3 -->
+          <fieldset class="stap mt-8" data-stap="3">
+            <legend class="font-kop text-3xl font-bold uppercase">Wanneer kun je?</legend>
+            <p class="mt-2 text-grijs">Kies de dagen waarop je beschikbaar bent. Rijles is mogelijk vanaf 7.00 uur, van maandag tot en met zaterdag.</p>
+            <div class="mt-6 flex flex-wrap gap-2.5">
+              {dagenAlle.map(([d, vol]) => (
+                <label class="dag"><input type="checkbox" name="dagen" value={vol} class="sr-only" aria-label={vol} /><span aria-hidden="true">{d}</span></label>
+              ))}
+            </div>
+          </fieldset>
+
+          <!-- Stap 4 -->
+          <fieldset class="stap mt-8" data-stap="4">
+            <legend class="font-kop text-3xl font-bold uppercase">Je gegevens</legend>
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" autocomplete="name" class="veld mt-2" /></label>
+              <label class="block"><span class="text-sm font-semibold">Woonplaats</span><input name="plaats" autocomplete="address-level2" class="veld mt-2" /></label>
+              <label class="block sm:col-span-2"><span class="text-sm font-semibold">Vraag of opmerking <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="vraag" rows="3" class="veld mt-2" placeholder="Bijvoorbeeld: ik heb mijn theorie al gehaald"></textarea></label>
+            </div>
+            <div class="mt-7 rounded-md bg-vlak p-5 text-[.9375rem]" data-samenvatting aria-live="polite"></div>
+          </fieldset>
+
+          <div class="mt-8 flex flex-wrap items-center gap-3" data-acties>
+            <button type="button" class="knop knop-oranje" data-verder>Verder<Icoon naam="pijl" /></button>
+            <button type="submit" class="knop knop-oranje hidden" data-wa-knop><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand hidden" data-mail-knop><Icoon naam="mail" />Of per e-mail</a>
+          </div>
+          <p class="mt-4 text-sm text-grijs" data-melding>Er wordt niets verstuurd tot je in WhatsApp of je mailprogramma zelf op verzenden drukt.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Lestijden en locaties -->
+    <section id="contact" class="py-20 lg:py-24" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="eyebrow">Lestijden en locaties</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Rijles van vroeg tot laat.</h2>
+          <div class="kaart mt-8 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="font-kop text-2xl uppercase">Rijles mogelijk</h3>
+              <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Tijden waarop rijles mogelijk is</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold data-[vandaag]:text-roest">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <ul class="mt-6 grid gap-3">
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-oranje text-inkt"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen of WhatsApp</b><span class="num text-grijs">{site.tel} of {site.tel2}</span></span><Icoon naam="pijl" class="h-5 w-5 text-roest" /></a></li>
+          </ul>
+        </div>
+        <div class="flex min-w-0 flex-col gap-5 lg:col-span-7 lg:pt-[5.5rem]">
+          <figure class="overflow-hidden rounded-lg">
+            <Image src={auto} alt="De lesauto’s van KERN naast elkaar" widths={[600, 900, 1300]} sizes="(min-width: 1248px) 680px, (min-width: 1024px) 56vw, 92vw" class="aspect-[21/9] w-full object-cover object-[50%_58%]" />
+          </figure>
+          <ul class="grid gap-3">
+            {locaties.map((l) => (
+              <li class="kaart flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-roest" /><span><b class="font-semibold">{l.t}</b><span class="block text-sm text-grijs">{l.d}</span><span class="mt-1 block">{l.adres}, {l.pc}</span></span></p>
+                <a href={l.maps} class="knop knop-rand knop-klein shrink-0">Route<Icoon naam="pijl" /></a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-oranje text-inkt" aria-label="Aanmelden">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(2.25rem,2.5vw+1.4rem,3.5rem)]">Klaar voor de start?</h2>
+          <p class="mt-2 text-lg">Meld je aan, dan plannen we samen je eerste les.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="#aanmelden" class="knop knop-inkt">Aanmelden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-rand num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-aanmeld]');
+  if (f) {
+    f.classList.add('stappen');
+    let stap = 1;
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const stappen = [...f.querySelectorAll<HTMLElement>('[data-stap]')];
+    const verder = $<HTMLButtonElement>('[data-verder]');
+    const terug = $<HTMLButtonElement>('[data-terug]');
+    const waKnop = $<HTMLButtonElement>('[data-wa-knop]');
+    const mailKnop = $<HTMLAnchorElement>('[data-mail-knop]');
+    const melding = $<HTMLElement>('[data-melding]');
+    const namen: Record<string, string> = { auto: 'Auto (rijbewijs B)', motor: 'Motor (rijbewijs A)', aanhanger: 'Aanhanger (rijbewijs BE)', bromfiets: 'Bromfiets (rijbewijs AM)' };
+    const rb = () => (f.querySelector<HTMLInputElement>('input[name=rijbewijs]:checked')?.value || '');
+    const optie = () => (f.querySelector<HTMLInputElement>(`input[name="optie-${rb()}"]:checked`)?.value || '');
+    const dagen = () => [...f.querySelectorAll<HTMLInputElement>('input[name=dagen]:checked')].map((i) => i.value);
+    const veld = (n: string) => (f.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name=${n}]`)?.value || '').trim();
+
+    const bericht = () => {
+      const r = [`Hallo KERN, ik wil me graag aanmelden.`, `Rijbewijs: ${namen[rb()] || '-'}`];
+      if (optie()) r.push(`Opleiding: ${optie()}`);
+      if (dagen().length) r.push(`Beschikbaar op: ${dagen().join(', ')}`);
+      if (veld('plaats')) r.push(`Woonplaats: ${veld('plaats')}`);
+      if (veld('vraag')) r.push(`Vraag: ${veld('vraag')}`);
+      if (veld('naam')) r.push(`Groet, ${veld('naam')}`);
+      return r.join('\n');
+    };
+
+    const toon = () => {
+      stappen.forEach((s) => (s.hidden = Number(s.dataset.stap) !== stap));
+      f.querySelectorAll<HTMLElement>('[data-groep]').forEach((g) => (g.hidden = g.dataset.groep !== rb()));
+      $<HTMLElement>('[data-stap-tekst]').textContent = `Stap ${stap} van 4`;
+      $<HTMLElement>('[data-balk]').style.width = `${stap * 25}%`;
+      terug.classList.toggle('hidden', stap === 1); terug.classList.toggle('inline-flex', stap > 1);
+      verder.classList.toggle('hidden', stap === 4);
+      waKnop.classList.toggle('hidden', stap !== 4);
+      mailKnop.classList.toggle('hidden', stap !== 4);
+      if (stap === 4) {
+        const s = $<HTMLElement>('[data-samenvatting]');
+        s.innerHTML = '';
+        const kop = document.createElement('p'); kop.className = 'font-semibold'; kop.textContent = 'Je bericht'; s.append(kop);
+        const pre = document.createElement('p'); pre.className = 'mt-2 whitespace-pre-line text-grijs'; pre.textContent = bericht(); s.append(pre);
+        mailKnop.href = `mailto:${'aanmeldingen@kernverkeersopleidingen.nl'}?subject=${encodeURIComponent('Aanmelding ' + (namen[rb()] || ''))}&body=${encodeURIComponent(bericht())}`;
+      }
+      melding.textContent = 'Er wordt niets verstuurd tot je in WhatsApp of je mailprogramma zelf op verzenden drukt.';
+    };
+
+    const kan = () => {
+      if (stap === 1 && !rb()) return 'Kies eerst een rijbewijs.';
+      if (stap === 2 && !optie()) return 'Kies een opleiding.';
+      if (stap === 3 && !dagen().length) return 'Kies minstens één dag.';
+      return '';
+    };
+    const ga = (n: number, focus = true) => { stap = Math.max(1, Math.min(4, n)); toon(); if (focus) stappen[stap - 1].querySelector<HTMLElement>('legend')?.setAttribute('tabindex', '-1'), stappen[stap - 1].querySelector<HTMLElement>('legend')?.focus({ preventScroll: true }); };
+
+    verder.addEventListener('click', () => { const fout = kan(); if (fout) { melding.textContent = fout; return; } ga(stap + 1); });
+    terug.addEventListener('click', () => ga(stap - 1));
+    // Na een keuze in stap 1 en 2 automatisch door.
+    f.addEventListener('change', (e) => {
+      const t = e.target as HTMLInputElement;
+      if (t.name === 'rijbewijs' && stap === 1) setTimeout(() => ga(2), 180);
+      else if (t.name.startsWith('optie-') && stap === 2) setTimeout(() => ga(3), 180);
+    });
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/31619086261?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+    });
+
+    // Snelkeuzes elders op de pagina (hero, kaarten, prijzen) vullen het formulier alvast in.
+    document.querySelectorAll<HTMLAnchorElement>('a[data-kies]').forEach((a) => a.addEventListener('click', () => {
+      const r = f.querySelector<HTMLInputElement>(`input[name=rijbewijs][value="${a.dataset.kies}"]`);
+      if (!r) return;
+      r.checked = true;
+      const o = a.dataset.optie && f.querySelector<HTMLInputElement>(`input[name="optie-${a.dataset.kies}"][data-id="${a.dataset.optie}"]`);
+      if (o) o.checked = true;
+      ga(o ? 3 : 2, false);
+    }));
+    toon();
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .9; letter-spacing: -0.012em; }
+  .status-stip { width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open='true'] .status-stip { background: var(--color-groen); box-shadow: 0 0 0 4px #2fbf7133; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; padding: .35rem .8rem; border-radius: 999px; background: var(--color-vlak); }
+  .status-pil .status-stip { background: #8a93a8; }
+  .status-pil[data-open='true'] .status-stip { background: var(--color-groen); }
+
+  .kies-tegel { display: block; height: 100%; padding: 1rem 1rem .95rem; border-radius: var(--radius-md); background: #f4f5f714; box-shadow: inset 0 0 0 1px #f4f5f740; backdrop-filter: blur(8px); color: var(--color-licht); text-decoration: none; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .kies-tegel:hover { background: var(--color-oranje); color: var(--color-inkt); transform: translateY(-2px); }
+
+  .tegel-in { display: block; height: 100%; padding: 1.15rem; border-radius: var(--radius-md); box-shadow: inset 0 0 0 1.5px #0f143026; cursor: pointer; transition: box-shadow .2s, background-color .2s; }
+  .tegel-in:hover { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .tegel input:checked + .tegel-in { background: #f26a1b1f; box-shadow: inset 0 0 0 2px var(--color-oranje); }
+  .tegel input:focus-visible + .tegel-in, .optie input:focus-visible + .optie-in { outline: 3px solid var(--color-oranje); outline-offset: 2px; }
+  .optie-in { display: block; height: 100%; padding: 1rem 1.15rem; border-radius: var(--radius-md); box-shadow: inset 0 0 0 1.5px #0f143026; cursor: pointer; transition: box-shadow .2s, background-color .2s; }
+  .optie-in:hover { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .optie input:checked + .optie-in { background: #f26a1b1f; box-shadow: inset 0 0 0 2px var(--color-oranje); }
+  .dag span { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: var(--radius-md); box-shadow: inset 0 0 0 1.5px #0f143026; font-weight: 600; cursor: pointer; transition: background-color .2s, box-shadow .2s; }
+  .dag span:hover { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .dag input:checked + span { background: var(--color-oranje); box-shadow: none; }
+  .dag input:focus-visible + span { outline: 3px solid var(--color-oranje); outline-offset: 2px; }
+  .dag[hidden] { display: none; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #0f143033; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #0f143066; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-oranje); }
+  .veld::placeholder { color: #737b8f; }
+  .stap[hidden], [data-groep][hidden] { display: none; }
+  .stap legend:focus { outline: none; }
+</style>

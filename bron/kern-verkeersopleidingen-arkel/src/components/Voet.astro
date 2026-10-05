@@ -1,0 +1,61 @@
+---
+import { site, url, tijden, waVraag } from '../data/site';
+import Icoon from './Icoon.astro';
+import logoWit from '../assets/logo-wit.svg';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="inline-block" aria-label={`${site.naam}, naar de homepage`}>
+        <img src={logoWit.src} alt={site.naam} width="156" height="55" class="h-[55px] w-auto" loading="lazy" />
+      </a>
+      <p class="mt-6 max-w-xs">Rijschool voor auto, motor, bromfiets en aanhanger. Met een eigen motor-oefenterrein aan de Vlietskade in Arkel.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-oranje hover:text-inkt" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-oranje hover:text-inkt" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+        <a href={waVraag} class="grid h-10 w-10 place-items-center rounded-md bg-nacht-2 text-licht transition-colors hover:bg-oranje hover:text-inkt" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Rijbewijzen</p>
+      <ul class="mt-4 space-y-2">
+        {['Auto (B)', 'Motor (A)', 'Bromfiets (AM)', 'Aanhanger (BE)', 'Theorie', 'Prijzen'].map((c) => <li><a href={h(c === 'Prijzen' ? 'prijzen' : 'rijbewijzen')} class="no-underline transition-colors hover:text-oranje-diep">{c}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-oranje-diep">{site.tel}</a></li>
+        <li><a href={site.tel2Href} class="num whitespace-nowrap no-underline transition-colors hover:text-oranje-diep">{site.tel2}</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-oranje-diep">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-oranje-diep">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Rijles mogelijk</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Lestijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-oranje-diep">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam} · KvK {site.kvk} · CBR-rijschoolnummer {site.cbr}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-oranje-diep">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van uw huidige website en uw Google-bedrijfsprofiel, kentekens onherkenbaar gemaakt. Prijzen van uw prijspagina’s (vanaf 01-01-2026). Reviews letterlijk van Google en Facebook (stand 5 oktober 2026).</p>}
+  </div>
+</footer>
