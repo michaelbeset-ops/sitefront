@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://localhost:4394/sitefront/rosa-gorinchem/', { waitUntil: 'networkidle' });
+await p.click('[data-stuk="jas"]'); await p.fill('input[name=maat]', 'XL'); await p.check('input[value=opsturen]');
+console.log(await p.textContent('[data-bericht-uit]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.check('input[name=anders]'); await p.fill('input[name=welke]', 'de rode bomberjas'); console.log(await p.textContent('[data-bericht-uit]'));
+console.log('pressed', await p.locator('[aria-pressed=true]').count());
+await p.uncheck('input[name=anders]'); await p.click('[data-stuk="riem"]');
+await p.locator('#binnen').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200); await p.screenshot({ path: 'shots/wow-1440.png' });
+console.log('jsonld', await p.locator('script[type="application/ld+json"]').count(), 'robots', await p.getAttribute('meta[name=robots]', 'content'), 'canonical', await p.locator('link[rel=canonical]').count(), errs);
+await b.close();
