@@ -1,0 +1,584 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, url, tijden, types, perioden, groepBorg, kleinTarief, extras, locaties, aantalAdressen, reviews, waVraag } from '../data/site';
+import hero from '../assets/hero.jpg';
+import smartbak from '../assets/smartbak.jpg';
+import huboB from '../assets/hubo-b.jpg';
+import hubo from '../assets/hubo.jpg';
+import karwei from '../assets/karwei.jpg';
+import tamoil from '../assets/tamoil.jpg';
+
+const vanaf: Record<string, string> = { a: '€ 23', b: '€ 32', c: '€ 37', d: '€ 42', motor: '€ 30', bagage: '€ 30' };
+const vanafPer: Record<string, string> = { a: '3 uur', b: '3 uur', c: '3 uur', d: '3 uur', motor: 'dag', bagage: 'dag' };
+const plusLoc = `${Math.floor(aantalAdressen / 10) * 10}+`;
+const provincies = [...new Set(locaties.map((l) => l.p))].sort((a, b) => (a.startsWith('Buitenland') ? 1 : b.startsWith('Buitenland') ? -1 : a.localeCompare(b)));
+const typeNaam = Object.fromEntries(types.map((t) => [t.key, t.naam]));
+
+// Bovenaanzicht op schaal: 300 cm = volle breedte.
+const schets = (t: (typeof types)[number]) => {
+  const s = 0.62, L = t.l * s, W = t.w * s, x0 = 200 - L, y0 = 60 - W / 2;
+  return { L, W, x0, y0, dicht: t.h >= 100 };
+};
+
+const groepen = [
+  { g: 1, titel: 'Kort huren', sub: 'uren en losse dagen' },
+  { g: 2, titel: '2 tot 5 dagen', sub: 'een weekend of klus' },
+  { g: 3, titel: '6 tot 14 dagen', sub: 'een verhuizing of verbouwing' },
+];
+---
+<Base title="Laaiin Aanhangwagens | Aanhanger huren in Hank en door heel Nederland" description="Meer dan 550 Laaiin-aanhangwagens bij tankstations en bouwmarkten en bij de loods in Hank. Kies uw type, zie direct de prijs en reserveer via WhatsApp.">
+  <Kop />
+  <main id="inhoud">
+    <!-- HERO -->
+    <section class="donker relative isolate overflow-hidden bg-asfalt text-licht">
+      <Image src={hero} alt="Laaiin-aanhangwagens voor Scan & Go klaar op een verhuurlocatie, een open aanhanger met net voor twee gesloten aanhangers" widths={[828, 1280, 2048]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_60%] max-md:object-[72%_50%]" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#16181bf2_0%,#16181bd9_34%,#16181b66_62%,#16181b26_100%)] max-md:bg-[linear-gradient(180deg,#16181b99_0%,#16181bcc_40%,#16181bf0_100%)]"></div>
+      <div class="wrap flex min-h-[calc(100svh-7rem)] flex-col justify-center pb-40 pt-16 md:pb-40 lg:min-h-[43rem]">
+        <p class="eyebrow">Aanhangwagenverhuur · Hank</p>
+        <h1 class="mt-5 max-w-[13ch] text-hero">Een aanhanger huren, <span class="text-sein">snel geregeld.</span></h1>
+        <p class="mt-7 max-w-[36rem] text-lg leading-relaxed text-licht/90 md:text-[1.3rem]">Meer dan 550 Laaiin-aanhangwagens staan bij tankstations en bouwmarkten door bijna heel Nederland, en bij onze eigen loods in Hank. Kies uw type, zie direct de prijs en reserveer via WhatsApp.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#reserveren" class="knop knop-rood"><Icoon naam="kar" />Kies uw aanhanger</a>
+          <a href="#tarieven" class="knop knop-rand op-foto">Bekijk de tarieven</a>
+        </div>
+        <ul class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-[.9375rem]">
+          <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+          <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Loods Hank: ma t/m za open</span></li>
+          <li><a href={site.telHref} class="num font-bold no-underline hover:text-sein">{site.tel}</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SNELKIEZER over de hero-rand -->
+    <div class="wrap relative z-10 -mt-28 md:-mt-32 mb-4">
+      <div class="rounded-[1.75rem] bg-wit p-3 shadow-md ring-1 ring-lijn">
+        <p class="px-3 pb-2 pt-1 text-sm font-bold text-grijs">Welke aanhanger zoekt u?</p>
+        <ul class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+          {types.map((t) => (
+            <li>
+              <a href="#reserveren" data-kies-type={t.key} class="group flex h-full flex-col rounded-[1.1rem] bg-papier px-4 py-3.5 no-underline transition-colors hover:bg-rood hover:text-wit">
+                <span class="font-kop text-[1.05rem] leading-tight">{t.naam}</span>
+                <span class="num mt-0.5 text-[.8125rem] text-grijs group-hover:text-wit/85">{t.maat}</span>
+                <span class="mt-3 text-[.8125rem]">vanaf <b class="num text-[.95rem]">{vanaf[t.key]}</b> / {vanafPer[t.key]}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- RESERVEERHULP -->
+    <section id="reserveren" class="py-20 lg:py-24" aria-labelledby="res-kop">
+      <div class="wrap">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Reserveren</p>
+          <h2 id="res-kop" class="mt-4 text-3xl">In drie stappen uw aanhanger vast.</h2>
+          <p class="mt-5 max-w-2xl text-lg text-grijs">Kies het type, de huurtijd en waar u hem ophaalt. U ziet meteen wat het kost. Daarna staat uw reservering klaar als WhatsApp-bericht aan ons.</p>
+        </div>
+
+        <form class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12" data-res novalidate>
+          <div class="min-w-0 space-y-10 lg:col-span-8">
+            <!-- Stap 1 -->
+            <fieldset class="min-w-0">
+              <legend class="flex items-center gap-3 font-kop text-xl"><span class="grid h-9 w-9 place-items-center rounded-full bg-inkt text-[.95rem] text-wit">1</span>Welk type?</legend>
+              <div class="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3">
+                {types.map((t) => { const s = schets(t); return (
+                  <label class="tegel min-w-0 p-4">
+                    <input type="radio" name="type" value={t.key} checked={t.key === 'b'} />
+                    <svg viewBox="0 0 240 120" class="h-16 w-full md:h-[4.5rem]" aria-hidden="true">
+                      <line x1={s.x0 - 34} y1="60" x2={s.x0} y2={s.y0 + 4} stroke="#16181b" stroke-width="3" stroke-linecap="round" />
+                      <line x1={s.x0 - 34} y1="60" x2={s.x0} y2={s.y0 + s.W - 4} stroke="#16181b" stroke-width="3" stroke-linecap="round" />
+                      <circle cx={s.x0 - 37} cy="60" r="5" fill="#16181b" />
+                      <rect x={s.x0 + s.L * 0.5 - 13} y={s.y0 - 8} width="26" height="8" rx="3" fill="#16181b" />
+                      <rect x={s.x0 + s.L * 0.5 - 13} y={s.y0 + s.W} width="26" height="8" rx="3" fill="#16181b" />
+                      <rect x={s.x0} y={s.y0} width={s.L} height={s.W} rx="6" fill={s.dicht ? '#d0161e' : '#e9ebec'} stroke="#16181b" stroke-width="2.5" />
+                      {!s.dicht && <rect x={s.x0 + 5} y={s.y0 + 5} width={s.L - 10} height={s.W - 10} rx="3" fill="none" stroke="#16181b" stroke-opacity=".25" stroke-width="1.5" stroke-dasharray="4 4" />}
+                    </svg>
+                    <span class="mt-2 flex flex-wrap items-baseline justify-between gap-x-2">
+                      <b class="font-kop text-[1.05rem] leading-tight">{t.naam}</b>
+                      <span class="num whitespace-nowrap text-sm font-bold text-rood"><span class="text-[.75rem] font-semibold text-grijs">v.a. </span>{vanaf[t.key]}</span>
+                    </span>
+                    <span class="num mt-1 block text-[.8125rem] font-semibold text-grijs">{t.maat}</span>
+                  </label>
+                ); })}
+              </div>
+              <p class="mt-3 text-sm text-grijs">Tekening op schaal, van bovenaf gezien. Maten zijn binnenmaten.</p>
+            </fieldset>
+
+            <!-- Stap 2 -->
+            <fieldset class="min-w-0">
+              <legend class="flex items-center gap-3 font-kop text-xl"><span class="grid h-9 w-9 place-items-center rounded-full bg-inkt text-[.95rem] text-wit">2</span>Hoe lang?</legend>
+              <div class="mt-5 flex flex-wrap gap-2" data-duur-groot>
+                {perioden.map((p) => (
+                  <label class="tegel px-4 py-2.5 !rounded-full">
+                    <input type="radio" name="duur" value={p.key} checked={p.key === '24u'} />
+                    <span class="text-[.9375rem] font-bold">{p.naam}</span>
+                  </label>
+                ))}
+              </div>
+              <div class="mt-5 hidden flex-wrap gap-2" data-duur-klein>
+                {kleinTarief.map((p, i) => (
+                  <label class="tegel px-4 py-2.5 !rounded-full">
+                    <input type="radio" name="duurk" value={p.key} checked={i === 0} />
+                    <span class="text-[.9375rem] font-bold">{p.naam}</span>
+                  </label>
+                ))}
+              </div>
+              <p class="mt-3 text-sm text-grijs" data-duur-uitleg>Maximaal 24 uur.</p>
+            </fieldset>
+
+            <!-- Stap 3 -->
+            <fieldset class="min-w-0">
+              <legend class="flex items-center gap-3 font-kop text-xl"><span class="grid h-9 w-9 place-items-center rounded-full bg-inkt text-[.95rem] text-wit">3</span>Waar en wanneer?</legend>
+              <div class="mt-5 kaart grid gap-6 p-5 md:grid-cols-2 md:p-6">
+                <div>
+                <p class="label">Ophaallocatie</p>
+                <div class="flex items-start gap-3 rounded-2xl bg-papier p-4">
+                  <Icoon naam="pin" class="mt-0.5 h-5 w-5 flex-none text-rood" />
+                  <div class="min-w-0">
+                    <p class="font-bold" data-loc-naam>Laaiin Loods Hank</p>
+                    <p class="text-sm text-grijs" data-loc-adres>Mariapolder 73, 4273 CH, Hank</p>
+                  </div>
+                </div>
+                <div class="relative mt-4">
+                  <label for="loc-zoek" class="sr-only">Zoek een andere locatie op plaats of naam</label>
+                  <Icoon naam="zoek" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-grijs" />
+                  <input id="loc-zoek" type="search" class="veld !pl-12" placeholder="Andere plaats? Bijv. Tilburg" autocomplete="off" data-loc-zoek />
+                  <ul class="absolute inset-x-0 top-full z-20 mt-2 hidden max-h-80 overflow-auto rounded-2xl bg-wit p-1.5 shadow-md ring-1 ring-lijn" data-loc-lijst role="listbox" aria-label="Locaties"></ul>
+                </div>
+                <p class="mt-3 hidden rounded-xl bg-rood-zacht px-4 py-3 text-sm font-semibold text-rood-diep" data-loc-waarschuwing></p>
+                </div>
+                <div class="grid content-start gap-4 sm:grid-cols-2">
+                  <div>
+                    <label for="r-datum" class="label">Ophalen op</label>
+                    <input id="r-datum" name="datum" type="date" class="veld" />
+                  </div>
+                  <div>
+                    <label for="r-tijd" class="label">Rond</label>
+                    <select id="r-tijd" name="tijd" class="veld">
+                      <option value="">Kies een tijd</option>
+                      {Array.from({ length: 23 }, (_, i) => { const m = 420 + i * 30; return `${Math.floor(m / 60)}.${m % 60 ? '30' : '00'} uur`; }).map((t) => <option>{t}</option>)}
+                    </select>
+                  </div>
+                  <div class="sm:col-span-2">
+                    <label for="r-naam" class="label">Uw naam</label>
+                    <input id="r-naam" name="naam" type="text" class="veld" autocomplete="name" />
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <!-- Samenvatting -->
+          <aside class="lg:col-span-4">
+            <div class="donker sticky top-28 rounded-[1.75rem] bg-asfalt p-6 text-licht shadow-md md:p-7">
+              <p class="eyebrow">Uw reservering</p>
+              <p class="mt-4 font-kop text-2xl" data-sam-type>Type B</p>
+              <p class="text-sm text-licht-zacht" data-sam-maat>Speciale aanhangwagen, 250 × 125 × 28 cm</p>
+              <dl class="mt-6 space-y-3 border-t border-lijn-licht pt-5 text-[.9375rem]">
+                <div class="flex justify-between gap-4"><dt class="text-licht-zacht">Huurtijd</dt><dd class="text-right font-semibold" data-sam-duur>24 uur</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-licht-zacht">Ophalen</dt><dd class="text-right font-semibold" data-sam-loc>Laaiin Loods Hank</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-licht-zacht">Wanneer</dt><dd class="text-right font-semibold" data-sam-wanneer>nog kiezen</dd></div>
+              </dl>
+              <div class="mt-6 flex items-end justify-between gap-4 border-t border-lijn-licht pt-5">
+                <p class="text-sm text-licht-zacht">Huurprijs<br />incl. btw</p>
+                <p class="num font-kop text-[2.75rem] leading-none" data-sam-prijs>€ 51</p>
+              </div>
+              <p class="mt-3 text-[.8125rem] leading-snug text-licht-zacht" data-sam-borg>Plus borg en verzekering (1x).</p>
+              <button type="submit" class="knop knop-rood mt-6 w-full"><Icoon naam="wa" />Reserveer via WhatsApp</button>
+              <p class="mt-3 text-center text-[.8125rem] text-licht-zacht">Liever bellen? <a href={site.telHref} class="num link font-semibold text-licht">{site.tel}</a></p>
+              <p class="mt-5 rounded-xl bg-asfalt-2 px-4 py-3 text-[.8125rem] leading-snug text-licht-zacht" data-status-res>Neem uw rijbewijs mee en het kenteken van de auto waarmee u rijdt.</p>
+            </div>
+          </aside>
+        </form>
+      </div>
+    </section>
+
+    <!-- TARIEVEN -->
+    <section id="tarieven" class="bg-staal py-20 lg:py-24" aria-labelledby="tar-kop">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="tarief min-w-0 lg:col-span-7">
+          <p class="eyebrow">Tarieven</p>
+          <h2 id="tar-kop" class="mt-4 text-3xl">Eerlijke prijzen, gewoon op een rij.</h2>
+          <p class="mt-5 max-w-xl text-lg text-grijs">Alle prijzen zijn inclusief btw. Huurt u langer dan 14 dagen, neem dan even contact op met uw Laaiin-dealer of met ons.</p>
+          <div class="mt-9 inline-flex flex-wrap gap-1 rounded-[1.6rem] bg-wit p-1.5 shadow-sm" role="radiogroup" aria-label="Huurperiode">
+            {groepen.map((gr, i) => (
+              <label class="tab cursor-pointer rounded-full px-4 py-2 text-[.9375rem] font-bold transition-colors">
+                <input type="radio" name="tg" value={gr.g} class="sr-only" checked={i === 0} />{gr.titel}
+              </label>
+            ))}
+          </div>
+          {groepen.map((gr) => (
+            <div class="paneel kaart mt-4 overflow-hidden" data-p={gr.g}>
+              <table class="num w-full text-[.9375rem]">
+                <caption class="sr-only">Tarieven {gr.titel}</caption>
+                <thead>
+                  <tr class="text-left text-[.8125rem] text-grijs">
+                    <th scope="col" class="px-4 py-3.5 font-semibold sm:px-5">Huurtijd</th>
+                    {['A', 'B', 'C', 'D'].map((x) => <th scope="col" class="whitespace-nowrap px-1.5 py-3.5 text-right font-semibold last:pr-4 sm:px-2 sm:last:pr-5"><span class="hidden sm:inline">Type </span>{x}</th>)}
+                  </tr>
+                </thead>
+                <tbody>
+                  {perioden.filter((p) => p.groep === gr.g).map((p) => (
+                    <tr class="border-t border-lijn">
+                      <th scope="row" class="px-4 py-3.5 text-left font-bold sm:px-5">{p.naam}<span class="block text-[.75rem] font-normal text-grijs">{p.uitleg}</span></th>
+                      {p.p.map((x) => <td class="whitespace-nowrap px-1.5 py-3.5 text-right last:pr-4 sm:px-2 sm:text-base sm:last:pr-5">€ {x}</td>)}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p class="border-t border-lijn bg-papier px-5 py-3 text-[.8125rem] text-grijs">Bij deze huurtijden: {groepBorg[gr.g]}.</p>
+            </div>
+          ))}
+        </div>
+        <div class="grid content-start gap-4 sm:grid-cols-2 lg:col-span-5 lg:grid-cols-1 lg:pt-10">
+          <div class="kaart p-6">
+            <h3 class="text-xl">Motor, scooter en bagage</h3>
+            <div class="num mt-4 flex gap-8">
+              <p><span class="block text-sm text-grijs">Per dag</span><b class="font-kop text-3xl">€ 30</b></p>
+              <p><span class="block text-sm text-grijs">Per week</span><b class="font-kop text-3xl">€ 90</b></p>
+            </div>
+            <p class="mt-3 text-sm text-grijs">Geen bagagewagen bij uw dealer? Reserveer en haal hem op bij de loods in Hank.</p>
+          </div>
+          <div class="kaart p-6">
+            <h3 class="text-xl">Bijkomend</h3>
+            <dl class="num mt-3 text-[.9375rem]">
+              {extras.map(([k, v]) => <div class="flex justify-between gap-3 border-b border-lijn py-2 last:border-0"><dt class="text-grijs">{k}</dt><dd class="whitespace-nowrap font-semibold">{v}</dd></div>)}
+            </dl>
+          </div>
+          <div class="kaart p-6 sm:col-span-2 lg:col-span-1">
+            <ul class="space-y-3 text-[.9375rem]">
+              <li class="flex gap-3"><Icoon naam="klok" class="mt-1 h-4 w-4 flex-none text-rood" />Loopt de maximale huurtijd af buiten de openingstijden van het filiaal, dan geldt een hoger tarief.</li>
+              <li class="flex gap-3"><Icoon naam="klok" class="mt-1 h-4 w-4 flex-none text-rood" />Een reservering vervalt 15 minuten na de afgesproken ophaaltijd.</li>
+              <li class="flex gap-3"><Icoon naam="schild" class="mt-1 h-4 w-4 flex-none text-rood" />Neem uw rijbewijs mee en het kenteken van de auto die trekt. De verzekering dekt schade aan de aanhanger, geen diefstal.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCATIES -->
+    <section id="locaties" class="py-20 lg:py-24" aria-labelledby="loc-kop">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <p class="eyebrow">Verhuurlocaties</p>
+            <h2 id="loc-kop" class="mt-4 text-3xl">Altijd een Laaiin in de buurt.</h2>
+            <p class="mt-5 text-lg text-grijs">Onze aanhangers staan bij {plusLoc} tankstations, bouwmarkten en tuincentra, van Groningen tot Limburg en zelfs in België. Zoek uw plaats en zie meteen welke types daar staan.</p>
+            <div class="mt-8 grid grid-cols-3 gap-3">
+              <div class="rounded-2xl bg-staal p-4"><b class="num block font-kop text-[1.75rem] leading-tight">550+</b><span class="text-sm text-grijs">aanhangwagens</span></div>
+              <div class="rounded-2xl bg-staal p-4"><b class="num block font-kop text-[1.75rem] leading-tight">{plusLoc}</b><span class="text-sm text-grijs">locaties</span></div>
+              <div class="rounded-2xl bg-staal p-4"><b class="num block font-kop text-[1.75rem] leading-tight">{provincies.length - 1}</b><span class="text-sm text-grijs">provincies</span></div>
+            </div>
+          </div>
+          <div class="lg:col-span-7">
+            <div class="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <div class="relative">
+                <label for="lz" class="sr-only">Zoek op plaats of naam</label>
+                <Icoon naam="zoek" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-grijs" />
+                <input id="lz" type="search" class="veld !pl-12" placeholder="Zoek op plaats of naam" autocomplete="off" data-lz />
+              </div>
+              <label class="sr-only" for="lp">Provincie</label>
+              <select id="lp" class="veld sm:w-52" data-lp>
+                <option value="">Alle provincies</option>
+                {provincies.map((p) => <option>{p}</option>)}
+              </select>
+            </div>
+            <p class="mt-4 text-sm text-grijs" aria-live="polite" data-l-aantal></p>
+            <ul class="mt-3 grid gap-3 sm:grid-cols-2" data-l-lijst>
+              {locaties.slice(0, 4).map((l, i) => (
+                <li class="kaart flex flex-col p-5">
+                  <p class="font-bold leading-snug">{l.n}</p>
+                  <p class="mt-1 text-sm text-grijs">{l.a}, {l.c}</p>
+                  <p class="mt-3 flex flex-wrap gap-1.5">{l.s.map((s) => <span class="pil bg-staal">{typeNaam[s]}</span>)}</p>
+                  <button type="button" class="link mt-4 self-start text-sm font-bold" data-kies-loc={i}>Hier reserveren</button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" class="knop knop-rand knop-klein mt-5" data-l-meer>Toon meer locaties</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCAN & GO -->
+    <section id="scan-go" class="donker bg-asfalt text-licht" aria-labelledby="sg-kop">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] lg:col-span-5 lg:min-h-full">
+          <Image src={smartbak} alt="Laaiin-aanhanger type B met Smartbak-sticker en QR-code om te ontgrendelen met de app" widths={[640, 1000, 1400]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+        </div>
+        <div class="px-5 py-20 md:px-14 lg:col-span-7 lg:py-24 xl:px-20">
+          <p class="eyebrow">Digitaal huren · Scan & Go</p>
+          <h2 id="sg-kop" class="mt-4 text-3xl">Geen sleutel nodig. Gewoon de app.</h2>
+          <p class="mt-5 max-w-xl text-lg text-licht-zacht">Bij de digitale aanhangwagens van Laaiin huurt u op elk moment van de dag, precies zo lang als u nodig heeft. Het digitale slot opent met de app: geen sleuteloverdracht, en u betaalt alleen de tijd die u gebruikt.</p>
+          <ol class="mt-9 grid gap-x-8 sm:grid-cols-2">
+            {['Download de app en maak een account aan', 'Voeg uw contactgegevens toe', 'Voeg een betaalmethode toe', 'Verifieer uw rijbewijs', 'Boek uw aanhangwagen'].map((s, i) => (
+              <li class="flex items-center gap-4 border-t border-lijn-licht py-3.5"><span class="num font-kop text-lg text-sein">0{i + 1}</span><span>{s}</span></li>
+            ))}
+            <li class="flex items-center gap-4 border-t border-lijn-licht py-3.5"><Icoon naam="slot" class="h-5 w-5 text-sein" /><span class="font-semibold">Open met de app, 24/7</span></li>
+          </ol>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={site.app} class="knop knop-wit"><Icoon naam="app" />Zo werkt de app</a>
+            <p class="text-sm text-licht-zacht">Nu bij: {locaties.filter((l) => l.g).map((l) => l.c).join(', ')}.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OVER LAAIIN -->
+    <section id="over" class="donker bg-asfalt py-24 text-licht lg:py-32" aria-labelledby="over-kop">
+      <div class="wrap">
+        <div class="grid gap-12 lg:grid-cols-12 lg:gap-14">
+          <div class="lg:col-span-6">
+            <p class="eyebrow">Over Laaiin</p>
+            <h2 id="over-kop" class="mt-4 text-3xl">Een familiebedrijf uit Hank.</h2>
+            <p class="mt-6 text-lg text-licht-zacht">Laaiin verhuurt en verkoopt aanhangwagens. Vanuit de loods aan de Mariapolder in Hank zorgen we dat er bij tankstations en bouwmarkten robuuste en betrouwbare aanhangers klaarstaan, voor uw verhuizing, verbouwing of ander project.</p>
+            <p class="mt-4 text-lg text-licht-zacht">Ron en Michiel van den Heuvel staan u persoonlijk te woord. Wilt u een aanhangwagen kopen of uw bedrijfsbus inrichten met kasten? Ook daarvoor kunt u bij ons terecht.</p>
+            <div class="mt-10 grid gap-3 sm:grid-cols-3">
+              <div class="rounded-2xl bg-asfalt-2 p-5"><b class="block font-kop text-lg">Familiebedrijf</b><span class="mt-1 block text-sm text-licht-zacht">Korte lijnen, vaste gezichten.</span></div>
+              <div class="rounded-2xl bg-asfalt-2 p-5"><b class="block font-kop text-lg">Denkt met u mee</b><span class="mt-1 block text-sm text-licht-zacht">Welke maat en huurtijd past bij uw klus.</span></div>
+              <div class="rounded-2xl bg-asfalt-2 p-5"><b class="block font-kop text-lg">Scherp geprijsd</b><span class="mt-1 block text-sm text-licht-zacht">Alle tarieven gewoon online.</span></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 content-center gap-3 lg:col-span-6">
+            <div class="col-span-2 aspect-[16/9] overflow-hidden rounded-[1.5rem]"><Image src={karwei} alt="Een rij Laaiin-aanhangers voor een bouwmarkt" widths={[700, 1100]} sizes="(min-width: 1024px) 40vw, 100vw" class="h-full w-full object-cover" /></div>
+            <div class="aspect-[4/3] overflow-hidden rounded-[1.5rem]"><Image src={huboB} alt="Laaiin-aanhanger type B naast een gesloten aanhanger" widths={[400, 700]} sizes="(min-width: 1024px) 20vw, 50vw" class="h-full w-full object-cover" /></div>
+            <div class="aspect-[4/3] overflow-hidden rounded-[1.5rem]"><Image src={tamoil} alt="Twee gesloten Laaiin-aanhangers bij een tankstation" widths={[400, 700]} sizes="(min-width: 1024px) 20vw, 50vw" class="h-full w-full object-cover" /></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="py-20 lg:py-24" aria-labelledby="rev-kop">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 id="rev-kop" class="mt-4 text-3xl">Wat klanten zeggen</h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-shadow hover:shadow-md">
+            <Icoon naam="g" class="h-8 w-8" />
+            <span><span class="flex items-center gap-2"><b class="num font-kop text-2xl">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span><span class="text-sm text-grijs">{site.google.aantal} reviews op Google</span></span>
+          </a>
+        </div>
+        <ul class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class="kaart rijs flex flex-col p-6" style={`--d:${(i % 3) * 0.08}s`}>
+              <span class="flex text-ster" role="img" aria-label="5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+              <blockquote class="mt-4 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+              <p class="mt-6 flex items-center justify-between text-sm"><b>{r.naam}</b><span class="flex items-center gap-1.5 text-grijs"><Icoon naam="g" class="h-4 w-4" />Google review</span></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- OPENINGSTIJDEN + CONTACT -->
+    <section id="contact" class="bg-staal py-20 lg:py-24" aria-labelledby="con-kop">
+      <div class="wrap grid gap-6 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="con-kop" class="mt-4 text-3xl">Vragen? We denken graag mee.</h2>
+          <p class="mt-5 text-lg text-grijs">Twijfelt u over de maat of de huurtijd? Stuur een WhatsApp of bel, dan zoeken we samen de beste aanhanger voor uw klus.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={waVraag} class="knop knop-rood"><Icoon naam="wa" />WhatsApp ons</a>
+            <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" />Bel {site.tel}</a>
+          </div>
+          <ul class="mt-10 space-y-3 text-[.9375rem]">
+            <li class="flex items-center justify-between gap-4 border-b border-lijn pb-3"><span class="text-grijs">Ron van den Heuvel</span><a href={site.telHref} class="num font-bold no-underline hover:text-rood">{site.tel}</a></li>
+            <li class="flex items-center justify-between gap-4 border-b border-lijn pb-3"><span class="text-grijs">Michiel van den Heuvel</span><a href={site.tel2Href} class="num font-bold no-underline hover:text-rood">{site.tel2}</a></li>
+            <li class="flex items-center justify-between gap-4 border-b border-lijn pb-3"><span class="text-grijs">Kantoor</span><a href={site.kantoorHref} class="num font-bold no-underline hover:text-rood">{site.kantoor}</a></li>
+            <li class="flex items-center justify-between gap-4"><span class="text-grijs">E-mail</span><a href={`mailto:${site.mail}`} class="font-bold no-underline hover:text-rood">{site.mail}</a></li>
+          </ul>
+        </div>
+        <div class="kaart p-6 md:p-8 lg:col-span-6 lg:col-start-7">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h3 class="text-xl">Loods Hank</h3>
+              <p class="mt-1 text-grijs">{site.straat}, {site.postcode} {site.plaats}</p>
+            </div>
+            <p class="status-pil text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m za open</span></p>
+          </div>
+          <table class="num mt-6 w-full text-[.9375rem]">
+            <caption class="sr-only">Openingstijden loods Hank</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr data-dag={t.dag} class="border-t border-lijn data-[vandaag]:font-bold data-[vandaag]:text-rood">
+                  <th scope="row" class="py-2.5 text-left font-normal">{t.naam}</th>
+                  <td class="py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="mt-5 text-sm text-grijs">Bij een dealer gelden de openingstijden van die locatie.</p>
+          <a href={site.maps} class="knop knop-inkt mt-6 w-full sm:w-auto"><Icoon naam="kaart" />Route plannen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOTBALK -->
+    <section class="bg-rood text-wit">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center">
+        <p class="font-kop text-2xl md:text-[2rem]">Aanhanger nodig? Reserveer hem nu, dan staat hij klaar.</p>
+        <a href="#reserveren" class="knop knop-wit flex-none"><Icoon naam="kar" />Nu reserveren</a>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script type="application/json" id="loc-data" set:html={JSON.stringify(locaties)} />
+  <script type="application/json" id="tar-data" set:html={JSON.stringify({ types, perioden, kleinTarief, groepBorg })} />
+</Base>
+
+<style>
+  .status-stip { display: inline-block; width: .55rem; height: .55rem; border-radius: 999px; background: var(--color-licht-zacht); flex: none; }
+  [data-open="true"] .status-stip { background: #3fd07f; box-shadow: 0 0 0 4px #3fd07f33; }
+  .status-pil { display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px; padding: .35rem .85rem; background: var(--color-papier); }
+  .tab:has(input:checked) { background: var(--color-inkt); color: var(--color-licht); }
+  .tab:has(input:focus-visible) { outline: 3px solid var(--color-rood); outline-offset: 2px; }
+  .tarief:has(input[value="1"]:checked) .paneel:not([data-p="1"]),
+  .tarief:has(input[value="2"]:checked) .paneel:not([data-p="2"]),
+  .tarief:has(input[value="3"]:checked) .paneel:not([data-p="3"]) { display: none; }
+  .status-pil[data-open="true"] .status-stip { background: var(--color-groen); box-shadow: 0 0 0 4px #1f9d5526; }
+</style>
+
+<script>
+  type Loc = { n: string; c: string; p: string; a: string; t: string; s: string[]; g: boolean; eigen?: boolean };
+  type T = { key: string; naam: string; soort: string; maat: string };
+  type P = { key: string; naam: string; uitleg: string; groep: number; p: number[] };
+  const locs: Loc[] = JSON.parse(document.getElementById('loc-data')!.textContent || '[]');
+  const tar = JSON.parse(document.getElementById('tar-data')!.textContent || '{}') as { types: T[]; perioden: P[]; kleinTarief: { key: string; naam: string; p: number }[]; groepBorg: Record<string, string> };
+  const typeNaam: Record<string, string> = Object.fromEntries(tar.types.map((t) => [t.key, t.naam]));
+  const $ = <E extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector<E>(s) as E;
+  const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const zoek = (q: string, prov = '') => {
+    const w = norm(q.trim());
+    return locs.map((l, i) => ({ l, i })).filter(({ l }) => (!prov || l.p === prov) && (!w || norm(`${l.n} ${l.c} ${l.a}`).includes(w)));
+  };
+
+  // ---------- Reserveerhulp ----------
+  const f = $<HTMLFormElement>('[data-res]');
+  let locIdx = 0;
+  const grootIdx = ['a', 'b', 'c', 'd'];
+  const klein = (k: string) => k === 'motor' || k === 'bagage';
+  const datum = $<HTMLInputElement>('#r-datum');
+  const vandaag = new Date(); datum.min = new Date(vandaag.getTime() - vandaag.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+
+  function update() {
+    const d = new FormData(f);
+    const tk = f.querySelector<HTMLInputElement>('input[name=type]:checked')?.value || 'b';
+    f.querySelectorAll<HTMLInputElement>('input[name=type]').forEach((i) => { i.disabled = !locs[locIdx].s.includes(i.value) && !i.checked; });
+    const t = tar.types.find((x) => x.key === tk)!;
+    const isK = klein(tk);
+    $('[data-duur-groot]').classList.toggle('hidden', isK);
+    $('[data-duur-groot]').classList.toggle('flex', !isK);
+    $('[data-duur-klein]').classList.toggle('hidden', !isK);
+    $('[data-duur-klein]').classList.toggle('flex', isK);
+    let duurNaam: string, prijs: number, borg: string, uitleg: string;
+    if (isK) {
+      const k = tar.kleinTarief.find((x) => x.key === d.get('duurk'))!;
+      duurNaam = k.naam.toLowerCase(); prijs = k.p; borg = 'Plus borg (€ 75) en verzekering.'; uitleg = 'Motor-, scooter- en bagagewagen: € 30 per dag, € 90 per week.';
+    } else {
+      const p = tar.perioden.find((x) => x.key === d.get('duur'))!;
+      duurNaam = p.naam; prijs = p.p[grootIdx.indexOf(tk)]; borg = `Plus borg en verzekering (${tar.groepBorg[p.groep].split(',')[0].replace(' borg', '')}).`; uitleg = p.uitleg.charAt(0).toUpperCase() + p.uitleg.slice(1) + '.';
+    }
+    const l = locs[locIdx];
+    $('[data-sam-type]').textContent = t.naam;
+    $('[data-sam-maat]').textContent = `${t.soort}, ${t.maat}`;
+    $('[data-sam-duur]').textContent = duurNaam;
+    $('[data-sam-prijs]').textContent = `€ ${prijs}`;
+    $('[data-sam-borg]').textContent = borg;
+    $('[data-duur-uitleg]').textContent = uitleg;
+    $('[data-sam-loc]').textContent = l.eigen ? 'Loods Hank' : `${l.n}, ${l.c}`;
+    $('[data-loc-naam]').textContent = l.n;
+    $('[data-loc-adres]').textContent = `${l.a}, ${l.c}${l.t ? ' · ' + l.t : ''}`;
+    const wanneer = [datum.value ? new Date(datum.value + 'T12:00').toLocaleDateString('nl-NL', { weekday: 'short', day: 'numeric', month: 'short' }) : '', String(d.get('tijd') || '')].filter(Boolean).join(', ');
+    $('[data-sam-wanneer]').textContent = wanneer || 'nog kiezen';
+    // types die niet op de lijst van deze locatie staan
+    const w = $('[data-loc-waarschuwing]');
+    if (!l.s.includes(tk)) { w.textContent = `${t.naam} staat niet op de lijst van deze locatie. Kies een ander type of een andere locatie.`; w.classList.remove('hidden'); }
+    else w.classList.add('hidden');
+    return { t, duurNaam, prijs, l, wanneer, ok: l.s.includes(tk) };
+  }
+  f.addEventListener('change', update);
+  f.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const r = update();
+    if (!r.ok) { $('[data-loc-waarschuwing]').scrollIntoView({ block: 'center' }); return; }
+    const naam = String(new FormData(f).get('naam') || '').trim();
+    const regels = [
+      'Hallo Laaiin, ik wil graag een aanhanger reserveren.',
+      `Type: ${r.t.naam} (${r.t.soort.toLowerCase()}, ${r.t.maat})`,
+      `Huurtijd: ${r.duurNaam} (€ ${r.prijs})`,
+      `Ophalen bij: ${r.l.n}, ${r.l.a}, ${r.l.c}`,
+      `Wanneer: ${r.wanneer || 'graag overleggen'}`,
+    ];
+    if (naam) regels.push(`Naam: ${naam}`);
+    window.open(`https://wa.me/31653707721?text=${encodeURIComponent(regels.join('\n'))}`, '_blank', 'noopener');
+  });
+
+  // locatie zoeken binnen de reserveerhulp
+  const lz = $<HTMLInputElement>('[data-loc-zoek]');
+  const ll = $<HTMLUListElement>('[data-loc-lijst]');
+  const kiesLoc = (i: number) => { locIdx = i; ll.classList.add('hidden'); lz.value = ''; update(); };
+  lz.addEventListener('input', () => {
+    const res = lz.value.trim().length < 2 ? [] : zoek(lz.value).slice(0, 8);
+    ll.innerHTML = '';
+    res.forEach(({ l, i }) => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'w-full rounded-xl px-3.5 py-2.5 text-left hover:bg-papier focus:bg-papier';
+      b.innerHTML = `<b class="block text-[.9375rem]"></b><span class="block text-[.8125rem] text-grijs"></span>`;
+      b.querySelector('b')!.textContent = l.n;
+      b.querySelector('span')!.textContent = `${l.c} · ${l.s.map((s) => typeNaam[s]).join(', ')}`;
+      b.addEventListener('click', () => kiesLoc(i));
+      li.appendChild(b); ll.appendChild(li);
+    });
+    if (lz.value.trim().length >= 2 && !res.length) ll.innerHTML = '<li class="px-3.5 py-2.5 text-sm text-grijs">Geen locatie gevonden. Probeer een plaats in de buurt.</li>';
+    ll.classList.toggle('hidden', lz.value.trim().length < 2);
+  });
+  document.addEventListener('click', (e) => { if (!(e.target as Element).closest('[data-loc-lijst],[data-loc-zoek]')) ll.classList.add('hidden'); });
+
+  // snelkiezer in de hero
+  document.querySelectorAll<HTMLElement>('[data-kies-type]').forEach((a) => a.addEventListener('click', () => {
+    const i = f.querySelector<HTMLInputElement>(`input[name=type][value="${a.dataset.kiesType}"]`);
+    if (i) { if (!locs[locIdx].s.includes(i.value)) locIdx = 0; i.checked = true; update(); }
+  }));
+
+  // ---------- Locatielijst ----------
+  const lzz = $<HTMLInputElement>('[data-lz]');
+  const lp = $<HTMLSelectElement>('[data-lp]');
+  const lijst = $<HTMLUListElement>('[data-l-lijst]');
+  const meer = $<HTMLButtonElement>('[data-l-meer]');
+  let toon = 4;
+  function render() {
+    const res = zoek(lzz.value, lp.value);
+    $('[data-l-aantal]').textContent = res.length === 1 ? '1 locatie' : `${res.length} locaties`;
+    lijst.innerHTML = '';
+    res.slice(0, toon).forEach(({ l, i }) => {
+      const li = document.createElement('li');
+      li.className = 'kaart flex flex-col p-5';
+      li.innerHTML = `<p class="font-bold leading-snug" data-x="n"></p><p class="mt-1 text-sm text-grijs" data-x="a"></p><p class="mt-3 flex flex-wrap gap-1.5" data-x="s"></p><div class="mt-4 flex flex-wrap items-center justify-between gap-3"><button type="button" class="link text-sm font-bold">Hier reserveren</button><a class="num text-sm text-grijs no-underline hover:text-rood" data-x="t"></a></div>`;
+      li.querySelector('[data-x=n]')!.textContent = l.n;
+      li.querySelector('[data-x=a]')!.textContent = `${l.a}, ${l.c}`;
+      const s = li.querySelector('[data-x=s]')!;
+      l.s.forEach((k) => { const p = document.createElement('span'); p.className = 'pil bg-staal'; p.textContent = typeNaam[k]; s.appendChild(p); });
+      if (l.g) { const p = document.createElement('span'); p.className = 'pil bg-rood text-wit'; p.textContent = 'Scan & Go'; s.appendChild(p); }
+      const t = li.querySelector<HTMLAnchorElement>('[data-x=t]')!;
+      if (l.t) { t.textContent = l.t; t.href = 'tel:' + l.t.replace(/[^\d+]/g, ''); } else t.remove();
+      li.querySelector('button')!.addEventListener('click', () => { locIdx = i; update(); document.getElementById('reserveren')!.scrollIntoView(); });
+      lijst.appendChild(li);
+    });
+    meer.classList.toggle('hidden', res.length <= toon);
+  }
+  lzz.addEventListener('input', () => { toon = 4; render(); });
+  lp.addEventListener('change', () => { toon = 4; render(); });
+  meer.addEventListener('click', () => { toon += 12; render(); });
+  render();
+  update();
+</script>
