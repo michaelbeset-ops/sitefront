@@ -1,0 +1,59 @@
+---
+import { site, url, tijden, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-inkt text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 text-licht lg:col-span-4">
+      <Merk licht />
+      <p class="mt-6 max-w-xs text-licht-zacht">Een sfeervolle plek waar gastvrijheid, gezelligheid en lekker eten samenkomen.</p>
+      <p class="mt-6">
+        <a href={site.facebook} class="inline-flex items-center gap-2 font-semibold text-licht no-underline transition-colors hover:text-blad"><Icoon naam="fb" class="h-5 w-5" />Volg ons op Facebook</a>
+      </p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Bij ’t Kapelletje</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('kaart')} class="no-underline transition-colors hover:text-blad">Menukaart</a></li>
+        <li><a href={h('terras')} class="no-underline transition-colors hover:text-blad">Het terras</a></li>
+        <li><a href={h('reserveren')} class="no-underline transition-colors hover:text-blad">Tafel reserveren</a></li>
+        <li><a href={h('route')} class="no-underline transition-colors hover:text-blad">Route en openingstijden</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-blad">{site.tel}</a></li>
+        <li><a href={waHoi} class="num no-underline transition-colors hover:text-blad">WhatsApp <span class="whitespace-nowrap">{site.mob}</span></a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-blad">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-blad">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num whitespace-nowrap py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.vol}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-blad">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van jullie eigen Facebookpagina en één sfeerfoto via Unsplash (gemarkeerd), ter illustratie. Menukaart zoals gedeeld op Facebook, reviews letterlijk van Google (stand 5 oktober 2026).</p>}
+  </div>
+</footer>

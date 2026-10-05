@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 }, locale: 'nl-NL' });
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://localhost:4397/sitefront/t-kapelletje-waalwijk/', { waitUntil: 'networkidle' });
+await p.selectOption('#t-pers', '4'); await p.fill('#t-datum', '2026-10-13'); await p.selectOption('#t-tijd', '19.00'); await p.selectOption('#t-plek', 'op het terras'); await p.fill('#t-naam', 'Michael');
+console.log(await p.textContent('[data-melding]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.fill('#t-datum', '2026-10-17'); console.log('melding:', JSON.stringify(await p.textContent('[data-melding]'))); console.log(await p.textContent('[data-bericht]'));
+await p.click('[data-tab="hoofd"]'); console.log('zichtbaar panelen', await p.locator('[data-paneel]:visible').count(), await p.locator('#paneel-hoofd').isVisible());
+await p.locator('#kaart').scrollIntoViewIfNeeded(); await p.waitForTimeout(1500); await p.screenshot({ path: 'shots/wow-kaart-1440.png' });
+await p.locator('#reserveren').scrollIntoViewIfNeeded(); await p.waitForTimeout(1500); await p.screenshot({ path: 'shots/wow-reserveren-1440.png' });
+console.log('jsonld', await p.locator('script[type="application/ld+json"]').count(), 'robots', await p.getAttribute('meta[name=robots]', 'content'), 'canonical', await p.locator('link[rel=canonical]').count(), errs);
+await b.close();
