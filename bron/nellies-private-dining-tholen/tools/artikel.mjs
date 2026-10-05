@@ -1,0 +1,10 @@
+import { chromium } from 'playwright'; import fs from 'node:fs';
+const b = await chromium.launch(); const p = await b.newPage({ locale: 'nl-NL', userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' });
+await p.goto('https://www.bing.com/search?q=internetbode+Paula+eetconcept+Tholen&setlang=nl', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(3000);
+const u = await p.evaluate(() => [...document.querySelectorAll('cite')].map(c => c.innerText).find(t => /internetbode/.test(t)));
+const hrefs = await p.evaluate(() => [...document.querySelectorAll('li.b_algo h2 a')].map(a => a.href));
+console.log(u, hrefs.slice(0,3));
+await p.goto(hrefs.find(h=>h) , { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(5000);
+console.log(p.url());
+const t = await p.evaluate(() => (document.querySelector('article') || document.body).innerText);
+fs.writeFileSync('bron/web/internetbode.txt', p.url() + '\n\n' + t); console.log(t.slice(0, 5000)); await b.close();
