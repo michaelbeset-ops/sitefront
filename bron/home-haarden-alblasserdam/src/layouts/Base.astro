@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import kopUrl from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import sansUrl from '@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2?url';
+import { site, url, tijden } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const rooster = tijden.map((t) => [t.dag, t.o, t.d, t.open, t.dicht]);
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansUrl} crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:site_name" content={site.naam} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body class="min-h-dvh pb-[4.5rem] md:pb-0">
+    {site.voorstel && (
+      <div class="relative z-50 bg-sintel text-wit">
+        <p class="wrap py-2 text-xs leading-snug" style="font-family: system-ui, sans-serif">
+          Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website.{" "}
+          <a href="https://www.sitefront.nl" class="font-bold underline underline-offset-2">sitefront.nl</a>
+        </p>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
+    <slot />
+    <script define:vars={{ rooster }}>
+      window.__rooster = rooster;
+    </script>
+    <script>
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.rijs').forEach((el) => io.observe(el));
+
+      // Openingstijden: vandaag markeren en live open/gesloten tonen (Nederlandse tijd), op basis van de echte tijden.
+      type Rij = [number, number, number, string, string];
+      const rooster = (window as unknown as { __rooster: Rij[] }).__rooster;
+      const nu = new Date();
+      const deel = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', ...o }).format(nu);
+      const dag = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel({ weekday: 'short' }));
+      const min = Number(deel({ hour: '2-digit', hourCycle: 'h23' })) * 60 + Number(deel({ minute: '2-digit' }));
+      const van = (d: number) => rooster.find((r) => r[0] === d)!;
+      const namen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      const kort = (t: string) => t.replace(/^0/, '').replace('.00', '.00');
+      const vandaag = van(dag);
+      const open = vandaag[1] > 0 && min >= vandaag[1] && min < vandaag[2];
+      let tekst: string;
+      if (open) tekst = `Nu telefonisch bereikbaar, tot ${kort(vandaag[4])} uur`;
+      else if (vandaag[1] > 0 && min < vandaag[1]) tekst = `Vandaag bereikbaar vanaf ${kort(vandaag[3])} uur`;
+      else {
+        let m = (dag + 1) % 7; while (van(m)[1] === 0) m = (m + 1) % 7;
+        tekst = `${m === (dag + 1) % 7 ? 'Morgen' : namen[m].charAt(0).toUpperCase() + namen[m].slice(1)} weer bereikbaar vanaf ${kort(van(m)[3])} uur`;
+      }
+      document.querySelectorAll<HTMLElement>('[data-status]').forEach((el) => { el.textContent = tekst; el.closest('[data-status-wrap]')?.setAttribute('data-open', String(open)); });
+      document.querySelectorAll(`[data-dag="${dag}"]`).forEach((r) => r.setAttribute('data-vandaag', ''));
+    </script>
+  </body>
+</html>

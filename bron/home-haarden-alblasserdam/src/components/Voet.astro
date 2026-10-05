@@ -1,0 +1,59 @@
+---
+import { site, url, tijden, waAfspraak } from '../data/site';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+---
+<footer class="donker bg-antraciet text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <Merk licht />
+      <p class="mt-6 max-w-xs">Uw haarden-totaalleverancier: advies, levering en installatie van haard, kachel of schouw, alles uit 1 hand.</p>
+      <p class="mt-5 text-xs">Erkend bedrijf Stichting EVIS, gasgestookte en biomassagestookte haarden en kachels.</p>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Aanbod</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={h('aanbod')} class="no-underline transition-colors hover:text-gloed">Gashaarden</a></li>
+        <li><a href={h('aanbod')} class="no-underline transition-colors hover:text-gloed">Houtkachels</a></li>
+        <li><a href={h('aanbod')} class="no-underline transition-colors hover:text-gloed">Elektrische haarden</a></li>
+        <li><a href={h('maatwerk')} class="no-underline transition-colors hover:text-gloed">Maatwerk</a></li>
+        <li><a href={h('keuzehulp')} class="no-underline transition-colors hover:text-gloed">Welke haard past bij u?</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-gloed">{site.tel}</a></li>
+        <li><a href={site.vastHref} class="num whitespace-nowrap no-underline transition-colors hover:text-gloed">{site.vast}</a></li>
+        <li><a href={waAfspraak} class="no-underline transition-colors hover:text-gloed">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline transition-colors hover:text-gloed">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Telefonisch bereikbaar</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Telefonisch bereikbaar</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-gloed">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 text-xs">Showroom op afspraak.</p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.bv} · KvK {site.kvk}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-gloed">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s en klantervaringen van uw eigen website home-haarden.nl, kentekens onleesbaar gemaakt.</p>}
+  </div>
+</footer>
