@@ -1,56 +1,29 @@
 ---
-import { site, url, tijden, waVraag } from '../data/site';
-import Icoon from './Icoon.astro';
+import { site, url, waHoi } from '../data/site';
 import Merk from './Merk.astro';
-interface Props { thuis?: boolean }
-const { thuis = true } = Astro.props;
-const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
 const jaar = new Date().getFullYear();
-const groepen = [['Reptielen', 'assortiment'], ['Terraria en inrichting', 'assortiment'], ['Voedseldieren', 'voer'], ['Hond en kat', 'assortiment'], ['Knaagdieren en vogels', 'assortiment'], ['Visafdeling', 'assortiment']];
 ---
-<footer class="donker bg-kelder text-licht-zacht">
-  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
-    <div class="col-span-2 lg:col-span-4">
-      <a href={url('')} class="text-licht no-underline"><Merk /></a>
-      <p class="mt-6 max-w-xs">Dierenspeciaalzaak in {site.plaats}, gespecialiseerd in reptielen. En daarnaast alles voor uw huisdier.</p>
-      <a href={waVraag} class="knop knop-groen knop-klein mt-7"><Icoon naam="wa" />Stuur een WhatsApp</a>
+<footer class="donker bg-kelder text-mist">
+  <div class="wrap grid gap-x-10 gap-y-10 py-16 text-[.9375rem] md:grid-cols-12 md:py-20">
+    <div class="text-kalk md:col-span-5">
+      <Merk />
+      <p class="mt-5 max-w-xs text-mist">Dierenspeciaalzaak in Ridderkerk. Alles voor uw huisdier, en een kelder vol terraria.</p>
     </div>
-    <div class="lg:col-span-2">
-      <p class="font-semibold text-licht">Assortiment</p>
-      <ul class="mt-4 space-y-2">
-        {groepen.map(([t, id]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-lamp">{t}</a></li>)}
-      </ul>
+    <div class="md:col-span-3">
+      <p class="font-medium text-kalk">Contact</p>
+      <p class="mt-3"><a href={site.telHref} class="link num">{site.tel}</a></p>
+      <p class="mt-1"><a href={waHoi} class="link">WhatsApp</a></p>
+      <p class="mt-1"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></p>
     </div>
-    <div class="lg:col-span-3">
-      <p class="font-semibold text-licht">Contact</p>
-      <ul class="mt-4 space-y-2">
-        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-lamp">{site.tel}</a></li>
-        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-lamp">{site.mail}</a></li>
-        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
-        <li><a href={site.maps} class="no-underline transition-colors hover:text-lamp">Route plannen</a></li>
-        <li><a href={site.facebook} class="no-underline transition-colors hover:text-lamp">Facebook</a></li>
-      </ul>
-    </div>
-    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
-      <p class="font-semibold text-licht">Openingstijden</p>
-      <table class="mt-4 w-full max-w-[16rem]">
-        <caption class="sr-only">Openingstijden</caption>
-        <tbody>
-          {tijden.map((t) => (
-            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-lamp">
-              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
-              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div class="md:col-span-4">
+      <p class="font-medium text-kalk">Adres</p>
+      <p class="mt-3">{site.straat}<br />{site.postcode} {site.plaats}</p>
+      <p class="mt-3"><a href={site.facebook} class="link">Volg ons op Facebook</a></p>
     </div>
   </div>
-  <div class="border-t border-lijn-licht">
-    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
-      <p class="num">© {jaar} {site.naam} V.O.F., {site.plaats} · KvK {site.kvk}</p>
-      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-lamp">Privacyverklaring</a><span>Website door Sitefront</span></p>
-    </div>
-    {site.voorstel && <p class="wrap pb-8 text-xs">Foto’s van het Google-bedrijfsprofiel van Repti-Farm en van de huidige website repti-farm.nl, ter illustratie. Teksten, tijden en reviews van die bronnen (stand 2 oktober 2026).</p>}
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn-donker py-7 text-xs">
+    <p>© {jaar} {site.vol} · KvK {site.kvk}</p>
+    <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-loof">Privacyverklaring</a><span>Website door Sitefront</span></p>
   </div>
+  {site.voorstel && <p class="wrap pb-24 text-xs md:pb-8">Foto's van jullie oude website en Facebook, en van bezoekers op jullie Google-profiel (alleen foto's die in de winkel zijn gemaakt), ter illustratie. Reviews letterlijk van Google (stand 6 oktober 2026).</p>}
 </footer>

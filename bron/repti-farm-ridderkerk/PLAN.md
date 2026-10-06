@@ -1,19 +1,25 @@
-# Repti-Farm, Ridderkerk: ontwerpvoorstel (demomodus, niveau BRIEF-MICHAEL)
+# Repti-Farm, Ridderkerk: ontwerpvoorstel v2 (batch 38, 06-10-2026)
+v1 (2 okt, Archivo/Inter, topbar, chips, kaarten, cijferrij) staat in shots/v1: te veel template.
 
-Oude site repti-farm.nl: FrontPage-tabellen (windows-1252), geen viewport, knoppen als plaatjes, 450px-foto's, "al tien jaar
-een begrip" (verouderd), fax in de footer, contact alleen via mailto. Scrolt opzij op mobiel.
-Check: geen keten, geen overname. Repti-Farm V.O.F., KvK 24324506, opgericht 14-08-2001, vennoot H. van Setten; reviews tot
-8 maanden geleden noemen "hennie" / de eigenaar; Facebook actief (bericht 13 mei). Google 4,7 uit 251, profiel niet geclaimd.
+Check: actief en zelfstandig. Repti-Farm V.O.F. (KvK 24324506), eigenaar Hennie (van Setten). Google-review 3 dagen geleden,
+Facebook-bericht 4 september 2026, winkel 20 jaar op 22-11-2023 (eigen FB-bericht). Geen keten, geen overname.
 
-## Keuzes
-- Letter: Archivo 800 voor koppen (stevig, nog niet gebruikt in de herbouw) + Inter voor tekst, 17px/1.6.
-- Kleur: gekkogroen #1b6a35 (de groene gekko uit hun logo) als enige merkkleur; "kelder" #0f1c14 (het #003300 van hun oude
-  site, donkerder) voor donkere secties; gebroken wit #f6f3ec, terrariumzand #ebe5d8; warmtelamp-oranje #f2a65e alleen op donker.
-- Vorm: rond (pill-knoppen, kaarten 14px), zoals ZBN. Logo: gekkopootje in groen vlak + "Repti-Farm" + hun slogan.
-- Beeld: alleen eigen foto's (Google-profiel + oude site). Hero = blauwtongskink onder de warmtelamp.
+## Concept
+Een buurtwinkel met een geheim: boven alles voor uw huisdier, een trapje af een kelder vol terraria onder warmtelampen.
+De site loopt van licht (kalkwit, de winkel) via een getrapte rand naar donker groenzwart (de kelder). Eén kleur: het
+flessengroen van hun gevelbord; foto's staan in een "terrariumruit" (donkere lijst met schuifrail), de gekko uit hun logo nagetekend.
+Letters: Darker Grotesque 800-900 (koppen) + Geist (tekst).
 
-## Secties
-Topbar (4 vinkjes + tel) · header (merk, 6 links, tel, WhatsApp) · hero 100svh · chips · assortiment (6 kaarten: 4 foto,
-voedseldieren donker, visafdeling icoon) · cijferrij · de kelder (donker, fotomozaiek) · werkwijze 4 stappen ·
-voedseldieren + "Even checken of het er is" (wow: WhatsApp-bericht met echte openingsdagen) · over (winkelfoto + pand-inzet +
-quote + 3 kaders) · 3 reviews + Google-badge · tijden/contact · slotbalk groen · footer 4 kolommen · mobiele onderbalk.
+## Secties (7)
+hero (kop + één ruit) > Boven: de winkel > trap > De kelder (foto's, "eerder nieuw" uit FB) > Voedseldieren (lijst als beeld)
+> Wat zoek je? (één keuze + één veld > WhatsApp) > Sinds 2003 + 3 reviews > Langskomen (gevel, tijden, route) > footer.
+Vermeden: kicker-caps, stat-rij, kaartenrijen, open/gesloten-kaartje in hero, wizard, grote reviewscore, crème/goud.
+
+## Wat er nu mis is (bewijs in bron/web, bron/google)
+- De websiteknop op Google (http://www.repti-farm.nl/) stuurt door naar https://www.repti-farm.nl/, maar het certificaat geldt alleen
+  voor repti-farm.nl: browser toont ERR_CERT_COMMON_NAME_INVALID (bron/web/bewijs.txt). Ook Facebook linkt naar repti-farm.nl.
+- Zonder www werkt de site wel, maar: geen viewport, 980px breed op een telefoon van 390 (bron/web/oud-390.png), FrontPage-tabellen,
+  knoppen als plaatjes, "Wie zijn wij" linkt naar de homepage, contact is alleen een mailto, fax in de footer, "maaandag".
+- Tekst "Repti-farm is al tien jaar een begrip" terwijl de winkel in 2023 twintig jaar bestond.
+- Google-profiel niet geclaimd ("Dit bedrijf claimen"): geen eigen foto's (40 bezoekersfoto's), geen omschrijving.
+- Nieuws (nieuwe dieren, aangepaste tijden) staat alleen op Facebook; de site heeft niets actueels.
