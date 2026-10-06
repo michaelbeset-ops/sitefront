@@ -1,0 +1,282 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, buffetten, groepen, euro, waHoi } from '../data/site';
+
+import hapjes from '../assets/hapjes.jpg';
+import bas from '../assets/bas.jpg';
+import basEnAnneloes from '../assets/bas-en-anneloes.jpg';
+import nummer98 from '../assets/nummer-98.jpg';
+import vitrine from '../assets/vitrine.jpg';
+import brood from '../assets/brood.jpg';
+
+const titel = 'Bas & Anneloes | Catering, patisserie en traiteur in Etten-Leur';
+const omschrijving = 'Bas & Anneloes (voorheen Bas van der Ven Catering), Korte Brugstraat 98 in Etten-Leur: buffetten, hapjes, high tea, barbecue, taarten en brood. Bezorgd en opgebouwd bij u thuis.';
+const lidwoord = (g: string) => (g === 'buffet' || g === 'huiskamer' ? 'het' : 'de');
+const keuzes = buffetten.map((b) => ({ id: b.id, label: `${lidwoord(b.groep)} ${b.naam.toLowerCase()}`, naam: b.naam, min: b.min, prijs: b.prijs }));
+const feesten = ['een verjaardag', 'een receptie', 'een bruiloft', 'een communie', 'een babyshower', 'een feest op het werk', 'iets anders'];
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. HERO: licht papier links, hun hapjesschaal groot rechts -->
+    <section class="relative lg:min-h-[calc(100svh-6rem)] lg:max-h-[56rem]">
+      <figure class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-[56%]">
+        <Image src={hapjes} alt="Schaal met bruschetta's: zalmtartaar met radijs, gamba's met komkommer, coppa en geitenkaas met quinoa en walnoot, op een kanten kleedje" quality={76} widths={[640, 960, 1280, 1732]} sizes="(min-width: 1024px) 56vw, 100vw" loading="eager" fetchpriority="high" class="aspect-[4/3] w-full object-cover sm:aspect-[16/10] lg:aspect-auto lg:h-full" />
+      </figure>
+      <div class="wrap relative grid lg:min-h-[inherit] lg:max-h-[inherit] lg:grid-cols-12">
+        <div class="flex flex-col justify-center pb-16 pt-10 lg:col-span-5 lg:py-20">
+          <div class="flex items-center gap-4">
+            <span class="bord h-14 w-[4.25rem] text-[1.9rem] md:h-16 md:w-20 md:text-[2.25rem]" aria-hidden="true">98</span>
+            <p class="text-sm leading-snug text-grijs">Korte Brugstraat 98<br />Etten-Leur</p>
+          </div>
+          <h1 class="mt-8 text-hero leading-[.92] lg:mt-10">Liefde voor lekkers</h1>
+          <p class="mt-7 max-w-md text-lg text-grijs">Buffetten, hapjes, taarten en brood van Bas en Anneloes. Allemaal vers met de hand gemaakt, en bij u thuis bezorgd en opgebouwd.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href="#aanvragen" class="knop">Catering aanvragen<Icoon naam="pijl" /></a>
+            <a href="#catering" class="link text-[.9375rem] font-medium">Bekijk de buffetten</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. CATERING: de echte bestellijst -->
+    <section id="catering" class="border-t border-lijn bg-wit py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="min-w-0 lg:col-span-4">
+          <div class="lg:sticky lg:top-10">
+            <h2 class="rijs text-3xl">Van hapjesschaal tot tapasbuffet</h2>
+            <p class="rijs mt-6 max-w-sm text-grijs">Warm en koud, voor thuis of op het werk. Wij bezorgen en zetten het buffet klaar, zodat u zelf kunt genieten.</p>
+            <figure class="rijs mt-10 max-lg:hidden">
+              <Image src={bas} alt="Bas rolt fondant uit op de werkbank in de keuken" quality={74} widths={[480, 760]} sizes="26vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[62%_50%]" />
+              <figcaption class="mt-3 text-xs text-grijs">Bas aan de werkbank</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="min-w-0 lg:col-span-8">
+          {groepen.map((g, gi) => (
+            <div class={gi > 0 ? 'mt-14' : ''}>
+              <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b-2 border-inkt pb-3">
+                <h3 class="text-2xl">{g.titel}</h3>
+                {g.noot && <p class="text-xs text-grijs">{g.noot}</p>}
+              </div>
+              <ul>
+                {buffetten.filter((b) => b.groep === g.id).map((b) => (
+                  <li class="rijs border-b border-lijn py-5">
+                    <div class="flex items-baseline gap-3">
+                      <p class="min-w-0 font-kop text-xl leading-tight">{b.naam}</p>
+                      <span class="stip max-sm:min-w-2" aria-hidden="true"></span>
+                      <p class="num whitespace-nowrap text-sm text-grijs max-sm:hidden">vanaf {b.min} pers.</p>
+                      <p class="num whitespace-nowrap font-semibold">{euro(b.prijs)}<span class="font-normal text-grijs"> p.p.</span></p>
+                    </div>
+                    <div class="mt-1.5 flex items-start justify-between gap-6">
+                      <p class="max-w-xl text-sm text-grijs"><span class="sm:hidden">Vanaf {b.min} pers.</span><span class={g.id === 'buffet' ? '' : 'max-sm:hidden'}><span class="sm:hidden"> · </span>{b.kort}</span></p>
+                      <a href="#aanvragen" data-kies={b.id} class="mt-0.5 shrink-0 text-sm font-semibold text-steen no-underline transition-colors hover:text-steen-2">Kies<span class="sr-only"> {b.naam}</span> <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p class="mt-8 max-w-xl text-xs leading-relaxed text-grijs">Prijzen per persoon, uit onze cateringlijsten. Barbecueschotel 2 kost € 23,00 en de luxe barbecueschotel € 29,75; de luxe gourmetschotel € 37,50. Borden en bestek erbij: € 1,00 p.p. als u ze schoon terugbrengt, € 2,00 p.p. vuil.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. AANVRAGEN: één zin, klaar voor WhatsApp -->
+    <section id="aanvragen" class="bg-email py-20 text-wit [color-scheme:dark] md:py-28">
+      <div class="wrap">
+        <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-16">
+          <div class="min-w-0 lg:col-span-4">
+            <h2 class="rijs text-3xl">Vertel ons wat u viert</h2>
+            <p class="rijs mt-6 max-w-sm text-mist">Vul de zin aan. U ziet meteen wat het ongeveer kost, en WhatsApp opent met uw bericht klaar.</p>
+          </div>
+          <form class="min-w-0 lg:col-span-8" data-zin onsubmit="return false">
+            <p class="zin">
+              Op <label class="sr-only" for="z-datum">Datum</label><input id="z-datum" type="date" class="veld num w-[8.6em]" data-z="datum" />
+              vieren wij <label class="sr-only" for="z-feest">Soort feest</label><select id="z-feest" class="veld" data-z="feest">{feesten.map((f) => <option>{f}</option>)}</select>
+              met <label class="sr-only" for="z-aantal">Aantal gasten</label><input id="z-aantal" type="number" inputmode="numeric" min="2" max="500" value="25" class="veld num w-[2.6em] text-center" data-z="aantal" /> gasten,
+              in <label class="sr-only" for="z-plaats">Plaats</label><select id="z-plaats" class="veld" data-z="plaats"><option value="in">Etten-Leur</option><option value="uit">een andere plaats</option></select>.
+              Wij denken aan <label class="sr-only" for="z-keuze">Buffet of schotel</label><select id="z-keuze" class="veld" data-z="keuze">{keuzes.map((k) => <option value={k.id} selected={k.id === 'bourg'}>{k.label}</option>)}<option value="">iets anders</option></select>.
+            </p>
+            <div class="mt-10 grid gap-8 border-t border-lijn-licht pt-8 md:grid-cols-[1fr_auto] md:items-end">
+              <div aria-live="polite" class="space-y-1.5 text-sm text-mist">
+                <p class="text-base text-wit" data-uit="prijs">Indicatie: 25 × € 36,25 = <strong class="num">€ 906,25</strong></p>
+                <p data-uit="bezorg">Binnen Etten-Leur bezorgen we gratis bij bestellingen boven € 100.</p>
+                <p data-uit="min" class="font-semibold text-wit"></p>
+              </div>
+              <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a href={waHoi} class="knop" data-uit="wa"><Icoon naam="wa" />Stuur via WhatsApp</a>
+                <a href={site.telHref} class="link num text-sm">of bel {site.tel}</a>
+              </div>
+            </div>
+            <p class="mt-6 text-xs text-mist">Het aantal gasten kunt u tot vijf dagen vooraf nog aanpassen.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. DE WINKEL: het pand op nummer 98 -->
+    <section id="winkel" class="py-20 md:py-28">
+      <div class="wrap grid items-center gap-y-12 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-7">
+          <Image src={nummer98} alt="De winkel aan de Korte Brugstraat: rode bakstenen boog, het emaille bordje 98 en door de open deur de vitrine met gebak" quality={76} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 54vw, 100vw" class="aspect-[5/4] w-full rounded-sm object-cover object-[45%_50%]" />
+        </figure>
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Achter de boog op nummer 98</h2>
+          <p class="rijs mt-6 max-w-md text-grijs">In onze winkel vindt u patisserie, traiteur en rustieke (desem)broden. Elke week staat er een maaltijd klaar die past bij het seizoen, gluten- en lactosevrij.</p>
+          <table class="rijs mt-9 w-full max-w-sm text-sm">
+            <caption class="sr-only">Openingstijden van de winkel</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr data-dag={t.dag} class="border-b border-lijn data-[vandaag]:font-semibold data-[vandaag]:text-steen">
+                  <th scope="row" class="py-2 text-left" style="font-weight:inherit">{t.naam}</th>
+                  <td class="num whitespace-nowrap py-2 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="rijs mt-4 text-sm text-grijs" data-status-wrap><span data-status class="block font-semibold text-inkt"></span>Catering kan van dinsdag tot en met zaterdag.</p>
+        </div>
+      </div>
+
+      <div class="wrap mt-16 grid gap-y-10 md:mt-24 md:grid-cols-12 md:gap-x-10">
+        <figure class="rijs md:col-span-7">
+          <Image src={vitrine} alt="Gebakjes met room en vers fruit in de vitrine" quality={74} widths={[640, 960, 1300]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+          <figcaption class="mt-3 text-xs text-grijs">Eclairs, kleine taartjes, cupcakes en Bossche bollen: het aanbod verschilt per dag.</figcaption>
+        </figure>
+        <div class="md:col-span-5 md:pt-24">
+          <figure class="rijs" style="--d:.1s">
+            <Image src={brood} alt="Ambachtelijk gebakken broden met een bloemige korst op een rooster" quality={74} widths={[480, 800]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 text-xs text-grijs">Desem of gist, dik of dun gesneden.</figcaption>
+          </figure>
+          <p class="rijs mt-10 border-l-2 border-steen pl-5 text-sm">Een taart bestellen? Doe het minimaal twee weken van tevoren, dan bent u zeker van een plekje in de agenda.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. OVER: Bas en Anneloes + reviews -->
+    <section id="over" class="border-t border-lijn bg-wit py-20 md:py-28">
+      <div class="wrap grid items-center gap-y-12 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-6">
+          <Image src={basEnAnneloes} alt="Anneloes en Bas van der Ven in hun winkel" quality={76} widths={[640, 960, 1300]} sizes="(min-width: 1024px) 46vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover object-[50%_35%]" />
+        </figure>
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Bas en Anneloes</h2>
+          <p class="rijs mt-6 max-w-lg text-grijs">Sinds 1 september 2021 heet Bas van der Ven Catering ‘Bas en Anneloes’. Zelfde adres, zelfde telefoonnummer.</p>
+          <div class="mt-10 space-y-8">
+            {[reviews[0], reviews[2]].map((r, i) => (
+              <figure class="rijs" style={`--d:${i * 0.08}s`}>
+                <blockquote class="font-kop text-xl leading-snug md:text-2xl">“{r.tekst}”</blockquote>
+                <figcaption class="mt-3 text-xs text-grijs">{r.naam}, Google review</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div class="wrap mt-16 grid gap-10 border-t border-lijn pt-12 md:grid-cols-2 md:gap-16">
+        {[reviews[1], reviews[3]].map((r, i) => (
+          <figure class="rijs" style={`--d:${i * 0.08}s`}>
+            <blockquote class="text-lg leading-relaxed">“{r.tekst}”</blockquote>
+            <figcaption class="mt-3 text-xs text-grijs">{r.naam}, Google review</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+
+    <!-- 6. CONTACT + goed om te weten -->
+    <section id="contact" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-5">
+          <span class="bord h-16 w-20 text-[2.25rem]" aria-hidden="true">98</span>
+          <h2 class="mt-8 text-3xl">Korte Brugstraat 98, Etten-Leur</h2>
+          <p class="mt-6 text-grijs">Bel, app of mail ons, of loop binnen in de winkel. Voor catering kunt u terecht van dinsdag tot en met zaterdag.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={waHoi} class="knop"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="link num font-medium">{site.tel}</a>
+          </div>
+          <p class="mt-5 text-sm"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a> · <a href={site.maps} class="link">Route plannen</a></p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h3 class="text-2xl">Goed om te weten</h3>
+          <dl class="mt-6 text-sm">
+            {[
+              ['Bezorgen', 'Binnen Etten-Leur € 5,00, en gratis bij bestellingen boven € 100. Buiten Etten-Leur € 1,00 per km.'],
+              ['Aantal gasten', 'Nog niet zeker? Geef een schatting door; het definitieve aantal kan tot vijf dagen vooraf.'],
+              ['Annuleren', 'Tot vijf dagen vooraf kosteloos. Daarna rekenen we 50%, binnen 24 uur de hele bestelling.'],
+              ['Allergieën', 'Veel gebak en taarten kunnen ook gluten- en/of lactosevrij. Vraag het ons.'],
+            ].map(([k, v]) => (
+              <div class="grid gap-1 border-t border-lijn py-4 sm:grid-cols-[9rem_1fr] sm:gap-6">
+                <dt class="font-semibold">{k}</dt>
+                <dd class="text-grijs">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script define:vars={{ keuzes }}>
+  window.__keuzes = keuzes;
+</script>
+<script>
+  type Keuze = { id: string; label: string; naam: string; min: number; prijs: number };
+  const keuzes = (window as unknown as { __keuzes: Keuze[] }).__keuzes;
+  const f = document.querySelector<HTMLFormElement>('[data-zin]');
+  if (f) {
+    const v = (k: string) => f.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-z="${k}"]`)!;
+    const uit = (k: string) => document.querySelector<HTMLElement>(`[data-uit="${k}"]`)!;
+    const euro = (n: number) => '€ ' + n.toFixed(2).replace('.', ',');
+    const datumTekst = (s: string) => (s ? new Date(s + 'T12:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }) : '');
+    const morgen = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    (v('datum') as HTMLInputElement).min = morgen;
+
+    const werk = () => {
+      const aantal = Math.max(0, Math.round(Number(v('aantal').value) || 0));
+      const k = keuzes.find((x) => x.id === v('keuze').value);
+      const binnen = v('plaats').value === 'in';
+      const totaal = k ? aantal * k.prijs : 0;
+      uit('prijs').innerHTML = k && aantal ? `Indicatie: ${aantal} × ${euro(k.prijs)} = <strong class="num">${euro(totaal)}</strong>` : 'Vertel ons wat u zoekt, dan denken we mee.';
+      uit('bezorg').textContent = binnen
+        ? (k && totaal > 100 ? 'Bezorgen binnen Etten-Leur is gratis boven € 100.' : 'Bezorgen binnen Etten-Leur: € 5,00, gratis boven € 100.')
+        : 'Bezorgen buiten Etten-Leur: € 1,00 per km.';
+      uit('min').textContent = k && aantal < k.min ? `Let op: ${k.label} is er vanaf ${k.min} personen.` : '';
+
+      const d = datumTekst(v('datum').value);
+      const regel = [
+        'Hoi Bas en Anneloes,',
+        `${d ? `Op ${d}` : 'Binnenkort'} vieren wij ${v('feest').value} met ${aantal || 'een aantal'} gasten in ${binnen ? 'Etten-Leur' : '[plaats]'}.`,
+        k ? `We denken aan ${k.label}.` : 'We weten nog niet precies wat we willen.',
+        d ? 'Is die datum nog vrij?' : 'Welke datums zijn nog vrij?',
+      ].join('\n');
+      uit('wa').setAttribute('href', `https://wa.me/31643723557?text=${encodeURIComponent(regel)}`);
+    };
+    // Keuzelijsten zo breed als de gekozen tekst, zodat de zin als een zin leest.
+    const ctx = document.createElement('canvas').getContext('2d')!;
+    const pas = () => f.querySelectorAll<HTMLSelectElement>('select.veld').forEach((s) => {
+      const cs = getComputedStyle(s); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+      s.style.width = Math.ceil(ctx.measureText(s.options[s.selectedIndex].text).width + parseFloat(cs.fontSize) * 1.25) + 'px';
+    });
+    document.fonts.ready.then(pas); addEventListener('resize', pas);
+    f.addEventListener('change', pas);
+    f.addEventListener('input', werk);
+    f.addEventListener('change', werk);
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+      const s = v('keuze') as HTMLSelectElement; s.value = a.dataset.kies!;
+      const k = keuzes.find((x) => x.id === s.value);
+      const n = v('aantal') as HTMLInputElement; if (k && Number(n.value) < k.min) n.value = String(k.min);
+      werk(); pas();
+      setTimeout(() => v('datum').focus({ preventScroll: true }), 500);
+    }));
+    werk();
+  }
+</script>

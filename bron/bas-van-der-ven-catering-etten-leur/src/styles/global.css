@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@import "@fontsource/dm-serif-display/400.css";
+@import "@fontsource/dm-serif-display/400-italic.css";
+@import "@fontsource-variable/inter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Nummer 98: wit papier, zwart van hun stempel-logo, het donkerblauwe emaille huisnummerbord en één kleur: de rode baksteen van hun pand. */
+  --color-papier: #f4f3f0;     /* pagina */
+  --color-wit: #ffffff;
+  --color-inkt: #161616;       /* tekst, 16:1 op papier */
+  --color-grijs: #5d5a55;      /* bijtekst, 6,2:1 op papier */
+  --color-steen: #a3402a;      /* accent, 5,7:1 op papier, 6,3:1 met wit */
+  --color-steen-2: #8a3421;    /* hover */
+  --color-email: #1b2433;      /* emaille bord, donkere vlakken */
+  --color-email-2: #232e40;
+  --color-mist: #aeb6c2;       /* bijtekst op email, 7,6:1 */
+  --color-lijn: #16161624;
+  --color-lijn-licht: #ffffff2b;
+
+  --font-kop: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .9vw + 1.2rem, 2rem);
+  --text-3xl: clamp(2.25rem, 2.8vw + 1.2rem, 4rem);
+  --text-hero: clamp(3.1rem, 6.2vw + .4rem, 7.5rem);
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-full: 999px;
+
+  --shadow-bord: 0 1px 0 #ffffff30 inset, 0 10px 30px -12px #1b243380;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-steen); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-steen); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Het emaille huisnummerbord van Korte Brugstraat 98, nagemaakt: donkerblauw, witte binnenrand, ronde hoeken. */
+  .bord { position: relative; display: inline-grid; place-items: center; background: var(--color-email); color: var(--color-wit); border-radius: 9px; box-shadow: var(--shadow-bord); font-family: var(--font-kop); line-height: 1; }
+  .bord::before { content: ""; position: absolute; inset: 5px; border: 2px solid var(--color-wit); border-radius: 6px; pointer-events: none; }
+  .bord::after { content: ""; position: absolute; inset: 0; border-radius: 9px; background: radial-gradient(circle at 9px 9px, #ffffffaa 1.6px, transparent 2.2px), radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #ffffffaa 1.6px, transparent 2.2px); pointer-events: none; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-size: .9375rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-steen); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht); }
+  .knop:hover { background: var(--color-steen-2); }
+  .knop:active { transform: translateY(1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-licht { background: var(--color-wit); color: var(--color-email); }
+  .knop-licht:hover { background: var(--color-papier); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: color .25s; }
+  .link:hover { color: var(--color-steen); }
+
+  /* Bestellijst: naam .......... prijs */
+  .stip { flex: 1; min-width: 1.5rem; border-bottom: 1.5px dotted currentColor; opacity: .35; transform: translateY(-.3em); }
+
+  /* Invulzin: velden die in de tekst meelopen. */
+  .zin { font-family: var(--font-kop); font-size: clamp(1.6rem, 1.7vw + 1rem, 2.6rem); line-height: 1.55; }
+  .veld { font: inherit; color: var(--color-wit); background: transparent; border: 0; border-bottom: 2px solid var(--color-steen-licht, #e08a72); padding: 0 .1em; border-radius: 0; max-width: 100%; }
+  .veld:focus-visible { outline: 2px solid var(--color-wit); outline-offset: 2px; }
+  select.veld { appearance: none; -webkit-appearance: none; padding-right: 1.1em; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - .5em) 58%, calc(100% - .25em) 58%; background-size: .25em .25em; background-repeat: no-repeat; cursor: pointer; }
+  select.veld option { color: var(--color-inkt); background: var(--color-wit); font-family: var(--font-sans); font-size: 1rem; }
+
+  .js .rijs { opacity: 0; transform: translateY(12px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
