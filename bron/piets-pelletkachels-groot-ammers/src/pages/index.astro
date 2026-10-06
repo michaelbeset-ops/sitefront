@@ -1,0 +1,292 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waHoi, waMet } from '../data/site';
+
+import tuinkamer from '../assets/tuinkamer-pellet.jpg';
+import houtkachel from '../assets/houtkachel.jpg';
+import pelletkachel from '../assets/pelletkachel.jpg';
+import woonkamer from '../assets/pellet-woonkamer.jpg';
+import vuurtafel from '../assets/vuurtafel-terras.jpg';
+import vuurbank from '../assets/vuurtafel-bank.jpg';
+import rookkanaal from '../assets/rookkanaal.jpg';
+import jas from '../assets/logo-jas.jpg';
+
+// Keuzehulp: elke uitkomst is een categorie die ze zelf voeren; de punten komen van hun eigen productpagina's.
+const keuzes = [
+  {
+    id: 'pellet', vraag: 'Warmte zonder gedoe', naam: 'Pelletkachel', foto: woonkamer, alt: 'Brandende pelletkachel tussen witte muren in een woonkamer met planten',
+    punten: ['Ontsteekt automatisch op het tijdstip dat u instelt', 'Houdt de ruimte op de temperatuur die u wilt', 'Eén keer per week bijvullen is veelal genoeg'],
+    tekst: 'Hallo, ik denk aan een pelletkachel. Kan ik een afspraak maken om er een paar in de showroom te bekijken?',
+  },
+  {
+    id: 'hout', vraag: 'Het hele huis warm op hout', naam: 'Houtkachel met cv', foto: houtkachel, alt: 'Brandende houtkachel met houtvak onder de vuurhaard, op een zwarte vloerplaat',
+    punten: ['Te combineren met radiatoren of vloerverwarming', 'Verwarmt meer ruimtes tegelijk, niet alleen de woonkamer', 'Nordic Fire cv houtkachel: 10 jaar garantie'],
+    tekst: 'Hallo, ik ben benieuwd naar een houtkachel met cv-aansluiting. Kan ik een afspraak maken voor advies in de showroom?',
+  },
+  {
+    id: 'koken', vraag: 'Koken op houtvuur', naam: 'Kookhaard', foto: null, alt: '',
+    punten: ['Koken, bakken, braden en grillen terwijl het huis warm wordt', 'Aan te sluiten op uw cv-installatie', 'Nordic Fire kookhaarden van 6 tot 12 kW'],
+    tekst: 'Hallo, ik ben benieuwd naar een kookhaard op hout. Kan ik een afspraak maken om te komen kijken?',
+  },
+  {
+    id: 'binnen', vraag: 'Een haard als blikvanger', naam: 'Binnenhaard', foto: null, alt: '',
+    punten: ['Minimalistisch, robuust of industrieel: er past er een bij elk interieur', 'Advies bij de keuze, zodat hij echt iets toevoegt aan de kamer'],
+    tekst: 'Hallo, ik zoek een binnenhaard en wil graag advies. Wanneer kan ik in de showroom langskomen?',
+  },
+  {
+    id: 'buiten', vraag: 'Buiten zitten als het fris is', naam: 'Buitenhaard', foto: vuurtafel, alt: 'Vierkante vuurtafel met houten rand tussen loungebanken op een terras',
+    punten: ['Tuinhaarden, terrashaarden en vuurschalen', 'Nazomeren, vroeg in de lente of zelfs in de winter'],
+    tekst: 'Hallo, ik zoek iets voor warmte op het terras. Kan ik een afspraak maken om te komen kijken?',
+  },
+];
+
+// Letterlijk of licht ingekort van hun eigen productpagina's (bron/site.txt).
+const assortiment = [
+  ['Pelletkachels', 'Alle soorten en maten. Milieuvriendelijk, kostenbesparend en eenvoudig in gebruik.'],
+  ['Houtkachels', 'Ook met cv-aansluiting, en altijd geïnstalleerd door vakbekwame specialisten.'],
+  ['Kookhaarden', 'Een houtkachel met een fornuis erin. Dankzij de grote voorraad snel van dienst.'],
+  ['Binnenhaarden', 'Een groot aanbod moderne binnenhaarden, voor wie geen open haard heeft.'],
+  ['Buitenhaarden', 'Tuinhaarden, terrashaarden en vuurschalen voor tuin en terras.'],
+];
+
+const titel = "Piet's Pelletkachels | Pelletkachels, houtkachels en haarden in Groot-Ammers";
+const omschrijving = "Piet's Pelletkachels, Voorstraat 55A in Groot-Ammers: pelletkachels, houtkachels met cv, kookhaarden, binnen- en buitenhaarden. Showroom alleen op afspraak, 06 57 70 10 30.";
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. HERO: licht vlak met grote letters, hun eigen foto van een pelletkachel in een tuinkamer ernaast -->
+    <section class="relative overflow-hidden bg-as">
+      <div class="flex flex-col lg:grid lg:min-h-[calc(100svh-7rem)] lg:max-h-[56rem] lg:grid-cols-12">
+        <div class="wrap flex flex-col justify-center pb-14 pt-10 sm:pt-14 lg:col-span-7 lg:mx-0 lg:max-w-none lg:py-20 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:pr-12">
+          <p class="text-[.8125rem] font-semibold uppercase tracking-[.18em] text-vlam-diep">Groot-Ammers · showroom op afspraak</p>
+          <h1 class="mt-6 text-hero">
+            <span class="block">Pellet.</span>
+            <span class="block">Hout.</span>
+            <span class="block text-vlam-diep">Vuur.</span>
+          </h1>
+          <p class="mt-8 max-w-[34rem] text-lg leading-relaxed text-grijs md:text-xl">Een pelletkachel geeft de gezelligheid van een houtkachel en het gemak van een gashaard. Piet's levert ze, net als houtkachels, kookhaarden en haarden voor binnen en buiten.</p>
+          <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={waHoi} class="knop knop-vlam"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="num inline-flex items-center gap-2 font-semibold no-underline transition-colors hover:text-vlam-diep"><Icoon naam="tel" class="h-5 w-5" />of bel {site.tel}</a>
+          </div>
+        </div>
+        <figure class="relative order-first h-[42svh] max-h-[32rem] lg:order-none lg:col-span-5 lg:h-auto lg:max-h-none">
+          <Image src={tuinkamer} alt="Zwarte pelletkachel die brandt in een tuinkamer met zwarte houten wand, wandlampen en een grijze bank" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_60%]" loading="eager" fetchpriority="high" />
+          <figcaption class="absolute bottom-0 right-0 bg-roet/80 px-4 py-2 text-xs text-as">Pelletkachel in een tuinkamer</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. KEUZEHULP: één vraag, vijf antwoorden die precies hun vijf soorten kachels zijn -->
+    <section id="kiezen" class="op-donker bg-roet py-24 text-as md:py-32" aria-labelledby="kiezen-kop">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-x-16 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 id="kiezen-kop" class="text-3xl">Wat wilt u<br />van uw vuur?</h2>
+          <p class="mt-6 max-w-sm text-rook">Kies wat het zwaarst weegt. Dan ziet u welke kachel daarbij hoort, en appt u met één tik een afspraak in de showroom.</p>
+          <div class="mt-10" role="radiogroup" aria-label="Wat wilt u van uw vuur?" data-keuzes>
+            {keuzes.map((k, i) => (
+              <button type="button" role="radio" aria-checked={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="keuze" data-keuze={k.id}>
+                <span class="font-kop text-[1.6rem] uppercase leading-none md:text-[2rem]">{k.vraag}</span>
+                <Icoon naam="pijl" class="k-pijl h-6 w-6" />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 lg:pt-4" aria-live="polite">
+          {keuzes.map((k, i) => (
+            <article class="grid gap-8 md:grid-cols-[1fr_1.05fr] md:gap-10" data-uitkomst={k.id} hidden={i !== 0}>
+              <div class="relative aspect-[4/3] overflow-hidden rounded-sm bg-staal md:aspect-[4/5]">
+                {k.foto ? (
+                  <Image src={k.foto} alt={k.alt} widths={[400, 700]} sizes="(min-width: 1024px) 28vw, (min-width: 768px) 45vw, 100vw" class="h-full w-full object-cover object-[50%_30%]" />
+                ) : (
+                  <div class="flex h-full flex-col items-center justify-center gap-6 p-8 text-center">
+                    <svg viewBox="0 0 34 40" class="h-28 w-auto" fill="none" stroke-linecap="round" aria-hidden="true">
+                      <path d="M6 38c-4-6-3-13 2-19 1 4 3 6 5 7-1-8 2-16 9-23-1 7 1 12 4 16 1-3 3-5 5-6-1 6 2 12-1 25" stroke="#d6331a" stroke-width="1.4" />
+                      <path d="M11 38c-2-5-1-9 2-13 1 3 2 4 4 5 0-5 2-9 5-13 0 5 2 8 4 11 1 4 0 7-2 10" stroke="#f0611f" stroke-width="1.3" />
+                      <path d="M16 38c-1-3 0-6 2-8 .5 2 2 3 3 4 1 2 0 3-1 4" stroke="#f6b445" stroke-width="1.2" />
+                    </svg>
+                    <p class="max-w-[14rem] text-sm text-rook">Geen foto van deze soort op het profiel. Vraag ernaar bij uw afspraak.</p>
+                  </div>
+                )}
+              </div>
+              <div class="flex flex-col">
+                <p class="text-sm font-semibold text-vlam">Dat wordt een</p>
+                <h3 class="mt-2 text-[2.75rem] md:text-[3.5rem]">{k.naam}</h3>
+                <ul class="mt-7 space-y-4">
+                  {k.punten.map((p) => <li class="flex gap-3 text-as/90"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-vlam" />{p}</li>)}
+                </ul>
+                <div class="mt-auto pt-10">
+                  <a href={waMet(k.tekst)} class="knop knop-vlam w-full whitespace-normal py-3 text-center sm:w-auto"><Icoon naam="wa" />Afspraak voor een {k.naam.toLowerCase()}</a>
+                  <p class="mt-4 text-sm text-rook">Liever even overleggen? <a href={site.telHref} class="link num whitespace-nowrap text-as">{site.tel}</a></p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FOTO'S: alles van hun eigen Google-profiel, groot en in een onregelmatig raster -->
+    <section id="praktijk" class="bg-as py-24 md:py-32" aria-labelledby="praktijk-kop">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 id="praktijk-kop" class="max-w-3xl text-3xl">Zo staat hij er<br class="hidden sm:block" /> straks bij</h2>
+          <p class="max-w-xs text-grijs">Foto's die Piet's zelf op het Google-profiel zette: kachels thuis, in de tuinkamer en op het terras.</p>
+        </div>
+        <div class="mt-14 grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
+          <figure class="col-span-2 md:col-span-5 md:row-span-2">
+            <Image src={houtkachel} alt="Brandende houtkachel met een zwart rookkanaal recht omhoog, op een parketvloer" widths={[600, 1000]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/5] h-full w-full rounded-sm object-cover md:aspect-auto" />
+            <figcaption class="mt-3 text-sm text-grijs">Houtkachel met houtvak, op een stalen vloerplaat</figcaption>
+          </figure>
+          <figure class="md:col-span-4">
+            <Image src={pelletkachel} alt="Antraciet pelletkachel met afvoer door de muur in een woonkamer" widths={[400, 700]} sizes="(min-width: 768px) 32vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 text-sm text-grijs">Pelletkachel, afvoer door de muur</figcaption>
+          </figure>
+          <figure class="md:col-span-3">
+            <Image src={rookkanaal} alt="Zwart rookkanaal dat langs een bakstenen gevel omhoog loopt" widths={[300, 600]} sizes="(min-width: 768px) 24vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 text-sm text-grijs">Rookkanaal langs de gevel</figcaption>
+          </figure>
+          <figure class="col-span-2 md:col-span-4">
+            <Image src={vuurtafel} alt="Vuurtafel met houten rand en houtblokken op lavasteen tussen loungebanken" widths={[500, 960]} sizes="(min-width: 768px) 32vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 text-sm text-grijs">Vuurtafel op het terras</figcaption>
+          </figure>
+          <figure class="col-span-2 md:col-span-3">
+            <Image src={vuurbank} alt="Houten picknicktafel met een brandend vuur in het midden van het tafelblad, in het donker" widths={[360, 720]} sizes="(min-width: 768px) 24vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover object-[50%_40%] md:aspect-[4/5]" />
+            <figcaption class="mt-3 text-sm text-grijs">Picknicktafel met vuur in het blad</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PELLETS: hoe het werkt, met een typeplaatje zoals achter op de kachel -->
+    <section id="pellets" class="op-donker bg-staal py-24 text-as md:py-32" aria-labelledby="pellets-kop">
+      <div class="wrap grid items-center gap-x-16 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 id="pellets-kop" class="text-3xl">Eén keer per week <span class="text-vlam">bijvullen</span></h2>
+          <div class="mt-8 max-w-xl space-y-5 text-lg text-rook">
+            <p>De aanvoer van pellets, de ventilator en de hoeveelheid warme lucht stelt u zelf in. De kachel gaat op het gekozen tijdstip aan en houdt de kamer op temperatuur.</p>
+            <p>Houtpellets zijn samengeperst houtafval. Het verbruik is laag: volgens Piet's kunt u tot wel 30 procent besparen. Ideaal in een goed geïsoleerde woning.</p>
+            <p>Piet's levert onder meer Nordic Fire. Dit zijn de punten die de fabrikant zelf noemt, voor de pelletkachel en de houtkachel met cv.</p>
+          </div>
+        </div>
+        <div class="grid gap-5 sm:grid-cols-2 lg:col-span-7">
+          <div class="plaatje">
+            <span class="schroef left-2.5 top-2.5"></span><span class="schroef right-2.5 top-2.5" style="--r:110deg"></span>
+            <span class="schroef bottom-2.5 left-2.5" style="--r:70deg"></span><span class="schroef bottom-2.5 right-2.5" style="--r:150deg"></span>
+            <p class="font-kop text-2xl uppercase tracking-[.04em]">Nordic Fire</p>
+            <p class="text-xs font-semibold uppercase tracking-[.16em] text-rook">Pelletkachel</p>
+            <dl class="mt-6 divide-y divide-lijn border-y border-lijn text-sm">
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Rendement</dt><dd class="num text-right">90% en hoger</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Binnenwerk</dt><dd class="num text-right">vermiculite</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Bediening</dt><dd class="num text-right">Nederlandstalig</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Garantie</dt><dd class="num text-right">5 jaar</dd></div>
+            </dl>
+            <p class="mt-4 text-xs text-rook">Volgens Nordic Fire de stilste pelletkachel in zijn soort.</p>
+          </div>
+          <div class="plaatje">
+            <span class="schroef left-2.5 top-2.5"></span><span class="schroef right-2.5 top-2.5" style="--r:110deg"></span>
+            <span class="schroef bottom-2.5 left-2.5" style="--r:70deg"></span><span class="schroef bottom-2.5 right-2.5" style="--r:150deg"></span>
+            <p class="font-kop text-2xl uppercase tracking-[.04em]">Nordic Fire</p>
+            <p class="text-xs font-semibold uppercase tracking-[.16em] text-rook">Cv houtkachel</p>
+            <dl class="mt-6 divide-y divide-lijn border-y border-lijn text-sm">
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Naverbranding</dt><dd class="num text-right">extra</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Ruit</dt><dd class="num text-right">altijd schoon</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Oververhitting</dt><dd class="num text-right">dubbel beveiligd</dd></div>
+              <div class="flex justify-between gap-4 py-2.5"><dt class="text-rook">Garantie</dt><dd class="num text-right">10 jaar</dd></div>
+            </dl>
+            <p class="mt-4 text-xs text-rook">Extra beveiliging tegen schoorsteenbrand dankzij de thermostatische mengregeling.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ASSORTIMENT: hun vijf soorten als catalogusregels, tekst van hun eigen productpagina's -->
+    <section id="assortiment" class="bg-as py-24 md:py-32" aria-labelledby="assortiment-kop">
+      <div class="wrap">
+        <h2 id="assortiment-kop" class="text-3xl">In en rond het huis</h2>
+        <ul class="mt-12 border-t-2 border-roet">
+          {assortiment.map(([naam, tekst]) => (
+            <li class="grid gap-2 border-b border-lijn-licht py-6 md:grid-cols-12 md:items-baseline md:gap-8 md:py-7">
+              <h3 class="text-[2.25rem] md:col-span-5 md:text-[3rem]">{naam}</h3>
+              <p class="text-grijs md:col-span-5">{tekst}</p>
+              <a href="#kiezen" class="hidden text-sm font-semibold text-vlam-diep no-underline hover:underline md:col-span-2 md:block md:text-right">Past dit bij u?</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. SHOWROOM: adres groot, tijden, route; alleen op afspraak -->
+    <section id="showroom" class="op-donker bg-roet py-24 text-as md:py-32" aria-labelledby="showroom-kop">
+      <div class="wrap grid gap-x-16 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="text-sm font-semibold text-vlam">De showroom</p>
+          <h2 id="showroom-kop" class="mt-3 text-3xl">Voorstraat 55A<br /><span class="text-rook">Groot-Ammers</span></h2>
+          <p class="mt-8 max-w-lg text-lg text-rook">Een kachel kiest u het liefst als u hem in het echt ziet. De showroom is alleen op afspraak open: stuur even een appje of bel, dan spreken we een moment af.</p>
+          <div class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={waHoi} class="knop knop-vlam"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="num inline-flex items-center gap-2 font-semibold no-underline hover:text-vlam"><Icoon naam="tel" class="h-5 w-5" />{site.tel}</a>
+            <a href={site.maps} class="inline-flex items-center gap-2 font-semibold no-underline hover:text-vlam"><Icoon naam="pin" class="h-5 w-5" />Route plannen</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5">
+          <div class="border-t-2 border-vlam pt-6" data-status-wrap>
+            <p class="flex items-center gap-2 font-semibold"><Icoon naam="klok" class="h-5 w-5 text-vlam" /><span data-status>Maandag t/m zaterdag, op afspraak</span></p>
+            <table class="num mt-6 w-full text-[1rem]">
+              <caption class="sr-only">Tijden voor een afspraak in de showroom</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn data-[vandaag]:font-semibold data-[vandaag]:text-vlam">
+                    <th scope="row" class="py-2.5 text-left font-normal">{t.naam}</th>
+                    <td class="py-2.5 text-right whitespace-nowrap">{t.o ? `${t.open} - ${t.dicht}` : 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-4 text-sm text-rook">Tijden volgens het Google-profiel. Kom niet onaangekondigd: eerst even een afspraak.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SLOT: vlam-balk met het logo op de werkjas -->
+    <section class="bg-vlam" aria-labelledby="slot-kop">
+      <div class="wrap grid items-center gap-8 py-14 md:grid-cols-12 md:py-16">
+        <h2 id="slot-kop" class="text-[2.25rem] md:col-span-7 md:text-[3.25rem]">Twijfelt u tussen pellet en hout? Kom ze vergelijken.</h2>
+        <div class="flex items-center gap-6 md:col-span-5 md:justify-end">
+          <Image src={jas} alt="Het logo van Piet's Pelletkachels geborduurd op een donkere jas" widths={[200, 400]} sizes="160px" class="hidden h-32 w-48 rounded-sm object-cover sm:block" />
+          <a href={waHoi} class="knop bg-roet text-as hover:bg-as hover:text-roet"><Icoon naam="wa" />WhatsApp Piet's</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const groep = document.querySelector<HTMLElement>('[data-keuzes]');
+  if (groep) {
+    const knoppen = [...groep.querySelectorAll<HTMLButtonElement>('[data-keuze]')];
+    const kies = (k: HTMLButtonElement, focus = false) => {
+      knoppen.forEach((b) => { const aan = b === k; b.setAttribute('aria-checked', String(aan)); b.tabIndex = aan ? 0 : -1; });
+      document.querySelectorAll<HTMLElement>('[data-uitkomst]').forEach((u) => { u.hidden = u.dataset.uitkomst !== k.dataset.keuze; });
+      if (focus) k.focus();
+      const u = document.querySelector<HTMLElement>(`[data-uitkomst='${k.dataset.keuze}']`);
+      if (!focus && u && window.innerWidth < 1024) u.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    };
+    knoppen.forEach((k, i) => {
+      k.addEventListener('click', () => kies(k));
+      k.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+        if (d) { e.preventDefault(); kies(knoppen[(i + d + knoppen.length) % knoppen.length], true); }
+      });
+    });
+  }
+</script>
