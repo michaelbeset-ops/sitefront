@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const errs = []; p.on('pageerror', e => errs.push(e.message)); p.on('console', m => m.type() === 'error' && errs.push(m.text()));
+await p.addInitScript(() => { window.open = (u) => { window.__opened = u; return null; }; });
+await p.goto('http://localhost:4402/sitefront/bakkerij-tim-van-beijnen-waalwijk/', { waitUntil: 'networkidle' });
+await p.click('[data-bon] button[type=submit]'); console.log('leeg:', await p.textContent('[data-melding]'));
+await p.selectOption('[data-product]', 'Bosvruchten praline'); await p.fill('[data-aantal]', '4'); await p.click('[data-erbij]');
+await p.selectOption('[data-product]', "Tim's Spelt"); await p.click('[data-erbij]');
+await p.selectOption('[data-product]', 'Taart op bestelling'); await p.click('[data-erbij]');
+await p.selectOption('[data-dag]', { index: 1 }); await p.click('[data-bon] label:has(input[value=bezorgen])'); await p.fill('[data-naam]', 'Sanne'); await p.fill('[data-opm]', 'taart voor 8 personen');
+console.log('totaal', await p.textContent('[data-totaal]'));
+await p.locator('#bestellen').screenshot({ path: 'shots/bon-ingevuld-1440.png' });
+await p.click('[data-bon] button[type=submit]'); const u = await p.evaluate(() => window.__opened); console.log(u); console.log(decodeURIComponent(u.split('text=')[1]));
+console.log('status:', await p.textContent('[data-status]'), '| errors:', errs.join(' | ')); await b.close();

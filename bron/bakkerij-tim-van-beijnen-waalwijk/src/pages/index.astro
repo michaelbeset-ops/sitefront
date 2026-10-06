@@ -1,0 +1,358 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, gebak, brood, desem, zoet, reviews, euro, waMet } from '../data/site';
+
+import vitrine from '../assets/vitrine.jpg';
+import bonbons from '../assets/bonbons.jpg';
+import taart from '../assets/taart.jpg';
+import worstenbroodjes from '../assets/worstenbroodjes.jpg';
+import oliebollen from '../assets/oliebollen.jpg';
+import timsWit from '../assets/brood/tims-wit.jpg';
+import timsSpelt from '../assets/brood/tims-spelt.jpg';
+import desemBauern from '../assets/brood/desem-bauern.jpg';
+import rustiek from '../assets/brood/rustiek.jpg';
+import krentenbrood from '../assets/brood/krentenbrood.jpg';
+import croissant from '../assets/brood/croissant.jpg';
+
+// De "plank": vrijstaande productfoto's uit de webshop, met naam en prijs uit de webshop.
+const plank = [
+  { img: timsWit, naam: "Tim's Wit", prijs: 360, w: 'w-[86%]' },
+  { img: desemBauern, naam: 'Desem Bauern', prijs: 580, w: 'w-[78%]' },
+  { img: timsSpelt, naam: "Tim's Spelt", prijs: 495, w: 'w-[72%]' },
+  { img: krentenbrood, naam: 'Krentenbrood', prijs: 425, w: 'w-[82%]' },
+  { img: rustiek, naam: 'Rustiek landbrood', prijs: 460, w: 'w-[76%]' },
+  { img: croissant, naam: 'Roomboter croissant', prijs: 130, w: 'w-[54%]' },
+];
+
+const generaties = [
+  ['Piet', 'ging rond met de broodkar.'],
+  ['Hans', 'bakte aan de Loeffstraat en later aan het Hoogeinde.'],
+  ['Tim', 'begon Van Tim, op de recepten van de Waalwijkse patissier Gerard van Mil.'],
+];
+
+// Voor de bestelbon: alleen wat nu in de webshop staat, plus een taart op bestelling.
+const groepen = [
+  ['Gebak', gebak],
+  ['Brood', brood],
+  ['Desem', desem],
+  ['Zoet en hartig', zoet],
+] as const;
+
+const titel = 'Van Tim | Patisserie en brood van Tim van Beijnen, Waalwijk';
+const omschrijving = 'Patisserie en brood van Tim van Beijnen, uit eigen bakkerij aan het Hoogeinde in Waalwijk. Bestel online of via WhatsApp en haal vrijdag of zaterdag af.';
+const waTaart = waMet('Hoi Tim, ik zoek een taart voor ');
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. HERO: licht, de vitrine groot -->
+    <section class="relative overflow-hidden">
+      <div class="grid lg:min-h-[calc(100svh-4.75rem)] lg:max-h-[56rem] lg:grid-cols-12">
+        <div class="wrap flex flex-col justify-center pb-12 pt-12 lg:col-span-6 lg:max-w-none lg:pb-20 lg:pl-[max(3rem,calc((100vw-80rem)/2+3rem))] lg:pr-10 lg:pt-16">
+          <p class="kader self-start text-salie">Boulangerie <span aria-hidden="true">·</span> Patisserie</p>
+          <h1 class="mt-8 text-hero leading-[.98]">Uit duizenden te herkennen.</h1>
+          <p class="mt-7 max-w-md text-lg text-grijs">Gebak en brood van Tim van Beijnen, uit eigen bakkerij aan het Hoogeinde in Waalwijk. Bestel vooraf en haal vrijdag of zaterdag af.</p>
+          <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href="#bestellen" class="knop">Vul de bestelbon in</a>
+            <a href={site.webshop} class="link text-[.9375rem]">of bestel in de webshop</a>
+          </div>
+        </div>
+        <figure class="relative -order-1 lg:order-none lg:col-span-6">
+          <Image src={vitrine} alt="Vitrine vol gebak: roze macarons, gele eclairs, rode taartjes, chocoladebollen en citroentaartjes, met op veel gebakjes een klein zwart VAN TIM-plaatje" quality={78} widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" fetchpriority="high" class="aspect-[4/3] max-h-[42svh] h-full w-full object-cover object-[40%_60%] lg:max-h-none lg:absolute lg:inset-0 lg:aspect-auto" />
+          <figcaption class="absolute bottom-0 right-0 bg-krijt px-4 py-2.5 text-xs text-grijs">Op elk gebakje het VAN TIM-plaatje</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 2. FAMILIE: drie generaties, typografisch -->
+    <section id="familie" class="py-24 md:py-36">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <h2 class="rijs text-3xl lg:col-span-5">Drie generaties bakkers in Waalwijk</h2>
+        <ol class="lg:col-span-7 lg:col-start-6">
+          {generaties.map(([n, t], i) => (
+            <li class="rijs grid items-baseline gap-x-8 border-t border-lijn py-6 sm:grid-cols-[9rem_1fr] md:py-7" style={`--d:${i * 0.08}s; margin-left:${i * 6}%`}>
+              <p class="font-kop text-[clamp(2.5rem,3vw+1.2rem,4rem)] leading-none">{n}</p>
+              <p class="mt-2 text-lg text-grijs sm:mt-0">{t}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <p class="rijs wrap mt-14 max-w-3xl text-center text-lg text-grijs md:mt-20">In eigen keuken proeven, bakken en kneden we tot het écht goed is. Zo zetten we het smaakpalet van Van Mil voort, met klassiekers als het Christoffeltaartje. En onze tarte citroen werd bekroond met goud.</p>
+    </section>
+
+    <!-- Breed beeld: bonbons, met één stem van een klant -->
+    <section class="relative isolate" aria-label="Chocolade">
+      <Image src={bonbons} alt="Rijen handgemaakte bonbons op glazen plateaus: groen, rood, met luipaardprint en goudkleurige schelpjes" quality={76} widths={[640, 960, 1440, 1600]} sizes="100vw" class="h-[62vh] min-h-[22rem] w-full object-cover object-[50%_55%] md:h-[78vh] md:max-h-[50rem]" />
+      <blockquote class="rijs wrap relative -mt-20 md:absolute md:bottom-12 md:left-0 md:right-0 md:mt-0">
+        <div class="max-w-md bg-krijt p-7 md:p-9">
+          <p class="font-kop text-2xl leading-snug">“{reviews.chocola.tekst}”</p>
+          <footer class="mt-4 text-sm text-grijs">{reviews.chocola.naam}, op Google</footer>
+        </div>
+      </blockquote>
+    </section>
+
+    <!-- 3. PATISSERIE -->
+    <section id="patisserie" class="py-24 md:py-36">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-6">
+          <Image src={taart} alt="Taart in vier lagen op een witte etagère, afgewerkt met witte chocolade, krullen, roosjes en een gouden lint" quality={76} widths={[640, 960, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" class="aspect-[4/5] w-full object-cover object-[50%_40%]" />
+          <figcaption class="mt-3 text-xs text-grijs">Taart in vier lagen, met witte chocolade en een gouden lint</figcaption>
+        </figure>
+        <div class="lg:col-span-5 lg:col-start-8 lg:pt-10">
+          <h2 class="rijs text-3xl">Gebak uit de vitrine</h2>
+          <p class="rijs mt-6 text-grijs">Per stuk, zoals ze nu in de webshop staan.</p>
+          <ul class="rijs mt-8 border-t border-lijn">
+            {gebak.map((g) => (
+              <li class="regel border-b border-lijn"><span class="naam">{g.naam}</span><span class="stip" aria-hidden="true"></span><span class="prijs">{euro(g.prijs)}</span></li>
+            ))}
+          </ul>
+          <blockquote class="rijs mt-12 border-l-2 border-salie pl-6">
+            <p class="font-kop text-xl leading-snug">“{reviews.samba.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.samba.naam}, op Google</footer>
+          </blockquote>
+          <div class="rijs mt-12 bg-mist p-7">
+            <h3 class="text-2xl">Iets te vieren?</h3>
+            <p class="mt-3 text-grijs">Vertel Tim voor wie de taart is en voor hoeveel personen.</p>
+            <a href={waTaart} class="knop mt-6"><Icoon naam="wa" />Vraag naar een taart</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BROOD: de plank -->
+    <section id="brood" class="border-t border-lijn bg-papier py-24 md:py-36">
+      <div class="wrap">
+        <div class="grid gap-y-8 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-3xl lg:col-span-5">Van Tim’s Wit tot desem</h2>
+          <p class="rijs text-lg text-grijs lg:col-span-5 lg:col-start-8 lg:pt-3">Uit de eigen bakkerij. Een greep uit de broden die nu in de webshop staan.</p>
+        </div>
+        <ul class="mt-16 grid grid-cols-2 gap-x-6 gap-y-14 sm:grid-cols-3 lg:mt-20 lg:grid-cols-6 lg:gap-x-4">
+          {plank.map((b, i) => (
+            <li class="rijs flex flex-col" style={`--d:${i * 0.06}s`}>
+              <div class="flex h-32 items-end justify-center border-b-2 border-inkt pb-1 md:h-44">
+                <Image src={b.img} alt="" quality={74} widths={[240, 400]} sizes="(min-width: 1024px) 14vw, 42vw" class={`vrij ${b.w} h-auto max-h-full object-contain`} />
+              </div>
+              <p class="mt-3 text-[.9375rem]">{b.naam}</p>
+              <p class="num text-sm text-grijs">{euro(b.prijs)}</p>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-24 grid gap-y-16 md:mt-32 lg:grid-cols-12 lg:gap-x-14">
+          <div class="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:col-span-7">
+            {[['Brood', brood], ['Desem', desem]].map(([kop, lijst]) => (
+              <div class="rijs">
+                <h3 class="text-2xl">{kop as string}</h3>
+                <ul class="mt-5 border-t border-lijn text-[.9375rem]">
+                  {(lijst as typeof brood).map((g) => (
+                    <li class="regel border-b border-lijn"><span class="naam">{g.naam}</span><span class="stip" aria-hidden="true"></span><span class="prijs">{euro(g.prijs)}</span></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <blockquote class="rijs sm:col-span-2">
+              <p class="font-kop text-2xl leading-snug">“{reviews.brood.tekst}”</p>
+              <footer class="mt-3 text-sm text-grijs">{reviews.brood.naam}, op Google</footer>
+            </blockquote>
+          </div>
+          <figure class="rijs lg:col-span-5">
+            <Image src={worstenbroodjes} alt="Doos vol worstenbroodjes met servetjes van Bakkerij van Beijnen erop" quality={74} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full object-cover" />
+            <figcaption class="mt-3 flex justify-between gap-4 text-xs text-grijs"><span>Worstenbroodjes</span><span class="num">{euro(200)} per stuk</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. BESTELBON -->
+    <section id="bestellen" class="bg-salie py-24 text-wit md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">Bestel vooraf, haal vers op</h2>
+          <p class="rijs mt-6 text-lg text-wit/85">Zet op de bon wat je wilt hebben. De bon gaat als WhatsApp-bericht naar Tim.</p>
+          <dl class="rijs mt-10 border-t border-lijn-licht text-[.9375rem]"><div class="flex justify-between gap-4 border-b border-lijn-licht py-3"><dt>Afhalen vrijdag</dt><dd class="num">8.30 - 13.00</dd></div><div class="flex justify-between gap-4 border-b border-lijn-licht py-3"><dt>Afhalen zaterdag</dt><dd class="num">8.00 - 11.00</dd></div></dl>
+          <p class="rijs mt-8 text-sm text-wit/75">Liever meteen betalen met iDEAL of Wero? Bestel dan in de <a href={site.webshop} class="link text-wit">webshop</a>.</p>
+        </div>
+
+        <form class="rijs bg-papier p-6 text-inkt sm:p-10 lg:col-span-7 lg:col-start-6" data-bon novalidate>
+          <div class="flex items-start justify-between gap-6 border-b-2 border-inkt pb-5">
+            <div>
+              <p class="font-kop text-3xl leading-none">Bestelbon</p>
+              <p class="mt-2 text-sm text-grijs">Van Tim · {site.straat}, {site.plaats}</p>
+            </div>
+            <span class="merk pointer-events-none max-sm:hidden" aria-hidden="true"><b>VAN TIM</b><small>since 1978</small></span>
+          </div>
+
+          <div class="mt-7 grid gap-4 sm:grid-cols-[1fr_6rem_auto] sm:items-end">
+            <label class="block text-sm">
+              <span class="text-grijs">Wat mag het zijn?</span>
+              <select class="mt-1.5 block h-12 w-full border border-inkt/40 bg-wit px-3 text-base" data-product>
+                {groepen.map(([g, lijst]) => (
+                  <optgroup label={g}>
+                    {lijst.map((p) => <option value={p.naam} data-prijs={p.prijs}>{p.naam} · {euro(p.prijs)}</option>)}
+                  </optgroup>
+                ))}
+                <optgroup label="Taart">
+                  <option value="Taart op bestelling" data-prijs="0">Taart op bestelling (zet je wens bij opmerking)</option>
+                </optgroup>
+              </select>
+            </label>
+            <label class="block text-sm">
+              <span class="text-grijs">Aantal</span>
+              <input type="number" min="1" max="99" value="1" inputmode="numeric" class="num mt-1.5 block h-12 w-full border border-inkt/40 bg-wit px-3 text-base" data-aantal />
+            </label>
+            <button type="button" class="knop knop-lijn h-12 min-h-12" data-erbij>Op de bon</button>
+          </div>
+
+          <ul class="mt-6 min-h-16 border-y border-dashed border-inkt/30 py-2 text-[.9375rem]" data-regels aria-live="polite">
+            <li class="py-3 text-sm text-grijs" data-leeg>Nog niets op de bon.</li>
+          </ul>
+          <p class="mt-3 flex justify-between text-sm"><span class="text-grijs">Indicatie, prijzen uit de webshop</span><span class="num font-medium" data-totaal>€ 0,00</span></p>
+
+          <div class="mt-8 grid gap-4 sm:grid-cols-2">
+            <label class="block text-sm">
+              <span class="text-grijs">Voor wanneer?</span>
+              <select class="mt-1.5 block h-12 w-full border border-inkt/40 bg-wit px-3 text-base" data-dag>
+                <option value="">Kies een dag</option>
+              </select>
+            </label>
+            <fieldset class="text-sm">
+              <legend class="text-grijs">Ophalen of bezorgen</legend>
+              <div class="mt-1.5 grid h-12 grid-cols-2 border border-inkt/40 bg-wit">
+                <label class="flex cursor-pointer items-center justify-center gap-2 border-r border-inkt/20 has-[:checked]:bg-salie has-[:checked]:text-wit"><input type="radio" name="hoe" value="ophalen" class="sr-only" checked />Ophalen</label>
+                <label class="flex cursor-pointer items-center justify-center gap-2 has-[:checked]:bg-salie has-[:checked]:text-wit"><input type="radio" name="hoe" value="bezorgen" class="sr-only" />Bezorgen</label>
+              </div>
+            </fieldset>
+            <label class="block text-sm">
+              <span class="text-grijs">Je naam</span>
+              <input type="text" autocomplete="name" class="mt-1.5 block h-12 w-full border border-inkt/40 bg-wit px-3 text-base" data-naam />
+            </label>
+            <label class="block text-sm">
+              <span class="text-grijs">Opmerking</span>
+              <input type="text" class="mt-1.5 block h-12 w-full border border-inkt/40 bg-wit px-3 text-base" placeholder="Bijv. gesneden, of je taartwens" data-opm />
+            </label>
+          </div>
+
+          <div class="mt-9 flex flex-wrap items-center justify-between gap-4">
+            <p class="max-w-xs text-xs text-grijs">Bezorgen kan in een beperkt gebied, vanaf 8.00 uur. Je ziet het bericht eerst in WhatsApp.</p>
+            <button type="submit" class="knop"><Icoon naam="wa" />Verstuur de bon</button>
+          </div>
+          <p class="mt-3 hidden text-sm text-salie" data-melding role="status"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. AFHALEN -->
+    <section id="afhalen" class="py-24 md:py-36">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Afhalen aan het Hoogeinde</h2>
+          <p class="rijs mt-6 font-kop text-2xl">{site.straat}</p>
+          <p class="rijs text-grijs">{site.postcode} {site.plaats}</p>
+          <table class="rijs mt-10 w-full max-w-sm text-[.9375rem]">
+            <caption class="sr-only">Afhaaltijden volgens Google</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr data-dag={t.dag} class="border-b border-lijn data-[vandaag]:font-semibold data-[vandaag]:text-salie">
+                  <th scope="row" class="py-2.5 text-left font-normal">{t.naam}</th>
+                  <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : <span class="text-grijs">geen afhalen</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="rijs mt-4 text-sm font-medium text-salie" data-status></p>
+          <div class="rijs mt-9 flex flex-wrap gap-x-6 gap-y-3 text-[.9375rem]">
+            <a href={site.maps} class="link inline-flex items-center gap-2"><Icoon naam="pin" class="h-4 w-4" />Route plannen</a>
+            <a href={site.telHref} class="link num inline-flex items-center gap-2"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <figure class="rijs">
+            <Image src={oliebollen} alt="Oliebollen goudbruin in het frituurmandje" quality={76} widths={[480, 800, 950]} sizes="(min-width: 1024px) 44vw, 100vw" class="aspect-[3/2] w-full object-cover" />
+          </figure>
+          <h3 class="rijs mt-8 text-2xl">En in december: oliebollen</h3>
+          <p class="rijs mt-3 text-grijs">Zoals ieder jaar staan we eind december met onze kraam op het Bloemenoordplein. Met goud bekroonde oliebollen en knapperige appelbeignets.</p>
+          <blockquote class="rijs mt-10 border-t border-lijn pt-6">
+            <p class="font-kop text-xl leading-snug">“{reviews.noten.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.noten.naam}, op Google</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  const bon = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (bon) {
+    const $ = <T extends Element>(s: string) => bon.querySelector<T>(s)!;
+    const product = $<HTMLSelectElement>('[data-product]');
+    const aantal = $<HTMLInputElement>('[data-aantal]');
+    const regelsEl = $<HTMLUListElement>('[data-regels]');
+    const leeg = $<HTMLLIElement>('[data-leeg]');
+    const totaalEl = $<HTMLElement>('[data-totaal]');
+    const dagSel = $<HTMLSelectElement>('[data-dag]');
+    const melding = $<HTMLElement>('[data-melding]');
+    const regels = new Map<string, { n: number; prijs: number }>();
+    const euro = (c: number) => `€ ${(c / 100).toFixed(2).replace('.', ',')}`;
+
+    // De eerstvolgende vrijdagen en zaterdagen (de afhaaldagen).
+    const fmt = new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' });
+    const d = new Date(); d.setHours(12, 0, 0, 0);
+    for (let i = 1, n = 0; i < 28 && n < 6; i++) {
+      const x = new Date(d); x.setDate(d.getDate() + i);
+      if (x.getDay() === 5 || x.getDay() === 6) { const o = document.createElement('option'); o.value = o.textContent = fmt.format(x); dagSel.append(o); n++; }
+    }
+
+    const teken = () => {
+      regelsEl.querySelectorAll('[data-regel]').forEach((r) => r.remove());
+      let tot = 0;
+      for (const [naam, r] of regels) {
+        tot += r.n * r.prijs;
+        const li = document.createElement('li');
+        li.dataset.regel = '';
+        li.className = 'regel';
+        li.innerHTML = `<span class="naam"><span class="num">${r.n}×</span> ${naam}</span><span class="stip" aria-hidden="true"></span><span class="prijs">${r.prijs ? euro(r.n * r.prijs) : 'in overleg'}</span><button type="button" class="ml-1 grid h-8 w-8 place-items-center text-grijs hover:text-inkt" aria-label="${naam} van de bon halen">×</button>`;
+        li.querySelector('button')!.addEventListener('click', () => { regels.delete(naam); teken(); });
+        regelsEl.append(li);
+      }
+      leeg.hidden = regels.size > 0;
+      totaalEl.textContent = euro(tot);
+    };
+
+    $<HTMLButtonElement>('[data-erbij]').addEventListener('click', () => {
+      const opt = product.selectedOptions[0];
+      const n = Math.max(1, Math.min(99, parseInt(aantal.value, 10) || 1));
+      const oud = regels.get(opt.value);
+      regels.set(opt.value, { n: (oud?.n ?? 0) + n, prijs: Number(opt.dataset.prijs) || 0 });
+      aantal.value = '1';
+      melding.classList.add('hidden');
+      teken();
+    });
+
+    bon.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!regels.size) { melding.textContent = 'Zet eerst iets op de bon.'; melding.classList.remove('hidden'); return; }
+      melding.classList.add('hidden');
+      const hoe = (bon.querySelector<HTMLInputElement>('input[name="hoe"]:checked')?.value) ?? 'ophalen';
+      const naam = $<HTMLInputElement>('[data-naam]').value.trim();
+      const opm = $<HTMLInputElement>('[data-opm]').value.trim();
+      const lijst = [...regels].map(([p, r]) => `- ${r.n}x ${p}`).join('\n');
+      const tekst = [
+        'Hoi Tim, ik wil graag bestellen:',
+        lijst,
+        dagSel.value ? `Voor ${dagSel.value}, ${hoe === 'ophalen' ? 'ophalen aan het Hoogeinde' : 'graag bezorgen (adres volgt)'}.` : (hoe === 'ophalen' ? 'Ik haal het op aan het Hoogeinde.' : 'Graag bezorgen (adres volgt).'),
+        opm ? `Opmerking: ${opm}` : '',
+        naam ? `Groet, ${naam}` : '',
+      ].filter(Boolean).join('\n');
+      window.open(`${site.wa}?text=${encodeURIComponent(tekst)}`, '_blank', 'noopener');
+    });
+  }
+</script>
