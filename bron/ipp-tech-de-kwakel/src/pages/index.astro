@@ -1,0 +1,356 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waMet } from '../data/site';
+
+import hal from '../assets/hal.jpg';
+import bus from '../assets/bus.jpg';
+import baoliRij from '../assets/baoli-rij.jpg';
+import still from '../assets/still.jpg';
+import ezs130 from '../assets/ezs130.jpg';
+import etv216 from '../assets/etv216.jpg';
+import etv214 from '../assets/etv214.jpg';
+import rx20 from '../assets/rx20.jpg';
+import accu from '../assets/accu.jpg';
+import storing from '../assets/storing.jpg';
+import busZij from '../assets/bus-zij.jpg';
+import display from '../assets/display.jpg';
+import ventielblok from '../assets/ventielblok.jpg';
+import stuurmotoren from '../assets/stuurmotoren.jpg';
+import wielen from '../assets/wielen.jpg';
+import vorken from '../assets/vorken.jpg';
+import pompwagen from '../assets/pompwagen.jpg';
+import elektra from '../assets/elektra.jpg';
+
+// Hero: hun eigen hal met gele en grijze heftrucks (staande foto, desktop toont de middenband).
+const hD = await Promise.all([960, 1440, 1500].map((w) => getImage({ src: hal, width: w, quality: 70, format: 'webp' })));
+const hM = await Promise.all([480, 780, 1080].map((w) => getImage({ src: hal, width: w, quality: 64, format: 'webp' })));
+const srcset = (l: { src: string }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+// Service: de vier diensten van hun servicepagina, met hun eigen kopjes.
+const diensten = [
+  { naam: 'Reparatie op locatie', tekst: 'Snel, efficiënt en betrouwbaar. Wij komen met de servicebus naar u toe.' },
+  { naam: 'Storing', tekst: 'Snel en vakkundig opgelost met onze directe service.' },
+  { naam: 'Onderhoud accu', tekst: 'Verleng de levensduur van uw tractiebatterij en houd de prestaties op peil.' },
+  { naam: 'Jaarlijks onderhoud en keuring', tekst: 'Inclusief NEN 3140-keuringen, ook van heftruck opladers.' },
+];
+
+// Occasions: letterlijk de specificaties van ipp-tech.nl/verkoop (stand 7 oktober 2026).
+const occasions = [
+  { naam: 'Jungheinrich EZS 130', soort: 'Trekker', foto: ezs130, alt: 'Gele Jungheinrich EZS 130 elektrische trekker voor een witte loods', specs: [['Bouwjaar', '2019'], ['Accu', '2019, 24V']] },
+  { naam: 'Jungheinrich ETV 216', soort: 'Reachtruck', foto: etv216, alt: 'Jungheinrich ETV 216 reachtruck met uitgeschoven mast in de hal', specs: [['Bouwhoogte', '2500 mm'], ['Hefhoogte', '6200 mm'], ['Urenstand', '10416 h'], ['Bouwjaar', '2016'], ['Accu', 'Zeer goed']] },
+  { naam: 'Jungheinrich ETV 214', soort: 'Reachtruck', foto: etv214, alt: 'Gele Jungheinrich ETV 214 reachtruck in de hal van IPP-Tech', specs: [['Bouwhoogte', '3300 mm'], ['Hefhoogte', '8300 mm'], ['Urenstand', '8924 h'], ['Bouwjaar', '2015'], ['Accu', 'Zeer goed']] },
+  { naam: 'Still RX 20-16', soort: 'Elektrische heftruck', foto: rx20, alt: 'Grijs-oranje Still RX 20-16 elektrische heftruck buiten op het terrein', specs: [['Bouwjaar', '2009'], ['Accu', '2021, zeer goed'], ['Urenstand', '5087 h']] },
+];
+
+// Onderdelen: modelnamen van ipp-tech.nl/onderdelen (spelling rechtgezet).
+const onderdelen = [
+  { naam: 'Display Still R20-16/18/20', foto: display, alt: 'Display van een Still R20 heftruck' },
+  { naam: 'Proportioneel ventielblok Still RX60', foto: ventielblok, alt: 'Zwart hydraulisch ventielblok van een Still RX60' },
+  { naam: 'Stuurmotoren Jungheinrich', foto: stuurmotoren, alt: 'Twee stuurmotoren van Jungheinrich' },
+  { naam: 'Wielen', foto: wielen, alt: 'Heftruckwielen met gele en groene loopvlakken' },
+  { naam: 'Elektrische pompwagen', foto: pompwagen, alt: 'Turquoise Baoli elektrische pompwagen' },
+  { naam: 'Elektrische componenten', foto: elektra, alt: 'Een motorcontroller en een behuizing van een heftruck' },
+];
+const vorkenTekst = 'Heftruckvorken FEM 3A, 125 x 45, lengte 1800';
+
+const merken = ['Baoli', 'Jungheinrich', 'Still', 'Linde', 'Toyota', 'BT', 'Hyster', 'Caterpillar', 'Mitsubishi', 'Manitou', 'Spykstaal'];
+
+const titel = 'IPP-Tech B.V. | Heftruckservice, verkoop en verhuur in De Kwakel';
+const omschrijving = 'IPP-Tech: onderhoud, reparatie en keuring van heftrucks op uw locatie, verkoop en verhuur, onderdelen voor alle merken. Baoli-dealer. Noorddammerweg 45, De Kwakel.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen hal vol heftrucks en reachtrucks -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-zwart text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hD, [960, 1440, 1500])} sizes="100vw" type="image/webp" />
+        <source srcset={srcset(hM, [480, 780, 1080])} sizes="100vw" type="image/webp" />
+        <img src={hD[1].src} alt="De hal van IPP-Tech met een rij gele en grijze heftrucks, reachtrucks en stapelaars" width="1440" height="1920" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_60%] md:object-[50%_52%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d1d1b4d_0%,#1d1d1b59_34%,#1d1d1bd1_62%,#1d1d1bf5_100%)] md:bg-[linear-gradient(90deg,#1d1d1bf0_0%,#1d1d1bc7_38%,#1d1d1b4d_68%,#1d1d1b1a_100%),linear-gradient(0deg,#1d1d1bb3_0%,#1d1d1b00_42%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-14 lg:pb-16">
+        <p class="flex items-center gap-3 text-base font-bold text-wit/90 md:text-lg"><span class="blok" aria-hidden="true"></span>Heftruckservice in De Kwakel</p>
+        <h1 class="mt-5 max-w-[11ch] text-hero">Altijd in <span class="text-limoen">beweging.</span></h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90 md:text-xl">Onderhoud, reparatie en keuring van uw heftrucks, op uw eigen locatie. Plus verkoop, verhuur en onderdelen voor alle merken.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#melden" class="knop">Storing melden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <ul class="mt-12 hidden flex-wrap items-center gap-x-9 gap-y-2 border-t border-lijn-licht pt-5 text-sm text-mist md:flex">
+          <li class="flex items-center gap-2.5"><span class="blok" aria-hidden="true"></span>25 jaar ervaring</li>
+          <li class="flex items-center gap-2.5"><span class="blok" aria-hidden="true"></span>Baoli-dealer</li>
+          <li class="flex items-center gap-2.5"><span class="blok" aria-hidden="true"></span>NEN 3140-keuringen</li>
+          <li class="ml-auto"><a href={site.maps} class="link link-licht">{site.straat}, {site.plaats}</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. WIE: 25 jaar, kernwaarden, Baoli -->
+    <section class="wrap grid grid-cols-1 gap-y-12 py-24 md:grid-cols-12 md:gap-x-10 md:py-32">
+      <div class="rijs md:col-span-6 lg:col-span-5 lg:pt-6">
+        <h2 class="text-3xl">25 jaar heftrucks. Elk merk.</h2>
+        <p class="mt-7 text-lg text-grijs">Onderhoud en aankoop van heftrucks, reachtrucks, stapelaars, palletwagens, tractiebatterijen en ander intern transport. Nieuw en gebruikt, en alle onderdelen en toebehoren erbij.</p>
+        <blockquote class="mt-10 border-l-[3px] border-limoen pl-6">
+          <p class="kop-6 text-xl leading-snug md:text-2xl">Kwaliteit en vertrouwen vormen onze kernwaarden.</p>
+          <p class="mt-4 text-grijs">Snelle en effectieve service, zorgvuldig onderhoud en betrouwbaar advies bij de aankoop van occasions en nieuwe machines.</p>
+        </blockquote>
+      </div>
+      <figure class="rijs relative md:col-span-6 lg:col-span-6 lg:col-start-7" style="--d:.1s">
+        <Image src={baoliRij} alt="Een rij nieuwe Baoli heftrucks op het terrein van IPP-Tech" widths={[480, 720, 960]} sizes="(min-width: 1024px) 560px, (min-width: 768px) 48vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_60%]" />
+        <figcaption class="absolute bottom-0 left-0 flex items-center gap-3 rounded-tr-sm bg-zwart px-5 py-4 text-sm font-bold text-wit"><span class="blok" aria-hidden="true"></span>Baoli-dealer</figcaption>
+      </figure>
+    </section>
+
+    <!-- 3. MAINTENANCE: service op locatie -->
+    <section id="service" class="bg-zwart text-wit">
+      <div class="grid lg:grid-cols-2">
+        <div class="relative min-h-[26rem] lg:min-h-full">
+          <Image src={bus} alt="De grijze servicebus van IPP-Tech met de tekst Heftruckservice op de achterdeuren" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_45%]" />
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:px-16 lg:py-28 xl:px-20">
+          <p class="flex items-center gap-3 text-sm font-bold text-limoen"><span class="blok" aria-hidden="true"></span>Maintenance</p>
+          <h2 class="mt-5 text-3xl">Service op uw locatie</h2>
+          <p class="mt-6 max-w-[34rem] text-lg text-mist">Onderhoud en reparatie van uw heftruckpark direct bij u op het terrein. Zo blijft stilstand tot een minimum beperkt.</p>
+          <ul class="mt-12 max-w-[36rem] border-t border-lijn-licht">
+            {diensten.map((d, i) => (
+              <li class="rijs grid grid-cols-[auto_1fr] gap-x-5 border-b border-lijn-licht py-6" style={`--d:${i * 0.07}s`}>
+                <span class="blok mt-2 text-sm" aria-hidden="true"></span>
+                <div>
+                  <h3 class="text-lg md:text-xl">{d.naam}</h3>
+                  <p class="mt-2 text-mist">{d.tekst}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={waMet('Hallo Ed, ik wil graag een onderhoudsafspraak maken.')} class="knop"><Icoon naam="wa" />Onderhoud plannen</a>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-px bg-lijn-licht">
+        <Image src={accu} alt="Een geopende tractiebatterij van een heftruck met de kabels erop" widths={[400, 720]} sizes="50vw" class="aspect-[4/3] h-full w-full object-cover object-[50%_40%] md:aspect-[16/7]" />
+        <Image src={storing} alt="Het oranje display van een reachtruck tijdens een storing" widths={[400, 720]} sizes="50vw" class="aspect-[4/3] h-full w-full object-cover object-[50%_45%] md:aspect-[16/7]" />
+      </div>
+    </section>
+
+    <!-- 4. SUPPLY: occasions en verhuur -->
+    <section id="occasions" class="bg-beton">
+      <div class="wrap py-24 md:py-32">
+        <div class="grid gap-y-6 md:grid-cols-12 md:gap-x-10">
+          <h2 class="rijs text-3xl md:col-span-6">Verkoop en verhuur</h2>
+          <p class="rijs text-lg text-grijs md:col-span-5 md:col-start-8 md:pt-2" style="--d:.08s">Nieuw en gebruikt. Dit staat nu in het aanbod, de prijs is op aanvraag.</p>
+        </div>
+        <ul class="mt-14 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {occasions.map((o, i) => (
+            <li class="rijs flex flex-col" style={`--d:${i * 0.08}s`}>
+              <Image src={o.foto} alt={o.alt} widths={[360, 560, 720]} sizes="(min-width: 1024px) 290px, (min-width: 640px) 45vw, 100vw" class="aspect-[4/3] w-full rounded-t-sm object-cover sm:aspect-[4/5]" />
+              <div class="plaat -mt-px flex flex-1 flex-col rounded-t-none p-5">
+                <p class="text-xs font-bold text-grijs">{o.soort}</p>
+                <h3 class="mt-1 text-lg">{o.naam}</h3>
+                <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 border-t border-lijn pt-4">
+                  {o.specs.map(([k, v]) => (<><dt>{k}</dt><dd class="num text-right">{v}</dd></>))}
+                </dl>
+                <a href={waMet(`Hallo Ed, is de ${o.naam} nog beschikbaar?`)} class="link mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold no-underline hover:underline">Vraag naar deze machine<Icoon naam="pijl" class="h-4 w-4" /></a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="relative isolate overflow-hidden bg-zwart text-wit">
+        <Image src={still} alt="Een Still RX20-18 heftruck van opzij, buiten voor een kas" widths={[800, 1440, 2000]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d1d1bb3_0%,#1d1d1be6_100%)] md:bg-[linear-gradient(90deg,#1d1d1bf2_0%,#1d1d1bcc_45%,#1d1d1b33_100%)]" aria-hidden="true"></div>
+        <div class="wrap py-24 md:py-36">
+          <div class="max-w-[30rem]">
+            <h2 class="text-3xl">Huren vanaf één maand</h2>
+            <p class="mt-6 text-lg text-wit/90">Kort of lang, zonder hoge investering. Snel uitbreiden in drukke tijden, en de machines voldoen aan alle technische eisen.</p>
+            <a href={waMet('Hallo Ed, ik wil graag een heftruck huren. Kunt u mij meer vertellen?')} class="knop mt-9"><Icoon naam="wa" />Huur aanvragen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ONDERDELEN -->
+    <section id="onderdelen" class="wrap py-24 md:py-32">
+      <div class="grid gap-y-6 md:grid-cols-12 md:gap-x-10">
+        <h2 class="rijs text-3xl md:col-span-7">Onderdelen voor alle merken</h2>
+        <p class="rijs text-lg text-grijs md:col-span-5 md:pt-2" style="--d:.08s">Nieuw en gebruikt, voor heftrucks, stapelaars, reachtrucks en palletwagens. Stuur het typenummer, dan zoeken wij het op.</p>
+      </div>
+      <div class="mt-14 grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <figure class="rijs flex flex-col">
+          <div class="flex-1 overflow-hidden rounded-sm">
+            <Image src={vorken} alt="Een paar zwarte heftruckvorken op een pallet in de hal" widths={[480, 800, 1100]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] h-full w-full object-cover object-[30%_55%]" />
+          </div>
+          <figcaption class="mt-3 text-sm font-bold">{vorkenTekst}</figcaption>
+        </figure>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 md:gap-x-6">
+          {onderdelen.map((o, i) => (
+            <figure class="rijs" style={`--d:${(i + 1) * 0.06}s`}>
+              <div class="aspect-[4/5] overflow-hidden rounded-sm bg-beton">
+                <Image src={o.foto} alt={o.alt} widths={[300, 600]} sizes="(min-width: 1024px) 190px, (min-width: 640px) 30vw, 45vw" class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.04]" />
+              </div>
+              <figcaption class="mt-2.5 text-sm font-bold leading-snug">{o.naam}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+      <div class="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-lijn pt-8">
+        <a href={waMet('Hallo Ed, ik zoek een onderdeel. Typenummer / merk: ')} class="knop knop-zwart"><Icoon naam="wa" />Onderdeel aanvragen</a>
+        <a href={`mailto:${site.mail}?subject=${encodeURIComponent('Onderdeel aanvragen')}`} class="link font-bold">{site.mail}</a>
+      </div>
+    </section>
+
+    <!-- 6. MERKEN -->
+    <section class="border-y border-lijn bg-beton" aria-labelledby="merken-kop">
+      <div class="wrap flex flex-col gap-6 py-12 md:flex-row md:items-baseline md:gap-12">
+        <h2 id="merken-kop" class="flex-none font-sans text-base font-bold">Voor alle merken, waaronder</h2>
+        <ul class="flex flex-wrap gap-x-6 gap-y-3">
+          {merken.map((m) => <li class="kop-6 text-[.875rem] tracking-[.03em] text-grijs">{m}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. STORING MELDEN (wow): het heftruckdisplay -->
+    <section id="melden" class="bg-zwart text-wit">
+      <div class="wrap grid grid-cols-1 gap-y-12 py-24 md:py-32 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="text-3xl">Storing of onderhoud melden</h2>
+          <p class="mt-6 text-lg text-mist">Vul in wat er speelt. Het bericht staat klaar in WhatsApp, u hoeft alleen nog op verzenden te drukken.</p>
+          <p class="mt-8 text-mist">Spoed? Bel direct <a href={site.telHref} class="link link-licht num font-bold text-wit">{site.tel}</a>, ook voor service en storingen.</p>
+        </div>
+        <form class="lg:col-span-7" data-melding novalidate>
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class="block text-sm font-bold">Wat is er nodig
+              <select class="veld mt-2" name="wat">
+                <option>Storing</option><option>Onderhoud</option><option>Keuring</option><option>Huur</option><option>Onderdeel</option>
+              </select>
+            </label>
+            <label class="block text-sm font-bold">Machine
+              <select class="veld mt-2" name="machine">
+                <option>Heftruck</option><option>Reachtruck</option><option>Stapelaar / palletheffer</option><option>Palletwagen</option><option>Tractiebatterij</option><option>Oplader</option><option>Anders</option>
+              </select>
+            </label>
+            <label class="block text-sm font-bold">Merk
+              <select class="veld mt-2" name="merk">
+                <option value="">Weet ik niet</option>
+                {merken.map((m) => <option>{m}</option>)}
+                <option>Ander merk</option>
+              </select>
+            </label>
+            <label class="block text-sm font-bold">Plaats
+              <input class="veld mt-2" name="plaats" type="text" autocomplete="address-level2" placeholder="Bijvoorbeeld Aalsmeer" />
+            </label>
+          </div>
+          <div class="mt-5">
+            <input id="spoed" type="checkbox" name="spoed" class="peer sr-only" />
+            <label for="spoed" class="keus"><span class="blok text-sm" aria-hidden="true"></span>Spoed: de machine staat stil</label>
+          </div>
+
+          <div class="display mt-8 p-3 sm:p-4" aria-live="polite">
+            <div class="lcd flex min-h-[8.5rem] flex-col justify-between gap-4 p-4 sm:p-5">
+              <div class="lcd-tekst flex items-center justify-between gap-4 text-xs sm:text-sm">
+                <span data-lcd-kop>STORING</span>
+                <span class="flex items-center gap-2" data-lcd-spoed hidden><svg viewBox="0 0 24 24" class="h-4 w-4" aria-hidden="true"><path d="M12 3 2 20h20L12 3Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 10v4.5M12 17.2v.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>SPOED</span>
+              </div>
+              <p class="text-[.9375rem] font-medium leading-snug sm:text-base" data-lcd-tekst></p>
+            </div>
+            <div class="flex items-center justify-between gap-3 px-1 pt-3 text-[.6875rem] font-bold text-mist">
+              <span>IPP-TECH</span><span class="num" data-lcd-tel>{site.tel}</span>
+            </div>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={waMet('Hallo Ed,')} class="knop" data-wa-knop><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="link link-licht font-bold" data-mail-knop>Of per e-mail</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT -->
+    <section id="contact" class="bg-beton">
+      <div class="wrap grid grid-cols-1 gap-y-14 py-24 md:grid-cols-12 md:gap-x-10 md:py-32">
+        <div class="md:col-span-5">
+          <h2 class="text-3xl">Langskomen of bellen</h2>
+          <address class="mt-8 not-italic text-lg">
+            <p class="font-bold">{site.naam}</p>
+            <p>{site.straat}<br />{site.postcode} {site.plaats}</p>
+          </address>
+          <div class="mt-8 space-y-2 text-lg">
+            <p><a href={site.telHref} class="link num font-bold">{site.tel}</a> <span class="text-grijs">telefoon en WhatsApp</span></p>
+            <p class="break-all"><a href={`mailto:${site.mail}`} class="link font-bold">{site.mail}</a></p>
+          </div>
+          <a href={site.maps} class="knop knop-zwart mt-10"><Icoon naam="pin" />Route plannen</a>
+        </div>
+        <div class="md:col-span-6 md:col-start-7">
+          <div class="plaat p-6 md:p-8">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-lg">Openingstijden</h3>
+              <p class="flex items-center gap-2 text-sm font-bold" data-status hidden><span class="h-2.5 w-2.5 rounded-full" data-status-stip></span><span data-status-tekst></span></p>
+            </div>
+            <table class="mt-5 w-full text-[1rem]">
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                  <tr class="border-t border-lijn" data-dag={d}>
+                    <th scope="row" class="py-2.5 text-left font-medium capitalize">{tijden[d][0]}</th>
+                    <td class="num py-2.5 text-right">{tijden[d][1] ?? 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-sm text-grijs">Buiten kantooruren bereikbaar per e-mail. Zaterdag liefst op afspraak.</p>
+          </div>
+          <figure class="mt-6">
+            <Image src={busZij} alt="De servicebus van IPP-Tech voor een loods" widths={[480, 800]} sizes="(min-width: 768px) 45vw, 100vw" class="aspect-[16/8] w-full rounded-sm object-cover object-[50%_55%]" />
+          </figure>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    // Storingsmelding: live in het display, en een vooraf ingevuld WhatsApp- of mailbericht. Er wordt niets verstuurd of opgeslagen.
+    const f = document.querySelector<HTMLFormElement>('[data-melding]');
+    if (f) {
+      const kop = f.querySelector<HTMLElement>('[data-lcd-kop]')!;
+      const tekst = f.querySelector<HTMLElement>('[data-lcd-tekst]')!;
+      const spoedEl = f.querySelector<HTMLElement>('[data-lcd-spoed]')!;
+      const wa = f.querySelector<HTMLAnchorElement>('[data-wa-knop]')!;
+      const mail = f.querySelector<HTMLAnchorElement>('[data-mail-knop]')!;
+      const zin = () => {
+        const d = new FormData(f);
+        const wat = String(d.get('wat')), machine = String(d.get('machine')).toLowerCase(), merk = String(d.get('merk') || ''), plaats = String(d.get('plaats') || '').trim();
+        const spoed = d.get('spoed') === 'on';
+        const ding = `${machine}${merk && merk !== 'Ander merk' ? ` (${merk})` : ''}`;
+        const voor = { Storing: `Storing aan een ${ding}`, Onderhoud: `Onderhoud voor een ${ding}`, Keuring: `Keuring van een ${ding}`, Huur: `Ik wil een ${ding} huren`, Onderdeel: `Ik zoek een onderdeel voor een ${ding}` }[wat] ?? wat;
+        const regel = `${voor}${plaats ? ` in ${plaats}` : ''}.${spoed ? ' Spoed, de machine staat stil.' : ''}`;
+        kop.textContent = wat.toUpperCase();
+        tekst.textContent = regel;
+        spoedEl.hidden = !spoed;
+        const bericht = `Hallo Ed, ${regel.charAt(0).toLowerCase()}${regel.slice(1)} Kunt u contact met mij opnemen?`;
+        wa.href = `https://wa.me/31642047596?text=${encodeURIComponent(bericht)}`;
+        mail.href = `mailto:info@ipp-tech.nl?subject=${encodeURIComponent(`${wat}: ${ding}`)}&body=${encodeURIComponent(bericht)}`;
+      };
+      f.addEventListener('input', zin); f.addEventListener('change', zin); f.addEventListener('submit', (e) => e.preventDefault());
+      zin();
+    }
+
+    // Openingstijden: vandaag markeren en live open/gesloten (Nederlandse tijd).
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const dag = nu.getDay(), min = nu.getHours() * 60 + nu.getMinutes();
+    const rij = document.querySelector<HTMLElement>(`[data-dag="${dag}"]`);
+    if (rij) { rij.classList.add('font-bold'); rij.querySelector('th')?.classList.replace('font-medium', 'font-bold'); rij.style.boxShadow = 'inset 3px 0 0 #80bd01'; rij.querySelector('th')!.style.paddingLeft = '.85rem'; }
+    const t = rij?.querySelector('td')?.textContent ?? '';
+    const m = t.match(/(\d\d):(\d\d)-(\d\d):(\d\d)/);
+    const open = !!m && min >= +m[1] * 60 + +m[2] && min < +m[3] * 60 + +m[4];
+    const st = document.querySelector<HTMLElement>('[data-status]');
+    if (st) { st.hidden = false; st.querySelector<HTMLElement>('[data-status-stip]')!.style.background = open ? '#80bd01' : '#9a9b93'; st.querySelector<HTMLElement>('[data-status-tekst]')!.textContent = open ? 'Nu open' : 'Nu gesloten'; }
+  </script>
+</Base>
+

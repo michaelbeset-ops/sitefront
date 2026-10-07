@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 1000 } })).newPage();
+await p.goto('http://localhost:4435/sitefront/ipp-tech-de-kwakel/#melden', { waitUntil: 'networkidle' });
+await p.click('text=Retrofit >> nth=-1').catch(()=>{}); await p.locator('label:has(input[value=storing])').click();
+await p.fill('[name=machine]', 'Verpakkingslijn 2'); await p.fill('[name=bedrijf]', 'Voorbeeld BV'); await p.fill('[name=plaats]', 'Gouda');
+await p.click('[data-spoed]'); await p.waitForTimeout(900);
+await p.locator('[data-bon]').screenshot({ path: 'shots/wow-1440.png' });
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-wa]', 'href')));
+console.log(decodeURIComponent(await p.getAttribute('[data-mail]', 'href')));
+await b.close();
+
