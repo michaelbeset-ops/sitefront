@@ -1,0 +1,315 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import kastWand from '../assets/kast-wand.jpg';
+import kastPallet from '../assets/kast-pallet.jpg';
+import kastOven from '../assets/kast-oven.jpg';
+import ventielen from '../assets/ventielen.jpg';
+import filterlijn from '../assets/filterlijn.jpg';
+import plc from '../assets/plc.jpg';
+import fred from '../assets/fred.jpg';
+
+// Hero: liggende foto (rij kasten) op desktop, staande montageplaat op mobiel.
+const hD = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: hero, width: w, quality: 70, format: 'webp' })));
+const hM = await Promise.all([480, 780, 1080].map((w) => getImage({ src: heroM, width: w, quality: 66, format: 'webp' })));
+const srcset = (l: { src: string; attributes: Record<string, any> }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+// Diensten: teksten van hun eigen homepage, ingekort en taalkundig rechtgezet.
+const diensten = [
+  { klem: 'X1', naam: 'Storingen', tekst: 'Niets is zo vervelend als stilstand tijdens het productieproces. IFS reageert zo snel als mogelijk, voor een tijdelijke of permanente oplossing.' },
+  { klem: 'X2', naam: 'Onderhoud', tekst: 'Onderhoud van uw installatie of machine, zodat die blijft draaien.' },
+  { klem: 'X3', naam: 'Retrofit machine-besturingen', tekst: 'Mechanisch nog goed, maar de besturing verouderd? Dan vervangt IFS de besturingskast.' },
+  { klem: 'X4', naam: 'Paneelbouw', tekst: 'Besturingspanelen voor onder andere food & beverage, ovenbouw en filtertechniek, geheel naar uw wens.' },
+  { klem: 'X5', naam: 'Ondersteuning', tekst: 'Tekort aan technisch personeel? IFS neemt taken over, zoals het geplande onderhoud, en kan een beroep doen op een betrouwbaar partnernetwerk.' },
+];
+
+const soorten = [['storing', 'Storing'], ['onderhoud', 'Onderhoud'], ['retrofit', 'Retrofit'], ['paneelbouw', 'Paneelbouw'], ['iets anders', 'Iets anders']];
+
+const titel = 'Industrial Field Services (IFS) | Besturingstechniek in Moordrecht';
+const omschrijving = 'IFS ontwerpt, programmeert en realiseert industriële besturingen: storingen, onderhoud, retrofit van machine-besturingen en paneelbouw. PLC, HMI en SCADA. Westbaan 225, Moordrecht.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen rij besturingskasten in de werkplaats -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-marine text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hD, [960, 1440, 1920])} sizes="100vw" type="image/webp" />
+        <source srcset={srcset(hM, [480, 780, 1080])} sizes="100vw" type="image/webp" />
+        <img src={hD[1].src} alt="Een rij lichtgrijze besturingskasten met temperatuurregelaars en ventilatieroosters op een werkbank in de werkplaats" width="1440" height="1080" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_42%] md:object-[70%_55%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#141a4566_0%,#141a4580_30%,#141a45d9_58%,#141a45f7_100%)] md:bg-[linear-gradient(90deg,#141a45f2_0%,#141a45d1_36%,#141a4566_62%,#141a4526_100%),linear-gradient(0deg,#141a45b3_0%,#141a4500_40%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-16 lg:pb-20">
+        <p class="kop text-sm tracking-[.1em] text-blauw-licht sm:text-base sm:tracking-[.14em]">BESTURINGSTECHNIEK IN MOORDRECHT</p>
+        <h1 class="mt-5 max-w-[12ch] text-hero">Uw machinepark in <span class="text-blauw-licht">topconditie</span></h1>
+        <p class="mt-7 max-w-[35rem] text-lg text-wit/90 md:text-xl">Storingen oplossen, besturingen moderniseren en nieuwe besturingskasten bouwen. Met PLC, HMI en SCADA, afgestemd op uw proces.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#melden" class="knop">Storing melden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <div class="mt-12 hidden items-center gap-x-8 border-t border-lijn-licht pt-5 text-sm text-mist md:flex">
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />VCA VOL</span>
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Industrie en machinebouw</span>
+          <span class="flex items-center gap-2"><Icoon naam="pin" class="h-4 w-4 text-blauw-licht" />{site.straat}, {site.plaats}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DIENSTEN: als een klemmenstrook, X1 tot en met X5 -->
+    <section id="diensten" class="py-20 md:py-28" aria-labelledby="dienst-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-28">
+            <h2 id="dienst-titel" class="rijs text-3xl">Van storing tot nieuwe besturingskast</h2>
+            <p class="rijs mt-5 max-w-md text-lg text-grijs">Ook voor het in bedrijf stellen, uitbreiden en optimaliseren van bestaande besturingssystemen.</p>
+            <figure class="rijs mt-10 hidden lg:block">
+              <Image src={kastWand} alt="Een lichtgrijze besturingskast aan de wand met gekleurde signaallampen en een rode noodstop, de kabels netjes in goten" quality={68} widths={[420, 640, 840]} sizes="34vw" class="aspect-[4/5] w-full rounded-sm object-cover" />
+            </figure>
+          </div>
+        </div>
+        <ol class="border-t-2 border-marine lg:col-span-7">
+          {diensten.map((d, i) => (
+            <li class="rijs grid grid-cols-[auto_1fr] gap-x-5 border-b border-lijn py-8 sm:gap-x-8 md:py-10" style={`--d:${i * 0.05}s`}>
+              <span class="klem mt-1" aria-hidden="true">{d.klem}</span>
+              <div>
+                <h3 class="text-2xl">{d.naam}</h3>
+                <p class="mt-2 max-w-xl text-grijs">{d.tekst}</p>
+              </div>
+            </li>
+          ))}
+          <li class="rijs flex flex-wrap items-center gap-x-6 gap-y-3 pt-8">
+            <a href="#melden" class="knop knop-donker">Aanvraag doen<Icoon naam="pijl" /></a>
+            <span class="text-grijs">of bel <a href={site.telHref} class="link num font-semibold text-inkt">{site.tel}</a></span>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. WERKPLAATS: hun eigen foto's, groot -->
+    <section id="werkplaats" class="bg-kast py-20 md:py-28" aria-labelledby="wp-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-14">
+          <h2 id="wp-titel" class="rijs text-3xl lg:col-span-6">Uit de werkplaats en van locatie</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Eigen foto's van IFS, van 2019 tot en met 2026.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
+          <figure class="rijs col-span-2 md:col-span-5 md:row-span-2">
+            <Image src={kastPallet} alt="Een dubbele lichtgrijze besturingskast met ventilatieroosters, een touchscreen en een rood-gele hoofdschakelaar, op een pallet in de werkplaats" quality={70} widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-full" />
+            <figcaption class="mt-2 text-xs text-grijs">Dubbele kast met hoofdschakelaar, 2023</figcaption>
+          </figure>
+          <figure class="rijs col-span-2 md:col-span-7" style="--d:.08s">
+            <Image src={filterlijn} alt="Een productiehal met een rij filterinstallaties en luchtkanalen, met aan het eind een besturingskast met signaallampen" quality={68} widths={[560, 840, 1120]} sizes="(min-width: 768px) 55vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+            <figcaption class="mt-2 text-xs text-grijs">Filtertechniek, 2022</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-4" style="--d:.12s">
+            <Image src={ventielen} alt="Een open kast met een ventieleiland en blauwe persluchtslangen" quality={68} widths={[360, 560, 720]} sizes="(min-width: 768px) 30vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Persluchtbesturing, 2020</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-3" style="--d:.16s">
+            <Image src={kastOven} alt="Een hoge lichtgrijze besturingskast met bedieningspaneel naast een grote installatie in een fabriekshal" quality={68} widths={[300, 450, 600]} sizes="(min-width: 768px) 22vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Op locatie, 2026</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RETROFIT: donker, met de drie redenen van hun eigen site -->
+    <section id="retrofit" class="goot bg-marine text-wit" aria-labelledby="rf-titel">
+      <div class="klemmen rijs" aria-hidden="true"></div>
+      <div class="wrap grid gap-y-12 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <div class="flex flex-col lg:col-span-6">
+          <h2 id="rf-titel" class="rijs text-3xl">Machine nog goed, besturing verouderd?</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-mist">Dan vervangt IFS de besturingskast. Daarna is uw machine weer helemaal up-to-date, veiliger en klaar om weer jaren te produceren.</p>
+          <ul class="mt-10 border-t border-lijn-licht">
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4"><span class="klem flex-none !bg-marine-2 !text-blauw-licht !border-lijn-licht">01</span><span class="pt-0.5">De (perslucht)besturing is verouderd.</span></li>
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4" style="--d:.06s"><span class="klem flex-none !bg-marine-2 !text-blauw-licht !border-lijn-licht">02</span><span class="pt-0.5">Onderdelen zijn slecht of niet meer leverbaar.</span></li>
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4" style="--d:.12s"><span class="klem flex-none !bg-marine-2 !text-blauw-licht !border-lijn-licht">03</span><span class="pt-0.5">De bediening is niet meer naar wens.</span></li>
+          </ul>
+          <a href={waMet('Hallo Fred, ik wil een retrofit van een machine-besturing bespreken.')} class="rijs knop mt-10 w-fit"><Icoon naam="wa" />Retrofit bespreken</a>
+        </div>
+        <figure class="rijs lg:col-span-6">
+          <Image src={plc} alt="Een geopende besturingskast tegen een bakstenen muur, met PLC, relais en klemmen op de montageplaat" quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 44vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_75%] lg:aspect-auto lg:h-full lg:max-h-[42rem]" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 5. OVER: Fred Kool, in zijn eigen woorden -->
+    <section id="over" class="py-20 md:py-28" aria-labelledby="over-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={fred} alt="Fred Kool, oprichter van IFS, lachend voor een houten wand" quality={72} widths={[400, 600, 800]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-square w-full rounded-sm object-cover" />
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7 lg:self-center">
+          <h2 id="over-titel" class="rijs text-3xl">Fred Kool, oprichter</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-grijs">Sinds 2000 werkzaam in de elektrotechniek, met projecten en service in elektrotechniek en mechatronica. In oktober 2018 richtte hij IFS op.</p>
+          <blockquote class="rijs mt-10 border-l-[3px] border-blauw pl-6">
+            <p class="kop text-2xl leading-tight md:text-[2rem]">“Storingen vertonen zich altijd op het moment dat er geen stilstand in het proces gewenst is.”</p>
+            <footer class="mt-4 text-sm text-grijs">Fred Kool. Daarom reageert IFS zo snel als mogelijk, zodat de productie weer snel hervat kan worden.</footer>
+          </blockquote>
+          <dl class="rijs mt-10 grid max-w-lg grid-cols-2 gap-x-8 border-t border-lijn">
+            <div class="border-b border-lijn py-3"><dt class="text-sm text-grijs">Expertise</dt><dd class="kop text-xl">PLC, HMI, SCADA</dd></div>
+            <div class="border-b border-lijn py-3"><dt class="text-sm text-grijs">Certificering</dt><dd class="kop text-xl">VCA VOL</dd></div>
+          </dl>
+          <a href={site.linkedin} class="rijs link mt-6 inline-block font-semibold">Fred Kool op LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. MELDEN: een storingsbon met hoofdschakelaar voor spoed -->
+    <section id="melden" class="bg-kast py-16 md:py-24" aria-labelledby="bon-titel">
+      <div class="wrap">
+        <form class="rijs grid overflow-hidden rounded-md border border-kast-2 bg-wit shadow-sm lg:grid-cols-12" data-bon>
+          <div class="p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <h2 id="bon-titel" class="text-3xl">Storing, onderhoud of project melden</h2>
+            <p class="mt-4 max-w-md text-grijs">Een paar regels zijn genoeg. Uw bericht gaat rechtstreeks naar Fred.</p>
+
+            <div class="mt-9 grid gap-x-6 gap-y-7 sm:grid-cols-2">
+              <fieldset class="sm:col-span-2">
+                <legend class="text-sm font-semibold">Waar gaat het om?</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {soorten.map(([v, t], i) => <label><input type="radio" name="soort" value={v} checked={i === 0} class="peer sr-only" /><span class="keus">{t}</span></label>)}
+                </div>
+              </fieldset>
+              <label class="block sm:col-span-2">
+                <span class="text-sm font-semibold">Machine of installatie</span>
+                <input class="veld mt-2" type="text" name="machine" maxlength="120" placeholder="Bijv. verpakkingslijn of oven" autocomplete="off" />
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Bedrijf</span>
+                <input class="veld mt-2" type="text" name="bedrijf" maxlength="80" autocomplete="organization" />
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Locatie (plaats)</span>
+                <input class="veld mt-2" type="text" name="plaats" maxlength="60" autocomplete="address-level2" />
+              </label>
+            </div>
+
+            <div class="mt-9 flex items-center gap-5 border-t border-lijn pt-7">
+              <button type="button" class="schakelaar group grid h-20 w-20 flex-none place-items-center rounded-sm bg-[#f3c400] shadow-sm transition-transform active:scale-95" aria-pressed="false" data-spoed>
+                <span class="sr-only">Spoed</span>
+                <svg viewBox="0 0 100 100" class="h-16 w-16" aria-hidden="true">
+                  <circle cx="50" cy="50" r="30" fill="#c8102e" />
+                  <g class="greep"><rect x="20" y="42" width="60" height="16" rx="4" fill="#a00c24" /><rect x="22" y="44" width="56" height="12" rx="3" fill="#d81b36" /></g>
+                  <circle cx="50" cy="50" r="5" fill="#7d0a1d" />
+                  <text x="50" y="11" text-anchor="middle" font-family="Rajdhani, sans-serif" font-weight="700" font-size="11" fill="#141a45">I</text>
+                  <text x="94" y="54" text-anchor="middle" font-family="Rajdhani, sans-serif" font-weight="700" font-size="11" fill="#141a45">0</text>
+                </svg>
+              </button>
+              <div>
+                <p class="kop text-xl" data-spoed-label>Geen spoed</p>
+                <p class="text-sm text-grijs">Draai de schakelaar om als de productie stilstaat.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="goot flex flex-col bg-marine p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <p class="text-sm font-semibold text-mist">Uw bericht aan Fred</p>
+            <p class="mt-3 rounded-sm bg-marine-2 p-5 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <p class="mt-4 hidden rounded-sm border-l-[3px] border-[#f3c400] bg-marine-2 px-4 py-3 text-[.9375rem]" data-spoed-tip role="status">Staat de productie stil? Bel dan ook direct: <a href={site.telHref} class="link link-licht num whitespace-nowrap font-semibold">{site.tel}</a></p>
+            <a href={site.wa} class="knop mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-lijn mt-3 w-full" data-mail><Icoon naam="mail" />Of per e-mail</a>
+            <p class="mt-5 text-sm text-mist">Deze bon verstuurt zelf niets. WhatsApp of uw mailprogramma opent met dit bericht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT: adres, bereikbaarheid met live status -->
+    <section id="contact" class="py-20 md:py-28" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">Westbaan 225, Moordrecht</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Voor storingen, onderhoud en nieuwe projecten in de industrie en machinebouw.</p>
+          <dl class="rijs mt-10 max-w-md border-t border-lijn">
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Telefoon</dt><dd><a href={site.telHref} class="link num">{site.tel}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">E-mail</dt><dd class="min-w-0 break-all text-right"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Adres</dt><dd class="text-right">{site.straat}, {site.postcode} {site.plaats}</dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">KvK</dt><dd class="num">{site.kvk}</dd></div>
+          </dl>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop knop-donker"><Icoon naam="pin" />Route plannen</a>
+            <a href={waMet('Hallo Fred, ik heb een vraag.')} class="knop"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs border-t-4 border-blauw bg-kast p-7 md:p-9">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl">Bereikbaar</h3>
+              <p class="flex items-center gap-2 text-sm font-semibold" data-status><span class="h-2.5 w-2.5 rounded-full bg-grijs" data-stip></span><span data-status-tekst>&nbsp;</span></p>
+            </div>
+            <table class="mt-6 w-full text-[.9375rem]">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                  <tr class="border-b border-kast-2" data-dag={d}>
+                    <th scope="row" class="py-2.5 text-left font-medium capitalize">{tijden[d][0]}</th>
+                    <td class="num py-2.5 text-right text-grijs">{tijden[d][1] ?? 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-xs text-grijs">Openingstijden volgens Google.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Storingsbon: bouwt een kort bericht op en zet het in de WhatsApp- en mailknop.
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const mail = $<HTMLAnchorElement>('[data-mail]');
+    const sp = $<HTMLButtonElement>('[data-spoed]');
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const d = new FormData(f);
+      const soort = String(d.get('soort'));
+      const machine = String(d.get('machine') || '').trim();
+      const bedrijf = String(d.get('bedrijf') || '').trim();
+      const plaats = String(d.get('plaats') || '').trim();
+      const spoed = sp.getAttribute('aria-pressed') === 'true';
+      const wat = soort === 'iets anders' ? 'een vraag' : soort === 'storing' ? 'een storing' : soort === 'onderhoud' ? 'onderhoud' : `een ${soort}-project`;
+      const aan = machine ? ` aan ${machine.charAt(0).toLowerCase() + machine.slice(1)}` : '';
+      const waar = bedrijf && plaats ? ` Bedrijf: ${bedrijf}, in ${plaats}.` : bedrijf ? ` Bedrijf: ${bedrijf}.` : plaats ? ` Locatie: ${plaats}.` : '';
+      const tekst = `Hallo Fred, ik heb ${wat}${aan}.${waar}${spoed ? ' SPOED: de productie staat stil.' : ''} Kunt u contact met mij opnemen?`;
+      $('[data-bericht]').textContent = tekst;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `mailto:${site.mail}?subject=${encodeURIComponent((spoed ? 'SPOED: ' : '') + 'Melding via website')}&body=${encodeURIComponent(tekst)}`;
+      $('[data-spoed-label]').textContent = spoed ? 'Spoed: productie staat stil' : 'Geen spoed';
+      $('[data-spoed-tip]').classList.toggle('hidden', !spoed);
+    };
+    sp.addEventListener('click', () => { const o = sp.getAttribute('aria-pressed') !== 'true'; sp.setAttribute('aria-pressed', String(o)); sp.classList.toggle('aan', o); zet(); });
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+
+  // Live status volgens de tijden van Google, in Nederlandse tijd.
+  const tijden: Record<number, [number, number] | null> = { 0: null, 1: [420, 1020], 2: [420, 1020], 3: [420, 1020], 4: [420, 1020], 5: [420, 720], 6: null };
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay(), min = nu.getHours() * 60 + nu.getMinutes();
+  const t = tijden[dag];
+  const open = !!t && min >= t[0] && min < t[1];
+  const rij = document.querySelector<HTMLElement>(`[data-dag="${dag}"]`);
+  rij?.classList.add('bg-wit', 'font-semibold');
+  rij?.querySelectorAll('th, td').forEach((c) => c.classList.add('px-2'));
+  const st = document.querySelector('[data-status-tekst]');
+  const stip = document.querySelector('[data-stip]');
+  if (st) st.textContent = open ? 'Nu bereikbaar' : 'Nu gesloten';
+  if (stip) stip.className = `h-2.5 w-2.5 rounded-full ${open ? 'bg-[#2f9e4a]' : 'bg-grijs'}`;
+</script>

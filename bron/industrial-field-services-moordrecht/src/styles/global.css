@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@import "@fontsource/rajdhani/600.css";
+@import "@fontsource/rajdhani/700.css";
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/500.css";
+@import "@fontsource/barlow/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het blauw van het IFS-tandwiel, op het marineblauw van hun logo. Verder kastgrijs, zoals hun besturingskasten. */
+  --color-blauw: #0093d3;        /* alleen vlak, lijn of vorm; tekst erop is marine (5,2:1) */
+  --color-blauw-licht: #4fc0f0;  /* accent op marine */
+  --color-blauw-donker: #00679a; /* links en kleine accenten op wit, 5,6:1 */
+  --color-marine: #141a45;
+  --color-marine-2: #1d2558;
+  --color-kast: #e6e8e5;         /* RAL 7035-achtig lichtgrijs */
+  --color-kast-2: #d6d9d5;
+  --color-wit: #ffffff;
+  --color-inkt: #10132b;
+  --color-grijs: #4f5566;        /* bijtekst, 7:1 op wit */
+  --color-mist: #b3bad0;         /* bijtekst op marine, 8:1 */
+  --color-lijn: #10132b1f;
+  --color-lijn-licht: #ffffff26;
+
+  --font-kop: "Rajdhani", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Barlow", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .8vw + 1.25rem, 1.875rem);
+  --text-3xl: clamp(2.125rem, 2.6vw + 1.2rem, 3.75rem);
+  --text-hero: clamp(3rem, 6vw + 1rem, 6.75rem);
+
+  --radius-sm: .1875rem;
+  --radius-md: .375rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #10132b14, 0 6px 18px #10132b12;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-wit); }
+  body {
+    background-color: var(--color-wit);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: .98; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: break-word; }
+  h3 { line-height: 1.1; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-blauw); color: var(--color-marine); }
+  :focus-visible { outline: 2px solid var(--color-blauw); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); font-weight: 700; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-family: var(--font-kop); font-weight: 700; font-size: 1.125rem; letter-spacing: .01em; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-blauw); color: var(--color-marine); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-blauw-licht); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-marine); }
+  .knop-donker { background: var(--color-marine); color: var(--color-wit); }
+  .knop-donker:hover { background: var(--color-marine-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-blauw); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-blauw-donker); }
+  .link-licht:hover { color: var(--color-blauw-licht); }
+
+  /* Eigen detail 1: een klemmenstrook als rand. Grijze klemmen, af en toe een blauwe (N) en groen-gele (PE). */
+  .klemmen { height: 1.25rem; background:
+      repeating-linear-gradient(90deg, transparent 0 calc(11 * 14px), #2f9e4a calc(11 * 14px) calc(11 * 14px + 5px), #e6c619 calc(11 * 14px + 5px) calc(11 * 14px + 9px), #2f9e4a calc(11 * 14px + 9px) calc(12 * 14px - 2px), transparent calc(12 * 14px - 2px) calc(12 * 14px)),
+      repeating-linear-gradient(90deg, transparent 0 calc(5 * 14px), var(--color-blauw) calc(5 * 14px) calc(6 * 14px - 2px), transparent calc(6 * 14px - 2px) calc(6 * 14px)),
+      repeating-linear-gradient(90deg, #a9aeab 0 12px, #8b908d 12px 14px);
+    background-size: calc(24 * 14px) 100%, calc(24 * 14px) 100%, 14px 100%;
+    box-shadow: inset 0 3px 0 #ffffff55, inset 0 -3px 0 #00000026; }
+  .js .klemmen.rijs { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path 1.4s var(--ease-zacht); }
+  .js .klemmen.rijs.in { clip-path: inset(0 0 0 0); }
+
+  /* Klemnummer, zoals de markeerstrookjes op hun klemmen. */
+  .klem { display: inline-flex; align-items: center; justify-content: center; min-width: 2.75rem; height: 1.75rem; padding: 0 .5rem; border-radius: 2px; background: var(--color-kast); border: 1px solid var(--color-kast-2); font-family: var(--font-kop); font-weight: 700; font-size: .9375rem; color: var(--color-inkt); letter-spacing: .02em; }
+
+  /* Kabelgoot-raster op donkere vlakken. */
+  .goot { background-image: linear-gradient(90deg, #ffffff0a 1px, transparent 1px), linear-gradient(0deg, #ffffff0a 1px, transparent 1px); background-size: 28px 28px; }
+
+  .veld { display: block; width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-size: 1.0625rem; font-weight: 500; color: var(--color-inkt); background: var(--color-wit); border: 1.5px solid var(--color-kast-2); border-radius: var(--radius-sm); padding: .7rem .85rem; min-height: 3rem; transition: border-color .25s, box-shadow .25s; }
+  .veld:focus { outline: none; border-color: var(--color-blauw); box-shadow: 0 0 0 3px #0093d333; }
+  .veld::placeholder { color: #6d7384; }
+  select.veld { padding-right: 2.2rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310132b' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; background-size: 1rem; }
+  .keus { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1.5px solid var(--color-kast-2); background: var(--color-wit); border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  input:checked + .keus { background: var(--color-marine); border-color: var(--color-marine); color: var(--color-wit); }
+  input:focus-visible + .keus { outline: 2px solid var(--color-blauw); outline-offset: 3px; }
+
+  /* Eigen detail 2: de hoofdschakelaar. Bij spoed draait de rode greep een kwartslag. */
+  .schakelaar .greep { transform-origin: 50px 50px; transform: rotate(-90deg); transition: transform .45s cubic-bezier(.5, 1.6, .5, 1); }
+  .schakelaar.aan .greep { transform: rotate(0deg); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs, .js .klemmen.rijs { opacity: 1; transform: none; clip-path: none; transition: none; } }
+}
