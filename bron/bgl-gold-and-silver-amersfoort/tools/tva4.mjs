@@ -1,0 +1,10 @@
+import { chromium } from 'playwright'; import fs from 'node:fs';
+const b = await chromium.launch(); const p = await (await b.newContext({ locale: 'nl-NL', userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', viewport:{width:1300,height:1000} })).newPage();
+await p.goto('https://www.tijdvooramersfoort.nl/nl/locaties/4163513992/b-g-l-gold-and-silver', { waitUntil: 'domcontentloaded' }); await p.waitForTimeout(5000);
+await p.getByRole('button', { name: /weigeren|noodzakelijk|Weiger/i }).first().click({timeout:3000}).catch(()=>{}); await p.waitForTimeout(1000);
+const t = await p.evaluate(() => document.querySelector('main')?.innerText || document.body.innerText);
+const imgs = await p.evaluate(() => [...document.querySelectorAll('main img')].map(i => i.currentSrc || i.src));
+const links = await p.evaluate(() => [...document.querySelectorAll('main a[href]')].map(a => a.href));
+fs.writeFileSync('bron/web/tva.txt', t + '\n\nIMGS:\n' + imgs.join('\n') + '\n\nLINKS:\n' + links.join('\n'));
+await p.screenshot({ path: 'bron/web/tva.png', fullPage: true });
+await b.close();
