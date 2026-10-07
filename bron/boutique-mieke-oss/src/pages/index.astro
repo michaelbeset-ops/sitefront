@@ -1,0 +1,278 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, waHoi, waMet } from '../data/site';
+
+import plank from '../assets/plank.jpg';
+import spiegel1 from '../assets/spiegel-1.jpg';
+import spiegel2 from '../assets/spiegel-2.jpg';
+import spiegel3 from '../assets/spiegel-3.jpg';
+import tassen from '../assets/tassen.jpg';
+import oorbellen from '../assets/oorbellen.jpg';
+import borduur from '../assets/tas-borduur.jpg';
+import rekken from '../assets/rekken.jpg';
+import gevel from '../assets/gevel.jpg';
+
+// Drie posts uit de paskamerspiegel (Instagram @boutiquemieke, 29 september tot 5 oktober 2026). Tekst uit hun eigen posts, zonder prijzen.
+const spiegels = [
+  { img: spiegel1, titel: 'Vegan leather blouse jasje', alt: 'Spiegelfoto in de paskamer van de boutique: een bruin vegan leren blouse jasje op een wit shirt en jeans' },
+  { img: spiegel2, titel: 'Geruit bomberjasje, van S t/m L', alt: 'Spiegelfoto in de boutique: een kort geruit bomberjasje over een wit shirt' },
+  { img: spiegel3, titel: 'Poncho vestje in bordeaux, zwart, blauw en bruin', alt: 'Spiegelfoto in de boutique: een bordeauxrood poncho vestje met knopen' },
+];
+
+// Apart leggen: één zin, eindigt in WhatsApp. Alleen dagen dat de boutique open is.
+const waar = ['op Instagram', 'op Facebook', 'in de etalage'];
+const maten = ['S', 'M', 'L', 'XL', 'weet ik nog niet'];
+const dagen = ['dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+
+const titel = 'Boutique Mieke Oss | Hippe en trendy dameskleding';
+const omschrijving = 'Boutique Mieke, Kerkstraat 10 in Oss: hippe en trendy dameskleding, sieraden en tassen. Elke week nieuwe collectie. Iets gezien? App ons en we leggen het voor je apart.';
+const r = (i: number) => reviews[i];
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen plank met tassen en riemen boven het rek, schermvullend -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-inkt text-wit md:min-h-[calc(100svh-5rem)]">
+      <Image src={plank} alt="Een houten plank in de boutique met een gevlochten strandtas, lichtblauwe en denim tasjes, riemen met gouden gespen en een groene trui, met daaronder een rek vol blouses" quality={52} widths={[480, 720, 960, 1280, 1600, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[46%_50%] lg:object-[50%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15151540_0%,#15151573_22%,#151515b8_42%,#151515eb_66%,#151515_100%)] lg:bg-[linear-gradient(90deg,#151515e6_0%,#151515c7_34%,#15151566_56%,#15151514_80%),linear-gradient(0deg,#151515b3_0%,#15151500_45%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-20 lg:pb-24">
+        <p class="text-sm text-goud-licht">Damesmode aan de Kerkstraat in Oss</p>
+        <h1 class="mt-5 max-w-[12ch] text-hero">Elke week een nieuwe collectie</h1>
+        <p class="mt-6 max-w-md text-lg text-wit/90">Hippe en trendy dameskleding, sieraden en tassen. Kom een kijkje nemen, de koffie staat klaar.</p>
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href={waHoi} class="knop knop-goud max-sm:!px-5"><Icoon naam="wa" />App de boutique</a>
+          <a href="#nieuw" class="knop knop-rand max-sm:!px-5">Net binnen</a>
+        </div>
+        <p class="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-mist">
+          <span class="inline-flex items-center gap-1.5"><Icoon naam="ster" class="h-3.5 w-3.5 text-goud" />{site.google.score} op Google</span>
+          <span aria-hidden="true">·</span>
+          <span data-status-wrap><span data-status>Di t/m za open</span></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. NET BINNEN: drie posts in de zwarte paskamerspiegel -->
+    <section id="nieuw" class="overflow-hidden bg-inkt py-20 text-wit md:py-32" aria-labelledby="nieuw-titel">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-6">
+            <span class="haal rijs"></span>
+            <h2 id="nieuw-titel" class="rijs mt-7 text-3xl">Net binnen, eerst gezien in de spiegel</h2>
+          </div>
+          <p class="rijs self-end text-lg text-mist lg:col-span-5 lg:col-start-8">Wat nieuw is, laten we meteen zien op Instagram en Facebook. Zie je iets leuks? App ons, dan leggen we het voor je apart.</p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:mt-20 md:grid-cols-3 md:gap-x-8">
+          {spiegels.map((s, i) => (
+            <figure class:list={['rijs', i === 1 && 'md:mt-24', i === 2 && 'col-span-2 mx-auto w-1/2 md:col-span-1 md:mx-0 md:mt-10 md:w-auto']} style={`--d:${i * 0.1}s`}>
+              <div class="spiegel">
+                <Image src={s.img} alt={s.alt} quality={52} widths={[240, 360, 480, 640]} sizes="(min-width: 768px) 30vw, 50vw" class="aspect-[4/5] w-full object-cover" />
+              </div>
+              <figcaption class="mt-4 text-sm text-mist"><span class="text-wit">{s.titel}</span></figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div class="mt-14 flex flex-wrap items-center gap-x-8 gap-y-4 border-t border-lijn-licht pt-8 md:mt-20">
+          <a href={site.instagram} class="link link-licht inline-flex items-center gap-2 font-medium"><Icoon naam="insta" class="h-5 w-5 text-goud-licht" />@boutiquemieke</a>
+          <a href={site.facebook} class="link link-licht inline-flex items-center gap-2 font-medium"><Icoon naam="fb" class="h-5 w-5 text-goud-licht" />Boutique Mieke op Facebook</a>
+          <p class="text-sm text-mist md:ml-auto">Uit onze posts van eind september en begin oktober 2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. DE BOUTIQUE: hun eigen intro als kop, foto's in een tijdschriftsnede -->
+    <section id="boutique" class="py-20 md:py-32" aria-labelledby="boutique-titel">
+      <div class="wrap">
+        <h2 id="boutique-titel" class="rijs max-w-[14ch] text-[clamp(2.5rem,6vw+.5rem,6.25rem)] leading-[1]">Fashion, Jewels <span class="text-goud-diep">&amp;</span> Musthaves</h2>
+
+        <div class="mt-14 grid gap-y-12 md:mt-20 md:grid-cols-12 md:gap-x-8">
+          <figure class="rijs md:col-span-5">
+            <Image src={tassen} alt="Twee lichtbruine leren tassen en riemen met luipaardprint op een vachtje, met een hangplant erachter" quality={52} widths={[320, 480, 640, 900]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_60%]" />
+            <figcaption class="mt-4 flex items-baseline justify-between gap-4 border-b border-lijn pb-3"><span class="font-kop text-xl">Tassen en riemen</span></figcaption>
+          </figure>
+          <div class="grid content-start gap-y-12 md:col-span-6 md:col-start-7 md:pt-28">
+            <p class="rijs max-w-md text-lg text-grijs">Kleding, sieraden en tassen bij elkaar: je hele outfit in één keer.</p>
+            <div class="grid grid-cols-2 gap-x-5 sm:gap-x-8">
+              <figure class="rijs">
+                <Image src={oorbellen} alt="Een zwart standaard vol grote oorbellen met parels en kraaltjes, naast een roze tasje en een bos bloemen" quality={52} widths={[240, 360, 480, 640]} sizes="(min-width: 768px) 22vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover object-[50%_70%]" />
+                <figcaption class="mt-4 border-b border-lijn pb-3 font-kop text-xl">Sieraden</figcaption>
+              </figure>
+              <figure class="rijs mt-16" style="--d:.1s">
+                <Image src={borduur} alt="Een geborduurde tas met kleurige bloemen en drie riemen met geweven gespen op een houten plank" quality={52} widths={[240, 360, 480, 640]} sizes="(min-width: 768px) 22vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover object-[50%_55%]" />
+                <figcaption class="mt-4 border-b border-lijn pb-3 font-kop text-xl">Musthaves</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <figure class="rijs mt-16 grid gap-y-6 md:mt-24 md:grid-cols-12 md:items-end md:gap-x-8">
+          <Image src={rekken} alt="Vier foto's van de rekken in de boutique: blouses met dierenprint, stapels truien, blouses in zachte kleuren en roze en rode tunieken" quality={52} widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 58vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover md:col-span-7" />
+          <figcaption class="md:col-span-4 md:col-start-9">
+            <p class="font-kop text-2xl leading-snug">“Fijne kleding winkel iedere week nieuwe collectie.”</p>
+            <p class="mt-3 text-sm text-grijs">Chantal H. op Google</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 4. APART LEGGEN: één zin, eindigt in WhatsApp -->
+    <section id="apart" class="border-y border-lijn bg-papier-2 py-20 md:py-28" aria-labelledby="apart-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <span class="haal"></span>
+          <h2 id="apart-titel" class="mt-7 text-3xl">Leg het voor me apart</h2>
+          <blockquote class="mt-8 max-w-xs text-grijs">
+            <p>“Mocht u iets willen reserveren kan dat natuurlijk altijd.”</p>
+            <footer class="mt-2 text-sm">Boutique Mieke op Facebook</footer>
+          </blockquote>
+        </div>
+        <form class="lg:col-span-8" data-apart>
+          <p class="font-kop text-[clamp(1.6rem,2.4vw+.9rem,3rem)] leading-[1.45]">
+            Ik zag
+            <label class="sr-only" for="a-wat">Wat zag je?</label>
+            <input id="a-wat" class="veld !w-[11ch] sm:!w-[13ch]" type="text" placeholder="iets leuks" maxlength="60" autocomplete="off" data-wat />
+            <label class="sr-only" for="a-waar">Waar zag je het?</label>
+            <select id="a-waar" class="kies" data-waar>
+              {waar.map((t) => <option value={t}>{t}</option>)}
+            </select>
+            en pas het graag in maat
+            <label class="sr-only" for="a-maat">Maat</label>
+            <select id="a-maat" class="kies" data-maat>
+              {maten.map((t, i) => <option value={t} selected={i === 1}>{t}</option>)}
+            </select>.
+            Ik kom
+            <label class="sr-only" for="a-dag">Wanneer kom je langs?</label>
+            <select id="a-dag" class="kies" data-dag>
+              {dagen.map((t, i) => <option value={t} selected={i === 4}>{t}</option>)}
+            </select>
+            langs.
+          </p>
+          <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
+            <a href={waMet('Hoi Boutique Mieke! Ik zag iets leuks op Instagram. Kunnen jullie het in maat M voor me apart leggen? Ik kom zaterdag langs.')} class="knop" data-apart-wa><Icoon naam="wa" />Vraag het via WhatsApp</a>
+            <a href={site.telHref} class="link num font-medium">Of bel {site.tel}</a>
+          </div>
+          <p class="mt-6 max-w-lg text-sm text-grijs">Je bericht opent in WhatsApp; je verstuurt het zelf.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. WAT KLANTEN ZEGGEN -->
+    <section class="py-20 md:py-32" aria-labelledby="rev-titel">
+      <div class="wrap">
+        <h2 id="rev-titel" class="sr-only">Reviews op Google</h2>
+        <figure class="rijs max-w-4xl">
+          <blockquote class="font-kop text-[clamp(1.75rem,3vw+.75rem,3.5rem)] leading-[1.15]">“{r(2).tekst}”</blockquote>
+          <figcaption class="mt-6 text-sm text-grijs">{r(2).naam} op Google</figcaption>
+        </figure>
+        <div class="mt-16 grid gap-x-12 gap-y-12 border-t border-lijn pt-12 md:mt-24 md:grid-cols-3">
+          {[r(1), r(3), r(4)].map((x, i) => (
+            <figure class="rijs" style={`--d:${i * 0.08}s`}>
+              <blockquote class="text-lg leading-relaxed">“{x.tekst}”</blockquote>
+              <figcaption class="mt-4 flex items-center gap-2 text-sm text-grijs"><Icoon naam="g" class="h-4 w-4" />{x.naam} op Google</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SINDS 2021: de gevel met het gouden handschrift -->
+    <section class="bg-inkt text-wit" aria-labelledby="gevel-titel">
+      <div class="grid lg:grid-cols-2">
+        <figure class="relative min-h-[26rem] lg:min-h-[44rem]">
+          <Image src={gevel} alt="De zwarte gevel van Boutique Mieke aan de Kerkstraat met het gouden logo op het raam, een bankje, twee zuilen van gouden en witte ballonnen en de deurmat met het logo" quality={52} widths={[480, 720, 960, 1126]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_42%]" />
+        </figure>
+        <div class="flex flex-col justify-center px-5 py-20 md:px-16 lg:py-28 xl:px-24">
+          <span class="haal rijs"></span>
+          <h2 id="gevel-titel" class="rijs mt-7 text-3xl">Sinds oktober 2021 aan de Kerkstraat 10</h2>
+          <blockquote class="rijs mt-10 border-l border-goud pl-6">
+            <p class="font-kop text-xl leading-snug text-goud-licht md:text-2xl">“Al 5 jaar mogen wij jullie verwelkomen, inspireren en laten stralen.”</p>
+            <footer class="mt-3 text-sm text-mist">Boutique Mieke op Instagram, 30 september 2026</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BEZOEK -->
+    <section id="bezoek" class="py-20 md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Leuk dat je er bent</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Kerkstraat 10, in het centrum van Oss. Gewoon binnenlopen kan; de koffie staat klaar.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop"><Icoon naam="pin" />Route plannen</a>
+            <a href={waHoi} class="knop border-inkt bg-transparent !text-inkt hover:!bg-inkt hover:!text-wit"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <p class="rijs mt-8 text-sm text-grijs"><a href={site.telHref} class="link num">{site.tel}</a> · {site.straat}, {site.postcode} {site.plaats}</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs border-t border-inkt pt-6">
+            <div class="flex items-baseline justify-between gap-4">
+              <h3 class="text-2xl">Open</h3>
+              <p class="text-sm font-semibold text-goud-diep" data-status></p>
+            </div>
+            <table class="mt-5 w-full text-base">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-semibold">
+                    <th scope="row" class="py-3 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num whitespace-nowrap py-3 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-apart]');
+  if (f) {
+    const wat = f.querySelector<HTMLInputElement>('[data-wat]')!;
+    const waar = f.querySelector<HTMLSelectElement>('[data-waar]')!;
+    const maat = f.querySelector<HTMLSelectElement>('[data-maat]')!;
+    const dag = f.querySelector<HTMLSelectElement>('[data-dag]')!;
+    const wa = f.querySelector<HTMLAnchorElement>('[data-apart-wa]')!;
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const iets = wat.value.trim() || 'iets leuks';
+      const m = maat.value === 'weet ik nog niet' ? 'Mijn maat weet ik nog niet precies.' : `Kunnen jullie het in maat ${maat.value} voor me apart leggen?`;
+      const vraag = maat.value === 'weet ik nog niet' ? `Kunnen jullie het voor me apart leggen? ${m}` : m;
+      const tekst = `Hoi Boutique Mieke! Ik zag ${iets} ${waar.value}. ${vraag} Ik kom ${dag.value} langs.`;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    // Elke keuzelijst zo breed als het gekozen woord, zodat de zin een zin blijft.
+    const maatEl = document.createElement('span');
+    maatEl.setAttribute('aria-hidden', 'true');
+    maatEl.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px;top:0';
+    f.appendChild(maatEl);
+    const pas = () => f.querySelectorAll<HTMLSelectElement>('select').forEach((s) => {
+      const cs = getComputedStyle(s);
+      maatEl.style.font = cs.font; maatEl.style.letterSpacing = cs.letterSpacing;
+      maatEl.textContent = s.selectedOptions[0]?.text || '';
+      s.style.width = `calc(${maatEl.getBoundingClientRect().width}px + 1.25em)`;
+    });
+    const pasVeld = () => {
+      const cs = getComputedStyle(wat);
+      maatEl.style.font = cs.font; maatEl.style.letterSpacing = cs.letterSpacing;
+      maatEl.textContent = wat.value || wat.placeholder;
+      wat.style.setProperty('width', `calc(${maatEl.getBoundingClientRect().width}px + .4em)`, 'important');
+    };
+    f.addEventListener('change', () => { zet(); pas(); });
+    wat.addEventListener('input', () => { zet(); pasVeld(); });
+    document.fonts?.ready.then(pasVeld); addEventListener('resize', pasVeld); pasVeld();
+    document.fonts?.ready.then(pas); addEventListener('resize', pas); pas();
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>
