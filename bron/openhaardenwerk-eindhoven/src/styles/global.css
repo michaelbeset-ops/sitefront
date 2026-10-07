@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@import "@fontsource/tilt-warp/400.css";
+@import "@fontsource-variable/bitter/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Roet, kalk en het rood uit het logo ("Sterk in [open]haarden werk"). Verder niets. */
+  --color-roet: #141211;        /* bijna zwart */
+  --color-antraciet: #221f1d;   /* donkere vlakken */
+  --color-kalk: #f4f3f0;        /* gebroken wit, stucwerk */
+  --color-kalk-2: #e9e7e3;
+  --color-steen: #5e5a56;       /* bijtekst, 6:1 op kalk */
+  --color-as: #b9b4ae;          /* bijtekst op roet, 9:1 */
+  --color-rood: #c8141b;        /* logo-rood, 5,5:1 op kalk */
+  --color-rood-diep: #a10f15;
+  --color-gloed: #ff5a50;       /* rood op donker, 6:1 op roet */
+  --color-lijn: #1412111f;
+  --color-lijn-licht: #ffffff24;
+  --color-wit: #ffffff;
+
+  --font-kop: "Tilt Warp", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Bitter Variable", Georgia, serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.15rem, 2rem);
+  --text-3xl: clamp(2.125rem, 3vw + 1rem, 3.75rem);
+  --text-hero: clamp(2.75rem, 6vw + .6rem, 6.75rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .5rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #14121114, 0 2px 8px #1412110f;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-kalk); }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-roet);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.02; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  /* De vierkante haken uit hun slogan: [open]haarden. */
+  .haak { white-space: nowrap; }
+  .haak::before { content: "["; color: var(--color-rood); margin-right: .04em; }
+  .haak::after { content: "]"; color: var(--color-rood); margin-left: .04em; }
+  .op-donker .haak::before, .op-donker .haak::after { color: var(--color-gloed); }
+
+  /* Haakjes als hoeken rond een foto, zoals snijtekens op een bouwtekening. */
+  .kader { position: relative; }
+  .kader::before, .kader::after { content: ""; position: absolute; width: 1.75rem; height: 1.75rem; border: 3px solid var(--color-rood); pointer-events: none; z-index: 1; }
+  .kader::before { top: -.6rem; left: -.6rem; border-right: 0; border-bottom: 0; }
+  .kader::after { bottom: -.6rem; right: -.6rem; border-left: 0; border-top: 0; }
+  @media (max-width: 400px) { .kader::before { left: -.45rem; } .kader::after { right: -.45rem; } }
+
+  /* Woordmerk naar hun logo: "Hans van der Vorst" met daaronder "Sterk in [open]haarden werk". */
+  .merk { display: inline-flex; flex-direction: column; line-height: 1.02; text-decoration: none; color: var(--color-roet); white-space: nowrap; }
+  .merk b { font-family: var(--font-sans); font-weight: 750; font-size: 1.1875rem; letter-spacing: .005em; }
+  .merk small { margin-top: .25rem; font-size: .75rem; font-weight: 450; letter-spacing: .01em; }
+  .merk small em { font-style: normal; font-weight: 750; color: var(--color-rood); }
+  .merk-licht { color: var(--color-wit); }
+  .merk-licht small em { color: var(--color-gloed); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-weight: 650; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-rood); color: var(--color-wit); box-shadow: var(--shadow-sm); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, border-color .3s; }
+  .knop:hover { background: var(--color-rood-diep); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); border: 1.5px solid #ffffff8c; box-shadow: none; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-roet); border-color: var(--color-wit); }
+  .knop-donker { background: var(--color-roet); }
+  .knop-donker:hover { background: var(--color-antraciet); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .22em; transition: color .25s; }
+  .link:hover { color: var(--color-rood); }
+  .link-licht:hover { color: var(--color-gloed); }
+
+  /* Inline keuzelijst in de zin van de haardkiezer, tussen rode haken. */
+  .kies-wrap { display: inline-block; white-space: nowrap; max-width: 100%; margin-inline: .12em; }
+  .kies-wrap::before { content: "["; color: var(--color-gloed); }
+  .kies-wrap::after { content: "]"; color: var(--color-gloed); }
+  .kies { appearance: none; -webkit-appearance: none; font: inherit; color: var(--color-wit); background: transparent; border: 0; border-radius: 0; padding: 0 .95em 0 .1em; margin: 0; cursor: pointer; max-width: calc(100vw - 4rem);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ff5a50' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right .1em center; background-size: .55em; transition: color .25s; text-decoration: underline; text-decoration-color: #ffffff40; text-decoration-thickness: 2px; text-underline-offset: .18em; }
+  .kies:hover { color: var(--color-gloed); }
+  .kies option { color: var(--color-roet); background: var(--color-wit); font-family: var(--font-sans); font-size: 1rem; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
