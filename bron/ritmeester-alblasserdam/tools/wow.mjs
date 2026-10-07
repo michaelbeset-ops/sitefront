@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4412/sitefront/de-laat-kachels-hooge-mierde/#keuzehulp', { waitUntil: 'networkidle' });
+await p.click('[data-tik="soort"]'); await p.click('[data-tik="soort"]'); await p.click('[data-tik="kanaal"]');
+await p.focus('[data-tik="ruimte"]'); await p.keyboard.press('Enter');
+await p.check('input[value="showroom"]');
+await p.waitForTimeout(1500);
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.locator('#keuzehulp').screenshot({ path: 'shots/wow-1440.png' });
+await b.close();
