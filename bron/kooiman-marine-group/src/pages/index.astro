@@ -1,0 +1,484 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Waterlijn from '../components/Waterlijn.astro';
+import { site, bedrijven, onderwerpen, vacatures, mijlpalen, mailto, type BedrijfSleutel } from '../data/site';
+
+import hero from '../assets/hero-swalinge.jpg';
+import wZwijndrecht from '../assets/werf-zwijndrecht.jpg';
+import wDordrecht from '../assets/werf-dordrecht.jpg';
+import wYerseke from '../assets/werf-yerseke.jpg';
+import b230 from '../assets/bnr230-rijnstroom-render.jpg';
+import b219 from '../assets/bnr219-hegemann.jpg';
+import b217 from '../assets/bnr217-poa.jpg';
+import b215 from '../assets/bnr215-wid.jpg';
+import b213 from '../assets/bnr213-mariette.jpg';
+import b212 from '../assets/bnr212-flexfueler.jpg';
+import fMonteur from '../assets/werkenbij-monteur.jpg';
+import fKpc from '../assets/kpc.jpg';
+
+const P = 'https://kooimanmarinegroup.nl/';
+const brief = 'Naam:\nBedrijf:\nSchip / object:\nWaar gaat het om:\n';
+
+// Router: alleen diensten die ze zelf noemen; tekst ingekort uit hun eigen dienstpagina's.
+type Route = { id: string; titel: string; tekst: string; punten: string[]; bij: BedrijfSleutel; meer: string };
+const routes: Route[] = [
+  { id: 'nieuwbouw', titel: 'Nieuwbouw', tekst: 'Meer dan 200 nieuwbouwschepen opgeleverd. De groep ontwerpt, engineert en bouwt klantspecifiek.', punten: ['Ontwerp en engineering', 'Staal- en aluminiumbouw', 'Elektrotechniek en HVAC', 'Interieurbetimmering'], bij: 'gebr', meer: P + 'scheepsnieuwbouw-32.html' },
+  { id: 'verbouw', titel: 'Verbouw en conversie', tekst: 'Oudere schepen kunnen weer worden vernieuwd of ingericht naar nieuwe technische en functionele eisen.', punten: ['Verlengen van bunker- en beunschepen', 'Ombouw droge lading schepen naar baggerschepen', 'Dubbelwandig maken van tankers', 'Verbreden en verlengen mosselkotters'], bij: 'gebr', meer: P + 'scheepsverbouw-conversies-31.html' },
+  { id: 'reparatie', titel: 'Reparatie en onderhoud', tekst: 'Klasse maken, schadeherstel, modificaties, preventief onderhoud en (verkoop)inspecties op drie goed bereikbare werven.', punten: [], bij: 'gebr', meer: P + 'scheepsreparatie-onderhoud-33.html' },
+  { id: 'engineering', titel: 'Ontwerp en engineering', tekst: 'Van het eerste schetsontwerp tot en met turn key oplevering, ook voor conversies en modificaties.', punten: ['Scheepsontwerp en detail-engineering', 'Sterkte- en stabiliteitsberekeningen', 'Digitale metingen met fotogrammetrie', 'Bouwbegeleiding in binnen- en buitenland'], bij: 'engineering', meer: bedrijven.engineering.href },
+  { id: 'elektro', titel: 'Elektro en storingen', tekst: 'Elektrotechnische installaties, navigatie, beveiliging en data aan boord. Service en reparatie bij de werven of op locatie.', punten: ['Eigen ontwerpafdeling', 'Kasten- en panelenbouw', 'Nieuwbouwmonteurs', '24/7 storingsdienst'], bij: 'elektro', meer: bedrijven.elektro.href },
+  { id: 'interieur', titel: 'Scheepsinterieur', tekst: 'Complete interieurs of delen daarvan, voor jachtbouw, binnenvaart, zeevaart en offshore.', punten: ['Maatwerk meubilair en keukens', 'Vloeren, wanden en plafonds', 'Trappen, deuren en ramen', 'Interieurbouw voor accommodatie-units'], bij: 'interieur', meer: bedrijven.interieur.href },
+  { id: 'haven', titel: 'Haveninrichting', tekst: 'Ontwerp, bouw en installatie van complete constructies in eigen beheer, plus (spoed)reparaties op locatie.', punten: ['Pontons en loopbruggen', 'Botenhuizen en meerboeien', 'Drijvende bakens', 'Dempende paalgeleiders'], bij: 'haven', meer: bedrijven.haven.href },
+];
+
+// Reparatie: kies de werf op basis van wat elke werf zelf over zich zegt.
+const reparatieWerven: { id: BedrijfSleutel; plaats: string; regel: string; extra?: string }[] = [
+  { id: 'hoebee', plaats: 'Dordrecht', regel: 'Dwarshelling van 150 meter, 4.200 ton. Bezocht door coasters, binnenvaartschepen, tankers, baggerschepen, beunschepen, sleepboten en passagiersschepen.', extra: 'Op de helling is ruimte in week 43, 44 en 45 (bericht van de werf, 7 oktober 2026).' },
+  { id: 'gebr', plaats: 'Zwijndrecht', regel: 'Twee schroevendokken tot 1.000 ton en een helling die doorloopt in de scheepsbouwloods, voor overdekte reparaties. Aan de Oude Maas.' },
+  { id: 'vanos', plaats: 'Yerseke', regel: 'Vertrouwd adres voor visserijschepen, duw- en sleepboten, inspectievaartuigen, bruine-vloot schepen, woonarken, jachten en werkpontons.' },
+];
+
+const werven = [
+  { b: bedrijven.gebr, foto: wZwijndrecht, alt: 'Rode portaalkraan met de tekst Gebr. Kooiman B.V. en een torenkraan boven de scheepsbouwloods in Zwijndrecht', pos: 'object-[50%_45%]', haven: 'Swinhaven, sinds 1975', sinds: '1884', specs: ['Twee hellingen van 110 meter, tot 1.700 ton', 'Twee schroevendokken tot 1.000 ton', '150 meter afbouwkade', 'Nieuwbouwhallen met 6 bovenloopkranen van 10 ton'] },
+  { b: bedrijven.hoebee, foto: wDordrecht, alt: 'Luchtfoto van de dwarshelling in Dordrecht met vier binnenvaartschepen naast elkaar op het droge', pos: 'object-[50%_40%]', haven: '1e Merwedehaven', sinds: '1815', specs: ['Dwarshelling van 150 x 41 meter, 4.200 ton', 'Schroevendok tot 2.000 ton', '275 meter kade en 135 meter pier', 'Volgens Kooiman de langste dwarsscheepshelling van Nederland'] },
+  { b: bedrijven.vanos, foto: wYerseke, alt: 'Luchtfoto van de Julianahaven in Yerseke met de werf, de dijk en de Oosterschelde', pos: 'object-[45%_50%]', haven: 'Julianahaven, Oosterschelde', sinds: '1885', specs: ['Vier langshellingen tot 350 ton', 'Scheepsbouwhal van 50 x 12 meter', 'Drijvende steiger voor 2 x 40 meter', 'Producent van Kooiman Spudpalen'] },
+];
+
+const bouwnummers = [
+  { bnr: '230', naam: 'Rijnstroom', type: 'DP2 Multi Purpose Vessel, 47 x 16 meter', voor: 'Van Wijngaarden Marine Services · in aanbouw, kiel gelegd december 2025', foto: b230, alt: 'Ontwerpimpressie van de Rijnstroom, een oranje-grijs multi purpose vessel met twee dekkranen', bijschrift: 'Ontwerpimpressie', href: P + 'belangrijke-mijlpaal-kiellegging-van-onze-nieuwe-mpv-4716-142-168.html' },
+  { bnr: '219', naam: 'Hegemann V', type: '1500 m³ hopperzuiger', voor: 'Hegemann Reiners Gruppe', foto: b219, alt: 'Hopperzuiger Hegemann V vaart op open zee met blauwe romp en gele dekkranen', bijschrift: 'Hegemann V op zee', href: P + 'BNR-219-Hegemann-V-161.html' },
+  { bnr: '217-218', naam: 'POA 1 & 2', type: 'Hybride patrouillevaartuigen', voor: 'Port of Antwerp-Bruges · in gebruik sinds december 2022', foto: b217, alt: 'Zwart-rood patrouillevaartuig POA met windmolens op de achtergrond', bijschrift: 'POA, hybride aluminium patrouillevaartuig', href: P + "BNR-217-&-218---POA-1-&-2-160.html" },
+  { bnr: '215-216', naam: 'Maas & Mersey', type: "Waterinjectievaartuigen (WID's)", voor: 'Van Oord', foto: b215, alt: 'Waterinjectievaartuig in Van Oord-kleuren op ruwe zee', bijschrift: "Waterinjectievaartuig voor Van Oord", href: P + "BNR-215-&-216-WID's-Maas-&-Mersey-159.html" },
+  { bnr: '213', naam: 'Mariëtte', type: 'Enkelschroefs beunschip, Green Award Gold', voor: '', foto: b213, alt: 'Beunschip Mariëtte met kraan op een brede rivier, van boven gefotografeerd', bijschrift: 'Mariëtte', href: P + 'BNR-213-Mariette-158.html' },
+  { bnr: '212, 214', naam: 'Flexfueler 001 & 002', type: 'LNG bunkerschepen', voor: '', foto: b212, alt: 'LNG-bunkerschip Flexfueler met groene romp varend op de rivier', bijschrift: 'Flexfueler 001', href: P + 'BNR-212-&-214-Flexfueler-001-&-002-157.html' },
+];
+
+const groep: { b: BedrijfSleutel; plaats: string; kort: string; wat: string}[] = [
+  { b: 'gebr', plaats: 'Zwijndrecht', kort: 'Nieuwbouw, afbouw en reparatie, met eigen machinefabriek en timmerafdeling.', wat: 'Nieuwbouw, afbouw en reparatie, met eigen machinefabriek, pijpfitterij en timmerafdeling. Levert dekwerktuigen zoals Kooiman Towing Pins.' },
+  { b: 'hoebee', plaats: 'Dordrecht', kort: 'Onderhoud, reparatie en revisie op de dwarshelling van 150 meter.', wat: 'Onderhoud, reparatie en revisie op de dwarshelling: klasse maken, (her)motoriseren en omvangrijke verbouwingen.' },
+  { b: 'vanos', plaats: 'Yerseke', kort: '(Ver)bouwen en repareren, vooral voor de visserijvloot.', wat: '(Ver)bouwen, repareren en onderhouden, vooral voor de visserijvloot. Producent van Kooiman Spudpalen.' },
+  { b: 'engineering', plaats: 'Zwijndrecht', kort: 'Eigen ontwerpbureau sinds 1988, voor de groep en voor derden.', wat: 'Ontwerpbureau sinds 1988: complete scheepsontwerpen, berekeningen, lijnenplannen, snijfiles en werktekeningen.' },
+  { b: 'elektro', plaats: 'Zwijndrecht', kort: 'Elektrotechniek aan boord, met een 24/7 storingsdienst.', wat: 'Elektrotechnische installaties aan boord van binnen- en zeeschepen, met een 24/7 storingsdienst.' },
+  { b: 'interieur', plaats: 'Dordrecht', kort: 'Complete interieurs voor schepen, accommodatie-units en kantoren.', wat: 'Complete interieurs voor jachtbouw, binnenvaart, zeevaart en offshore, ook voor kantoren en accommodatie-units.' },
+  { b: 'haven', plaats: 'Dordrecht', kort: '', wat: 'Pontons, loopbruggen, botenhuizen en paalgeleiders, voorheen Van Eijk Haveninrichtingen.' },
+];
+
+const lijnRand = ['border-w1', 'border-w2', 'border-w3', 'border-w5', 'border-w6', 'border-w8'];
+const telPlaats = (p: string) => vacatures.filter((v) => v.plaats === p).length;
+
+const titel = 'Kooiman Marine Group | Scheepsbouw en scheepsreparatie in Zwijndrecht, Dordrecht en Yerseke';
+const omschrijving = 'Onafhankelijke groep multi-disciplinaire scheepsbouwers sinds 1884: ontwerp, nieuwbouw, verbouw en reparatie van schepen op drie werven in Zwijndrecht, Dordrecht en Yerseke.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: Swalinge op de helling bij Hoebee -->
+    <section class="op-donker relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-nacht text-wit md:min-h-[100svh]">
+      <Kop />
+      <Image src={hero} alt="Sleephopperzuiger Swalinge met rode onderwaterromp op de helling van de werf, met een rode torenkraan en blauwe lucht" quality={78} widths={[640, 960, 1280, 1773]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_50%] md:object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#071f33cc_0%,#071f3352_22%,#071f33b8_44%,#071f33f2_78%)] md:bg-[linear-gradient(90deg,#071f33f2_0%,#071f33c4_36%,#071f3333_66%,#071f3300_100%),linear-gradient(0deg,#071f33d9_0%,#071f3300_32%)]"></div>
+      <div class="wrap mt-auto pb-12 pt-28 md:my-auto md:pb-10">
+        <p class="kopf text-lg font-medium text-wit md:text-licht">Scheepsbouw en scheepsreparatie</p>
+        <h1 class="mt-4 max-w-[12ch] text-hero">Drie werven. Eén groep. Sinds 1884.</h1>
+        <p class="mt-6 max-w-xl text-base text-wit/90 sm:text-lg md:text-xl">Ontwerp, nieuwbouw, verbouw en reparatie van schepen, met alle disciplines in eigen huis.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#helpen" class="knop knop-licht max-[359px]:px-4">Waar kunnen we u mee helpen?<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-wit max-sm:hidden"><Icoon naam="tel" />Bel {site.tel}</a>
+        </div>
+      </div>
+      <div class="wrap flex flex-wrap items-end justify-between gap-x-8 gap-y-2 pb-7 text-sm text-wit/80 max-md:hidden">
+        <p class="kopf flex gap-5 text-base font-medium text-wit">{werven.map((w) => <a href="#werven" class="link">{w.b.kort}</a>)}</p>
+        <p>Swalinge, met ruim 37 meter verlengd op Scheepswerf Kooiman Hoebee in Dordrecht</p>
+      </div>
+    </section>
+
+    <!-- 2. TITELBLOK: missie + key figures letterlijk van hun site -->
+    <section class="py-16 md:py-20">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Het resultaat van samen&shy;werking.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-inkt" style="--d:.08s">Vakmanschap en oog voor kwaliteit zijn de basis voor zuiver op maat gemaakte schepen. Alle disciplines zijn aanwezig, wij kunnen complexe projecten aan en voldoen aan internationale standaarden.</p>
+          <p class="rijs mt-4 max-w-md text-grijs" style="--d:.12s">Familiebedrijf onder Gebr. Kooiman Holding BV, met als bestuurders Rinus en Wim Kooiman.</p>
+        </div>
+        <div class="rijs lg:col-span-7" style="--d:.1s">
+          <div class="titelblok grid-cols-2 bg-wit sm:grid-cols-3">
+            <div class="col-span-2 flex items-center justify-between gap-4 sm:col-span-3">
+              <span class="veld">Kooiman Marine Group · kerncijfers</span>
+              <span class="veld num">Blad 1/1</span>
+            </div>
+            <div><p class="veld">Nieuwbouwschepen opgeleverd</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">200+</p></div>
+            <div><p class="veld">Droogzettingen per jaar</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">300+</p></div>
+            <div><p class="veld">Hellingcapaciteit</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">12.000 m²</p></div>
+            <div><p class="veld">Kades en pieren</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">1.000 m</p></div>
+            <div><p class="veld">Mensen in directe dienst</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">ca. 200</p></div>
+            <div><p class="veld">Jaar ervaring samen</p><p class="kopf num mt-2 whitespace-nowrap text-[clamp(1.6rem,2.4vw+.6rem,2.6rem)] font-semibold leading-none text-marine">bijna 500</p></div>
+            <div class="col-span-2 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 sm:col-span-3">
+              <span class="veld">ISO 9001 groepscertificaat, DNV, sinds 2023</span>
+              <span class="veld">3 locaties: Zwijndrecht · Dordrecht · Yerseke</span>
+            </div>
+          </div>
+          <p class="mt-3 text-xs text-grijs">Cijfers bij benadering, zoals vermeld op kooimanmarinegroup.nl.</p>
+        </div>
+      </div>
+      <div class="wrap mt-16 md:mt-20">
+        <div class="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-4">
+            <h3 class="rijs text-3xl">Sinds 1884 aan de Zwijndrechtse oever.</h3>
+            <p class="rijs mt-4 max-w-sm text-grijs" style="--d:.06s">Ouderwets vakmanschap in de genen, en tegelijk mee met investeringen in technologie, vakmensen en faciliteiten.</p>
+          </div>
+          <ol class="grid grid-cols-1 border-b border-lijn-2 lg:col-span-8 lg:grid-cols-2 lg:gap-x-8 lg:self-start" role="list">
+            {mijlpalen.map(([j, t], i) => (
+              <li class="rijs grid grid-cols-[4rem_1fr] gap-x-3 border-t border-lijn-2 py-2.5 text-sm sm:grid-cols-[4.5rem_1fr]" style={`--d:${i * .03}s`}>
+                <span class="kopf num text-lg font-semibold leading-tight text-marine">{j}</span>
+                <span class="self-center">{t}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ROUTER: Waar kunnen we u mee helpen? -->
+    <section id="helpen" class="op-donker bg-nacht py-20 text-wit md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 class="text-4xl">Waar kunnen we u mee helpen?</h2>
+          <p class="mt-5 max-w-md text-mist">Kies uw vraag. U komt direct bij het juiste bedrijf of de juiste werf.</p>
+          <ul class="mt-8 border-t border-lijn-donker" role="list">
+            {routes.map((r, i) => (
+              <li><button type="button" class="keuze" data-kies={r.id} aria-pressed="false" aria-controls="router-uitkomst"><span class="nr">{String(i + 1).padStart(2, '0')}</span>{r.titel}<span class="pijl" aria-hidden="true"></span></button></li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="lg:col-span-6">
+          <div id="router-uitkomst" class="lg:sticky lg:top-8" aria-live="polite">
+            <div class="overflow-hidden rounded-md bg-nacht-2">
+              <Waterlijn class="router-lijn" data-stap="0" />
+              <!-- begin -->
+              <div class="p-6 md:p-9" data-paneel="start">
+                <p class="veld text-mist">Centraal</p>
+                <p class="kopf mt-3 text-3xl leading-[1.05]">Liever direct iemand spreken?</p>
+                <p class="mt-4 max-w-sm text-mist">Algemene informatie, Kooiman Marine Group in Zwijndrecht.</p>
+                <p class="mt-6"><a href={site.telHref} class="kopf num text-4xl font-semibold text-wit no-underline hover:text-licht">{site.tel}</a></p>
+                <p class="mt-2 text-sm text-mist">{site.uren}</p>
+                <div class="mt-7 border-t border-lijn-donker pt-6">
+                  <p class="flex items-center gap-2 text-sm text-mist"><Icoon naam="storing" class="h-5 w-5 text-licht" />Storing aan boord? Storingsdienst Scheepselektro, 24/7</p>
+                  <p class="mt-2"><a href={bedrijven.elektro.telHref} class="kopf num text-2xl font-semibold text-licht no-underline hover:text-wit">{bedrijven.elektro.tel}</a></p>
+                </div>
+              </div>
+
+              {routes.map((r) => {
+                const b = bedrijven[r.bij];
+                return (
+                  <div class="hidden p-6 md:p-9" data-paneel={r.id}>
+                    <p class="veld text-mist">{r.id === 'reparatie' ? 'Drie werven' : b.naam}</p>
+                    <p class="kopf mt-3 text-3xl leading-[1.05]">{r.titel}</p>
+                    <p class="mt-4 text-mist">{r.tekst}</p>
+                    {r.punten.length > 0 && (
+                      <ul class="mt-5 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+                        {r.punten.map((p) => <li class="flex gap-2.5"><span class="mt-[.55em] h-[2px] w-3 flex-none bg-licht" aria-hidden="true"></span>{p}</li>)}
+                      </ul>
+                    )}
+
+                    {r.id === 'reparatie' ? (
+                      <div class="mt-6">
+                        <p class="text-sm font-medium text-wit">Welke werf past bij uw schip?</p>
+                        <div class="mt-3 grid grid-cols-3 gap-2" role="group" aria-label="Kies een werf">
+                          {reparatieWerven.map((w) => <button type="button" class="chip border-lijn-donker text-wit hover:border-licht aria-pressed:border-licht aria-pressed:bg-licht aria-pressed:text-nacht" data-werf={w.id} aria-pressed="false">{w.plaats}</button>)}
+                        </div>
+                        {reparatieWerven.map((w) => {
+                          const wb = bedrijven[w.id];
+                          return (
+                            <div class="mt-6 hidden border-t border-lijn-donker pt-6" data-werfpaneel={w.id}>
+                              <p class="kopf text-xl font-semibold">{wb.naam}</p>
+                              <p class="mt-2 text-sm text-mist">{w.regel}</p>
+                              {w.extra && <p class="mt-4 rounded-sm border-l-2 border-w3 bg-nacht px-4 py-3 text-sm text-wit">{w.extra}</p>}
+                              <div class="mt-5 flex flex-wrap gap-3">
+                                <a href={wb.telHref} class="knop knop-licht"><Icoon naam="tel" />{wb.tel}</a>
+                                <a href={mailto(wb.mail, wb.onderwerp, brief)} class="knop knop-wit"><Icoon naam="mail" />Mail de werf</a>
+                              </div>
+                              <p class="mt-3 text-xs text-mist">{wb.adres} · {wb.mail}</p>
+                            </div>
+                          );
+                        })}
+                        <p class="mt-6 text-sm text-mist" data-werfhint>Twijfelt u? Bel centraal: <a href={site.telHref} class="link num text-wit">{site.tel}</a></p>
+                      </div>
+                    ) : (
+                      <div class="mt-7 border-t border-lijn-donker pt-6">
+                        <p class="text-sm text-mist">Contact: {b.naam}</p>
+                        <div class="mt-3 flex flex-wrap gap-3">
+                          <a href={b.telHref} class="knop knop-licht"><Icoon naam={r.id === 'elektro' ? 'storing' : 'tel'} />{r.id === 'elektro' ? `24/7 ${b.tel}` : b.tel}</a>
+                          <a href={mailto(b.mail, b.onderwerp, brief)} class="knop knop-wit"><Icoon naam="mail" />Stuur een e-mail</a>
+                        </div>
+                        <p class="mt-3 break-words text-xs text-mist">{b.mail}{b.tel !== site.tel && <> · centraal <a href={site.telHref} class="link num">{site.tel}</a></>}</p>
+                        <p class="mt-5"><a href={r.meer} class="link text-sm text-wit">Meer over {r.titel.toLowerCase()}</a></p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <p class="mt-4 text-sm text-mist">Zoekt u werk? <a href="#werken" class="link text-wit">Bekijk de 22 vacatures</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. DRIE WERVEN -->
+    <section id="werven" class="py-16 md:py-20">
+      <div class="wrap">
+        <div class="grid grid-cols-1 items-end gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-7">Aan het water, van de Oude Maas tot de Oosterschelde.</h2>
+          <p class="rijs text-grijs lg:col-span-5" style="--d:.08s">Elke werf richt zich op eigen klanten en werk. Samen delen ze ontwerpbureau, machinefabriek, elektro en interieurbouw.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-1 gap-y-14 md:mt-16 lg:grid-cols-3 lg:gap-x-0">
+          {werven.map((w, i) => (
+            <article class={`rijs lg:px-7 ${i > 0 ? 'lg:border-l lg:border-lijn-2' : 'lg:pl-0'} ${i === 2 ? 'lg:pr-0' : ''}`} style={`--d:${i * .08}s`}>
+              <Image src={w.foto} alt={w.alt} quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 400px, 100vw" class={`aspect-[3/2] w-full rounded-sm object-cover ${w.pos}`} />
+              <div class="mt-6 flex items-baseline justify-between gap-4">
+                <h3 class="text-3xl">{w.b.kort}</h3>
+                <span class="veld num">sinds {w.sinds}</span>
+              </div>
+              <p class="mt-1 font-medium text-marine">{w.b.naam}</p>
+              <p class="text-sm text-grijs">{w.haven}</p>
+              <ul class="mt-5 border-t border-lijn-2 text-sm">
+                {w.specs.map((s) => <li class="border-b border-lijn py-2.5">{s}</li>)}
+              </ul>
+              <p class="mt-5 text-sm">{w.b.adres}</p>
+              <p class="mt-1 flex flex-wrap gap-x-5 text-sm"><a href={w.b.telHref} class="link num font-medium text-marine">{w.b.tel}</a><a href={w.b.href} class="link text-grijs">Werfpagina</a></p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. BOUWNUMMERS -->
+    <section id="bouwnummers" class="bg-staal-2 py-16 md:py-20">
+      <div class="wrap grid grid-cols-1 gap-y-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
+        <div class="lg:col-span-5 lg:col-start-1 lg:row-start-1">
+          <h2 class="rijs text-4xl">Bouwnummer na bouw&shy;nummer.</h2>
+          <p class="rijs mt-5 max-w-md text-grijs" style="--d:.08s">Klantspecifiek ontworpen en gebouwd. Een greep uit de recente nieuwbouw.</p>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1">
+          <div class="lg:sticky lg:top-8">
+            {bouwnummers.map((b, i) => (
+              <figure class={i === 1 ? '' : 'hidden'} data-bnrfoto={i}>
+                <Image src={b.foto} alt={b.alt} quality={72} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 720px, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover lg:aspect-[5/4]" />
+                <figcaption class="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <span><span class="kopf text-lg font-semibold">BNR {b.bnr} · {b.naam}</span>{b.voor && <span class="block text-sm text-grijs">{b.voor}</span>}</span>
+                  <a href={b.href} class="link text-sm font-medium text-marine">Lees meer</a>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-1 lg:row-start-2">
+          <ul class="rijs lg:mt-8 border-t border-inkt" role="list" style="--d:.1s">
+            {bouwnummers.map((b, i) => (
+              <li>
+                <button type="button" class="regel w-full text-left" data-bnr={i} aria-pressed={i === 1 ? 'true' : 'false'}>
+                  <span class="kopf num text-sm font-semibold text-marine">BNR {b.bnr}</span>
+                  <span><span class="kopf block text-xl font-semibold leading-tight">{b.naam}</span><span class="block text-sm text-grijs">{b.type}</span></span>
+                  <span class="bnr-pijl h-2.5 w-2.5 rotate-45 border-r-2 border-t-2 border-marine opacity-0 transition-opacity" aria-hidden="true"></span>
+                </button>
+              </li>
+            ))}
+          </ul>
+          <a href={site.portfolio} class="knop knop-rand mt-8">Alle projecten in het portfolio<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ALLES IN EIGEN HUIS -->
+    <section id="bedrijven" class="py-16 md:py-20">
+      <div class="wrap">
+        <div class="grid grid-cols-1 items-end gap-y-5 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-7">Alles in eigen huis.</h2>
+          <p class="rijs text-grijs lg:col-span-5" style="--d:.08s">Zes bedrijven en Kooiman Haveninrichtingen onder Gebr. Kooiman Holding BV. Ze werken voor elkaar en voor derden.</p>
+        </div>
+        <div class="rijs mt-12 md:mt-16">
+          <div class="flex lg:justify-center">
+            <div class="rounded-sm bg-nacht px-5 py-4 text-wit lg:text-center">
+              <p class="kopf text-xl font-semibold leading-tight">Gebr. Kooiman Holding BV</p>
+              <p class="mt-1 text-sm text-mist">Bestuur: Rinus en Wim Kooiman</p>
+            </div>
+          </div>
+          <div class="org relative mt-0 lg:mt-0">
+            <ol class="grid grid-cols-1 lg:grid-cols-6 lg:gap-x-4" role="list">
+              {groep.filter((g) => g.b !== 'haven').map((g, i) => {
+                const b = bedrijven[g.b];
+                return (
+                  <li class="org-tak relative">
+                    <div class={`org-knoop relative border-t-[3px] bg-wit p-4 lg:min-h-[13.5rem] lg:p-5 ${lijnRand[i]}`}>
+                      <h3 class="text-xl leading-tight lg:text-lg xl:text-xl">{b.naam.replace("Scheepsinterieurbouw", "Scheeps­interieurbouw")}</h3>
+                      <p class="veld mt-1">{g.plaats}</p>
+                      <p class="mt-3 text-sm text-grijs">{g.kort}</p>
+                      <p class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm"><a href={b.telHref} class="link num text-marine">{b.tel}</a><a href={b.href} class="link text-grijs">Meer</a></p>
+                    </div>
+                    {g.b === 'hoebee' && (
+                      <div class="org-sub relative ml-6 mt-3 border-l-[3px] border-w7 bg-wit p-4 lg:ml-0">
+                        <p class="kopf text-lg font-semibold leading-tight">{bedrijven.haven.naam}</p>
+                        <p class="mt-1 text-sm text-grijs">Pontons, loopbruggen, botenhuizen en paalgeleiders</p>
+                        <p class="mt-2 text-sm"><a href={bedrijven.haven.href} class="link text-grijs">Meer</a></p>
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. WERKEN BIJ (je-vorm, zoals werkenbijkooiman.nl) -->
+    <section id="werken" class="op-donker bg-nacht text-wit">
+      <div class="relative isolate overflow-hidden">
+        <Image src={fMonteur} alt="Lachende monteur met witte helm draait een afsluiter aan in een machinekamer" quality={72} widths={[640, 960, 1440, 1900]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_22%] md:object-[85%_30%]" />
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#071f33f5_0%,#071f33d9_45%,#071f3333_80%)] max-md:bg-[linear-gradient(180deg,#071f3366_0%,#071f33f2_70%)]"></div>
+        <div class="wrap pb-12 pt-48 md:pb-16 md:pt-20">
+          <h2 class="max-w-[14ch] text-4xl">Dit is werken bij Kooiman.</h2>
+          <p class="mt-5 max-w-lg text-lg text-wit/90">Bij Kooiman werk je aan indrukwekkende schepen en technische projecten, samen met vakmensen die weten wat ze doen.</p>
+          <p class="mt-3 max-w-lg text-mist">Of je nu lasser, monteur of engineer bent: je krijgt de ruimte om jezelf te ontwikkelen binnen een hecht team met korte lijnen.</p>
+        </div>
+      </div>
+
+      <div class="wrap grid grid-cols-1 gap-y-14 py-14 md:py-16 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-8">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <h3 class="text-3xl"><span class="num" data-vac-aantal>{vacatures.length}</span> vacatures</h3>
+            <div class="flex flex-wrap gap-2" role="group" aria-label="Filter op werf">
+              <button type="button" class="chip border-lijn-donker text-wit aria-pressed:border-licht aria-pressed:bg-licht aria-pressed:text-nacht" data-filter="alle" aria-pressed="true">Alle</button>
+              {['Zwijndrecht', 'Dordrecht', 'Yerseke'].map((p) => <button type="button" class="chip border-lijn-donker text-wit aria-pressed:border-licht aria-pressed:bg-licht aria-pressed:text-nacht" data-filter={p} aria-pressed="false">{p} <span class="num text-xs opacity-70">{telPlaats(p)}</span></button>)}
+            </div>
+          </div>
+          <ul class="mt-8 border-t border-lijn-donker" role="list" data-vaclijst>
+            {vacatures.map((v, i) => (
+              <li data-plaats={v.plaats} class={i >= 6 ? 'vac-meer hidden' : ''}>
+                <a href={v.href} class="group grid grid-cols-1 gap-x-6 gap-y-1 border-b border-lijn-donker py-4 text-wit no-underline sm:grid-cols-[1fr_9rem_10.5rem_auto] sm:items-baseline">
+                  <span class="kopf text-lg font-medium leading-snug transition-colors group-hover:text-licht">{v.titel}</span>
+                  <span class="flex flex-wrap gap-x-3 text-sm text-mist sm:contents"><span>{v.plaats}</span><span class="num">{v.salaris}</span></span>
+                  <span class="hidden h-2.5 w-2.5 rotate-45 border-r-2 border-t-2 border-licht opacity-60 transition-opacity group-hover:opacity-100 sm:block" aria-hidden="true"></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="button" class="knop knop-wit" data-vac-alles>Toon alle vacatures</button>
+            <a href={site.vacatures} class="link text-sm text-mist">Solliciteren via werkenbijkooiman.nl</a>
+          </div>
+          <p class="mt-4 text-xs text-mist">Bruto per maand, fulltime, zoals vermeld in de vacature.</p>
+        </div>
+
+        <aside class="lg:col-span-4">
+          <Image src={fKpc} alt="Zeven leerlingen in blauwe overalls en witte helmen voor het Kooiman Praktijk Centrum" quality={70} widths={[480, 720]} sizes="(min-width: 1024px) 380px, 100vw" class="aspect-[16/9] w-full rounded-sm object-cover object-[50%_75%]" />
+          <h3 class="mt-6 text-2xl">Werken en leren in het Kooiman Praktijk Centrum</h3>
+          <p class="mt-3 text-mist">Haal je MBO-diploma via een BBL-traject: lasser, scheepsmetaalbewerker, pijpfitter of bankwerker/monteur.</p>
+          <ul class="mt-4 space-y-1.5 text-sm">
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-0.5 h-4 w-4 flex-none text-licht" />Je opleiding wordt volledig betaald</li>
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-0.5 h-4 w-4 flex-none text-licht" />Je krijgt direct salaris</li>
+            <li class="flex gap-2.5"><Icoon naam="vink" class="mt-0.5 h-4 w-4 flex-none text-licht" />Doorgroeien binnen de scheepsbouw</li>
+          </ul>
+          <p class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm"><a href={site.kpc} class="link text-wit">Over het praktijkcentrum</a><a href={site.stage} class="link text-wit">Stage en afstuderen</a></p>
+          <p class="mt-6 border-t border-lijn-donker pt-5 text-sm text-mist">Open sollicitatie of vragen? <a href={`mailto:${site.recruitment}`} class="link break-all text-wit">{site.recruitment}</a></p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT -->
+    <section id="contact" class="bg-wit py-16 md:py-20">
+      <div class="wrap grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="text-4xl">Contact</h2>
+          <p class="mt-5 text-grijs">Kooiman Marine Group</p>
+          <p class="mt-1">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <p class="mt-6"><a href={site.telHref} class="kopf num text-4xl font-semibold text-marine no-underline hover:text-blauw">{site.tel}</a></p>
+          <p class="mt-2"><a href={`mailto:${site.mail}`} class="link break-all text-marine">{site.mail}</a></p>
+          <p class="mt-4 flex items-center gap-2 text-sm text-grijs"><Icoon naam="klok" class="h-4 w-4" />{site.uren}</p>
+          <p class="mt-1 flex items-center gap-2 text-sm text-grijs"><Icoon naam="pin" class="h-4 w-4" /><a href={site.maps} class="link">Route naar Lindtsedijk 84</a></p>
+
+          <dl class="mt-10 border-t border-lijn-2 text-sm">
+            {[bedrijven.hoebee, bedrijven.vanos, bedrijven.interieur].map((b) => (
+              <div class="grid grid-cols-1 gap-x-4 border-b border-lijn py-3 sm:grid-cols-[1fr_auto]">
+                <dt><span class="font-medium">{b.naam}</span><br /><span class="text-grijs">{b.adres}</span></dt>
+                <dd class="sm:text-right"><a href={b.telHref} class="link num text-marine">{b.tel}</a></dd>
+              </div>
+            ))}
+            <div class="grid grid-cols-1 gap-x-4 border-b border-lijn py-3 sm:grid-cols-[1fr_auto]">
+              <dt><span class="font-medium">Storingsdienst Scheepselektro</span><br /><span class="text-grijs">24 uur per dag, 7 dagen per week</span></dt>
+              <dd class="sm:text-right"><a href={bedrijven.elektro.telHref} class="link num text-marine">{bedrijven.elektro.tel}</a></dd>
+            </div>
+          </dl>
+        </div>
+
+        <form class="lg:col-span-7" data-formulier novalidate>
+          <div class="grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-2">
+            <label class="block"><span class="veld text-inkt">Naam</span><input class="veldin mt-1.5" name="naam" autocomplete="name" /></label>
+            <label class="block"><span class="veld text-inkt">Bedrijf</span><input class="veldin mt-1.5" name="bedrijf" autocomplete="organization" /></label>
+            <label class="block"><span class="veld text-inkt">E-mail</span><input class="veldin mt-1.5" type="email" name="email" autocomplete="email" /></label>
+            <label class="block"><span class="veld text-inkt">Telefoon</span><input class="veldin mt-1.5" type="tel" name="telefoon" autocomplete="tel" /></label>
+            <label class="block sm:col-span-2"><span class="veld text-inkt">Onderwerp</span>
+              <select class="veldin mt-1.5" name="onderwerp">{onderwerpen.map((o) => <option>{o}</option>)}</select>
+            </label>
+            <label class="block sm:col-span-2"><span class="veld text-inkt">Uw bericht</span><textarea class="veldin mt-1.5 min-h-36" name="bericht" rows="5"></textarea></label>
+          </div>
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-marine">Versturen<Icoon naam="pijl" /></button>
+            <p class="text-sm text-grijs" data-formulier-melding role="status">Uw gegevens worden vertrouwelijk en volgens de AVG behandeld.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    // Router
+    const keuzes = document.querySelectorAll<HTMLButtonElement>('[data-kies]');
+    const lijn = document.querySelector('.router-lijn');
+    const werfKnoppen = document.querySelectorAll<HTMLButtonElement>('[data-werf]');
+    const panelen = document.querySelectorAll<HTMLElement>('[data-paneel]');
+    const kies = (id: string) => {
+      keuzes.forEach((k) => k.setAttribute('aria-pressed', String(k.dataset.kies === id)));
+      panelen.forEach((p) => p.classList.toggle('hidden', p.dataset.paneel !== id));
+      lijn?.setAttribute('data-stap', id === 'reparatie' ? '1' : '2');
+      werfKnoppen.forEach((x) => x.setAttribute('aria-pressed', 'false')); document.querySelectorAll<HTMLElement>('[data-werfpaneel]').forEach((p) => p.classList.add('hidden'));
+      if (window.matchMedia('(max-width: 1023px)').matches) document.getElementById('router-uitkomst')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+    keuzes.forEach((k) => k.addEventListener('click', () => kies(k.dataset.kies!)));
+    werfKnoppen.forEach((k) => k.addEventListener('click', () => {
+      werfKnoppen.forEach((x) => x.setAttribute('aria-pressed', String(x === k))); lijn?.setAttribute('data-stap', '2');
+      document.querySelectorAll<HTMLElement>('[data-werfpaneel]').forEach((p) => p.classList.toggle('hidden', p.dataset.werfpaneel !== k.dataset.werf));
+    }));
+
+    // Bouwnummers
+    const bnr = document.querySelectorAll<HTMLButtonElement>('[data-bnr]');
+    const toon = (i: string) => {
+      bnr.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.bnr === i)));
+      document.querySelectorAll<HTMLElement>('[data-bnrfoto]').forEach((f) => f.classList.toggle('hidden', f.dataset.bnrfoto !== i));
+    };
+    bnr.forEach((b) => { b.addEventListener('click', () => { toon(b.dataset.bnr!); const f = document.querySelector<HTMLElement>(`[data-bnrfoto='${b.dataset.bnr}']`); if (f && window.matchMedia('(max-width: 1023px)').matches) { const r = f.getBoundingClientRect(); if (r.top < 0) f.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); b.addEventListener('mouseenter', () => { if (window.matchMedia('(hover: hover)').matches) toon(b.dataset.bnr!); }); });
+
+    // Vacatures: filter op werf + alles tonen
+    let allesOpen = false; let filter = 'alle';
+    const items = document.querySelectorAll<HTMLElement>('[data-vaclijst] > li');
+    const knopAlles = document.querySelector<HTMLButtonElement>('[data-vac-alles]');
+    const teken = () => {
+      let n = 0;
+      items.forEach((li) => { const past = filter === 'alle' || li.dataset.plaats === filter; const zicht = past && (allesOpen || filter !== 'alle' || n < 6); if (past) n++; li.classList.toggle('hidden', !zicht); });
+      const a = document.querySelector('[data-vac-aantal]'); if (a) a.textContent = String(n);
+      if (knopAlles) knopAlles.hidden = allesOpen || filter !== 'alle';
+    };
+    document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((k, _, alle) => k.addEventListener('click', () => { filter = k.dataset.filter!; alle.forEach((x) => x.setAttribute('aria-pressed', String(x === k))); teken(); }));
+    knopAlles?.addEventListener('click', () => { allesOpen = true; teken(); });
+
+    // Formulier: voorstel, verstuurt niets
+    const f = document.querySelector<HTMLFormElement>('[data-formulier]');
+    f?.addEventListener('submit', (e) => { e.preventDefault(); const m = f.querySelector('[data-formulier-melding]'); if (m) m.textContent = 'Dit is een ontwerpvoorstel: het formulier verstuurt niets. Mail of bel ons gerust.'; });
+  </script>
+</Base>

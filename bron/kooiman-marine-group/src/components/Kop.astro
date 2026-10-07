@@ -1,0 +1,46 @@
+---
+import { url, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['helpen', 'Waar helpen we mee?'], ['werven', 'Werven'], ['bouwnummers', 'Projecten'], ['bedrijven', 'Bedrijven'], ['werken', 'Werken bij'], ['contact', 'Contact']];
+---
+<header class={thuis ? 'absolute inset-x-0 top-0 z-40' : 'relative z-40 bg-nacht'}>
+  <div class="wrap flex h-20 items-center justify-between gap-6 md:h-24">
+    <Merk class="h-12 w-auto md:h-14" />
+    <nav aria-label="Hoofdmenu" class="hidden xl:block">
+      <ul class="flex gap-7 font-kop text-[1.0625rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/85 no-underline transition-colors duration-200 hover:text-licht">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-4">
+      <a href={site.telHref} class="knop knop-wit hidden min-h-11 px-4 md:inline-flex"><Icoon naam="tel" />{site.tel}</a>
+      <button type="button" class="grid h-11 w-11 place-items-center text-wit xl:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-nav" aria-label="Menu" class="hidden bg-nacht xl:hidden" data-menu>
+    <ul class="wrap pb-8 pt-2">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="block border-b border-lijn-donker py-4 font-kop text-2xl font-medium text-wit no-underline">{t}</a></li>)}
+      <li class="pt-6"><a href={site.telHref} class="num font-semibold text-mist no-underline">{site.tel}</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-nacht md:hidden">
+  <a href={site.telHref} class="flex min-h-14 items-center justify-center gap-2.5 border-r border-lijn-donker font-kop text-[1.0625rem] font-semibold text-wit no-underline"><Icoon naam="tel" class="h-5 w-5 text-licht" />Bellen</a>
+  <a href={h('contact')} class="flex min-h-14 items-center justify-center gap-2.5 bg-licht font-kop text-[1.0625rem] font-semibold text-nacht no-underline"><Icoon naam="mail" class="h-5 w-5" />Contact</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>

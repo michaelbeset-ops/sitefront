@@ -1,0 +1,56 @@
+---
+import { site, url, bedrijven } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+import Waterlijn from './Waterlijn.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const jaar = new Date().getFullYear();
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const werven = [bedrijven.gebr, bedrijven.hoebee, bedrijven.vanos];
+---
+<footer class="op-donker bg-nacht text-mist">
+  <Waterlijn />
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-sm md:grid-cols-12 md:py-20">
+    <div class="md:col-span-3">
+      <Merk class="h-16 w-auto" />
+      <p class="mt-6 max-w-xs">Een onafhankelijke groep multi-disciplinaire scheepsbouwers met groot oplossend vermogen. Familiebedrijf sinds 1884.</p>
+      <ul class="mt-6 flex gap-2">
+        <li><a href={site.linkedin} class="grid h-10 w-10 place-items-center rounded-sm border border-lijn-donker text-wit transition-colors hover:border-licht hover:text-licht" aria-label="LinkedIn"><Icoon naam="li" class="h-5 w-5" /></a></li>
+        <li><a href={site.youtube} class="grid h-10 w-10 place-items-center rounded-sm border border-lijn-donker text-wit transition-colors hover:border-licht hover:text-licht" aria-label="YouTube"><Icoon naam="yt" class="h-5 w-5" /></a></li>
+        <li><a href={site.facebook} class="grid h-10 w-10 place-items-center rounded-sm border border-lijn-donker text-wit transition-colors hover:border-licht hover:text-licht" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a></li>
+        <li><a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm border border-lijn-donker text-wit transition-colors hover:border-licht hover:text-licht" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a></li>
+      </ul>
+    </div>
+    <div class="md:col-span-3">
+      <p class="kopf text-base font-semibold text-wit">De groep</p>
+      <ul class="mt-4 space-y-1.5">
+        {Object.values(bedrijven).map((b) => <li><a href={b.href} class="link">{b.naam}</a></li>)}
+      </ul>
+    </div>
+    <div class="md:col-span-2">
+      <p class="kopf text-base font-semibold text-wit">Werven</p>
+      <ul class="mt-4 space-y-3">
+        {werven.map((w) => <li><span class="text-wit">{w.kort}</span><br />{w.adres.split(', ')[0]}</li>)}
+      </ul>
+    </div>
+    <div class="md:col-span-4">
+      <p class="kopf text-base font-semibold text-wit">Contact</p>
+      <p class="mt-4"><a href={site.telHref} class="link num text-wit">{site.tel}</a></p>
+      <p class="mt-1.5"><a href={`mailto:${site.mail}`} class="link [overflow-wrap:anywhere]">{site.mail}</a></p>
+      <p class="mt-3">{site.straat}, {site.postcode} {site.plaats}</p>
+      <p class="mt-1.5">{site.uren}</p>
+      <p class="mt-3">Storingsdienst Scheepselektro, 24/7: <a href={bedrijven.elektro.telHref} class="link num text-wit">{bedrijven.elektro.tel}</a></p>
+      <p class="mt-3"><a href={h('werken')} class="link">Werken bij Kooiman</a></p>
+    </div>
+  </div>
+  <div class="border-t border-lijn-donker">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} Kooiman Marine Group · Gebr. Kooiman Holding BV</p>
+      <p class="flex flex-wrap gap-x-6 gap-y-1">
+        <span>Werven contracteren op de Algemene Werfvoorwaarden van de VNSI</span>
+        <a href={url('privacy/')} class="link">Privacyverklaring</a>
+      </p>
+    </div>
+  </div>
+</footer>
