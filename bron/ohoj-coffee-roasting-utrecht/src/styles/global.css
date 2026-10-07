@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@import "@fontsource/rubik-mono-one/400.css";
+@import "@fontsource-variable/reddit-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Witte muren, het zwarte letterbord en één kleur: het kobalt van hun kopjes en de vos op de jute zakken. */
+  --color-muur: #f3f3f0;        /* lichte vlakken */
+  --color-muur-2: #e8e8e3;
+  --color-bord: #151515;        /* letterbord, donkere vlakken */
+  --color-bord-2: #1f1f1e;
+  --color-tekst: #151515;
+  --color-grijs: #55554f;       /* bijtekst op muur, 7:1 */
+  --color-kobalt: #2140a0;      /* accent op muur, 8:1 */
+  --color-kobalt-diep: #18307c;
+  --color-kobalt-licht: #a9bcff;/* accent op bord, 10:1 */
+  --color-krijt: #f3f3f0;       /* tekst op bord */
+  --color-zacht: #b3b3ac;       /* bijtekst op bord, 8:1 */
+  --color-lijn: #1515151f;
+  --color-lijn-bord: #f3f3f024;
+  --color-wit: #ffffff;
+
+  --font-kop: "Rubik Mono One", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Reddit Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-label: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.125rem, .6vw + .95rem, 1.5rem);
+  --text-3xl: clamp(1.625rem, 2.2vw + .9rem, 3.25rem);
+  --text-hero: clamp(1.875rem, 4.6vw + .6rem, 5.125rem);
+
+  --radius-sm: 3px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-muur); }
+  body {
+    background-color: var(--color-muur);
+    color: var(--color-tekst);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; word-spacing: -0.3em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-kobalt); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-kobalt); outline-offset: 3px; }
+  .op-bord :focus-visible, .op-bord:focus-visible { outline-color: var(--color-kobalt-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border: 1.5px solid transparent; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 650; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .3s var(--ease-zacht), color .3s var(--ease-zacht), border-color .3s var(--ease-zacht), transform .3s var(--ease-zacht); }
+  .knop:hover { transform: translateY(-1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-kobalt { background: var(--color-kobalt); color: var(--color-wit); }
+  .knop-kobalt:hover { background: var(--color-kobalt-diep); }
+  .knop-wit { border-color: #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-bord); }
+  .knop-lijn { border-color: var(--color-tekst); color: var(--color-tekst); }
+  .knop-lijn:hover { background: var(--color-tekst); color: var(--color-muur); }
+  .knop-vol { background: var(--color-wit); color: var(--color-kobalt-diep); }
+  .knop-vol:hover { background: var(--color-bord); color: var(--color-wit); }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: color .25s; }
+  .link:hover { color: var(--color-kobalt); }
+  .op-bord .link:hover { color: var(--color-kobalt-licht); }
+
+  /* Letterbord: witte opzetletters op zwart vilt, zoals het bord aan hun muur. */
+  .bord { background-color: var(--color-bord); color: var(--color-krijt); background-image: repeating-linear-gradient(0deg, #ffffff07 0 1px, transparent 1px 7px); }
+  .bord-kop { font-family: var(--font-kop); letter-spacing: .02em; }
+  .bord-regel { font-weight: 650; text-transform: uppercase; letter-spacing: .05em; }
+
+  /* De bonenvraag: een gewone zin met keuzes erin. */
+  .zin select { appearance: none; -webkit-appearance: none; background-color: transparent; color: inherit; font: inherit; font-weight: 700; border: 0; border-bottom: 2px solid #ffffffa6; border-radius: 0; padding: 0 1.7rem .05em .1rem; cursor: pointer; max-width: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1rem center; background-size: 1.05rem; transition: border-color .25s; }
+  .zin select:hover, .zin select:focus-visible { border-bottom-color: var(--color-wit); }
+  .zin select option { color: var(--color-tekst); background: var(--color-wit); font-weight: 500; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
