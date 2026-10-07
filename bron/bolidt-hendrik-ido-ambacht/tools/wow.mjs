@@ -1,0 +1,15 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+const errs = []; p.on('pageerror', (e) => errs.push(e.message));
+await p.goto('http://localhost:4426/sitefront/bolidt-hendrik-ido-ambacht/#keuze', { waitUntil: 'networkidle' });
+await p.click('[data-k-sector="openbaar"]'); await p.click('[data-k-toep="4"]');
+await p.waitForTimeout(900);
+console.log(await p.textContent('[data-k-series]'), '|', await p.textContent('[data-k-familie]'), '|', await p.getAttribute('[data-k-pagina]', 'href'));
+console.log(decodeURIComponent(await p.getAttribute('[data-k-mail]', 'href')));
+await p.locator('#keuze').screenshot({ path: 'shots/wow-1440.png' });
+await p.click('[data-k-sector="voedsel"]'); await p.waitForTimeout(300);
+console.log(await p.textContent('[data-k-extra]'), await p.getAttribute('[data-k-pagina]', 'href'));
+await p.click('[data-bezoek]'); console.log('onderwerp', await p.inputValue('[data-onderwerp]'), 'sector', await p.inputValue('#f-sector'));
+await p.click('[data-formulier] button[type=submit]'); console.log('melding zichtbaar', await p.isVisible('[data-melding]'));
+console.log('errors', errs);
+await b.close();

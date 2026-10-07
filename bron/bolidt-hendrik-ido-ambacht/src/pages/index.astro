@@ -1,0 +1,401 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, url, sectoren, systemen, vacatures, familieNaam, familieHref, mailMet } from '../data/site';
+
+import campus from '../assets/campus-dak.jpg';
+import sMaritiem from '../assets/s-maritiem.jpg';
+import sIndustrie from '../assets/s-industrie.jpg';
+import sVoedsel from '../assets/s-voedsel.jpg';
+import sOpenbaar from '../assets/s-openbaar.jpg';
+import sInfra from '../assets/s-infra.jpg';
+import sSport from '../assets/s-sport.jpg';
+import pJoy from '../assets/p-norwegian-joy.jpg';
+import pSchiff from '../assets/p-mein-schiff.jpg';
+import pLeviathan from '../assets/p-leviathan.jpg';
+import pErasmus from '../assets/p-erasmusbrug.jpg';
+import teamAllure from '../assets/team-allure.jpg';
+import noLimits from '../assets/no-limits.jpg';
+import gietenAllure from '../assets/gieten-allure.jpg';
+
+const fotos: Record<string, ImageMetadata> = { 's-maritiem': sMaritiem, 's-industrie': sIndustrie, 's-voedsel': sVoedsel, 's-openbaar': sOpenbaar, 's-infra': sInfra, 's-sport': sSport };
+
+// Keuzehulp-data naar de browser: sector > toepassing > series die Bolidt op die pagina zelf het vaakst noemt.
+const extra: Record<string, string> = {
+  voedsel: 'Bolidtop 801 is speciaal ontwikkeld voor de food sector: één laag, binnen een weekend weer operationeel.',
+};
+const keuzeData = sectoren.map((s) => ({ id: s.id, naam: s.naam, extra: extra[s.id] ?? '', toepassingen: s.toepassingen.map((t) => ({ ...t, familieNaam: familieNaam[t.familie], familieHref: familieHref[t.familie] })) }));
+const eerste = sectoren[0].toepassingen[0];
+const eersteMail = mailMet(`Projectvraag: ${sectoren[0].naam}, ${eerste.naam}`, `Goedendag,\n\nIk werk aan een project in de sector ${sectoren[0].naam} (${eerste.naam}) en denk aan ${eerste.series.join(', ')}.\nMaritiem gerelateerd: ja\n\nProject en locatie:\nOppervlakte (circa):\nPlanning:\n\nMet vriendelijke groet,\n`);
+
+const reg = (s: string) => s.replace(/^(Bolid\w+|Boli\w+|Plycoat)/, '$1<span class="reg">®</span>');
+
+const titel = 'Bolidt | Vloer- en deksystemen, ontwikkeld en aangebracht in eigen huis';
+const omschrijving = 'Bolidt ontwikkelt, produceert en appliceert thermohardende kunststofsystemen: scheepsdekken, industriële vloeren, slijtlagen en sportvloeren. Sinds 1964, vanuit Hendrik-Ido-Ambacht.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun eigen dakterras op het Innovation Center, met de B in de vloer -->
+    <section class={`relative isolate flex flex-col overflow-hidden bg-asfalt text-wit md:min-h-[100svh] ${site.voorstel ? 'min-h-[calc(100svh-6.75rem)]' : 'min-h-[calc(100svh-3.5rem)]'}`}>
+      <Kop />
+      <Image src={campus} alt="Dakterras van het Bolidt Innovation Center bij zonsondergang: een naadloos kunststof dek met gekleurde cirkels, een visgraatpatroon, witte belijning en de B van Bolidt in de vloer" quality={60} widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[54%_50%] md:object-[50%_62%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#171716b3_0%,#17171626_22%,#17171614_40%,#171716b8_64%,#171716f0_100%)] md:bg-[linear-gradient(90deg,#171716e6_0%,#171716a8_34%,#17171626_62%,#17171600_100%),linear-gradient(0deg,#171716d9_0%,#17171600_34%),linear-gradient(180deg,#17171699_0%,#17171600_22%)]"></div>
+      <div class="wrap mt-auto pb-10 pt-28 md:my-auto md:pb-14">
+        <p class="text-sm font-medium text-wit/85">Vloer- en deksystemen<span class="max-sm:hidden"> · Hendrik-Ido-Ambacht</span>, sinds 1964</p>
+        <h1 class="mt-4 max-w-[13ch] text-hero md:mt-5">Zelf bedacht, zelf gemaakt, <span class="text-oranje">zelf aangebracht.</span></h1>
+        <p class="mt-5 max-w-xl text-base text-wit/90 sm:text-lg md:mt-6 md:text-xl">Bolidt ontwikkelt, produceert en appliceert thermohardende kunststofsystemen: scheepsdekken, industriële vloeren, slijtlagen en sportvloeren.</p>
+        <div class="mt-7 flex flex-wrap gap-3 md:mt-8">
+          <a href="#keuze" class="knop knop-oranje"><span class="sm:hidden">Welk systeem past?</span><span class="max-sm:hidden">Welk systeem past bij uw project?</span><Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-wit num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+      <div class="wrap flex flex-wrap items-end justify-between gap-x-8 gap-y-2 pb-7 text-xs text-wit/75 max-md:hidden">
+        <p>EN-ISO 9001 · EN-ISO 14001 · VCA** · IMO-gecertificeerde deksystemen</p>
+        <p>Dak van het Bolidt Innovation Center, Hendrik-Ido-Ambacht</p>
+      </div>
+    </section>
+
+    <!-- 2. SECTOREN: zes ingangen, alle segmenten als links naar hun eigen pagina's -->
+    <section id="sectoren" class="py-16 md:py-20" data-sectoren>
+      <div class="wrap">
+        <div class="grid gap-y-0 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-7">
+            <span class="balk text-inkt" aria-hidden="true"></span>
+            <h2 class="rijs mt-7 text-4xl">Kies uw toepassing.</h2>
+            <p class="rijs mt-5 max-w-md text-grijs" style="--d:.1s">Van cruiseschip tot cleanroom en van parkeergarage tot atletiekbaan. Voor elke toepassing een specifieke oplossing.</p>
+          <ul class="mt-8">
+            {sectoren.map((s, i) => (
+              <li class="sector py-4" data-sector={s.id} data-actief={i === 0 ? 'true' : 'false'}>
+                <figure class="mb-5 lg:hidden">
+                  <Image src={fotos[s.foto]} alt={s.alt} quality={68} widths={[480, 800]} sizes="100vw" class="aspect-[16/9] w-full rounded-sm object-cover" />
+                </figure>
+                <div class="sm:grid sm:grid-cols-[minmax(0,15.5rem)_1fr] sm:gap-x-6">
+                <div>
+                  <h3 class="sector-naam text-3xl md:text-[1.9rem]">{s.naam}</h3>
+                  <span class="num mt-1 block text-xs font-semibold text-grijs">{s.toepassingen.length} toepassingen</span>
+                </div>
+                <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-0.5 text-sm text-grijs sm:mt-1.5">
+                  {s.toepassingen.map((t) => <li><a href={t.href} class="no-underline transition-colors hover:text-oranje-diep focus-visible:text-oranje-diep" data-hover={s.id}>{t.naam}</a></li>)}
+                </ul>
+                </div>
+              </li>
+            ))}
+          </ul>
+          </div>
+          <div class="hidden lg:col-span-5 lg:block">
+            <div class="sticky top-8">
+              <div class="relative h-[min(44rem,calc(100svh-4rem))] w-full overflow-hidden rounded-sm bg-beton-2">
+                {sectoren.map((s, i) => (
+                  <figure class="sector-foto absolute inset-0" data-foto={s.id} data-actief={i === 0 ? 'true' : 'false'}>
+                    <Image src={fotos[s.foto]} alt={s.alt} quality={70} widths={[640, 960, 1280]} sizes="(min-width: 1280px) 500px, 40vw" class="h-full w-full object-cover" />
+                    <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#171716cc,#17171600)] px-5 pb-4 pt-14 text-xs font-medium text-wit">{s.onderschrift}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PROJECTEN: groot en asymmetrisch, met hun eigen systeemnamen -->
+    <section id="projecten" class="bg-asfalt py-16 text-wit md:py-20">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-8">Van kartbaan op zee tot de Erasmusbrug.</h2>
+          <div class="rijs lg:col-span-4 lg:pt-3" style="--d:.1s">
+            <p class="max-w-sm text-as">Voor onder andere MSC Cruises, Royal Caribbean en AIDA Cruises realiseert Bolidt momenteel projecten die behoren tot de grootste in de geschiedenis van het bedrijf.</p>
+            <p class="mt-4 flex flex-wrap items-start gap-x-6 gap-y-2 text-sm font-semibold"><a href={site.nieuws} class="link">Lees het nieuwsbericht</a><a href={site.referenties} class="link">Alle referenties</a></p>
+          </div>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-4 md:mt-12 md:grid-cols-12 md:gap-5">
+          <figure class="rijs relative overflow-hidden rounded-sm md:col-span-8">
+            <Image src={pJoy} alt="Kartbaan met rode en witte curbs op het bovendek van cruiseschip Norwegian Joy, op open zee" quality={70} widths={[640, 960, 1280]} sizes="(min-width: 768px) 66vw, 100vw" class="aspect-[4/3] h-full w-full object-cover md:aspect-[16/9]" />
+            <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#171716f0_0%,#171716a6_45%,#17171600_100%)] p-5 pt-20 md:p-7"><span class="balk mb-3 w-12 text-wit" aria-hidden="true"></span><span class="block text-lg font-semibold">Norwegian Joy</span><span class="text-sm text-wit/85">Racebaan aan boord, Boligrip 1250</span></figcaption>
+          </figure>
+          <figure class="rijs relative overflow-hidden rounded-sm md:col-span-4 md:row-span-2" style="--d:.1s">
+            <Image src={pSchiff} alt="Kunststof vloer in golvende vlakken van oranje, rood, paars en wit, die doorloopt in een kunstwerk op de wand" quality={70} widths={[800, 1280, 1920]} sizes="(min-width: 768px) 1000px, 100vw" class="aspect-[4/3] h-full w-full object-cover object-[50%_70%] md:aspect-auto" />
+            <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#171716f0_0%,#171716a6_45%,#17171600_100%)] p-5 pt-20 md:p-7"><span class="balk mb-3 w-12 text-wit" aria-hidden="true"></span><span class="block text-lg font-semibold">Mein Schiff 6</span><span class="text-sm text-wit/85">Bolideck Sensation</span></figcaption>
+          </figure>
+          <figure class="rijs relative overflow-hidden rounded-sm md:col-span-4">
+            <Image src={pLeviathan} alt="Superjacht Leviathan van Oceanco van bovenaf gezien op donker water" quality={70} widths={[480, 800]} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/3] h-full w-full object-cover md:aspect-[16/10]" />
+            <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#171716f0_0%,#171716a6_45%,#17171600_100%)] p-5 pt-20"><span class="balk mb-3 w-12 text-wit" aria-hidden="true"></span><span class="block text-lg font-semibold">Leviathan, Oceanco</span><span class="text-sm text-wit/85">Bolideck</span></figcaption>
+          </figure>
+          <figure class="rijs relative overflow-hidden rounded-sm md:col-span-4" style="--d:.1s">
+            <Image src={pErasmus} alt="Brugdek van de Erasmusbrug in Rotterdam met grijze slijtlaag, witte belijning en de tuidraden" quality={70} widths={[480, 800]} sizes="(min-width: 768px) 33vw, 100vw" class="aspect-[4/3] h-full w-full object-cover md:aspect-[16/10]" />
+            <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#171716f0_0%,#171716a6_45%,#17171600_100%)] p-5 pt-20"><span class="balk mb-3 w-12 text-wit" aria-hidden="true"></span><span class="block text-lg font-semibold">Erasmusbrug, Rotterdam</span><span class="text-sm text-wit/85">Bridgedeck UP</span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SYSTEMEN: hun eigen productnamen als letterproef -->
+    <section id="systemen" class="bg-wit py-16 md:py-20">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <span class="balk text-inkt" aria-hidden="true"></span>
+          <h2 class="rijs mt-7 text-4xl">Elke naam een systeem.</h2>
+          <p class="rijs mt-5 max-w-sm text-grijs" style="--d:.1s">Bolidt voert wereldwijd merken die een begrip zijn in de industrie. Elke serie heeft eigen afwerkdetails en eigenschappen, afgestemd op de bedrijfstak.</p>
+          <a href="#keuze" class="rijs knop knop-inkt mt-8" style="--d:.15s">Welk systeem past?<Icoon naam="pijl" /></a>
+        </div>
+        <ul class="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
+          {systemen.map((s) => (
+            <li class="border-t border-lijn-licht">
+              <a href={s.href} class="group block py-5 no-underline">
+                <span class="flex items-baseline justify-between gap-3">
+                  <span class="kop text-[1.75rem] leading-none transition-colors group-hover:text-oranje-diep md:text-[2rem]">{s.naam}<span class="reg">®</span></span>
+                  <Icoon naam="pijl" class="h-5 w-5 shrink-0 text-grijs transition-transform duration-300 group-hover:translate-x-1 group-hover:text-oranje-diep" />
+                </span>
+                <span class="mt-2 block font-semibold">{s.wat}</span>
+                <span class="block text-sm text-grijs">{s.zin}</span>
+                <span class="mt-1.5 block text-xs text-grijs">Series: {s.series.join(' · ')}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. WOW: welk systeem past bij uw project? -->
+    <section id="keuze" class="relative isolate overflow-hidden bg-asfalt py-16 text-wit md:py-20">
+      <svg class="pointer-events-none absolute -right-40 top-10 -z-10 h-[46rem] w-[46rem] text-wit opacity-[.06] max-lg:hidden" viewBox="0 0 400 400" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="200" cy="200" r="190" /><circle cx="200" cy="200" r="120" /><circle cx="200" cy="200" r="34" />
+        <path d="M0 200h400M200 0v400" /><circle cx="330" cy="330" r="26" /><circle cx="70" cy="330" r="26" />
+      </svg>
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-8">Welk systeem past bij uw project?</h2>
+          <p class="rijs max-w-sm text-as lg:col-span-4 lg:pt-3" style="--d:.1s">Kies sector en toepassing. U ziet welke systemen Bolidt daar zelf het meest noemt, en belt of mailt direct.</p>
+        </div>
+
+        <div class="mt-10 grid gap-y-8 md:mt-14 lg:grid-cols-12 lg:gap-x-10" data-keuze>
+          <div class="lg:col-span-3">
+            <p class="text-xs font-semibold text-as" id="k-sector-lab">1. Sector</p>
+            <div class="mt-2 grid grid-cols-2 gap-x-5 lg:block" role="group" aria-labelledby="k-sector-lab">
+              {sectoren.map((s, i) => <button type="button" class="keus keus-groot" aria-pressed={i === 0 ? 'true' : 'false'} data-k-sector={s.id}>{s.naam}</button>)}
+            </div>
+          </div>
+          <div class="lg:col-span-4">
+            <p class="text-xs font-semibold text-as" id="k-toep-lab">2. Toepassing</p>
+            <div class="mt-2 grid grid-cols-2 gap-x-5 sm:grid-cols-3 lg:block" role="group" aria-labelledby="k-toep-lab" data-k-toepassingen>
+              {sectoren[0].toepassingen.map((t, i) => <button type="button" class="keus" aria-pressed={i === 0 ? 'true' : 'false'} data-k-toep={i}>{t.naam}</button>)}
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-sm bg-asfalt-2 p-6 ring-1 ring-lijn md:p-8" aria-live="polite">
+              <p class="text-sm text-as">Op de pagina <a href={eerste.href} class="link font-semibold text-wit" data-k-pagina>{eerste.naam}</a> noemt Bolidt vooral:</p>
+              <ul class="mt-5 space-y-1" data-k-series>
+                {eerste.series.map((r) => <li class="kop text-2xl leading-tight md:text-[1.7rem]" set:html={reg(r)} />)}
+              </ul>
+              <p class="mt-4 hidden text-sm text-wit/85" data-k-extra></p>
+              <p class="mt-6 text-sm"><a href={familieHref[eerste.familie]} class="link font-semibold text-oranje" data-k-familie>Lees verder: {familieNaam[eerste.familie]}</a></p>
+              <div class="mt-7 flex flex-wrap gap-3 border-t border-lijn pt-7">
+                <a href={site.telHref} class="knop knop-oranje num"><Icoon naam="tel" />Bel {site.tel}</a>
+                <a href={eersteMail} class="knop knop-wit" data-k-mail>Mail uw project</a>
+              </div>
+              <p class="mt-5 text-xs text-as">Een indicatie op basis van de sectorpagina’s op bolidt.com. Een specialist van Bolidt adviseert het systeem voor uw ondergrond en gebruik.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="application/json" id="keuze-data" set:html={JSON.stringify(keuzeData)}></script>
+    </section>
+
+    <!-- 6. OVER BOLIDT: alles onder één dak -->
+    <section id="over" class="pb-16 md:pb-20">
+      <figure class="relative">
+        <Image src={teamAllure} alt="Een groot team in witte shirts en met witte helmen op het zwembaddek van Allure of the Seas tijdens de refit" quality={70} widths={[640, 960, 1440, 1920]} sizes="100vw" class="aspect-[4/3] w-full object-cover object-[50%_40%] md:aspect-[21/6]" />
+        <figcaption class="wrap mt-3 text-xs text-grijs">Refit van Allure of the Seas, werk in uitvoering</figcaption>
+      </figure>
+      <div class="wrap mt-12 grid gap-y-10 md:mt-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <span class="balk text-inkt" aria-hidden="true"></span>
+          <h2 class="rijs mt-7 text-4xl">Alles onder één dak.</h2>
+          <figure class="rijs mt-10 max-lg:hidden">
+            <Image src={gietenAllure} alt="Applicateur strijkt de vloeibare kunststof uit met een rakel op een buitendek" quality={68} widths={[480, 800]} sizes="34vw" class="aspect-[4/3] w-full rounded-sm object-cover object-[62%_50%]" />
+            <figcaption class="mt-2 text-xs text-grijs">Vloeibaar aangebracht, aan boord van Allure of the Seas</figcaption>
+          </figure>
+        </div>
+        <div class="rijs text-grijs lg:col-span-7 lg:col-start-6 lg:pt-[4.6rem] [&>p+p]:mt-5" style="--d:.1s">
+          <p class="text-lg text-inkt">Om continu te kunnen blijven innoveren, ontwikkelen, produceren en appliceren wij onze kunststofsystemen zelf; een unieke geïntegreerde bedrijfskolom.</p>
+          <p>Op 28 februari 1964 richtten de heren Bol en Schmidt, allebei afkomstig van Sikkens, het bedrijf op. Eigen applicatieteams worden nog altijd wereldwijd ingevlogen, van Kuwait tot Singapore.</p>
+        <dl class="mt-8 grid grid-cols-1 border-y border-lijn-licht sm:grid-cols-3">
+          <div class="flex flex-col-reverse border-lijn-licht py-6 max-sm:border-b sm:border-r sm:pr-6">
+            <dt class="text-sm text-grijs">opgericht</dt>
+            <dd class="kop num whitespace-nowrap text-4xl leading-none text-inkt md:text-[2.6rem]">1964</dd>
+          </div>
+          <div class="flex flex-col-reverse border-lijn-licht py-6 max-sm:border-b sm:border-r sm:px-6">
+            <dt class="text-sm text-grijs">landen</dt>
+            <dd class="kop num whitespace-nowrap text-4xl leading-none text-inkt md:text-[2.6rem]">135+</dd>
+          </div>
+          <div class="flex flex-col-reverse py-6 sm:pl-6">
+            <dt class="text-sm text-grijs">m² per jaar</dt>
+            <dd class="kop num whitespace-nowrap text-4xl leading-none text-inkt md:text-[2.6rem]">2 mln</dd>
+          </div>
+        </dl>
+        <div class="mt-7">
+          <p class="text-sm font-semibold text-inkt">Gecertificeerd</p>
+          <ul class="mt-3 grid grid-cols-1 gap-x-6 gap-y-1.5 text-sm text-grijs sm:grid-cols-2">
+            <li>EN-ISO 9001:2015</li><li>EN-ISO 14001:2015</li><li>SCL 2.0, trede 3</li><li>VCA** 2017/6.0</li><li>IMO-gecertificeerde deksystemen</li><li>Dun &amp; Bradstreet Rating 1</li>
+          </ul>
+          <a href={site.kwaliteit} class="link link-diep mt-5 inline-block text-sm font-semibold">Kwaliteit, milieu en certificering</a>
+        </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 7. WERKEN BIJ -->
+    <section id="werken" class="bg-wit py-16 md:py-20">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs lg:col-span-5">
+          <Image src={noLimits} alt="Twee collega’s in oranje-zwarte Bolidt-wielershirts met de tekst no limits, met hun racefietsen op een bergweg" quality={70} widths={[480, 800, 1000]} sizes="(min-width: 1024px) 40vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover lg:aspect-[4/5] lg:max-h-[34rem]" />
+          <figcaption class="mt-3 text-xs text-grijs">Bolidt Cycling Team</figcaption>
+        </figure>
+        <div class="lg:col-span-7">
+          <span class="balk text-inkt" aria-hidden="true"></span>
+          <h2 class="rijs mt-7 text-4xl">Niets is doorsnee bij Bolidt.</h2>
+          <p class="rijs mt-6 max-w-xl text-grijs" style="--d:.1s">Bolidt is een bedrijf van doeners en denkers. Naar goede ideeën wordt geluisterd, initiatief wordt beloond.</p>
+          <p class="mt-8 text-sm font-semibold">{vacatures.length} vacatures en een open sollicitatie</p>
+          <ul class="mt-3 grid border-t border-lijn-licht sm:grid-cols-2 sm:gap-x-8">
+            {[...vacatures, ['Open sollicitatie', 'Alle vakgebieden']].map(([t, v]) => (
+              <li class="border-b border-lijn-licht">
+                <a href={site.jobs} class="group flex h-full items-center justify-between gap-4 py-3 no-underline">
+                  <span><span class="block text-[.9375rem] font-semibold leading-snug transition-colors group-hover:text-oranje-diep">{t}</span><span class="block text-xs text-grijs">{v}</span></span>
+                  <Icoon naam="pijl" class="h-5 w-5 shrink-0 text-grijs transition-transform duration-300 group-hover:translate-x-1 group-hover:text-oranje-diep" />
+                </a>
+              </li>
+            ))}
+          </ul>
+          <a href={site.jobs} class="knop knop-inkt mt-8">Alle vacatures op jobs.bolidt.com<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT + INNOVATION CENTER -->
+    <section id="contact" class="bg-asfalt-2 py-16 text-wit md:py-20">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Een goed project begint met een goed gesprek.</h2>
+          <div class="mt-8 space-y-2">
+            <a href={site.telHref} class="kop num block text-3xl text-wit no-underline transition-colors hover:text-oranje md:text-[2.4rem]">{site.tel}</a>
+            <a href={`mailto:${site.mail}`} class="link inline-block text-lg">{site.mail}</a>
+          </div>
+          <div class="mt-10 grid gap-6 text-sm text-as sm:grid-cols-2">
+            <p><span class="block font-semibold text-wit">Bolidt Innovation Center</span>{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.maps} class="link mt-2 inline-block font-semibold text-wit">Route</a></p>
+            <p><span class="block font-semibold text-wit">Postadres</span>Postbus 131<br />3340 AC Hendrik-Ido-Ambacht</p>
+          </div>
+
+          <div class="mt-10 rounded-sm bg-asfalt p-6 ring-1 ring-lijn md:p-7">
+            <h3 class="text-2xl">Kom aan via het water.</h3>
+            <p class="mt-3 max-w-md text-sm text-as">De reis over de Maas vanuit Rotterdam naar de campus biedt een blik op een aantal grote projecten van Bolidt. Liever op afstand kennismaken? Een virtueel bezoek is ook mogelijk.</p>
+            <svg viewBox="0 0 520 150" class="mt-6 w-full max-sm:hidden" role="img" aria-labelledby="route-t">
+              <title id="route-t">Schematische route over het water: Rotterdam met Hotel New York en de Erasmusbrug, langs Kinderdijk, naar de Bolidt Campus in Hendrik-Ido-Ambacht</title>
+              <path d="M10 46 H250 C300 46 318 46 344 70 L404 126 H510" fill="none" stroke="#ef7521" stroke-width="3" stroke-linecap="round" />
+              <path d="M10 46 H250 C300 46 318 46 344 70 L404 126 H510" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="12" stroke-linecap="round" />
+              <g fill="#20201e" stroke="#fff" stroke-width="2.5"><circle cx="50" cy="46" r="7" /><circle cx="160" cy="46" r="7" /><circle cx="318" cy="50" r="7" /></g>
+              <circle cx="470" cy="126" r="11" fill="#ef7521" /><circle cx="470" cy="126" r="4" fill="#171716" />
+              <g fill="#fff" font-family="Mona Sans Variable, system-ui, sans-serif" font-size="13">
+                <text x="12" y="24">Hotel New York</text>
+                <text x="160" y="24" text-anchor="middle">Erasmusbrug</text>
+                <text x="160" y="74" text-anchor="middle" fill="#ef7521" font-size="11.5">Bridgedeck UP</text>
+                <text x="318" y="28" text-anchor="middle">Kinderdijk</text>
+                <text x="470" y="100" text-anchor="middle" font-weight="650">Bolidt Campus</text>
+              </g>
+              <text x="10" y="142" fill="#a8a8a1" font-family="Mona Sans Variable, system-ui, sans-serif" font-size="11">Rotterdam</text>
+            </svg>
+            <svg viewBox="0 0 300 230" class="mt-6 w-full sm:hidden" role="img" aria-labelledby="route-m">
+              <title id="route-m">Schematische route over het water: Rotterdam met Hotel New York en de Erasmusbrug, langs Kinderdijk, naar de Bolidt Campus in Hendrik-Ido-Ambacht</title>
+              <path d="M24 16 V130 C24 150 30 160 44 172 L60 186 V214" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="12" stroke-linecap="round" />
+              <path d="M24 16 V130 C24 150 30 160 44 172 L60 186 V214" fill="none" stroke="#ef7521" stroke-width="3" stroke-linecap="round" />
+              <g fill="#20201e" stroke="#fff" stroke-width="2.5"><circle cx="24" cy="30" r="7" /><circle cx="24" cy="80" r="7" /><circle cx="24" cy="134" r="7" /></g>
+              <circle cx="60" cy="208" r="11" fill="#ef7521" /><circle cx="60" cy="208" r="4" fill="#171716" />
+              <g fill="#fff" font-family="Mona Sans Variable, system-ui, sans-serif" font-size="17">
+                <text x="46" y="36">Hotel New York</text>
+                <text x="46" y="80">Erasmusbrug</text>
+                <text x="46" y="100" fill="#ef7521" font-size="14">Bridgedeck UP</text>
+                <text x="46" y="140">Kinderdijk</text>
+                <text x="84" y="214" font-weight="650">Bolidt Campus</text>
+              </g>
+            </svg>
+            <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a href="#formulier" class="knop knop-oranje" data-bezoek>Plan uw bezoek</a>
+              <a href={site.bic} class="link text-sm font-semibold">bolidtinnovationcenter.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6">
+          <form id="formulier" class="rounded-sm bg-wit p-6 text-inkt md:p-9" data-formulier novalidate>
+            <p class="kop text-2xl">Stel uw vraag</p>
+            <p class="mt-2 text-sm text-grijs">Een specialist neemt contact met u op.</p>
+            <div class="mt-7 grid gap-5 sm:grid-cols-2">
+              <div><label class="veld-label" for="f-naam">Naam *</label><input id="f-naam" name="naam" class="veld" autocomplete="name" required /></div>
+              <div><label class="veld-label" for="f-bedrijf">Bedrijf</label><input id="f-bedrijf" name="bedrijf" class="veld" autocomplete="organization" /></div>
+              <div><label class="veld-label" for="f-mail">E-mail *</label><input id="f-mail" name="email" type="email" class="veld" autocomplete="email" required /></div>
+              <div><label class="veld-label" for="f-tel">Telefoon</label><input id="f-tel" name="telefoon" type="tel" class="veld" autocomplete="tel" /></div>
+              <div><label class="veld-label" for="f-onderwerp">Onderwerp</label>
+                <select id="f-onderwerp" name="onderwerp" class="veld" data-onderwerp>
+                  <option>Projectvraag</option><option>Monster of brochure</option><option value="bezoek">Bezoek Innovation Center, live of virtueel</option><option>Iets anders</option>
+                </select>
+              </div>
+              <div><label class="veld-label" for="f-sector">Sector</label>
+                <select id="f-sector" name="sector" class="veld">
+                  {sectoren.map((s) => <option>{s.naam}</option>)}<option>Anders</option>
+                </select>
+              </div>
+              <div class="sm:col-span-2"><label class="veld-label" for="f-bericht">Uw project of vraag</label><textarea id="f-bericht" name="bericht" rows="4" class="veld min-h-28"></textarea></div>
+            </div>
+            <button type="submit" class="knop knop-inkt mt-6 w-full sm:w-auto">Verstuur<Icoon naam="pijl" /></button>
+            <p class="mt-4 hidden rounded-sm bg-beton p-4 text-sm" role="status" data-melding>Dit is een ontwerpvoorstel: het formulier verstuurt niets. Bel {site.tel} of mail {site.mail}.</p>
+            <p class="mt-4 text-xs text-grijs">We gebruiken uw gegevens alleen om uw vraag te beantwoorden. Zie de <a href={url('privacy/')} class="underline">privacyverklaring</a>.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    // Sectorindex: foto wisselt mee met de sector onder de muis of focus.
+    const rijen = [...document.querySelectorAll<HTMLElement>('[data-sector]')];
+    const fotos = [...document.querySelectorAll<HTMLElement>('[data-foto]')];
+    const zet = (id: string) => { rijen.forEach((r) => r.dataset.actief = String(r.dataset.sector === id)); fotos.forEach((f) => f.dataset.actief = String(f.dataset.foto === id)); };
+    rijen.forEach((r) => { r.addEventListener('mouseenter', () => zet(r.dataset.sector!)); r.addEventListener('focusin', () => zet(r.dataset.sector!)); });
+
+    // Keuzehulp
+    type T = { naam: string; href: string; series: string[]; familieNaam: string; familieHref: string };
+    type S = { id: string; naam: string; extra: string; toepassingen: T[] };
+    const data: S[] = JSON.parse(document.getElementById('keuze-data')!.textContent!);
+    const mail = 'website@bolidt.nl';
+    let si = 0, ti = 0;
+    const $ = <E extends HTMLElement>(s: string) => document.querySelector<E>(s)!;
+    const reg = (s: string) => s.replace(/^(Bolid\w+|Boli\w+|Plycoat)/, '$1<span class="reg">®</span>');
+    const toon = () => {
+      const s = data[si], t = s.toepassingen[ti];
+      document.querySelectorAll<HTMLButtonElement>('[data-k-sector]').forEach((b, i) => b.setAttribute('aria-pressed', String(i === si)));
+      document.querySelectorAll<HTMLButtonElement>('[data-k-toep]').forEach((b, i) => b.setAttribute('aria-pressed', String(i === ti)));
+      const p = $<HTMLAnchorElement>('[data-k-pagina]'); p.textContent = t.naam; p.href = t.href;
+      $('[data-k-series]').innerHTML = t.series.map((r) => `<li class="kop text-2xl leading-tight md:text-[1.7rem]">${reg(r)}</li>`).join('');
+      const ex = $('[data-k-extra]'); ex.textContent = s.extra; ex.classList.toggle('hidden', !s.extra);
+      const f = $<HTMLAnchorElement>('[data-k-familie]'); f.textContent = `Lees verder: ${t.familieNaam}`; f.href = t.familieHref;
+      const tekst = `Goedendag,\n\nIk werk aan een project in de sector ${s.naam} (${t.naam}) en denk aan ${t.series.join(', ')}.\nMaritiem gerelateerd: ${s.id === 'maritiem' ? 'ja' : 'nee'}\n\nProject en locatie:\nOppervlakte (circa):\nPlanning:\n\nMet vriendelijke groet,\n`;
+      $<HTMLAnchorElement>('[data-k-mail]').href = `mailto:${mail}?subject=${encodeURIComponent(`Projectvraag: ${s.naam}, ${t.naam}`)}&body=${encodeURIComponent(tekst)}`;
+      const sel = document.querySelector<HTMLSelectElement>('#f-sector'); if (sel) sel.value = s.naam;
+    };
+    const bouwToepassingen = () => {
+      $('[data-k-toepassingen]').innerHTML = data[si].toepassingen.map((t, i) => `<button type="button" class="keus" aria-pressed="${i === ti}" data-k-toep="${i}">${t.naam}</button>`).join('');
+    };
+    document.querySelectorAll<HTMLButtonElement>('[data-k-sector]').forEach((b, i) => b.addEventListener('click', () => { si = i; ti = 0; bouwToepassingen(); toon(); }));
+    $('[data-k-toepassingen]').addEventListener('click', (e) => { const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-k-toep]'); if (!b) return; ti = Number(b.dataset.kToep); toon(); });
+
+    // Formulier: verstuurt niets (ontwerpvoorstel). "Plan uw bezoek" kiest het onderwerp.
+    document.querySelector('[data-bezoek]')?.addEventListener('click', () => { const o = document.querySelector<HTMLSelectElement>('[data-onderwerp]'); if (o) o.value = 'bezoek'; });
+    const form = document.querySelector<HTMLFormElement>('[data-formulier]');
+    form?.addEventListener('submit', (e) => { e.preventDefault(); form.querySelector('[data-melding]')?.classList.remove('hidden'); });
+  </script>
+</Base>
