@@ -1,0 +1,229 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Ster from '../components/Ster.astro';
+import { site, tijden, thee, reviews, waHoi, waDiner, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import terras from '../assets/terras.jpg';
+import theeFoto from '../assets/thee.jpg';
+import matcha from '../assets/matcha.jpg';
+import dagtaart from '../assets/dagtaart.jpg';
+import koffie from '../assets/koffie.jpg';
+import ontbijt from '../assets/ontbijt.jpg';
+import tajine from '../assets/tajine.jpg';
+
+const theeVraag = (naam: string) => `Hoi Marcus! Hebben jullie vandaag de ${naam}? Dan kom ik straks langs.`;
+const r = (naam: string) => reviews.find((x) => x.naam === naam)!;
+
+const titel = 'Marcus Coffee, Tea Blends & Lifestyle | Koffiebar aan het Bellamypark, Vlissingen';
+const omschrijving = 'Koffiebar Marcus, Bellamypark 52 in Vlissingen: specialty coffee, verse theeblends, huisgemaakte taart, ontbijt en lunch, met terras aan het Bellamypark. Dinsdag t/m zaterdag 09.00-17.00 uur.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun eigen foto van de Victoria Arduino, schermvullend -->
+    <section class="op-inkt relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col md:min-h-[100svh] overflow-hidden bg-inkt text-krijt">
+      <Kop />
+      <div class="absolute inset-0 -z-10">
+        <Image src={hero} alt="Een laagjeskoffie met chocolade loopt uit de espressomachine van Marcus in een glas" quality={72} widths={[480, 768, 1080, 1440, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[52%_62%] md:object-[50%_58%]" />
+        <div class="absolute inset-0 bg-[linear-gradient(180deg,#12110fcc_0%,#12110f33_26%,#12110f40_50%,#12110fe6_100%)] md:bg-[linear-gradient(90deg,#12110fe6_0%,#12110fb3_34%,#12110f1a_66%),linear-gradient(180deg,#12110f99_0%,#12110f00_22%,#12110f00_70%,#12110fb3_100%)]"></div>
+      </div>
+      <div class="wrap mt-auto pb-20 pt-36 md:pb-20 lg:pb-24">
+        <p class="flex items-center gap-3 text-[.9375rem] font-medium text-krijt/90"><Ster class="text-munt-licht" />Koffiebar aan het Bellamypark, Vlissingen</p>
+        <h1 class="mt-6 max-w-[13ch] text-hero leading-[.98]">Koffie zoals jij hem <span class="text-munt-licht">lekker</span> vindt.</h1>
+        <p class="mt-6 max-w-xl text-lg text-krijt/90 md:mt-7 md:text-xl">Specialty coffee, verse theeblends en huisgemaakte taart. Voor ontbijt, lunch of gewoon even zitten aan het park.</p>
+        <div class="mt-8 flex flex-wrap gap-3 md:mt-9">
+          <a href={waHoi} class="knop knop-munt max-sm:min-h-12 max-sm:px-5"><Icoon naam="wa" />Tafel reserveren</a>
+          <a href="#theekaart" class="knop knop-wit max-sm:min-h-12 max-sm:px-5"><span class="max-sm:hidden">Naar de theekaart</span><span class="sm:hidden">Theekaart</span></a>
+        </div>
+        <p class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-krijt/80 max-md:hidden" data-status-wrap>
+          <span class="inline-flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-munt-licht"></span><span data-status>Dinsdag t/m zaterdag 09.00 - 17.00 uur</span></span>
+          <span class="max-md:hidden">{site.straat}</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. ONZE HUT: hun eigen woorden, één grote foto van het terras -->
+    <section class="py-24 md:py-32">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Een koffie- en theehuis, bomvol gezelligheid en lekkernijen.</h2>
+          <p class="rijs mt-8 max-w-lg text-lg text-grijs">Thee die je nog nooit hebt geproefd, koffie precies zoals jij hem lekker vindt. En vergeet de huisgemaakte taartjes niet.</p>
+          <figure class="rijs mt-14 max-w-lg border-l-2 border-munt pl-6">
+            <blockquote class="font-kop text-2xl leading-snug">“{r('Roshni M.').tekst.split('. ')[0]}.”</blockquote>
+            <figcaption class="mt-3 text-sm text-grijs">{r('Roshni M.').naam} · Google</figcaption>
+          </figure>
+        </div>
+        <figure class="rijs lg:col-span-5 lg:col-start-8">
+          <Image src={terras} alt="Twee gelaagde ijskoffies op een houten plankje, op het terras met het Bellamypark erachter" quality={70} widths={[480, 760, 1000]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_60%]" />
+          <figcaption class="mt-3 text-sm text-grijs">Zin in een next level coffee? Op ons terras aan het Bellamypark.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. THEEKAART: de wow, kies een blend en vraag het na via WhatsApp -->
+    <section id="theekaart" class="bg-papier-2 py-24 md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:sticky lg:top-8 lg:col-span-6 lg:self-start">
+          <Image src={theeFoto} alt="Een glas verse muntthee, chocoladetaart, een zilveren theepot en de menukaart van Marcus op tafel" quality={70} widths={[480, 760, 1000]} sizes="(min-width: 1024px) 44vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[38%_50%]" />
+          <figcaption class="mt-3 text-sm text-grijs">Verse muntthee, met iets lekkers erbij</figcaption>
+        </figure>
+        <div class="lg:col-span-5 lg:col-start-8 lg:pt-6">
+          <h2 class="rijs text-3xl">De theekaart</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Verse theeblends die je nog nooit hebt geproefd. Tik er een aan en vraag ons of hij vandaag klaarstaat.</p>
+          <ul class="rijs mt-10 border-t border-lijn" data-thee aria-label="Theeblends">
+            {thee.map((t, i) => (
+              <li class="border-b border-lijn">
+                <button type="button" aria-pressed={i === 0 ? 'true' : 'false'} data-naam={t.naam} data-wa={waMet(theeVraag(t.naam))} class="group grid w-full cursor-pointer grid-cols-[auto_1fr_auto] items-baseline gap-x-3 py-4 text-left transition-colors duration-300 hover:text-munt aria-pressed:text-munt">
+                  <span class="font-kop text-xl md:text-2xl">{t.naam}</span>
+                  <span class="h-px self-end border-b-2 border-dotted border-current opacity-25 mb-[.45em]"></span>
+                  <Ster class="h-5 w-5 self-center text-munt opacity-20 transition-opacity duration-300 group-hover:opacity-60 group-aria-pressed:opacity-100" />
+                  {t.wat && <span class="col-span-3 mt-1 text-sm text-grijs">{t.wat}</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+          <div class="rijs mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={waMet(theeVraag(thee[0].naam))} class="knop knop-munt whitespace-normal py-3 text-left leading-tight" data-thee-knop><Icoon naam="wa" /><span>Vraag naar de <span data-thee-naam>{thee[0].naam}</span></span></a>
+            <p class="text-sm text-grijs">Van onze kaart; het aanbod kan wisselen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KOFFIE & TAART: groot beeld, weinig woorden -->
+    <section id="koffie" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid items-end gap-y-10 md:grid-cols-12 md:gap-x-10">
+          <h2 class="rijs text-3xl md:col-span-6">Next level coffee, en taart van het huis</h2>
+          <p class="rijs max-w-md text-lg text-grijs md:col-span-5 md:col-start-8">Van cortado en matcha latte tot dirty chai en ijskoffie, uit een Italiaanse Victoria Arduino. Vraag naar de dagtaart van vandaag.</p>
+        </div>
+        <div class="mt-16 grid gap-y-14 md:mt-20 md:grid-cols-12 md:gap-x-10">
+          <figure class="rijs md:col-span-7">
+            <Image src={matcha} alt="Matcha latte met een hartje latte art in een glazen kom op een houten plank" quality={70} widths={[480, 760, 1000, 1300]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-square w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 flex justify-between gap-6 text-sm text-grijs"><span class="font-kop text-lg text-tekst">Matcha latte</span><span>Chilled of als hotbrew</span></figcaption>
+          </figure>
+          <div class="flex flex-col gap-y-14 md:col-span-5">
+            <figure class="rijs" style="--d:.1s">
+              <Image src={dagtaart} alt="Een punt amandel-matchataart op een wit geschulpt bordje" quality={70} widths={[480, 760]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover object-[50%_62%]" />
+              <figcaption class="mt-3 flex justify-between gap-6 text-sm text-grijs"><span class="font-kop text-lg text-tekst">Dagtaart</span><span>Amandel-matcha</span></figcaption>
+            </figure>
+            <div class="rijs" style="--d:.15s">
+              <h3 class="text-2xl">Taart op de kaart</h3>
+              <ul class="mt-5 space-y-3 text-[1.0625rem]">
+                <li class="kaartregel"><span class="font-semibold">Salted caramel</span><span class="flex items-baseline gap-3"><span class="stip flex-1"></span><span class="wat text-sm text-grijs">chocolade met gezouten karamel, glutenvrij</span></span></li>
+                <li class="kaartregel"><span class="font-semibold">Dadeltaart</span><span class="flex items-baseline gap-3"><span class="stip flex-1"></span><span class="wat text-sm text-grijs">suikervrij en vegan</span></span></li>
+                <li class="kaartregel"><span class="font-semibold">Dagtaart</span><span class="flex items-baseline gap-3"><span class="stip flex-1"></span><span class="wat text-sm text-grijs">vraag naar het aanbod</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ONTBIJT & LUNCH -->
+    <section id="lunch" class="border-t border-lijn py-24 md:py-32">
+      <div class="wrap grid items-center gap-y-14 md:grid-cols-12 md:gap-x-16">
+        <figure class="rijs md:col-span-5">
+          <Image src={ontbijt} alt="Toast met gebakken ei, rucola en avocado op een donker bord, met twee verse sapjes op een plankje" quality={70} widths={[480, 760, 1000]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover" />
+        </figure>
+        <div class="md:col-span-6 md:col-start-7">
+          <h2 class="rijs text-3xl">Ontbijt en lunch, alles vers</h2>
+          <p class="rijs mt-8 max-w-md text-lg text-grijs">Msemmen, bruschetta’s, toasted sandwiches en wraps, met huisgemaakte hummus en verse limonade.</p>
+          <div class="mt-12 space-y-10">
+            {[r('Sophie W.'), r('Arno D.')].map((x, i) => (
+              <figure class="rijs border-l-2 border-munt pl-6" style={`--d:${i * 0.1}s`}>
+                <blockquote class="text-lg leading-relaxed">“{x.tekst}”</blockquote>
+                <figcaption class="mt-3 text-sm text-grijs">{x.naam} · Google</figcaption>
+              </figure>
+            ))}
+          </div>
+          <a href={waHoi} class="rijs knop knop-lijn mt-12"><Icoon naam="wa" />Tafel reserveren</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DINERNIGHT: donker, zoals de avond -->
+    <section id="dinernight" class="op-inkt relative overflow-hidden bg-inkt text-krijt">
+      <div class="grid lg:grid-cols-2">
+        <div class="relative min-h-[26rem] lg:min-h-[44rem]">
+          <Image src={tajine} alt="Tajine met kip, wortel, olijven, pruimen en sesam op een blauwe houten tafel" quality={70} widths={[480, 760, 1000, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_40%]" />
+        </div>
+        <div class="flex items-center px-5 py-20 md:px-10 lg:px-20">
+          <div class="max-w-lg">
+            <Ster class="rijs h-7 w-7 text-munt-licht" />
+            <h2 class="rijs mt-6 text-3xl">Dinernight</h2>
+            <p class="rijs mt-8 text-lg text-zacht">Op sommige zaterdagavonden koken we traditioneel, op Marokkaanse wijze: een tajine, of couscous van kip met gekarameliseerde uitjes en knapperig gebakken noten. We koken vers en serveren warm.</p>
+            <p class="rijs mt-5 text-zacht">De data zetten we op <a href={site.facebook} class="link text-krijt">Facebook</a>. Met z’n tweeën of met al je vrienden: reserveer je plek via WhatsApp.</p>
+            <a href={waDiner} class="rijs knop knop-licht mt-10"><Icoon naam="wa" />Plek reserveren</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BEZOEK: reviews, tijden, adres -->
+    <section id="bezoek" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-x-16 gap-y-12 md:grid-cols-3">
+          {[r('Erwin V.'), r('Nienke S.')].map((x, i) => (
+            <figure class="rijs" style={`--d:${i * 0.1}s`}>
+              <blockquote class="font-kop text-xl leading-snug md:text-[1.375rem]">“{x.tekst}”</blockquote>
+              <figcaption class="mt-4 text-sm text-grijs">{x.naam} · Google</figcaption>
+            </figure>
+          ))}
+          <figure class="rijs" style="--d:.2s">
+            <Image src={koffie} alt="Twee gelaagde koffies met slagroom op een houten plankje" quality={70} widths={[400, 640]} sizes="(min-width: 768px) 30vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover object-[50%_55%]" />
+            <figcaption class="mt-3 text-sm text-grijs">{site.google.score} op Google, uit {site.google.aantal} reviews</figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-24 grid gap-y-12 border-t border-lijn pt-16 md:mt-28 md:grid-cols-12 md:gap-x-12">
+          <div class="md:col-span-5">
+            <h2 class="rijs text-3xl">Kom langs</h2>
+            <p class="rijs mt-6 text-lg">{site.straat}<br />{site.postcode} {site.plaats}</p>
+            <p class="rijs mt-2 text-grijs">Midden in de stad, met terras aan het Bellamypark.</p>
+            <p class="rijs mt-6"><a href={site.maps} class="link">Route plannen</a></p>
+          </div>
+          <div class="md:col-span-3">
+            <table class="rijs w-full max-w-xs text-[1.0625rem]">
+              <caption class="mb-3 text-left font-kop text-xl">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn data-[vandaag]:font-semibold data-[vandaag]:text-munt">
+                    <th scope="row" class="py-2 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-3 text-sm text-grijs" data-status></p>
+          </div>
+          <div class="md:col-span-4 md:pl-6">
+            <p class="rijs font-kop text-xl">Reserveren of iets vragen?</p>
+            <p class="rijs mt-3 text-grijs">Stuur ons een berichtje of bel. Voor een tafel, een groep of de dinernight.</p>
+            <div class="rijs mt-7 flex flex-col items-start gap-3">
+              <a href={waHoi} class="knop knop-munt"><Icoon naam="wa" />WhatsApp</a>
+              <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Theekaart: kies een blend, de WhatsApp-knop past zich aan.
+  const lijst = document.querySelector('[data-thee]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-thee-knop]');
+  const naam = document.querySelector('[data-thee-naam]');
+  lijst?.querySelectorAll<HTMLButtonElement>('button').forEach((b) => b.addEventListener('click', () => {
+    lijst.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    if (knop && naam) { knop.href = b.dataset.wa!; naam.textContent = b.dataset.naam!; }
+  }));
+</script>
