@@ -1,0 +1,327 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, plaatsen, reviews, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import markiezen from '../assets/markiezen.jpg';
+import screen from '../assets/screen.jpg';
+import rolluik from '../assets/rolluik.jpg';
+import uitval from '../assets/uitval.jpg';
+import knikarm from '../assets/knikarm.jpg';
+import markiesBinnen from '../assets/markies-binnen.jpg';
+import bus from '../assets/bus.jpg';
+import romazo from '../assets/romazo.png';
+
+// Specificaties letterlijk van hun productpagina's (acb.nl). Maten: breedte x uitval, maximaal.
+const producten = [
+  {
+    id: 'rolluiken', naam: 'Rolluiken', zin: 'Privacy, rust, isolatie en veiligheid.',
+    rijen: [['Kast', 'afgeschuind of rond'], ['Kastmaten', '150, 165, 180, 205, 230'], ['Bediening', 'band, koord, slinger of elektrisch'], ['Extra', 'zon- en windmeter, tijdschakelaar']],
+  },
+  {
+    id: 'screens', naam: 'Screens', zin: 'Lichtdoorlatend, en u houdt zicht naar buiten.',
+    rijen: [['Werking', 'doek glijdt tussen twee geleiders'], ['Kastmaten', 'grote variatie'], ['Bediening', 'met de hand of elektrisch']],
+  },
+  {
+    id: 'knikarm', naam: 'Knikarmschermen', zin: 'Voor terras en tuin.',
+    rijen: [['Wega', '600 x 250 of 500 x 300 cm'], ['Naos Cassette', '650 x 300 of 600 x 350 cm'], ['Merga', 'koppelbaar tot 1500 cm'], ['Situla', '650 x 300 of 600 x 350 cm']],
+  },
+  {
+    id: 'uitval', naam: 'Uitvalschermen', zin: 'Voor het raam, met wind- en stormvaste armen.',
+    rijen: [['Caph 110 Cassette', '600 x 150 cm'], ['Caph 95', '400 x 150 cm'], ['Chara', '600 x 150 cm']],
+  },
+  {
+    id: 'markiezen', naam: 'Markiezen', zin: 'De meest traditionele vorm van zonwering.',
+    rijen: [['Frame', 'hout of aluminium'], ['Afwerking', 'spijkerband en markiesnagels'], ['Vorm', 'rond, bol, hol, recht, ovaal']],
+  },
+  {
+    id: 'pergola', naam: 'Pergola en veranda', zin: 'Solidare, op of onder de overkapping, of vrijstaand.',
+    rijen: [['Solidare Veranda', '600 x 500 cm'], ['Solidare Versa', '600 x 400 cm'], ['Solidare Pergola', '600 x 500 cm'], ['Solidare Cubola', '600 x 400 cm']],
+  },
+];
+
+const soorten = ['rolluik', 'screen', 'knikarmscherm', 'uitvalscherm', 'markies', 'pergola- of verandascherm'];
+const verdiepingen = [['begane grond', 'Begane grond'], ['eerste verdieping', '1e verdieping'], ['tweede verdieping of hoger', '2e of hoger']];
+const bediening = [['met de hand', 'Met de hand'], ['elektrisch', 'Elektrisch'], ['nog geen idee', 'Weet ik nog niet']];
+
+const titel = 'ACB Zonwering & Rolluiken | Zonwering op maat in Lisse, sinds 1994';
+const omschrijving = 'Rolluiken, screens, knikarmschermen, uitvalschermen en markiezen, gemaakt in eigen werkplaats en gemonteerd door Alexander Beentjes. Voor de Bollenstreek en de Haarlemmermeer.';
+const [martijn, charlotte, milosz, ivar] = reviews.los;
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen pergolascherm, met de ACB-bus in de verte -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-antraciet text-wit md:min-h-[calc(100svh-5rem)]">
+      <Image src={hero} alt="Een gestreept pergolascherm boven een terras met loungestoelen en siergrassen; in de verte de witte bus van ACB met het oranje zonlogo" quality={72} widths={[480, 720, 960, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_50%] lg:object-[50%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1f232633_0%,#1f232699_24%,#1f2326d9_42%,#1f2326f2_62%,#1f2326_100%)] lg:bg-[linear-gradient(90deg,#1f2326f0_0%,#1f2326cc_34%,#1f232673_55%,#1f232614_80%),linear-gradient(0deg,#1f2326a6_0%,#1f232600_38%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-28 md:pb-20 lg:pb-24">
+        <p class="text-sm font-semibold text-mist">Zonwering en rolluiken in Lisse, sinds 1994</p>
+        <h1 class="mt-5 max-w-[17ch] text-hero">Op maat gemaakt.<br /> Zelf gemonteerd.</h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90">Rolluiken, screens, knikarmschermen en markiezen uit onze eigen werkplaats. Voor de Bollenstreek en de Haarlemmermeer.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#offerte" class="knop">Offerte aanvragen<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WERK: hun eigen foto's, groot en scheef verdeeld -->
+    <section id="werk" class="py-20 md:py-24" aria-labelledby="werk-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-12">
+          <h2 id="werk-titel" class="rijs text-3xl lg:col-span-6">Elk scherm voor één gevel</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Ingemeten aan huis, gemaakt in Lisse en opgehangen door Alexander.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
+          <figure class="rijs col-span-2 flex flex-col md:col-span-7 md:row-span-2">
+            <Image src={markiezen} alt="Twee gestreepte markiezen in grijs en wit boven de ramen van een bakstenen woning" quality={68} widths={[480, 720, 960]} sizes="(min-width: 768px) 58vw, 100vw" class="aspect-[4/3] w-full flex-1 rounded-sm object-cover md:aspect-auto md:min-h-0" />
+            <figcaption class="mt-2 text-xs text-grijs">Markiezen</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.08s">
+            <Image src={screen} alt="Een uitgerold screen voor een groot raam van een bakstenen woning, de kast strak onder de dakrand" quality={68} widths={[360, 560, 760]} sizes="(min-width: 768px) 40vw, 50vw" class="aspect-[4/3] w-full rounded-sm object-cover md:aspect-[16/10]" />
+            <figcaption class="mt-2 text-xs text-grijs">Screen</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.16s">
+            <Image src={rolluik} alt="Twee witte rolluiken naast elkaar, neergelaten voor een breed raam" quality={68} widths={[360, 560, 760]} sizes="(min-width: 768px) 40vw, 50vw" class="aspect-[4/3] w-full rounded-sm object-cover md:aspect-[16/10]" />
+            <figcaption class="mt-2 text-xs text-grijs">Rolluiken</figcaption>
+          </figure>
+          <figure class="rijs col-span-2 md:col-span-5">
+            <Image src={uitval} alt="Een vrijstaande bakstenen woning met drie lichte uitvalschermen voor de ramen" quality={68} widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Uitvalschermen</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-4" style="--d:.08s">
+            <Image src={knikarm} alt="Een groen-wit gestreept knikarmscherm boven een terras" quality={68} widths={[360, 560, 760]} sizes="(min-width: 768px) 32vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Knikarmscherm</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-3" style="--d:.16s">
+            <Image src={markiesBinnen} alt="Een oranje gestreepte markies van onderen gezien, met geschulpte volant" quality={68} widths={[300, 450, 600]} sizes="(min-width: 768px) 24vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Markies, van onderen</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. PRODUCTEN: een maatlijst, geen kaartjes -->
+    <section id="producten" class="border-t border-lijn bg-wit py-20 md:py-24" aria-labelledby="prod-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <h2 id="prod-titel" class="rijs text-3xl">Wat we leveren</h2>
+            <p class="rijs mt-5 max-w-sm text-grijs">Maten zijn de maximale breedte x uitval. Alles daaronder maken we op maat.</p>
+            <a href="#offerte" class="rijs link mt-6 inline-block font-semibold">Vraag een offerte aan</a>
+          </div>
+        </div>
+        <div class="grid gap-x-12 gap-y-12 sm:grid-cols-2 lg:col-span-8">
+          {producten.map((p, i) => (
+            <div class="rijs" style={`--d:${(i % 2) * 0.08}s`}>
+              <h3 class="flex items-baseline gap-3 text-xl"><span class="inline-block h-[.55em] w-[.55em] flex-none bg-zon" aria-hidden="true"></span>{p.naam}</h3>
+              <p class="mt-2 text-grijs">{p.zin}</p>
+              <dl class="mt-4 text-[.9375rem]">
+                {p.rijen.map(([k, v]) => (
+                  <div class="spec"><dt class="font-semibold">{k}</dt><span aria-hidden="true"></span><dd class="num text-grijs">{v}</dd></div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WERKPLAATS: de lamellen rollen dicht boven het donkere vlak -->
+    <div class="lamellen rijs" aria-hidden="true"></div>
+    <section id="werkplaats" class="bg-antraciet pb-20 pt-14 text-wit md:pb-28 md:pt-20" aria-labelledby="wp-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={bus} alt="De witte bus van ACB Zonwering & Rolluiken met ladders op het dak, voor een woning met een wit rolluik" quality={75} widths={[400, 555]} sizes="(min-width: 1024px) 34vw, 100vw" class="aspect-[555/500] w-full rounded-sm object-cover" />
+        </figure>
+        <div class="flex flex-col lg:col-span-6 lg:col-start-7">
+          <h2 id="wp-titel" class="rijs text-3xl">Van vader op zoon, sinds 1994</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-mist">Begonnen met een mobiele showroom. Nu een showroom en werkplaats aan Meer en Duin, waar we al onze zonwering zelf in elkaar zetten.</p>
+          <ul class="mt-10 border-t border-lijn-licht">
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4"><span class="kop w-28 flex-none pt-0.5 text-xs text-zon-licht">MONTAGE</span><span>Alexander Beentjes, met een vaste inhuurkracht.</span></li>
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4"><span class="kop w-28 flex-none pt-0.5 text-xs text-zon-licht">GARANTIE</span><span>Aangesloten bij ROMAZO Garant, lid van Metaalunie.</span></li>
+            <li class="rijs flex gap-5 border-b border-lijn-licht py-4"><span class="kop w-28 flex-none pt-0.5 text-xs text-zon-licht">SHOWROOM</span><span>Op afspraak, maandag tot en met zaterdag.</span></li>
+          </ul>
+          <div class="rijs mt-10 inline-flex w-fit items-center rounded-sm bg-wit px-4 py-3">
+            <Image src={romazo} alt="ROMAZO, sinds 1923" widths={[160, 240]} sizes="7.5rem" class="h-auto w-[7.5rem]" />
+          </div>
+        </div>
+      </div>
+
+      <div id="service" class="wrap mt-16 grid gap-y-10 border-t border-lijn-licht pt-14 md:mt-20 md:pt-16 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Service, het hele jaar</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-mist">Onderhoud, garantie en reparatie voor zonwering die wij hebben geleverd en gemonteerd.</p>
+          <a href={waMet('Hallo Alexander, ik heb een storing aan mijn zonwering of rolluik.')} class="rijs knop mt-8"><Icoon naam="wa" />Storing melden</a>
+        </div>
+        <blockquote class="rijs self-center border-l-2 border-zon pl-6 lg:col-span-6 lg:col-start-7">
+          <p class="text-xl leading-snug md:text-2xl">“{milosz.tekst}”</p>
+          <footer class="mt-3 text-sm text-mist">{milosz.naam} op Google</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 5. REVIEWS: de klant die het zelf als lijstje opschreef -->
+    <section class="py-20 md:py-24" aria-labelledby="rev-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-6">
+          <h2 id="rev-titel" class="text-3xl">In één woord perfect</h2>
+          <blockquote class="mt-8">
+            <p class="text-grijs">Door ACB 2 rolluiken voor de zolder en een markies laten plaatsen. …</p>
+            <ul class="mt-6 border-t border-lijn">
+              {reviews.lijst.tekst.map((t) => <li class="flex gap-4 border-b border-lijn py-3.5 text-lg"><span class="kop text-zon" aria-hidden="true">+</span>{t}</li>)}
+            </ul>
+          </blockquote>
+          <figcaption class="mt-4 text-sm text-grijs">{reviews.lijst.naam} op Google</figcaption>
+        </figure>
+        <div class="space-y-12 lg:col-span-5 lg:col-start-8 lg:pt-14">
+          {[martijn, charlotte, ivar].map((x, i) => (
+            <figure class="rijs" style={`--d:${i * 0.08}s`}>
+              <blockquote class="text-xl leading-snug">“{x.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm text-grijs">{x.naam} op Google</figcaption>
+            </figure>
+          ))}
+          <p class="flex items-center gap-2 border-t border-lijn pt-6 text-sm text-grijs"><Icoon naam="g" class="h-4 w-4" />{site.google.score} op Google, {site.google.aantal} reviews · ook reviews op Trustoo</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. INMEETBON: de offerte-vraag zoals hun contactpagina hem stelt, met een maattekening die meetekent -->
+    <section id="offerte" class="bg-alu-2 py-16 md:py-20" aria-labelledby="bon-titel">
+      <div class="wrap">
+        <form class="rijs grid overflow-hidden rounded-md border border-lijn bg-wit shadow-sm lg:grid-cols-12" data-bon>
+          <div class="p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <p class="kop text-xs text-grijs">INMEETBON</p>
+            <h2 id="bon-titel" class="mt-3 text-3xl">Vraag een offerte aan</h2>
+            <p class="mt-4 max-w-md text-grijs">Vul in wat u weet. Alexander komt daarna inmeten.</p>
+
+            <div class="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+              <label class="block sm:col-span-2">
+                <span class="text-sm font-semibold text-grijs">Wat zoekt u?</span>
+                <select class="veld" name="soort" data-soort>{soorten.map((s) => <option value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}</select>
+              </label>
+              <fieldset class="sm:col-span-2">
+                <legend class="text-sm font-semibold text-grijs">Welke verdieping?</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {verdiepingen.map(([v, t], i) => <label><input type="radio" name="verdieping" value={v} checked={i === 0} class="peer sr-only" /><span class="keus">{t}</span></label>)}
+                </div>
+              </fieldset>
+              <div class="sm:col-span-2">
+                <p class="text-sm font-semibold text-grijs" id="maat-label">Ongeveer hoe groot? (cm)</p>
+                <div class="mt-1 grid grid-cols-[1fr_auto_1fr] items-end gap-4" role="group" aria-labelledby="maat-label">
+                  <label class="block"><span class="sr-only">Breedte in cm</span><input class="veld num" type="number" inputmode="numeric" min="20" max="1500" step="1" name="breedte" placeholder="breedte" data-b /></label>
+                  <span class="kop pb-3 text-grijs" aria-hidden="true">x</span>
+                  <label class="block"><span class="sr-only">Hoogte in cm</span><input class="veld num" type="number" inputmode="numeric" min="20" max="600" step="1" name="hoogte" placeholder="hoogte" data-h /></label>
+                </div>
+              </div>
+              <fieldset class="sm:col-span-2">
+                <legend class="text-sm font-semibold text-grijs">Bediening</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {bediening.map(([v, t], i) => <label><input type="radio" name="bediening" value={v} checked={i === 1} class="peer sr-only" /><span class="keus">{t}</span></label>)}
+                </div>
+              </fieldset>
+              <label class="block sm:col-span-2">
+                <span class="text-sm font-semibold text-grijs">Waar woont u?</span>
+                <select class="veld" name="plaats" data-plaats>
+                  {plaatsen.map((p) => <option value={p}>{p}</option>)}
+                  <option value="">Een andere plaats</option>
+                </select>
+              </label>
+            </div>
+            <p class="mt-6 hidden rounded-sm border-l-2 border-zon bg-alu px-4 py-3 text-[.9375rem]" data-buiten role="status">We werken uitsluitend in de Bollenstreek en de Haarlemmermeer, tot ongeveer 15 km rond Lisse. Twijfelt u? Vraag het gerust.</p>
+          </div>
+
+          <div class="flex flex-col bg-antraciet p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <!-- Maattekening: een raam met maatlijnen die meetekenen -->
+            <svg viewBox="0 0 300 230" class="w-full max-w-[19rem] self-center" aria-hidden="true">
+              <defs><marker id="pijl" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 8 4 0 8z" fill="#f6a45c" /></marker></defs>
+              <rect x="60" y="30" width="200" height="22" fill="#2b3034" stroke="#b8bfc3" stroke-width="1.5" />
+              <g data-doek>
+                <rect x="70" y="52" width="180" height="150" fill="none" stroke="#b8bfc3" stroke-width="1.5" />
+                <line x1="160" y1="52" x2="160" y2="202" stroke="#b8bfc3" stroke-width="1" />
+              </g>
+              <g stroke="#ffffff22" stroke-width="5"><line x1="71" y1="60" x2="249" y2="60" /><line x1="71" y1="70" x2="249" y2="70" /><line x1="71" y1="80" x2="249" y2="80" /><line x1="71" y1="90" x2="249" y2="90" /></g>
+              <line x1="60" y1="14" x2="260" y2="14" stroke="#f6a45c" stroke-width="1.5" marker-start="url(#pijl)" marker-end="url(#pijl)" />
+              <line x1="34" y1="52" x2="34" y2="202" stroke="#f6a45c" stroke-width="1.5" marker-start="url(#pijl)" marker-end="url(#pijl)" />
+              <text x="160" y="10" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Michroma, sans-serif" data-tb>B ?</text>
+              <text x="22" y="127" text-anchor="middle" fill="#ffffff" font-size="12" font-family="Michroma, sans-serif" transform="rotate(-90 22 127)" data-th>H ?</text>
+              <text x="160" y="224" text-anchor="middle" fill="#b8bfc3" font-size="11" font-family="Albert Sans Variable, sans-serif" data-tv>begane grond</text>
+            </svg>
+            <p class="mt-8 text-sm font-semibold text-mist">Uw bericht aan Alexander</p>
+            <p class="mt-2 rounded-sm bg-staal p-4 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <a href={site.wa} class="knop mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="mt-4 text-sm text-mist">Stuur er een foto van de gevel bij, dan kan Alexander alvast meekijken. Liever mailen? <a href={`mailto:${site.mail}`} class="link link-licht">{site.mail}</a></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT EN LEVERGEBIED -->
+    <section id="contact" class="py-16 md:py-20" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">Meer en Duin 54 F/G, Lisse</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">De showroom is open op afspraak. Zo plant Alexander inmeten en monteren in overleg met u.</p>
+          <dl class="mt-10 max-w-md">
+            <div class="rijs spec"><dt class="font-semibold">Showroom</dt><span aria-hidden="true"></span><dd class="text-grijs">op afspraak, ma t/m za</dd></div>
+            <div class="rijs spec"><dt class="font-semibold">Telefoon</dt><span aria-hidden="true"></span><dd><a href={site.telHref} class="link num">{site.tel}</a></dd></div>
+            <div class="rijs spec"><dt class="font-semibold">E-mail</dt><span aria-hidden="true"></span><dd><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></dd></div>
+          </dl>
+          <p class="rijs mt-8 max-w-md text-[.9375rem] text-grijs">Van maart tot en met september is het hoogseizoen. Dan belt Alexander u terug, meestal aan het eind van de ochtend of de middag.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop knop-donker"><Icoon naam="pin" />Route plannen</a>
+            <a href={waMet('Hallo Alexander, ik wil graag een afspraak in de showroom maken.')} class="knop"><Icoon naam="wa" />Afspraak maken</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs border-t-4 border-zon bg-wit p-7 shadow-sm md:p-9">
+            <h3 class="text-xl">Waar we monteren</h3>
+            <p class="mt-2 text-sm text-grijs">Tot ongeveer 15 km rond Lisse</p>
+            <ul class="mt-6 grid grid-cols-2 gap-x-6 text-[.9375rem]">
+              {plaatsen.map((p) => <li class="border-b border-lijn py-2">{p}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const d = new FormData(f);
+      const soort = String(d.get('soort'));
+      const verd = String(d.get('verdieping'));
+      const bed = String(d.get('bediening'));
+      const plaats = String(d.get('plaats'));
+      const b = Math.round(Number(d.get('breedte')) || 0);
+      const h = Math.round(Number(d.get('hoogte')) || 0);
+      const maat = b && h ? `, ongeveer ${b} x ${h} cm (breedte x hoogte)` : b ? `, ongeveer ${b} cm breed` : h ? `, ongeveer ${h} cm hoog` : '';
+      const bedZin = bed === 'nog geen idee' ? 'Over de bediening twijfel ik nog.' : `Bediening het liefst ${bed}.`;
+      const waar = plaats ? `Ik woon in ${plaats}.` : 'Ik woon buiten jullie lijst met plaatsen.';
+      const tekst = `Hallo Alexander, ik wil graag een offerte voor een ${soort} op de ${verd}${maat}. ${bedZin} ${waar} Kunnen we een afspraak maken om in te meten?`;
+      $('[data-bericht]').textContent = tekst;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+      $('[data-buiten]').classList.toggle('hidden', !!plaats);
+      $('[data-tb]').textContent = b ? `B ${b} cm` : 'B ?';
+      $('[data-th]').textContent = h ? `H ${h} cm` : 'H ?';
+      $('[data-tv]').textContent = verd;
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>
