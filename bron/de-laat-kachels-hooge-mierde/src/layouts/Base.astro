@@ -1,0 +1,94 @@
+---
+import '../styles/global.css';
+import kopUrl from '@fontsource/bowlby-one/files/bowlby-one-latin-400-normal.woff2?url';
+import sansUrl from '@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2?url';
+import { site, url } from '../data/site';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content={site.themeColor} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansUrl} crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:site_name" content={site.naam} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
+  </head>
+  <body class="min-h-dvh pb-14 md:pb-0">
+    {site.voorstel && (
+      <div class="relative z-50 bg-vlam text-roet">
+        <p class="wrap py-2 text-xs font-medium leading-snug" style="font-family: system-ui, sans-serif">
+          Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website.{" "}
+          <a href="https://www.sitefront.nl" class="font-bold underline underline-offset-2">sitefront.nl</a>
+        </p>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-sm focus:bg-kalk focus:px-4 focus:py-2 focus:text-roet">Naar de inhoud</a>
+    <slot />
+    <script>
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -6% 0px' });
+      document.querySelectorAll('.rijs').forEach((el) => io.observe(el));
+
+      // Showroom: vrijdag 10-17 en alleen de EERSTE zaterdag van de maand 10-13 (eigen site). Nederlandse tijd.
+      const nu = new Date();
+      const deel = (d: Date, o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Amsterdam', ...o }).format(d);
+      const nlDag = (d: Date) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(deel(d, { weekday: 'short' }));
+      const nlDatum = (d: Date) => Number(deel(d, { day: 'numeric' }));
+      const venster = (d: Date): [number, number] | null => {
+        const w = nlDag(d);
+        if (w === 5) return [600, 1020];
+        if (w === 6 && nlDatum(d) <= 7) return [600, 780];
+        return null;
+      };
+      const min = Number(deel(nu, { hour: '2-digit', hourCycle: 'h23' })) * 60 + Number(deel(nu, { minute: '2-digit' }));
+      const tijd = (m: number) => `${Math.floor(m / 60)}.${String(m % 60).padStart(2, '0')}`;
+      const maanden = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+      const dagen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      const v = venster(nu);
+      let tekst: string; let open = false;
+      if (v && min >= v[0] && min < v[1]) { open = true; tekst = `Showroom nu open, tot ${tijd(v[1])} uur`; }
+      else if (v && min < v[0]) tekst = `Showroom vandaag open vanaf ${tijd(v[0])} uur`;
+      else {
+        let d = new Date(nu); let i = 0; let w: [number, number] | null = null;
+        do { d = new Date(d.getTime() + 864e5); w = venster(d); i++; } while (!w && i < 40);
+        const dag = i === 1 ? 'morgen' : `${dagen[nlDag(d)]} ${nlDatum(d)} ${maanden[Number(deel(d, { month: 'numeric' })) - 1]}`;
+        tekst = `Showroom gesloten, ${dag} weer open vanaf ${tijd(w![0])} uur`;
+      }
+      document.querySelectorAll<HTMLElement>('[data-status]').forEach((el) => { el.textContent = tekst; el.closest('[data-status-wrap]')?.setAttribute('data-open', String(open)); });
+
+      // Maandkalender met vrijdagen en de eerste zaterdag (eigen detail: hun ongewone openingsritme).
+      const kal = document.querySelector<HTMLElement>('[data-kal]');
+      if (kal) {
+        const j = Number(deel(nu, { year: 'numeric' })); const m = Number(deel(nu, { month: 'numeric' })) - 1; const vandaag = nlDatum(nu);
+        const eerste = new Date(Date.UTC(j, m, 1, 12)); const start = (eerste.getUTCDay() + 6) % 7; const n = new Date(Date.UTC(j, m + 1, 0, 12)).getUTCDate();
+        let h = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'].map((d) => `<span class="kop-d" aria-hidden="true">${d}</span>`).join('');
+        for (let i = 0; i < start; i++) h += '<span aria-hidden="true"></span>';
+        for (let d = 1; d <= n; d++) {
+          const w = new Date(Date.UTC(j, m, d, 12)).getUTCDay();
+          const c = [w === 5 ? 'vr' : '', w === 6 && d <= 7 ? 'za1' : '', d === vandaag ? 'nu' : ''].join(' ').trim();
+          const lab = w === 5 ? `${d} ${maanden[m]}, open 10.00 tot 17.00 uur` : w === 6 && d <= 7 ? `${d} ${maanden[m]}, eerste zaterdag, open 10.00 tot 13.00 uur` : '';
+          h += lab ? `<span class="num ${c}" role="listitem" aria-label="${lab}">${d}</span>` : `<span class="num ${c}" aria-hidden="true">${d}</span>`;
+        }
+        kal.innerHTML = h;
+        const t = document.querySelector('[data-kal-titel]'); if (t) t.textContent = `${maanden[m]} ${j}`;
+      }
+    </script>
+  </body>
+</html>
