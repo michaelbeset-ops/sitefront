@@ -1,0 +1,252 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Automaat from '../components/Automaat.astro';
+import { site, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import bus from '../assets/bus.png';
+import polder from '../assets/polder.jpg';
+
+const hD = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: hero, width: w, quality: 68, format: 'webp' })));
+const hM = await Promise.all([480, 780, 1080].map((w) => getImage({ src: heroM, width: w, quality: 64, format: 'webp' })));
+const srcset = (l: { src: string }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+// De groepenverklaring: teksten van hun eigen pagina's (stremme.nl, archief 2025-2026), ingekort.
+const groepen = [
+  { nr: '1', naam: 'Elektrotechniek', tekst: 'Grote en kleine klussen: een aanbouw, een nieuwe keuken, energiezuinige ledverlichting. Ook voor het aansluiten van tv en internet.' },
+  { nr: '2', naam: 'Beveiliging', tekst: 'Camerasystemen voor buiten, in uw bedrijf en thuis, met beelden die u overal via internet bekijkt. Inbraak- en brandbeveiliging op maat.' },
+  { nr: '3', naam: 'Data', tekst: 'Bedrijfsmatige netwerken, van datanetwerken tot UPS-systemen.' },
+  { nr: '4', naam: 'Groene energie', tekst: "Zonnepanelen, laadpalen voor plug-in hybride en elektrische auto's, en energiezuinige verlichting." },
+  { nr: '5', naam: 'Service en storing', tekst: 'Elke installatie met service erbij. Voor storingen en reparatie belt of appt u het storingsnummer.' },
+];
+
+const zakelijk = ['Moderne, energiezuinige verlichting', 'Computeraansluitingen', 'Krachtstroom', 'Noodverlichting', 'Alarm- en intercominstallaties'];
+
+const soorten = ['Elektra', 'Beveiliging of camera', 'Data of netwerk', 'Zonnepanelen of laadpaal', 'Iets anders'];
+
+const titel = 'Stremme Technisch Onderhoud | Elektricien in Papendrecht';
+const omschrijving = 'Elektrotechnisch installatiebedrijf sinds 1999: nieuwe installaties, uitbreiding en onderhoud, beveiliging, data en groene energie. Voor particulieren en bedrijven in Papendrecht.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: groepenkast, tekst links -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-nacht text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hD, [960, 1440, 1920])} sizes="100vw" type="image/webp" />
+        <source srcset={srcset(hM, [480, 780, 1080])} sizes="100vw" type="image/webp" />
+        <img src={hD[1].src} alt="Een open groepenkast met een rij witte installatieautomaten en blauwe bedrading" width="1440" height="1080" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%] md:object-[60%_45%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0b1a3399_0%,#0b1a33a6_35%,#0b1a33e0_62%,#0b1a33f7_100%)] md:bg-[linear-gradient(90deg,#0b1a33f5_0%,#0b1a33d9_38%,#0b1a3373_70%,#0b1a3340_100%),linear-gradient(0deg,#0b1a33b3_0%,#0b1a3300_45%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-14 lg:pb-16">
+        <p class="text-base font-semibold text-blauw-licht md:text-lg">Elektrotechnisch installatiebedrijf in Papendrecht</p>
+        <h1 class="mt-4 text-hero">Korte lijnen,<br class="max-sm:hidden" /> <span class="text-blauw-licht">snel geschakeld.</span></h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90 md:text-xl">Nieuwe installaties, uitbreidingen en onderhoud, voor particulieren en bedrijven. Sinds 1999.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#storing" class="knop knop-wit">Storing of klus melden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <div class="mt-12 flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-lijn-licht pt-5 text-sm text-mist">
+          <a href={site.google} class="flex items-center gap-2 text-mist no-underline hover:text-wit"><Icoon naam="ster" class="h-4 w-4 text-draad-geel" />5,0 op Google · 7 reviews</a>
+          <span class="hidden items-center gap-2 sm:flex"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Elektra, beveiliging, data en groene energie</span>
+          <span class="hidden items-center gap-2 md:flex"><Icoon naam="klok" class="h-4 w-4 text-blauw-licht" />Ook in de avonduren langs</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DE GROEPENVERKLARING -->
+    <section id="werk" class="bg-alu py-20 md:py-28" aria-labelledby="werk-titel">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-28">
+            <h2 id="werk-titel" class="rijs text-3xl">Alles op één kaart.</h2>
+            <p class="rijs mt-6 max-w-md text-lg text-grijs">Zoals de groepenverklaring in uw meterkast: per groep wat Stremme aanlegt, uitbreidt en onderhoudt.</p>
+            <p class="rijs mt-6 max-w-md text-grijs">Voor renovatie, onderhoud, villa's, aanbouw en nieuwbouw. Ook domotica hoort erbij.</p>
+            <a href={waMet('Goedendag, ik wil graag een klus bespreken met Stremme Technisch Onderhoud.')} class="rijs knop mt-9"><Icoon naam="wa" />Klus bespreken</a>
+          </div>
+        </div>
+        <div class="rijs rounded-md border border-alu-2 bg-wit shadow-sm lg:col-span-7">
+          <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b-2 border-blauw px-5 py-4 sm:px-8">
+            <p class="mono text-xs uppercase tracking-[.14em] text-blauw">Groepenverklaring</p>
+            <p class="mono text-xs text-grijs">Stremme · Papendrecht</p>
+          </div>
+          <ol>
+            {groepen.map((g) => (
+              <li class="groep grid grid-cols-[2.5rem_1fr] gap-x-5 border-b border-lijn px-5 py-7 last:border-b-0 sm:grid-cols-[3rem_1fr] sm:gap-x-7 sm:px-8 md:py-8" tabindex="0">
+                <Automaat nr={`Gr.${g.nr}`} class="mt-1 w-10 sm:w-12" />
+                <div>
+                  <h3 class="text-2xl"><span class="mono mb-1 block text-sm font-medium text-grijs">Groep {g.nr}</span>{g.naam}</h3>
+                  <p class="mt-2 max-w-xl text-grijs">{g.tekst}</p>
+                  {g.nr === '5' && <p class="mt-3"><a href={site.mobielHref} class="link num font-bold text-blauw">{site.mobiel}</a></p>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ZAKELIJK: blauw, met hun eigen bus -->
+    <section id="zakelijk" class="bg-blauw text-wit" aria-labelledby="zak-titel">
+      <div class="draden rijs" aria-hidden="true"></div>
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="zak-titel" class="rijs text-3xl">Ook voor uw bedrijfspand.</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-wit/85">Stremme ontwerpt de installatie in overleg met u en legt hem aan:</p>
+          <ul class="mt-8 border-t border-lijn-licht">
+            {zakelijk.map((z, i) => (
+              <li class="rijs flex items-center gap-4 border-b border-lijn-licht py-4 text-xl font-extrabold sm:text-2xl" style={`--d:${i * 0.05}s`}>
+                <span class="h-[3px] w-6 flex-none bg-blauw-licht" aria-hidden="true"></span>{z}
+              </li>
+            ))}
+          </ul>
+          <p class="rijs mt-8 max-w-lg text-wit/85">Advies, ontwerp, installatie en service in één pakket.</p>
+        </div>
+        <div class="flex flex-col justify-between gap-12 lg:col-span-6">
+          <figure class="rijs">
+            <Image src={bus} alt="De zilveren bedrijfsbus van Stremme Technisch Onderhoud met blauwe belettering en het telefoonnummer, voor een hoogspanningsstation" quality={70} widths={[360, 576]} sizes="(min-width: 1024px) 576px, (min-width: 768px) 576px, 100vw" class="w-full rounded-md bg-wit" />
+            <figcaption class="mt-3 text-sm text-wit/75">De bus van Stremme. Foto van de eerdere stremme.nl.</figcaption>
+          </figure>
+          <div class="rijs border-l-[3px] border-blauw-licht pl-6">
+            <p class="text-[clamp(4rem,9vw,7.5rem)] font-black leading-[.85] tracking-[-.04em] text-blauw-licht">1999</p>
+            <p class="mt-4 max-w-md text-lg text-wit/90">Opgericht in 1999. Sindsdien een vaste klantenkring, dankzij gedegen advies en een proactieve houding.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GROENE ENERGIE: beeldband -->
+    <section class="relative isolate overflow-hidden bg-nacht text-wit" aria-labelledby="groen-titel">
+      <Image src={polder} alt="" quality={48} widths={[640, 1024, 1440]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover object-[80%_60%] md:object-[50%_60%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0b1a3300_0%,#0b1a3359_45%,#0b1a33e6_100%)] md:bg-[linear-gradient(90deg,#0b1a33e6_0%,#0b1a33a6_40%,#0b1a3300_75%)]" aria-hidden="true"></div>
+      <div class="wrap flex min-h-[34rem] flex-col justify-end py-16 md:min-h-[38rem] md:justify-center md:py-24">
+        <h2 id="groen-titel" class="rijs max-w-[13ch] text-3xl">Klaar voor wat er komt.</h2>
+        <p class="rijs mt-6 max-w-md text-lg text-wit/90">Zonnepanelen op het dak, een laadpaal voor de elektrische auto, zuinige verlichting: Stremme levert en installeert het.</p>
+        <a href={waMet('Goedendag, ik heb een vraag over zonnepanelen of een laadpaal.')} class="rijs mt-8 w-fit font-bold text-wit link link-licht">Vraag naar de mogelijkheden</a>
+      </div>
+    </section>
+
+    <!-- 5. REVIEWS: de woorden van klanten, groot -->
+    <section id="reviews" class="py-20 md:py-32" aria-labelledby="rev-titel">
+      <h2 id="rev-titel" class="sr-only">Reviews op Google</h2>
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-8">
+          <blockquote>
+            <p class="text-[clamp(2.5rem,5.5vw,5rem)] font-black leading-[.95] tracking-[-.03em] text-blauw">“Man van de klok.”</p>
+            <p class="mt-8 max-w-2xl text-xl leading-relaxed md:text-2xl">“Keurig geholpen. Prijs/kwaliteit uitstekend. Bij een volgend probleem wat electra betreft bellen we zeker de heer Stremme. En heel erg bedankt.”</p>
+          </blockquote>
+          <figcaption class="mt-6 flex items-center gap-3 text-grijs"><Icoon naam="g" class="h-5 w-5" />Greet B., Google-review</figcaption>
+        </figure>
+        <figure class="rijs self-end border-t-2 border-blauw pt-8 lg:col-span-4" style="--d:.1s">
+          <blockquote>
+            <p class="text-lg leading-relaxed">“Fijn contact en klus was snel en goed uitgevoerd. Wij hadden te maken met enkele aanpassingen achteraf. Ook dit was geen probleem en snel opgelost.”</p>
+          </blockquote>
+          <figcaption class="mt-5 flex items-center gap-3 text-grijs"><Icoon naam="g" class="h-5 w-5" />Wouter K., Google-review</figcaption>
+          <a href={site.google} class="link mt-8 inline-block font-bold text-blauw">Alle reviews op Google</a>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6. STORING OF KLUS MELDEN (wow): de spoed-schakelaar is een automaat -->
+    <section id="storing" class="bg-nacht text-wit" aria-labelledby="st-titel">
+      <div class="draden rijs" aria-hidden="true"></div>
+      <div class="wrap grid gap-y-12 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="st-titel" class="rijs text-3xl">Storing of klus melden.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-mist">Vul in wat er speelt. Uw bericht gaat via WhatsApp naar het storingsnummer van Stremme.</p>
+          <p class="rijs mt-8 text-mist">Direct bellen: <a href={site.mobielHref} class="link link-licht num font-bold text-wit">{site.mobiel}</a></p>
+        </div>
+        <form class="rijs grid gap-6 rounded-md bg-wit p-5 text-inkt sm:p-8 lg:col-span-7" data-melding novalidate>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <label class="block">
+              <span class="mb-2 block font-bold">Waar gaat het om?</span>
+              <select class="veld" name="soort">{soorten.map((s) => <option>{s}</option>)}</select>
+            </label>
+            <label class="block">
+              <span class="mb-2 block font-bold">Plaats</span>
+              <input class="veld" name="plaats" type="text" autocomplete="address-level2" placeholder="Bijvoorbeeld Papendrecht" />
+            </label>
+          </div>
+          <label class="block">
+            <span class="mb-2 block font-bold">Wat is er aan de hand?</span>
+            <textarea class="veld min-h-28 resize-y" name="wat" rows="3" placeholder="Korte omschrijving"></textarea>
+          </label>
+          <div class="flex items-center gap-5 rounded-sm bg-alu p-4">
+            <button type="button" class="flex-none rounded-sm focus-visible:outline-2" role="switch" aria-checked="false" aria-labelledby="spoed-label" data-spoed>
+              <Automaat class="w-11" />
+            </button>
+            <div>
+              <p id="spoed-label" class="font-bold">Spoed</p>
+              <p class="text-sm text-grijs" data-spoed-tekst>Uit: het kan even wachten.</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop"><Icoon naam="wa" />Open in WhatsApp</button>
+            <p class="text-sm text-grijs">Er gaat pas iets weg als u het zelf in WhatsApp verstuurt.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="py-20 md:py-28" aria-labelledby="ct-titel">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="ct-titel" class="rijs text-3xl">Samen een plan maken, ook 's avonds.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Stremme komt graag bij u langs, ook in de avonduren, om samen een plan en ontwerp op te stellen.</p>
+        </div>
+        <dl class="rijs grid gap-y-0 self-end border-t-2 border-inkt lg:col-span-6">
+          <div class="grid grid-cols-[8.5rem_1fr] gap-x-4 border-b border-lijn py-4 sm:grid-cols-[11rem_1fr]"><dt class="text-grijs">Contactpersoon</dt><dd class="font-bold">{site.eigenaar}</dd></div>
+          <div class="grid grid-cols-[8.5rem_1fr] gap-x-4 border-b border-lijn py-4 sm:grid-cols-[11rem_1fr]"><dt class="text-grijs">Kantoor</dt><dd><a href={site.telHref} class="link num font-bold">{site.tel}</a></dd></div>
+          <div class="grid grid-cols-[8.5rem_1fr] gap-x-4 border-b border-lijn py-4 sm:grid-cols-[11rem_1fr]"><dt class="text-grijs">Mobiel en storing</dt><dd><a href={site.mobielHref} class="link num font-bold">{site.mobiel}</a></dd></div>
+          <div class="grid grid-cols-[8.5rem_1fr] gap-x-4 border-b border-lijn py-4 sm:grid-cols-[11rem_1fr]"><dt class="text-grijs">E-mail</dt><dd class="min-w-0 break-words"><a href={`mailto:${site.mail}`} class="link font-bold">{site.mail}</a></dd></div>
+          <div class="grid grid-cols-[8.5rem_1fr] gap-x-4 border-b border-lijn py-4 sm:grid-cols-[11rem_1fr]"><dt class="text-grijs">Gevestigd in</dt><dd class="font-bold">{site.plaats}</dd></div>
+        </dl>
+      </div>
+      <div class="wrap mt-16">
+        <div class="rijs flex flex-col items-start justify-between gap-6 rounded-md bg-blauw px-6 py-8 text-wit sm:px-10 md:flex-row md:items-center">
+          <p class="max-w-xl text-2xl font-extrabold leading-tight">Een vraag over uw installatie? Stuur een appje of bel even.</p>
+          <div class="flex flex-wrap gap-3">
+            <a href={waMet('Goedendag, ik heb een vraag over mijn installatie.')} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    import { waMet } from '../data/site';
+    const f = document.querySelector<HTMLFormElement>('[data-melding]');
+    const s = document.querySelector<HTMLButtonElement>('[data-spoed]');
+    const t = document.querySelector<HTMLElement>('[data-spoed-tekst]');
+    let spoed = false;
+    s?.addEventListener('click', () => {
+      spoed = !spoed;
+      s.setAttribute('aria-checked', String(spoed));
+      s.querySelector('.automaat')?.classList.toggle('aan', spoed);
+      if (t) t.textContent = spoed ? 'Aan: het is dringend.' : 'Uit: het kan even wachten.';
+    });
+    f?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const d = new FormData(f);
+      const regels = [
+        'Goedendag, ik wil iets melden bij Stremme Technisch Onderhoud.',
+        `Soort: ${d.get('soort')}`,
+        `Spoed: ${spoed ? 'ja' : 'nee'}`,
+      ];
+      const plaats = String(d.get('plaats') || '').trim();
+      const wat = String(d.get('wat') || '').trim();
+      if (plaats) regels.push(`Plaats: ${plaats}`);
+      if (wat) regels.push(`Wat er aan de hand is: ${wat}`);
+      window.open(waMet(regels.join('\n')), '_blank', 'noopener');
+    });
+  </script>
+</Base>

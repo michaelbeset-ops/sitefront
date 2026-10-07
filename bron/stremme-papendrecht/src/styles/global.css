@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@import "@fontsource/overpass/400.css";
+@import "@fontsource/overpass/600.css";
+@import "@fontsource/overpass/800.css";
+@import "@fontsource/overpass/900.css";
+@import "@fontsource/overpass-mono/500.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het blauw van de Stremme-kop en de belettering op hun bus. Verder aluminium en wit, zoals een nieuwe groepenkast. */
+  --color-blauw: #004895;        /* wit erop 9:1 */
+  --color-blauw-2: #003a7a;
+  --color-blauw-licht: #8fbcf0;  /* accent op nacht/blauw */
+  --color-nacht: #0b1a33;
+  --color-nacht-2: #13264a;
+  --color-alu: #eceef0;
+  --color-alu-2: #d7dbe0;
+  --color-wit: #ffffff;
+  --color-inkt: #0f1724;
+  --color-grijs: #4a5361;        /* bijtekst, 7,6:1 op wit */
+  --color-mist: #b9c6d8;         /* bijtekst op nacht */
+  --color-lijn: #0f17241f;
+  --color-lijn-licht: #ffffff29;
+  /* draadkleuren (alleen als dunne lijn) */
+  --color-draad-bruin: #7b4a26;
+  --color-draad-blauw: #2f6fd0;
+  --color-draad-geel: #e2c21c;
+  --color-draad-groen: #2c8c3c;
+
+  --font-kop: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Overpass Mono", ui-monospace, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .8vw + 1.2rem, 1.875rem);
+  --text-3xl: clamp(2.125rem, 2.6vw + 1.15rem, 3.75rem);
+  --text-hero: clamp(2.75rem, 6vw + .9rem, 6.5rem);
+
+  --radius-sm: .25rem;
+  --radius-md: .5rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #0f172414, 0 8px 24px #0f172412;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-wit); }
+  body {
+    background-color: var(--color-wit);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 900; line-height: 1; letter-spacing: -0.025em; text-wrap: balance; overflow-wrap: break-word; }
+  h3 { font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-blauw); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-draad-blauw); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .mono { font-family: var(--font-mono); font-weight: 500; letter-spacing: .02em; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: .1rem 1.5rem 0; border-radius: var(--radius-sm); font-weight: 800; font-size: 1.0625rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-blauw); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-blauw-2); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; margin-top: -.1rem; }
+  .knop-wit { background: var(--color-wit); color: var(--color-blauw); }
+  .knop-wit:hover { background: var(--color-alu); }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-blauw); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: currentColor; text-underline-offset: .22em; transition: color .25s, text-decoration-color .25s; }
+  .link:hover { color: var(--color-blauw); }
+  .link-licht:hover { color: var(--color-blauw-licht); }
+
+  /* Eigen detail 1: de drie draadkleuren (fase bruin, nul blauw, aarde geel-groen) als scheidingslijn. */
+  .draden { height: 12px; background:
+      linear-gradient(var(--color-draad-bruin) 0 4px, var(--color-draad-blauw) 4px 8px, transparent 8px 100%),
+      repeating-linear-gradient(90deg, var(--color-draad-groen) 0 22px, var(--color-draad-geel) 22px 32px); }
+  .js .draden.rijs { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path 1.4s var(--ease-zacht); }
+  .js .draden.rijs.in { clip-path: inset(0 0 0 0); }
+
+  /* Eigen detail 2: een installatieautomaat. De hendel slaat om bij hover/focus of als hij 'aan' staat. */
+  .automaat .hendel { transform-origin: 20px 30px; transform: translateY(9px); transition: transform .4s cubic-bezier(.5, 1.6, .5, 1), fill .3s; }
+  .automaat .venster { transition: fill .3s; }
+  .groep:hover .automaat .hendel, .groep:focus-within .automaat .hendel, .automaat.aan .hendel { transform: translateY(0); }
+  .groep:hover .automaat .venster, .groep:focus-within .automaat .venster, .automaat.aan .venster { fill: #d43a2f; }
+
+  .veld { display: block; width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-size: 1.0625rem; color: var(--color-inkt); background: var(--color-wit); border: 1.5px solid var(--color-alu-2); border-radius: var(--radius-sm); padding: .75rem .85rem .6rem; min-height: 3.1rem; transition: border-color .25s, box-shadow .25s; }
+  .veld:focus { outline: none; border-color: var(--color-draad-blauw); box-shadow: 0 0 0 3px #2f6fd040; }
+  .veld::placeholder { color: #69717e; }
+  select.veld { padding-right: 2.2rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f1724' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; background-size: 1rem; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs, .js .draden.rijs { opacity: 1; transform: none; clip-path: none; transition: none; } }
+}

@@ -1,0 +1,378 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waMet } from '../data/site';
+
+import gang1 from '../assets/gang-1.jpg';
+import gang2 from '../assets/gang-2.jpg';
+import gang3 from '../assets/gang-3.jpg';
+import vacuumheffer from '../assets/vacuumheffer.jpg';
+import transportsysteem from '../assets/transportsysteem.jpg';
+import heftafelsPut from '../assets/heftafels-put.jpg';
+import draaiplateau from '../assets/heftafels-met-draaiplateau.jpg';
+import montage from '../assets/montage.jpg';
+import parkeerdek from '../assets/heftafel-parkeerdek.jpg';
+import goederenheffer from '../assets/goederenheffer.jpg';
+import zakkenheffer from '../assets/zakkenheffer.jpg';
+import glas from '../assets/glas-manipulator.jpg';
+import hal from '../assets/heffers-hal.jpg';
+import tsMontage from '../assets/transport-systeem-montage.jpg';
+
+// Hero: drie gangpaden van hoogbouwmagazijnen naast elkaar (desktop), het middelste gangpad alleen op mobiel.
+const g = await Promise.all([gang1, gang2, gang3].map((s) => Promise.all([400, 560, 768].map((w) => getImage({ src: s, width: w, quality: 66, format: 'webp' })))));
+const gM = await Promise.all([480, 768].map((w) => getImage({ src: gang2, width: w, quality: 64, format: 'webp' })));
+const srcset = (l: { src: string }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+const routes = [
+  {
+    id: 'inspectie hef-, hijs- en klimmiddelen', kies: 'Inspectie',
+    titel: 'Inspectie van hef-, hijs- en klimmiddelen',
+    tekst: 'Periodieke inspectie volgens de AI-bladen van de Arbeidsinspectie, de NEN-normen en de machinerichtlijnen. Onderhoud doen we in dezelfde ronde.',
+    lijst: ['Heftafels', 'Takels', 'Vacuümheffers', 'Klimmiddelen'],
+    foto: vacuumheffer, alt: 'Een vacuümheffer met zes zuignappen boven een glasplaat op een houten bok, in een bedrijfshal', pos: 'object-[50%_45%]',
+  },
+  {
+    id: 'onderhoud transportsystemen', kies: 'Onderhoud',
+    titel: 'Onderhoud van transportsystemen, mini loads en hoogbouwkranen',
+    tekst: 'Een onderhoudspakket op maat: lagere operationele kosten, een hogere beschikbaarheid. U richt zich op uw eigen kernactiviteiten.',
+    lijst: ['Preventief', 'Correctief', 'Reserve-onderdelen', 'Advies'],
+    foto: transportsysteem, alt: 'Een blauw transportsysteem met rollenbanen en bakken onder een stalen bovenloopconstructie in een orderverzamelhal', pos: 'object-[50%_55%]',
+  },
+  {
+    id: 'reparatie en revisie', kies: 'Reparatie of revisie',
+    titel: 'Reparatie, revisie en modificatie',
+    tekst: 'Heftafels, takels en aandrijvingen herstellen of reviseren, op locatie of in onze werkplaats. Met goede contacten bij leveranciers en importeurs van de diverse merken.',
+    lijst: ['Op locatie', 'In de werkplaats', 'Systeemmodificaties'],
+    foto: heftafelsPut, alt: 'Een blauwe dubbele schaarheftafel in een put in de vloer van een productiehal, met een zware mal op het plateau', pos: 'object-[50%_50%]',
+  },
+];
+
+const contracten = ['Service- en inspectiecontracten', 'Onderhoudscontracten, preventief of correctief', 'Reserve-onderdelen', 'Slijt- en verbruiksdelen', 'Systeemmodificaties', 'Serviceprojecten'];
+
+const installaties = ['Heftafel', 'Takel of hijsmiddel', 'Vacuümheffer', 'Goederenheffer', 'Klimmiddel', 'Transportsysteem', 'Mini load', 'Hoogbouwkraan', 'Iets anders'];
+
+const titel = 'Kermul Oosterhout | Inspectie en onderhoud van intern transport';
+const omschrijving = 'Kermul inspecteert, onderhoudt en reviseert hoogbouwkranen, transportsystemen, mini loads en hef-, hijs- en klimmiddelen. Sinds 1980, Keiweg 162, Oosterhout.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: drie gangpaden, drie hoogbouwkranen -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-petrol-diep text-wit md:min-h-[calc(100svh-5rem)]">
+      <div class="absolute inset-0 -z-20 md:grid md:grid-cols-3 md:gap-[3px] md:bg-petrol-diep">
+        <picture class="contents md:hidden">
+          <source srcset={srcset(gM, [480, 768])} sizes="100vw" type="image/webp" />
+          <img src={gM[1].src} alt="Een smal gangpad in een hoogbouwmagazijn met aan het eind de oranje mast van een hoogbouwkraan" width="768" height="1364" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 h-full w-full object-cover object-[50%_40%] md:hidden" />
+        </picture>
+        {[0, 1, 2].map((i) => (
+          <img
+            src={g[i][1].src}
+            srcset={srcset(g[i], [400, 560, 768])}
+            sizes="34vw"
+            alt={['Een gangpad tussen hoge witte stellingen in een hoogbouwmagazijn, met in het midden de mast van een kraan', 'Een smal gangpad in een hoogbouwmagazijn met aan het eind de oranje mast van een hoogbouwkraan', 'De oranje onderwagen en aandrijving van een hoogbouwkraan op de rail tussen de stellingen'][i]}
+            width="768" height="1364" loading={i === 1 ? 'eager' : 'lazy'} decoding="async"
+            class:list={['hidden h-full w-full object-cover md:block', i === 0 ? 'object-[50%_35%]' : i === 1 ? 'object-[50%_42%]' : 'object-[60%_50%]']}
+          />
+        ))}
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#07282755_0%,#0728277a_32%,#072827d9_62%,#072827f5_100%)] md:bg-[linear-gradient(90deg,#072827f0_0%,#072827cc_38%,#07282766_66%,#07282733_100%),linear-gradient(0deg,#072827cc_0%,#07282700_45%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-28 md:pb-16 lg:pb-20">
+        <p class="kop text-base font-medium tracking-[.14em] text-mint">INSPECTIE EN ONDERHOUD · OOSTERHOUT</p>
+        <h1 class="mt-5 max-w-[11ch] text-hero">Intern transport in <span class="text-mint">topconditie</span></h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90 md:text-xl">Inspectie, onderhoud en revisie van hoogbouwkranen, transportsystemen, mini loads en hef-, hijs- en klimmiddelen. Sinds 1980.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#aanvragen" class="knop knop-licht">Inspectie aanvragen<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <div class="mt-12 hidden items-center gap-x-8 border-t border-lijn-licht pt-5 text-sm text-mist md:flex">
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-mint" />Opgericht in 1980</span>
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-mint" />Volgens NEN-normen en machinerichtlijnen</span>
+          <span class="flex items-center gap-2"><Icoon naam="pin" class="h-4 w-4 text-mint" />{site.straat}, {site.plaats}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DRIE ROUTES: inspectie, onderhoud, reparatie -->
+    <section id="diensten" class="py-16 md:py-24" aria-labelledby="dienst-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-14">
+          <h2 id="dienst-titel" class="rijs text-3xl lg:col-span-8">Inspectie, onderhoud en revisie</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-4 lg:col-start-9 lg:hidden xl:block xl:col-span-3 xl:col-start-10">Voor vrijwel alle marktsegmenten. Op locatie of in onze eigen werkplaats.</p>
+        </div>
+        <div class="mt-12 border-t-2 border-inkt md:mt-14">
+          {routes.map((r, i) => (
+            <article class="grid gap-y-7 border-b border-lijn py-8 md:grid-cols-12 md:items-center md:gap-x-12 md:py-8">
+              <figure class:list={['rijs md:col-span-6', i % 2 === 1 && 'md:order-2 md:col-start-7']}>
+                <Image src={r.foto} alt={r.alt} quality={68} widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 48vw, 100vw" class:list={['aspect-[16/9] w-full rounded-sm object-cover', r.pos]} />
+              </figure>
+              <div class:list={['rijs flex flex-col md:col-span-5', i % 2 === 1 ? 'md:order-1 md:col-start-1' : 'md:col-start-8']} style="--d:.08s">
+                <span class="num kop text-xl text-petrol">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="mt-3 text-[clamp(1.875rem,1.6vw+1.3rem,2.75rem)]">{r.titel}</h3>
+                <p class="mt-4 max-w-md text-grijs">{r.tekst}</p>
+                <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-1.5 text-sm font-semibold">
+                  {r.lijst.map((l) => <li class="flex items-center gap-1.5"><Icoon naam="vink" class="h-3.5 w-3.5 text-petrol" />{l}</li>)}
+                </ul>
+                <a href="#aanvragen" class="link mt-6 inline-flex w-fit items-center gap-2 font-semibold" data-kies={r.kies}>Aanvragen<Icoon naam="pijl" class="h-4 w-4" /></a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. INSPECTIE: het verloop, opgemaakt als inspectierapport -->
+    <section id="inspectie" class="donker bg-petrol-diep py-20 text-wit md:py-32" aria-labelledby="insp-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-28">
+            <h2 id="insp-titel" class="rijs text-3xl">Zo verloopt een inspectie</h2>
+            <p class="rijs mt-6 max-w-md text-lg text-mist">De wet vraagt minimaal één inspectie per jaar door een deskundige. Vaker als de veiligheid dat vraagt.</p>
+            <figure class="rijs mt-10 hidden lg:block">
+              <Image src={draaiplateau} alt="Twee heftafels in een productiehal, een met een oranje en een met een blauw plateau, afgeschermd met gaas" quality={68} widths={[420, 640, 840]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+            </figure>
+          </div>
+        </div>
+        <div class="rijs lg:col-span-7">
+          <div class="blad rounded-sm bg-wit p-6 text-inkt shadow-sm sm:p-10">
+            <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b-2 border-inkt pb-5">
+              <p class="kop text-2xl tracking-[.03em] md:text-[2rem]">Inspectierapport</p>
+              <p class="kop text-base font-medium text-grijs">Hef-, hijs- en klimmiddelen</p>
+            </div>
+            <dl>
+              <div class="regel"><dt class="regel-label">Frequentie</dt><dd>Minimaal eenmaal per jaar. Afhankelijk van conditie, gebruik en belasting soms enkele keren per jaar, in overleg.</dd></div>
+              <div class="regel"><dt class="regel-label">Controle</dt><dd>Alle componenten worden gecontroleerd en vastgelegd. Is er een stekkeraansluiting, dan testen we ook volgens NEN 3140.</dd></div>
+              <div class="regel"><dt class="regel-label">Onveilig</dt><dd>Zien we een onveilige situatie, dan melden en tonen we die direct aan uw verantwoordelijke. Zo kunt u meteen maatregelen nemen.</dd></div>
+              <div class="regel"><dt class="regel-label">Rapport</dt><dd>U krijgt een uitvoerig rapport met inventarisatie, toelichting en aanbevelingen. Uw bewijs richting de Arbeidsinspectie.</dd></div>
+              <div class="regel !border-b-0"><dt class="regel-label">Daarna</dt><dd>Onderhoud, revisie of vervanging nodig? Uw eigen mensen, wij, of samen. Op verzoek eerst een vrijblijvende prijsopgaaf.</dd></div>
+            </dl>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href="#aanvragen" class="knop knop-licht" data-kies="Inspectie">Inspectie aanvragen<Icoon naam="pijl" /></a>
+            <span class="text-mist">of bel <a href={site.telHref} class="link link-licht num font-semibold text-wit">{site.tel}</a></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SERVICECONTRACTEN: hun eigen lijst, groot gezet -->
+    <section id="contracten" class="py-16 md:py-24" aria-labelledby="sc-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={montage} alt="Twee monteurs in werkkleding aan een rollenbaan onder een schaarhoogwerker, in een donkere bedrijfshal" quality={68} widths={[480, 720, 960]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[62%_50%] lg:aspect-auto lg:h-[32rem]" />
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7 lg:self-center">
+          <h2 id="sc-titel" class="rijs text-3xl">Servicecontracten op maat</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Voor de continuïteit en bedrijfszekerheid van uw intern transport.</p>
+          <ul class="mt-10 border-t border-inkt">
+            {contracten.map((c, i) => (
+              <li class="rijs flex items-baseline gap-5 border-b border-lijn py-4" style={`--d:${i * 0.04}s`}>
+                <span class="num kop w-7 flex-none text-base text-petrol">{String(i + 1).padStart(2, '0')}</span>
+                <span class="kop text-[1.5rem] leading-tight md:text-[1.75rem]">{c}</span>
+              </li>
+            ))}
+          </ul>
+          <a href={waMet('Goedendag, ik wil graag een offerte op maat voor een servicecontract.')} class="rijs knop mt-10 w-fit"><Icoon naam="wa" />Offerte op maat aanvragen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PRAKTIJK: eigen projectfoto's -->
+    <section id="praktijk" class="bg-beton py-16 md:py-24" aria-labelledby="pr-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-14">
+          <h2 id="pr-titel" class="rijs text-3xl lg:col-span-6">Uit de praktijk</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Heftafels, goederenheffers, vacuümheffers en transportsystemen. Een greep uit ons werk.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
+          {[
+            { src: parkeerdek, alt: 'Een heftafel met een geribbeld plateau, ingebouwd in de vloer bij een gevel', cap: 'Heftafel, ingebouwd in de vloer', c: 'col-span-2 md:col-span-6', w: [560, 840, 1120] },
+            { src: goederenheffer, alt: 'Een blauwe goederenheffer met hekwerk aan een gemetselde wand', cap: 'Goederenheffer', c: 'md:col-span-3', w: [360, 540] },
+            { src: zakkenheffer, alt: 'Een groene zakkenheffer met zuigslang naast een blauwe rollenbaan in een magazijn', cap: 'Zakkenheffer met rollenbaan', c: 'md:col-span-3', w: [360, 540] },
+            { src: tsMontage, alt: 'Rollenbanen en een palletbaan tijdens de montage van een transportsysteem in een hal', cap: 'Transportsysteem in montage', c: 'col-span-2 md:col-span-5', w: [560, 840, 1024] },
+            { src: glas, alt: 'Een paarse glasmanipulator met zuignappen in een werkplaats', cap: 'Glasmanipulator', c: 'md:col-span-3', w: [360, 480] },
+            { src: hal, alt: 'Twee heftafels met geel hekwerk en een blauw plateau in een lege bedrijfshal', cap: 'Heftafels met hekwerk', c: 'md:col-span-4', w: [360, 540, 720] },
+          ].map((f, i) => (
+            <figure class:list={['rijs', f.c]} style={`--d:${(i % 3) * 0.06}s`}>
+              <Image src={f.src} alt={f.alt} quality={68} widths={f.w} sizes="(min-width: 768px) 45vw, 100vw" class:list={['w-full rounded-sm object-cover md:aspect-auto md:h-[16rem]', f.c.startsWith('col-span-2') ? 'aspect-[4/3]' : 'aspect-[3/4]']} />
+              <figcaption class="mt-2 text-xs text-grijs">{f.cap}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. OVER: Ker + Mul, en waar hun werk begint -->
+    <section id="over" class="py-16 md:py-24" aria-labelledby="over-titel">
+      <div class="wrap">
+        <blockquote class="rijs max-w-5xl">
+          <p class="kop text-[clamp(2rem,3.2vw+1rem,4rem)] font-extrabold leading-[.98]">“De relatie met klanten houdt voor de meeste fabrikanten op bij de aflevering van een gereed product. <span class="text-petrol">Hier begint de inbreng van Kermul.</span>”</p>
+        </blockquote>
+        <div class="mt-12 grid gap-y-10 md:mt-16 md:grid-cols-12 md:gap-x-12">
+          <div class="md:col-span-5">
+            <h2 id="over-titel" class="rijs text-[clamp(3rem,4vw+1.5rem,5.5rem)] leading-[.9]"><span class="text-petrol">Ker</span>khof + <span class="text-petrol">Mul</span>der</h2>
+            <p class="rijs mt-6 max-w-sm text-lg text-grijs">Opgericht in 1980 door dhr. Van Kerkhof en dhr. Mulder. Daar komt de naam vandaan.</p>
+          </div>
+          <div class="md:col-span-6 md:col-start-7">
+            <p class="rijs text-lg">Kermul is breed georiënteerd op intern transport. Door de samenwerking met diverse vooraanstaande leveranciers zijn we actief in vrijwel alle marktsegmenten.</p>
+            <p class="rijs mt-5 text-lg text-grijs">Onze medewerkers zijn up to date geschoold en hebben jarenlange ervaring.</p>
+            <a href={site.facebook} class="rijs link mt-8 inline-block font-semibold">Kermul op Facebook</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. AANVRAGEN: inspectie of onderhoud, eindigt in WhatsApp of mail -->
+    <section id="aanvragen" class="bg-beton py-14 md:py-20" aria-labelledby="bon-titel">
+      <div class="wrap">
+        <form class="rijs grid overflow-hidden rounded-md border border-beton-2 bg-wit shadow-sm lg:grid-cols-12" data-bon>
+          <div class="p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <h2 id="bon-titel" class="text-3xl">Inspectie of onderhoud aanvragen</h2>
+            <p class="mt-4 max-w-md text-grijs">Op basis hiervan maken we een vrijblijvende prijsopgaaf.</p>
+
+            <div class="mt-9 grid gap-x-6 gap-y-6 sm:grid-cols-2">
+              <label class="block">
+                <span class="text-sm font-semibold">Wat heeft u nodig?</span>
+                <select class="veld mt-2" name="wat">
+                  <option>Inspectie</option><option>Onderhoud</option><option>Reparatie of revisie</option><option>Servicecontract</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Soort installatie</span>
+                <select class="veld mt-2" name="soort">{installaties.map((s) => <option>{s}</option>)}</select>
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Aantal</span>
+                <input class="veld num mt-2" type="number" name="aantal" min="1" max="999" value="1" inputmode="numeric" />
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Laatste keuring</span>
+                <select class="veld mt-2" name="keuring">
+                  <option value="">Weet ik niet</option><option value="binnen">Minder dan een jaar geleden</option><option value="over">Langer dan een jaar geleden</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Bedrijf</span>
+                <input class="veld mt-2" type="text" name="bedrijf" maxlength="80" autocomplete="organization" />
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Plaats</span>
+                <input class="veld mt-2" type="text" name="plaats" maxlength="60" autocomplete="address-level2" />
+              </label>
+            </div>
+            <p class="mt-5 hidden border-l-[3px] border-petrol bg-beton px-4 py-3 text-[.9375rem]" data-keuring-tip role="status">De wet schrijft minimaal eenmaal per jaar een inspectie voor.</p>
+
+            <label class="mt-8 flex cursor-pointer items-center gap-4 border-t border-lijn pt-7">
+              <input type="checkbox" name="spoed" class="peer sr-only" />
+              <span class="relative h-8 w-14 flex-none rounded-full bg-beton-2 transition-colors peer-checked:bg-petrol peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-petrol after:absolute after:left-1 after:top-1 after:h-6 after:w-6 after:rounded-full after:bg-wit after:shadow-sm after:transition-transform peer-checked:after:translate-x-6" aria-hidden="true"></span>
+              <span><span class="kop block text-xl">Spoed</span><span class="text-sm text-grijs">Een installatie staat stil of is onveilig.</span></span>
+            </label>
+          </div>
+
+          <div class="donker flex flex-col bg-petrol-diep p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <p class="text-sm font-semibold text-mist">Uw bericht aan Kermul</p>
+            <p class="mt-3 rounded-sm bg-petrol-2 p-5 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <p class="mt-4 hidden rounded-sm border-l-[3px] border-mint bg-petrol-2 px-4 py-3 text-[.9375rem]" data-spoed-tip role="status">Bij spoed ook direct bellen: <a href={site.telHref} class="link link-licht num whitespace-nowrap font-semibold">{site.tel}</a></p>
+            <a href={site.wa} class="knop knop-licht mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-lijn mt-3 w-full" data-mail><Icoon naam="mail" />Of per e-mail</a>
+            <p class="mt-5 text-sm text-mist">Dit formulier verstuurt zelf niets. WhatsApp of uw mailprogramma opent met dit bericht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT: adres, bereikbaarheid met live status -->
+    <section id="contact" class="py-16 md:py-24" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">Keiweg 162, Oosterhout</h2>
+          <dl class="rijs mt-10 max-w-md border-t border-lijn">
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Telefoon</dt><dd><a href={site.telHref} class="link num">{site.tel}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">WhatsApp</dt><dd><a href={waMet('Goedendag, ik heb een vraag.')} class="link num">{site.gsm}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">E-mail</dt><dd class="min-w-0 break-all text-right"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Adres</dt><dd class="text-right">{site.straat}, {site.postcode} {site.plaats}</dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">KvK</dt><dd class="num">{site.kvk}</dd></div>
+          </dl>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop"><Icoon naam="pin" />Route plannen</a>
+            <a href={site.voorwaarden} class="knop knop-lijn !text-petrol-donker !shadow-[inset_0_0_0_1.5px_#006564] hover:!bg-petrol hover:!text-wit">Leveringsvoorwaarden</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs border-t-4 border-petrol bg-beton p-7 md:p-9">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl">Bereikbaar</h3>
+              <p class="flex items-center gap-2 text-sm font-semibold" data-status><span class="h-2.5 w-2.5 rounded-full bg-grijs" data-stip></span><span data-status-tekst>&nbsp;</span></p>
+            </div>
+            <table class="mt-6 w-full text-[.9375rem]">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                  <tr class="border-b border-beton-2" data-dag={d}>
+                    <th scope="row" class="py-2.5 text-left font-medium capitalize">{tijden[d][0]}</th>
+                    <td class="num py-2.5 text-right text-grijs">{tijden[d][1] ?? 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-xs text-grijs">Openingstijden volgens Google.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Aanvraag: bouwt een kort bericht op en zet het in de WhatsApp- en mailknop.
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const mail = $<HTMLAnchorElement>('[data-mail]');
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const d = new FormData(f);
+      const wat = String(d.get('wat'));
+      const soort = String(d.get('soort'));
+      const aantal = Math.max(1, parseInt(String(d.get('aantal') || '1'), 10) || 1);
+      const keuring = String(d.get('keuring'));
+      const bedrijf = String(d.get('bedrijf') || '').trim();
+      const plaats = String(d.get('plaats') || '').trim();
+      const spoed = d.get('spoed') === 'on';
+      const ding = soort === 'Iets anders' ? 'een installatie' : `${aantal > 1 ? aantal + ' x ' : 'een '}${soort.toLowerCase()}`;
+      const k = keuring === 'binnen' ? ' Laatste keuring: minder dan een jaar geleden.' : keuring === 'over' ? ' Laatste keuring: langer dan een jaar geleden.' : '';
+      const waar = bedrijf && plaats ? ` Bedrijf: ${bedrijf}, ${plaats}.` : bedrijf ? ` Bedrijf: ${bedrijf}.` : plaats ? ` Locatie: ${plaats}.` : '';
+      const tekst = `Goedendag, ik wil graag ${wat.toLowerCase()} aanvragen voor ${ding}.${k}${waar}${spoed ? ' SPOED: de installatie staat stil of is onveilig.' : ''} Kunt u contact met mij opnemen?`;
+      $('[data-bericht]').textContent = tekst;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `mailto:${site.mail}?subject=${encodeURIComponent((spoed ? 'SPOED: ' : '') + wat + ' aanvragen')}&body=${encodeURIComponent(tekst)}`;
+      $('[data-spoed-tip]').classList.toggle('hidden', !spoed);
+      $('[data-keuring-tip]').classList.toggle('hidden', keuring !== 'over');
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    // Links "Aanvragen" bij de diensten kiezen alvast het juiste soort werk.
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => { $<HTMLSelectElement>('[name=wat]').value = a.dataset.kies!; zet(); }));
+    zet();
+  }
+
+  // Live status volgens de tijden van Google, in Nederlandse tijd.
+  const open = [450, 1020];
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay(), min = nu.getHours() * 60 + nu.getMinutes();
+  const isOpen = dag >= 1 && dag <= 5 && min >= open[0] && min < open[1];
+  const rij = document.querySelector<HTMLElement>(`[data-dag="${dag}"]`);
+  rij?.classList.add('bg-wit', 'font-semibold');
+  rij?.querySelectorAll('th, td').forEach((c) => c.classList.add('px-2'));
+  const st = document.querySelector('[data-status-tekst]');
+  const stip = document.querySelector('[data-stip]');
+  if (st) st.textContent = isOpen ? 'Nu bereikbaar' : 'Nu gesloten';
+  if (stip) stip.className = `h-2.5 w-2.5 rounded-full ${isOpen ? 'bg-[#2f9e6a]' : 'bg-grijs'}`;
+</script>

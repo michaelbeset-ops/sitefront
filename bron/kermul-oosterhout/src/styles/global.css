@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@import "@fontsource/saira-condensed/500.css";
+@import "@fontsource/saira-condensed/700.css";
+@import "@fontsource/saira-condensed/800.css";
+@import "@fontsource-variable/libre-franklin";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het petrol van het Kermul-logo. Het olijfgoud van de logo-ringen alleen als lijn, nooit als vlak of tekst. */
+  --color-petrol: #006564;        /* knoppen en links op wit, 7,2:1 */
+  --color-petrol-donker: #00403f;
+  --color-petrol-diep: #072827;   /* donkere vlakken */
+  --color-petrol-2: #0d3836;
+  --color-mint: #8fd3c8;          /* accent op donker, 9:1 */
+  --color-olijf: #b0a00d;         /* alleen de ringen */
+  --color-beton: #eceeec;         /* betonvloer van de hal */
+  --color-beton-2: #d9dedc;
+  --color-wit: #ffffff;
+  --color-inkt: #0e1b1b;
+  --color-grijs: #4a5655;         /* bijtekst, 7,4:1 op wit */
+  --color-mist: #aac3bf;          /* bijtekst op petrol-diep, 8:1 */
+  --color-lijn: #0e1b1b1f;
+  --color-lijn-licht: #ffffff24;
+
+  --font-kop: "Saira Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Libre Franklin Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, .9vw + 1.3rem, 2.125rem);
+  --text-3xl: clamp(2.375rem, 3vw + 1.3rem, 4.25rem);
+  --text-hero: clamp(3.25rem, 6.6vw + 1rem, 7.75rem);
+
+  --radius-sm: .125rem;
+  --radius-md: .25rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #0e1b1b14, 0 8px 22px #0e1b1b12;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-wit); }
+  body {
+    background-color: var(--color-wit);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: .92; letter-spacing: -0.005em; text-wrap: balance; overflow-wrap: break-word; }
+  h3 { font-weight: 700; line-height: 1.02; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-mint); color: var(--color-petrol-diep); }
+  :focus-visible { outline: 2px solid var(--color-petrol); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-mint); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); font-weight: 700; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-family: var(--font-kop); font-weight: 700; font-size: 1.1875rem; letter-spacing: .02em; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-petrol); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-petrol-donker); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-licht { background: var(--color-wit); color: var(--color-petrol-donker); }
+  .knop-licht:hover { background: var(--color-mint); color: var(--color-petrol-diep); }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-petrol-donker); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-petrol); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-petrol); }
+  .link-licht { text-decoration-color: var(--color-mint); }
+  .link-licht:hover { color: var(--color-mint); }
+
+  /* Regels van een inspectierapport: label links, waarde rechts, dunne lijn ertussen. */
+  .regel { display: grid; grid-template-columns: minmax(0, 1fr); gap: .25rem; padding-block: .85rem; border-bottom: 1px solid var(--color-lijn); overflow-wrap: break-word; }
+  @media (min-width: 480px) { .regel { grid-template-columns: 7.5rem minmax(0, 1fr); gap: 1.25rem; } }
+  @media (min-width: 768px) { .regel { grid-template-columns: 9rem minmax(0, 1fr); gap: 2rem; } }
+  .donker .regel { border-color: var(--color-lijn-licht); }
+  .regel-label { font-family: var(--font-kop); font-weight: 500; font-size: .9375rem; letter-spacing: .04em; color: var(--color-grijs); padding-top: .2rem; }
+  .donker .regel-label { color: var(--color-mist); }
+  .donker .blad .regel { border-color: var(--color-lijn); }
+  .donker .blad .regel-label { color: var(--color-grijs); }
+
+  /* Eigen detail 1: de mast van een hoogbouwkraan. Een rail langs de rechterrand, de bak rijdt mee met het scrollen. */
+  .mast { position: fixed; right: 1.1rem; top: 7rem; bottom: 2rem; width: 10px; z-index: 30; pointer-events: none; }
+  .mast::before, .mast::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: currentColor; opacity: .35; }
+  .mast::before { left: 0; } .mast::after { right: 0; }
+  .mast-sport { position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 22px, currentColor 22px 23.5px); opacity: .25; }
+  .mast-bak { position: absolute; left: -5px; width: 20px; height: 26px; top: calc(var(--p, 0) * (100% - 26px)); background: var(--color-petrol); border: 2px solid var(--color-wit); box-shadow: 0 0 0 1px #0e1b1b33; transition: top .12s linear; }
+
+  .veld { display: block; width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-size: 1.0625rem; font-weight: 500; color: var(--color-inkt); background: var(--color-wit); border: 1.5px solid var(--color-beton-2); border-radius: var(--radius-sm); padding: .7rem .85rem; min-height: 3rem; transition: border-color .25s, box-shadow .25s; }
+  .veld:focus { outline: none; border-color: var(--color-petrol); box-shadow: 0 0 0 3px #00656433; }
+  .veld::placeholder { color: #66716f; }
+  select.veld { padding-right: 2.2rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e1b1b' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; background-size: 1rem; }
+  .keus { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1.5px solid var(--color-beton-2); background: var(--color-wit); border-radius: var(--radius-sm); font-weight: 600; font-size: .9375rem; cursor: pointer; transition: background-color .2s, color .2s, border-color .2s; }
+  input:checked + .keus { background: var(--color-petrol); border-color: var(--color-petrol); color: var(--color-wit); }
+  input:focus-visible + .keus { outline: 2px solid var(--color-petrol); outline-offset: 3px; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } .mast-bak { transition: none; } }
+}
