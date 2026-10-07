@@ -1,106 +1,352 @@
 ---
-import Foto from '../components/Foto.astro';
-import hero from '../assets/hero.jpg';
-import scherm from '../assets/scherm.jpg';
-import terras from '../assets/terras.jpg';
+import { Image, getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Chrome from '../components/Chrome.astro';
-import { site } from '../data/site';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waMet, waHoi } from '../data/site';
 
-// Productteksten ingekort uit hun eigen productpagina.
-const producten = [
-  ['Terraszonwering', 'Een cassettescherm houdt het doek beschermd als hij dicht is en blijft zo langer mooi. Een open knikarmscherm is voordeliger.'],
-  ['Knikarmschermen', 'Ook met verlichting in de cassette, voor je balkon of terras als de zon onder is.'],
-  ['Uitvalschermen', 'Voor ramen zonder openslaande delen. Getemperd licht bij de eettafel of computer, en je meubels en parket verkleuren niet.'],
-  ['Screens', 'Houden warmte buiten en schittering tegen. Van binnen blijf je naar buiten kijken, van buiten kijkt niemand naar binnen.'],
-  ['Markiezen', 'Met gesloten zijkanten tegen zon van opzij. Aluminium markiezen kunnen gewoon buiten overwinteren.'],
-  ['Rolluiken', 'Voor beveiliging, isolatie tegen kou, zonwering en afsluiting. Opbouw of inbouw, met motoren die 30% stiller zijn.'],
-  ['Serrezonwering', 'Voor kleine en grote serres, strak vormgegeven.'],
-  ['Zonneroosters', 'Vaste lamellen, extreem windbestendig, met vrijwel vrij zicht naar buiten.'],
+import terras from '../assets/terras-nieuw-doek.jpg';
+import keuken from '../assets/duo-rolgordijn-keuken.jpg';
+import kantoor from '../assets/uitvalschermen-kantoor.jpg';
+import rolluik from '../assets/rolluik-gevel.jpg';
+import roosters from '../assets/zonneroosters.jpg';
+import ambacht from '../assets/ritsscreen-ambacht.jpg';
+import rotterdam from '../assets/ritsscreens-rotterdam.jpg';
+import oudHangend from '../assets/doek-oud-hangend.jpg';
+import eraf from '../assets/doek-eraf.jpg';
+import uitgerold from '../assets/doek-oud-uitgerold.jpg';
+import oprollen from '../assets/doek-nieuw-oprollen.jpg';
+
+// Productteksten ingekort uit hun eigen productpagina (zonwering_kilazonweringen.html); ritsscreens uit hun Facebookposts.
+const fotoVan = async (img: ImageMetadata, pos = '50% 50%') => ({ ...(await getImage({ src: img, widths: [560, 960], width: 960, quality: 72 })), pos });
+const f = {
+  terras: await fotoVan(terras, '62% 50%'),
+  kantoor: await fotoVan(kantoor, '62% 40%'),
+  ambacht: await fotoVan(ambacht, '50% 60%'),
+  rolluik: await fotoVan(rolluik, '62% 50%'),
+  roosters: await fotoVan(roosters, '50% 45%'),
+  keuken: await fotoVan(keuken, '55% 40%'),
+};
+const buiten = [
+  { naam: 'Terras- en knikarmschermen', tekst: 'Een cassettescherm houdt het doek beschermd als het dicht is en blijft zo langer mooi. Een open knikarmscherm is voordeliger. Ook met verlichting in de cassette.', foto: f.terras, bij: 'Terrasscherm met nieuw doek, juni 2023' },
+  { naam: 'Uitvalschermen', tekst: 'Voor ramen zonder openslaande delen. Getemperd licht bij de eettafel of computer, en meubels en parket verschieten niet.', foto: f.kantoor, bij: 'Uitvalschermen aan een kantoorgevel' },
+  { naam: 'Screens en ritsscreens', tekst: 'Houden de zon tegen en de warmte buiten. Van binnen blijft u naar buiten kijken, van buiten kijkt niemand naar binnen.', foto: f.ambacht, bij: '3-in-1 ritsscreen bij Ambacht klimaatservice, april 2025' },
+  { naam: 'Markiezen', tekst: 'Gesloten zijkanten houden ook de zon van opzij tegen. Aluminium markiezen kunnen gewoon buiten overwinteren.', foto: null, bij: '' },
+  { naam: 'Rolluiken', tekst: 'Voor beveiliging, isolatie tegen kou, zonwering en afsluiting. Opbouw of inbouw, met motoren die 30% minder geluid maken.', foto: f.rolluik, bij: 'Rolluik in een bakstenen gevel' },
+  { naam: 'Serrezonwering', tekst: 'Voor kleine en grote serres, met een strak, modern ontwerp.', foto: null, bij: '' },
+  { naam: 'Zonneroosters', tekst: 'Vaste lamellen, extreem windbestendig, met vrijwel vrij zicht naar buiten.', foto: f.roosters, bij: 'Zonneroosters langs een glazen gevel' },
 ];
-const tijden = [['Maandag t/m vrijdag', '09.00 tot 17.00'], ['Zaterdag en zondag', 'Gesloten']];
+const binnen = [
+  { naam: 'Raamdecoratie', tekst: 'Ons specialisme: rolgordijnen en andere raamdecoratie, plus horren. Exact op maat, gekozen uit de collectieboeken van onze leveranciers.', foto: f.keuken, bij: 'Raamdecoratie in een keuken' },
+];
+
+// Offertezin: alleen producten en diensten die ze zelf noemen (site, meta-trefwoorden, Facebook-intro en -posts).
+const keuzes = {
+  wat: ['een terrasscherm', 'een knikarmscherm', 'een nieuw zonneschermdoek', 'screens', 'een ritsscreen', 'uitvalschermen', 'markiezen', 'rolluiken', 'serrezonwering', 'zonneroosters', 'raamdecoratie voor binnen', 'rolgordijnen', 'horren', 'reparatie van mijn zonwering', 'onderhoud van mijn zonwering'],
+  waar: ['ons terras', 'ons balkon', 'de ramen van ons huis', 'onze serre', 'ons bedrijfspand'],
+  maat: ['de maat weet ik nog niet', 'ongeveer 3 meter breed', 'ongeveer 4 meter breed', 'ongeveer 5 meter breed', '6 meter of breder', '1 raam', '2 ramen', '3 ramen', '4 of meer ramen'],
+};
+const startBericht = `Hallo Kila Zonweringen, ik wil graag een offerte voor ${keuzes.wat[0]} voor ${keuzes.waar[0]}, ${keuzes.maat[0]}. Kunt u langskomen om de maten op te nemen?`;
+const waDoek = waMet('Hallo Kila Zonweringen, het doek van mijn zonnescherm is aan vervanging toe. Ik stuur een foto van het scherm mee.');
+
+const titel = 'Kila Zonweringen | Zonwering en rolluiken op maat, Zwijndrecht';
+const omschrijving = 'Zonwering, screens, rolluiken en raamdecoratie op maat. Kila Zonweringen komt bij u thuis meten, monteert zelf en doet ook onderhoud, reparatie en nieuw doek. Zwijndrecht, Dordrecht, Rotterdam en omgeving.';
 ---
-<Base
-  title="Kila Zonweringen | Zonwering, screens en rolluiken op maat in Zwijndrecht"
-  description="Zonwering en raamdecoratie op maat, zelf gemonteerd en onderhouden. Screens, knikarmschermen, markiezen en rolluiken in Zwijndrecht, Dordrecht, Papendrecht en omgeving."
->
-  <Chrome deel="kop" />
+<Base title={titel} description={omschrijving}>
   <main id="inhoud">
-    <section class="relative overflow-hidden">
-      <!-- Het gele vlak is de zon; de rest van de hero ligt in de schaduw. Eén beeldidee, geen foto nodig. -->
-      <div aria-hidden="true" class="absolute -right-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-sun md:-right-16 md:-top-40 md:h-[40rem] md:w-[40rem]"></div>
-      <div class="wrap relative grid gap-10 pb-16 pt-14 lg:grid-cols-12 lg:pb-24 lg:pt-24">
-        <div class="lg:col-span-7">
-          <p class="font-display font-bold">Zwijndrecht en de hele regio</p>
-          <h1 class="mt-4 text-4xl">Zonwering op maat, door ons gemonteerd</h1>
-          <p class="mt-6 max-w-xl text-lg text-ink-soft">
-            Voor binnen en buiten, thuis of op de zaak. Kila Zonweringen levert, monteert en onderhoudt alles zelf,
-            zodat de kwaliteit ook na jaren nog klopt.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a href="#offerte" class="btn btn-ink">Vrijblijvende offerte</a>
-            <a href={site.telHref} class="btn btn-sun">Bel {site.tel}</a>
+
+    <!-- 1. HERO: hun eigen terrasproject (Facebook, juni 2023), kop groot onderin, meetlint als onderrand -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-nacht text-wit md:min-h-[calc(100svh-2.15rem)]">
+      <Kop />
+      <Image src={terras} alt="Terras met een nieuw antraciet-wit gestreept zonnescherm langs een gevel met openslaande deuren, rechts een tuin met buxushagen" quality={72} widths={[640, 960, 1280, 1600, 1958]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[40%_50%] md:object-[50%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#232322cc_0%,#23232233_26%,#2323224d_48%,#232322f2_88%)] md:bg-[linear-gradient(180deg,#232322b3_0%,#23232200_24%,#23232214_50%,#232322e6_84%,#232322_100%)]"></div>
+      <div class="wrap mt-auto pb-14 pt-28 md:pb-7">
+        <p class="text-sm font-medium text-wit/85 md:text-base"><span class="blok" aria-hidden="true"></span>Zonwering en rolluiken uit Zwijndrecht</p>
+        <h1 class="mt-4 text-hero leading-[.84]">Zelf gemeten.<br /><span class="text-zon">Zelf gemonteerd.</span></h1>
+        <div class="mt-6 grid gap-6 md:mt-7 md:grid-cols-12 md:items-end">
+          <p class="max-w-xl text-base text-wit/90 sm:text-lg md:col-span-6 md:text-xl">Zonwering en raamdecoratie op maat, voor thuis en voor bedrijven. Wij komen bij u meten, monteren alles zelf en doen jaren later ook het onderhoud.</p>
+          <div class="flex flex-wrap gap-3 md:col-span-6 md:justify-end">
+            <a href="#offerte" class="knop knop-zon">Offerte aanvragen<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="knop knop-wit max-sm:hidden"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
           </div>
-          <p class="mt-8 text-sm text-ink-soft"><span class="font-bold text-ink">4,9</span> op Google, uit 8 reviews</p>
         </div>
-        <!-- De foto in een cirkel: de schaduw onder de zon. -->
-        <div class="self-center lg:col-span-5 lg:col-start-8"><div class="mx-auto aspect-square max-w-md overflow-hidden rounded-full border-[10px] border-paper"><Foto src={hero} alt="Rij huizen met gele zonneschermen boven de balkons" hero sizes="(min-width: 1024px) 440px, 90vw" /></div></div>
+      </div>
+      <div class="wrap pb-6 max-md:hidden">
+        <div class="lint text-wit"></div>
+        <div class="mt-3 flex items-center justify-between gap-8 text-sm text-wit/75">
+          <p data-status-wrap class="flex items-center gap-2.5"><span class="h-2 w-2 rounded-full bg-zon" aria-hidden="true"></span><span data-status>Maandag tot en met vrijdag bereikbaar van 09.00 tot 17.00 uur</span></p>
+          <p>Nieuw doek op een bestaand terrasscherm, juni 2023</p>
+        </div>
       </div>
     </section>
 
-    <section id="producten" class="scroll-mt-20 bg-white py-16 lg:py-24">
-      <div class="wrap">
-        <div class="grid items-end gap-8 lg:grid-cols-2"><h2 class="max-w-2xl text-3xl">Wat we leveren en monteren</h2><div class="aspect-[16/9] overflow-hidden"><Foto src={scherm} alt="Zonnescherm boven een raam aan een witte gevel" sizes="(min-width: 1024px) 560px, 100vw" /></div></div>
-        <dl class="mt-12 grid gap-x-12 md:grid-cols-2">
-          {producten.map(([n, t]) => (
-            <div class="grid gap-1 border-t border-line py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
-              <dt class="font-display text-lg font-extrabold">{n}</dt>
-              <dd class="text-ink-soft">{t}</dd>
-            </div>
+    <!-- 2. WERKWIJZE: geen showroom, wel de collectie aan huis -->
+    <section id="werkwijze" class="py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-12 grid gap-y-7 lg:grid-cols-12 lg:gap-x-14 lg:items-end">
+          <h2 class="rijs text-4xl lg:col-span-7">Geen dure showroom.<br /><span class="text-zon-diep">Wel de collectie aan huis.</span></h2>
+          <p class="rijs max-w-xl text-lg text-grijs lg:col-span-5" style="--d:.1s">Wij hebben geen dure showroom, wat u terugziet in onze scherpe offertes. U hoeft maar te bellen en wij brengen u de collectieboeken van onze leveranciers, zodat u thuis op uw gemak kiest.</p>
+        </div>
+      </div>
+      <div class="wrap mt-12 grid grid-cols-1 gap-y-12 md:mt-16 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={keuken} alt="Keukenraam met licht-donker gestreepte raamdecoratie, twee hanglampen en een aanrecht met waterkoker" quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[55%_40%] lg:aspect-[5/6]" />
+          <figcaption class="mt-3 text-xs text-grijs">Raamdecoratie op maat</figcaption>
+        </figure>
+        <ol class="lg:col-span-7">
+          {[
+            ['Bij u thuis gemeten', 'Niets is mooier dan een product dat exact voor uw raam op maat is gemaakt. Daarom komen wij altijd bij u thuis de maten opnemen.'],
+            ['Kiezen uit de collectieboeken', 'De collectie van diverse topleveranciers, met eerlijk en deskundig advies erbij. U kiest thuis, op uw gemak.'],
+            ['Wij monteren zelf', 'Kila Zonweringen monteert alle zonweringen zelf, met veel aandacht en zorg voor elke montage.'],
+            ['Onderhoud in eigen beheer', 'Ook het onderhoud door de jaren heen doen we zelf, zodat de kwaliteit altijd gewaarborgd blijft.'],
+          ].map(([t, p], i) => (
+            <li class="rijs grid grid-cols-[3.25rem_1fr] gap-x-5 border-t border-lijn-licht py-6 md:grid-cols-[5rem_1fr]" style={`--d:${i * .06}s`}>
+              <span class="font-kop text-[2.6rem] leading-[.8] text-zon-diep md:text-[3.6rem]" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-[1.9rem] md:text-[2.3rem]">{t}</h3>
+                <p class="mt-2 max-w-xl text-grijs">{p}</p>
+              </div>
+            </li>
           ))}
-        </dl>
+        </ol>
       </div>
     </section>
 
-    <section id="thuis-zakelijk" class="wrap scroll-mt-20 grid gap-12 py-16 lg:grid-cols-2 lg:py-24">
-      <div class="border-l-4 border-sun pl-6">
-        <h2 class="text-2xl">Thuis</h2>
-        <p class="mt-4 text-lg">Lekker buiten zitten onder een zonnescherm, of binnen koel blijven met screens. We denken mee over wat bij je huis past.</p>
-      </div>
-      <div class="border-l-4 border-ink pl-6">
-        <h2 class="text-2xl">Zakelijk</h2>
-        <p class="mt-4 text-lg">Nieuwbouw of renovatie: voorkom de hinderlijke schittering op beeldschermen en hou de warmte buiten.</p>
-      </div>
-      <div class="aspect-[16/9] lg:col-span-2 lg:aspect-[3/1] overflow-hidden"><Foto src={terras} alt="Terras met een uitgerold zonnescherm tussen de planten" sizes="(min-width: 1184px) 1120px, 100vw" /></div>
-    </section>
-
-    <section id="offerte" class="scroll-mt-20 bg-ink py-16 text-white lg:py-24">
-      <div class="wrap grid gap-12 lg:grid-cols-12">
-        <div class="lg:col-span-5">
-          <h2 class="text-3xl">Wat kost het?</h2>
-          <p class="mt-5 text-lg text-white/80">Vertel wat je zoekt, dan maken we een vrijblijvende offerte. We werken vooral in Zwijndrecht, Dordrecht, Papendrecht, Alblasserdam, Rotterdam en omliggende plaatsen.</p>
-          <dl class="mt-8 space-y-2 text-white/80">
-            {tijden.map(([d, t]) => <div class="flex justify-between gap-4 border-b border-white/15 pb-2"><dt>{d}</dt><dd class="whitespace-nowrap">{t}</dd></div>)}
-          </dl>
+    <!-- 3. PRODUCTEN: lijst links, eigen foto rechts die meewisselt -->
+    <section id="producten" class="bg-wit py-20 md:py-28" data-producten>
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs text-4xl">Buiten en binnen.</h2>
+          <p class="rijs max-w-md text-grijs" style="--d:.1s">Bijna alles is met de hand of elektrisch te bedienen. Twijfelt u wat past? Wij adviseren bij u thuis.</p>
         </div>
-        <form class="grid gap-4 lg:col-span-6 lg:col-start-7" aria-describedby="form-uit" onsubmit="return false">
-          <label class="grid gap-1 text-sm font-semibold">Naam<input type="text" name="naam" autocomplete="name" class="rounded-sm bg-white px-3 py-2.5 text-base font-normal text-ink" /></label>
-          <label class="grid gap-1 text-sm font-semibold">Telefoon of e-mail<input type="text" name="contact" autocomplete="email" class="rounded-sm bg-white px-3 py-2.5 text-base font-normal text-ink" /></label>
-          <label class="grid gap-1 text-sm font-semibold">Wat wil je laten maken?<textarea name="wens" rows="4" class="rounded-sm bg-white px-3 py-2.5 text-base font-normal text-ink"></textarea></label>
-          {site.voorstel ? (
-            <p id="form-uit" class="rounded-sm bg-white/10 p-4 text-sm">Dit is een ontwerpvoorstel: het formulier verstuurt nog niets. Bel {site.tel} of mail naar{' '}<a href={`mailto:${site.mail}`} class="font-bold underline">{site.mail}</a>.</p>
-          ) : (
-            <button type="submit" class="btn btn-sun justify-self-start">Offerte aanvragen</button>
-          )}
+        <div class="mt-12 grid grid-cols-1 gap-x-14 lg:mt-16 lg:grid-cols-12">
+          <div class="lg:col-span-7">
+            {[['Buitenzonwering', buiten], ['Binnen', binnen]].map(([kop, rij], k) => (
+              <div class={k ? 'mt-10' : ''}>
+                <p class="mb-2 text-sm font-semibold text-zon-diep"><span class="blok" aria-hidden="true"></span>{kop as string}</p>
+                {(rij as typeof buiten).map((p) => (
+                  <div class="regel group" data-foto={p.foto ? JSON.stringify({ src: p.foto.src, srcset: p.foto.srcSet.attribute, pos: p.foto.pos, bij: p.bij, alt: p.naam }) : undefined} tabindex={p.foto ? 0 : undefined}>
+                    <h3 class="text-[1.85rem] transition-colors duration-200 md:text-[2.15rem] group-data-[actief]:text-zon-diep">{p.naam}</h3>
+                    <p class="text-grijs">{p.tekst}</p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+          <figure class="hidden lg:col-span-5 lg:block">
+            <div class="sticky top-8">
+              <img src={f.terras.src} srcset={f.terras.srcSet.attribute} sizes="36vw" alt="Terrasschermen" loading="lazy" decoding="async" width="960" height="720" class="aspect-[4/5] w-full rounded-sm object-cover transition-opacity duration-300" style={`object-position:${f.terras.pos}`} data-groot />
+              <figcaption class="mt-3 text-xs text-grijs" data-bij>Terrasscherm met nieuw doek, Facebook juni 2023</figcaption>
+            </div>
+          </figure>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-3 lg:hidden">
+          {[[rolluik, 'Rolluik in een bakstenen gevel', '62% 50%'], [roosters, 'Zonneroosters langs een glazen gevel', '50% 45%']].map(([img, bij, pos], i) => (
+            <figure>
+              <Image src={img as ImageMetadata} alt={bij as string} quality={70} widths={[360, 560]} sizes="(min-width: 640px) 31vw, 48vw" class="aspect-[3/4] w-full rounded-sm object-cover" style={`object-position:${pos}`} />
+              <figcaption class="mt-2 text-xs text-grijs">{bij as string}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. NIEUW DOEK: hun eigen reeks van 2 juni 2023 -->
+    <section id="doek" class="bg-nacht py-20 text-wit md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-14">
+        <h2 class="rijs text-4xl lg:col-span-7">Nieuw doek.<br /><span class="text-zon">Zelfde scherm.</span></h2>
+        <div class="rijs lg:col-span-5 lg:pt-3" style="--d:.1s">
+          <p class="text-lg text-wit/85">Op dit terras kreeg het bestaande scherm een nieuw doek. Van oud doek eraf tot nieuw doek erop.</p>
+          <a href={waDoek} class="knop knop-zon mt-7"><Icoon naam="wa" />Stuur een foto van uw scherm</a>
+        </div>
+      </div>
+      <ol class="wrap mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-12 md:gap-4">
+        {[
+          [oudHangend, 'Het oude gestreepte doek hangt nog aan het scherm, met een trapje eronder', 'Het oude doek', 'md:col-span-3', 'aspect-[3/5] md:aspect-[3/4]', '50% 50%'],
+          [eraf, 'Het oude rood-witte doek komt van de rol', 'Eraf', 'md:col-span-4', 'aspect-[3/5] md:aspect-auto md:h-full', '35% 50%'],
+          [uitgerold, 'Het oude doek ligt uitgerold over de lengte van het terras', 'Uitgerold op het terras', 'col-span-2 md:col-span-5', 'aspect-[16/9] md:aspect-auto md:h-full', '50% 50%'],
+        ].map(([img, alt, cap, span, asp, pos], i) => (
+          <li class={`rijs ${span}`} style={`--d:${i * .08}s`}>
+            <figure class="flex h-full flex-col">
+              <Image src={img as ImageMetadata} alt={alt as string} quality={70} widths={[360, 560, 800]} sizes="(min-width: 768px) 40vw, 48vw" class={`w-full flex-1 rounded-sm object-cover ${asp}`} style={`object-position:${pos}`} />
+              <figcaption class="mt-3 flex gap-2 text-sm text-as"><span class="font-kop text-xl leading-none text-zon">{i + 1}</span>{cap as string}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ol>
+      <div class="wrap mt-3 grid grid-cols-1 gap-3 md:mt-4 md:grid-cols-12 md:gap-4">
+        <figure class="rijs md:col-span-8">
+          <Image src={terras} alt="Het nieuwe antraciet-witte doek uitgerold boven het terras" quality={70} widths={[640, 960, 1280]} sizes="(min-width: 768px) 62vw, 100vw" class="aspect-[16/9] w-full rounded-sm object-cover md:aspect-[21/10]" />
+          <figcaption class="mt-3 flex gap-2 text-sm text-as"><span class="font-kop text-xl leading-none text-zon">4</span>Het nieuwe doek, foto’s van onze Facebookpagina, 2 juni 2023</figcaption>
+        </figure>
+        <blockquote class="rijs flex flex-col justify-between rounded-sm bg-nacht-2 p-7 md:col-span-4 md:p-9" style="--d:.1s">
+          <p class="font-kop text-[2rem] uppercase leading-[.95] md:text-[2.5rem]">“{reviews.henk.tekst}”</p>
+          <footer class="mt-6 flex items-center gap-3 text-sm text-as"><Icoon naam="g" class="h-4 w-4" />{reviews.henk.naam}, Google review</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 5. ZAKELIJK -->
+    <section id="zakelijk" class="py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Nieuwbouw of renovatie.</h2>
+          <p class="rijs mt-7 text-lg" style="--d:.1s">Voorkom de hinderlijke schittering op uw beeldscherm. Kila Zonweringen wordt vaak rechtstreeks benaderd door bedrijven die zonwering nodig hebben.</p>
+          <p class="rijs mt-4 text-grijs" style="--d:.15s">Met een goede werkvoorbereiding voeren we ook complexe projecten uit, en naast nieuwbouw en renovatie doen we onderhoud en service voor onze opdrachtgevers.</p>
+          <ul class="rijs mt-10 border-t border-lijn-licht" style="--d:.2s">
+            <li class="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-lijn-licht py-4"><span class="num text-sm font-semibold text-zon-diep">Juni 2026</span><span>Solar ritsscreens geplaatst in Rotterdam</span></li>
+            <li class="grid grid-cols-[6.5rem_1fr] gap-4 border-b border-lijn-licht py-4"><span class="num text-sm font-semibold text-zon-diep">April 2025</span><span>3-in-1 ritsscreen bij Ambacht klimaatservice</span></li>
+          </ul>
+          <a href={waMet('Hallo Kila Zonweringen, ik zoek zonwering voor ons bedrijfspand. Kunnen we een afspraak maken?')} class="rijs knop knop-nacht mt-9" style="--d:.25s"><Icoon naam="wa" />Zakelijke aanvraag</a>
+        </div>
+        <div class="grid grid-cols-2 gap-3 md:gap-4 lg:col-span-7">
+          <figure class="rijs col-span-2">
+            <Image src={kantoor} alt="Kantoorpand van lichte baksteen met twee grijze uitvalschermen boven de ramen, blauwe lucht en bomen" quality={70} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 55vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover object-[60%_40%]" />
+            <figcaption class="mt-3 text-xs text-grijs">Uitvalschermen aan een kantoorgevel</figcaption>
+          </figure>
+          <figure class="rijs" style="--d:.08s">
+            <Image src={rotterdam} alt="Grijze units met groene rand, de ramen afgedekt met neergelaten ritsscreens" quality={70} widths={[360, 560, 800]} sizes="(min-width: 1024px) 27vw, 48vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[40%_50%]" />
+            <figcaption class="mt-3 text-xs text-grijs">Solar ritsscreens, Rotterdam, juni 2026</figcaption>
+          </figure>
+          <figure class="rijs" style="--d:.14s">
+            <Image src={ambacht} alt="Bedrijfspand met een ritsscreen voor het raam onder de gevelnaam, een hoogwerker ervoor" quality={70} widths={[360, 560, 800]} sizes="(min-width: 1024px) 27vw, 48vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_35%]" />
+            <figcaption class="mt-3 text-xs text-grijs">3-in-1 ritsscreen, april 2025</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. OFFERTE: één zin met keuzes, eindigt in WhatsApp -->
+    <section id="offerte" class="bg-nacht py-20 text-wit md:py-28" data-zin>
+      <div class="wrap">
+        <div class="lint text-as"></div>
+        <div class="mt-10 flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs text-4xl">Meten is weten.</h2>
+          <p class="rijs max-w-md text-as" style="--d:.05s">Kies de woorden die kloppen en stuur de zin via WhatsApp. Daarna komen we bij u langs om de exacte maten op te nemen.</p>
+        </div>
+        <form class="rijs mt-10 md:mt-14" style="--d:.1s" onsubmit="return false" aria-label="Offertezin">
+          <p class="font-kop text-[1.95rem] uppercase leading-[1.18] sm:text-[2.6rem] md:text-[3.6rem] lg:text-[4.2rem]">
+            Ik wil graag{' '}
+            <select class="zin-keuze" name="wat" aria-label="Product of dienst">{keuzes.wat.map((o) => <option>{o}</option>)}</select>
+            {' '}voor{' '}
+            <select class="zin-keuze" name="waar" aria-label="Waar">{keuzes.waar.map((o) => <option>{o}</option>)}</select>,{' '}
+            <select class="zin-keuze" name="maat" aria-label="Maat of aantal ramen">{keuzes.maat.map((o) => <option>{o}</option>)}</select>,{' '}
+            in <input class="zin-veld" name="plaats" list="plaatsen" placeholder="plaats" autocomplete="address-level2" aria-label="Plaats" />.
+            <datalist id="plaatsen">{site.regio.map((p) => <option value={p} />)}</datalist>
+          </p>
+          <div class="mt-12 grid grid-cols-1 gap-8 border-t border-lijn pt-8 lg:grid-cols-12">
+            <div class="lg:col-span-4">
+              <label class="flex min-h-11 cursor-pointer items-start gap-3 text-base">
+                <input type="checkbox" name="boeken" class="mt-1 h-5 w-5 flex-none accent-[#f39a2b]" />
+                <span>Neem de collectieboeken mee</span>
+              </label>
+              <p class="mt-3 text-sm text-as">Of bel <a href={site.telHref} class="link num text-wit">{site.tel}</a>, of mail <a href={`mailto:${site.mail}`} class="link text-wit">{site.mail}</a>.</p>
+            </div>
+            <div class="lg:col-span-8">
+              <p class="text-sm font-semibold text-as">Uw bericht</p>
+              <p class="mt-3 rounded-sm bg-nacht-2 p-5 text-wit/90" data-bericht aria-live="polite">{startBericht}</p>
+              <a href={waMet(startBericht)} class="knop knop-zon mt-5" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            </div>
+          </div>
         </form>
       </div>
     </section>
 
-    <section class="wrap py-16 lg:py-20">
-      <h2 class="text-2xl">Contact</h2>
-      <p class="mt-4 text-lg">{site.naam}, {site.straat}, {site.postcode} {site.plaats}</p>
-      <p class="mt-2"><a href={site.telHref} class="font-display text-2xl font-black underline decoration-sun decoration-[3px] underline-offset-4">{site.tel}</a><span class="mx-3 text-ink-soft">·</span><a href={`mailto:${site.mail}`} class="underline decoration-sun decoration-[3px] underline-offset-4">{site.mail}</a></p>
+    <!-- 7. REVIEWS -->
+    <section class="py-20 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs text-4xl">Komt netjes op tijd.</h2>
+          <p class="rijs flex items-center gap-2.5 text-sm font-semibold" style="--d:.05s"><Icoon naam="g" class="h-5 w-5" />{site.google.score} op Google, {site.google.aantal} reviews</p>
+        </div>
+        <div class="mt-12 grid grid-cols-1 gap-x-14 gap-y-12 lg:grid-cols-12">
+          <blockquote class="rijs lg:col-span-7">
+            <p class="flex gap-0.5 text-zon-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</p>
+            <p class="mt-5 text-lg leading-relaxed md:text-[1.55rem] md:leading-[1.5]">“{reviews.jordy.tekst}”</p>
+            <footer class="mt-6 text-sm text-grijs"><span class="font-semibold text-inkt">{reviews.jordy.naam}</span> · {reviews.jordy.wanneer}</footer>
+          </blockquote>
+          <div class="space-y-10 lg:col-span-5">
+            {[reviews.stefan, reviews.corinne, reviews.danica].map((r, i) => (
+              <blockquote class="rijs border-t-2 border-inkt pt-5" style={`--d:${i * .08}s`}>
+                <p class="flex gap-0.5 text-zon-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+                <p class="mt-3">“{r.tekst}”</p>
+                <footer class="mt-3 text-sm text-grijs"><span class="font-semibold text-inkt">{r.naam}</span> · {r.wanneer}</footer>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CONTACT: wij komen naar u toe -->
+    <section id="contact" class="bg-kalk-2 py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Wij komen<br />naar u toe.</h2>
+          <ul class="rijs mt-8 flex flex-wrap gap-x-5 gap-y-1 font-kop text-[1.9rem] uppercase leading-[1.1] md:text-[2.6rem]" style="--d:.1s">
+            {site.regio.map((p, i) => <li class={i ? 'text-grijs' : 'text-inkt'}>{p}{i < site.regio.length - 1 && <span class="ml-5 text-zon-diep" aria-hidden="true">/</span>}</li>)}
+          </ul>
+          <p class="rijs mt-4 text-grijs" style="--d:.15s">En omliggende plaatsen in Zuid-Holland.</p>
+        </div>
+        <div class="rijs lg:col-span-5" style="--d:.1s">
+          <p data-status-wrap class="flex items-center gap-2.5 font-semibold"><span class="h-2.5 w-2.5 flex-none rounded-full bg-zon" aria-hidden="true"></span><span data-status>Maandag tot en met vrijdag bereikbaar van 09.00 tot 17.00 uur</span></p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-zon"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-nacht"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+          <dl class="mt-9 space-y-3 border-t border-lijn-licht pt-6 text-sm">
+            <div class="flex justify-between gap-6"><dt class="text-grijs">Maandag t/m vrijdag</dt><dd class="num font-semibold">09.00 tot 17.00</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-grijs">Zaterdag en zondag</dt><dd class="font-semibold">Gesloten</dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-grijs">E-mail</dt><dd><a href={`mailto:${site.mail}`} class="link link-diep font-semibold">{site.mail}</a></dd></div>
+            <div class="flex justify-between gap-6"><dt class="text-grijs">Adres</dt><dd class="text-right font-semibold">{site.straat}, {site.plaats}</dd></div>
+          </dl>
+        </div>
+      </div>
     </section>
   </main>
-  <Chrome deel="voet" />
+  <Voet />
+
+  <script define:vars={{ wa: site.wa }}>
+    // Productfoto wisselt mee met de regel waar u op wijst (alleen eigen foto's).
+    const groot = document.querySelector('[data-groot]');
+    const bij = document.querySelector('[data-bij]');
+    const regels = document.querySelectorAll('[data-foto]');
+    const zet = (el) => {
+      regels.forEach((r) => r.toggleAttribute('data-actief', r === el));
+      const d = JSON.parse(el.dataset.foto);
+      if (!groot || groot.getAttribute('src') === d.src) return;
+      groot.style.opacity = '0';
+      setTimeout(() => { groot.srcset = d.srcset; groot.src = d.src; groot.alt = d.alt; groot.style.objectPosition = d.pos; bij.textContent = d.bij; groot.style.opacity = '1'; }, 180);
+    };
+    regels.forEach((r) => { r.addEventListener('mouseenter', () => zet(r)); r.addEventListener('focus', () => zet(r)); });
+
+    // Offertezin naar WhatsApp.
+    const zin = document.querySelector('[data-zin]');
+    if (zin) {
+      const bericht = zin.querySelector('[data-bericht]');
+      const stuur = zin.querySelector('[data-stuur]');
+      const v = (n) => zin.querySelector(`[name="${n}"]`);
+      const maak = () => {
+        const plaats = v('plaats').value.trim();
+        let t = `Hallo Kila Zonweringen, ik wil graag een offerte voor ${v('wat').value} voor ${v('waar').value}, ${v('maat').value}${plaats ? `, in ${plaats}` : ''}. Kunt u langskomen om de maten op te nemen?`;
+        if (v('boeken').checked) t += ' Wilt u de collectieboeken meenemen?';
+        bericht.textContent = t;
+        stuur.href = `${wa}?text=${encodeURIComponent(t)}`;
+      };
+      // Selects zo breed als het gekozen woord, zodat de zin als zin leest.
+      const ctx = document.createElement('canvas').getContext('2d');
+      const pas = () => zin.querySelectorAll('select').forEach((s) => {
+        const cs = getComputedStyle(s);
+        ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        const t = s.options[s.selectedIndex].text.toUpperCase();
+        s.style.width = `${Math.ceil(ctx.measureText(t).width + parseFloat(cs.fontSize) * 0.62)}px`;
+      });
+      const veld = v('plaats');
+      const pasVeld = () => { const cs = getComputedStyle(veld); ctx.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; veld.style.width = `${Math.ceil(ctx.measureText((veld.value || veld.placeholder).toUpperCase()).width + parseFloat(cs.fontSize) * 0.3)}px`; };
+      veld.addEventListener('input', pasVeld); pasVeld(); document.fonts?.ready.then(pasVeld);
+      pas(); document.fonts?.ready.then(pas); addEventListener('resize', pas);
+      zin.querySelectorAll('select,input').forEach((el) => { el.addEventListener('change', () => { maak(); pas(); }); el.addEventListener('input', maak); });
+    }
+  </script>
 </Base>

@@ -9,6 +9,7 @@ export default defineConfig({
   base: '/sitefront/kila-zonweringen',
   trailingSlash: 'ignore',
   devToolbar: { enabled: false },
+  build: { inlineStylesheets: 'always' },
   integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

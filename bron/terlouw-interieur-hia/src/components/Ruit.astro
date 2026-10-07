@@ -1,0 +1,16 @@
+---
+// Nagetekend logomerk: een raster van 3x3 ruiten, om en om zandkleurig gevuld en open, als op hun logo, bus en gevelbord.
+interface Props { class?: string; n?: number; open?: string }
+const { class: cls = '', n = 3, open = 'currentColor' } = Astro.props;
+const s = 10; const ruiten: { x: number; y: number; vol: boolean }[] = [];
+for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) ruiten.push({ x: j * s, y: i * s, vol: (i + j) % 2 === 1 });
+// Vierkant raster 45 graden gedraaid tot ruiten.
+const w = n * s;
+const pt = (x: number, y: number) => { const a = (x - y) * 0.7071, b = (x + y) * 0.7071; return `${(a + w * 0.7071).toFixed(2)},${b.toFixed(2)}`; };
+const vb = `-1 -1 ${(w * 1.4142 + 2).toFixed(2)} ${(w * 1.4142 + 2).toFixed(2)}`;
+---
+<svg class={cls} viewBox={vb} aria-hidden="true" fill="none">
+  {ruiten.map((r) => (
+    <polygon points={[pt(r.x, r.y), pt(r.x + s, r.y), pt(r.x + s, r.y + s), pt(r.x, r.y + s)].join(' ')} fill={r.vol ? 'var(--color-zand)' : 'none'} stroke={r.vol ? 'var(--color-zand)' : open} stroke-width=".9" stroke-linejoin="miter" />
+  ))}
+</svg>
