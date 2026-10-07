@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+await p.goto('http://localhost:4445/sitefront/sam-zonwering-alblasserdam/#schaduw', { waitUntil: 'networkidle' });
+await p.click('button.plek-knop[data-plek="terras"]'); await p.fill('[data-maat]', '4 meter breed'); await p.fill('[data-plaats]', 'Papendrecht');
+console.log(decodeURIComponent((await p.getAttribute('[data-wa-schaduw]', 'href')).split('text=')[1]));
+await p.click('button.plek-knop[data-plek="slaap"]'); await p.click('text=Cassette rolgordijn');
+console.log(decodeURIComponent((await p.getAttribute('[data-wa-schaduw]', 'href')).split('text=')[1]));
+await p.locator('#schaduw').screenshot({ path: 'shots/wow-390.png' });
+await p.setViewportSize({ width: 1440, height: 900 }); await p.click('g.huis-punt[data-plek="dak"]');
+console.log(decodeURIComponent((await p.getAttribute('[data-wa-schaduw]', 'href')).split('text=')[1]));
+await p.click('.lamel:nth-child(3) button'); console.log(await p.evaluate(() => [...document.querySelectorAll('.lamel')].map(l => l.dataset.open).join(',')));
+await b.close();

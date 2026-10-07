@@ -1,0 +1,324 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, buiten, binnen, plekken, reviews, serviceReviews, waLink } from '../data/site';
+import heroImg from '../assets/lamellen-daglicht.jpg';
+import markies from '../assets/markies-lucht.jpg';
+import woonkamer from '../assets/woonkamer-plisse.jpg';
+import schaduw from '../assets/schaduw-gevel.jpg';
+
+const waInmeten = waLink('Hallo Sam, ik wil graag een afspraak voor gratis inmeten. Het gaat om: ');
+const waStoring = waLink('Hallo Sam, ik heb een storing of iets is kapot aan mijn zonwering. Ik stuur een foto mee. Adres/plaats: ');
+const dagen = [['Maandag', 1], ['Dinsdag', 2], ['Woensdag', 3], ['Donderdag', 4], ['Vrijdag', 5], ['Zaterdag', 6], ['Zondag', 0]] as const;
+const [eerste, ...rest] = reviews;
+---
+<Base title="Sam Zonwering, Alblasserdam | Binnen- en buitenzonwering op maat" description="Screens, markiezen, knikarmschermen, rolluiken en raamdecoratie op maat. Gratis inmeten, levering en montage door Sam Zonwering uit Alblasserdam.">
+  <main id="inhoud">
+    <div class="relative">
+    <Kop />
+    <!-- HERO: daglicht door lamellen -->
+    <section class="relative flex min-h-[100svh] items-end overflow-hidden bg-lucht pb-14 pt-32 md:items-center md:pb-24">
+      <Image quality={68} src={heroImg} alt="" widths={[640, 1024, 1600, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 h-full w-full object-cover object-[60%_50%]" />
+      <div class="absolute inset-0 bg-[linear-gradient(90deg,#f6f9fbf5_0%,#f6f9fbe6_38%,#f6f9fb80_62%,#f6f9fb1a_100%)] max-md:bg-[linear-gradient(180deg,#f6f9fb66_0%,#f6f9fbd9_45%,#f6f9fbf7_100%)]" aria-hidden="true"></div>
+      <div class="wrap relative">
+        <p class="text-sm font-semibold text-sam">Zonwering en rolluiken uit Alblasserdam</p>
+        <h1 class="mt-4 max-w-[11ch] text-[length:var(--text-hero)] text-sam">Sterk in zonwering.</h1>
+        <p class="mt-6 max-w-[34rem] text-lg leading-relaxed text-inkt md:text-xl">Binnen- en buitenzonwering op maat, geleverd en gemonteerd door Sam. Ook voor onderhoud en reparatie.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href={waInmeten} class="knop knop-sam"><Icoon naam="wa" />Gratis inmeten aanvragen</a>
+          <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+        </div>
+        <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-sm font-medium text-inkt">
+          {['Gratis meten', '24 uur service, ook in het weekend', 'Alle losse onderdelen verkrijgbaar'].map((t) => <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-sam" />{t}</li>)}
+        </ul>
+      </div>
+      <!-- horizon met opkomende zon (uit het logo) -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0" aria-hidden="true">
+        <div class="relative h-[3px] bg-zon">
+          <div class="absolute bottom-[3px] right-[8%] h-7 w-14 overflow-hidden md:h-11 md:w-[5.5rem]"><div class="h-14 w-14 rounded-full bg-zon md:h-[5.5rem] md:w-[5.5rem]"></div></div>
+        </div>
+      </div>
+    </section>
+    </div>
+
+    <!-- WAT SAM DOET -->
+    <section class="bg-wit py-20 md:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-20">
+        <h2 class="rijs text-[length:var(--text-4xl)] text-inkt">Van markies tot rolgordijn: <span class="text-sam">Sam meet in, levert en hangt op.</span></h2>
+        <div class="rijs self-end text-grijs" style="--d:.1s">
+          <p class="text-lg leading-relaxed">“Zonwering kan jarenlang meegaan, logischerwijs is zonwering daarom geen product dat u met enige regelmaat aanschaft. Sam Zonwering begrijpt dat u voor aanschaf goed geïnformeerd en geadviseerd wilt worden.”</p>
+          <p class="mt-4 text-sm">Uit de eigen tekst van Sam Zonwering</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUITEN -->
+    <section id="buiten" class="bg-licht">
+      <div class="grid lg:grid-cols-2">
+        <div class="relative min-h-[22rem] lg:min-h-full">
+          <Image quality={68} src={markies} alt="Gestreept zonnescherm tegen een blauwe lucht (sfeerfoto)" widths={[640, 1000, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          <p class="absolute bottom-3 left-4 text-xs text-wit/90">Sfeerfoto</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:px-16 lg:py-28 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <h2 class="rijs text-[length:var(--text-4xl)] text-sam">Buiten</h2>
+          <p class="rijs mt-4 max-w-md text-lg text-grijs">Zonneschermen, screens, markiezen en rolluiken. Op maat, met de bediening die u wilt: band, koord, slinger of elektrisch.</p>
+          <div class="mt-10" data-lamellen>
+            {buiten.map((b, i) => (
+              <div class="lamel" data-open={i === 0 ? 'true' : 'false'}>
+                <button type="button" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`lamel-${i}`}>
+                  <span><span class="lamel-titel block text-inkt">{b.titel}</span><span class="mt-1 block text-sm text-grijs">{b.kort}</span></span>
+                  <span class="lamel-plus" aria-hidden="true"></span>
+                </button>
+                <div class="lamel-body" id={`lamel-${i}`}><div><p class="max-w-lg pb-6 text-inkt">{b.lang}</p></div></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAAR WILT U SCHADUW? -->
+    <section id="schaduw" class="bg-lucht py-20 md:py-28">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-end">
+          <h2 class="rijs text-[length:var(--text-4xl)] text-sam">Waar wilt u schaduw?</h2>
+          <p class="rijs max-w-md text-lg text-grijs lg:justify-self-end">Tik op een plek in het huis. U ziet wat Sam daarvoor levert en stuurt de vraag meteen via WhatsApp.</p>
+        </div>
+        <div class="mt-12 grid gap-10 lg:grid-cols-[1.45fr_1fr] lg:items-start lg:gap-14">
+          <div class="rijs rounded-sm bg-wit p-3 md:p-6 lg:sticky lg:top-8">
+            <svg viewBox="0 0 640 430" class="h-auto w-full" role="group" aria-label="Tekening van een huis met vijf plekken voor zonwering">
+              <g fill="none" stroke="#004078" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+                <!-- zon -->
+                <circle cx="585" cy="62" r="24" fill="#f8e048" stroke="none" />
+                <!-- grond -->
+                <path d="M20 402h600" stroke-width="2.5" />
+                <!-- dak en gevel -->
+                <path d="M96 196 292 62l196 134" />
+                <path d="M118 182v220M466 182v220" />
+                <!-- dakkapel -->
+                <rect class="huis-zone" data-zone="dak" x="222" y="112" width="140" height="68" stroke="none" />
+                <path d="M226 176v-58h132v58" /><path d="M218 118h148" stroke-width="3" />
+                <rect x="240" y="130" width="104" height="38" /><path d="M292 130v38" />
+                <path d="M244 133h96M244 139h96M244 145h96" stroke-width="1" opacity=".5" />
+                <!-- verdieping: slaapkamerraam met rolluikkast -->
+                <rect class="huis-zone" data-zone="slaap" x="140" y="206" width="150" height="76" stroke="none" />
+                <rect x="150" y="214" width="130" height="12" fill="#e6eff6" />
+                <rect x="150" y="226" width="130" height="50" />
+                <path d="M150 232h130M150 238h130M150 244h130M150 250h130" stroke-width="1" opacity=".55" />
+                <path d="M215 226v50" />
+                <rect x="320" y="214" width="120" height="62" /><path d="M380 214v62" />
+                <!-- verdiepingsvloer -->
+                <path d="M118 294h348" stroke-width="1.5" opacity=".6" />
+                <!-- begane grond: gevelraam met uitvalscherm -->
+                <rect class="huis-zone" data-zone="gevel" x="140" y="300" width="150" height="100" stroke="none" />
+                <path d="M146 312h138l12 26H158z" fill="#f8e04833" />
+                <rect x="150" y="330" width="130" height="64" /><path d="M215 330v64" />
+                <!-- voordeur -->
+                <rect x="300" y="322" width="38" height="80" /><circle cx="330" cy="364" r="2" fill="#004078" stroke="none" />
+                <!-- schuifpui met paneelgordijn -->
+                <rect class="huis-zone" data-zone="pui" x="346" y="304" width="116" height="98" stroke="none" />
+                <rect x="352" y="316" width="104" height="86" /><path d="M404 316v86" />
+                <path d="M360 318v82M368 318v82M376 318v82" stroke-width="1" opacity=".55" />
+                <!-- terras met knikarmscherm -->
+                <rect class="huis-zone" data-zone="terras" x="470" y="296" width="150" height="106" stroke="none" />
+                <path d="M466 302 612 334" stroke-width="3" />
+                <path d="M466 302h14l132 32" fill="#f8e04833" />
+                <path d="M484 306l40 36M560 322l-36 20" stroke-width="1.5" />
+                <path d="M520 402v-30h56v30M514 372h68" />
+                <path d="M600 402v-34" stroke-width="1.5" />
+              </g>
+              {plekken.map((p) => {
+                const pos = { dak: [292, 98], slaap: [292, 222], gevel: [134, 352], pui: [404, 290], terras: [560, 290] }[p.id]!;
+                return (
+                  <g class="huis-punt" role="button" tabindex="0" aria-label={`${p.nr}. ${p.plek}`} aria-pressed={p.id === 'gevel' ? 'true' : 'false'} data-plek={p.id} transform={`translate(${pos[0]} ${pos[1]})`}>
+                    <circle class="ring" r="15" />
+                    <text text-anchor="middle" dy="5">{p.nr}</text>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+
+          <div class="rijs" style="--d:.1s">
+            <div class="mb-6 flex flex-wrap gap-2" role="group" aria-label="Kies een plek">
+              {plekken.map((p) => <button type="button" class="plek-knop" data-plek={p.id} aria-pressed={p.id === 'gevel' ? 'true' : 'false'} title={p.plek}><span class="nr">{p.nr}</span><span class="sr-only">{p.plek}</span></button>)}
+            </div>
+            {plekken.map((p) => (
+              <div data-paneel={p.id} hidden={p.id !== 'gevel'}>
+                <h3 class="text-3xl text-inkt"><span class="text-sam">{p.nr}.</span> {p.plek}</h3>
+                <fieldset class="mt-5">
+                  <legend class="sr-only">Kies een product voor {p.plek}</legend>
+                  {p.opties.map(([t, z, w], j) => (
+                    <label class="flex cursor-pointer gap-3 border-b border-lijn py-3">
+                      <input type="radio" name={`opt-${p.id}`} value={w} checked={j === 0} class="mt-1.5 h-4 w-4 shrink-0 accent-[#004078]" />
+                      <span><span class="block font-semibold text-inkt">{t}</span><span class="block text-sm text-grijs">{z}</span></span>
+                    </label>
+                  ))}
+                </fieldset>
+              </div>
+            ))}
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <label class="text-sm font-medium text-inkt">Aantal ramen of maat<input class="veld mt-1.5" data-maat placeholder="bijv. 2 ramen, 180 cm" /></label>
+              <label class="text-sm font-medium text-inkt">Plaats<input class="veld mt-1.5" data-plaats placeholder="bijv. Alblasserdam" autocomplete="address-level2" /></label>
+            </div>
+            <a href={waInmeten} class="knop knop-sam mt-6 w-full" data-wa-schaduw><Icoon naam="wa" />Vraag via WhatsApp</a>
+            <p class="mt-3 text-sm text-grijs" data-voorbeeld aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BINNEN -->
+    <section id="binnen" class="bg-wit">
+      <div class="relative h-[46svh] min-h-[19rem] overflow-hidden md:h-[50vh]">
+        <Image quality={68} src={woonkamer} alt="Woonkamer met raamdecoratie (sfeerfoto)" widths={[640, 1000, 1600]} sizes="100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_40%]" />
+        <div class="absolute inset-0 bg-[linear-gradient(0deg,#01213fcc_0%,#01213f00_55%)]" aria-hidden="true"></div>
+        <div class="wrap absolute inset-x-0 bottom-0 pb-10 md:pb-14">
+          <h2 class="text-[length:var(--text-4xl)] text-wit">Binnen</h2>
+          <p class="mt-3 max-w-lg text-lg text-wit/90">Raamdecoratie op maat gemaakt, van jaloezie tot vouwgordijn.</p>
+        </div>
+        <p class="absolute right-4 top-3 text-xs text-wit/90">Sfeerfoto</p>
+      </div>
+      <div class="wrap py-16 md:py-24">
+        <div class="hidden border-b border-lijn-2 pb-3 text-sm font-semibold text-grijs md:grid md:grid-cols-[13rem_minmax(0,1fr)_11rem] md:gap-6">
+          <span>Product</span><span>Uitvoering</span><span>Levertijd</span>
+        </div>
+        {binnen.map((b, i) => (
+          <div class="staal rijs" style={`--d:${i * 0.05}s`}>
+            <h3 class="text-2xl text-inkt md:text-[1.75rem]">{b.titel}</h3>
+            <p class="text-grijs">{b.uitvoering}</p>
+            <p class="num text-sm font-semibold text-sam md:text-base">{b.levertijd}</p>
+          </div>
+        ))}
+        <p class="mt-6 text-sm text-grijs">Uitvoeringen en levertijden zoals Sam ze op de eigen productpagina's noemt. Op jaloezieën en lamel-, paneel-, rol- en silhouettegordijnen geeft Sam 1 jaar garantie op fabricage- en materiaalfouten.</p>
+      </div>
+    </section>
+
+    <!-- STORING EN REPARATIE -->
+    <section id="service" class="op-donker bg-nacht text-wit">
+      <div class="wrap grid gap-14 py-20 md:py-28 lg:grid-cols-[1.1fr_1fr] lg:gap-20">
+        <div>
+          <h2 class="rijs text-[length:var(--text-4xl)]">Storing of iets kapot?</h2>
+          <p class="rijs mt-6 max-w-lg text-xl leading-relaxed text-mist">Sam is 24 uur bereikbaar voor storingen en reparaties, ook in het weekend. Alle losse onderdelen zijn verkrijgbaar.</p>
+          <div class="rijs mt-9 flex flex-wrap gap-3">
+            <a href={waStoring} class="knop knop-zon"><Icoon naam="wa" />Stuur een foto via WhatsApp</a>
+            <a href={site.telHref} class="knop knop-wit"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+          <div class="mt-16 space-y-10">
+            {serviceReviews.map((r) => (
+              <figure class="rijs border-l-2 border-zon pl-6">
+                <blockquote class="text-lg leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-3 text-sm text-mist">{r.naam}, Google-review</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <div class="relative hidden min-h-[24rem] overflow-hidden lg:block">
+          <Image quality={68} src={schaduw} alt="Schaduw van lamellen op een gevel (sfeerfoto)" widths={[640, 1000, 1400]} sizes="(min-width: 1024px) 45vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          <p class="absolute bottom-3 left-4 text-xs text-wit/90">Sfeerfoto</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="bg-licht py-20 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs text-[length:var(--text-4xl)] text-sam">Wat klanten zeggen</h2>
+          <a href={site.maps} class="rijs flex items-center gap-2 text-sm font-medium text-inkt no-underline hover:text-sam-2" rel="noopener"><Icoon naam="g" class="h-5 w-5" /><span class="num">{site.google.score}</span> op Google, {site.google.aantal} reviews</a>
+        </div>
+        <figure class="rijs mt-10 max-w-5xl">
+          <blockquote class="kop text-[length:var(--text-3xl)] font-semibold leading-[1.05] text-inkt">“{eerste.tekst}”</blockquote>
+          <figcaption class="mt-5 text-grijs">{eerste.naam}, {eerste.wanneer}</figcaption>
+        </figure>
+        <div class="mt-12 grid gap-x-14 md:grid-cols-2">
+          {rest.map((r, i) => (
+            <figure class="rijs border-t border-lijn-2 py-7" style={`--d:${(i % 2) * 0.08}s`}>
+              <div class="flex gap-0.5 text-sam" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+              <blockquote class="mt-3 text-lg leading-relaxed text-inkt">“{r.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm text-grijs">{r.naam}{r.wanneer && `, ${r.wanneer}`}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="bg-wit py-20 md:py-28">
+      <div class="wrap grid gap-14 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+        <div>
+          <h2 class="rijs text-[length:var(--text-4xl)] text-inkt">Een afspraak maken voor het <span class="text-sam">opmeten?</span></h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-grijs">Stuur een appje of bel. Sam komt bij u langs, meet gratis in en bespreekt meteen de mogelijkheden.</p>
+          <div class="rijs mt-9 flex flex-wrap gap-3">
+            <a href={waInmeten} class="knop knop-sam"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand"><Icoon naam="mail" />Mail</a>
+          </div>
+        </div>
+        <div class="rijs" style="--d:.1s">
+          <p class="flex items-center gap-2.5 text-sm font-semibold" data-status-wrap><span class="h-2.5 w-2.5 rounded-full bg-grijs [[data-open=true]_&]:bg-[#1d8a4e]" aria-hidden="true"></span><span data-status>Ma t/m vr 08.00 tot 18.00 uur</span></p>
+          <table class="mt-5 w-full text-left">
+            <caption class="sr-only">Openingstijden</caption>
+            <tbody>
+              {dagen.map(([d, n]) => (
+                <tr data-dag={n} class="border-b border-lijn data-[vandaag=true]:font-semibold data-[vandaag=true]:text-sam">
+                  <th scope="row" class="py-2.5 font-[inherit]">{d}</th>
+                  <td class="num py-2.5 text-right">{n >= 1 && n <= 5 ? '08.00 tot 18.00' : 'gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="mt-8 flex items-start gap-3">
+            <Icoon naam="pin" class="mt-0.5 h-5 w-5 shrink-0 text-sam" />
+            <p>{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.maps} class="link mt-2 inline-block font-semibold text-sam" rel="noopener">Route plannen</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Lamellenlijst: één lamel tegelijk open.
+  const lamellen = [...document.querySelectorAll<HTMLElement>('[data-lamellen] .lamel')];
+  lamellen.forEach((l) => l.querySelector('button')!.addEventListener('click', () => {
+    const open = l.dataset.open !== 'true';
+    lamellen.forEach((x) => { x.dataset.open = 'false'; x.querySelector('button')!.setAttribute('aria-expanded', 'false'); });
+    if (open) { l.dataset.open = 'true'; l.querySelector('button')!.setAttribute('aria-expanded', 'true'); }
+  }));
+
+  // Huistekening: plek kiezen > product > WhatsApp.
+  const plekNaam: Record<string, string> = { dak: 'het dakraam of de dakkapel', slaap: 'het slaapkamerraam', gevel: 'de ramen in de gevel', pui: 'de schuifpui', terras: 'het terras' };
+  let actief = 'gevel';
+  const wa = document.querySelector<HTMLAnchorElement>('[data-wa-schaduw]')!;
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]')!;
+  const maat = document.querySelector<HTMLInputElement>('[data-maat]')!;
+  const plaats = document.querySelector<HTMLInputElement>('[data-plaats]')!;
+  const bericht = () => {
+    const prod = document.querySelector<HTMLInputElement>(`[data-paneel="${actief}"] input:checked`)?.value || 'zonwering';
+    let t = `Hallo Sam, ik zoek ${prod} voor ${plekNaam[actief]}.`;
+    if (maat.value.trim()) t += ` Aantal ramen of maat: ${maat.value.trim()}.`;
+    if (plaats.value.trim()) t += ` Plaats: ${plaats.value.trim()}.`;
+    t += ' Kunt u langskomen om gratis in te meten?';
+    wa.href = `https://wa.me/31611092590?text=${encodeURIComponent(t)}`;
+    vb.textContent = `Bericht: “${t}”`;
+  };
+  const kies = (id: string) => {
+    actief = id;
+    document.querySelectorAll<HTMLElement>('[data-plek]').forEach((el) => el.setAttribute('aria-pressed', String(el.dataset.plek === id)));
+    document.querySelectorAll<HTMLElement>('[data-paneel]').forEach((el) => { el.hidden = el.dataset.paneel !== id; });
+    document.querySelectorAll<SVGElement>('[data-zone]').forEach((el) => el.setAttribute('data-actief', String(el.dataset.zone === id)));
+    bericht();
+  };
+  document.querySelectorAll<HTMLElement>('[data-plek]').forEach((el) => {
+    el.addEventListener('click', () => kies(el.dataset.plek!));
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); kies(el.dataset.plek!); } });
+  });
+  document.querySelectorAll('[data-paneel] input, [data-maat], [data-plaats]').forEach((el) => el.addEventListener('input', bericht));
+  document.querySelectorAll('[data-paneel] input').forEach((el) => el.addEventListener('change', bericht));
+  kies('gevel');
+</script>

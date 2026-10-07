@@ -1,0 +1,364 @@
+---
+import { Picture, Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, url, waHoi, waStoring, groepen, rolluiken, service, reviews, plaatsen, partners, tijden, dagNamen } from '../data/site';
+
+import dakkapel from '../assets/dakkapel-klant.jpg';
+import bus from '../assets/bus.jpg';
+import zon from '../assets/zon.png';
+import fZonnescherm from '../assets/zonnescherm-ipanema.jpg';
+import fJaloezie from '../assets/jaloezie.jpg';
+import fLamellendak from '../assets/lamellendak.jpg';
+import fHor from '../assets/hor.jpg';
+import fRolluiken from '../assets/rolluiken-gevel.jpg';
+import fScreen from '../assets/screen-solar.jpg';
+
+const groepFoto: Record<string, { src: ImageMetadata; alt: string; pos: string }> = {
+  buiten: { src: fZonnescherm, alt: 'Knikarmscherm boven een terras aan de voorgevel', pos: '50% 30%' },
+  binnen: { src: fJaloezie, alt: 'Witte jaloezieën voor het keukenraam', pos: '40% 50%' },
+  leven: { src: fLamellendak, alt: 'Lamellendak boven een terras met tafels', pos: '50% 50%' },
+  horren: { src: fHor, alt: 'Plissé-hor in een deurkozijn', pos: '50% 50%' },
+};
+
+const productOpties = [
+  ['Buitenzonwering', ['Zonnescherm', 'Screens', 'Verandazonwering', 'Uitvalschermen', 'Markiezen']],
+  ['Rolluiken', ['Rolluiken']],
+  ['Raamdecoratie', ['Jaloezieën', 'Rolgordijnen', 'Verticale lamellen', 'Plisségordijnen', 'Vouwgordijnen']],
+  ['Buitenleven', ['Terrasoverkapping', 'Lamellendak', 'Glaswanden', 'Terrasscherm', 'Windschermen', 'Tuinschermen']],
+  ['Horren', ['Horren']],
+] as const;
+
+const maxB = 400, maxH = 360; // grootste rolluik (RV 49) bepaalt de schaal
+const sterren = [1, 2, 3, 4, 5];
+const reviewsUrl = 'https://www.google.com/maps/search/?api=1&query=Ton+Stassen+Zonwering+Barendrecht';
+---
+<Base
+  title="Ton Stassen Zonwering & outdoor Living | Barendrecht"
+  description="Zonwering, rolluiken, raamdecoratie, horren en buitenleven op maat in Barendrecht en omstreken. Voor particulier, VvE en projecten."
+>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: hun werk onder de blauwe lucht -->
+    <section class="relative isolate overflow-hidden md:flex md:min-h-[calc(100svh-5rem)] md:items-center" style="background: linear-gradient(90deg, #86b0e6, #6896d0)">
+      <div class="wrap relative z-10 pt-9 md:py-24">
+        <div class="md:max-w-[56%] xl:max-w-[54%]">
+          <p class="text-sm font-semibold text-inkt md:text-base">Zonwering &amp; outdoor living in Barendrecht</p>
+          <h1 class="mt-5 text-hero text-inkt" style="font-weight: 800">Zonwering met een persoonlijke benadering.</h1>
+          <p class="mt-5 max-w-lg text-inkt/85 md:mt-6 md:text-xl">Zonwering, rolluiken, raamdecoratie en buitenleven op maat. Voor particulier, VvE en projecten.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#offerte" class="knop knop-rood">Offerte via WhatsApp<Icoon naam="pijl" /></a>
+            <a href={site.mobielHref} class="knop knop-inkt num"><Icoon naam="tel" />{site.mobiel}</a>
+          </div>
+        </div>
+      </div>
+      <div class="relative -mt-20 h-[46svh] min-h-72 md:absolute md:inset-y-0 md:right-0 md:mt-0 md:h-auto md:w-[56%]">
+        <Picture
+          src={dakkapel}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1300, 1800]}
+          sizes="(min-width: 768px) 56vw, 100vw"
+          alt="Wit rolluik op een dakkapel onder een blauwe lucht"
+          class="hero-foto h-full w-full object-cover"
+          style="object-position: 48% 80%"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <p class="absolute bottom-4 right-5 left-5 text-right text-xs text-wit/85 md:bottom-6 md:right-10">Rolluik op een dakkapel, geleverd door Ton. Foto van een klant op Google.</p>
+      </div>
+    </section>
+
+    <!-- 2. Persoonlijk: de bus en hun eigen belofte -->
+    <section id="ton" class="bg-papier py-24 md:py-32">
+      <div class="wrap grid items-center gap-x-14 gap-y-12 lg:grid-cols-12">
+        <div class="rijs relative lg:col-span-7">
+          <Image src={bus} widths={[480, 720, 960, 1400]} sizes="(min-width: 1024px) 58vw, 100vw" quality={72} alt="De zwarte bedrijfsbus van Ton Stassen Zonwering met rood-geel zonlogo" class="aspect-[4/3] w-full rounded-md object-cover" style="object-position: 55% 60%" />
+        </div>
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Persoonlijk advies, eigen montageteams.</h2>
+          <p class="rijs mt-6 text-lg text-grijs">Ton Stassen Zonwering is gespecialiseerd in de complete zorg van binnen- en buitenzonwering en projectzonwering.</p>
+          <dl class="rijs mt-10 border-t border-lijn-2">
+            <div class="grid grid-cols-[6.25rem_1fr] md:grid-cols-[7.5rem_1fr] gap-4 border-b border-lijn py-4"><dt class="font-semibold">Garantie</dt><dd class="text-grijs">5 tot 7 jaar op de meeste producten</dd></div>
+            <div class="grid grid-cols-[6.25rem_1fr] md:grid-cols-[7.5rem_1fr] gap-4 border-b border-lijn py-4"><dt class="font-semibold">Montage</dt><dd class="text-grijs">Teams met minimaal 20 jaar ervaring, o.a. VCA-gecertificeerd</dd></div>
+            <div class="grid grid-cols-[6.25rem_1fr] md:grid-cols-[7.5rem_1fr] gap-4 border-b border-lijn py-4"><dt class="font-semibold">Betaling</dt><dd class="text-grijs">Geen aanbetaling voor uw opdracht</dd></div>
+            <div class="grid grid-cols-[6.25rem_1fr] md:grid-cols-[7.5rem_1fr] gap-4 border-b border-lijn py-4"><dt class="font-semibold">Inmeten</dt><dd class="text-grijs">Gratis meten bij opdracht</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Aanbod: index met grote groepsnamen -->
+    <section id="aanbod" class="bg-wit py-24 md:py-32">
+      <div class="wrap">
+        <h2 class="rijs max-w-3xl text-4xl">Voor raam, gevel en terras.</h2>
+        <div class="mt-12 grid gap-x-14 gap-y-10 lg:mt-16 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+          <div role="tablist" aria-label="Aanbod" data-tabs>
+            {groepen.map((g, i) => (
+              <button type="button" role="tab" id={`tab-${g.id}`} aria-controls={`paneel-${g.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} class="groep" data-tab={g.id}>
+                <Image src={zon} alt="" width={48} height={47} class="wig" aria-hidden="true" />{g.titel}
+              </button>
+            ))}
+          </div>
+          <a href="#rolluiken" class="groep !border-b-0 no-underline"><span class="wig" aria-hidden="true"></span>Rolluiken</a>
+          </div>
+          <div class="lg:col-span-7">
+            {groepen.map((g, i) => (
+              <div id={`paneel-${g.id}`} role="tabpanel" aria-labelledby={`tab-${g.id}`} class="paneel" hidden={i !== 0} data-paneel={g.id}>
+                <Image src={groepFoto[g.id].src} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 50vw, 100vw" quality={72} alt={groepFoto[g.id].alt} class="aspect-[16/10] w-full rounded-md object-cover" style={`object-position: ${groepFoto[g.id].pos}`} loading={i === 0 ? 'lazy' : 'lazy'} />
+                <p class="mt-6 max-w-xl text-lg text-grijs">{g.zin}</p>
+                <ul class="mt-6 flex flex-wrap gap-2">
+                  {g.producten.map((p) => <li><a href="#offerte" class="pil" data-kies={p}>{p}</a></li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Rolluiken: de drie typen op schaal -->
+    <section id="rolluiken" class="bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid gap-x-14 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Rolluiken in drie sterktes.</h2>
+          <p class="rijs mt-6 text-lg text-mist">Isolatie, inbraakvertraging, vochtwering, privacy, geluidswering en energiebesparing.</p>
+          <Image src={fRolluiken} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 36vw, 100vw" alt="Bakstenen woning met antraciet rolluiken voor de ramen" class="rijs mt-10 hidden aspect-[4/5] w-full rounded-md object-cover lg:block" style="object-position: 50% 35%" />
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rijs rounded-md border border-lijn-d p-5 md:p-8">
+            <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+              <p class="w-full font-semibold md:w-auto">Past mijn raam?</p>
+              <label class="text-sm text-mist">Breedte (cm)
+                <input type="number" inputmode="numeric" min="20" max="800" step="1" placeholder="bijv. 180" class="mt-1 block w-32 rounded-sm border border-lijn-d bg-inkt-2 px-3 py-2.5 text-base text-wit" data-maat-b />
+              </label>
+              <label class="text-sm text-mist">Hoogte (cm)
+                <input type="number" inputmode="numeric" min="20" max="800" step="1" placeholder="bijv. 150" class="mt-1 block w-32 rounded-sm border border-lijn-d bg-inkt-2 px-3 py-2.5 text-base text-wit" data-maat-h />
+              </label>
+            </div>
+            <div class="mt-8 grid grid-cols-3 items-end gap-3 md:gap-6" aria-hidden="true">
+              {rolluiken.map((r) => (
+                <div class="flex flex-col justify-end">
+                  <div class="maat" style={`width: ${(r.b / maxB) * 100}%; aspect-ratio: ${r.b} / ${r.h}`} data-max={`${r.b}x${r.h}`}>
+                    <span class="raam" style="width: 0; height: 0" data-raam></span>
+                  </div>
+                  <p class="mt-3 kopf text-lg font-bold md:text-2xl">{r.type}</p>
+                  <p class="num text-xs text-mist md:text-sm">max. {r.b / 100} × {r.h / 100} m</p>
+                </div>
+              ))}
+            </div>
+            <p class="mt-6 min-h-[1.6em] text-sm text-mist" data-maat-uitkomst aria-live="polite">Vul de maat van uw raam in; de tekening staat op schaal.</p>
+          </div>
+          <ul class="mt-10 border-t border-lijn-d">
+            {rolluiken.map((r) => (
+              <li class="rijs grid gap-2 border-b border-lijn-d py-5 md:grid-cols-[7rem_1fr]">
+                <p class="kopf text-xl font-bold">{r.type}</p>
+                <div>
+                  <p class="font-semibold">{r.soort}, {r.bediening}</p>
+                  <p class="mt-1 text-mist">{r.zin}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <a href="#offerte" class="knop knop-rood mt-10" data-kies="Rolluiken" data-neem-maat>Offerte voor rolluiken<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Offerte in één zin, eindigt in WhatsApp -->
+    <section id="offerte" class="relative overflow-hidden py-24 md:py-32" style="background: linear-gradient(160deg, #dfeaf7, #c9dbf1)">
+      <div class="wrap">
+        <form class="rijs max-w-5xl" data-zin novalidate>
+          <p class="kopf text-[clamp(1.35rem,2.1vw+.75rem,2.6rem)] font-bold leading-[1.45] text-inkt">
+            Hallo Ton, graag een offerte voor
+            <label class="sr-only" for="z-product">Product</label>
+            <select id="z-product" class="vul" data-z="product">
+              {productOpties.map(([groep, items]) => (
+                <optgroup label={groep}>{items.map((p) => <option value={p} selected={p === 'Zonnescherm'}>{p.toLowerCase()}</option>)}</optgroup>
+              ))}
+            </select>
+            voor
+            <label class="sr-only" for="z-aantal">Aantal</label>
+            <input id="z-aantal" type="number" inputmode="numeric" min="1" max="99" value="2" class="vul vul-num w-[2.2ch]" data-z="aantal" />
+            <label class="sr-only" for="z-wat">Ramen, deuren of stuks</label>
+            <select id="z-wat" class="vul" data-z="wat">
+              <option value="ramen">ramen</option>
+              <option value="deuren">deuren</option>
+              <option value="stuks">stuks</option>
+            </select>
+            in
+            <label class="sr-only" for="z-plaats">Plaats</label>
+            <input id="z-plaats" type="text" list="z-plaatsen" value="Barendrecht" autocomplete="address-level2" class="vul w-[9ch] !text-left" data-z="plaats" />.
+            <datalist id="z-plaatsen">{plaatsen.map((p) => <option value={p} />)}</datalist>
+          </p>
+          <p class="mt-6 text-lg text-grijs">
+            Maat ongeveer
+            <label class="sr-only" for="z-b">Breedte in cm</label>
+            <input id="z-b" type="number" inputmode="numeric" min="0" placeholder="breedte" class="vul vul-num w-[8ch] text-inkt" data-z="b" />
+            bij
+            <label class="sr-only" for="z-h">Hoogte of uitval in cm</label>
+            <input id="z-h" type="number" inputmode="numeric" min="0" placeholder="hoogte" class="vul vul-num w-[8ch] text-inkt" data-z="h" />
+            cm (mag leeg blijven).
+          </p>
+          <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={waHoi} class="knop knop-rood" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="text-sm text-grijs">Liever bellen? <a href={site.vastHref} class="link num font-semibold text-inkt">{site.vast}</a> of <a href={site.mobielHref} class="link num font-semibold text-inkt">{site.mobiel}</a></p>
+          </div>
+          <p class="mt-8 max-w-2xl rounded-md bg-wit/70 px-4 py-3 text-sm text-grijs"><span class="font-semibold text-inkt">Zo komt het binnen: </span><span data-bericht>Hallo Ton, graag een offerte voor een zonnescherm voor 2 ramen in Barendrecht.</span></p>
+        </form>
+      </div>
+      <Image src={zon} alt="" width={240} height={236} class="pointer-events-none absolute -right-16 top-10 hidden h-64 w-auto opacity-90 xl:block" aria-hidden="true" />
+    </section>
+
+    <!-- 6. Service en onderhoud -->
+    <section id="service" class="bg-papier py-24 md:py-32">
+      <div class="wrap grid gap-x-14 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Storing of onderhoud.</h2>
+          <p class="rijs mt-6 text-lg text-grijs">Bekwame servicemonteurs verhelpen storingen aan uw zonwering snel en vakkundig, ook aan systemen die niet door ons geleverd zijn.</p>
+          <div class="rijs mt-10">
+            <p class="text-sm font-semibold text-grijs">Storingsnummer</p>
+            <a href={site.vastHref} class="kopf num mt-1 block text-[clamp(2rem,3vw+1rem,3.25rem)] font-bold text-inkt no-underline transition-colors hover:text-rood">{site.vast}</a>
+            <a href={waStoring} class="link mt-3 inline-block font-semibold">Of meld het via WhatsApp, met een foto</a>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <Image src={fScreen} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 46vw, 100vw" alt="Zonwerend screen voor een groot raam van een houten woning" class="rijs aspect-[16/10] w-full rounded-md object-cover" style="object-position: 50% 30%" />
+          <div class="mt-10 grid grid-cols-2 gap-8 sm:grid-cols-3">
+            <div class="rijs col-span-2 sm:col-span-1"><p class="font-semibold">Buitenzonwering</p><ul class="mt-3 space-y-1 text-sm text-grijs">{service.buiten.map((s) => <li>{s}</li>)}</ul></div>
+            <div class="rijs"><p class="font-semibold">Raamdecoratie</p><ul class="mt-3 space-y-1 text-sm text-grijs">{service.binnen.map((s) => <li>{s}</li>)}<li>Handbediend en elektrisch</li></ul></div>
+            <div class="rijs"><p class="font-semibold">Overig</p><ul class="mt-3 space-y-1 text-sm text-grijs">{service.overig.map((s) => <li>{s}</li>)}</ul></div>
+          </div>
+          <p class="rijs mt-10 border-t border-lijn-2 pt-6 text-grijs"><span class="font-semibold text-inkt">Preventief onderhoud.</span> Eenmalig of meerjarig in een onderhoudscontract. Bij meerjarig nemen wij de planning over en benaderen wij u voor de afspraak.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews -->
+    <section id="reviews" class="bg-wit py-24 md:py-32">
+      <div class="wrap grid gap-x-14 gap-y-12 lg:grid-cols-12">
+        <figure class="rijs lg:col-span-7">
+          <div class="flex gap-1 text-rood" role="img" aria-label="5 van 5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
+          <blockquote class="kopf mt-6 text-[clamp(1.35rem,1.6vw+.9rem,2.25rem)] font-bold leading-snug">“{reviews[0].tekst}”</blockquote>
+          <figcaption class="mt-6 text-grijs">{reviews[0].naam}, Google review, {reviews[0].wanneer}</figcaption>
+        </figure>
+        <div class="lg:col-span-5">
+          {reviews.slice(1, 5).map((r) => (
+            <figure class="rijs border-b border-lijn py-6 first:pt-0">
+              <blockquote class="text-grijs">“{r.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm font-semibold">{r.naam} <span class="font-normal text-grijs">· Google review, {r.wanneer}</span></figcaption>
+            </figure>
+          ))}
+          <a href={reviewsUrl} class="link mt-6 inline-flex items-center gap-2 text-sm font-semibold"><Icoon naam="g" class="h-4 w-4" />Alle reviews op Google</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact -->
+    <section id="contact" class="bg-papier py-24 md:py-32">
+      <div class="wrap grid gap-x-14 gap-y-14 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-4xl">Bel, app of mail Ton.</h2>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-rood"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.mobielHref} class="knop knop-rand num"><Icoon naam="tel" />{site.mobiel}</a>
+          </div>
+          <p class="rijs mt-8 text-grijs">Vast <a href={site.vastHref} class="link num font-semibold text-inkt">{site.vast}</a> · <a href={`mailto:${site.mail}`} class="link break-all font-semibold text-inkt">{site.mail}</a></p>
+          <div class="rijs mt-12 border-t border-lijn pt-8">
+            <p class="font-semibold">{site.straat}, {site.postcode} {site.plaats}</p>
+            <a href={site.maps} class="link mt-2 inline-flex items-center gap-2 text-sm text-grijs"><Icoon naam="pin" class="h-4 w-4" />Route in Google Maps</a>
+            <p class="mt-8 text-grijs">Levert o.a. in {plaatsen.join(', ')} en omstreken.</p>
+            <p class="mt-3 text-grijs">Verano-dealer. Werkt verder met {partners.slice(1, -1).join(', ')} en {partners[partners.length - 1]}.</p>
+          </div>
+        </div>
+        <div class="rijs lg:col-span-5 lg:col-start-8">
+          <p class="group flex items-center gap-2.5 font-semibold" data-status-wrap><span class="h-2.5 w-2.5 rounded-full bg-grijs/40 group-data-[open=true]:bg-lucht-diep" aria-hidden="true"></span><span data-status>Ma t/m vr 9.00 tot 17.00 uur, za tot 16.00 uur</span></p>
+          <div class="mt-6 border-t border-lijn text-grijs">
+            {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+              <div class="flex justify-between gap-4 border-b border-lijn py-3 [&[data-vandaag]]:font-semibold [&[data-vandaag]]:text-inkt" data-dag={d}>
+                <span>{dagNamen[d]}</span>
+                <span class="num">{tijden[d] ? `${Math.floor(tijden[d]![0] / 60)}.00 tot ${Math.floor(tijden[d]![1] / 60)}.00 uur` : 'Gesloten'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Aanbod-tabs
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+  const kies = (id: string, focus = false) => {
+    tabs.forEach((t) => { const ja = t.dataset.tab === id; t.setAttribute('aria-selected', String(ja)); t.tabIndex = ja ? 0 : -1; if (ja && focus) t.focus(); });
+    document.querySelectorAll<HTMLElement>('[data-paneel]').forEach((p) => { p.hidden = p.dataset.paneel !== id; });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => kies(t.dataset.tab!));
+    t.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover)').matches) kies(t.dataset.tab!); });
+    t.addEventListener('keydown', (e) => {
+      const n = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? -1 : 0;
+      if (n) { e.preventDefault(); kies(tabs[(i + n + tabs.length) % tabs.length].dataset.tab!, true); }
+    });
+  });
+
+  // Offertezin
+  const z = (k: string) => document.querySelector<HTMLInputElement & HTMLSelectElement>(`[data-z="${k}"]`)!;
+  const stuur = document.querySelector<HTMLAnchorElement>('[data-stuur]')!;
+  const bericht = document.querySelector<HTMLElement>('[data-bericht]')!;
+  const lidwoord: Record<string, string> = { Zonnescherm: 'een zonnescherm', Terrasoverkapping: 'een terrasoverkapping', Lamellendak: 'een lamellendak', Terrasscherm: 'een terrasscherm' };
+  const wa = 'https://wa.me/31619622378?text=';
+  const meet = document.createElement('span'); meet.setAttribute('aria-hidden', 'true'); meet.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px';
+  const pas = (el: HTMLSelectElement | HTMLInputElement, extra: string) => { const cs = getComputedStyle(el); meet.style.fontFamily = cs.fontFamily; meet.style.fontSize = cs.fontSize; meet.style.fontWeight = cs.fontWeight; meet.style.letterSpacing = cs.letterSpacing; el.parentElement!.appendChild(meet); meet.textContent = el instanceof HTMLSelectElement ? el.options[el.selectedIndex].text : (el.value || el.placeholder || ' '); el.style.width = `calc(${meet.offsetWidth}px + ${extra})`; meet.remove(); };
+  const maak = () => {
+    const p = z('product').value; const n = Math.max(1, Math.min(99, parseInt(z('aantal').value) || 1));
+    let wat = z('wat').value; if (n === 1) wat = wat === 'ramen' ? 'raam' : wat === 'deuren' ? 'deur' : 'stuk';
+    const plaats = (z('plaats').value || '').trim() || 'Barendrecht';
+    const b = parseInt(z('b').value), h = parseInt(z('h').value);
+    let t = `Hallo Ton, graag een offerte voor ${lidwoord[p] || p.toLowerCase()} voor ${n} ${wat} in ${plaats}.`;
+    if (b > 0 && h > 0) t += ` Maat ongeveer ${b} bij ${h} cm.`; else if (b > 0) t += ` Breedte ongeveer ${b} cm.`;
+    t += ' Wanneer kunt u komen inmeten?';
+    bericht.textContent = t; stuur.href = wa + encodeURIComponent(t);
+    if (klaar) passen2();
+  };
+  let klaar = false;
+  const passen2 = () => { pas(z('product'), '1.35em'); pas(z('wat'), '1.35em'); pas(z('aantal'), '.4em'); pas(z('plaats'), '.6em'); };
+  document.querySelectorAll('[data-z]').forEach((el) => { el.addEventListener('input', maak); el.addEventListener('change', maak); });
+  maak();
+  // Pas de breedtes pas aan als de zin in beeld komt (geen meetwerk tijdens het laden).
+  const zinIo = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { zinIo.disconnect(); document.fonts.ready.then(() => { klaar = true; passen2(); }); } }, { rootMargin: '400px 0px' });
+  zinIo.observe(document.querySelector('[data-zin]')!);
+
+  // "Past mijn raam?": raam op schaal in de drie rolluiken
+  const mb = document.querySelector<HTMLInputElement>('[data-maat-b]')!, mh = document.querySelector<HTMLInputElement>('[data-maat-h]')!;
+  const uit = document.querySelector<HTMLElement>('[data-maat-uitkomst]')!;
+  const passen = () => {
+    const b = parseInt(mb.value), h = parseInt(mh.value); const ok: string[] = [];
+    document.querySelectorAll<HTMLElement>('.maat').forEach((m, i) => {
+      const [B, H] = m.dataset.max!.split('x').map(Number); const r = m.querySelector<HTMLElement>('[data-raam]')!;
+      if (b > 0 && h > 0) {
+        r.style.width = `${Math.min(100, (b / B) * 100)}%`; r.style.height = `${Math.min(100, (h / H) * 100)}%`;
+        const past = b <= B && h <= H; m.dataset.past = past ? 'ja' : 'nee'; if (past) ok.push(['RV 41', 'RV 40', 'RV 49'][i]);
+      } else { r.style.width = '0'; r.style.height = '0'; delete m.dataset.past; }
+    });
+    if (!(b > 0 && h > 0)) uit.textContent = 'Vul de maat van uw raam in; de tekening staat op schaal.';
+    else if (ok.length) uit.textContent = `${b} × ${h} cm past binnen de maximale maat van ${ok.length > 1 ? ok.slice(0, -1).join(', ') + ' en ' + ok[ok.length - 1] : ok[0]}.`;
+    else uit.textContent = `${b} × ${h} cm is groter dan de maximale maten op deze pagina. Vraag Ton wat er mogelijk is.`;
+  };
+  mb.addEventListener('input', passen); mh.addEventListener('input', passen);
+
+  // Product voorselecteren vanuit aanbod en rolluiken
+  document.querySelectorAll<HTMLElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+    const naam = a.dataset.kies!; const sel = z('product');
+    const map: Record<string, string> = { Zonneschermen: 'Zonnescherm', 'Screens en Ritzscreens': 'Screens', Terrasoverkappingen: 'Terrasoverkapping', Lamellendaken: 'Lamellendak', Terrasschermen: 'Terrasscherm', Deurhorren: 'Horren', Raamhorren: 'Horren' };
+    const v = map[naam] || naam; if ([...sel.options].some((o) => o.value === v)) sel.value = v;
+    if (naam === 'Deurhorren') z('wat').value = 'deuren';
+    if (a.hasAttribute('data-neem-maat')) { if (mb.value) z('b').value = mb.value; if (mh.value) z('h').value = mh.value; }
+    maak();
+  }));
+</script>

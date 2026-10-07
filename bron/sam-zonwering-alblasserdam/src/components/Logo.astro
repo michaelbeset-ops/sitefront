@@ -1,0 +1,23 @@
+---
+// Hun logo nagetekend: blauwe "Sam", gele zon die erachter opkomt, "Zonwering" eronder, gele horizonlijn.
+interface Props { licht?: boolean; class?: string }
+const { licht = false, class: cls = '' } = Astro.props;
+const blauw = licht ? '#ffffff' : '#004078';
+const cx = 120, cy = 40;
+const stralen = Array.from({ length: 14 }, (_, i) => {
+  const a = ((-200 + i * (220 / 13)) * Math.PI) / 180;
+  const b = 0.11;
+  const p = (r: number, d: number) => `${(cx + r * Math.cos(a + d)).toFixed(1)},${(cy + r * Math.sin(a + d)).toFixed(1)}`;
+  return `${p(25, -b)} ${p(25, b)} ${p(i % 2 ? 36 : 41, 0)}`;
+});
+---
+<svg class={cls} viewBox="0 0 182 78" role="img" aria-label="Sam Zonwering">
+  <g fill="#f8e048">
+    {stralen.map((s) => <polygon points={s} />)}
+    <circle cx={cx} cy={cy} r="21" />
+  </g>
+  <path d={`M${cx + 2} ${cy - 17} A 17 17 0 0 0 ${cx + 2} ${cy + 17}`} fill="none" stroke={licht ? '#01213f' : '#ffffff'} stroke-width="3.2" stroke-linecap="round" />
+  <text x="2" y="54" fill={blauw} style="font: 800 47px 'Barlow Semi Condensed', 'Arial Narrow', sans-serif; letter-spacing: -1px">Sam</text>
+  <text x="66" y="70" fill={blauw} style="font: 700 19.5px 'Barlow Semi Condensed', 'Arial Narrow', sans-serif; letter-spacing: .2px">Zonwering</text>
+  <rect x="0" y="74.5" width="182" height="2" fill="#f8e048" />
+</svg>

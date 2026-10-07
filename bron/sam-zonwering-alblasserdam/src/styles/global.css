@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@import "@fontsource/barlow-semi-condensed/500.css";
+@import "@fontsource/barlow-semi-condensed/700.css";
+@import "@fontsource/barlow-semi-condensed/800.css";
+@import "@fontsource-variable/radio-canada/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Uit hun logo: Sam-blauw #004078 en zongeel #f8e048. Verder alleen daglicht: wit en een koel luchtblauw. */
+  --color-sam: #004078;         /* logo-blauw, 10,6:1 op wit */
+  --color-sam-2: #0a5596;       /* hover */
+  --color-nacht: #01213f;       /* donkere secties */
+  --color-nacht-2: #0b2f52;
+  --color-zon: #f8e048;         /* logo-zon, alleen detail en op donker */
+  --color-zon-2: #ffeb7a;
+  --color-wit: #ffffff;
+  --color-licht: #f6f9fb;       /* pagina */
+  --color-lucht: #e6eff6;       /* licht vlak */
+  --color-lucht-2: #cfdeea;
+  --color-inkt: #0c1a28;        /* tekst, 17:1 */
+  --color-grijs: #4a5868;       /* bijtekst op licht, 7:1 */
+  --color-mist: #a9bccd;        /* bijtekst op nacht, 8:1 */
+  --color-lijn: #0c1a2824;
+  --color-lijn-2: #0c1a2840;
+  --color-lijn-d: #ffffff24;
+
+  --font-kop: "Barlow Semi Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-sans: "Radio Canada Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-label: 0.8125rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.15rem, 2rem);
+  --text-3xl: clamp(2rem, 3.4vw + 1rem, 3.5rem);
+  --text-4xl: clamp(2.3rem, 4.6vw + 1rem, 4.75rem);
+  --text-hero: clamp(3.4rem, 7.4vw + 1rem, 8.25rem);
+
+  --radius-sm: 2px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-nacht); }
+  body {
+    background-color: var(--color-licht);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: .95; letter-spacing: -0.015em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-zon); color: var(--color-nacht); }
+  :focus-visible { outline: 2px solid var(--color-sam-2); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-zon); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-size: 1rem; font-weight: 650; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-sam { background: var(--color-sam); color: var(--color-wit); }
+  .knop-sam:hover { background: var(--color-sam-2); }
+  .knop-rand { border: 1.5px solid var(--color-sam); color: var(--color-sam); background: #ffffffb3; }
+  .knop-rand:hover { background: var(--color-sam); color: var(--color-wit); }
+  .knop-zon { background: var(--color-zon); color: var(--color-nacht); }
+  .knop-zon:hover { background: var(--color-zon-2); }
+  .knop-wit { border: 1.5px solid #ffffff80; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-nacht); border-color: var(--color-wit); }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1.5px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-sam-2); }
+  .op-donker .link:hover { color: var(--color-zon); }
+
+  /* Horizon met opkomende zon, uit hun logo. */
+  .horizon { position: relative; height: 2px; background: var(--color-zon); }
+
+  /* Lamellenlijst: elke regel is een lamel die openkantelt. */
+  .lamel { border-top: 1px solid var(--color-lijn-2); }
+  .lamel:last-child { border-bottom: 1px solid var(--color-lijn-2); }
+  .lamel > button { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 1rem; width: 100%; padding: .95rem 0; text-align: left; cursor: pointer; background: none; border: 0; color: inherit; font: inherit; }
+  .lamel-titel { font-family: var(--font-kop); font-weight: 700; font-size: clamp(1.6rem, 1.5vw + 1.1rem, 2.35rem); line-height: 1; letter-spacing: -.01em; transition: color .25s; }
+  .lamel > button:hover .lamel-titel { color: var(--color-sam-2); }
+  .lamel-plus { position: relative; width: 1.6rem; height: 1.6rem; flex: none; }
+  .lamel-plus::before, .lamel-plus::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--color-sam); transition: transform .4s var(--ease-zacht); }
+  .lamel-plus::after { transform: rotate(90deg); }
+  .lamel[data-open="true"] .lamel-plus::after { transform: rotate(0deg); }
+  .lamel-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .45s var(--ease-zacht); }
+  .lamel[data-open="true"] .lamel-body { grid-template-rows: 1fr; }
+  .lamel-body > div { overflow: hidden; }
+
+  /* Stalenkaart: product ...... levertijd. */
+  .staal { display: grid; grid-template-columns: minmax(0, 1fr); gap: .2rem; padding: .95rem 0; border-bottom: 1px solid var(--color-lijn); }
+  @media (min-width: 768px) { .staal { grid-template-columns: 13rem minmax(0, 1fr) 11rem; gap: 1.5rem; align-items: baseline; } }
+
+  /* Huistekening */
+  .huis-punt { cursor: pointer; }
+  .huis-punt circle.ring { fill: var(--color-wit); stroke: var(--color-sam); stroke-width: 2; transition: fill .25s, stroke .25s; }
+  .huis-punt text { fill: var(--color-sam); font: 700 15px var(--font-kop); pointer-events: none; transition: fill .25s; }
+  .huis-punt:hover circle.ring { fill: var(--color-lucht); }
+  .huis-punt[aria-pressed="true"] circle.ring { fill: var(--color-sam); }
+  .huis-punt[aria-pressed="true"] text { fill: var(--color-wit); }
+  .huis-punt:focus-visible { outline: none; }
+  .huis-punt:focus-visible circle.ring { stroke: var(--color-sam-2); stroke-width: 4; }
+  .huis-zone { fill: transparent; transition: fill .3s; }
+  .huis-zone[data-actief="true"] { fill: #f8e04866; }
+
+  .plek-knop { display: inline-flex; padding: 0; background: none; border: 0; font: inherit; color: var(--color-sam); cursor: pointer; }
+  .plek-knop .nr { display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-full); border: 1.5px solid currentColor; background: var(--color-wit); font: 700 1.05rem var(--font-kop); transition: background-color .2s, color .2s; }
+  .plek-knop:hover .nr { background: var(--color-lucht-2); }
+  .plek-knop[aria-pressed="true"] .nr { background: var(--color-sam); border-color: var(--color-sam); color: var(--color-wit); }
+
+  .veld { width: 100%; min-height: 3rem; padding: .6rem .85rem; border: 1px solid var(--color-lijn-2); border-radius: var(--radius-sm); background: var(--color-wit); color: var(--color-inkt); font: inherit; }
+  .veld:focus { outline: 2px solid var(--color-sam-2); outline-offset: 1px; border-color: transparent; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
