@@ -1,0 +1,273 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, voorraad, waHoi } from '../data/site';
+
+import pand from '../assets/pand.jpg';
+import dakkapel from '../assets/dakkapel.jpg';
+import witRolluik from '../assets/wit-rolluik.jpg';
+import kastAntraciet from '../assets/kast-antraciet.jpg';
+import kastCreme from '../assets/kast-creme.jpg';
+import kastGroen from '../assets/kast-groen.jpg';
+import kastOpen from '../assets/kast-open.jpg';
+
+// Wat ze doen, in hun eigen woorden (oude site, Facebook, Marktplaats).
+const aanbod = [
+  ['Nieuwe rolluiken op maat', 'Handmatig of elektrisch, met schakelaar of afstandsbediening. Met 4 jaar garantie.'],
+  ['Gereviseerde rolluiken', 'Nagekeken, schoon en gepolijst als nieuw. Met een half jaar garantie.'],
+  ['Roldeuren', 'Voor garage, winkel, carport of poort.'],
+  ['Uw eigen rolluik aanpassen', 'Op maat of elektrisch maken. Kom langs met het rolluik.'],
+  ['Onderdelen en motoren', 'Los te koop, nieuw en gebruikt.'],
+  ['Inkoop en inruil', 'Wij kopen gebruikte rolluiken in. Uw oude rolluik kunt u inruilen.'],
+];
+
+// Maten doorgeven: alleen keuzes die ze zelf noemen.
+const soorten = ['rolluik voor een raam', 'roldeur voor garage of winkel', 'transparant rolluik voor serre of overkapping', 'aanpassing aan mijn eigen rolluik'];
+const staat = ['nieuw', 'gereviseerd', 'nieuw of gereviseerd'];
+const bediening = ['handmatig', 'elektrisch, met schakelaar', 'elektrisch, met afstandsbediening', 'elektrisch, op zonne-energie'];
+const kleuren = ['wit', 'roomwit', 'ivoor', 'lichtgrijs', 'antraciet', 'zwart', 'nog niet bekend'];
+
+const titel = 'CC Rolluiken Waalwijk | Rolluiken en roldeuren op maat, nieuw en gereviseerd';
+const omschrijving = 'CC Rolluiken, Sluisweg 2z in Waalwijk: nieuwe en gereviseerde rolluiken en roldeuren op maat, onderdelen en motoren. Geef uw maten door via WhatsApp: 06 23 84 27 20.';
+const [hoofd, ...rest] = reviews;
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen bedrijfshal met het gevelbord en de blauwe roldeur -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-blauw-nacht text-wit">
+      <Image src={pand} alt="De bedrijfshal van CC Rolluiken aan de Sluisweg in Waalwijk: bakstenen gevel met het bord CC Rolluiken, in en verkoop, nieuwe en gebruikte rolluiken, op maat gemaakt, en een blauwe roldeur" quality={60} widths={[480, 720, 960, 1280, 1440]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-x-0 top-0 -z-20 h-[46%] w-full object-cover object-[10%_50%] lg:inset-0 lg:h-full lg:object-[30%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#071f4300_0%,#071f4300_30%,#071f43d9_44%,#071f43_50%)] lg:bg-[linear-gradient(270deg,#071f43f5_0%,#071f43e0_34%,#071f4366_52%,#071f4300_64%),linear-gradient(0deg,#071f43b3_0%,#071f4300_30%)]" aria-hidden="true"></div>
+      <div class="wrap grid pb-28 pt-56 md:pb-16 lg:grid-cols-12 lg:pt-24">
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="text-sm font-semibold text-blauw-licht">In en verkoop, Sluisweg 2z in Waalwijk</p>
+          <h1 class="mt-4 text-hero lg:text-[clamp(3.5rem,5.2vw,5.25rem)]">Rolluiken <span class="text-blauw-licht">op maat.</span> Nieuw en gereviseerd.</h1>
+          <p class="mt-6 max-w-lg text-lg text-wit/90 md:text-xl">Voor ramen, garages en winkels. Geef uw maten door, de rest regelen wij in Waalwijk.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#maten" class="knop knop-wit">Maten doorgeven<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <div class="mt-10 border-t border-lijn-licht pt-5 text-sm text-wit/85" data-status-wrap>
+            <p><span class="font-semibold text-wit" data-status>Di t/m vr 9.30 - 16.30, za 9.30 - 12.00</span><span class="text-wit/70"> · buiten deze tijden op afspraak</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. AANBOD: een lijst als lamellen, naast de werkplaats -->
+    <section id="aanbod" class="py-24 md:py-28">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-7">
+          <h2 class="max-w-[16ch] text-3xl">Rolluiken en roldeuren, in en verkoop.</h2>
+          <ul class="mt-12 border-t-2 border-inkt">
+            {aanbod.map(([t, z], i) => (
+              <li class="rijs grid gap-1 border-b border-lijn py-6 sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8" style={`--d:${i * 0.05}s`}>
+                <h3 class="font-sans text-lg font-bold leading-snug">{t}</h3>
+                <p class="text-grijs">{z}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <figure class="lg:col-span-5 lg:pt-4">
+          <Image src={kastOpen} alt="Een open rolluikkast met het opgerolde rolluik erin, in de werkplaats van CC Rolluiken" quality={60} widths={[400, 600, 800]} sizes="(min-width: 1024px) 34vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_40%]" />
+          <figcaption class="mt-3 text-sm text-grijs">Uit de werkplaats aan de Sluisweg.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. VOORRAAD: drie kasten in hun eigen kleuren + wat er onlangs stond -->
+    <section id="voorraad" class="bg-staal py-24 md:py-28">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h2 class="text-3xl lg:col-span-6">Veel rolluiken op voorraad.</h2>
+          <p class="max-w-lg text-lg text-grijs lg:col-span-5 lg:col-start-8">Ook gereviseerde rolluiken maken we op maat, met een half jaar garantie. Nieuwe rolluiken krijgen 4 jaar garantie.</p>
+        </div>
+        <div class="mt-14 grid grid-cols-3 gap-2 md:gap-4">
+          {[[kastAntraciet, 'Rolluikkast in antraciet op de werkbank'], [kastCreme, 'Rolluikkast in crème op de werkbank'], [kastGroen, 'Rolluikkast in donkergroen in de werkplaats']].map(([src, alt], i) => (
+            <Image src={src as typeof kastAntraciet} alt={alt as string} quality={58} widths={[240, 420, 640]} sizes="(min-width: 1280px) 400px, 32vw" class="rijs aspect-[3/4] w-full rounded-sm object-cover" style={`--d:${i * 0.08}s`} />
+          ))}
+        </div>
+        <div class="mt-16 grid gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-4">
+            <h3 class="font-sans text-lg font-bold">Onlangs op voorraad</h3>
+            <p class="mt-2 text-grijs">Uit onze advertenties van september en oktober 2026, in centimeters breed × hoog.</p>
+            <a href={site.marktplaats} class="link mt-5 inline-flex items-center gap-2 font-semibold">Wat er nu staat, op Marktplaats<Icoon naam="pijl" class="h-4 w-4" /></a>
+          </div>
+          <ul class="grid gap-x-10 sm:grid-cols-2 lg:col-span-8">
+            {voorraad.map((v) => (
+              <li class="flex items-baseline gap-3 border-b border-lijn py-3">
+                <span class="num shrink-0 font-kop text-base">{v.maat}</span>
+                <span class="min-w-0 flex-1 text-right text-sm text-grijs">{v.wat}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MATEN DOORGEVEN: maatschets op de blauwe roldeur, wordt een WhatsApp-bericht -->
+    <section id="maten" class="lamellen relative overflow-hidden bg-blauw-diep py-24 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 gap-14 lg:grid-cols-12 lg:items-center">
+        <div class="min-w-0 lg:col-span-5">
+          <h2 class="text-3xl">Geef ons de maten door.</h2>
+          <p class="mt-5 max-w-md text-lg text-wit/85">Vul breedte en hoogte in, kies wat u zoekt, en verstuur het als WhatsApp-bericht.</p>
+          <p class="mt-8 max-w-md text-sm text-blauw-licht">Hulp nodig met het opmeten? Bel ons, het is eenvoudiger dan u denkt: <a href={site.telHref} class="link link-licht num whitespace-nowrap font-semibold text-wit">{site.tel}</a></p>
+        </div>
+
+        <div class="min-w-0 lg:col-span-7">
+          <div class="rounded-md bg-blauw-nacht/70 p-5 ring-1 ring-lijn-licht sm:p-8">
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-3 sm:gap-x-5">
+              <svg viewBox="0 0 320 300" class="h-auto w-full max-h-[22rem]" role="img" aria-label="Schets van uw rolluik, op schaal van de ingevulde maten" data-schets>
+                <g data-rolluik fill="none" stroke="#b9d0f2" stroke-width="2"></g>
+              </svg>
+              <label class="flex flex-col items-center gap-1 text-xs text-blauw-licht">
+                <span>hoogte</span>
+                <input class="maat num" type="number" inputmode="numeric" min="30" max="600" value="150" data-h aria-label="Hoogte in centimeters" />
+                <span>cm</span>
+              </label>
+              <label class="flex items-center justify-center gap-2 text-xs text-blauw-licht">
+                <span>breedte</span>
+                <input class="maat num" type="number" inputmode="numeric" min="30" max="600" value="120" data-b aria-label="Breedte in centimeters" />
+                <span>cm</span>
+              </label>
+              <span></span>
+            </div>
+
+            <p class="mt-8 text-lg leading-[2.1] sm:text-xl">
+              Ik zoek
+              <select class="kies" data-aantal aria-label="Aantal">{['1', '2', '3', '4', '5', '6 of meer'].map((a) => <option>{a}</option>)}</select>
+              <select class="kies" data-staat aria-label="Nieuw of gereviseerd">{staat.map((s) => <option>{s}</option>)}</select>
+              <select class="kies" data-soort aria-label="Wat zoekt u">{soorten.map((s) => <option>{s}</option>)}</select>,
+              <select class="kies" data-bediening aria-label="Bediening">{bediening.map((s, i) => <option selected={i === 2}>{s}</option>)}</select>,
+              kleur <select class="kies" data-kleur aria-label="Kleur">{kleuren.map((s) => <option>{s}</option>)}</select>.
+            </p>
+
+            <div class="mt-8 flex flex-col gap-4 border-t border-lijn-licht pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm text-blauw-licht" data-samenvatting>1 × 120 × 150 cm</p>
+              <a href={waHoi} class="knop knop-wit" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. AFHALEN: eigen foto + hoe het werkt -->
+    <section class="py-24 md:py-28">
+      <div class="wrap grid gap-12 md:grid-cols-12 md:items-center md:gap-x-12">
+        <figure class="md:col-span-5">
+          <Image src={witRolluik} alt="Een wit rolluik voor een raam, half neergelaten, met een antraciet kozijn" quality={60} widths={[400, 600, 800]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_22%]" />
+        </figure>
+        <div class="md:col-span-6 md:col-start-7">
+          <h2 class="text-3xl">Ophalen aan de Sluisweg.</h2>
+          <p class="mt-6 max-w-lg text-lg text-grijs">Bij een bestelling kunt u uw rolluik afhalen en zelf monteren. U krijgt er een duidelijke handleiding bij.</p>
+          <p class="mt-4 max-w-lg text-lg text-grijs">Moet uw eigen rolluik worden aangepast? Kom ermee langs.</p>
+          <a href={waHoi} class="knop mt-9"><Icoon naam="wa" />Vraag het via WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. REVIEWS: brede eigen montagefoto, één grote quote en de rest als lijst -->
+    <section id="reviews" class="bg-inkt text-wit">
+      <Image src={dakkapel} alt="Twee mensen monteren een groot wit rolluik op een dakkapel, met ladders tegen de dakrand" quality={58} widths={[640, 960, 1280, 1600]} sizes="100vw" class="h-[16rem] w-full object-cover object-[60%_50%] md:h-[26rem]" />
+      <div class="wrap grid gap-14 py-24 md:py-28 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <p class="flex items-center gap-2 text-sm text-wit/80"><Icoon naam="g" class="h-5 w-5" /><span><span class="num">{site.google.score}</span> uit <span class="num">{site.google.aantal}</span> reviews op Google</span></p>
+          <h2 class="mt-6 text-3xl">Afspraak is afspraak.</h2>
+          <blockquote class="mt-8">
+            <p class="text-xl leading-relaxed text-wit/90">“{hoofd.tekst}”</p>
+            <footer class="mt-4 text-sm text-blauw-licht">{hoofd.naam}, Google review</footer>
+          </blockquote>
+        </div>
+        <ul class="lg:col-span-6 lg:pt-2">
+          {rest.map((r, i) => (
+            <li class="rijs border-t border-lijn-licht py-7 first:border-t-0 first:pt-0 lg:first:pt-0" style={`--d:${i * 0.06}s`}>
+              <p class="flex gap-0.5 text-bord" role="img" aria-label="5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+              <p class="mt-3 whitespace-pre-line text-wit/90">“{r.tekst}”</p>
+              <p class="mt-2 text-sm text-blauw-licht">{r.naam}, Google review</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. BEZOEK: tijden, adres, koffie -->
+    <section id="bezoek" class="py-24 md:py-28">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="text-3xl">De koffie staat klaar.</h2>
+          <p class="mt-6 max-w-md text-lg text-grijs">Kom langs om uw wensen te bespreken. Bel of app even voordat u komt: het kan zijn dat we even weg zijn.</p>
+          <address class="mt-10 not-italic">
+            <p class="font-kop text-2xl leading-tight">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          </address>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop"><Icoon naam="pin" />Route plannen</a>
+            <a href={waHoi} class="knop knop-wit !text-blauw ring-[1.5px] ring-blauw ring-inset"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <p class="mt-8 text-sm text-grijs">Telefonisch 7 dagen per week bereikbaar op <a href={site.telHref} class="link num whitespace-nowrap font-semibold text-inkt">{site.tel}</a>.</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="flex items-center justify-between gap-4 border-b-2 border-inkt pb-4" data-status-wrap>
+            <h3 class="font-sans text-lg font-bold">Openingstijden</h3>
+            <p class="flex items-center gap-2 text-sm font-semibold text-grijs"><span class="status-stip h-2.5 w-2.5 rounded-full bg-grijs" aria-hidden="true"></span><span data-status>Openingstijden</span></p>
+          </div>
+          <table class="mt-2 w-full text-base">
+            <caption class="sr-only">Openingstijden CC Rolluiken</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr class="border-b border-lijn data-[vandaag]:font-bold data-[vandaag]:text-blauw" data-dag={t.dag}>
+                  <th scope="row" class="py-3 text-left font-[inherit]">{t.naam}</th>
+                  <td class="num py-3 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="mt-4 text-sm text-grijs">Buiten deze tijden op afspraak.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  [data-status-wrap][data-open='true'] .status-stip { background: #1f8a4c; }
+</style>
+
+<script>
+  const $ = <T extends Element>(s: string) => document.querySelector<T>(s)!;
+  const b = $<HTMLInputElement>('[data-b]'), h = $<HTMLInputElement>('[data-h]');
+  const g = $<SVGGElement>('[data-rolluik]');
+  const sel = (n: string) => $<HTMLSelectElement>(`[data-${n}]`);
+  const wa = $<HTMLAnchorElement>('[data-wa]'), sam = $<HTMLElement>('[data-samenvatting]');
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag: string, a: Record<string, string | number>) => { const e = document.createElementNS(ns, tag); for (const k in a) e.setAttribute(k, String(a[k])); return e; };
+  const getal = (i: HTMLInputElement, d: number) => { const v = parseFloat(i.value.replace(',', '.')); return Number.isFinite(v) && v > 0 ? v : d; };
+
+  function teken() {
+    const B = Math.min(Math.max(getal(b, 120), 30), 600), H = Math.min(Math.max(getal(h, 150), 30), 600);
+    const s = Math.min(280 / B, 260 / H);
+    const w = B * s, hh = H * s, x = (320 - w) / 2, y = (300 - hh) / 2;
+    const kast = Math.max(16, Math.min(34, hh * 0.13));
+    g.replaceChildren();
+    g.append(el('rect', { x, y, width: w, height: kast, rx: 2, fill: '#0b2f63' }));
+    g.append(el('rect', { x: x + 4, y: y + kast, width: w - 8, height: hh - kast, fill: '#ffffff12', stroke: 'none' }));
+    for (let ly = y + kast + 9; ly < y + hh - 6; ly += 9) g.append(el('line', { x1: x + 4, x2: x + w - 4, y1: ly, y2: ly, 'stroke-width': 1, 'stroke-opacity': .55 }));
+    g.append(el('line', { x1: x + 2, x2: x + 2, y1: y + kast, y2: y + hh }));
+    g.append(el('line', { x1: x + w - 2, x2: x + w - 2, y1: y + kast, y2: y + hh }));
+    g.append(el('rect', { x: x + 2, y: y + hh - 6, width: w - 4, height: 6, fill: '#b9d0f2', stroke: 'none' }));
+    const aantal = sel('aantal').value, soort = sel('soort').value, staat = sel('staat').value, bed = sel('bediening').value, kleur = sel('kleur').value;
+    const fmt = (n: number) => String(Math.round(n * 10) / 10).replace('.', ',');
+    sam.textContent = `${aantal} × ${fmt(B)} cm breed × ${fmt(H)} cm hoog`;
+    const bijv = soort.startsWith('roldeur') ? staat.replace('nieuw', 'nieuwe').replace('gereviseerd', 'gereviseerde') : staat;
+    const wat = soort.startsWith('aanpassing') ? soort : `${bijv} ${soort}`;
+    const tekst = `Hallo CC Rolluiken, ik zoek: ${aantal} × ${wat}, ${bed}, kleur ${kleur}. Maat: ${fmt(B)} cm breed × ${fmt(H)} cm hoog. Wat is er mogelijk?`;
+    wa.href = `https://wa.me/31623842720?text=${encodeURIComponent(tekst)}`;
+  }
+  [b, h].forEach((i) => i.addEventListener('input', teken));
+  ['aantal', 'soort', 'staat', 'bediening', 'kleur'].forEach((n) => sel(n).addEventListener('change', teken));
+  teken();
+</script>
