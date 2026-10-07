@@ -1,0 +1,10 @@
+import sharp from 'sharp';
+const F = 'bron/foto/', U = 'bron/unsplash/', A = 'src/assets/';
+const j = (s) => s.jpeg({ quality: 88, mozjpeg: true });
+await j(sharp(F + 'cropped-voorraad.jpg')).toFile(A + 'hero.jpg');
+const m = await sharp(F + 'voorraad.jpg').metadata();
+const w = Math.round(m.height * 0.62);
+await j(sharp(F + 'voorraad.jpg').extract({ left: Math.round((m.width - w) / 2), top: 0, width: w, height: m.height })).toFile(A + 'hero-staand.jpg');
+await j(sharp(F + 'Logopallet.jpg').trim({ threshold: 12 })).toFile(A + 'epal.jpg');
+await j(sharp(F + 'pallet5.jpg')).toFile(A + 'panorama.jpg');
+await j(sharp(U + 'tWLgDQCKRYU.jpg')).toFile(A + 'wand.jpg');

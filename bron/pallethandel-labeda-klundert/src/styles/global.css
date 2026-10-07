@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/alumni-sans/wght.css";
+@import "@fontsource-variable/rethink-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De werf: asfalt, beton, en het markeergroen van de spuitverf op de stapels. */
+  --color-asfalt: #141618;
+  --color-asfalt-2: #1d2023;
+  --color-asfalt-3: #2a2e32;
+  --color-beton: #e9ebe8;
+  --color-beton-2: #d8dbd7;
+  --color-wit: #ffffff;
+  --color-inkt: #141618;
+  --color-grijs: #4d5357;       /* bijtekst op licht, 7,6:1 op wit */
+  --color-mist: #a7aeb2;        /* bijtekst op asfalt */
+  --color-groen: #0b6b3a;       /* groen als tekst op licht, 6,6:1 */
+  --color-groen-knop: #0e7c43;  /* gevulde knop, wit erop 5,3:1 */
+  --color-groen-diep: #095a31;
+  --color-groen-licht: #3ddc84; /* spuitverf op donker */
+  --color-lijn: #ffffff1f;
+  --color-lijn-2: #ffffff40;
+  --color-lijn-licht: #14161822;
+
+  --font-kop: "Alumni Sans Variable", "Arial Narrow", sans-serif;
+  --font-sans: "Rethink Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.9rem, 1.4vw + 1.4rem, 2.6rem);
+  --text-3xl: clamp(2.6rem, 3.6vw + 1.4rem, 4.6rem);
+  --text-4xl: clamp(3rem, 6vw + 1rem, 7rem);
+  --text-hero: clamp(3.4rem, 11vw + 1rem, 11.5rem);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1rem; background: var(--color-asfalt); }
+  body {
+    background-color: var(--color-wit);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: .86; letter-spacing: .005em; text-transform: uppercase; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-groen-licht); color: var(--color-asfalt); }
+  :focus-visible { outline: 2px solid var(--color-groen-licht); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 82rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.4rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-size: .9375rem; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-groen { background: var(--color-groen-knop); color: var(--color-wit); }
+  .knop-groen:hover { background: var(--color-groen-diep); }
+  .knop-fel { background: var(--color-groen-licht); color: var(--color-asfalt); }
+  .knop-fel:hover { background: var(--color-wit); }
+  .knop-wit { border: 1.5px solid #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-asfalt); border-color: var(--color-wit); }
+  .knop-rand { border: 1.5px solid var(--color-inkt); color: var(--color-inkt); }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-wit); }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1.5px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-groen-licht); }
+  .link-licht:hover { color: var(--color-groen); }
+
+  /* Gemarkeerd woord: spuitverfstreep eronder. */
+  .gemerkt { position: relative; display: inline-block; z-index: 0; }
+  .gemerkt > svg { position: absolute; left: -4%; right: -4%; width: 108%; bottom: .02em; height: .32em; z-index: -1; color: var(--color-groen-licht); }
+  .gemerkt-licht > svg { color: #3ddc84b0; }
+
+  /* Diensten als grote regels. */
+  .regel { display: grid; grid-template-columns: 1fr; gap: .35rem 2rem; padding: 1.6rem 0; border-top: 1px solid var(--color-lijn-licht); }
+  .regel:last-child { border-bottom: 1px solid var(--color-lijn-licht); }
+  .regel h3 { font-size: clamp(2.6rem, 3vw + 1.4rem, 4rem); }
+  @media (min-width: 768px) { .regel { grid-template-columns: 13.5rem 1fr; align-items: baseline; } }
+
+  /* Aanvraag. */
+  .keuze { position: relative; display: block; cursor: pointer; }
+  .keuze input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .keuze .kv { display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem; height: 100%; min-height: 9.5rem; padding: 1.4rem 1.4rem 1.3rem; border: 1.5px solid var(--color-lijn-2); border-radius: var(--radius-md); color: var(--color-wit); transition: border-color .25s, background-color .25s, color .25s; }
+  .keuze .kv b { font-family: var(--font-kop); font-weight: 800; text-transform: uppercase; font-size: clamp(2.2rem, 2.6vw + 1.2rem, 3.4rem); line-height: .85; }
+  .keuze .kv small { font-size: .9375rem; color: var(--color-mist); line-height: 1.4; }
+  .keuze .kv .bol { width: 1.5rem; height: 1.5rem; border-radius: 50%; border: 1.5px solid var(--color-lijn-2); display: grid; place-items: center; transition: background-color .25s, border-color .25s; }
+  .keuze .kv .bol svg { width: .95rem; height: .95rem; opacity: 0; color: var(--color-asfalt); }
+  .keuze:hover .kv { border-color: #ffffff80; }
+  .keuze input:checked + .kv { border-color: var(--color-groen-licht); background: #3ddc8414; }
+  .keuze input:checked + .kv .bol { background: var(--color-groen-licht); border-color: var(--color-groen-licht); }
+  .keuze input:checked + .kv .bol svg { opacity: 1; }
+  .keuze input:focus-visible + .kv { outline: 2px solid var(--color-groen-licht); outline-offset: 3px; }
+
+  .veld { display: block; }
+  .veld > span { display: block; font-size: .875rem; font-weight: 600; color: var(--color-mist); }
+  .invoer { width: 100%; margin-top: .4rem; min-height: 3.25rem; padding: .7rem .9rem; border: 0; border-bottom: 2px solid var(--color-lijn-2); background: var(--color-asfalt-3); border-radius: var(--radius-sm) var(--radius-sm) 0 0; font: inherit; color: var(--color-wit); transition: border-color .2s, background-color .2s; }
+  .invoer::placeholder { color: #a7aeb2b0; }
+  .invoer:focus { outline: none; border-color: var(--color-groen-licht); background: #33393e; }
+  select.invoer { appearance: none; background-image: linear-gradient(45deg, transparent 50%, #a7aeb2 50%), linear-gradient(135deg, #a7aeb2 50%, transparent 50%); background-position: calc(100% - 1.15rem) 55%, calc(100% - .8rem) 55%; background-size: .35rem .35rem; background-repeat: no-repeat; padding-right: 2.2rem; }
+  select.invoer option { color: var(--color-inkt); background: var(--color-wit); }
+
+  /* Bericht-voorbeeld: als een WhatsApp-ballon, maar in de huisstijl. */
+  .ballon { position: relative; background: var(--color-beton); color: var(--color-inkt); border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 0; padding: 1.1rem 1.2rem; font-size: .9375rem; line-height: 1.55; white-space: pre-line; }
+  .ballon::after { content: ""; position: absolute; left: 0; bottom: -10px; border-left: 12px solid var(--color-beton); border-bottom: 10px solid transparent; }
+
+  /* Ingebrand stempel (HT, ISPM 15), zoals op het blok van een behandelde pallet. */
+  .stempel { display: inline-grid; grid-template-columns: auto auto; border: 3px solid currentColor; font-family: var(--font-kop); font-weight: 800; text-transform: uppercase; line-height: .9; transform: rotate(-2deg); filter: url(#ruw); }
+  .stempel > span { padding: .5rem .8rem; }
+  .stempel > span + span { border-left: 3px solid currentColor; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

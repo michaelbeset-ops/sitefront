@@ -1,0 +1,242 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Pallet from '../components/Pallet.astro';
+import Streep from '../components/Streep.astro';
+import { site, tijden } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroStaand from '../assets/hero-staand.jpg';
+import wand from '../assets/wand.jpg';
+import epal from '../assets/epal.jpg';
+import panorama from '../assets/panorama.jpg';
+
+const heroMobiel = await getImage({ src: heroStaand, widths: [480], format: 'webp', quality: 62 });
+const heroBreed = await getImage({ src: hero, widths: [960, 1400, 1800], sizes: '100vw', format: 'webp', quality: 72 });
+
+const soortenKopen = ['Gebruikte houten pallets', 'Nieuwe houten pallets', 'Heat treated pallets (ISPM 15)', 'Weet ik nog niet'];
+const soortenVerkopen = ['Gebruikte houten pallets', 'Nieuwe houten pallets', 'Weet ik niet'];
+
+const titel = 'Pallethandel Labeda | Pallets kopen, verkopen en repareren in Klundert';
+const omschrijving = 'Inkoop, verkoop en reparatie van nieuwe en gebruikte houten pallets, altijd 20.000 pallets op voorraad en eigen transport. Kievitweg 15, Klundert (Industrieterrein Moerdijk). WhatsApp 06 10 12 48 49.';
+---
+<Base title={titel} description={omschrijving}>
+  <svg width="0" height="0" class="absolute" aria-hidden="true"><filter id="ruw"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" result="n" /><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" /></filter></svg>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun eigen headerfoto, torens van houten pallets -->
+    <section class:list={["relative isolate flex flex-col overflow-hidden bg-asfalt text-wit md:min-h-[100svh]", site.voorstel ? "min-h-[calc(100svh-6.75rem)] md:min-h-[calc(100svh-2.25rem)]" : "min-h-[calc(100svh-3.5rem)]"]}>
+      <Kop />
+      <picture>
+        <source media="(max-width: 767px)" srcset={heroMobiel.srcSet.attribute || heroMobiel.src} />
+        <source media="(min-width: 768px)" srcset={heroBreed.srcSet.attribute} sizes="100vw" />
+        <img src={heroBreed.src} width="1800" height="1080" alt="Twee hoge wanden van gestapelde houten pallets met een smalle strook lucht ertussen" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_40%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#141618cc_0%,#14161833_24%,#14161880_52%,#141618f5_100%)] md:bg-[linear-gradient(180deg,#141618b3_0%,#14161800_22%,#14161826_40%,#141618e0_74%,#141618_100%)]"></div>
+
+      <div class="wrap mt-auto pb-10 pt-28 md:pb-14">
+        <p class="text-sm font-semibold text-wit/90 md:text-base"><span class="mr-2 inline-block h-2 w-2 bg-groen-licht align-middle"></span><span class="max-sm:hidden">Pallethandel Labeda · </span>Kievitweg 15, Klundert</p>
+        <h1 class="mt-4 text-hero">
+          <span class="gemerkt block w-fit">20.000<Streep /></span>
+          <span class="block">pallets. Altijd</span>
+          <span class="block">op voorraad.</span>
+        </h1>
+        <div class="mt-8 grid gap-8 md:grid-cols-12 md:items-end">
+          <p class="max-w-xl text-base text-wit/90 sm:text-lg md:col-span-6 md:text-xl">Inkoop, verkoop en reparatie van nieuwe en gebruikte houten pallets. Met eigen transport, ook voor kleine aantallen.</p>
+          <div class="flex flex-wrap gap-3 md:col-span-6 md:justify-end">
+            <a href="#aanvraag" class="knop knop-fel">Pallets aanvragen<Icoon naam="pijl" /></a>
+            <a href={site.wa} class="knop knop-wit num max-md:hidden"><Icoon naam="wa" />{site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. WAT WE DOEN: drie grote regels over een full-bleed stapelfoto -->
+    <section id="wat" class="relative bg-beton">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative h-[52vw] max-h-[34rem] lg:col-span-6 lg:h-auto lg:max-h-none">
+          <Image src={wand} widths={[700, 1100, 1500]} sizes="(min-width: 1024px) 50vw, 100vw" alt="Wand van gestapelde houten europallets" class="absolute inset-0 h-full w-full object-cover object-[50%_50%]" quality={70} loading="lazy" />
+        </div>
+        <div class="px-5 py-16 md:px-10 md:py-24 lg:col-span-6 lg:px-16 lg:py-28 xl:pr-[max(4rem,calc((100vw-82rem)/2+2.5rem))]">
+          <h2 class="rijs text-4xl"><span class="whitespace-nowrap">Kopen,</span> <span class="whitespace-nowrap"><span class="gemerkt gemerkt-licht">verkopen<Streep /></span>,</span> repareren.</h2>
+          <div class="mt-12">
+            <div class="regel rijs">
+              <h3>Verkoop</h3>
+              <p class="text-grijs">Nieuwe en gebruikte houten pallets, uit een vaste voorraad van 20.000 stuks.</p>
+            </div>
+            <div class="regel rijs" style="--d:.08s">
+              <h3>Inkoop</h3>
+              <p class="text-grijs">Pallets over? Wij kopen gebruikte en nieuwe pallets in en halen ze met onze eigen wagen op.</p>
+            </div>
+            <div class="regel rijs" style="--d:.16s">
+              <h3>Reparatie</h3>
+              <p class="text-grijs">Beschadigde pallets laten repareren, zodat ze weer mee kunnen.</p>
+            </div>
+          </div>
+          <p class="rijs mt-10"><a href="#aanvraag" class="link link-licht font-semibold">Direct een aanvraag doen</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. AANVRAAG (wow): kopen of verkopen, drie velden, ingevuld WhatsApp-bericht -->
+    <section id="aanvraag" class="bg-asfalt py-20 text-wit md:py-32">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-7">Kopen <span class="text-groen-licht">of kwijt?</span></h2>
+          <p class="rijs max-w-md text-lg text-mist lg:col-span-5 lg:self-end" style="--d:.08s">Kies wat u zoekt, vul soort, aantal en plaats in en verstuur het als WhatsApp-bericht.</p>
+        </div>
+
+        <form class="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-12" data-aanvraag novalidate>
+          <fieldset class="lg:col-span-7">
+            <legend class="sr-only">Wat wilt u?</legend>
+            <div class="grid gap-3 sm:grid-cols-2">
+              <label class="keuze">
+                <input type="radio" name="richting" value="kopen" checked />
+                <span class="kv"><b>Pallets kopen</b><span class="flex items-end justify-between gap-4"><small>Nieuw, gebruikt of heat treated. Wij bezorgen.</small><span class="bol"><Icoon naam="vink" /></span></span></span>
+              </label>
+              <label class="keuze">
+                <input type="radio" name="richting" value="verkopen" />
+                <span class="kv"><b>Verkopen of laten ophalen</b><span class="flex items-end justify-between gap-4"><small>Wij halen ze zelf bij u op.</small><span class="bol"><Icoon naam="vink" /></span></span></span>
+              </label>
+            </div>
+
+            <div class="mt-8 grid gap-5 sm:grid-cols-2">
+              <label class="veld sm:col-span-2">
+                <span>Soort pallets</span>
+                <select name="soort" class="invoer" data-soort>
+                  {soortenKopen.map((s) => <option>{s}</option>)}
+                </select>
+              </label>
+              <label class="veld">
+                <span>Aantal (ongeveer)</span>
+                <input name="aantal" type="number" inputmode="numeric" min="1" placeholder="bijv. 40" class="invoer num" />
+              </label>
+              <label class="veld">
+                <span>Plaats</span>
+                <input name="plaats" type="text" autocomplete="address-level2" placeholder="bijv. Breda" class="invoer" />
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="lg:col-span-5">
+            <p class="text-sm font-semibold text-mist" id="voorbeeld-kop">Uw bericht</p>
+            <p class="ballon mt-3" data-bericht aria-live="polite" aria-labelledby="voorbeeld-kop"></p>
+            <p class="mt-7 flex gap-3 text-sm text-mist"><Icoon naam="foto" class="mt-0.5 h-5 w-5 flex-none text-groen-licht" /><span>Tip: stuur er een foto van de pallets achteraan. Dan zien we meteen om wat voor pallets het gaat.</span></p>
+            <a href={site.wa} class="knop knop-fel mt-7 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="mt-4 text-sm text-mist">Of bel <a href={site.telHref} class="link num font-semibold text-wit">{site.tel}</a>, <span class="whitespace-nowrap">ma t/m vr 08:00 - 18:00</span>.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 4. HEAT TREATED: stempel + hun europallet -->
+    <section id="ht" class="overflow-hidden bg-wit py-20 md:py-32">
+      <div class="wrap grid items-center gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="rijs lg:col-span-5">
+          <p class="stempel text-[1.9rem] text-groen md:text-[2.4rem]" aria-hidden="true"><span>HT</span><span>ISPM 15</span></p>
+          <h2 class="mt-10 text-3xl">Heat treated, volgens ISPM 15.</h2>
+          <p class="mt-5 max-w-md text-lg text-grijs">Bij ons ook verkrijgbaar: heat treated pallets, behandeld volgens de ISPM 15-norm.</p>
+          <a href={site.wa + '?text=' + encodeURIComponent('Goedendag, ik zoek heat treated pallets (ISPM 15). Aantal: ')} class="knop knop-rand mt-8"><Icoon naam="wa" />Vraag naar heat treated</a>
+        </div>
+        <div class="rijs lg:col-span-7" style="--d:.1s">
+          <Image src={epal} widths={[600, 900, 1300]} sizes="(min-width: 1024px) 56vw, 100vw" alt="Nieuwe houten europallet met EPAL-brandmerk op de blokken" class="h-auto w-full" quality={70} loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. EIGEN TRANSPORT: hun panorama van palletstapels -->
+    <section id="transport" class="bg-asfalt text-wit">
+      <div class="wrap grid gap-y-8 pb-12 pt-20 md:pt-28 lg:grid-cols-12 lg:gap-x-12">
+        <h2 class="rijs text-4xl lg:col-span-6">Eigen <span class="gemerkt">transport<Streep /></span>.</h2>
+        <div class="rijs space-y-4 text-lg text-wit/85 lg:col-span-5 lg:col-start-8 lg:self-end" style="--d:.08s">
+          <p>Labeda heeft zelf diverse transportmiddelen om pallets bij u te bezorgen of op te halen. We leveren een bestelling altijd zo snel mogelijk af.</p>
+          <p class="text-groen-licht">Ook voor kleine aantallen kunt u bij ons terecht.</p>
+        </div>
+      </div>
+      <div class="relative">
+        <Image src={panorama} widths={[800, 1440]} sizes="100vw" alt="Lange rijen gestapelde houten pallets op een buitenterrein onder een blauwe lucht" class="h-[34vw] max-h-[27rem] min-h-[13rem] w-full object-cover object-[40%_60%]" quality={70} loading="lazy" />
+      </div>
+    </section>
+
+    <!-- 6. DE WERF + TIJDEN -->
+    <section id="werf" class="bg-beton py-20 md:py-32">
+      <div class="wrap">
+        <Pallet class="h-6 w-auto text-asfalt" />
+        <div class="mt-10 grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-6">
+            <h2 class="rijs text-4xl">Kievitweg 15, <span class="text-groen">Klundert.</span></h2>
+            <p class="rijs mt-6 max-w-md text-lg text-grijs">{site.postcode} {site.plaats}, op {site.terrein}. Pallethandel in Klundert sinds 2006.</p>
+            <div class="rijs mt-10 flex flex-wrap gap-3">
+              <a href={site.wa} class="knop knop-groen"><Icoon naam="wa" />WhatsApp</a>
+              <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+              <a href={site.maps} class="knop knop-rand"><Icoon naam="pin" />Route</a>
+            </div>
+            <p class="rijs mt-6"><a href={`mailto:${site.mail}`} class="link link-licht inline-flex items-center gap-2 font-semibold"><Icoon naam="mail" class="h-4 w-4" />{site.mail}</a></p>
+          </div>
+          <div class="rijs lg:col-span-5 lg:col-start-8" style="--d:.1s">
+            <div class="flex items-baseline justify-between gap-4 border-b-2 border-asfalt pb-3">
+              <h3 class="text-3xl">Open</h3>
+              <p class="flex items-center gap-2 text-sm font-semibold" data-nu><span class="h-2.5 w-2.5 rounded-full bg-grijs" data-nu-bol></span><span data-nu-tekst>Ma t/m vr</span></p>
+            </div>
+            <table class="w-full text-base">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t, i) => (
+                  <tr class="border-b border-lijn-licht" data-dag={(i + 1) % 7}>
+                    <th scope="row" class="py-3 text-left font-medium">{t.dag}</th>
+                    <td class="num py-3 text-right">{t.open ? `${t.open} - ${t.dicht}` : <span class="text-grijs">Gesloten</span>}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-4 text-sm text-grijs">Tijden volgens Google.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ soortenKopen, soortenVerkopen, wa: site.wa, tijden }}>
+    const f = document.querySelector('[data-aanvraag]');
+    if (f) {
+      const soort = f.querySelector('[data-soort]');
+      const uit = f.querySelector('[data-bericht]');
+      const knop = f.querySelector('[data-wa]');
+      let vorige = 'kopen';
+      const maak = () => {
+        const r = f.richting.value;
+        if (r !== vorige) {
+          soort.innerHTML = (r === 'kopen' ? soortenKopen : soortenVerkopen).map((s) => `<option>${s}</option>`).join('');
+          vorige = r;
+        }
+        const aantal = f.aantal.value.trim() || '...';
+        const plaats = f.plaats.value.trim() || '...';
+        const regels = r === 'kopen'
+          ? ['Goedendag, ik wil graag pallets kopen.', `Soort: ${soort.value}`, `Aantal: ${aantal}`, `Bezorgen in: ${plaats}`, 'Kunt u mij laten weten wat de prijs is en wanneer u kunt leveren?']
+          : ['Goedendag, ik heb pallets die ik wil verkopen of laten ophalen.', `Soort: ${soort.value}`, `Aantal: ${aantal}`, `Ophalen in: ${plaats}`, 'Ik stuur een foto van de pallets mee.'];
+        const tekst = regels.join('\n');
+        uit.textContent = tekst;
+        knop.href = `${wa}?text=${encodeURIComponent(tekst)}`;
+      };
+      f.addEventListener('input', maak);
+      f.addEventListener('change', maak);
+      f.addEventListener('submit', (e) => e.preventDefault());
+      maak();
+    }
+    // Vandaag markeren + nu open / gesloten (Nederlandse tijd).
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const d = nu.getDay();
+    const rij = document.querySelector(`[data-dag="${d}"]`);
+    if (rij) { rij.classList.add('font-bold'); rij.querySelector('th').insertAdjacentHTML('beforeend', ' <span class="ml-1 text-xs font-semibold text-groen">vandaag</span>'); }
+    const t = tijden[(d + 6) % 7];
+    const min = nu.getHours() * 60 + nu.getMinutes();
+    const m = (s) => +s.slice(0, 2) * 60 + +s.slice(3);
+    const open = t.open && min >= m(t.open) && min < m(t.dicht);
+    const bol = document.querySelector('[data-nu-bol]'), tx = document.querySelector('[data-nu-tekst]');
+    if (bol && tx) { bol.style.background = open ? '#0e7c43' : '#9b3b2f'; tx.textContent = open ? `Nu open tot ${t.dicht}` : 'Nu gesloten'; }
+  </script>
+</Base>
