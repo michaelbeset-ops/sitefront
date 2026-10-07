@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+await p.goto('http://localhost:4429/sitefront/arm-transport-rotterdam/');
+await p.fill('#b-van', 'Rotterdam Waalhaven'); await p.fill('#b-naar', 'Utrecht'); await p.selectOption('#b-soort', { label: 'Bulkzending' }); await p.fill('#b-gew', '4 pallets');
+await p.click('text=Op datum'); await p.fill('#b-datum', '2026-10-12');
+console.log(decodeURIComponent((await p.getAttribute('[data-wa]', 'href')).split('text=')[1]));
+console.log((await p.getAttribute('[data-mail]', 'href')).slice(0, 80));
+console.log(await p.textContent('.relative.z-50'));
+await p.locator('#aanvraag').screenshot({ path: 'shots/r2-wow-390.png' });
+await b.close();

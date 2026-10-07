@@ -1,0 +1,397 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, shop, reviews, waHoi, waMet } from '../data/site';
+import stapel from '../assets/stapel.png';
+import groen250 from '../assets/groen-250.jpg';
+import pvc from '../assets/pvc.jpg';
+import aanhanger from '../assets/aanhanger.jpg';
+import bouwhek from '../assets/bouwhek.jpg';
+import hek from '../assets/hek.jpg';
+
+// Aantallen letterlijk van hun homepage (7 oktober 2026).
+const index: [string, string, string][] = [
+  ['Maatwerk', '10', shop.maatwerk],
+  ['Fijnmazige containernetten', '8', shop.containernet],
+  ['PVC cargo containerzeilen', '12', shop.containerzeil],
+  ['Brandvertragende zeilen (NVO)', '', shop.brand],
+  ['Afdekfolie en bouwfolie', '', shop.folie],
+  ['Accessoires', '59', shop.accessoires],
+  ['Spanrubbers en koorden', '26', shop.spanrubbers],
+  ['Spanbanden', '6', shop.spanbanden],
+];
+
+// Dikteschaal: gramgewichten en levensduur-indicaties letterlijk uit hun besteladvies.
+const schaal = [
+  { g: 75, leven: '0-6 mnd', href: shop.pe75 },
+  { g: 100, leven: '0-1 jaar', href: shop.pe100 },
+  { g: 150, leven: '1-2 jaar', href: shop.pe150 },
+  { g: 180, leven: '1-2 jaar', href: shop.pe180 },
+  { g: 250, leven: '2-3 jaar', href: shop.pe250 },
+  { g: 400, leven: '5-10 jaar', href: shop.pvc400 },
+  { g: 600, leven: '5-10 jaar', href: shop.pvc600 },
+  { g: 650, leven: 'zwaar', href: shop.pvc650 },
+];
+
+// Maatwerk-tekening: zeil met twee uitsparingen, ogen circa om de 50 cm.
+const ogen: [number, number][] = [];
+for (let x = 78; x <= 482; x += 50.5) ogen.push([x, 289]);
+for (let y = 112; y <= 262; y += 50) { ogen.push([71, y]); ogen.push([489, y]); }
+for (let x = 122; x <= 438; x += 52.7) ogen.push([x, 61]);
+---
+<Base title="Afdekproducten.nl | Afdekzeilen, PVC-zeilen en netten uit Dordrecht" description="PE- en PVC-afdekzeilen, netten, bouwhekzeilen en maatwerk uit voorraad. Op werkdagen voor 16.00 uur besteld en betaald, in de regel dezelfde dag verzonden. Afhalen in Dordrecht op afspraak.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: het gespannen zeil met hun eigen stapel -->
+    <section class="weefsel relative isolate flex min-h-[calc(100svh-4.25rem)] flex-col overflow-hidden text-wit md:min-h-[calc(100svh-4.75rem)]" aria-labelledby="hero-kop">
+      <div class="wrap relative grid flex-1 items-center gap-y-4 pb-10 pt-6 md:gap-y-6 md:pb-20 md:pt-8 lg:grid-cols-12 lg:gap-x-8 lg:py-16">
+        <div class="order-2 lg:order-1 lg:col-span-6 xl:col-span-6">
+          <p class="text-[.9375rem] font-semibold text-mist">Afdekzeilen, netten en maatwerk · Dordrecht</p>
+          <h1 id="hero-kop" class="mt-3 text-hero md:mt-4">Van 75 tot <span class="text-laag">650 gram,</span> uit voorraad.</h1>
+          <p class="mt-4 max-w-[34rem] text-[1.0625rem] leading-relaxed text-[#dce6ec] md:mt-6 md:text-xl">Wat op voorraad is en op werkdagen vóór 16.00 uur besteld en betaald is, gaat in de regel dezelfde werkdag de deur uit.</p>
+          <div class="mt-6 flex flex-col gap-3 sm:flex-row md:mt-8">
+            <a href={shop.home} class="knop knop-wit">Naar de webshop<Icoon naam="pijl" /></a>
+            <a href="#keuzehulp" class="knop knop-lijn">Welk zeil heb ik nodig?</a>
+          </div>
+          <p class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-mist md:mt-8">
+            <a href={site.maps} class="inline-flex items-center gap-1.5 text-mist no-underline hover:text-wit"><Icoon naam="ster" class="h-4 w-4 text-laag" /><span class="num">{site.google.score}</span> op Google</a>
+            <span>Gratis afhalen in Dordrecht, op afspraak</span>
+          </p>
+        </div>
+        <div class="relative order-1 mx-auto w-[min(48vw,12.5rem)] sm:w-[20rem] lg:order-2 lg:col-span-6 lg:w-full lg:max-w-[36rem] lg:justify-self-end">
+          <Image src={stapel} alt="Gevouwen PE-afdekzeilen op een stapel: oranje, groen, zwart, blauw, wit en grijs" widths={[320, 480, 627]} sizes="(min-width: 1024px) 36rem, (min-width: 640px) 20rem, 48vw" class="h-auto w-full drop-shadow-[0_28px_40px_#00000066]" loading="eager" fetchpriority="high" />
+        </div>
+      </div>
+      <div class="zoom relative h-10 border-t md:h-12 border-[#ffffff1f] bg-[#052a40]" aria-hidden="true">
+        <div class="absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-around px-4">{Array.from({ length: 12 }).map((_, i) => <span class:list={['oog !relative', i > 5 && 'hidden md:block', i > 3 && 'max-sm:hidden']}></span>)}</div>
+      </div>
+      <div class="rand relative" aria-hidden="true"></div>
+    </section>
+
+    <!-- 2. Assortiment -->
+    <section id="assortiment" class="py-20 md:py-28" aria-labelledby="ass-kop">
+      <div class="wrap">
+        <div class="grid gap-6 md:grid-cols-12 md:items-end">
+          <h2 id="ass-kop" class="text-3xl md:col-span-7">Afdekken, afschermen, vastzetten.</h2>
+          <p class="max-w-md text-grijs md:col-span-5 md:justify-self-end">Elke groep opent direct de juiste categorie in de webshop. Daar ziet u maten, kleuren en prijzen.</p>
+        </div>
+
+        <div class="mt-12 grid gap-4 md:mt-16 md:grid-cols-12 md:gap-5">
+          <a href={shop.pe} class="rijs group relative flex flex-col overflow-hidden rounded-md bg-papier-2 no-underline md:col-span-7 md:row-span-2">
+            <div class="flex flex-1 items-center justify-center px-6 pt-8 md:px-12 md:pt-12">
+              <Image src={groen250} alt="Gestapelde groene afdekzeilen van 250 gr/m²" widths={[400, 640, 800]} sizes="(min-width: 768px) 46vw, 92vw" class="opwit aspect-square w-full max-w-[34rem] object-contain transition-transform duration-700 group-hover:scale-[1.03]" />
+            </div>
+            <div class="flex flex-col gap-4 p-6 sm:flex-row sm:items-end sm:justify-between sm:gap-6 md:p-9">
+              <div>
+                <h3 class="text-2xl text-inkt md:text-[2.25rem]">PE afdekzeilen</h3>
+                <p class="mt-2 max-w-md text-grijs">75 tot 250 gr/m², in wit, groen, blauw, oranje, grijs, zwart en gewapend transparant.</p>
+              </div>
+              <span class="num flex flex-none items-center gap-2 text-sm font-semibold text-zeil">270 producten<Icoon naam="pijl" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /></span>
+            </div>
+          </a>
+
+          <a href={shop.pvc} class="rijs group grid grid-cols-[40%_minmax(0,1fr)] items-center overflow-hidden rounded-md bg-papier-2 no-underline md:col-span-5" style="--d:.08s">
+            <Image src={pvc} alt="PVC-afdekzeilen in wit, grijs, blauw en groen" widths={[300, 480]} sizes="(min-width: 768px) 17vw, 40vw" class="opwit aspect-square h-full w-full object-contain p-3 transition-transform duration-700 group-hover:scale-[1.04]" />
+            <div class="min-w-0 py-6 pr-5 sm:pr-6">
+              <h3 class="text-lg text-inkt sm:text-xl md:text-2xl">PVC afdekzeilen</h3>
+              <p class="mt-2 text-sm text-grijs">400, 600 en 650 gr/m². Vrachtwagenzeilkwaliteit: waterdicht, kleurvast en UV-bestendig.</p>
+              <span class="num mt-4 flex items-center gap-2 text-sm font-semibold text-zeil">47 producten<Icoon naam="pijl" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /></span>
+            </div>
+          </a>
+
+          <a href={shop.aanhanger} class="rijs group grid grid-cols-[40%_minmax(0,1fr)] items-center overflow-hidden rounded-md bg-papier-2 no-underline md:col-span-5" style="--d:.16s">
+            <Image src={aanhanger} alt="Aanhangwagen met een aanhangwagennet en hoeklussen" widths={[300, 480]} sizes="(min-width: 768px) 17vw, 40vw" class="opwit aspect-square h-full w-full object-contain p-3 transition-transform duration-700 group-hover:scale-[1.04]" />
+            <div class="min-w-0 py-6 pr-5 sm:pr-6">
+              <h3 class="text-lg text-inkt sm:text-xl md:text-2xl">Aanhangwagen&shy;netten</h3>
+              <p class="mt-2 text-sm text-grijs">Met aanhangwagennetten dekt u lading veilig af tijdens vervoer.</p>
+              <span class="num mt-4 flex items-center gap-2 text-sm font-semibold text-zeil">39 producten<Icoon naam="pijl" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /></span>
+            </div>
+          </a>
+
+          <div class="rijs grid grid-cols-[40%_minmax(0,1fr)] items-center overflow-hidden rounded-md bg-papier-2 md:col-span-5">
+            <Image src={bouwhek} alt="Bouwhek met een zwart winddoorlatend bouwhekdoek" widths={[300, 480]} sizes="(min-width: 768px) 15vw, 36vw" class="opwit aspect-square h-full w-full object-contain p-3" />
+            <div class="min-w-0 py-6 pr-5 sm:pr-6 md:py-8">
+              <h3 class="text-lg text-inkt sm:text-xl md:text-2xl">Bouw en steiger</h3>
+              <ul class="mt-4 border-t border-lijn">
+                {[['Bouwhekzeilen', '12', shop.bouwhekzeil], ['Bouwhekdoeken', '10', shop.bouwhekdoek], ['Steigernetten', '32', shop.steiger]].map(([t, n, h]) => (
+                  <li class="border-b border-lijn"><a href={h} class="group flex items-center justify-between gap-4 py-3 font-semibold text-inkt no-underline hover:text-zeil"><span class="min-w-0">{t}</span><span class="num flex items-center gap-2 text-sm text-grijs group-hover:text-zeil">{n}<Icoon naam="pijl" class="h-4 w-4" /></span></a></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div class="rijs rounded-md border border-lijn bg-wit p-6 md:col-span-7 md:p-9" style="--d:.08s">
+            <h3 class="text-lg text-inkt sm:text-xl md:text-2xl">Verder in het magazijn</h3>
+            <ul class="mt-4 grid border-t border-lijn sm:grid-cols-2 sm:gap-x-8 sm:border-t-0">
+              {index.map(([t, n, h]) => (
+                <li class="border-b border-lijn sm:[&:nth-child(-n+2)]:border-t"><a href={h} class="group flex items-center justify-between gap-4 py-3 font-semibold text-inkt no-underline hover:text-zeil"><span class="min-w-0">{t}</span><span class="num flex flex-none items-center gap-2 text-sm text-grijs group-hover:text-zeil">{n}<Icoon naam="pijl" class="h-4 w-4" /></span></a></li>
+              ))}
+            </ul>
+            <p class="mt-6 text-sm text-grijs">Liever per kleur zoeken? <a href={shop.kleur} class="link">Afdekzeil kleur kiezen</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Keuzehulp met dikteschaal (wow) -->
+    <section id="keuzehulp" class="border-y border-lijn bg-wit py-20 md:py-28" aria-labelledby="kh-kop">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+          <div class="min-w-0 lg:col-span-6">
+            <h2 id="kh-kop" class="text-3xl">Welk zeil heb ik nodig?</h2>
+            <p class="mt-5 max-w-md text-grijs">Kies waarvoor en hoe lang het buiten ligt. Het advies komt letterlijk uit ons eigen besteladvies.</p>
+
+            <form class="mt-10 text-lg leading-[2.6] sm:text-xl md:text-2xl md:leading-[2.4]" data-hulp onsubmit="return false">
+              <span class="block"><label for="kh-voor">Ik zoek iets voor</label>{' '}
+              <select id="kh-voor" class="veld" data-voor>
+                <option value="spullen" selected>spullen, hout of tuinmeubelen</option>
+                <option value="aanhanger">een aanhanger of lading</option>
+                <option value="bouw">een bouwplaats of steiger</option>
+                <option value="tuin">een zwembad, terras of tuin</option>
+                <option value="brand">een plek waar brandveiligheid telt</option>
+              </select></span>
+              <span class="block"><label for="kh-duur">dat</label>{' '}
+              <select id="kh-duur" class="veld" data-duur>
+                <option value="weken">een paar weken</option>
+                <option value="maanden" selected>een paar maanden</option>
+                <option value="jaren">jaren</option>
+              </select>
+              buiten ligt,</span>
+              <span class="block">van ongeveer
+              <label class="sr-only" for="kh-l">Lengte in meters</label><input id="kh-l" class="veld veld-maat num" inputmode="decimal" placeholder="4" data-l />
+              bij
+              <label class="sr-only" for="kh-b">Breedte in meters</label><input id="kh-b" class="veld veld-maat num" inputmode="decimal" placeholder="6" data-b />
+              meter.</span>
+            </form>
+            <p class="mt-6 max-w-md text-sm text-grijs"><strong class="font-semibold text-inkt">Tel overlap mee.</strong> Een zeil moet vaak over de rand vallen om water af te voeren en bevestiging mogelijk te maken. <a href={shop.maatBerekenen} class="link">Maat berekenen</a></p>
+          </div>
+
+          <!-- Het advies als ingenaaid label -->
+          <div class="min-w-0 lg:col-span-6">
+            <div class="relative rounded-md bg-nacht p-2 text-wit shadow-sm" aria-live="polite">
+              <span class="oog left-3 top-3" aria-hidden="true"></span>
+              <span class="oog right-3 top-3" aria-hidden="true"></span>
+              <div class="rounded-sm border border-dashed border-[#ffffff4d] px-6 pb-7 pt-12 md:px-10 md:pb-9 md:pt-14">
+                <p class="text-sm font-semibold text-mist">Ons advies</p>
+                <h3 class="mt-2 text-2xl md:text-[2rem]" data-titel>PE afdekzeil 150 of 180 gr/m²</h3>
+                <p class="mt-3 font-semibold text-laag" data-leven>Levensduur indicatie: 1-2 jaar</p>
+                <p class="mt-4 leading-relaxed text-[#dce6ec]" data-tekst>Voor algemeen buitengebruik wordt meestal 150-180 gr/m² gekozen. Deze middenklasse afdekzeilen zijn allround inzetbaar.</p>
+                <p class="mt-4 border-t border-lijn-licht pt-4 text-xs leading-relaxed text-mist" data-let>De levensduur is een indicatie. Intensief gebruik, UV-zonlicht, wind, regen en scherpe randen kunnen de levensduur verkorten.</p>
+                <div class="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <a href={shop.pe150} class="knop knop-wit" data-knop1>Bekijk 150 gr/m²<Icoon naam="pijl" /></a>
+                  <a href={shop.pe180} class="knop knop-lijn" data-knop2>Bekijk 180 gr/m²</a>
+                </div>
+                <a href={waHoi} class="mt-6 inline-flex items-center gap-2 font-semibold text-wit no-underline hover:text-laag" data-wa><Icoon naam="wa" class="h-5 w-5 text-laag" />Twijfel? App ons, met uw maten erbij.</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dikteschaal -->
+        <div class="mt-20 md:mt-24">
+          <div class="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-lijn pb-4">
+            <h3 class="text-xl md:text-2xl">Dikteschaal in gr/m²</h3>
+            <p class="text-sm text-grijs">Hoe zwaarder het zeil, hoe langer het meegaat. Klik op een gewicht voor de webshop.</p>
+          </div>
+          <ol class="schaal mt-8 grid grid-cols-8 items-start gap-1.5 md:gap-3" data-schaal>
+            {schaal.map((s) => (
+              <li>
+                <a href={s.href} class="group block text-center no-underline" data-g={s.g}>
+                  <span class="flex h-[100px] items-end md:h-[160px]"><span class="schaal-streep block w-full rounded-sm" style={`height:${Math.round(6 + (s.g / 650) * 94)}%`} data-streep></span></span>
+                  <span class="kop num mt-3 block text-[.9375rem] text-inkt sm:text-xl md:text-3xl">{s.g}</span>
+                  <span class="mt-1 block text-[.6875rem] leading-tight text-grijs sm:text-xs md:text-sm">{s.leven}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+          <div class="mt-4 grid grid-cols-8 gap-1.5 text-xs font-semibold text-grijs md:gap-3 md:text-sm">
+            <p class="col-span-5 border-t-2 border-inkt pt-2">PE afdekzeil</p>
+            <p class="col-span-3 border-t-2 border-zeil pt-2 text-zeil">PVC</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Maatwerk -->
+    <section id="maatwerk" class="weefsel relative overflow-hidden py-24 text-wit md:py-28" aria-labelledby="mw-kop">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-6">
+          <svg viewBox="0 0 560 360" class="h-auto w-full" role="img" aria-labelledby="mw-tek">
+            <title id="mw-tek">Tekening van een zeil op maat met twee uitsparingen, een verstevigingsband en zeilogen circa om de 50 cm</title>
+            <path d="M110 50H450V90H500V300H60V90H110Z" fill="#0b405f" stroke="#2aabe3" stroke-width="2" />
+            <path d="M119 59H441V99H491V291H69V99H119Z" fill="none" stroke="#ffffff59" stroke-width="1.2" stroke-dasharray="5 4" />
+            {ogen.map(([x, y]) => (<g><circle cx={x} cy={y} r="5.4" fill="#e9edef" /><circle cx={x} cy={y} r="2.6" fill="#07324b" /></g>))}
+            <g stroke="#b9c8d1" stroke-width="1.2" fill="none"><path d="M60 340H500M60 333v14M500 333v14" /><path d="M28 90V300M21 90h14M21 300h14" /><path d="M78 314h50.5M78 308v12M128.5 308v12" stroke="#2aabe3" /></g>
+            <g fill="#b9c8d1" font-family="Golos Text Variable, system-ui, sans-serif" font-size="15" font-weight="600">
+              <text x="280" y="358" text-anchor="middle">lengte</text>
+              <text x="14" y="198" text-anchor="middle" transform="rotate(-90 14 198)">breedte</text>
+              <text x="138" y="319" fill="#2aabe3" font-size="13">± 50 cm</text>
+              <text x="60" y="40" >uitsparing</text>
+              <text x="500" y="40" text-anchor="end">uitsparing</text>
+            </g>
+          </svg>
+        </figure>
+        <div class="lg:col-span-6">
+          <h2 id="mw-kop" class="text-3xl">Past de standaardmaat niet? Dan op maat.</h2>
+          <p class="mt-5 max-w-lg text-lg leading-relaxed text-[#dce6ec]">PVC-zeilen, transparant PVC, netten en schaduwdoeken op uw lengte en breedte. Plat, rechthoekig of vierkant, eventueel met uitsparingen.</p>
+          <dl class="mt-10 border-t border-lijn-licht text-[.9375rem]">
+            {[
+              ['Randen', 'Dubbel gestikte polyester verstevigingsband'],
+              ['Zeilogen', 'Roestbestendig aluminium, circa om de 50 cm'],
+              ['Uitsparingen', '2 of 4, bijvoorbeeld voor een koprek of staanders'],
+              ['Levertijd', 'Circa 10-15 werkdagen'],
+              ['Niet mogelijk', 'Ronde vormen, schuine zijden, ritsen en 3D-hoezen'],
+            ].map(([k, v]) => (<div class="grid grid-cols-[8.5rem_1fr] gap-4 border-b border-lijn-licht py-3.5 sm:grid-cols-[10rem_1fr]"><dt class="font-semibold text-wit">{k}</dt><dd class="text-mist">{v}</dd></div>))}
+          </dl>
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-3 font-semibold">
+            {[['PVC op maat', shop.pvcMaat], ['Transparant PVC', shop.transparantMaat], ['Schaduwdoek', shop.schaduwMaat], ['Fijnmazige netten', shop.fijnmazigMaat], ['Maasnetten', shop.maasMaat]].map(([t, h]) => (
+              <li><a href={h} class="inline-flex items-center gap-1.5 text-wit no-underline hover:text-laag">{t}<Icoon naam="pijl" class="h-4 w-4 text-laag" /></a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Bezorgen of afhalen -->
+    <section id="afhalen" class="py-20 md:py-28" aria-labelledby="af-kop">
+      <div class="wrap">
+        <h2 id="af-kop" class="max-w-3xl text-3xl">Bezorgd met DHL of PostNL, of zelf ophalen aan de N3.</h2>
+        <div class="mt-14 grid gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+          <div class="lg:col-span-5">
+            <h3 class="text-xl md:text-2xl">Bezorgen</h3>
+            <ul class="mt-6 space-y-4">
+              {[
+                'Nederland met DHL, België met PostNL, met Track & Trace waar beschikbaar.',
+                'Gratis verzending vanaf € 750 excl. btw, op het Nederlandse vasteland.',
+                'Verzendkosten hangen af van gewicht en lengte. Het bedrag ziet u bij het afrekenen.',
+                'Consumenten hebben 14 dagen bedenktijd. Maatwerk valt daarbuiten.',
+              ].map((t) => (<li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-zeil" /><span>{t}</span></li>))}
+            </ul>
+            <blockquote class="mt-10 border-l-2 border-zeil pl-5">
+              <p class="kop text-xl leading-snug text-inkt md:text-2xl">"Wij kiezen er liever voor om de kosten open en eerlijk te tonen."</p>
+              <footer class="mt-2 text-sm text-grijs">Uit onze verzendinformatie</footer>
+            </blockquote>
+            <p class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem]"><a href={shop.verzending} class="link">Verzendkosten en levertijd</a><a href={shop.retour} class="link">Annuleren en retourneren</a></p>
+          </div>
+          <div class="lg:col-span-7">
+            <figure class="rijs overflow-hidden rounded-md">
+              <Image src={hek} alt="Het toegangshek van het Multibox-verzamelgebouw met het bordje Kerkeplaat 2F" widths={[400, 690]} sizes="(min-width: 1024px) 44vw, 92vw" class="aspect-[3/2] w-full object-cover" />
+            </figure>
+            <h3 class="mt-8 text-xl md:text-2xl">Afhalen in Dordrecht</h3>
+            <p class="mt-3 text-grijs">In het Multibox-verzamelgebouw langs de N3, naast McDonald's en tegenover PI Dordrecht. Afhalen en bekijken op afspraak, dan staat uw bestelling klaar.</p>
+            <ol class="mt-6 grid gap-x-8 sm:grid-cols-2">
+              {[
+                'Rijd naar Kerkeplaat 2F unit 90 in Dordrecht.',
+                'Zoek het Multibox-verzamelgebouw naast McDonald’s.',
+                'Het terrein is afgesloten met een toegangshek.',
+                `Bel bij aankomst ${site.tel}.`,
+                'Wij openen het hek voor u.',
+              ].map((t, i) => (<li class="flex gap-4 border-t border-lijn py-3"><span class="kop num text-zeil">{i + 1}</span><span>{t}</span></li>))}
+            </ol>
+            <p class="mt-6 rounded-sm bg-papier-2 px-4 py-3 text-[.9375rem]"><strong class="font-semibold">Geen pinautomaat.</strong> U betaalt contant of met een betaalverzoek op uw telefoon.</p>
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href={site.maps} class="knop">Route plannen<Icoon naam="pin" /></a>
+              <a href={site.telHref} class="knop knop-inkt"><Icoon naam="tel" />Afspraak maken</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section class="border-t border-lijn bg-wit py-20 md:py-28" aria-labelledby="rv-kop">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="rv-kop" class="sr-only">Reviews van klanten</h2>
+          <blockquote>
+            <p class="kop text-[1.75rem] leading-[1.12] md:text-[2.5rem]">"{reviews.groot.tekst}"</p>
+            <footer class="mt-6 flex items-center gap-3 text-sm text-grijs"><Icoon naam="g" class="h-5 w-5" /><span><strong class="font-semibold text-inkt">{reviews.groot.naam}</strong> · Google review</span></footer>
+          </blockquote>
+          <a href={site.maps} class="link mt-10 inline-block text-[.9375rem]">Alle reviews op Google</a>
+        </div>
+        <div class="grid gap-x-10 sm:grid-cols-2 lg:col-span-7">
+          {reviews.los.map((r, i) => (
+            <figure class="rijs border-t border-lijn py-7" style={`--d:${i * 0.06}s`}>
+              <p class="flex gap-0.5 text-zeil" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+              <blockquote class="mt-3 leading-relaxed">"{r.tekst}"</blockquote>
+              <figcaption class="mt-4 text-sm text-grijs"><strong class="font-semibold text-inkt">{r.naam}</strong> · Google review</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Contact -->
+    <section id="contact" class="bg-zeil py-20 text-wit md:py-24" aria-labelledby="ct-kop">
+      <div class="wrap grid gap-y-10 lg:grid-cols-12 lg:items-end lg:gap-x-12">
+        <div class="lg:col-span-7">
+          <h2 id="ct-kop" class="text-3xl">Twijfel over maat, kwaliteit of toepassing?</h2>
+          <p class="mt-5 max-w-xl text-lg text-[#e3eef5]">Stuur een foto en de maten via WhatsApp, of bel even. Gaat het over een bestelling, zet dan uw bestelnummer erbij.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href={waMet('Hallo, ik twijfel over een zeil. Dit wil ik afdekken (foto volgt):')} class="knop knop-wit"><Icoon naam="wa" class="h-5 w-5 text-zeil" />App een foto</a>
+            <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+        </div>
+        <div class="text-[.9375rem] text-[#e3eef5] lg:col-span-4 lg:col-start-9">
+          <p class="font-semibold text-wit">{site.naam}</p>
+          <p class="mt-1">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <p class="mt-3"><a href={`mailto:${site.mail}`} class="text-wit underline decoration-[#ffffff80] underline-offset-4 hover:decoration-wit">{site.mail}</a></p>
+          <p class="mt-3">Afhalen en bekijken op afspraak</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    import { site, shop } from '../data/site';
+    type Advies = { titel: string; leven?: string; tekst: string; let?: string; k1: [string, string]; k2?: [string, string]; g: number[] };
+    const LET = 'De levensduur is een indicatie. Intensief gebruik, UV-zonlicht, wind, regen en scherpe randen kunnen de levensduur verkorten.';
+    const MAAT = 'Maatwerk: levertijd circa 10-15 werkdagen. Voor maatwerk geldt geen wettelijk herroepingsrecht.';
+    const advies = (voor: string, duur: string): Advies => {
+      if (voor === 'spullen') {
+        if (duur === 'weken') return { titel: 'PE afdekzeil 75 of 100 gr/m²', leven: 'Levensduur indicatie: 0-6 maanden (75) of 0-1 jaar (100)', tekst: 'Voor tijdelijk gebruik is 75-100 gr/m² vaak voldoende. Voorkom contact met scherpe hoeken en randen.', let: LET, k1: ['Bekijk 100 gr/m²', shop.pe100], k2: ['Bekijk 75 gr/m²', shop.pe75], g: [75, 100] };
+        if (duur === 'jaren') return { titel: 'PE 250 gr/m² of PVC', leven: 'Levensduur indicatie: 2-3 jaar (250) of 5-10 jaar (PVC)', tekst: 'Voor langduriger of zwaarder gebruik is 250 gr/m² of PVC vaak een betere keuze. Kies PVC wanneer duurzaamheid, scheurvastheid en levensduur belangrijker zijn dan een zo laag mogelijke prijs.', let: LET, k1: ['Bekijk PVC-zeilen', shop.pvc], k2: ['Bekijk 250 gr/m²', shop.pe250], g: [250, 400, 600] };
+        return { titel: 'PE afdekzeil 150 of 180 gr/m²', leven: 'Levensduur indicatie: 1-2 jaar', tekst: 'Voor algemeen buitengebruik wordt meestal 150-180 gr/m² gekozen. Deze middenklasse afdekzeilen zijn allround inzetbaar.', let: LET, k1: ['Bekijk 150 gr/m²', shop.pe150], k2: ['Bekijk 180 gr/m²', shop.pe180], g: [150, 180] };
+      }
+      if (voor === 'aanhanger') {
+        if (duur === 'jaren') return { titel: 'PVC afdekzeil 600 gr/m², ook op maat', leven: 'Levensduur indicatie: 5-10 jaar', tekst: 'Een PVC afdekzeil wordt vaak gekozen voor professionele toepassingen, transport, machines, aanhangers, boten, containers, laadbakken of andere situaties waarbij een PE afdekzeil niet sterk genoeg is.', let: LET, k1: ['Bekijk PVC op maat', shop.pvcMaat], k2: ['Bekijk 600 gr/m²', shop.pvc600], g: [600] };
+        return { titel: 'Aanhangwagennet', tekst: 'Met aanhangwagennetten dekt u lading veilig af tijdens vervoer. Moet het waterdicht zijn en precies passen, kies dan een PVC-zeil op maat.', let: MAAT, k1: ['Bekijk aanhangwagennetten', shop.aanhanger], k2: ['PVC op maat', shop.pvcMaat], g: [] };
+      }
+      if (voor === 'bouw') return { titel: 'Steigernet of bouwhekzeil', tekst: 'Voor steigers en bouwhekken spelen windbelasting, zicht, privacy en bevestiging een grotere rol dan waterdichtheid.', k1: ['Bekijk steigernetten', shop.steiger], k2: ['Bekijk bouwhekzeilen', shop.bouwhekzeil], g: [] };
+      if (voor === 'tuin') return { titel: 'Schaduwdoek of fijnmazig net, op maat', tekst: 'Schaduwdoek en winddoek zijn gemaakt om licht, wind en zicht te sturen, niet om volledig waterdicht af te dekken. Voor zwembaden en vijvers zijn er fijnmazige, pvc-gecoate netten.', let: MAAT, k1: ['Bekijk schaduwdoek', shop.schaduwMaat], k2: ['Bekijk fijnmazige netten', shop.fijnmazigMaat], g: [] };
+      return { titel: 'Brandvertragend NVO-afdekzeil 150 gr/m²', tekst: 'Wij leveren 150 gr/m² vlamvertragende afdekzeilen met DIN 4102-B1 certificaat. Brandvertragende zeilen zijn niet onbrandbaar. De vereiste norm of verklaring wordt bepaald door het project, de locatie, de opdrachtgever en soms de verzekeraar.', k1: ['Bekijk brandvertragend', shop.brand], g: [150] };
+    };
+
+    const f = document.querySelector<HTMLFormElement>('[data-hulp]');
+    if (f) {
+      const $ = <T extends Element>(s: string) => document.querySelector<T>(s)!;
+      const voor = $<HTMLSelectElement>('[data-voor]'), duur = $<HTMLSelectElement>('[data-duur]');
+      const l = $<HTMLInputElement>('[data-l]'), b = $<HTMLInputElement>('[data-b]');
+      const titel = $('[data-titel]'), leven = $<HTMLElement>('[data-leven]'), tekst = $('[data-tekst]'), lt = $<HTMLElement>('[data-let]');
+      const k1 = $<HTMLAnchorElement>('[data-knop1]'), k2 = $<HTMLAnchorElement>('[data-knop2]'), wa = $<HTMLAnchorElement>('[data-wa]');
+      const schaal = $<HTMLElement>('[data-schaal]');
+      const pijl = k1.querySelector('svg')?.outerHTML ?? '';
+      const zet = () => {
+        const a = advies(voor.value, duur.value);
+        titel.textContent = a.titel;
+        leven.textContent = a.leven ?? ''; leven.hidden = !a.leven;
+        tekst.textContent = a.tekst;
+        lt.textContent = a.let ?? ''; lt.hidden = !a.let;
+        k1.innerHTML = a.k1[0] + pijl; k1.href = a.k1[1];
+        if (a.k2) { k2.textContent = a.k2[0]; k2.href = a.k2[1]; k2.hidden = false; } else k2.hidden = true;
+        schaal.toggleAttribute('data-actief', a.g.length > 0);
+        schaal.querySelectorAll<HTMLElement>('[data-g]').forEach((el) => el.querySelector('[data-streep]')!.toggleAttribute('data-aan', a.g.includes(Number(el.dataset.g))));
+        const maat = l.value.trim() && b.value.trim() ? `, ongeveer ${l.value.trim()} x ${b.value.trim()} meter` : '';
+        const msg = `Hallo, ik zoek iets voor ${voor.selectedOptions[0].text}, ${duur.selectedOptions[0].text} buiten${maat}. Jullie keuzehulp geeft: ${a.titel}. Klopt dat, en welke maat raden jullie aan?`;
+        wa.href = `${site.wa}?text=${encodeURIComponent(msg)}`;
+      };
+      [voor, duur, l, b].forEach((el) => el.addEventListener('input', zet));
+      zet();
+    }
+  </script>
+</Base>

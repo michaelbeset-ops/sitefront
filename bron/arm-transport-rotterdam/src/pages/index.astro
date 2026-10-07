@@ -1,0 +1,280 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waHoi } from '../data/site';
+
+import heroD from '../assets/hero-d.jpg';
+import heroM from '../assets/hero-m.jpg';
+import duo from '../assets/duo.jpg';
+import hal from '../assets/hal.jpg';
+import actros from '../assets/actros.jpg';
+import actrosZij from '../assets/actros-zij.jpg';
+import bus from '../assets/bus.jpg';
+
+const hd = await Promise.all([800, 1200, 1400].map((w) => getImage({ src: heroD, width: w, format: 'webp', quality: 70 })));
+const hm = await Promise.all([480, 720, 960].map((w) => getImage({ src: heroM, width: w, format: 'webp', quality: 66 })));
+const srcset = (l: { src: string; attributes: Record<string, any> }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+// Letterlijk of vrijwel letterlijk van armtransport.nl (diensten, home, over-ons).
+const vervoer = [
+  { naam: 'Spoedzendingen', zin: '24/7 op te geven. Binnen 100 km rond Rotterdam doorgaans binnen een uur opgehaald.' },
+  { naam: 'Medische artikelen', zin: 'Met spoed opgehaald en via de kortste weg bezorgd.' },
+  { naam: 'Bloemen', zin: 'Snel op de plaats van bestemming, zodat de kwaliteit blijft.' },
+  { naam: 'Pakketpost', zin: 'Pakketdiensten voor onder meer Post.nl, DHL en UPS. Nieuwe partners zijn welkom.' },
+  { naam: 'Objecten en bulk', zin: 'Van een piano of kunstcollectie tot een bulkzending van 50 ton.' },
+  { naam: 'Opslag en overslag', zin: 'In ons eigen pand. Kosten hangen af van massa en volume.' },
+];
+
+const steden: [string, number, number, 'l' | 'r'][] = [
+  ['Den Haag', -12, -18, 'l'], ['Amsterdam', 29, -50, 'r'], ['Utrecht', 44, -19, 'r'],
+  ['Breda', 21, 37, 'r'], ['Eindhoven', 69, 53, 'r'], ['Middelburg', -60, 47, 'l'],
+];
+const vandaag = new Date().getDay();
+---
+<Base title="ARM Transport B.V. | Transport en koeriersdiensten in Rotterdam" description="Van spoedzending per koerier tot bulkzending van 50 ton. ARM Transport in Rotterdam is 24/7 bereikbaar. Euro 5 en 6, track & trace, volledig verzekerd.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Hero: eigen DAF bij het laaddock -->
+    <section class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-asfalt text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hd, [800, 1200, 1400])} sizes="100vw" />
+        <img src={hm[1].src} srcset={srcset(hm, [480, 720, 960])} sizes="100vw" width="1200" height="1406" alt="Een witte DAF XF-trekker van ARM Transport met een container, bij een laaddock in de avond" fetchpriority="high" loading="eager" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[62%_40%] md:object-[38%_60%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#15171b99_0%,#15171b59_22%,#15171bc4_42%,#15171bf2_70%)] md:bg-[linear-gradient(90deg,#15171b00_0%,#15171b33_40%,#15171bd9_78%),linear-gradient(180deg,#15171b80_0%,#15171b00_25%,#15171b00_60%,#15171bcc_100%)]"></div>
+      <div class="wrap pb-28 pt-32 md:pb-24">
+        <div class="md:ml-auto md:max-w-[38rem] lg:max-w-[44rem]">
+          <p class="text-[.9375rem] font-semibold text-wit/90">Transport en koeriersdiensten in Rotterdam</p>
+          <h1 class="mt-4 text-hero italic leading-[.95]">Afspraak <br class="hidden sm:block" />is afspraak.</h1>
+          <p class="mt-6 max-w-[34rem] text-lg leading-relaxed text-wit/90 md:text-xl">Van een spoedzending per koerier tot een bulkzending van 50 ton. Dag en nacht bereikbaar, rond Rotterdam doorgaans binnen een uur opgehaald.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#aanvraag" class="knop"><span>Transport aanvragen</span></a>
+            <a href={site.telHref} class="knop knop-lijn"><span class="inline-flex items-center gap-2"><Icoon naam="tel" />Bel {site.tel}</span></a>
+          </div>
+          <p class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] font-semibold text-wit/85">
+            <span class="inline-flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Euro 5 en 6</span>
+            <span class="inline-flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Track &amp; trace</span>
+            <span class="inline-flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Volledig verzekerd</span>
+          </p>
+        </div>
+      </div>
+      <div class="strepen rijs absolute bottom-0 left-0 w-[70%] max-w-[46rem] translate-y-[3px]" aria-hidden="true"><i></i><i></i><i></i></div>
+    </section>
+
+    <!-- 2. Wagenpark -->
+    <section id="wagenpark" class="py-24 md:py-32">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Eén nummer voor koerier en vrachtwagen.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs" style="--d:.08s">ARM Transport rijdt al meer dan tien jaar vanuit Rotterdam. Spoedzendingen gaan per koerier door heel Europa, bulktransport door heel Nederland.</p>
+          <div class="rijs mt-10 text-[1rem]" style="--d:.14s">
+            <p class="spec"><span class="font-bold">Wagenpark</span><span></span><span class="text-grijs">recente bouwjaren, navigatie aan boord</span></p>
+            <p class="spec"><span class="font-bold">Emissie</span><span></span><span class="text-grijs">Euro 5 of 6</span></p>
+            <p class="spec"><span class="font-bold">Volgen</span><span></span><span class="text-grijs">track &amp; trace voor de ontvanger</span></p>
+            <p class="spec"><span class="font-bold">Schade</span><span></span><span class="text-grijs">volledig gedekt</span></p>
+            <p class="spec"><span class="font-bold">Bereikbaar</span><span></span><span class="text-grijs">24 uur, 7 dagen</span></p>
+          </div>
+        </div>
+        <figure class="rijs relative lg:col-span-7 lg:mt-16" style="--d:.1s">
+          <Image src={duo} alt="Twee witte DAF XF-trekkers van ARM Transport naast elkaar bij een laaddock" quality={70} widths={[480, 760, 1000, 1400]} sizes="(min-width: 1024px) 56vw, 100vw" class="aspect-[3/2] w-full rounded-sm object-cover" />
+          <figcaption class="mt-3 text-sm text-grijs">Discrete chauffeurs, bekend met het wegennet in binnen- en buitenland.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. Wat wij vervoeren -->
+    <section id="vervoer" class="bg-papier py-24 md:py-32">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <h2 class="rijs text-3xl">Wat wij vervoeren</h2>
+            <Image src={hal} alt="Een witte DAF XF-trekker van ARM Transport binnen in een bedrijfshal" quality={70} widths={[400, 525]} sizes="(min-width: 1024px) 28vw, 100vw" class="rijs mt-10 hidden aspect-[3/4] w-full rounded-sm object-cover lg:block" />
+          </div>
+        </div>
+        <div class="min-w-0 lg:col-span-8">
+          {vervoer.map((v, i) => (
+            <div class="dienst rijs" style={`--d:${i * 0.05}s`}>
+              <h3 class="text-2xl italic">{v.naam}</h3>
+              <p class="text-lg text-grijs">{v.zin}</p>
+            </div>
+          ))}
+          <div class="border-t border-lijn pt-8">
+            <a href="#aanvraag" class="knop knop-donker"><span class="inline-flex items-center gap-2">Vraag een offerte aan<Icoon naam="pijl" /></span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Beeldstrook -->
+    <section aria-label="Uit het wagenpark" class="bg-papier pb-24 md:pb-32">
+      <div class="grid grid-cols-2 gap-1.5 md:grid-cols-12">
+        <Image src={bus} alt="Een witte Mercedes Sprinter bestelbus van ARM Transport, langs een woonstraat geparkeerd" quality={60} widths={[480, 800, 1000]} sizes="(min-width: 768px) 50vw, 100vw" class="col-span-2 aspect-[4/3] h-full w-full object-cover md:col-span-6 md:aspect-auto md:max-h-[34rem]" />
+        <Image src={actros} alt="Een witte Mercedes Actros van ARM Transport van voren, onder een blauwe lucht" quality={68} widths={[360, 525]} sizes="(min-width: 768px) 25vw, 50vw" class="aspect-[3/4] w-full object-cover md:col-span-3 md:max-h-[34rem]" />
+        <Image src={actrosZij} alt="Een witte Mercedes Actros-trekker van ARM Transport met een container" quality={68} widths={[360, 525]} sizes="(min-width: 768px) 25vw, 50vw" class="aspect-[3/4] w-full object-cover md:col-span-3 md:max-h-[34rem]" />
+      </div>
+    </section>
+
+    <!-- 5. Werkgebied -->
+    <section id="bereik" class="relative overflow-hidden bg-asfalt py-24 text-wit md:py-32">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Binnen een uur opgehaald.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-mist" style="--d:.08s">In ongeveer 100 kilometer rond Rotterdam streven wij ernaar uw zending binnen een uur op te halen. Onvoorziene omstandigheden daargelaten.</p>
+          <dl class="rijs mt-10 grid gap-5 text-[1rem]" style="--d:.14s">
+            <div class="border-l-[3px] border-blauw-licht pl-4"><dt class="kop text-xl italic">Koerier</dt><dd class="text-mist">door heel Europa</dd></div>
+            <div class="border-l-[3px] border-blauw-licht pl-4"><dt class="kop text-xl italic">Bulktransport</dt><dd class="text-mist">door heel Nederland</dd></div>
+          </dl>
+        </div>
+        <figure class="rijs lg:col-span-7" style="--d:.1s">
+          <svg viewBox="-128 -118 256 236" class="mx-auto block w-full max-w-[38rem]" role="img" aria-labelledby="kaart-t">
+            <title id="kaart-t">Cirkel van 100 kilometer rond Rotterdam, met ter orientatie Den Haag, Amsterdam, Utrecht, Breda, Eindhoven en Middelburg</title>
+            <circle r="100" fill="#22388333" stroke="#8fa3e6" stroke-width=".8" />
+            <circle r="50" fill="none" stroke="#ffffff40" stroke-width=".5" stroke-dasharray="2 2" />
+            <path d="M-100 0H100M0-100V100" stroke="#ffffff1f" stroke-width=".4" />
+            <text x="2" y="-102" fill="#b4bac3" font-size="5.5" font-family="Barlow, sans-serif">100 km</text>
+            <text x="2" y="-52" fill="#b4bac3" font-size="5.5" font-family="Barlow, sans-serif">50 km</text>
+            {steden.map(([n, x, y, k]) => (
+              <g>
+                <circle cx={x} cy={y} r="1.8" fill="#ffffff" />
+                <text x={k === 'r' ? x + 4 : x - 4} y={y + 2} text-anchor={k === 'r' ? 'start' : 'end'} fill="#ffffff" font-size="6.5" font-weight="600" font-family="Barlow, sans-serif">{n}</text>
+              </g>
+            ))}
+            <circle r="4.5" fill="#d31118" />
+            <circle r="9" fill="none" stroke="#d31118" stroke-width=".8" class="puls" />
+            <text x="-7" y="13" text-anchor="end" fill="#ffffff" font-size="9" font-family="'Russo One', sans-serif">Rotterdam</text>
+          </svg>
+          <figcaption class="mt-4 text-center text-sm text-mist">Hemelsbreed, ter orientatie.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6. Vrachtbrief (wow) -->
+    <section id="aanvraag" class="py-24 md:py-32">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">Transport aanvragen</h2>
+          <p class="rijs mt-6 max-w-sm text-lg text-grijs" style="--d:.08s">Vul de vrachtbrief in. U krijgt een kant-en-klaar bericht dat u via WhatsApp of e-mail verstuurt. Wij reageren met een vrijblijvende offerte.</p>
+          <p class="rijs mt-6 text-[1rem]" style="--d:.12s">Spoed? Bel direct <a href={site.telHref} class="link num font-bold whitespace-nowrap">{site.tel}</a>.</p>
+        </div>
+        <form class="rijs lg:col-span-8" style="--d:.1s" data-bon novalidate onsubmit="return false">
+          <div class="overflow-hidden rounded-sm bg-papier shadow-sm">
+            <div class="flex items-center justify-between gap-4 bg-blauw px-5 py-3 text-wit">
+              <p class="kop text-lg italic">Vrachtbrief</p>
+              <p class="text-sm text-wit/85">{site.naam}</p>
+            </div>
+            <div class="grid p-4 sm:grid-cols-2 md:p-6">
+              <div class="vak"><span class="nr">1</span><label for="b-van">Ophalen in</label><input id="b-van" class="veld" name="van" autocomplete="off" placeholder="Plaats of postcode" /></div>
+              <div class="vak"><span class="nr">2</span><label for="b-naar">Afleveren in</label><input id="b-naar" class="veld" name="naar" autocomplete="off" placeholder="Plaats of postcode" /></div>
+              <div class="vak"><span class="nr">3</span><label for="b-soort">Soort zending</label>
+                <select id="b-soort" class="veld" name="soort">
+                  <option>Spoedzending (koerier)</option><option>Medische artikelen</option><option>Bloemen</option><option>Pakketpost</option><option>Object (bijvoorbeeld piano of kunst)</option><option>Bulkzending</option><option>Opslag en overslag</option>
+                </select>
+              </div>
+              <div class="vak"><span class="nr">4</span><label for="b-gew">Gewicht of volume</label><input id="b-gew" class="veld" name="gewicht" autocomplete="off" placeholder="Bijvoorbeeld 2 pallets, 800 kg" /></div>
+              <fieldset class="vak sm:col-span-2"><span class="nr">5</span><legend class="lab float-left">Wanneer</legend>
+                <div class="clear-left flex flex-wrap items-center gap-2 pt-2">
+                  <label><input type="radio" name="wanneer" value="Zo snel mogelijk (spoed)" class="peer sr-only" checked /><span class="keus">Zo snel mogelijk</span></label>
+                  <label><input type="radio" name="wanneer" value="Vandaag" class="sr-only" /><span class="keus">Vandaag</span></label>
+                  <label><input type="radio" name="wanneer" value="Op datum" class="sr-only" /><span class="keus">Op datum</span></label>
+                  <label class="sr-only" for="b-datum">Datum</label><input id="b-datum" type="date" name="datum" class="veld hidden !w-auto min-w-[11rem]" data-datum />
+                </div>
+                <p class="mt-3 text-sm text-grijs" data-spoed>Rond Rotterdam doorgaans binnen een uur opgehaald.</p>
+              </fieldset>
+              <div class="vak"><span class="nr">6</span><label for="b-naam">Naam of bedrijf</label><input id="b-naam" class="veld" name="naam" autocomplete="organization" placeholder="Optioneel" /></div>
+              <div class="vak"><span class="nr">7</span><label for="b-op">Opmerking</label><input id="b-op" class="veld" name="opmerking" autocomplete="off" placeholder="Optioneel" /></div>
+            </div>
+            <div class="border-t border-dashed border-lijn px-4 pb-6 pt-5 md:px-6">
+              <p class="text-sm font-bold text-grijs">Uw bericht</p>
+              <p class="mt-2 whitespace-pre-line rounded-sm bg-beton px-4 py-3 text-[.9375rem] leading-relaxed" data-tekst aria-live="polite"></p>
+              <div class="mt-5 flex flex-wrap gap-3">
+                <a href={waHoi} class="knop" data-wa target="_blank" rel="noopener"><span class="inline-flex items-center gap-2"><Icoon naam="wa" />Versturen via WhatsApp</span></a>
+                <a href={`mailto:${site.mail}`} class="knop knop-donker" data-mail><span>Per e-mail</span></a>
+              </div>
+              {site.voorstel && <p class="mt-4 text-xs text-grijs">Ontwerpvoorstel: dit formulier verstuurt zelf niets.</p>}
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. Contact -->
+    <section id="contact" class="bg-blauw text-wit">
+      <div class="wrap grid gap-y-12 py-24 md:py-28 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Bel, app of mail.<br />Wij komen direct in actie.</h2>
+          <p class="rijs mt-8" style="--d:.06s"><a href={site.telHref} class="kop num text-[clamp(2rem,5vw,3.5rem)] italic leading-none text-wit no-underline hover:text-blauw-licht">{site.tel}</a></p>
+          <div class="rijs mt-8 flex flex-wrap gap-3" style="--d:.1s">
+            <a href={waHoi} class="knop knop-wit"><span class="inline-flex items-center gap-2"><Icoon naam="wa" />WhatsApp</span></a>
+            <a href={`mailto:${site.mail}`} class="knop knop-lijn"><span>E-mail</span></a>
+          </div>
+          <p class="rijs mt-6 break-all text-wit/85" style="--d:.12s">{site.mail}</p>
+        </div>
+        <div class="grid gap-10 sm:grid-cols-2 lg:col-span-6">
+          <div class="rijs">
+            <p class="font-bold">Adres</p>
+            <p class="mt-2 text-wit/85">{site.straat}<br />{site.postcode} {site.plaats}</p>
+            <a href={site.maps} class="link link-licht mt-3 inline-block font-semibold" target="_blank" rel="noopener">Route plannen</a>
+            <p class="mt-8 inline-flex items-center gap-2 text-sm text-wit/85"><Icoon naam="g" class="h-4 w-4 rounded-full bg-wit p-[1px]" />{site.google.score} op Google ({site.google.aantal} reviews)</p>
+          </div>
+          <div class="rijs" style="--d:.06s">
+            <p class="font-bold">Op locatie</p>
+            <table class="mt-2 w-full text-[1rem]">
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                  <tr data-dag={d} class:list={['border-b border-lijn-licht', d === vandaag && 'font-bold']}><th scope="row" class="py-1.5 pr-4 text-left font-[inherit]">{tijden[d][0]}</th><td class="num py-1.5 text-right text-wit/85">{tijden[d][1]}</td></tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-3 text-sm text-wit/85">Opdrachten doorgeven kan 24/7.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .puls { transform-origin: center; animation: puls 2.4s var(--ease-zacht) infinite; }
+  @keyframes puls { from { transform: scale(.6); opacity: 1; } to { transform: scale(2.4); opacity: 0; } }
+</style>
+
+<script>
+  import { site } from '../data/site';
+  // Dag van vandaag markeren in de browser (de build kent alleen de builddag).
+  const d = new Date().getDay();
+  document.querySelectorAll<HTMLElement>('[data-dag]').forEach((r) => r.classList.toggle('font-bold', Number(r.dataset.dag) === d));
+
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const tekst = f.querySelector<HTMLElement>('[data-tekst]')!;
+    const wa = f.querySelector<HTMLAnchorElement>('[data-wa]')!;
+    const mail = f.querySelector<HTMLAnchorElement>('[data-mail]')!;
+    const datum = f.querySelector<HTMLInputElement>('[data-datum]')!;
+    const spoed = f.querySelector<HTMLElement>('[data-spoed]')!;
+    const bouw = () => {
+      const v = (n: string) => ((f.elements.namedItem(n) as HTMLInputElement | null)?.value || '').trim();
+      const wanneer = (f.querySelector('input[name=wanneer]:checked') as HTMLInputElement).value;
+      datum.classList.toggle('hidden', wanneer !== 'Op datum');
+      spoed.classList.toggle('hidden', wanneer !== 'Zo snel mogelijk (spoed)');
+      const datumTekst = wanneer === 'Op datum' && datum.value ? new Date(datum.value).toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+      const r = [
+        'Goedendag, ik wil graag een transport aanvragen.',
+        `Ophalen: ${v('van') || '...'}`,
+        `Afleveren: ${v('naar') || '...'}`,
+        `Zending: ${v('soort')}`,
+        v('gewicht') && `Gewicht/volume: ${v('gewicht')}`,
+        `Wanneer: ${datumTekst || wanneer}`,
+        v('opmerking') && `Opmerking: ${v('opmerking')}`,
+        v('naam') && `Naam: ${v('naam')}`,
+      ].filter(Boolean).join('\n');
+      tekst.textContent = r;
+      wa.href = `${site.wa}?text=${encodeURIComponent(r)}`;
+      mail.href = `mailto:${site.mail}?subject=${encodeURIComponent('Transportaanvraag')}&body=${encodeURIComponent(r)}`;
+    };
+    f.addEventListener('input', bouw); f.addEventListener('change', bouw); bouw();
+  }
+</script>

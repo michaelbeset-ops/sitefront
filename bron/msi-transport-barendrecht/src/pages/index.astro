@@ -1,0 +1,295 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, review, landen, waHoi } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import vloot from '../assets/vloot.jpg';
+import dfds from '../assets/dfds.jpg';
+import reefer from '../assets/reefer.jpg';
+import chassis from '../assets/chassis.jpg';
+import zuideinde from '../assets/zuideinde.jpg';
+import loods from '../assets/loods.jpg';
+import iveco from '../assets/iveco.jpg';
+
+// Containermaten letterlijk van msitransport.nl/diensten: "20FT, 30 FT, 40FT, 45FT (High Cube)".
+const maten = [['20', 'ft'], ['30', 'ft'], ['40', 'ft'], ['45', 'ft High Cube']];
+
+// Diensten van msitransport.nl/diensten, kort samengevat in hun eigen woorden.
+const diensten = [
+  ['Dry containers', 'Droge containers van 20 tot 45 ft, zorgeloos van en naar de gewenste bestemming.'],
+  ['Reefer met genset-trailer', 'Gekoelde lading in reefer containers, op een trailer met eigen Genset-generator.'],
+  ['Flat rack en open top', 'Voor lading die van de zij- of bovenkant geladen wordt.'],
+  ['Flexibags', 'Natte bulk in een 20 ft dry container met een ingebouwde flexibele bag.'],
+  ['Shunten', 'Container naar een andere terminal of depot overrijden, bijvoorbeeld als hij uit huur moet.'],
+  ['Afvalstoffen', 'Naast de NIWO-vergunning hebben we de VIHB-vergunning voor het vervoer van afvalstoffen.'],
+  ['Opslag', 'Op- en overslag van uw goederen, in afwachting van transport.'],
+  ['Gasmeting', 'Meten en ontgassen van containers. Bij goedkeuring krijgt u een officieel rapport.'],
+];
+
+const soorten = ['dry container', 'reefer (gekoeld)', 'flat rack of open top', 'flexibag', 'shunt naar andere terminal of depot', 'afvalstoffen', 'opslag', 'gasmeting'];
+const ophalen = ['haven Rotterdam', 'haven Antwerpen', 'andere terminal of depot'];
+const bestemmingen = ['Nederland', 'België', 'Luxemburg', ...landen.slice(1)];
+
+const titel = 'MSI Transport BV | Containertransport vanuit Barendrecht door heel Europa';
+const omschrijving = 'Wegvervoer van zeecontainers vanuit de havens van Rotterdam en Antwerpen: dry, reefer, flat rack, flexibags, shunten, opslag en gasmeting. 40 trucks, planning 24/7 bereikbaar.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen DAF's op een rij op de kade -->
+    <section class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-diep text-wit">
+      <Image src={hero} alt="Een lange rij witte DAF-trucks van MSI Transport met marineblauwe strepen op de kade, met een cruiseschip op de achtergrond" quality={70} widths={[640, 960, 1280, 1680, 2200]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[78%_50%] md:object-[60%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0e182033_0%,#0e182014_30%,#0e182099_55%,#0e1820e6_78%,#0e1820_100%)] lg:bg-[linear-gradient(90deg,#0e1820e0_0%,#0e1820a6_36%,#0e182033_62%,#0e182000_80%),linear-gradient(0deg,#0e1820b3_0%,#0e182000_40%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-36 md:pb-16 lg:pb-20">
+        <p class="text-sm font-semibold text-wit/85">Containertransport vanuit Barendrecht</p>
+        <h1 class="mt-5 max-w-[14ch] text-hero">Zeecontainers over de weg, door heel Europa.</h1>
+        <p class="mt-7 max-w-[33rem] text-lg text-wit/90">Vanuit de havens van Rotterdam en Antwerpen, met ruim 40 vrachtwagens. Onze planning is dag en nacht bereikbaar.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#aanvraag" class="knop knop-wit">Transport aanvragen<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />Bel de planning</a>
+        </div>
+        <ul class="mt-12 flex flex-wrap gap-x-8 gap-y-2 border-t border-lijn-licht pt-6 text-sm text-wit/85">
+          <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4" />Planning 24/7 bereikbaar</li>
+          <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4" />Euro 6</li>
+          <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4" />NIWO- en VIHB-vergunning</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. DIENSTEN: containermaten als typografie, dan wat ze rijden -->
+    <section id="diensten" class="pb-20 pt-20 md:pb-28 md:pt-28" aria-labelledby="dienst-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-12">
+          <h2 id="dienst-titel" class="rijs text-3xl lg:col-span-6">Elke container, elke maat</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Van een 20 ft dry box tot een reefer met genset. Wij rijden alle types deep-sea containers.</p>
+        </div>
+
+        <ul class="rijs mt-12 grid grid-cols-2 border-t border-inkt md:grid-cols-4" aria-label="Containermaten">
+          {maten.map(([n, l], i) => (
+            <li class:list={['border-b border-lijn py-5 md:border-b-0 md:py-7', i % 2 === 1 && 'pl-5 max-md:border-l md:pl-0', i > 0 && 'md:border-l md:pl-7']}>
+              <span class="kop num block text-maat font-bold leading-[.9] tracking-[-0.05em] text-marine">{n}</span>
+              <span class="mt-2 block text-sm font-semibold text-grijs">{l}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-12 md:gap-4">
+          <figure class="rijs col-span-2 md:col-span-7 md:row-span-2">
+            <Image src={dfds} alt="Een witte DAF van MSI Transport met een blauwe 40 ft container van DFDS op de chassis, op een zonnig containerterrein" quality={70} widths={[480, 720, 1024]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[4/3] h-full w-full rounded-md object-cover" />
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.08s">
+            <Image src={reefer} alt="Achterzijde van een trailer met witte containers, tegen de laagstaande zon" quality={68} widths={[360, 560, 760]} sizes="(min-width: 768px) 38vw, 50vw" class="aspect-[4/3] w-full rounded-md object-cover md:aspect-[16/10]" />
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.16s">
+            <Image src={chassis} alt="Een DAF van MSI Transport met een lege containerchassis op een containerterrein" quality={68} widths={[360, 560, 760]} sizes="(min-width: 768px) 38vw, 50vw" class="aspect-[4/3] w-full rounded-md object-cover object-[70%_50%] md:aspect-[16/10]" />
+          </figure>
+        </div>
+
+        <ul class="mt-16 grid gap-x-14 sm:grid-cols-2 md:mt-20" aria-label="Onze diensten">
+          {diensten.map(([naam, zin], i) => (
+            <li class="rijs grid grid-cols-[2rem_1fr] gap-x-3 border-t border-lijn py-5 md:py-6" style={`--d:${(i % 2) * 0.06}s`}>
+              <svg viewBox="0 0 24 12" class="mt-2 h-3 w-6 text-marine" fill="currentColor" aria-hidden="true"><path d="M0 9 18 0h4L4 9z" /><path d="M2 12 24 1v3L6 12z" /></svg>
+              <div>
+                <h3 class="text-xl">{naam}</h3>
+                <p class="mt-1.5 text-grijs">{zin}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. EUROPA: de landen uit hun eigen tekst, groot gezet -->
+    <section id="europa" class="bg-beton py-20 md:py-28" aria-labelledby="eu-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="min-w-0 lg:col-span-7">
+          <h2 id="eu-titel" class="rijs text-3xl">Vanuit Rotterdam en Antwerpen naar</h2>
+          <p class="rijs kop mt-8 text-[clamp(1.5rem,2.6vw+.6rem,2.75rem)] font-semibold leading-[1.25] tracking-[-0.03em] text-marine">
+            {landen.map((l, i) => <><span class="whitespace-nowrap">{l}{i < landen.length - 1 && <span class="pl-[.3em] text-grijs/50" aria-hidden="true">/</span>}</span>{' '}</>)}
+          </p>
+          <p class="rijs mt-10 max-w-lg text-lg text-grijs">Onze vrachtwagens rijden dag en nacht, 7 dagen in de week. Met meer dan 15 jaar ervaring in containertransport.</p>
+          <a href="#aanvraag" class="rijs link mt-6 inline-block font-semibold text-marine">Vraag een transport aan</a>
+        </div>
+        <figure class="rijs lg:col-span-4 lg:col-start-9">
+          <Image src={loods} alt="Een zilveren MAN-truck van MSI Transport met container in een verlichte loods, naast stapels pallets" quality={70} widths={[360, 560, 737]} sizes="(min-width: 1024px) 28vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover max-lg:aspect-[16/11] max-lg:object-[50%_55%]" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 4. WAGENPARK: de strepen van hun cabine, dan het donkere vlak -->
+    <div class="strepen rijs" style="background:var(--color-beton)" aria-hidden="true"><i></i></div>
+    <section id="wagenpark" class="bg-diep pb-20 pt-10 text-wit md:pb-28 md:pt-14" aria-labelledby="wp-titel">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-14">
+          <h2 id="wp-titel" class="rijs num text-3xl lg:col-span-6">40 trucks en 60 containerchassis</h2>
+          <p class="rijs max-w-lg self-end text-lg text-mist lg:col-span-5 lg:col-start-8">Een modern wagenpark dat aan de Euro 6-norm voldoet, onderhouden door erkende dealers.</p>
+        </div>
+        <figure class="rijs mt-12">
+          <Image src={vloot} alt="Een Volvo van MSI Transport vooraan, met daarachter een rij witte DAF's van MSI op de kade voor een cruiseschip" quality={68} widths={[640, 960, 1280, 1800]} sizes="(min-width: 1280px) 75rem, 100vw" class="aspect-[16/10] w-full rounded-md object-cover object-[50%_40%] md:aspect-[21/9] md:object-[50%_52%]" />
+        </figure>
+        <div class="mt-12 grid gap-y-10 lg:grid-cols-12 lg:gap-x-14">
+          <dl class="lg:col-span-7">
+            {[
+              ['Merken', 'DAF, Volvo, MAN, Mercedes-Benz en Iveco'],
+              ['Milieu', 'Euro 6, combi trailers en LZV'],
+              ['Chassis', 'voor alle types containers, ook bijzonder vervoer en stalling'],
+              ['Vergunningen', 'NIWO en VIHB'],
+            ].map(([k, v]) => (
+              <div class="rijs grid gap-x-6 border-t border-lijn-licht py-4 sm:grid-cols-[10rem_1fr]">
+                <dt class="kop text-sm font-semibold text-mist">{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <figure class="rijs max-sm:hidden lg:col-span-4 lg:col-start-9">
+            <Image src={iveco} alt="Een witte Iveco van MSI Transport van voren, met een Volvo en een tweede Iveco erachter" quality={68} widths={[360, 560, 760]} sizes="(min-width: 1024px) 28vw, 100vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. OVER ONS: hun pand aan het Zuideinde, hun eigen woorden, de review -->
+    <section id="over" class="py-20 md:py-28" aria-labelledby="over-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={zuideinde} alt="Het bord van MSI Transport aan het Zuideinde in Barendrecht, met trucks van MSI erachter" quality={70} widths={[480, 720, 960]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover object-[55%_50%] max-lg:aspect-[4/3]" />
+        </figure>
+        <div class="flex flex-col justify-center lg:col-span-6 lg:col-start-7">
+          <h2 id="over-titel" class="rijs text-3xl">Opdrachtgevers zijn partners</h2>
+          <p class="rijs mt-6 max-w-xl text-lg text-grijs">Een team dat meedenkt met al uw transporten, op kantoor en op de vrachtwagen. We communiceren informeel, met duidelijke afspraken, en streven naar een langdurige relatie.</p>
+          <figure class="rijs mt-12 border-l-[3px] border-marine pl-6">
+            <blockquote class="kop text-2xl font-semibold leading-snug tracking-[-0.02em]">“{review.tekst}”</blockquote>
+            <figcaption class="mt-3 flex flex-wrap items-center gap-x-2 text-sm text-grijs">
+              <span>{review.naam} op Google</span><span aria-hidden="true">·</span>
+              <span class="inline-flex items-center gap-1.5"><Icoon naam="g" class="h-3.5 w-3.5" />{site.google.score} uit {site.google.aantal} reviews</span>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. AANVRAAG: een vrachtbrief die zichzelf als bericht schrijft -->
+    <section id="aanvraag" class="bg-beton py-16 md:py-24" aria-labelledby="aanv-titel">
+      <div class="wrap">
+        <form class="rijs grid grid-cols-1 overflow-hidden rounded-md bg-wit shadow-sm lg:grid-cols-12" data-brief>
+          <div class="min-w-0 p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <h2 id="aanv-titel" class="text-3xl">Transport aanvragen</h2>
+            <p class="mt-4 max-w-md text-grijs">Vul in wat u weet. De planning reageert met een prijs en een tijd.</p>
+
+            <div class="mt-9 grid grid-cols-1 gap-x-8 gap-y-7 sm:grid-cols-2">
+              <label class="block">
+                <span class="label">Soort transport</span>
+                <select class="veld" name="soort" data-soort>{soorten.map((s) => <option value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}</select>
+              </label>
+              <label class="block">
+                <span class="label">Containermaat</span>
+                <select class="veld" name="maat">
+                  <option value="20 ft">20 ft</option><option value="30 ft">30 ft</option><option value="40 ft" selected>40 ft</option><option value="45 ft High Cube">45 ft High Cube</option><option value="">Weet ik nog niet</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="label">Ophalen</span>
+                <select class="veld" name="ophalen">{ophalen.map((o) => <option value={o}>{o[0].toUpperCase() + o.slice(1)}</option>)}</select>
+              </label>
+              <label class="block" data-naar>
+                <span class="label">Bestemming</span>
+                <select class="veld" name="land">{bestemmingen.map((b) => <option value={b}>{b}</option>)}</select>
+              </label>
+              <label class="block" data-naar>
+                <span class="label">Plaats <span class="font-normal">(optioneel)</span></span>
+                <input class="veld" type="text" name="plaats" autocomplete="off" placeholder="bijv. Duisburg" />
+              </label>
+              <label class="block">
+                <span class="label">Gewenste datum</span>
+                <input class="veld num" type="date" name="datum" />
+              </label>
+              <label class="block sm:col-span-2">
+                <span class="label">Containernummer of referentie <span class="font-normal">(optioneel)</span></span>
+                <input class="veld num" type="text" name="ref" autocomplete="off" />
+              </label>
+            </div>
+          </div>
+
+          <div class="flex flex-col bg-diep p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <p class="text-sm font-semibold text-mist">Uw bericht aan de planning</p>
+            <p class="mt-3 flex-1 rounded-md bg-marine p-5 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <a href={site.wa} class="knop knop-wit mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.planning}`} class="knop knop-lijn mt-3 w-full" data-mail><Icoon naam="mail" />Of mail naar de planning</a>
+            <p class="mt-5 text-sm text-mist">Spoed? Bel <a href={site.telHref} class="link num text-wit">{site.tel}</a>, de planning is 24/7 bereikbaar.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="py-20 md:py-24" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">Zuideinde 2, Barendrecht</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Voor een offerte, een spoedrit of een vraag over uw container.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.telHref} class="knop num"><Icoon naam="tel" />{site.tel}</a>
+            <a href={site.maps} class="knop knop-lijn !text-marine ![box-shadow:inset_0_0_0_1.5px_var(--color-marine)] hover:!bg-marine hover:!text-wit"><Icoon naam="pin" />Route plannen</a>
+          </div>
+        </div>
+        <dl class="text-[.9375rem] lg:col-span-5 lg:col-start-8">
+          {[
+            ['Planning', '24/7 bereikbaar', null],
+            ['Telefoon en WhatsApp', site.tel, site.telHref],
+            ['Algemeen', site.mail, `mailto:${site.mail}`],
+            ['Planning', site.planning, `mailto:${site.planning}`],
+            ['Financieel', site.financieel, `mailto:${site.financieel}`],
+            ['Adres', `${site.straat}, ${site.postcode} ${site.plaats}`, site.maps],
+          ].map(([k, v, h]) => (
+            <div class="rijs grid gap-x-6 border-t border-lijn py-4 sm:grid-cols-[11rem_1fr]">
+              <dt class="font-semibold">{k}</dt>
+              <dd class="break-words text-grijs">{h ? <a href={h} class="link num text-inkt">{v}</a> : v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-brief]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const mail = $<HTMLAnchorElement>('[data-mail]');
+    const waBasis = wa.href.split('?')[0];
+    const mailBasis = mail.href.split('?')[0];
+    const zonderRit = ['opslag', 'gasmeting'];
+    const zet = () => {
+      const d = new FormData(f);
+      const g = (k: string) => String(d.get(k) ?? '').trim();
+      const soort = g('soort'), maat = g('maat');
+      const rit = !zonderRit.includes(soort);
+      f.querySelectorAll<HTMLElement>('[data-naar]').forEach((el) => el.classList.toggle('hidden', !rit));
+      const datum = g('datum') ? new Date(g('datum') + 'T12:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+      const regels = [
+        `Goedendag, ik wil graag een aanvraag doen voor ${soort}${maat ? `, ${maat}` : ''}.`,
+        `${rit ? 'Ophalen' : 'Locatie'}: ${g('ophalen')}.`,
+        rit ? `Bestemming: ${g('plaats') ? `${g('plaats')}, ` : ''}${g('land')}.` : '',
+        datum ? `Gewenste datum: ${datum}.` : '',
+        g('ref') ? `Referentie: ${g('ref')}.` : '',
+        'Kunnen jullie een prijs en planning doorgeven?',
+      ].filter(Boolean);
+      const tekst = regels.join('\n');
+      $('[data-bericht]').innerText = tekst;
+      wa.href = `${waBasis}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `${mailBasis}?subject=${encodeURIComponent('Transportaanvraag')}&body=${encodeURIComponent(tekst)}`;
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>

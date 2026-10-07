@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@import "@fontsource/archivo-black/400.css";
+@import "@fontsource-variable/golos-text/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Kleuren uit hun logo (drie lagen blauw). De zeilkleuren komen alleen terug in de gevouwen rand. */
+  --color-zeil: #006aa3;        /* logo, middelste laag; wit erop 5,6:1 */
+  --color-zeil-2: #005487;      /* logo, onderste laag, hover */
+  --color-laag: #2aabe3;        /* logo, bovenste laag; alleen op nacht (6,1:1) */
+  --color-nacht: #07324b;
+  --color-nacht-2: #0b405f;
+  --color-inkt: #0e1a22;
+  --color-grijs: #4d5b64;       /* bijtekst, 6,9:1 op papier */
+  --color-mist: #b9c8d1;        /* bijtekst op nacht, 9:1 */
+  --color-papier: #f2f5f7;
+  --color-papier-2: #e4eaee;
+  --color-wit: #ffffff;
+  --color-lijn: #0e1a2224;
+  --color-lijn-licht: #ffffff2e;
+
+  /* De stapel van boven naar onder, zoals op hun eigen foto. */
+  --color-z-oranje: #f26a1b;
+  --color-z-groen: #31502c;
+  --color-z-zwart: #1b1c1e;
+  --color-z-blauw: #1747d6;
+  --color-z-wit: #f4f4f2;
+  --color-z-grijs: #a5a8ab;
+
+  --font-kop: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Golos Text Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: clamp(1.3rem, .7vw + 1.05rem, 1.7rem);
+  --text-3xl: clamp(1.9rem, 2.4vw + 1rem, 3.4rem);
+  --text-hero: clamp(2.6rem, 5.4vw + .5rem, 6rem);
+
+  --radius-sm: .1875rem;
+  --radius-md: .375rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #0e1a2214, 0 6px 18px #0e1a2210;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 410;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.02; letter-spacing: -0.025em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-zeil); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-laag); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); letter-spacing: -0.02em; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-weight: 650; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-zeil); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-zeil-2); transform: translateY(-2px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-wit { background: var(--color-wit); color: var(--color-nacht); }
+  .knop-wit:hover { background: var(--color-papier-2); }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffff9c; }
+  .knop-lijn:hover { background: #ffffff14; box-shadow: inset 0 0 0 1.5px #ffffff; }
+  .knop-inkt { background: transparent; color: var(--color-inkt); box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .knop-inkt:hover { background: var(--color-inkt); color: var(--color-wit); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-zeil); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-zeil); }
+  .link-licht { text-decoration-color: var(--color-laag); }
+  .link-licht:hover { color: var(--color-laag); }
+
+  /* Het gespannen zeil: HDPE-bandjesweefsel als heel fijne structuur. */
+  .weefsel {
+    background-color: var(--color-nacht);
+    background-image:
+      repeating-linear-gradient(0deg, #ffffff05 0 3px, transparent 3px 6px),
+      repeating-linear-gradient(90deg, #0000000f 0 3px, transparent 3px 6px),
+      radial-gradient(120% 90% at 78% 40%, #0a5a85 0%, transparent 62%);
+  }
+
+  /* Aluminium zeiloog. */
+  .oog { position: absolute; width: 1.75rem; height: 1.75rem; border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 32%, #ffffffd9 0 6%, transparent 18%),
+      radial-gradient(circle, var(--oog-gat, #041f30) 0 30%, #59646b 32%, #f1f4f5 40%, #aeb7bc 52%, #f7f9fa 63%, #7a858b 72%, #3b454b 75%, transparent 77%);
+    filter: drop-shadow(0 2px 2px #0008); }
+
+  /* De gevouwen rand: zes banen in de volgorde van hun stapel. */
+  .rand { height: 1.75rem; background: linear-gradient(180deg,
+    var(--color-z-oranje) 0 16.66%, var(--color-z-groen) 16.66% 33.33%, var(--color-z-zwart) 33.33% 50%,
+    var(--color-z-blauw) 50% 66.66%, var(--color-z-wit) 66.66% 83.33%, var(--color-z-grijs) 83.33% 100%); }
+  .rand-dun { height: .9rem; }
+
+  /* Productfoto's op wit: het wit valt weg in het papier. */
+  .opwit { mix-blend-mode: multiply; }
+
+  /* Dikteschaal */
+  .schaal-streep { transition: background-color .35s var(--ease-zacht), color .35s, opacity .35s; }
+  .schaal-streep { background: #c9d4db !important; }
+  .schaal a:hover .schaal-streep { background: var(--color-zeil-2) !important; }
+  .schaal[data-actief] .schaal-streep:not([data-aan]) { opacity: .6; }
+  .schaal-streep[data-aan] { background: var(--color-zeil) !important; opacity: 1; }
+
+  .veld { display: inline-block; field-sizing: content; appearance: none; -webkit-appearance: none; font: inherit; font-weight: 650; color: var(--color-zeil); background: transparent; border: 0; border-bottom: 2px solid var(--color-zeil); border-radius: 0; padding: .1rem 1.6rem .1rem 0; min-height: 2.75rem; max-width: 100%; cursor: pointer; transition: border-color .25s, color .25s;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23006aa3' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1rem center; background-size: 1.05rem; }
+  .veld:focus { outline: none; border-color: var(--color-inkt); color: var(--color-inkt); }
+  .veld-maat { width: 4.2rem; padding-right: 0; background-image: none; text-align: center; cursor: text; }
+  .veld-maat::placeholder { color: #006aa380; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
