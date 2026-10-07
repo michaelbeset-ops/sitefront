@@ -1,0 +1,28 @@
+---
+// Lijntekening naar de ingelegde windroos in hun eigen salontafel (fotoarchief). Naald noord in logo-magenta.
+interface Props { class?: string; naald?: string; dik?: number }
+const { class: cls = '', naald = 'var(--color-roze)', dik = 1 } = Astro.props;
+const punt = (hoek: number, lang: number, breed: number) => {
+  const r = (a: number) => ((a - 90) * Math.PI) / 180;
+  const p = (a: number, l: number) => `${(50 + Math.cos(r(a)) * l).toFixed(2)},${(50 + Math.sin(r(a)) * l).toFixed(2)}`;
+  return `M50,50 L${p(hoek - breed, lang * 0.22)} L${p(hoek, lang)} L${p(hoek + breed, lang * 0.22)} Z`;
+};
+const hoofd = [0, 90, 180, 270];
+const schuin = [45, 135, 225, 315];
+const klein = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5];
+---
+<svg class={cls} viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width={0.45 * dik} stroke-linejoin="round" aria-hidden="true">
+  <circle cx="50" cy="50" r="47" />
+  <circle cx="50" cy="50" r="44.5" stroke-width={0.25 * dik} />
+  {Array.from({ length: 32 }, (_, i) => {
+    const a = ((i * 11.25 - 90) * Math.PI) / 180;
+    const l = i % 2 ? 1.6 : 2.6;
+    return <line x1={(50 + Math.cos(a) * 44.5).toFixed(2)} y1={(50 + Math.sin(a) * 44.5).toFixed(2)} x2={(50 + Math.cos(a) * (44.5 - l)).toFixed(2)} y2={(50 + Math.sin(a) * (44.5 - l)).toFixed(2)} stroke-width={0.25 * dik} />;
+  })}
+  <circle cx="50" cy="50" r="17" stroke-width={0.25 * dik} />
+  {klein.map((h) => <path d={punt(h, 22, 6)} />)}
+  {schuin.map((h) => <path d={punt(h, 32, 7)} />)}
+  {hoofd.slice(1).map((h) => <path d={punt(h, 41, 8)} />)}
+  <path d={punt(0, 41, 8)} fill={naald} stroke={naald} />
+  <circle cx="50" cy="50" r="1.6" fill="currentColor" />
+</svg>

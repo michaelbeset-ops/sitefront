@@ -1,0 +1,10 @@
+import { chromium } from 'playwright'; import fs from 'node:fs';
+import lighthouse from 'file:///C:/Users/Micha/AppData/Local/npm-cache/_npx/1722e863ebfd623b/node_modules/lighthouse/core/index.js';
+const url = process.argv[2] || 'http://localhost:'+(process.env.PORT||4441)+'/sitefront/exclusieve-horlogemakers-den-bosch/'; const out = process.argv[3] || 'shots/lh.json';
+const b = await chromium.launch({ args: ['--remote-debugging-port=9441'] });
+const r = await lighthouse(url, { port: 9441, output: 'json', logLevel: 'error' });
+fs.writeFileSync(out, r.report);
+console.log(Object.entries(r.lhr.categories).map(([k,v])=>k+':'+Math.round(v.score*100)).join(' '));
+for (const id of ['first-contentful-paint','largest-contentful-paint','total-blocking-time','cumulative-layout-shift','speed-index','total-byte-weight','dom-size']) console.log(id, r.lhr.audits[id]?.displayValue);
+for (const a of Object.values(r.lhr.audits)) if (a.score!==null && a.score<0.9 && !['informative','notApplicable','manual'].includes(a.scoreDisplayMode)) console.log('LOW', a.id, a.score, a.displayValue||'');
+await b.close();

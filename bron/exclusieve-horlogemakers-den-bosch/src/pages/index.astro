@@ -1,0 +1,308 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, waMet, waHoi } from '../data/site';
+
+import loep from '../assets/atelier-loep.jpg';
+import werkbank from '../assets/werkbank.jpg';
+import pincet from '../assets/pincet.jpg';
+import zakhorloge from '../assets/zakhorloge.jpg';
+
+// Werkwijze: hun eigen vijf stappen (pagina "Onze werkwijze"), ingekort.
+const stappen = [
+  ['I', 'Inspectie', 'Uurwerk, kast, wijzerplaat, kroon en pakkingen worden beoordeeld.'],
+  ['II', 'Prijsopgave', 'U krijgt uitleg en een duidelijke prijs. Pas na uw akkoord beginnen wij.'],
+  ['III', 'Het werk', 'Reparatie, revisie of restauratie, met originele onderdelen.'],
+  ['IV', 'Eindcontrole', 'Nauwkeurigheid, functies en waar nodig de waterdichtheid.'],
+  ['V', 'Terug naar u', 'Ophalen in het atelier op afspraak, of verzekerd retour.'],
+];
+
+// Diensten uit hun eigen opsomming (pagina "Over ons"). Vakken van het onderdelenbakje: twee groot, vier klein.
+const vakken = [
+  ['Onderhoud en revisie', 'Periodiek onderhoud of een volledige revisie van het uurwerk, ook van chronografen en complicaties.', 'md:col-span-3'],
+  ['Polijsten en laserherstel', 'Polijsten en satineren met oog voor kastvorm, randen en proporties. Laserherstel waar het metaal het toelaat.', 'md:col-span-3'],
+  ['Reparatie', 'Loopt voor of achter, staat stil, kroon of glas beschadigd.', 'md:col-span-2'],
+  ['Vocht en water', 'Herstel na vochtschade en controle van de waterbestendigheid.', 'md:col-span-2'],
+  ['Batterij en quartz', 'Batterij vervangen en quartzuurwerken repareren.', 'md:col-span-2'],
+];
+
+const merken = ['Rolex', 'Omega', 'Breitling', 'Cartier', 'IWC', 'TAG Heuer', 'Audemars Piguet', 'Patek Philippe'];
+const klachten = [
+  'toe aan onderhoud',
+  'loopt voor of achter',
+  'staat stil',
+  'vocht of water erin',
+  'glas beschadigd',
+  'kast en band polijsten',
+  'vintage, restauratie gewenst',
+];
+
+const heroMobiel = await getImage({ src: werkbank, width: 800, format: 'webp', quality: 72 });
+const [ties, roel, harry, rhonda, mirjam, sander] = reviews;
+const titel = "Exclusieve Horlogemakers | Onafhankelijk horlogeatelier in 's-Hertogenbosch";
+const omschrijving = "Onderhoud, reparatie, restauratie en polijsten van exclusieve horloges. Onafhankelijk atelier in 's-Hertogenbosch, uitsluitend op afspraak of verzekerd per post.";
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun eigen foto, horlogemaker met loep aan de groene werkbank -->
+    <section class:list={["relative isolate flex flex-col overflow-hidden bg-nacht", site.voorstel ? "min-h-[calc(100svh-3.3rem)] md:min-h-[calc(100svh-2.2rem)]" : "min-h-[100svh]"]}>
+      <Kop />
+      <div class="absolute inset-0 -z-10">
+        <picture class="block h-full w-full">
+          <source media="(max-width: 767px)" srcset={heroMobiel.src} />
+          <Image src={loep} alt="Horlogemaker met loep en vingerlingen aan een geopend uurwerk op het groene werkbanklaken, naast een bakje met onderdelen" quality={74} widths={[960, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[60%_50%] lg:object-[60%_45%]" />
+        </picture>
+        <div class="absolute inset-0 bg-[linear-gradient(180deg,#0c0e0dd9_0%,#0c0e0d4d_22%,#0c0e0d80_45%,#0c0e0de6_72%,#0c0e0d_100%)] lg:bg-[linear-gradient(180deg,#0c0e0dbf_0%,#0c0e0d00_24%),linear-gradient(90deg,#0c0e0df2_0%,#0c0e0dcc_28%,#0c0e0d33_58%,#0c0e0d00_80%),linear-gradient(0deg,#0c0e0d_0%,#0c0e0d00_22%)]"></div>
+      </div>
+      <div class="wrap mt-auto pb-[5.5rem] md:pb-20 lg:my-auto lg:pb-0 lg:pt-20">
+        <p class="label text-salie"><span class="max-sm:hidden">Horlogeatelier · </span>'s-Hertogenbosch</p>
+        <h1 class="mt-6 max-w-[11ch] text-hero leading-[.95]">Eerst de loep, dan het werk</h1>
+        <p class="mt-7 max-w-md text-lg text-ivoor/90 [@media(max-height:700px)_and_(max-width:767px)]:hidden">Onafhankelijk atelier voor onderhoud, reparatie, restauratie en polijsten van exclusieve horloges. Uitsluitend op afspraak, of verzekerd per post.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href={waHoi} class="knop knop-vol"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+          <a href="#aanmelden" class="knop knop-stil max-sm:hidden">Horloge aanmelden</a>
+        </div>
+        <p class="mt-10 hidden items-center gap-3 text-xs text-zacht md:flex"><span class="h-px w-8 bg-salie"></span>In de horlogerie sinds 1986</p>
+      </div>
+    </section>
+
+    <!-- 2. ATELIER + WERKWIJZE -->
+    <section id="atelier" class="py-20 md:py-32">
+      <div class="wrap grid items-start gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-7">
+          <Image src={werkbank} alt="Gehandschoende handen met pincet boven een geopend uurwerk in een werkhouder, links een wit bakje met losse onderdelen" quality={74} widths={[640, 960, 1200]} sizes="(min-width: 1024px) 56vw, 100vw" class="aspect-[5/4] w-full rounded-sm object-cover" />
+        </figure>
+        <div class="lg:col-span-5 lg:pt-10">
+          <h2 class="rijs text-3xl">Sinds 1986 in de horlogerie</h2>
+          <p class="rijs mt-8 text-zacht">Alexander van de Griend begon in 1986 als zelfstandig ondernemer in de horlogerie. Sinds 2015 is Exclusieve Horlogemakers een onafhankelijk atelier, bij Slot Haverleij in 's-Hertogenbosch.</p>
+          <p class="rijs mt-5 text-zacht">Wij zijn niet verbonden aan en niet geautoriseerd door de horlogemerken. Waar specialistische kennis nodig is, werken wij samen met zorgvuldig gekozen partners.</p>
+          <ul class="rijs mt-10 border-t border-lijn text-sm">
+            {['Vrijblijvende inspectie en prijsopgave', 'Originele onderdelen', '12 maanden garantie op uitgevoerd werk', 'Opslag op een extern beveiligde locatie'].map((t) => (
+              <li class="flex items-center gap-4 border-b border-lijn py-3.5"><Icoon naam="ster4" class="h-2.5 w-2.5 flex-none text-salie" />{t}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap mt-24 grid gap-y-12 md:mt-32 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">Hoe wij werken</h2>
+          <figure class="rijs mt-10 hidden lg:block">
+            <Image src={pincet} alt="Zwart-witfoto: pincet en vingers boven een open uurwerk" quality={72} widths={[480, 640]} sizes="28vw" class="aspect-[3/2] w-full rounded-sm object-cover grayscale" />
+          </figure>
+        </div>
+        <ol class="lg:col-span-7 lg:col-start-6">
+          {stappen.map(([n, kop, tekst], i) => (
+            <li class="rijs grid grid-cols-[3.5rem_1fr] items-baseline gap-x-4 border-t border-lijn py-7 last:border-b md:grid-cols-[5rem_12rem_1fr] md:gap-x-8" style={`--d:${i * 0.05}s`}>
+              <span class="font-kop text-2xl text-salie" aria-hidden="true">{n}</span>
+              <h3 class="font-kop text-2xl">{kop}</h3>
+              <p class="col-start-2 mt-2 text-zacht md:col-start-3 md:mt-0">{tekst}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. DIENSTEN als het witte onderdelenbakje op het groene werkbanklaken -->
+    <section id="diensten" class="bg-laken py-20 md:py-28">
+      <div class="wrap">
+        <div class="grid items-end gap-y-6 md:grid-cols-12 md:gap-x-10">
+          <h2 class="rijs text-3xl md:col-span-6">Wat er op de werkbank komt</h2>
+          <p class="rijs text-zacht md:col-span-5 md:col-start-8">Moderne en vintage horloges. Niet ieder horloge heeft dezelfde behandeling nodig; het werk wordt afgestemd op model, kaliber en staat.</p>
+        </div>
+        <div class="rijs bakje mt-14 md:grid-cols-6">
+          {vakken.map(([kop, tekst, span]) => (
+            <div class={`vak ${span}`}>
+              <h3 class="font-kop text-2xl leading-tight">{kop}</h3>
+              <p class="mt-3 max-w-md text-sm text-grijs">{tekst}</p>
+            </div>
+          ))}
+        </div>
+        <div class="mt-12 grid gap-y-6 md:grid-cols-12 md:gap-x-10">
+          <p class="rijs text-sm text-zacht md:col-span-7">Wij werken onder andere aan {merken.slice(0, -1).join(', ')} en {merken.at(-1)}. Als onafhankelijk atelier, niet namens de merken.</p>
+          <p class="rijs md:col-span-4 md:col-start-9 md:text-right"><a href={site.resultaten} class="link text-sm">Meer dan 2000 resultaten bekijken</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VINTAGE: zakhorloge op papier -->
+    <section id="vintage" class="bg-papier text-inkt">
+      <div class="wrap grid items-center gap-y-12 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={zakhorloge} alt="Gesloten gouden zakhorloge met gegraveerd deksel, guilloche-achtig patroon en kleine sterren" quality={74} widths={[480, 720, 960]} sizes="(min-width: 1024px) 40vw, 90vw" class="mx-auto aspect-square w-full max-w-md object-contain mix-blend-multiply" />
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h2 class="rijs text-3xl">Originaliteit boven glans</h2>
+          <p class="rijs mt-8 max-w-lg text-grijs">Bij een vintage horloge of zakhorloge kan originaliteit minstens zo belangrijk zijn als een perfecte uitstraling. Wij kijken eerst naar wijzerplaat, wijzers, kastvorm en patina, en behouden waar het kan de originele onderdelen.</p>
+          <div class="mt-12 space-y-9 border-t border-[#16201b26] pt-9">
+            {[mirjam, harry].map((q, i) => (
+              <blockquote class="rijs max-w-lg" style={`--d:${i * 0.1}s`}>
+                <p class="font-kop text-xl leading-snug md:text-2xl">“{q.tekst}”</p>
+                <footer class="mt-3 text-xs tracking-[.06em] text-grijs">{q.naam} · Google</footer>
+              </blockquote>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. OPSTUREN: hun verzendproces, met het adres als verzendlabel -->
+    <section id="opsturen" class="py-20 md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 class="rijs max-w-[14ch] text-3xl">Niet in de buurt? Stuur uw horloge op.</h2>
+          <ol class="mt-12 space-y-8">
+            {[
+              ['Download het verzendformulier', 'Vul naam, adres, telefoon, e-mail, merk, model en de klacht in.'],
+              ['Verpak het horloge stevig', 'Zo dat het niet kan verschuiven en kast en band niet schuren.'],
+              ['Verstuur verzekerd, met Track & Trace', 'Na ontvangst krijgt u bericht, daarna diagnose, prijsopgave en een indicatie van de doorlooptijd.'],
+            ].map(([kop, tekst], i) => (
+              <li class="rijs grid grid-cols-[2.25rem_1fr] gap-x-4" style={`--d:${i * 0.06}s`}>
+                <span class="num pt-1 text-sm text-salie">{i + 1}</span>
+                <div>
+                  <h3 class="font-kop text-2xl">{kop}</h3>
+                  <p class="mt-2 text-zacht">{tekst}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <div class="rijs mt-12 flex flex-wrap items-center gap-x-6 gap-y-4">
+            <a href={site.formulier} class="knop knop-vol"><Icoon naam="pijl" class="rotate-90" />Verzendformulier (pdf)</a>
+            <a href={waMet('Goedendag, ik wil mijn horloge opsturen. Welke verzendmethode raadt u aan?')} class="link text-sm">Eerst overleggen via WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="rijs lg:col-span-5 lg:col-start-8 lg:pt-4">
+          <div class="relative rounded-sm bg-papier p-7 text-inkt md:p-10" style="background-image: repeating-linear-gradient(-45deg, #9fb6a8 0 10px, transparent 10px 20px); background-size: 100% 8px; background-repeat: no-repeat;">
+            <p class="text-xs uppercase tracking-[.2em] text-grijs">Verzenden naar</p>
+            <address class="mt-6 font-kop text-2xl not-italic leading-snug md:text-[1.875rem]">
+              Exclusieve Horlogemakers<br />
+              t.a.v. Alexander van de Griend<br />
+              {site.straat}<br />
+              <span class="num">{site.postcode}</span> {site.plaats}<br />
+              Nederland
+            </address>
+            <p class="mt-8 border-t border-[#16201b26] pt-5 text-sm text-grijs">Uw horloge is niet automatisch verzekerd. Stem bij twijfel vooraf de verzendmethode met ons af.</p>
+          </div>
+          <p class="mt-6 text-sm text-zacht">Klanten uit heel Nederland en België sturen hun horloge op. Ophalen kan ook, op afspraak in het atelier.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ERVARINGEN: letterlijk van Google -->
+    <section id="reviews" class="border-t border-lijn bg-nacht-2 py-20 md:py-28">
+      <div class="wrap">
+        <div class="grid gap-y-10 lg:grid-cols-12 lg:gap-x-14">
+          <blockquote class="rijs lg:col-span-8">
+            <p class="font-kop text-[clamp(1.625rem,2vw+1rem,2.75rem)] leading-[1.18]">“{ties.tekst}”</p>
+            <footer class="mt-6 label">{ties.naam} · Google</footer>
+          </blockquote>
+          <div class="rijs lg:col-span-3 lg:col-start-10 lg:pt-3">
+            <a href={site.maps} class="inline-flex items-center gap-3 text-xs text-zacht no-underline hover:text-salie"><Icoon naam="g" class="h-4 w-4" /><span><span class="num">{site.google.score}</span> op Google · <span class="num">{site.google.aantal}</span> reviews</span></a>
+          </div>
+        </div>
+        <div class="mt-16 grid gap-y-10 border-t border-lijn pt-12 md:grid-cols-3 md:gap-x-10">
+          {[roel, rhonda, sander].map((q, i) => (
+            <blockquote class="rijs" style={`--d:${i * 0.08}s`}>
+              <p class="leading-relaxed text-ivoor/90">“{q.tekst}”</p>
+              <footer class="mt-4 label">{q.naam} · Google</footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. AANMELDEN (wow) + CONTACT -->
+    <section id="aanmelden" class="py-20 md:py-32">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+        <div class="min-w-0 lg:col-span-7">
+          <h2 class="rijs text-3xl">Uw horloge aanmelden</h2>
+          <p class="rijs mt-6 max-w-lg text-zacht">Vul de zin aan. WhatsApp opent met het bericht klaar; foto's van het horloge kunt u daar meesturen voor een eerste indicatie.</p>
+
+          <form class="rijs mt-10 rounded-sm bg-papier p-6 text-inkt md:p-10" data-wow>
+            <p class="font-kop text-[1.4rem] leading-[1.95] md:text-[1.875rem]">
+              Goedendag, ik heb een{' '}
+              <span class="whitespace-nowrap"><span class="veld"><label for="merk" class="sr-only">Merk</label>
+                <select id="merk" name="merk">
+                  {merken.map((m) => <option>{m}</option>)}
+                  <option value="horloge van een ander merk">ander merk</option>
+                </select></span>, model</span>{' '}
+              <span class="whitespace-nowrap"><span class="veld veld-tekst"><label for="model" class="sr-only">Model (mag leeg)</label><input id="model" name="model" maxlength="40" autocomplete="off" placeholder="bijv. Speedmaster" /></span>.</span>{' '}
+              Wat speelt er:{' '}
+              <span class="whitespace-nowrap"><span class="veld"><label for="klacht" class="sr-only">Wat speelt er</label>
+                <select id="klacht" name="klacht">{klachten.map((k) => <option>{k}</option>)}</select></span>.</span>{' '}
+              Ik wil het graag{' '}
+              <span class="whitespace-nowrap"><span class="veld"><label for="hoe" class="sr-only">Langsbrengen of opsturen</label>
+                <select id="hoe" name="hoe"><option value="langsbrengen, op afspraak">langsbrengen</option><option value="opsturen">opsturen</option></select></span>.</span>
+            </p>
+            <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-[#16201b26] pt-7">
+              <a href={waHoi} class="knop knop-inkt" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+              <span class="text-xs text-grijs">Er wordt pas iets verstuurd als u dat in WhatsApp zelf doet.</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="lg:col-span-4 lg:col-start-9 lg:pt-2">
+          <h2 class="rijs text-3xl">Bezoek op afspraak</h2>
+          <address class="rijs mt-8 not-italic text-zacht">{site.straat}<br />{site.postcode} {site.plaats}</address>
+          <ul class="rijs mt-8 space-y-2 text-sm">
+            <li><a href={site.telHref} class="link num">{site.tel}</a></li>
+            <li><a href={waHoi} class="link">WhatsApp <span class="num">{site.waTel}</span></a></li>
+            <li><a href={`mailto:${site.mail}`} class="link">info@exclusieve<wbr />horlogemakers.nl</a></li>
+          </ul>
+          <table class="rijs mt-10 w-full text-sm">
+            <caption class="label mb-3 text-left">Openingstijden, op afspraak</caption>
+            <tbody>
+              {tijden.map(([d, t]) => (
+                <tr class="border-b border-lijn">
+                  <th scope="row" class="py-3 text-left font-normal">{d}</th>
+                  <td class="num py-3 text-right text-zacht">{t}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <a href={site.route} class="rijs knop mt-10"><Icoon naam="pin" />Route naar het atelier</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style>
+  .veld { position: relative; display: inline-block; max-width: 100%; vertical-align: baseline; }
+  .veld select, .veld input { font: inherit; color: #2d5443; background: transparent; border: 0; border-bottom: 1px solid #2d544380; border-radius: 0; padding: 0 1.4rem 0 .1rem; outline: none; max-width: 100%; appearance: none; cursor: pointer; line-height: 1.3; }
+  .veld select { field-sizing: content; }
+  .veld-tekst input { padding-right: .1rem; width: 9.5ch; cursor: text; }
+  .veld-tekst input::placeholder { color: #2d544380; }
+  .veld select:focus-visible, .veld input:focus-visible { border-bottom-color: #2d5443; outline: none; background: #9fb6a826; }
+  .veld:not(.veld-tekst)::after { content: ""; position: absolute; right: .25rem; top: 50%; width: .45rem; height: .45rem; border-right: 1px solid #2d5443; border-bottom: 1px solid #2d5443; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+  .veld option { color: #161a18; background: #f3f0e9; }
+</style>
+
+<script>
+  // De zin vult het WhatsApp-bericht. Alleen keuzes die zij zelf noemen; geen prijzen of levertijden.
+  const f = document.querySelector<HTMLFormElement>('[data-wow]');
+  if (f) {
+    const v = (id: string) => (f.querySelector<HTMLInputElement | HTMLSelectElement>(`#${id}`)!.value || '').trim();
+    const knop = f.querySelector<HTMLAnchorElement>('[data-wa]')!;
+    const breedte = () => { const i = f.querySelector<HTMLInputElement>('#model')!; i.style.width = `${Math.max(9.5, (i.value || i.placeholder).length + 1)}ch`; };
+    const zet = () => {
+      const merk = v('merk');
+      const model = v('model');
+      let m = `Goedendag Exclusieve Horlogemakers, ik heb een ${merk}`;
+      if (model) m += `, model ${model}`;
+      m += `. Wat speelt er: ${v('klacht')}. Ik wil het graag ${v('hoe')}.`;
+      knop.href = `https://wa.me/31612275118?text=${encodeURIComponent(m)}`;
+      breedte();
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>

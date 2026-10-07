@@ -1,0 +1,10 @@
+import { chromium } from 'playwright';
+import lighthouse from 'file:///C:/Users/Micha/AppData/Local/npm-cache/_npx/8003d8991b0d346b/node_modules/lighthouse/core/index.js';
+import fs from 'node:fs';
+const pad = process.argv[2] || '';
+const b = await chromium.launch({ args: ['--remote-debugging-port=9442'] });
+const r = await lighthouse('http://127.0.0.1:4442/sitefront/boom-interieur-hardinxveld/' + pad, { port: 9442, output: 'json', onlyCategories: ['performance', 'accessibility', 'best-practices', 'seo'] });
+fs.writeFileSync('shots/lh' + (pad ? '-privacy' : '') + '.json', r.report);
+for (const [k, v] of Object.entries(r.lhr.categories)) console.log(k, Math.round(v.score * 100));
+for (const a of Object.values(r.lhr.audits)) if (a.score !== null && a.score < 0.9 && !['informative', 'notApplicable', 'manual'].includes(a.scoreDisplayMode)) console.log(' -', a.id, a.score, a.displayValue || '');
+await b.close();
