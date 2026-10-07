@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: 1440, height: 1000 } })).newPage();
+await p.goto('http://localhost:4430/sitefront/ropapin-verpakkingen-ridderkerk/#verpakken', { waitUntil: 'networkidle' });
+await p.fill('input[name=wat]', 'Dozen met blikwerk');
+await p.check('input[value=zakken]'); await p.check('input[value=schade]');
+await p.fill('input[name=aantal]', '40 pallets per week');
+await p.check('input[value=regelmatig]'); await p.fill('input[name=naam]', 'Jan, Bedrijf BV');
+await p.evaluate(() => document.querySelectorAll('.rijs').forEach(e => e.classList.add('in')));
+await p.waitForTimeout(900);
+await (await p.$('#verpakken')).screenshot({ path: 'shots/wow-1440.png' });
+console.log(await p.$eval('[data-wa]', a => decodeURIComponent(a.href)));
+console.log(await p.$eval('[data-groepen-uit]', a => a.textContent));
+await b.close();
