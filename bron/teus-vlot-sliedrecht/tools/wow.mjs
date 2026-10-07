@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4420/sitefront/teus-vlot-sliedrecht/#storing', { waitUntil: 'networkidle' });
+await p.check('input[value="plannen"]', { force: true });
+await p.selectOption('select[name=vaartuig]', 'Coaster'); await p.selectOption('select[name=merk]', 'Cummins');
+await p.fill('input[name=type]', 'KTA19'); await p.fill('input[name=locatie]', 'Dordrecht, Merwekade'); await p.fill('textarea[name=omschrijving]', 'Onderhoudsbeurt en olie verversen');
+await p.waitForTimeout(800);
+console.log(decodeURIComponent(await p.getAttribute('[data-mail]', 'href'))); console.log(await p.textContent('[data-uitleg]'));
+await p.locator('[data-bon]').screenshot({ path: 'shots/wow-1440.png' });
+await p.goto('http://localhost:4420/sitefront/teus-vlot-sliedrecht/#groep', { waitUntil: 'networkidle' }); await p.waitForTimeout(800);
+await p.hover('[data-bedrijf="tve"]'); await p.waitForTimeout(900);
+await p.locator('#groep').screenshot({ path: 'shots/groep-hover-1440.png' });
+await b.close();

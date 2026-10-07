@@ -1,0 +1,395 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, bedrijven, werf, dealers, anderemerken, vacatures } from '../data/site';
+
+import luchtfoto from '../assets/werf-luchtfoto.jpg';
+import luchtfotoStaand from '../assets/werf-luchtfoto-staand.jpg';
+import havenKraan from '../assets/haven-kraan.jpg';
+import scania from '../assets/scania-dc16.jpg';
+import elektro from '../assets/elektro-installatie.jpg';
+import revisie from '../assets/revisie-cilinderkoppen.jpg';
+import dms from '../assets/dms-cummins-gensets.jpg';
+import cornerpoint from '../assets/cornerpoint-veren.jpg';
+import machinekamer from '../assets/machinekamer-zw.jpg';
+import amasofia from '../assets/amasofia.jpg';
+import nicolaas from '../assets/nicolaas-van-der-wees.jpg';
+import dokboten from '../assets/dokboten.jpg';
+import hermotorisering from '../assets/hermotorisering-haven.jpg';
+import team from '../assets/team.jpg';
+
+const fotos: Record<string, { src: ImageMetadata; alt: string; pos: string }> = {
+  tvdm: { src: scania, alt: 'Rode Scania DC16-scheepsmotor met blauwe leidingen in een machinekamer', pos: '50% 60%' },
+  tve: { src: elektro, alt: 'Machinekamer met generatorset, schakelkasten en geïsoleerde uitlaat na de elektrotechnische installatie', pos: '50% 50%' },
+  tvrt: { src: revisie, alt: 'Cilinderkoppen op de bewerkingsbank van de revisie-afdeling', pos: '50% 50%' },
+  dms: { src: dms, alt: 'Ingepakte Cummins-generatorsets in de hal van DMS', pos: '50% 50%' },
+  cp: { src: cornerpoint, alt: 'Blauwe klepveren op een cilinderkop, zwart-wit, uit de Cornerpoint-pagina van de brochure', pos: '50% 50%' },
+};
+
+const vaartuigen = ['Binnenvaartschip', 'Coaster', 'Drijvend baggerwerktuig', 'Passagiersschip', 'Werkschip', 'Installatie aan wal (industrie)'];
+const merken = ['Scania', 'Cummins', 'Baudouin', 'AGCO Power (Sisu Diesel)', 'John Deere', ...anderemerken, 'Ander merk of weet ik niet'];
+const disciplines = ['Dieseltechniek', 'Elektrotechniek', 'Revisietechniek', 'Onderhoud en reparatie', 'Weet ik niet'];
+
+const heroMobiel = await getImage({ src: luchtfotoStaand, widths: [470], format: 'webp', quality: 62 });
+const heroBreed = await getImage({ src: luchtfoto, widths: [960, 1280, 1500], sizes: '100vw', format: 'webp', quality: 74 });
+
+const titel = 'Teus Vlot Groep | Diesel, elektro en revisie voor de scheepvaart, Sliedrecht';
+const omschrijving = 'Motoronderhoud, revisie, hermotorisering en 24/7 service voor binnenvaartschepen, coasters en drijvende baggerwerktuigen. Vijf bedrijven en een eigen insteekhaven aan de Baanhoek in Sliedrecht. Servicelijn 24/7: +31 (0)184 493 888.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun luchtfoto van de werf met insteekhaven, torenkranen en schepen -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-diep text-wit md:min-h-[100svh]">
+      <Kop />
+      <picture>
+        <source media="(max-width: 767px)" srcset={heroMobiel.srcSet.attribute || heroMobiel.src} />
+        <source media="(min-width: 768px)" srcset={heroBreed.srcSet.attribute} sizes="100vw" />
+        <img src={heroBreed.src} width="1500" height="811" alt="Luchtfoto van de werf van Teus Vlot aan de Baanhoek in Sliedrecht: hallen met Teus Vlot-logo, twee torenkranen en schepen in de eigen insteekhaven" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#001a3ad9_0%,#001a3a40_26%,#001a3a8c_55%,#001a3af5_100%)] md:bg-[linear-gradient(90deg,#001a3af2_0%,#001a3ab8_36%,#001a3a26_70%,#001a3a00_100%),linear-gradient(0deg,#001a3ae6_0%,#001a3a00_34%)]"></div>
+      <!-- schuin petrolfacet zoals op hun brochurepagina's -->
+            <div class="wrap mt-auto pb-10 pt-28 md:my-auto md:pb-12">
+        <p class="text-sm font-semibold text-petrol-licht md:text-base">Teus Vlot Groep · Baanhoek, Sliedrecht</p>
+        <h1 class="mt-4 max-w-[9ch] text-hero">De motor van uw bedrijf.</h1>
+        <p class="mt-6 max-w-xl text-base text-wit/90 sm:text-lg md:text-xl">Onderhoud, revisie en service voor binnenvaartschepen, coasters en drijvende baggerwerktuigen. Sinds 1992, met een eigen werf en insteekhaven aan de Beneden-Merwede.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#storing" class="knop knop-petrol">Storing melden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />Bel 24/7</a>
+        </div>
+      </div>
+      <div class="border-t border-lijn bg-diep/70 backdrop-blur-sm">
+        <div class="wrap flex flex-wrap items-center justify-between gap-x-10 gap-y-1.5 py-4 text-sm text-wit/85 md:py-5">
+          <p class="flex items-center gap-2.5"><span class="h-2 w-2 rounded-full bg-petrol-licht" aria-hidden="true"></span><span class="max-sm:hidden">Servicelijn dag en nacht:</span><span class="sm:hidden">Servicelijn 24/7</span> <a href={site.telHref} class="num font-bold text-wit no-underline hover:text-petrol-licht">{site.tel}</a></p>
+          <p class="max-sm:hidden">Binnen 90 minuten reactie op 90% van de vragen</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. EÉN AANSPREEKPUNT + hun eigen cijfers -->
+    <section class="py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+        <h2 class="rijs text-4xl lg:col-span-7">Alle disciplines <span class="text-petrol-diep">onder één dak.</span></h2>
+        <div class="rijs space-y-5 text-grijs lg:col-span-5 lg:pt-4" style="--d:.1s">
+          <p class="text-lg text-inkt">Van motorenrevisie en onderhoud tot constructiewerk, hydrauliek, elektra en inbedrijfstelling. Zo heeft u als klant altijd één aanspreekpunt dat de volledige klus coördineert.</p>
+          <p>Dat betekent korte lijnen, duidelijke communicatie en een resultaat dat u weer verder brengt.</p>
+        </div>
+      </div>
+      <dl class="rijs wrap mt-14 grid grid-cols-2 gap-y-10 md:mt-16 lg:grid-cols-4">
+        <div class="flex flex-col border-l-2 border-petrol pl-5 pr-4">
+          <dt class="text-sm text-grijs">opgericht door Teus Vlot</dt>
+          <dd class="num order-first font-kop text-5xl font-extrabold leading-none text-marine sm:text-6xl">1992</dd>
+        </div>
+        <div class="flex flex-col border-l-2 border-staal-2 pl-5 pr-4">
+          <dt class="text-sm text-grijs">serviceopdrachten in 20 jaar</dt>
+          <dd class="num order-first font-kop text-5xl font-extrabold leading-none text-marine sm:text-6xl">56.640</dd>
+        </div>
+        <div class="flex flex-col border-l-2 border-staal-2 pl-5 pr-4">
+          <dt class="text-sm text-grijs">medewerkers, ruim</dt>
+          <dd class="num order-first font-kop text-5xl font-extrabold leading-none text-marine sm:text-6xl">60</dd>
+        </div>
+        <div class="flex flex-col border-l-2 border-staal-2 pl-5 pr-4">
+          <dt class="text-sm text-grijs">kilometer met de servicewagens</dt>
+          <dd class="num order-first font-kop text-5xl font-extrabold leading-none text-marine sm:text-6xl">6,2 mln</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- 3. DE GROEP: vijf bedrijven als index, foto wisselt mee -->
+    <section id="groep" class="bg-staal py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <div class="lg:sticky lg:top-10">
+            <h2 class="rijs text-4xl">Vijf bedrijven.<br />Eén groep.</h2>
+            <div class="rijs relative mt-10 aspect-[4/3] overflow-hidden rounded-sm bg-marine lg:aspect-[4/5]" style="--d:.1s" data-groep-fotos>
+              {bedrijven.map((b, i) => (
+                <Image src={fotos[b.id].src} alt={fotos[b.id].alt} quality={60} widths={[480, 720, 960]} sizes="(min-width: 1024px) 34vw, 100vw" class={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0'}`} style={`object-position:${fotos[b.id].pos}`} data-foto={b.id} />
+              ))}
+              <div class="facet-r absolute bottom-0 right-0 h-1/3 w-1/2 transition-colors duration-500" style={`background:${bedrijven[0].kleur}`} data-groep-facet aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-7 lg:pt-28">
+          <ul class="rijs" style="--d:.15s">
+            {bedrijven.map((b, i) => (
+              <li>
+                <a href={b.href} class="bedrijf" style={`--k:${b.kleur}`} data-bedrijf={b.id} data-aan={i === 0 ? 'true' : 'false'}>
+                  <span class="tik" aria-hidden="true"></span>
+                  <span class="nm">{b.naam}</span>
+                  <Icoon naam="uit" class="pl" />
+                  <span class="om">{b.tekst}<span class="sr-only"> (opent de site van {b.vol})</span></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. DE WERF: haven + typeplaatje uit de brochure -->
+    <section id="werf" class="relative overflow-hidden bg-marine py-20 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 items-start gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-4xl">Afmeren<br /><span class="text-petrol-licht">voor de deur.</span></h2>
+          <p class="rijs mt-7 max-w-lg text-lg text-wit/85" style="--d:.1s">Onze servicehaven in Sliedrecht ligt direct aan de Beneden-Merwede. U kunt afmeren in onze insteekhaven, zodat wij onderhoud of reparatie efficiënt kunnen uitvoeren, ook buiten boord via onze hallen en torenkranen.</p>
+          <p class="rijs mt-4 max-w-lg text-mist" style="--d:.15s">Ligt u elders? Onze monteurs komen met volledig uitgeruste servicewagens naar u toe, en als het moet per vliegtuig.</p>
+          <figure class="rijs relative mt-12 overflow-hidden rounded-sm" style="--d:.2s">
+            <Image src={havenKraan} alt="Uitzicht vanaf de kade van Teus Vlot: torenkraan, een passagiersschip met zonnepanelen in de haven en de rivier erachter" quality={62} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 44vw, 100vw" class="aspect-[16/10] w-full object-cover object-[50%_40%]" />
+            <figcaption class="absolute bottom-0 left-0 bg-diep/80 px-4 py-2 text-xs text-wit/85">De eigen haven aan de Baanhoek</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-6 lg:pt-20">
+          <div class="plaat rijs px-6 pb-9 pt-10 sm:px-10 sm:pt-12" style="--d:.15s">
+            <span class="klink-b" aria-hidden="true"></span>
+            <div class="flex items-end justify-between gap-4 border-b-2 border-inkt pb-4">
+              <p class="font-kop text-3xl font-extrabold uppercase leading-none text-marine">Werf Teus Vlot</p>
+              <p class="num text-right text-xs font-bold uppercase tracking-[.12em] text-grijs">Baanhoek 182b<br />Sliedrecht</p>
+            </div>
+            <dl class="mt-2">
+              {werf.map(([k, v, s]) => (
+                <div>
+                  <dt>{k}</dt>
+                  <dd class="num">{v}</dd>
+                  {s && <dd class="sub">{s}</dd>}
+                </div>
+              ))}
+            </dl>
+            <p class="mt-5 text-xs text-grijs">Uit de brochure van de Teus Vlot Groep.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. DEALERSCHAPPEN -->
+    <section class="py-20 md:py-24">
+      <div class="wrap grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">Officieel dealer van</h2>
+          <p class="rijs mt-5 max-w-sm text-grijs" style="--d:.1s">Dankzij onze dealerschappen hebben we veel onderdelen direct op voorraad. En als iets niet op voorraad is, zorgen we dat het snel geleverd wordt.</p>
+        </div>
+        <p class="rijs font-kop text-[clamp(2.2rem,4vw+.6rem,4.6rem)] font-extrabold uppercase leading-[.95] text-marine lg:col-span-8" style="--d:.15s">
+          {dealers.map((d, i) => <><span class="whitespace-nowrap">{d}</span>{i < dealers.length - 1 && <span class="px-[.18em] text-petrol" aria-hidden="true">/</span>}{' '}</>)}
+        </p>
+        <p class="rijs max-w-2xl text-grijs lg:col-span-8 lg:col-start-5">Daarnaast service aan {anderemerken.join(', ')} en vele anderen, zowel motoren als keerkoppelingen.</p>
+      </div>
+    </section>
+
+    <!-- 6. PROJECTEN -->
+    <section id="projecten" class="bg-staal py-20 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs text-4xl">Onze trots<br />in beeld</h2>
+          <a href="https://teusvlotdieselmarine.com/projecten-teus-vlot/" class="rijs link link-diep font-semibold">Alle projecten</a>
+        </div>
+        <div class="mt-12 grid grid-cols-1 gap-x-10 gap-y-14 md:mt-16 lg:grid-cols-12">
+          <article class="rijs lg:col-span-7">
+            <a href="https://teusvlotdieselmarine.com/levering-5-scanias-dc16-en-scania-dc13-generatorset-door-teus-vlot-diesel-marine/" class="group block text-inherit no-underline">
+              <div class="overflow-hidden rounded-sm">
+                <Image src={amasofia} alt="Luik in het dek van de AmaSofia open, met motoren en leidingen in de machinekamer eronder" quality={72} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 56vw, 100vw" class="aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+              </div>
+              <p class="mt-6 text-sm font-semibold text-petrol-diep">Diesel &amp; Marine · Elektrotechniek</p>
+              <h3 class="mt-2 text-3xl">AmaSofia: 5 Scania’s DC16 en een DC13-generatorset</h3>
+              <p class="mt-3 max-w-xl text-grijs">Geleverd en in bedrijf gesteld voor het diesel-elektrische passagierscruiseschip AmaSofia, inclusief systeemintegratie en ondersteuning tijdens de proefvaart.</p>
+            </a>
+          </article>
+          <div class="grid gap-y-10 lg:col-span-5">
+            {[
+              { img: nicolaas, alt: 'Duwboot Nicolaas van der Wees aan de kade na de refit, met kraan op de achtergrond', titel: 'Complete refit duwboot Nicolaas van der Wees', tekst: 'Twee Scania DI13-hoofdmotoren van 500 pk, een elektrische boegschroef en een stuurhut aan een centrale kolom. Diepgang: 1,10 meter.', href: 'https://teusvlotdieselmarine.com/complete-refit-duwboot-nicolaas-van-der-wees/' },
+              { img: dokboten, alt: 'Twee oranje dokboten in aanbouw in de hal van Teus Vlot', titel: 'Afbouw van 10 dokboten', tekst: 'Voor J. Schlieker & Zonen BV, bestemd voor de haven van Antwerpen: John Deere-voortstuwing, Twin Disc-keerkoppeling en complete roerinstallatie.', href: 'https://teusvlotdieselmarine.com/afbouw-van-10-dokboten-voor-j-schlieker-zonen-bv/' },
+              { img: hermotorisering, alt: 'Een servicewagen van Teus Vlot hangt aan de scheepskraan en wordt aan boord van een binnenvaartschip gezet', pos: '42% 46%', titel: 'Servicewagen aan boord, en door', tekst: 'De monteur vaart mee en lost de storing varende weg op. Hier zijn op één bank alle 8 voeringen, zuigers en koppen gewisseld.', href: site.linkedin },
+            ].map((p, i) => (
+              <article class="rijs" style={`--d:${0.08 * (i + 1)}s`}>
+                <a href={p.href} class="group grid grid-cols-[7.5rem_1fr] gap-5 text-inherit no-underline sm:grid-cols-[11rem_1fr]">
+                  <div class="overflow-hidden rounded-sm"><Image src={p.img} alt={p.alt} quality={70} widths={[240, 360, 480]} sizes="11rem" class="aspect-square h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]" style={p.pos ? `object-position:${p.pos}` : undefined} /></div>
+                  <div>
+                    <h3 class="text-2xl transition-colors group-hover:text-petrol-diep">{p.titel}</h3>
+                    <p class="mt-2 text-sm text-grijs">{p.tekst}</p>
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. WERKEN BIJ -->
+    <section id="werken" class="py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Klaar om met ons mee te draaien?</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs" style="--d:.1s">Je werkt aan krachtige dieselmotoren en technische installaties in de maritieme sector. Uitdagend, afwisselend en samen met een hecht team van vakspecialisten.</p>
+          <figure class="rijs mt-10 overflow-hidden rounded-sm" style="--d:.15s">
+            <Image src={team} alt="Het team van Teus Vlot op het terrein voor de hal en de servicewagens" quality={72} widths={[480, 720]} sizes="(min-width: 1024px) 34vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+          </figure>
+        </div>
+        <div class="lg:col-span-7 lg:pt-3">
+          <ul class="rijs border-t border-lijn-licht" style="--d:.1s">
+            {vacatures.slice(0, 6).map(([t, s, href]) => (
+              <li class="border-b border-lijn-licht">
+                <a href={href} class="group flex items-center justify-between gap-5 py-3 text-inherit no-underline">
+                  <span>
+                    <span class="block font-kop text-2xl font-extrabold uppercase leading-tight transition-colors group-hover:text-petrol-diep md:text-[1.75rem]">{t}</span>
+                    <span class="block text-sm text-grijs">{s}</span>
+                  </span>
+                  <Icoon naam="pijl" class="h-5 w-5 flex-none text-grijs transition-transform duration-300 group-hover:translate-x-1 group-hover:text-petrol-diep" />
+                </a>
+              </li>
+            ))}
+          </ul>
+          <details class="group/meer">
+            <summary class="flex cursor-pointer list-none items-center gap-2 border-b border-lijn-licht py-4 text-sm font-semibold text-petrol-diep [&::-webkit-details-marker]:hidden">
+              <span class="group-open/meer:hidden">Nog {vacatures.length - 6} vacatures, onder andere in sales en administratie</span><span class="hidden group-open/meer:inline">Minder tonen</span>
+            </summary>
+            <ul>
+              {vacatures.slice(6).map(([t, s, href]) => (
+                <li class="border-b border-lijn-licht">
+                <a href={href} class="group flex items-center justify-between gap-5 py-3 text-inherit no-underline">
+                  <span>
+                    <span class="block font-kop text-2xl font-extrabold uppercase leading-tight transition-colors group-hover:text-petrol-diep md:text-[1.75rem]">{t}</span>
+                    <span class="block text-sm text-grijs">{s}</span>
+                  </span>
+                  <Icoon naam="pijl" class="h-5 w-5 flex-none text-grijs transition-transform duration-300 group-hover:translate-x-1 group-hover:text-petrol-diep" />
+                </a>
+              </li>
+              ))}
+            </ul>
+          </details>
+          <div class="rijs mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href={site.vacatures} class="knop knop-marine">Alle vacatures<Icoon naam="pijl" /></a>
+            <p class="text-sm text-grijs">Motivatie en cv naar <a href={`mailto:${site.mailVacatures}`} class="link link-diep font-semibold text-inkt">{site.mailVacatures}</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. STORING MELDEN + CONTACT: werkbon die eindigt in bellen of een ingevuld mailbericht -->
+    <section id="storing" class="relative isolate overflow-hidden bg-diep py-20 text-wit md:py-32">
+      <Image src={machinekamer} alt="" quality={60} widths={[640, 1024, 1576]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-30 grayscale" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#001a3a_0%,#001a3ae6_45%,#001a3ab3_100%)]" aria-hidden="true"></div>
+      <span id="contact" class="absolute top-0" aria-hidden="true"></span>
+      <div class="wrap grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Ligt u stil?<br /><span class="text-petrol-licht">Bel ons.</span></h2>
+          <p class="rijs mt-6 max-w-md text-lg text-wit/85" style="--d:.1s">Onze ervaren monteurs staan dag en nacht klaar voor snelle diagnose, reparatie en herstel, waar u ook ligt.</p>
+          <a href={site.telHref} class="rijs num mt-8 block whitespace-nowrap font-kop text-[clamp(2.3rem,3vw+1rem,3.6rem)] font-extrabold leading-none text-wit no-underline transition-colors hover:text-petrol-licht md:text-6xl" style="--d:.15s">{site.tel}</a>
+          <p class="rijs mt-2 text-sm text-mist" style="--d:.15s">Servicelijn 24/7</p>
+          <div class="rijs mt-12 grid gap-6 border-t border-lijn pt-8 text-sm text-mist sm:grid-cols-2" style="--d:.2s">
+            <div>
+              <p class="font-bold text-wit">{site.bv}</p>
+              <p class="mt-2">{site.straat}<br />{site.postcode} {site.plaats}</p>
+              <p class="mt-2"><a href={site.maps} class="link">Route plannen</a></p>
+            </div>
+            <div>
+              <p class="font-bold text-wit">Mail</p>
+              <p class="mt-2"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></p>
+              <p class="mt-4 font-bold text-wit">Cummins (DMS)</p>
+              <p class="mt-2"><a href="tel:+31180487284" class="link num">+31 (0)180 487 284</a></p>
+            </div>
+          </div>
+        </div>
+
+        <form class="bon rijs p-6 sm:p-9 lg:col-span-7" style="--d:.1s" data-bon novalidate aria-labelledby="bon-titel">
+          <div class="flex items-end justify-between gap-4 border-b-2 border-inkt pb-4">
+            <h3 id="bon-titel" class="text-3xl text-marine">Servicemelding</h3>
+            <p class="text-right text-xs font-bold uppercase tracking-[.12em] text-grijs max-sm:hidden">Werkbon</p>
+          </div>
+
+          <fieldset class="mt-6">
+            <legend class="veld"><span><b>01</b>Hoe dringend?</span></legend>
+            <div class="keus">
+              <label><input type="radio" name="urgentie" value="stil" checked /><span class="kv">Ik lig stil<small>Nu hulp nodig</small></span></label>
+              <label><input type="radio" name="urgentie" value="plannen" /><span class="kv">Inplannen<small>Onderhoud, revisie of reparatie</small></span></label>
+            </div>
+          </fieldset>
+
+          <div class="mt-6 grid gap-x-5 gap-y-6 sm:grid-cols-2">
+            <label class="veld"><span><b>02</b>Vaartuig</span>
+              <select class="invoer" name="vaartuig">{vaartuigen.map((v) => <option>{v}</option>)}</select>
+            </label>
+            <label class="veld"><span><b>03</b>Discipline</span>
+              <select class="invoer" name="discipline">{disciplines.map((v) => <option>{v}</option>)}</select>
+            </label>
+            <label class="veld"><span><b>04</b>Motormerk</span>
+              <select class="invoer" name="merk">{merken.map((v) => <option>{v}</option>)}</select>
+            </label>
+            <label class="veld"><span><b>05</b>Type motor</span>
+              <input class="invoer" name="type" type="text" placeholder="bijv. DI13, KTA19" autocomplete="off" />
+            </label>
+            <label class="veld sm:col-span-2"><span><b>06</b>Waar ligt u?</span>
+              <input class="invoer" name="locatie" type="text" placeholder="Haven, kade of ligplaats" autocomplete="off" />
+            </label>
+            <label class="veld sm:col-span-2"><span><b>07</b>Wat is er aan de hand?</span>
+              <textarea class="invoer min-h-24 resize-y" name="omschrijving" rows="3" placeholder="Foutmelding, geluid, wat er gebeurde"></textarea>
+            </label>
+            <label class="veld"><span><b>08</b>Naam en schip</span>
+              <input class="invoer" name="naam" type="text" autocomplete="name" />
+            </label>
+            <label class="veld"><span><b>09</b>Telefoon aan boord</span>
+              <input class="invoer" name="telefoon" type="tel" autocomplete="tel" />
+            </label>
+          </div>
+
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-lijn-licht pt-6">
+            <a href={site.telHref} class="knop knop-petrol num" data-bel><Icoon naam="tel" />Bel de servicelijn</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand" data-mail><Icoon naam="mail" />Melding mailen</a>
+          </div>
+          <p class="mt-4 text-sm text-grijs" data-uitleg>Stil liggen gaat het snelst telefonisch. De mail geeft de monteur alvast uw gegevens.</p>
+          {site.voorstel && <p class="mt-2 text-xs text-grijs">Ontwerpvoorstel: deze werkbon verstuurt zelf niets, hij opent alleen uw mailprogramma met de melding ingevuld.</p>}
+        </form>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Groepsindex: foto en kleurfacet wisselen mee met het bedrijf onder de muis of focus.
+  const kleur: Record<string, string> = {};
+  document.querySelectorAll<HTMLAnchorElement>('[data-bedrijf]').forEach((a) => { kleur[a.dataset.bedrijf!] = getComputedStyle(a).getPropertyValue('--k'); });
+  const zet = (id: string) => {
+    document.querySelectorAll<HTMLElement>('[data-foto]').forEach((f) => f.classList.toggle('opacity-0', f.dataset.foto !== id));
+    document.querySelectorAll<HTMLElement>('[data-foto]').forEach((f) => f.classList.toggle('opacity-100', f.dataset.foto === id));
+    document.querySelectorAll<HTMLElement>('[data-bedrijf]').forEach((a) => a.setAttribute('data-aan', String(a.dataset.bedrijf === id)));
+    const fc = document.querySelector<HTMLElement>('[data-groep-facet]'); if (fc) fc.style.background = kleur[id];
+  };
+  document.querySelectorAll<HTMLAnchorElement>('[data-bedrijf]').forEach((a) => {
+    a.addEventListener('mouseenter', () => zet(a.dataset.bedrijf!));
+    a.addEventListener('focus', () => zet(a.dataset.bedrijf!));
+  });
+
+  // Werkbon: stil liggen = bellen voorop; inplannen = ingevuld mailbericht voorop.
+  const bon = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (bon) {
+    const bel = bon.querySelector<HTMLAnchorElement>('[data-bel]')!;
+    const mail = bon.querySelector<HTMLAnchorElement>('[data-mail]')!;
+    const uitleg = bon.querySelector<HTMLElement>('[data-uitleg]')!;
+    const adres = mail.getAttribute('href')!.replace('mailto:', '');
+    const v = (n: string) => ((bon.elements.namedItem(n) as HTMLInputElement | null)?.value || '').trim();
+    const werk = () => {
+      const stil = v('urgentie') === 'stil';
+      const motor = [v('merk'), v('type')].filter(Boolean).join(' ');
+      const onderwerp = `${stil ? 'STORING' : 'Servicemelding'}: ${v('vaartuig')}${v('locatie') ? `, ${v('locatie')}` : ''}`;
+      const regels = [
+        `Urgentie: ${stil ? 'ligt stil, nu hulp nodig' : 'inplannen'}`,
+        `Vaartuig: ${v('vaartuig')}`,
+        `Discipline: ${v('discipline')}`,
+        `Motor: ${motor}`,
+        `Locatie: ${v('locatie') || '(nog invullen)'}`,
+        `Omschrijving: ${v('omschrijving') || '(nog invullen)'}`,
+        `Naam en schip: ${v('naam') || '(nog invullen)'}`,
+        `Telefoon aan boord: ${v('telefoon') || '(nog invullen)'}`,
+      ];
+      mail.href = `mailto:${adres}?subject=${encodeURIComponent(onderwerp)}&body=${encodeURIComponent(regels.join('\n'))}`;
+      bel.className = `knop num ${stil ? 'knop-petrol' : 'knop-rand order-2'}`;
+      mail.className = `knop ${stil ? 'knop-rand' : 'knop-marine'}`;
+      uitleg.textContent = stil
+        ? 'Stil liggen gaat het snelst telefonisch. De mail geeft de monteur alvast uw gegevens.'
+        : 'De mail opent met uw melding ingevuld. Wij plannen het werk met u in.';
+    };
+    bon.addEventListener('input', werk); bon.addEventListener('change', werk); werk();
+  }
+</script>
