@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await p.goto('http://localhost:4411/sitefront/lieve-lust-catering-rosmalen/', { waitUntil: 'networkidle' });
+await p.evaluate(() => { window.open = (u) => { window.__u = u; }; });
+await p.click('[data-kies="lunch"]'); await p.fill('#a-gast', '12'); await p.fill('#a-datum', '2027-06-12'); await p.fill('#a-plaats', 'Vught');
+await p.check('input[name=drank]');
+console.log(await p.textContent('[data-minimum]'));
+await p.click('button[type=submit]');
+console.log(decodeURIComponent(await p.evaluate(() => window.__u)));
+console.log(await p.evaluate(() => [document.querySelectorAll('script[type="application/ld+json"], link[rel=canonical]').length, document.querySelector('meta[name=robots]')?.content]));
+await b.close();

@@ -1,0 +1,279 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi } from '../data/site';
+
+import feestVeld from '../assets/feest-veld.jpg';
+import lunchtafel from '../assets/lunchtafel.jpg';
+import buffetTent from '../assets/buffet-tent.jpg';
+import hapjes from '../assets/hapjes.jpg';
+import bbq from '../assets/bbq.jpg';
+import borrelplank from '../assets/borrelplank.jpg';
+import stretchtent from '../assets/stretchtent.jpg';
+import eigenaars from '../assets/eigenaars.jpg';
+import beeldmerk from '../assets/beeldmerk.png';
+
+// Wegwijzer: alles wat ze zelf aanbieden (pagina's van hun eigen site). Waarde = keuze in het aanvraagkaartje.
+const wijzer = [
+  ['Wereldse buffetten', 'buffet'],
+  ['Walking dinner', 'walking'],
+  ['Hapjes & borrelplanken', 'hapjes'],
+  ['Lunch, brunch & high tea', 'lunch'],
+  ['Barbecue-arrangement', 'bbq'],
+  ['Stamppotbuffet', 'stamppot'],
+  ['Drank & verhuur', 'drank'],
+  ['Uitvaartcatering', 'uitvaart'],
+];
+
+// De keukens van hun buffetpagina (oktober 2025), met hun eigen omschrijving ingekort.
+const keukens = [
+  ['Frans', 'vis, vlees of vegetarisch, met het verfijnde accent van de traditionele Franse keuken'],
+  ['Indonesisch', 'nasi kuning, gado gado, sayur lodeh, ayam semur, rendang'],
+  ['Indiaas', 'zachte curry’s, kruidige tandoori’s, tikka’s en kofta’s'],
+  ['Aziatisch', 'vooral Zuidoost-Azië: groente, vers fruit, vlees en vis'],
+  ['Midden-Oosten', 'groenten en fruit in de hoofdrol, met vlees, vis en gevogelte'],
+  ['Surinaams', 'saoto soep, roti, heriheri, bakbanaan of bakkeljauw'],
+  ['Een reis rond de wereld', 'voor wie niet kan kiezen, samen in overleg'],
+  ['Vertrouwde klassieker', 'saté van kippendij, Black Angusballetjes, gamba’s in knoflookboter'],
+];
+
+const titel = 'Lieve Lust veelzijdige catering | Rosmalen en regio Den Bosch';
+const omschrijving = 'Kleinschalige, allround catering in Rosmalen: wereldse buffetten, walking dinner, hapjes, lunch en high tea, barbecue, drank en verhuur. Aanvragen via WhatsApp 06 81 74 57 78.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun eigen feest in het veld bij schemer -->
+    <section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-nacht text-wit">
+      <Kop />
+      <Image src={feestVeld} alt="Feest in een veld bij schemer: een stretchtent met gekleurd licht, lichtsnoeren, een houten vlonderpad en wegwijzers" quality={72} widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_50%] md:object-[50%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#101828b3_0%,#10182800_22%,#10182880_46%,#101828f5_78%)] md:bg-[linear-gradient(180deg,#101828a6_0%,#10182800_24%),linear-gradient(90deg,#101828e6_0%,#101828a6_38%,#10182800_66%)]"></div>
+      <div class="wrap mt-auto pb-32 pt-28 md:pb-28 lg:pb-32">
+        <p class="text-[.9375rem] font-medium text-wit/90">Catering in Rosmalen en regio Den Bosch</p>
+        <h1 class="mt-4 max-w-[13ch] text-hero">U bent gastheer. Lieve Lust regelt de rest.</h1>
+        <p class="mt-6 max-w-[34rem] text-lg text-wit/90 md:text-xl">Van wereldse hapjes en buffetten tot de drank, de tent en het licht.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#aanvragen" class="knop knop-vol">Feest aanvragen <Icoon naam="pijl" /></a>
+          <a href={waHoi} class="knop knop-licht max-sm:hidden"><Icoon naam="wa" />App <span class="num">{site.tel}</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. HET ETEN: grote lunchtafel + wegwijzer door het aanbod -->
+    <section id="eten" class="py-20 md:py-24">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-6 lg:pt-6">
+          <h2 class="rijs text-3xl">Verse producten, creativiteit en vakmanschap.</h2>
+          <p class="rijs mt-6 max-w-md text-grijs" style="--d:.1s">Vlees en groenten komen zoveel mogelijk van boerderijen en kwekers uit de regio. De seizoenen bepalen wat er op tafel komt.</p>
+          <p class="rijs mt-4 max-w-md text-grijs" style="--d:.15s">Allergie of dieetwens? Daar houden we gewoon rekening mee.</p>
+          <nav aria-label="Ons aanbod" class="rijs paal mt-14" style="--d:.2s">
+            {wijzer.map(([t, v], i) => (
+              <a href="#aanvragen" data-kies={v} class={`plank ${i % 2 ? 'plank-l' : 'plank-r'}`}>{t}</a>
+            ))}
+          </nav>
+        </div>
+        <figure class="rijs flex flex-col lg:col-span-6">
+          <Image src={lunchtafel} alt="Gedekte lunchtafel met quiches, salades, broodjes, vleeswaren, yoghurt met granola in glaasjes en gele bloemen" quality={74} widths={[640, 960, 1280, 1600]} sizes="(min-width: 1024px) 46vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover lg:aspect-auto lg:min-h-0 lg:flex-1" />
+          <figcaption class="mt-3 text-xs text-grijs">Lunch- en brunchtafel: broodjes, quiches, salades, abdijbrood en vers fruit.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. BUFFETTEN: menukaart van keukens naast hun buffet in de tent -->
+    <section id="buffetten" class="op-nacht bg-nacht py-20 text-wit md:py-24">
+      <div class="wrap grid items-start gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs order-2 lg:order-1 lg:col-span-5 lg:self-stretch">
+          <Image src={buffetTent} alt="Buffet onder een overkapping in de avond: een rij warmhoudpannen, stapels borden, brood en dips" quality={72} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[3/4] w-full rounded-md object-cover object-[50%_60%] lg:aspect-auto lg:h-full" />
+        </figure>
+        <div class="order-1 lg:order-2 lg:col-span-7">
+          <h2 class="rijs text-3xl">Ontdek een wereld van smaak.</h2>
+          <p class="rijs mt-6 max-w-lg text-maan" style="--d:.1s">Geen feest compleet zonder een werelds buffet of walking dinner. Hoe groter de groep, hoe meer gerechten op het buffet.</p>
+          <ul class="rijs mt-12 border-t border-lijn-n" style="--d:.15s">
+            {keukens.map(([k, o]) => (
+              <li class="grid gap-x-6 gap-y-1 border-b border-lijn-n py-3.5 sm:grid-cols-[14rem_1fr]">
+                <span class="font-kop text-xl">{k}</span>
+                <span class="text-[.9375rem] text-maan">{o}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="rijs mt-8 text-[.9375rem] text-maan">Vanaf 20 personen, met serveerschalen, servies en bestek. Walking dinners met personeel. Soep vooraf of dessert na kan erbij.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. HAPJES, BORRELPLANK, BARBECUE: grote foto's, weinig woorden -->
+    <section class="py-20 md:py-24">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <figure class="rijs md:col-span-7 md:row-span-2">
+          <Image src={hapjes} alt="Plank met zalmhapjes op komkommer, gehaktballetjes in tomatensaus, kaas, ham en wraps" quality={74} widths={[640, 960, 1280]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-square w-full rounded-md object-cover object-[50%_60%]" />
+        </figure>
+        <div class="md:col-span-5 md:self-end">
+          <h2 class="rijs text-3xl">Hapjes uit alle wereldkeukens.</h2>
+          <p class="rijs mt-6 text-grijs" style="--d:.1s">Warm en koud, amuses, hartige tapas, zoetigheden en fingerfood. En borrelplanken op maat: van boerenplank tot kreeft en kaviaar.</p>
+        </div>
+        <figure class="rijs md:col-span-5 md:self-start">
+          <Image src={borrelplank} alt="Twee borrelplanken met vleeswaren, kaas, druiven, radijs, tomaatjes en dips" quality={72} widths={[480, 720, 960]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/3] w-full rounded-md object-cover object-[50%_40%]" />
+        </figure>
+        <div class="grid items-center gap-y-8 md:col-span-12 md:mt-4 md:grid-cols-12 md:gap-x-10">
+          <figure class="rijs md:col-span-5">
+            <Image src={bbq} alt="Grillen op een grote rvs-barbecue: biefstuk en stokbrood op het rooster" quality={72} widths={[480, 720, 960]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-square w-full rounded-md object-cover object-[50%_40%]" />
+          </figure>
+          <div class="md:col-span-6 md:col-start-7">
+            <h3 class="rijs text-2xl">Zelf de pitmaster zijn?</h3>
+            <p class="rijs mt-4 max-w-md text-grijs" style="--d:.1s">Wij brengen mooi opgemaakte schalen met vlees, vis, gevogelte en vegetarisch, met sauzen, brood en salades. De gasbarbecue kunt u erbij huren.</p>
+            <h3 class="rijs mt-12 text-2xl">Ook bij een afscheid.</h3>
+            <p class="rijs mt-4 max-w-md text-grijs" style="--d:.1s">Van koffie met cake tot een uitgebreide maaltijd. Samen bekijken we de wensen van de familie.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. HET HELE FEEST: tent, licht, bar, muziek -->
+    <section id="feest" class="op-nacht relative isolate overflow-hidden bg-nacht text-wit">
+      <Image src={stretchtent} alt="Stretchtent in een weiland bij nacht, verlicht in oranje en paars, met gasten en picknicktafels" quality={70} widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" class="h-[21rem] w-full object-cover object-[30%_55%] md:absolute md:inset-0 md:-z-20 md:h-full md:object-[40%_50%]" />
+      <div class="absolute inset-0 -z-10 hidden md:block md:bg-[linear-gradient(90deg,#10182800_30%,#101828d9_62%,#101828f2_100%)]"></div>
+      <div class="wrap flex items-end pb-20 pt-12 md:min-h-[40rem] md:py-20 md:items-center md:justify-end md:py-24">
+        <div class="max-w-md">
+          <h2 class="rijs text-3xl">Tent, bar, licht en muziek erbij?</h2>
+          <p class="rijs mt-6 text-wit/90" style="--d:.1s">Bij u thuis, in de tuin of op het werk. Wij leveren en bouwen op, en halen alles de volgende dag weer op.</p>
+          <p class="rijs mt-6 text-[.9375rem] leading-relaxed text-maan" style="--d:.15s">Tenten, licht en geluid, dj of muzikanten, koelingen en biertap, statafels en tafellinnen. Het drankenarrangement komt met glaswerk; u rekent af op nacalculatie.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. OVER BAS + reviews -->
+    <section id="bas" class="py-20 md:py-24">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-5">
+          <Image src={eigenaars} alt="Het team van Lieve Lust in schort op het vlonderpad van een feest, armen in de lucht" quality={74} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover object-[50%_35%]" />
+        </figure>
+        <div class="lg:col-span-7 lg:pt-4">
+          <blockquote class="rijs">
+            <p class="font-kop text-2xl leading-[1.15] md:text-[2.5rem]">“Ik geniet ervan om anderen te verrassen en verwennen.”</p>
+            <footer class="mt-5 text-[.9375rem] text-grijs">Bas Wijlaars, Lieve Lust</footer>
+          </blockquote>
+          <p class="rijs mt-8 max-w-xl text-grijs" style="--d:.1s">Bas kookt sinds zijn vierentwintigste. Hij leerde het vak in Amsterdam, onder meer bij het Lloyd Hotel en Club Dauphine, en kookte daarna in Brabant voor De Ruwenberg, Libema, Maison van den Boer en Hutten.</p>
+
+          <div class="mt-16 border-t border-lijn-2">
+            {reviews.map((r, i) => (
+              <figure class="rijs border-b border-lijn-2 py-7" style={`--d:${i * .06}s`}>
+                <div class="flex items-center gap-1 text-oranje-diep" role="img" aria-label="5 van 5 sterren">
+                  {[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}
+                </div>
+                <blockquote class="mt-3 max-w-2xl">{r.tekst}</blockquote>
+                <figcaption class="mt-3 text-xs text-grijs">{r.naam} · Google review, {r.wanneer}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p class="mt-6 flex items-center gap-2 text-xs text-grijs"><Icoon naam="g" class="h-4 w-4" />{site.google.score} op Google uit {site.google.aantal} reviews. <a href={site.reviews} class="link">Alle reviews</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. AANVRAGEN: het menukaartje op het houten voetje, eindigt in WhatsApp -->
+    <section id="aanvragen" class="op-nacht bg-nacht-2 py-20 text-wit md:py-24">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-3xl">Vertel ons over uw feest.</h2>
+          <p class="rijs mt-6 max-w-md text-maan" style="--d:.1s">Vul het kaartje in en stuur het via WhatsApp. Dan bespreken we samen de wensen en mogelijkheden.</p>
+          <div class="rijs mt-10 space-y-3 text-[.9375rem]" style="--d:.15s">
+            <p class="flex items-center gap-3"><Icoon naam="tel" class="h-4 w-4 text-oranje" /><a href={site.telHref} class="link num">{site.tel}</a> <span class="text-maan">bellen of appen</span></p>
+            <p class="flex items-center gap-3"><Icoon naam="pin" class="h-4 w-4 text-oranje" />{site.regio}</p>
+            <p class="max-w-sm pl-7 text-xs text-maan">Buiten regio Den Bosch kunnen reiskosten gelden.</p>
+          </div>
+        </div>
+
+        <form class="mx-auto w-full min-w-0 max-w-[34rem] lg:col-span-6 lg:col-start-7" data-aanvraag novalidate>
+          <div class="kaart">
+            <p class="sier font-kop text-2xl"><span class="text-oranje-diep">Uw feest</span></p>
+            <div class="mt-8 space-y-3 text-lg leading-[2.6rem]">
+              <p>
+                <label class="sr-only" for="a-gel">Gelegenheid</label>
+                <select id="a-gel" name="gel" class="veld">
+                  <option>een verjaardag</option>
+                  <option>een bruiloft of jubileum</option>
+                  <option>een bedrijfsfeest of borrel</option>
+                  <option>een nieuwjaarsborrel</option>
+                  <option>een zakelijke lunch</option>
+                  <option>een tuinfeest</option>
+                  <option value="een afscheid">een afscheid (uitvaart)</option>
+                  <option>een ander feest</option>
+                </select>
+              </p>
+              <p>voor <label class="sr-only" for="a-gast">Aantal gasten</label><input id="a-gast" name="gast" type="number" inputmode="numeric" min="1" max="999" value="50" class="veld num w-[4.5rem] text-center" /> gasten</p>
+              <p>op <label class="sr-only" for="a-datum">Datum</label><input id="a-datum" name="datum" type="date" class="veld num" /></p>
+              <p>in <label class="sr-only" for="a-plaats">Plaats</label><input id="a-plaats" name="plaats" type="text" placeholder="Rosmalen" autocomplete="address-level2" class="veld w-[11rem] placeholder:text-[#b23c0099]" /></p>
+              <p>met
+                <label class="sr-only" for="a-eten">Eten</label>
+                <select id="a-eten" name="eten" class="veld">
+                  <option value="buffet">een werelds buffet</option>
+                  <option value="walking">een walking dinner</option>
+                  <option value="hapjes">hapjes en borrelplanken</option>
+                  <option value="lunch">een lunch-, brunch- of high-teatafel</option>
+                  <option value="bbq">een barbecue-arrangement</option>
+                  <option value="stamppot">een stamppotbuffet</option>
+                  <option value="uitvaart">een koffietafel</option>
+                  <option value="advies">nog geen idee: graag advies</option>
+                </select>
+              </p>
+            </div>
+            <div class="mt-6 space-y-2 border-t border-lijn-2 pt-5 text-[.9375rem] text-grijs">
+              <label class="flex min-h-8 cursor-pointer items-center gap-3"><input type="checkbox" name="drank" class="h-4 w-4 accent-[#b23c00]" /> drankenarrangement erbij</label>
+              <label class="flex min-h-8 cursor-pointer items-center gap-3"><input type="checkbox" name="huur" class="h-4 w-4 accent-[#b23c00]" /> tent, licht of andere verhuur erbij</label>
+            </div>
+            <p class="mt-4 min-h-[1.25rem] text-xs text-oranje-diep" data-minimum aria-live="polite"></p>
+            <Image src={beeldmerk} alt="" width={40} height={40} widths={[40, 80]} sizes="40px" class="absolute bottom-5 right-5 h-9 w-9 opacity-90 sm:bottom-7 sm:right-7" />
+          </div>
+          <div class="voetje" aria-hidden="true"></div>
+          <button type="submit" class="knop knop-vol mt-10 w-full"><Icoon naam="wa" />Stuur via WhatsApp</button>
+        </form>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-aanvraag]');
+  if (form) {
+    const el = form.elements as unknown as Record<string, HTMLInputElement & HTMLSelectElement>;
+    const melding = form.querySelector<HTMLElement>('[data-minimum]')!;
+    const min: Record<string, number> = { buffet: 20, walking: 20, bbq: 20, stamppot: 20, lunch: 15 };
+    const check = () => {
+      const g = Number(el.gast.value) || 0, m = min[el.eten.value] || (el.drank.checked ? 20 : 0);
+      melding.textContent = g && m && g < m ? `Dit arrangement is er vanaf ${m} personen. Stuur het gerust, dan denken we mee.` : '';
+    };
+    form.addEventListener('input', check);
+
+    // Wegwijzer-plankjes kiezen alvast het juiste eten.
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+      const v = a.dataset.kies!;
+      if (v === 'drank') { el.drank.checked = true; el.huur.checked = true; }
+      else { el.eten.value = v; if (v === 'uitvaart') el.gel.value = 'een afscheid'; }
+      check();
+    }));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const eten = el.eten.selectedOptions[0].textContent!.trim();
+      const d = el.datum.value ? new Intl.DateTimeFormat('nl-NL', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(el.datum.value + 'T12:00')) : 'nog niet bekend';
+      const extra = [el.drank.checked && 'drankenarrangement', el.huur.checked && 'tent, licht of andere verhuur'].filter(Boolean).join(' en ');
+      const regels = [
+        'Hoi Lieve Lust! Ik wil graag catering aanvragen.',
+        '',
+        `Gelegenheid: ${el.gel.value}`,
+        `Aantal gasten: ongeveer ${el.gast.value || '?'}`,
+        `Datum: ${d}`,
+        `Plaats: ${el.plaats.value.trim() || 'nog niet bekend'}`,
+        `Eten: ${eten}`,
+        extra ? `Ook graag: ${extra}` : null,
+        '',
+        'Kunnen we de mogelijkheden bespreken?',
+      ].filter((r) => r !== null) as string[];
+      window.open(`https://wa.me/31681745778?text=${encodeURIComponent(regels.join('\n'))}`, '_blank', 'noopener');
+    });
+  }
+</script>
