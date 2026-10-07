@@ -1,0 +1,268 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, waHoi, waMet } from '../data/site';
+
+import gevel from '../assets/gevel.jpg';
+import parmezaan from '../assets/parmezaan.jpg';
+import wielen from '../assets/wielen.jpg';
+import kaasplank from '../assets/kaasplank.jpg';
+import plankRond from '../assets/plank-rond.jpg';
+import cadeau from '../assets/cadeau.jpg';
+import fondue from '../assets/fondue.jpg';
+import markt from '../assets/markt.jpg';
+
+// Assortiment: hun eigen lijst "Een greep uit ons assortiment" (site 2022), aangevuld met wat ze in 2026 op Facebook en
+// hun krijtbord noemen (graskaas, truffelkaas, eieren, jam, wafeltjes). Geen prijzen.
+const bord = [
+  {
+    titel: 'Kaas',
+    rijen: [
+      ['Goudse', 'jong tot zeer zeer oud'],
+      ['Boeren Goudse', 'ook als gatenkaas'],
+      ['Noord-Hollandse', 'extra belegen, oud'],
+      ['Boeren graskaas', 'van de boerderij'],
+      ['Kruidenkaas', 'brandnetel, komijn, pesto'],
+      ['Italiaanse kruiden', 'ook met truffel'],
+      ['Zacht', 'brie, Chaumes, St. Agur'],
+    ],
+  },
+  {
+    titel: 'Noten',
+    rijen: [
+      ['Macadamia’s', 'pecan, para, walnoten'],
+      ['Cashew', 'pistache, hazelnoten'],
+      ['Pinda’s', 'vlies, Amerikaans, jumbo'],
+      ['Notenmixen', 'diverse'],
+      ['Studentenhaver', 'en chocolademix'],
+    ],
+  },
+  {
+    titel: 'En verder',
+    rijen: [
+      ['Zuidvruchten', 'abrikozen, dadels, pruimen'],
+      ['Cranberries', 'rozijnen'],
+      ['Eieren', 'en kaastoebehoren'],
+      ['Jam', 'van Fruit Fiction'],
+      ['Mosterd', 'sauzen, rijstzoutjes'],
+    ],
+  },
+] as const;
+
+// Bestelzin: alleen wat ze zelf aanbieden (Facebook-intro, eigen site, posts). Cadeau-soorten vragen niet naar personen.
+const soorten = [
+  ['een kaasplank', 'p'],
+  ['een kaasschotel', 'p'],
+  ['een kaasbuffet', 'p'],
+  ['verse kaasfondue', 'p'],
+  ['een cadeaumandje', 'c'],
+  ['relatiegeschenken', 'c'],
+  ['een cadeaubon', 'c'],
+];
+const personen = ['2 tot 4', '5 tot 10', '10 tot 25', 'meer dan 25'];
+const wanneer = ['deze week', 'volgende week', 'over een paar weken', 'nog niet bekend'];
+
+const titel = 'Ongelooflijk Lekker | Kaaswinkel in de Walstraat, Vlissingen';
+const omschrijving = 'Ongelooflijk Lekker, Walstraat 83 in Vlissingen: kaas, noten en zuidvruchten sinds 2015. Kaasplanken, kaasschotels en cadeaumandjes, vraag het via WhatsApp.';
+const r = reviews;
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen winkelpui met de gele parasol en de groene loper -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-bord text-wit md:min-h-[calc(100svh-5rem)]">
+      <Image src={gevel} alt="De winkel aan de Walstraat: open pui vol kazen, een gele parasol, een groene loper naar binnen, kaaswielen op een tafel en een vlag met Kaas & Noten" quality={60} widths={[480, 720, 960, 1280, 1440]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_78%] md:object-[50%_62%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1c201d80_0%,#1c201d59_22%,#1c201d99_48%,#1c201dee_72%,#1c201d_100%)] lg:bg-[linear-gradient(90deg,#1c201df0_0%,#1c201dd9_34%,#1c201d80_54%,#1c201d1a_76%,#1c201d00_100%),linear-gradient(0deg,#1c201dcc_0%,#1c201d00_42%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-20 lg:pb-24">
+        <p class="text-sm font-semibold text-wit lg:text-geel">Kaaswinkel aan de Walstraat, Vlissingen</p>
+        <h1 class="mt-5 text-hero">Ongelooflijk<br /> lekkere <span class="text-geel">kaas</span></h1>
+        <p class="mt-6 max-w-md text-lg text-wit/90">Met noten en zuidvruchten, verkocht met passie en plezier. Sinds 2015, in het kleine winkeltje op nummer 83.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-4">
+          <a href={waHoi} class="knop"><Icoon naam="wa" />App de winkel</a>
+          <a href={site.telHref} class="knop knop-rand num text-wit max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <p class="mt-10 text-xs text-krijt-zacht max-md:hidden" data-status-wrap><span data-status>Di t/m za open</span> · {site.straat}, {site.plaats}</p>
+      </div>
+    </section>
+
+    <!-- 2. DE WINKEL: de kaasboer met de parmezaan, het verhaal in twee zinnen -->
+    <section id="winkel" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-6">
+          <Image src={parmezaan} alt="De eigenaar in de winkel met een hele parmezaanse kaas in zijn armen, achter hem de schappen met kaas" quality={62} widths={[400, 600, 800, 1000]} sizes="(min-width: 1024px) 46vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover object-[45%_40%] md:aspect-[5/4] lg:aspect-[4/5]" />
+        </figure>
+        <div class="flex flex-col justify-center lg:col-span-5 lg:col-start-8">
+          <h2 class="rijs text-3xl">Een eigen speciaalzaak, sinds 2015</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">In de voormalige winkel van Smith Kaas. Vooral Hollandse kazen en de lekkerste noten en zuidvruchten, met een wisselend aanbod zachte kazen, eieren en kaastoebehoren.</p>
+          <blockquote class="rijs mt-10 border-l-4 border-geel pl-5">
+            <p class="font-kop text-xl leading-[1.3]">“{r.dennis.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{r.dennis.naam} op Google</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. HET BORD: assortiment als krijtbord, zoals bij hun pui -->
+    <section id="bord" class="bg-bord py-20 text-krijt md:py-28" aria-labelledby="bord-titel">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 id="bord-titel" class="rijs text-3xl lg:col-span-7">Van jong belegen tot <span class="text-geel">zeer zeer oud</span></h2>
+          <p class="rijs self-end text-krijt-zacht lg:col-span-4 lg:col-start-9">Een greep uit het assortiment. Wat er ligt wisselt met de seizoenen; app gerust wat er nu is.</p>
+        </div>
+
+        <div class="mt-14 grid gap-y-12 md:grid-cols-3 md:gap-x-10">
+          {bord.map((k, i) => (
+            <div class="rijs" style={`--d:${i * 0.08}s`}>
+              <h3 class="border-b border-lijn-licht pb-3 text-2xl text-geel">{k.titel}</h3>
+              <ul class="mt-2">
+                {k.rijen.map(([naam, uitleg]) => (
+                  <li class="regel"><span class="font-bold">{naam}</span><i aria-hidden="true"></i><span class="text-sm text-krijt-zacht">{uitleg}</span></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-16 grid grid-cols-12 gap-4 md:gap-6">
+          <Image src={wielen} alt="Gele, oranje, rode en groene kaaswielen op houten planken in de winkel" quality={62} widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 62vw, 100vw" class="rijs col-span-12 aspect-[16/10] w-full rounded-md object-cover md:col-span-8" />
+          <figure class="rijs col-span-12 flex flex-col md:col-span-4" style="--d:.1s">
+            <Image src={fondue} alt="Een pan kaasfondue op tafel, met brood, groenten en kaas eromheen" quality={62} widths={[320, 480, 640]} sizes="(min-width: 768px) 30vw, 100vw" class="aspect-[16/10] w-full flex-1 rounded-md object-cover md:aspect-auto" />
+            <figcaption class="mt-3 text-sm text-krijt-zacht"><span class="font-bold text-krijt">Kaasfondue kan het hele jaar.</span> De kaas malen we vers voor u, klaar terwijl u wacht.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KAASPLANK: de bestelzin, eindigt in WhatsApp -->
+    <section id="plank" class="relative overflow-hidden py-20 md:py-28" aria-labelledby="plank-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="order-2 lg:col-span-7">
+          <Image src={kaasplank} alt="Een lange houten plank vol kazen, brie, blauwe kaas, olijven, worst, ham, noten, dadels, crackers en fruit" quality={62} widths={[480, 720, 960, 1280]} sizes="(min-width: 1024px) 55vw, 100vw" class="rijs aspect-square w-full rounded-md object-cover" />
+          <div class="mt-4 grid grid-cols-2 gap-4">
+            <Image src={plankRond} alt="Een ronde kaasplank met blokjes kaas, bakjes noten, abrikozen, dadels en blauwe kaas" quality={60} widths={[320, 480]} sizes="(min-width: 1024px) 27vw, 50vw" class="rijs aspect-square w-full rounded-md object-cover" />
+            <Image src={cadeau} alt="Een cadeaukistje met jam en een strik met het label van Ongelooflijk Lekker, naast zwarte kaasklompjes" quality={60} widths={[320, 480]} sizes="(min-width: 1024px) 27vw, 50vw" class="rijs aspect-square w-full rounded-md object-cover" style="--d:.1s" />
+          </div>
+        </div>
+        <div class="order-1 lg:col-span-5 lg:pt-6">
+          <h2 id="plank-titel" class="rijs text-3xl">Receptie? Feestje? Borrel?</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">We stellen in overleg een plank of schotel samen, met kazen, noten, vruchten en andere heerlijkheden. Voor thuis en voor bedrijven.</p>
+
+          <form class="rijs mt-10 rounded-md bg-geel p-6 text-inkt shadow-sm md:p-8" data-bestel>
+            <p class="font-kop text-[clamp(1.5rem,1.6vw+1rem,2.125rem)] leading-[1.45]">
+              Ik zoek
+              <label class="sr-only" for="b-soort">Wat</label>
+              <select id="b-soort" class="kies" data-soort>
+                {soorten.map(([t, s]) => <option value={t} data-s={s}>{t}</option>)}
+              </select><span data-pers-zin>
+              voor
+              <label class="sr-only" for="b-pers">Aantal personen</label>
+              <select id="b-pers" class="kies" data-pers>
+                {personen.map((t, i) => <option value={t} selected={i === 1}>{t}</option>)}
+              </select>
+              personen</span>,
+              <label class="sr-only" for="b-wanneer">Wanneer</label>
+              <select id="b-wanneer" class="kies" data-wanneer>
+                {wanneer.map((t, i) => <option value={t} selected={i === 1}>{t}</option>)}
+              </select>.
+            </p>
+            <a href={waMet('Hallo, ik zoek een kaasplank voor 5 tot 10 personen, volgende week. Kunnen jullie die maken?')} class="knop knop-donker mt-8" data-bestel-wa><Icoon naam="wa" />Vraag het via WhatsApp</a>
+            <p class="mt-4 text-sm">Je bericht opent in WhatsApp; je verstuurt het zelf.</p>
+          </form>
+          <p class="rijs mt-8 max-w-md text-sm text-grijs">In overleg brengen we de schotel en halen we de platen weer op. Geen omkijken naar, en geen afwas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. WAT KLANTEN ZEGGEN: op het geel van de parasol -->
+    <div class="parasol rotate-180" aria-hidden="true"></div>
+    <section class="bg-geel pb-20 pt-16 text-inkt md:pb-28 md:pt-20" aria-labelledby="rev-titel">
+      <div class="wrap">
+        <h2 id="rev-titel" class="sr-only">Reviews op Google</h2>
+        <div class="grid gap-x-12 gap-y-14 md:grid-cols-3">
+          {[r.tom, r.martijn, r.michael].map((x, i) => (
+            <figure class="rijs" style={`--d:${i * 0.08}s`}>
+              <blockquote class="font-kop text-xl leading-[1.3] md:text-[1.5rem]">“{x.tekst}”</blockquote>
+              <figcaption class="mt-5 text-sm font-semibold">{x.naam} op Google</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+    <div class="parasol" aria-hidden="true"></div>
+
+    <!-- 6. BEZOEK: adres, tijden, markten -->
+    <section id="bezoek" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-3xl">Walstraat 83</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Midden in Vlissingen. Pinnen, creditcard en contactloos betalen kan.</p>
+          <div class="rijs mt-8 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop knop-donker"><Icoon naam="pin" />Route plannen</a>
+            <a href={site.telHref} class="knop knop-rand num">{site.tel}</a>
+          </div>
+          <figure class="rijs mt-14 grid grid-cols-[8rem_1fr] items-center gap-5 sm:grid-cols-[11rem_1fr]">
+            <Image src={markt} alt="De kraam van Ongelooflijk Lekker op de Highlandgames in Baarland, vol kaaswielen onder een witte tent" quality={60} widths={[200, 360]} sizes="11rem" class="aspect-square w-full rounded-sm object-cover" />
+            <figcaption class="text-grijs"><span class="font-bold text-inkt">In de zomer ook op de markt,</span> zoals op de Highlandgames in Baarland. Aangepaste tijden staan op <a href={site.facebook} class="link font-semibold text-inkt">Facebook</a>.</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs rounded-md bg-bord p-7 text-krijt md:p-9" data-status-wrap>
+            <h3 class="text-2xl text-geel">Open</h3>
+            <p class="mt-2 text-sm font-bold" data-status>Dinsdag tot en met zaterdag</p>
+            <table class="mt-6 w-full text-base">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn-licht last:border-0 data-[vandaag]:font-bold data-[vandaag]:text-geel">
+                    <th scope="row" class="py-2.5 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num whitespace-nowrap py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <a href={waHoi} class="link link-licht mt-6 inline-block font-semibold">Vraag via WhatsApp wat er vandaag ligt</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-bestel]');
+  if (f) {
+    const soort = f.querySelector<HTMLSelectElement>('[data-soort]')!;
+    const pers = f.querySelector<HTMLSelectElement>('[data-pers]')!;
+    const wanneer = f.querySelector<HTMLSelectElement>('[data-wanneer]')!;
+    const persZin = f.querySelector<HTMLElement>('[data-pers-zin]')!;
+    const wa = f.querySelector<HTMLAnchorElement>('[data-bestel-wa]')!;
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const cadeau = soort.selectedOptions[0]?.dataset.s === 'c';
+      persZin.hidden = cadeau;
+      const w = wanneer.value === 'nog niet bekend' ? 'de datum weet ik nog niet' : wanneer.value;
+      const tekst = `Hallo, ik zoek ${soort.value}${cadeau ? '' : ` voor ${pers.value} personen`}, ${w}. Kunnen jullie ${cadeau ? 'me daarmee helpen' : 'die maken'}?`;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+    };
+    // Elke keuzelijst zo breed als het gekozen woord, zodat de zin een zin blijft.
+    const maat = document.createElement('span');
+    maat.setAttribute('aria-hidden', 'true');
+    maat.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;left:-9999px;top:0';
+    f.appendChild(maat);
+    const pas = () => f.querySelectorAll<HTMLSelectElement>('select').forEach((s) => {
+      const cs = getComputedStyle(s);
+      maat.style.font = cs.font; maat.style.letterSpacing = cs.letterSpacing;
+      maat.textContent = s.selectedOptions[0]?.text || '';
+      s.style.width = `calc(${maat.getBoundingClientRect().width}px + 1.25em)`;
+    });
+    f.addEventListener('change', () => { zet(); pas(); });
+    document.fonts?.ready.then(pas); addEventListener('resize', pas); pas();
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>
