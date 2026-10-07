@@ -1,0 +1,5 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: +(process.argv[2]||1440), height: 900 } });
+await p.goto('http://localhost:4418/sitefront/bas-en-sax-heukelum/', { waitUntil: 'networkidle' });
+console.log(await p.evaluate(() => [...document.querySelectorAll('main > section, footer')].map(s => (s.id||s.tagName) + ' ' + Math.round(s.getBoundingClientRect().height)).join(' | ')));
+await b.close();

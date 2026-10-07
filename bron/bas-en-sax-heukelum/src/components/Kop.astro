@@ -1,0 +1,43 @@
+---
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['werkplaats', 'Werkplaats'], ['onderhoud', 'Onderhoud'], ['collectie', 'Collectie'], ['huren', 'Huren'], ['mondstukken', 'Mondstukken']];
+---
+<header class={thuis ? 'absolute inset-x-0 top-0 z-40' : 'relative z-40 bg-vilt'}>
+  <div class="wrap flex h-20 items-center justify-between gap-6 md:h-24">
+    <Merk />
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9688rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/85 no-underline transition-colors duration-200 hover:text-mos">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href={site.telHref} class="num hidden text-[.9688rem] font-medium text-wit no-underline transition-colors hover:text-mos xl:block">{site.tel}</a>
+      <a href={waHoi} class="knop knop-wit hidden min-h-11 px-5 md:inline-flex"><Icoon naam="wa" />WhatsApp</a>
+      <button type="button" class="grid h-11 w-11 place-items-center text-wit lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-nav" aria-label="Menu" class="hidden bg-vilt lg:hidden" data-menu>
+    <ul class="wrap pb-8 pt-2">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="block border-b border-lijn py-4 font-kop text-2xl text-wit no-underline">{t}</a></li>)}
+      <li class="pt-6"><a href={site.telHref} class="num font-medium text-nikkel no-underline">{site.tel}</a></li>
+    </ul>
+  </nav>
+</header>
+
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>
