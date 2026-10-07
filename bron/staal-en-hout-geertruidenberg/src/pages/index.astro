@@ -1,0 +1,204 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, waHoi } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import pontonKraan from '../assets/ponton-kraan.jpg';
+import pontonBoven from '../assets/ponton-boven.jpg';
+import sfeerStaal from '../assets/sfeer-staal.jpg';
+import sfeerHout from '../assets/sfeer-hout.jpg';
+
+// Hero: het ponton naast het schip, liggend op desktop en staand op mobiel. Foto: Lodewikus (LinkedIn, april 2026).
+const hD = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: hero, width: w, quality: 70, format: 'webp' })));
+const hM = await Promise.all([480, 900].map((w) => getImage({ src: heroM, width: w, quality: 66, format: 'webp' })));
+const srcset = (l: { src: string }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+const titel = 'Staal en Hout B.V. | Klussen, onderhoud en advies in Geertruidenberg';
+const omschrijving = 'Staal en Hout B.V. in Geertruidenberg: klussen, onderhoud en advies in staal en hout. Contact: Henk Zijlmans, 06 51 84 18 05.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun ponton op het water -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-inkt text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hD, [960, 1440, 1920])} sizes="100vw" type="image/webp" />
+        <source srcset={srcset(hM, [480, 900])} sizes="100vw" type="image/webp" />
+        <img src={hD[1].src} alt="Een betonnen ponton met stalen randen ligt in het kanaal naast een binnenvaartschip; twee mannen in oranje hesjes werken op het ponton" width="1440" height="900" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:object-[60%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#14191b33_0%,#14191b0d_28%,#14191bc7_52%,#14191bf5_100%)] md:bg-[linear-gradient(90deg,#14191be6_0%,#14191bb3_34%,#14191b33_62%,#14191b00_100%),linear-gradient(0deg,#14191bb3_0%,#14191b00_38%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-14 lg:pb-16">
+        <p class="text-sm font-medium tracking-[.14em] text-wit/85 uppercase">Aannemer in {site.plaats}</p>
+        <h1 class="mt-5 max-w-[11ch] text-hero">Staal. Hout. En een ponton van <span class="text-menie-licht">95 ton.</span></h1>
+        <p class="mt-7 max-w-[32rem] text-lg text-wit/90 md:text-xl">Klussen, onderhoud en advies in staal en hout. U spreekt direct met {site.contact}.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#aanvraag" class="knop"><span class="sm:hidden">Wat wilt u laten maken?</span><span class="max-sm:hidden">Vertel wat u wilt laten maken</span><Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <p class="mt-12 hidden max-w-sm border-t border-lijn-licht pt-4 text-xs text-wit/70 md:block">Ponton voor Jachthaven Biesbosch, voorjaar 2026. Foto: Lodewikus.</p>
+      </div>
+    </section>
+
+    <!-- 2. TWEE MATERIALEN -->
+    <section id="werk" class="raster bg-beton py-20 md:py-32">
+      <div class="wrap grid gap-y-8 md:grid-cols-12 md:gap-x-10">
+        <h2 class="rijs text-3xl md:col-span-7">Twee materialen, één aanspreekpunt.</h2>
+        <p class="rijs max-w-md text-lg text-grijs md:col-span-5 md:self-end" style="--d:.1s">Iets nieuws laten maken, onderhoud of eerst advies: u bespreekt het direct met {site.contact}.</p>
+      </div>
+
+      <div class="wrap mt-14 grid gap-5 md:mt-20 md:grid-cols-2 md:gap-6">
+        <figure class="rijs group relative overflow-hidden rounded-sm bg-staal">
+          <Image src={sfeerStaal} alt="" quality={66} widths={[480, 720, 960]} sizes="(min-width: 768px) 48vw, 100vw" class="aspect-[4/5] w-full object-cover opacity-80 transition-transform duration-[1.4s] ease-out group-hover:scale-[1.03] md:aspect-[5/6]" />
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,#14191b00_40%,#14191be0_100%)]" aria-hidden="true"></div>
+          <figcaption class="absolute inset-x-0 bottom-0 p-6 text-wit md:p-9">
+            <h3 class="text-reus leading-[.8]">Staal</h3>
+            <p class="mt-4 max-w-xs text-lg text-wit/85">Voor wat sterk moet zijn en lang mee moet.</p>
+          </figcaption>
+          <span class="absolute right-4 top-4 rounded-sm bg-inkt/70 px-2 py-1 text-xs text-wit/85">Sfeerbeeld</span>
+        </figure>
+        <figure class="rijs group relative overflow-hidden rounded-sm bg-staal md:mt-24" style="--d:.12s">
+          <Image src={sfeerHout} alt="" quality={66} widths={[480, 720, 960]} sizes="(min-width: 768px) 48vw, 100vw" class="aspect-[4/5] w-full object-cover object-[35%_50%] opacity-85 transition-transform duration-[1.4s] ease-out group-hover:scale-[1.03] md:aspect-[5/6]" />
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,#14191b00_40%,#14191be0_100%)]" aria-hidden="true"></div>
+          <figcaption class="absolute inset-x-0 bottom-0 p-6 text-wit md:p-9">
+            <h3 class="text-reus leading-[.8]">Hout</h3>
+            <p class="mt-4 max-w-xs text-lg text-wit/85">Voor wat warm, licht of goed te bewerken moet zijn.</p>
+          </figcaption>
+          <span class="absolute right-4 top-4 rounded-sm bg-inkt/70 px-2 py-1 text-xs text-wit/85">Sfeerbeeld</span>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. HET PONTON: het werk dat we kunnen laten zien -->
+    <section id="ponton" class="raster-donker bg-staal py-20 text-wit md:py-32">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:grid-rows-[auto_1fr] lg:gap-x-12">
+        <div class="lg:col-span-5 lg:row-start-1">
+          <h2 class="rijs text-3xl">Een ponton van beton. En het drijft.</h2>
+          <p class="rijs mt-7 max-w-md text-lg text-mist" style="--d:.1s">Voor Jachthaven Biesbosch bouwde {site.contact} een ponton, onder de kraanbaan van Lodewikus. Daarna: via het water naar zijn bestemming.</p>
+        </div>
+
+        <div class="grid gap-5 lg:col-span-7 lg:col-start-6 lg:row-span-2 lg:row-start-1 lg:grid-cols-7 lg:content-start">
+          <figure class="rijs lg:col-span-7">
+            <div class="maat mb-4 text-menie-licht"><span class="pijl-l"></span>95 ton<span class="pijl-r"></span></div>
+            <Image src={pontonKraan} alt="Het betonnen ponton met stalen randprofielen hangt aan vier kettingen onder een gele kraanbaan, net boven het water" quality={78} widths={[480, 718]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover" />
+          </figure>
+          <figure class="rijs lg:col-span-4" style="--d:.1s">
+            <Image src={pontonBoven} alt="Bovenaanzicht van het ponton in het water, aan staalkabels onder de kraanbaan, met een vlag van Lodewikus" quality={58} widths={[400, 600, 800]} sizes="(min-width: 1024px) 28vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_60%] max-lg:aspect-[4/3]" />
+          </figure>
+          <div class="rijs flex flex-col justify-end gap-6 lg:col-span-3" style="--d:.15s">
+            <p class="text-sm text-mist">Foto's: Lodewikus, uit hun LinkedIn-bericht van 1 april 2026.</p>
+            <a href="#aanvraag" class="knop self-start">Ook iets op maat?<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 lg:row-start-2">
+          <blockquote class="rijs border-l-2 border-menie-licht pl-6">
+            <p class="kop text-2xl leading-tight">“Dan zie je uiteindelijk dat een Betonblok van 95 ton ook gewoon kan drijven.”</p>
+            <footer class="mt-4 text-sm text-mist">Jan Konijnenberg, Lodewikus, op <a href={site.bronPost} class="link link-licht">LinkedIn</a></footer>
+          </blockquote>
+
+          <dl class="stempel rijs mt-12 max-w-md text-wit" style="--d:.1s">
+            <dt>Werk</dt><dd>Ponton</dd>
+            <dt>Voor</dt><dd>Jachthaven Biesbosch</dd>
+            <dt>Gebouwd</dt><dd>Onder de kraanbaan van Lodewikus</dd>
+            <dt>Gewicht</dt><dd class="num">95 ton</dd>
+            <dt>Vervoer</dt><dd>Over het water gesleept</dd>
+            <dt>Periode</dt><dd>Voorjaar 2026</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. WERKBON: de wow-functie -->
+    <section id="aanvraag" class="raster bg-papier py-20 md:py-32">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-3xl">Wat wilt u laten maken?</h2>
+          <p class="rijs mt-6 max-w-sm text-lg text-grijs" style="--d:.1s">Vul de zin aan en stuur hem via WhatsApp naar {site.voornaam}. Een foto of tekening kunt u daar meesturen.</p>
+        </div>
+
+        <form class="rijs relative rounded-sm border-[1.5px] border-inkt bg-wit p-6 shadow-sm sm:p-10 lg:col-span-8" style="--d:.15s" data-bon novalidate>
+          <div class="mb-8 flex items-center justify-between gap-4 border-b border-lijn pb-4 text-xs uppercase tracking-[.1em] text-grijs">
+            <span>Werkbon</span><span>{site.naam}</span>
+          </div>
+          <p class="kop text-[1.625rem] leading-[1.75] text-inkt sm:text-[2rem]">
+            Hallo {site.voornaam}, ik wil graag
+            <label class="sr-only" for="b-soort">Soort werk</label>
+            <select id="b-soort" name="soort" class="vul">
+              <option value="iets laten maken">iets laten maken</option>
+              <option value="onderhoud laten doen">onderhoud laten doen</option>
+              <option value="advies">advies</option>
+            </select>
+            in
+            <label class="sr-only" for="b-materiaal">Materiaal</label>
+            <select id="b-materiaal" name="materiaal" class="vul">
+              <option value="staal">staal</option>
+              <option value="hout">hout</option>
+              <option value="staal en hout">staal en hout</option>
+            </select>,
+            namelijk
+            <label class="sr-only" for="b-wat">Wat is het?</label>
+            <span class="inline-flex max-w-full items-baseline"><input id="b-wat" name="wat" class="vul min-w-[13ch]" placeholder="kort omschrijven" autocomplete="off" />.</span>{" "}
+            Het is in
+            <label class="sr-only" for="b-waar">Plaats</label>
+            <span class="inline-flex items-baseline"><input id="b-waar" name="waar" class="vul min-w-[7ch]" placeholder="plaats" autocomplete="address-level2" />.</span>
+          </p>
+
+          <div class="mt-10 flex flex-col gap-5 border-t border-lijn pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <a href={waHoi} class="knop" data-bon-wa><Icoon naam="wa" />Stuur naar {site.voornaam}</a>
+            <p class="text-sm text-grijs">Of bel: <a href={site.telHref} class="link num whitespace-nowrap">{site.tel}</a></p>
+          </div>
+          <p class="mt-5 text-xs text-grijs">De werkbon verstuurt zelf niets. WhatsApp opent met uw tekst; u verstuurt het daar zelf.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. CONTACT -->
+    <section id="contact" class="bg-beton py-20 md:py-28">
+      <div class="wrap grid gap-y-12 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-7">
+          <h2 class="rijs text-3xl">Bel of app {site.voornaam}.</h2>
+          <a href={site.telHref} class="rijs kop num mt-8 block text-[clamp(2.5rem,7vw,5.5rem)] leading-none text-inkt no-underline transition-colors hover:text-menie-donker" style="--d:.1s">{site.tel}</a>
+          <div class="rijs mt-10 flex flex-wrap gap-3" style="--d:.15s">
+            <a href={waHoi} class="knop"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-donker"><Icoon naam="tel" />Bellen</a>
+          </div>
+        </div>
+        <dl class="stempel rijs self-end text-inkt md:col-span-5" style="--d:.2s">
+          <dt>Contact</dt><dd>{site.contact}</dd>
+          <dt>Telefoon</dt><dd class="num">{site.tel}</dd>
+          <dt>Plaats</dt><dd>{site.plaats}</dd>
+          <dt>KvK</dt><dd class="num">{site.kvk}</dd>
+        </dl>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  const a = document.querySelector<HTMLAnchorElement>('[data-bon-wa]');
+  if (f && a) {
+    const maak = () => {
+      const d = new FormData(f);
+      const wat = String(d.get('wat') || '').trim();
+      const waar = String(d.get('waar') || '').trim();
+      let t = `Hallo ${site.voornaam}, ik wil graag ${d.get('soort')} in ${d.get('materiaal')}`;
+      if (wat) t += `, namelijk ${wat}`;
+      t += '.';
+      if (waar) t += ` Het is in ${waar}.`;
+      a.href = `${site.wa}?text=${encodeURIComponent(t)}`;
+    };
+    f.addEventListener('input', maak);
+    f.addEventListener('change', maak);
+    f.addEventListener('submit', (e) => { e.preventDefault(); maak(); window.open(a.href, '_blank', 'noopener'); });
+    maak();
+  }
+</script>

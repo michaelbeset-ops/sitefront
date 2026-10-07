@@ -1,0 +1,27 @@
+---
+// Keuringssticker "Volgende inspectie", naar de sticker in hun keuringenbanner. Twaalf maanden rond, twee jaartallen.
+// Het script prikt de maand van nu, een jaar verder: de volgende keuring.
+interface Props { class?: string }
+const { class: cls = '' } = Astro.props;
+const R = 86;
+const maanden = Array.from({ length: 12 }, (_, i) => {
+  const a = ((i * 30 - 90 + 15) * Math.PI) / 180;
+  return { n: i + 1, x: 100 + Math.cos(a) * R, y: 100 + Math.sin(a) * R, tx: 100 + Math.cos(a) * 70, ty: 100 + Math.sin(a) * 70 + 4, a: i * 30 };
+});
+---
+<svg viewBox="0 0 200 200" class:list={['sticker', cls]} role="img" aria-label="Keuringssticker: volgende inspectie" data-sticker>
+  <circle cx="100" cy="100" r="98" fill="#ffffff" />
+  <circle cx="100" cy="100" r="96" fill="none" stroke="#161513" stroke-width="2" />
+  <circle cx="100" cy="100" r="58" fill="none" stroke="#161513" stroke-width="1.5" />
+  {maanden.map((m) => (
+    <g>
+      <line x1="100" y1="4" x2="100" y2="42" stroke="#161513" stroke-width="1.5" transform={`rotate(${m.a} 100 100)`} />
+      <text x={m.tx} y={m.ty} text-anchor="middle" font-family="Fjalla One, sans-serif" font-size="13" fill="#161513">{m.n}</text>
+      <circle class="gat" cx={m.x} cy={m.y} r="7" data-maand={m.n} />
+    </g>
+  ))}
+  <text x="100" y="80" text-anchor="middle" font-family="Fjalla One, sans-serif" font-size="12" letter-spacing="1" fill="#161513">VOLGENDE</text>
+  <text x="100" y="95" text-anchor="middle" font-family="Fjalla One, sans-serif" font-size="12" letter-spacing="1" fill="#161513">INSPECTIE</text>
+  <rect x="68" y="104" width="64" height="26" rx="3" fill="#f3ab01" />
+  <text x="100" y="124" text-anchor="middle" font-family="Fjalla One, sans-serif" font-size="20" letter-spacing="1" fill="#161513" data-jaar>&nbsp;</text>
+</svg>

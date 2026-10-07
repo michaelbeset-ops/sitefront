@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@import "@fontsource/josefin-slab/600.css";
+@import "@fontsource/josefin-slab/700.css";
+@import "@fontsource/jost/400.css";
+@import "@fontsource/jost/500.css";
+@import "@fontsource/jost/600.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Concept: een werktekening op de werkvloer. Betongrijs en staalgrijs, met één kleur: menie,
+     het roodbruin van de stalen randprofielen langs hun ponton. */
+  --color-menie: #b0441d;        /* vlak + knop, witte tekst 5,7:1 */
+  --color-menie-licht: #e0764f;  /* accent op donker, 5,8:1 */
+  --color-menie-donker: #9a3a18; /* tekstlinks op licht, 7:1 */
+  --color-beton: #e6e7e4;
+  --color-beton-2: #d3d5d1;
+  --color-papier: #f4f4f2;
+  --color-wit: #ffffff;
+  --color-inkt: #14191b;
+  --color-staal: #222b2f;
+  --color-staal-2: #2e383d;
+  --color-grijs: #50595d;        /* bijtekst, 5,8:1 op beton */
+  --color-mist: #a9b3b7;         /* bijtekst op donker */
+  --color-lijn: #14191b26;
+  --color-lijn-licht: #ffffff2b;
+
+  --font-kop: "Josefin Slab", Rockwell, Georgia, serif;
+  --font-sans: "Jost", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.625rem, .9vw + 1.3rem, 2.125rem);
+  --text-3xl: clamp(2.375rem, 3vw + 1.3rem, 4.25rem);
+  --text-reus: clamp(4.5rem, 12vw + 1rem, 13rem);
+  --text-hero: clamp(2.875rem, 5.4vw + 1rem, 6.5rem);
+
+  --radius-sm: 2px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #14191b14, 0 8px 24px #14191b14;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: .95; letter-spacing: -0.015em; text-wrap: balance; overflow-wrap: break-word; }
+  h3 { line-height: 1.05; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-menie); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-menie-licht); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); font-weight: 700; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; padding: .2rem 1.5rem 0; border-radius: var(--radius-sm); font-family: var(--font-kop); font-weight: 700; font-size: 1.1875rem; letter-spacing: .01em; text-decoration: none; white-space: nowrap; cursor: pointer; max-width: 100%; background: var(--color-menie); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-menie-donker); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; margin-top: -.2rem; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-donker { background: var(--color-inkt); color: var(--color-wit); }
+  .knop-donker:hover { background: var(--color-staal-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-menie); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-menie-donker); }
+  .link-licht:hover { color: var(--color-menie-licht); }
+
+  /* Eigen detail 1: maatlijnen zoals op een werktekening. Pijlpunten aan de uiteinden, maatgetal in het midden. */
+  .maat { --c: currentColor; position: relative; display: flex; align-items: center; gap: .9rem; font-family: var(--font-kop); font-weight: 700; font-size: 1rem; letter-spacing: .04em; color: var(--c); }
+  .maat::before, .maat::after { content: ""; flex: 1; height: 1px; background: var(--c); }
+  .maat > .pijl-l, .maat > .pijl-r { position: absolute; top: 50%; width: 9px; height: 9px; border: solid var(--c); border-width: 0 0 1px 1px; }
+  .maat > .pijl-l { left: 0; transform: translateY(-50%) rotate(45deg); transform-origin: center; }
+  .maat > .pijl-r { right: 0; transform: translateY(-50%) rotate(-135deg); }
+  .maat-hulp { position: absolute; top: 50%; width: 1px; height: 1.4rem; background: var(--c); transform: translateY(-50%); }
+
+  /* Eigen detail 2: het titelblok (stempel) rechtsonder op een werktekening. */
+  .stempel { border: 1.5px solid currentColor; display: grid; grid-template-columns: auto 1fr; }
+  .stempel > dt, .stempel > dd { padding: .55rem .85rem; border-bottom: 1px solid currentColor; }
+  .stempel > dt { border-right: 1px solid currentColor; font-size: .8125rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 500; opacity: .8; display: flex; align-items: center; }
+  .stempel > dd { font-family: var(--font-kop); font-weight: 700; font-size: 1.1875rem; line-height: 1.2; padding-top: .7rem; }
+  .stempel > :nth-last-child(-n+2) { border-bottom: 0; }
+
+  /* Millimeterraster op betonvlakken, heel licht. */
+  .raster { background-image: linear-gradient(90deg, #14191b0b 1px, transparent 1px), linear-gradient(0deg, #14191b0b 1px, transparent 1px); background-size: 24px 24px; }
+  .raster-donker { background-image: linear-gradient(90deg, #ffffff09 1px, transparent 1px), linear-gradient(0deg, #ffffff09 1px, transparent 1px); background-size: 24px 24px; }
+
+  /* Werkbon: invulzin met onderstreepte velden. */
+  .vul { appearance: none; -webkit-appearance: none; font: inherit; font-family: var(--font-kop); font-weight: 700; color: var(--color-menie-donker); background: transparent; border: 0; border-bottom: 2px solid var(--color-inkt); border-radius: 0; padding: 0 .15em; min-height: 2.75rem; line-height: 1.1; max-width: 100%; field-sizing: content; min-width: 4ch; transition: border-color .25s, background-color .25s; }
+  .vul:focus { outline: none; border-color: var(--color-menie); background: #b0441d12; }
+  .vul::placeholder { color: #7a8286; font-weight: 600; }
+  select.vul { padding-right: 1.4em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a3a18' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1em center; background-size: .75em; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

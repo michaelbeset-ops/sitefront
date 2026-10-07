@@ -1,0 +1,293 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Silhouet from '../components/Silhouet.astro';
+import Sticker from '../components/Sticker.astro';
+import { site, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import elektrisch from '../assets/elektrisch.jpg';
+import stapelaars from '../assets/stapelaars.jpg';
+import rij from '../assets/rij.jpg';
+import erf from '../assets/erf.jpg';
+
+// Hero: hun grootste eigen foto (400x352 op de huidige site), vergroot met drukraster. Staande uitsnede op mobiel.
+const hD = await Promise.all([960, 1440, 1760].map((w) => getImage({ src: hero, width: w, quality: 68, format: 'webp' })));
+const hM = await Promise.all([480, 780, 1000].map((w) => getImage({ src: heroM, width: w, quality: 64, format: 'webp' })));
+const srcset = (l: { src: string }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+
+// Teksten van hun eigen site, ingekort en de spelling rechtgezet.
+const beurt = ['Smeren van draaiende delen', 'Olie verversen, filters reinigen of vervangen waar nodig', 'Algehele inspectie op inzetbaarheid en veiligheid', 'Machine opnieuw afstellen', 'Kleine reparaties', 'Overdracht van het servicerapport'];
+const keuring = ['Aandrijving', 'Motor', 'Chassis', 'Koelsysteem', 'Stuurinrichting', 'Transmissie', 'Mast', 'Voorzetapparatuur', 'Elektrische installatie', 'Hydraulisch systeem', 'Remmen', 'Kettingen', 'Lepels', 'Banden en wielen', 'EPT en stapelaar', 'Chauffeurspositie en stoel', 'Identificatie'];
+const aanbod = [
+  { naam: 'Verkoop', tekst: 'Op zoek naar een (andere) heftruck of intern transportmiddel? Vraag naar wat er nu op voorraad staat.', wa: 'Hallo, ik ben op zoek naar een heftruck. Wat heeft u op dit moment in de verkoop?', knop: 'Vraag het aanbod op' },
+  { naam: 'Inruil en inkoop', tekst: 'Ruil uw huidige heftruck in voor het model dat u zoekt. Wilt u alleen verkopen, dan horen we dat ook graag.', wa: 'Hallo, ik wil mijn heftruck inruilen of verkopen.', knop: 'Inruil bespreken' },
+  { naam: 'Verhuur', tekst: 'Niet meteen investeren? Huur een heftruck of intern transportmiddel, van 1 dag tot 1 jaar. We adviseren graag welk model past.', wa: 'Hallo, ik wil graag een heftruck huren.', knop: 'Huren aanvragen' },
+  { naam: 'Batterijen en laders', tekst: 'Diverse batterijen op voorraad, zodat u niet meteen een nieuwe heftruck hoeft te kopen. Niet op voorraad? Dan zorgen we dat hij snel geleverd wordt.', wa: 'Hallo, ik heb een batterij of lader nodig voor mijn heftruck.', knop: 'Batterij aanvragen' },
+  { naam: 'Transport', tekst: 'Eén heftruck of meerdere transportmiddelen: J.I.T. vervoert ze naar de gewenste locatie.', wa: 'Hallo, ik wil heftruck-transport regelen.', knop: 'Transport regelen' },
+];
+const soorten = [['storing', 'Storing of reparatie'], ['onderhoud', 'Onderhoudsbeurt'], ['keuring', 'Jaarlijkse keuring'], ['inruil', 'Inruilen of verkopen'], ['huur', 'Huren'], ['transport', 'Transport']];
+const machines = [['heftruck', 'Heftruck'], ['stapelaar', 'Stapelaar'], ['ept', 'EPT'], ['palletwagen', 'Ander transport­middel']] as const;
+
+const titel = 'J.I.T. Heftruckservice | Onderhoud, keuring en verkoop van heftrucks';
+const omschrijving = 'Service, onderhoud, (spoed)reparaties en jaarlijkse keuringen van heftrucks en interne transportmiddelen. Ook verkoop, inruil, verhuur, batterijen en transport. Jansen Intern Transport, Best.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen elektrische heftruck, schermvullend -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-asfalt text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hD, [960, 1440, 1760])} sizes="100vw" type="image/webp" />
+        <source srcset={srcset(hM, [480, 780, 1000])} sizes="100vw" type="image/webp" />
+        <img src={hD[1].src} alt="Een grijs-gele elektrische STILL-heftruck met de vork omlaag op een zonnig erf voor een rij coniferen" width="1440" height="1267" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-x-0 top-0 -z-20 h-[58%] w-full object-cover object-[62%_50%] md:inset-0 md:h-full md:object-[62%_58%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#16151326_0%,#1615134d_30%,#161513e6_52%,#161513_60%)] md:bg-[linear-gradient(90deg,#161513f5_0%,#161513d6_34%,#16151361_62%,#16151314_100%),linear-gradient(0deg,#161513b3_0%,#16151300_42%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-16 lg:pb-20">
+        <p class="kop text-base tracking-[.14em] text-geel sm:text-lg">JANSEN INTERN TRANSPORT, BEST</p>
+        <h1 class="mt-5 max-w-[11ch] text-hero">Van smeerbeurt tot <span class="text-geel">keuring</span></h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90 md:text-xl">Service, onderhoud en (spoed)reparaties van heftrucks en andere interne transportmiddelen. En toe aan een andere: verkoop, inruil en verhuur.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#werkbon" class="knop">Storing melden<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <div class="mt-12 hidden items-center gap-x-8 border-t border-lijn-licht pt-5 text-sm text-mist md:flex">
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />Spoed ook buiten werktijden</span>
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />Huren vanaf 1 dag</span>
+          <span class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-geel" />Inruil mogelijk</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hun gele silhouettenbalk, nagetekend -->
+    <div class="band" aria-hidden="true">
+      <div class="wrap flex items-end justify-between gap-4 py-4 md:py-5">
+        {(['palletwagen', 'ept', 'stapelaar', 'heftruck', 'palletwagen', 'ept', 'stapelaar', 'heftruck'] as const).map((s, i) => <Silhouet soort={s} class:list={['h-10 w-auto flex-none md:h-12', i > 3 && 'max-md:hidden', i > 5 && 'max-lg:hidden']} />)}
+      </div>
+    </div>
+
+    <!-- 2. ONDERHOUD EN REPARATIE: de onderhoudsbeurt als servicerapport -->
+    <section id="onderhoud" class="py-20 md:py-28" aria-labelledby="oh-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="oh-titel" class="rijs text-3xl">Goed onderhoud scheelt kosten later</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Tijdens een onderhoudsbeurt worden defecten vroeg ontdekt en gerepareerd. Zo voorkomt u onnodige slijtage aan uw transportmiddelen.</p>
+          <figure class="rijs mt-10 max-w-[23rem]">
+            <div class="foto"><Image src={elektrisch} alt="Een elektrische STILL-heftruck met gele achterkant voor een groene haag" quality={78} widths={[366]} sizes="366px" class="aspect-[366/312] w-full object-cover" /></div>
+          </figure>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rijs rounded-md border border-papier-2 bg-wit shadow-sm">
+            <div class="flex items-center justify-between gap-4 border-b-4 border-geel px-6 py-5 sm:px-8">
+              <h3 class="text-2xl">Standaard onderhoudsbeurt</h3>
+              <Silhouet soort="heftruck" class="h-9 w-auto flex-none text-asfalt [--hol:#ffffff]" />
+            </div>
+            <ul class="px-6 py-4 sm:px-8">
+              {beurt.map((b) => (
+                <li class="regel border-b border-lijn py-3.5 last:border-0">
+                  <span>{b}</span>
+                  <span class="v grid h-6 w-6 flex-none place-items-center rounded-sm bg-geel"><Icoon naam="vink" class="h-4 w-4" /></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="rijs mt-12 grid gap-6 border-t-2 border-asfalt pt-8 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div>
+              <h3 class="text-2xl">Reparaties, ook met spoed</h3>
+              <p class="mt-3 max-w-lg text-grijs">Normaal tijdens reguliere werktijden, maar voor dringende reparaties kunt u ook daarbuiten bij ons terecht. Bij een storing zijn we snel ter plaatse.</p>
+            </div>
+            <a href={site.telHref} class="knop knop-donker num w-fit"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. KEURINGEN: de keuringssticker en het keuringsrapport -->
+    <section id="keuringen" class="bg-asfalt text-wit" aria-labelledby="k-titel">
+      <div class="wrap grid gap-y-14 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="k-titel" class="rijs text-3xl">Minstens één keer per jaar gekeurd</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-mist">Volgens de Arbo-wet moeten uw heftrucks en interne transportmiddelen minimaal 1x per jaar vakkundig gekeurd worden. J.I.T. doet zowel de wettelijke als uw eigen veiligheidskeuringen.</p>
+          <figure class="rijs mt-12 flex items-center gap-6">
+            <Sticker class="w-40 flex-none drop-shadow-[0_10px_24px_#00000066] sm:w-48" />
+            <figcaption class="max-w-[13rem] text-sm text-mist">Vandaag gekeurd? Dan prikt de sticker deze maand, een jaar verder.</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rijs rounded-md bg-asfalt-2 p-6 sm:p-9">
+            <p class="kop text-xl uppercase tracking-[.04em] text-geel">Een standaardkeuring controleert</p>
+            <ul class="mt-5 grid gap-x-10 sm:grid-cols-2">
+              {keuring.map((k) => (
+                <li class="regel border-b border-lijn-licht py-2.5 text-[.9375rem]">
+                  <span>{k}</span>
+                  <span class="v text-geel"><Icoon naam="vink" class="h-4 w-4" /></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="rijs mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <a href={waMet('Hallo, ik wil graag een keuring inplannen voor mijn heftruck of intern transportmiddel.')} class="knop"><Icoon naam="wa" />Keuring inplannen</a>
+            <span class="text-sm text-mist">Goed onderhouden en gekeurd: veilig voor uw medewerkers en voor u.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VERKOOP, INRUIL, VERHUUR, BATTERIJEN, TRANSPORT -->
+    <section id="verkoop" class="bg-papier py-20 md:py-28" aria-labelledby="v-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <h2 id="v-titel" class="rijs text-3xl">Kopen, inruilen of huren</h2>
+            <p class="rijs mt-6 max-w-sm text-lg text-grijs">Elke heftruck die wij leveren is gekeurd en heeft een onderhoudsbeurt gehad.</p>
+            <div class="rijs mt-10 grid h-[17rem] max-w-sm grid-cols-[1fr_1.2fr] grid-rows-2 gap-3">
+              <div class="foto row-span-2"><Image src={erf} alt="Een oranje heftruck met hoge mast op een erf voor een bakstenen garage" quality={78} widths={[202]} sizes="180px" class="h-full w-full object-cover" /></div>
+              <div class="foto"><Image src={stapelaars} alt="Een rij oranje stapelaars op een bestraat terrein" quality={78} widths={[244]} sizes="200px" class="h-full w-full object-cover" /></div>
+              <div class="foto"><Image src={rij} alt="Een rij elektrische transportmiddelen met oranje onderstel naast elkaar" quality={78} widths={[236]} sizes="200px" class="h-full w-full object-cover" /></div>
+            </div>
+          </div>
+        </div>
+        <ol class="border-t-2 border-asfalt lg:col-span-8">
+          {aanbod.map((a, i) => (
+            <li class="rijs grid gap-x-8 gap-y-3 border-b border-lijn py-8 md:grid-cols-[13rem_1fr] md:py-10" style={`--d:${i * 0.05}s`}>
+              <h3 class="text-2xl md:text-[2rem]">{a.naam}</h3>
+              <div>
+                <p class="max-w-xl text-grijs">{a.tekst}</p>
+                <a href={waMet(a.wa)} class="link mt-4 inline-flex items-center gap-2 font-semibold">{a.knop}<Icoon naam="pijl" class="h-4 w-4" /></a>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. WERKBON: storing, keuring of inruil, met de silhouetten als machinekeuze -->
+    <section id="werkbon" class="band py-16 md:py-24" aria-labelledby="wb-titel">
+      <div class="wrap">
+        <form class="rijs grid overflow-hidden rounded-md bg-wit shadow-sm lg:grid-cols-12" data-bon>
+          <div class="p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <h2 id="wb-titel" class="text-3xl">Storing, keuring of inruil?</h2>
+            <p class="mt-4 max-w-md text-grijs">Vul in wat u weet. WhatsApp opent met uw bericht, u hoeft het alleen nog te versturen.</p>
+
+            <fieldset class="mt-9">
+              <legend class="text-sm font-semibold">Waarvoor?</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {soorten.map(([v, t], i) => <label><input type="radio" name="soort" value={v} checked={i === 0} class="peer sr-only" /><span class="keus">{t}</span></label>)}
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-8">
+              <legend class="text-sm font-semibold">Welke machine?</legend>
+              <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {machines.map(([v, t], i) => <label class="block"><input type="radio" name="machine" value={v} checked={i === 0} class="peer sr-only" /><span class="machine"><Silhouet soort={v} />{t}</span></label>)}
+              </div>
+            </fieldset>
+
+            <div class="mt-8 grid gap-x-6 gap-y-6 sm:grid-cols-2">
+              <label class="block">
+                <span class="text-sm font-semibold">Merk en type</span>
+                <input class="veld mt-2" type="text" name="merk" maxlength="60" placeholder="Bijv. STILL RX20" autocomplete="off" />
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Plaats</span>
+                <input class="veld mt-2" type="text" name="plaats" maxlength="60" autocomplete="address-level2" />
+              </label>
+            </div>
+
+            <label class="mt-8 flex cursor-pointer items-center gap-4 border-t border-lijn pt-7" data-spoed-rij>
+              <input type="checkbox" name="spoed" class="peer sr-only" />
+              <span class="relative h-8 w-14 flex-none rounded-full bg-papier-2 transition-colors peer-checked:bg-asfalt peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-asfalt after:absolute after:left-1 after:top-1 after:h-6 after:w-6 after:rounded-full after:bg-wit after:shadow-sm after:transition-transform peer-checked:after:translate-x-6 peer-checked:after:bg-geel" aria-hidden="true"></span>
+              <span><span class="kop block text-xl uppercase">Spoed</span><span class="text-sm text-grijs">De machine staat stil en is nu nodig.</span></span>
+            </label>
+          </div>
+
+          <div class="flex flex-col bg-asfalt p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <p class="text-sm font-semibold text-mist">Uw bericht</p>
+            <p class="mt-3 rounded-sm bg-asfalt-2 p-5 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <p class="mt-4 hidden rounded-sm border-l-[3px] border-geel bg-asfalt-2 px-4 py-3 text-[.9375rem]" data-spoed-tip role="status">Staat de machine stil? Bel dan ook direct: <a href={site.telHref} class="link link-licht num whitespace-nowrap font-semibold">{site.tel}</a></p>
+            <a href={site.wa} class="knop mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-lijn mt-3 w-full" data-mail><Icoon naam="mail" />Of per e-mail</a>
+            <div class="mt-10 hidden border-b border-lijn-licht pb-2 text-geel lg:mt-auto lg:block" aria-hidden="true">
+              {machines.map(([v]) => <Silhouet soort={v} class="h-auto w-full max-w-[17rem] [--hol:#161513]" data-sil={v} />)}
+            </div>
+            <p class="mt-5 text-sm text-mist">Deze werkbon verstuurt zelf niets. WhatsApp of uw mailprogramma opent met dit bericht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. CONTACT EN WERKEN BIJ -->
+    <section id="contact" class="py-20 md:py-28" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">Bel of app direct</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Voor alles op het gebied van heftrucks en andere interne transportmiddelen.</p>
+          <dl class="rijs mt-10 max-w-md border-t border-lijn">
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Telefoon en WhatsApp</dt><dd><a href={site.telHref} class="link num whitespace-nowrap">{site.tel}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">E-mail</dt><dd class="min-w-0 break-all text-right"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">Adres</dt><dd class="text-right">{site.straat}, {site.postcode} {site.plaats}</dd></div>
+            <div class="flex justify-between gap-6 border-b border-lijn py-3"><dt class="font-semibold">KvK</dt><dd class="num">{site.kvk}</dd></div>
+          </dl>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={waMet('Hallo, ik heb een vraag over een heftruck.')} class="knop"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.maps} class="knop knop-donker"><Icoon naam="pin" />Route plannen</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Werkbon: bouwt een kort bericht op en zet het in de WhatsApp- en mailknop.
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const mail = $<HTMLAnchorElement>('[data-mail]');
+    const basis = wa.href.split('?')[0];
+    const wat: Record<string, string> = { storing: 'een storing of reparatie', onderhoud: 'een onderhoudsbeurt', keuring: 'de jaarlijkse keuring', inruil: 'inruilen of verkopen', huur: 'een machine huren', transport: 'transport' };
+    const mach: Record<string, string> = { heftruck: 'een heftruck', stapelaar: 'een stapelaar', ept: 'een EPT', palletwagen: 'een ander intern transportmiddel' };
+    const zet = () => {
+      const d = new FormData(f);
+      const soort = String(d.get('soort'));
+      const m = mach[String(d.get('machine'))];
+      const merk = String(d.get('merk') || '').trim();
+      const plaats = String(d.get('plaats') || '').trim();
+      const spoed = soort === 'storing' && d.get('spoed') === 'on';
+      const welk = merk ? `${m} (${merk})` : m;
+      const zin = soort === 'huur' ? `Ik wil graag ${welk} huren.`
+        : soort === 'inruil' ? `Ik wil ${welk} inruilen of verkopen.`
+        : soort === 'transport' ? `Ik wil transport regelen voor ${welk}.`
+        : `Ik heb ${wat[soort]} nodig voor ${welk}.`;
+      const tekst = `Hallo, ${zin.charAt(0).toLowerCase() + zin.slice(1)}${plaats ? ` Locatie: ${plaats}.` : ''}${spoed ? ' SPOED: de machine staat stil.' : ''} Kunt u contact met mij opnemen?`;
+      $('[data-bericht]').textContent = tekst;
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `mailto:${site.mail}?subject=${encodeURIComponent((spoed ? 'SPOED: ' : '') + 'Werkbon via website')}&body=${encodeURIComponent(tekst)}`;
+      $('[data-spoed-rij]').classList.toggle('hidden', soort !== 'storing');
+      $('[data-spoed-tip]').classList.toggle('hidden', !spoed);
+      f.querySelectorAll<SVGElement>('[data-sil]').forEach((el) => { el.style.display = el.dataset.sil === String(d.get('machine')) ? '' : 'none'; });
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+
+  // Keuringssticker: prik de huidige maand, met het jaartal van volgend jaar.
+  const st = document.querySelector('[data-sticker]');
+  if (st) {
+    const nu = new Date();
+    const zet = () => { st.querySelector(`[data-maand="${nu.getMonth() + 1}"]`)?.classList.add('aan'); };
+    st.querySelector('[data-jaar]')!.textContent = String(nu.getFullYear() + 1);
+    const io = new IntersectionObserver((es) => { if (es[0].isIntersecting) { setTimeout(zet, 500); io.disconnect(); } });
+    io.observe(st);
+  }
+</script>
