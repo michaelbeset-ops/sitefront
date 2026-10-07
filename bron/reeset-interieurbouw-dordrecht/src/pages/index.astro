@@ -1,0 +1,304 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, waHoi, tijden, particulier, zakelijk, reviews } from '../data/site';
+
+import kastwand from '../assets/kastwand-zon.jpg';
+import steven from '../assets/steven-stalen.jpg';
+import steven2 from '../assets/steven-stalen-2.jpg';
+import ontwerp3d from '../assets/ontwerp-3d.jpg';
+import keukenEiland from '../assets/keuken-eiland.jpg';
+import haardwand from '../assets/haardwand.jpg';
+import roomdivider from '../assets/haard-roomdivider.jpg';
+import bedwand from '../assets/bedwand.jpg';
+import kastenwand from '../assets/kastenwand-slaapkamer.jpg';
+import lamellenTv from '../assets/lamellen-tv.jpg';
+import keukenHout from '../assets/keuken-hout.jpg';
+import kantoor from '../assets/kantoor-glas-2.jpg';
+import pantry from '../assets/pantry-groen.jpg';
+import lamellen from '../assets/lamellen-detail.jpg';
+
+// Vier woorden uit hun Instagram-bio, met hun eigen omschrijving uit de posts van juli tot september 2026.
+const stappen = [
+  ['Ontwerp', 'Luisteren, begrijpen wat je nodig hebt en dat vertalen naar een ontwerp dat past bij je manier van leven.'],
+  ['Kennis', 'Ieder ontwerp wordt eerst zorgvuldig uitgewerkt: verhoudingen, materialen, zichtlijnen en details. En hoe het gemaakt moet worden.'],
+  ['Connecties', 'Voor ieder project de maker die het beste past bij het ontwerp, en waar nodig ook elektricien, schilder en behanger, ieder vanuit hun eigen expertise.'],
+  ['Regie', 'Van het eerste gesprek en het ontwerp tot de afstemming en regie tijdens de uitvoering.'],
+];
+
+// Projectfoto's van hun eigen site. Bijschrift = wat er te zien is, geen verzonnen plaats of klant.
+const projecten = [
+  { img: keukenEiland, soort: 'wonen', bij: 'Keuken met kookeiland en hoge kastenwand', alt: 'Lange zwarte keuken met kookeiland en een hoge kastenwand met ingebouwde ovens, licht door een grote pui', cls: 'col-span-2 md:col-span-7', asp: 'aspect-[4/3]', pos: '50% 50%' },
+  { img: roomdivider, soort: 'wonen', bij: 'Roomdivider met doorkijkhaard en tv', alt: 'Antraciet roomdivider met doorkijkhaard en ingebouwde tv, ronde salontafel en gouden wandlamp', cls: 'md:col-span-5 md:mt-24', asp: 'aspect-[4/5]', pos: '40% 50%' },
+  { img: haardwand, soort: 'wonen', bij: 'Haardwand met verlichte open kast', alt: 'Brede haardwand in donkergrijs met een witte schouw, ingebouwde tv en een verlichte open kast vol beelden', cls: 'md:col-span-5', asp: 'aspect-[4/5]', pos: '22% 50%' },
+  { img: lamellenTv, soort: 'wonen', bij: 'Tv-wand met lamellen tot in het plafond', alt: 'Tv-wand met houten lamellen die doorlopen in het plafond, een donkere open kast met spotjes en bloesemtakken', cls: 'col-span-2 md:col-span-7 md:mt-16', asp: 'aspect-[4/3]', pos: '50% 50%' },
+  { img: kantoor, soort: 'werken', bij: 'Vergaderruimte met glazen wanden', alt: 'Vergaderruimte met zwarte stalen glaswanden op een visgraatvloer, met een lange tafel en zwarte stoelen', cls: 'md:col-span-4', asp: 'aspect-[3/4]', pos: '50% 50%' },
+  { img: bedwand, soort: 'wonen', bij: 'Bed-achterwand met zwevend nachtkastje', alt: 'Grijze bed-achterwand met een zwevend nachtkastje met indirect licht en een bladerbehang', cls: 'md:col-span-4 md:mt-12', asp: 'aspect-[3/4]', pos: '50% 60%' },
+  { img: pantry, soort: 'werken', bij: 'Pantry met bar en groene wand', alt: 'Pantry met witte marmerlook bar, groene barkrukken en een verlichte wand met groen', cls: 'md:col-span-4', asp: 'aspect-[3/4]', pos: '50% 50%' },
+  { img: kastenwand, soort: 'wonen', bij: 'Kastenwand van vloer tot plafond', alt: 'Zwarte kastenwand met lange grepen van vloer tot plafond in een slaapkamer met bank onder het raam', cls: 'md:col-span-5 md:mt-20', asp: 'aspect-[3/4] md:aspect-[4/5]', pos: '40% 50%' },
+  { img: keukenHout, soort: 'wonen', bij: 'Keuken met zitplekken aan het eiland', alt: 'Keuken met lichtgrijs kookeiland, leren barkrukken en een donkere kastenwand met ovens', cls: 'col-span-2 md:col-span-7', asp: 'aspect-[4/3]', pos: '50% 55%' },
+];
+
+// Wow: zin met keuzes. Alleen ruimtes die ze zelf noemen in "Maatwerk particulier" en "Maatwerk zakelijk".
+const ruimtes = {
+  Wonen: ['een keuken', 'een walk-in closet', 'een tv-meubel of cinewall', 'een haardmeubel', 'een bergkast of garderobekast', 'een bed-achterwand', 'een thuiskantoor', 'een wasruimte', 'een roomdivider'],
+  Werken: ['een balie of ontvangstruimte', 'een kantoorinrichting', 'een pantry of kantine', 'een winkelinrichting', 'een restaurant of bar'],
+};
+const waar = ['mijn woning', 'ons bedrijf', 'een onderwijs- of gemeentelijke instelling'];
+const fases = ['nog alleen een idee', 'al een plattegrond of tekening', 'al foto’s van de ruimte'];
+const eerste = `Hallo Steven, ik zoek een ontwerp voor ${ruimtes.Wonen[0]} in ${waar[0]}. Ik heb ${fases[0]}. Zullen we een keer koffie drinken om mijn wensen te bespreken?`;
+
+const titel = 'Reeset Interieur Design Studio | Maatwerkinterieurs, ontwerp en projectbegeleiding';
+const omschrijving = 'Interieurs ontworpen rondom hoe jij leeft. Reeset in Zwijndrecht doet ontwerp, advies en projectbegeleiding van maatwerkinterieurs voor woningen, bedrijven en instellingen, en zoekt voor ieder ontwerp de beste maker.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun roomdivider in de middagzon -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-eiken text-wit md:min-h-[100svh]">
+      <Kop />
+      <Image src={kastwand} alt="Zwarte maatwerk roomdivider met open kasten en spotjes in een lichte woonkamer, zon door de lamellen, oranje houten stoel ervoor" quality={74} widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[66%_50%] md:object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1b19cc_0%,#1b1b1933_28%,#1b1b1999_58%,#1b1b19f2_100%)] md:bg-[linear-gradient(90deg,#1b1b19f2_0%,#1b1b19c7_34%,#1b1b1940_62%,#1b1b1900_82%),linear-gradient(0deg,#1b1b19d9_0%,#1b1b1900_32%)]"></div>
+      <div class="wrap mt-auto pb-12 pt-28 md:my-auto md:pb-10 md:pt-32">
+        <p class="text-sm font-medium text-messing md:text-base">Interieur Design Studio in Zwijndrecht</p>
+        <h1 class="mt-5 max-w-[11em] text-hero">Interieurs ontworpen rondom hoe <em class="cursief text-messing">jij</em> leeft.</h1>
+        <p class="mt-6 max-w-xl text-lg text-wit/90 md:text-xl">Ontwerp, advies en projectbegeleiding van maatwerkinterieurs. Van eerste idee tot gerealiseerd interieur.</p>
+        <div class="mt-8 flex flex-wrap gap-3 md:mt-10">
+          <a href="#jouw-ruimte" class="knop knop-messing"><Icoon naam="wa" />Vertel over je ruimte</a>
+          <a href="#projecten" class="knop knop-wit max-sm:hidden">Bekijk projecten</a>
+        </div>
+      </div>
+      <div class="wrap flex flex-wrap items-end justify-between gap-x-8 gap-y-2 pb-7 text-sm text-wit/75 max-md:hidden">
+        <p class="font-kop text-lg tracking-[.01em] text-wit/90">Ontwerp · Kennis · Connecties · Regie</p>
+      </div>
+    </section>
+
+    <!-- 2. STUDIO: de nieuwe positie van Reeset, in Stevens eigen woorden -->
+    <section id="studio" class="py-20 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Het beste ontwerp verdient de <em class="cursief text-messing-diep">beste maker.</em></h2>
+          <div class="rijs mt-10 grid gap-8 sm:grid-cols-2" style="--d:.1s">
+            <p class="text-lg">Ruim anderhalf jaar geleden maakte Steven Schouten de keuze om Reeset anders te organiseren. Sindsdien richt Reeset zich volledig op ontwerp, advies en projectbegeleiding.</p>
+            <p class="text-grijs">De realisatie gebeurt samen met gespecialiseerde interieurbouwers die aansluiten bij het ontwerp, de opdrachtgever en de specifieke vraag. Zo krijgt iedere opdrachtgever het vakmanschap dat het beste bij zijn of haar wensen past.</p>
+          </div>
+          <blockquote class="rijs mt-14 border-l-2 border-messing pl-6 md:mt-20 md:pl-8" style="--d:.15s">
+            <p class="font-kop text-3xl leading-[1.15]">Niet als producent. Niet als verkoper. Maar als <em class="cursief">onafhankelijk ontwerper en projectbegeleider.</em></p>
+            <footer class="mt-5 text-sm text-grijs"><span class="font-semibold text-inkt">Steven Schouten</span>, Reeset</footer>
+          </blockquote>
+        </div>
+        <figure class="rijs relative z-10 lg:col-span-5 lg:-mt-60 lg:self-start" style="--d:.1s">
+          <Image src={steven} alt="Steven Schouten met een houtstaal in zijn hand voor een wand vol materiaalstalen" quality={74} widths={[480, 720, 960]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/5] w-full object-cover object-[30%_50%] shadow-[0_40px_80px_-40px_#1b1b1980]" />
+          <figcaption class="mt-3 text-sm text-grijs">Steven Schouten tussen de materiaalstalen</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. WERKWIJZE: hun vier woorden, groot -->
+    <section id="werkwijze" class="bg-eiken py-20 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Van eerste idee tot gerealiseerd interieur.</h2>
+          <figure class="rijs mt-10 md:mt-14" style="--d:.1s">
+            <Image src={ontwerp3d} alt="Beeldscherm met een 3D-ontwerp van een tv-wand met open kasten en houten panelen" quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/3] w-full object-cover object-[60%_50%]" />
+            <figcaption class="mt-3 text-sm text-as">Ieder ontwerp wordt eerst zorgvuldig uitgewerkt.</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-7 lg:col-start-6 lg:pl-10">
+          {stappen.map(([w, t], i) => (
+            <li class="rijs grid gap-x-8 gap-y-3 border-t border-lijn-2 py-8 first:border-t-0 first:pt-0 sm:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] md:py-10" style={`--d:${i * .06}s`}>
+              <h3 class="text-[clamp(2.1rem,2.6vw+1rem,3.3rem)] text-messing">{w}</h3>
+              <p class="text-wit/80 sm:pt-3">{t}</p>
+            </li>
+          ))}
+          <li class="rijs border-t border-lijn-2 pt-8 text-sm text-as">
+            Ook voor <span class="text-wit">3D-visualisatie, lichtplanadvies, materiaal- en kleuradvies en meubelontwerp</span>.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 4. PROJECTEN: editoriaal raster, filter wonen/werken -->
+    <section id="projecten" class="py-20 md:py-32" data-proj>
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <h2 class="rijs max-w-[14ch] text-4xl">Van bedenken naar <em class="cursief text-messing-diep">beleven.</em></h2>
+          <div class="filter rijs" role="group" aria-label="Filter projecten" style="--d:.1s">
+            <button type="button" aria-pressed="true" data-f="alles">Alles</button>
+            <button type="button" aria-pressed="false" data-f="wonen">Wonen</button>
+            <button type="button" aria-pressed="false" data-f="werken">Werken</button>
+          </div>
+        </div>
+        <div class="proj mt-10 grid grid-cols-2 gap-x-3 gap-y-8 md:mt-16 md:gap-x-8 md:grid-cols-12 md:gap-y-14">
+          {projecten.map((p) => (
+            <figure class={`rijs ${p.cls}`} data-soort={p.soort}>
+              <div class="overflow-hidden">
+                <Image src={p.img} alt={p.alt} quality={72} widths={[480, 720, 960, 1280]} sizes="(min-width: 768px) 55vw, 90vw" class={`${p.asp} w-full object-cover`} style={`object-position:${p.pos}`} />
+              </div>
+              <figcaption>{p.bij}</figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div class="mt-20 grid grid-cols-1 gap-y-12 border-t border-lijn-licht pt-12 md:mt-28 md:grid-cols-12 md:gap-x-10">
+          <div class="rijs md:col-span-4">
+            <h3 class="text-3xl">Particulier</h3>
+            <p class="mt-3 text-grijs">Een huis dat aanvoelt als een thuis.</p>
+            <p class="mt-5 text-sm leading-relaxed">{particulier.map((x, i) => <><span class="whitespace-nowrap">{x}{i < particulier.length - 1 ? ' ·' : ''}</span>{' '}</>)}</p>
+          </div>
+          <div class="rijs md:col-span-4" style="--d:.06s">
+            <h3 class="text-3xl">Zakelijk</h3>
+            <p class="mt-3 text-grijs">Werk- en winkelruimte, functioneel en met stijl.</p>
+            <p class="mt-5 text-sm leading-relaxed">{zakelijk.map((x, i) => <><span class="whitespace-nowrap">{x}{i < zakelijk.length - 1 ? ' ·' : ''}</span>{' '}</>)}</p>
+          </div>
+          <div class="rijs md:col-span-4" style="--d:.12s">
+            <h3 class="text-3xl">Gemeente en overheid</h3>
+            <p class="mt-3 text-grijs">Een inspirerende en praktische omgeving in onderwijs- en gemeentelijke instellingen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. JOUW RUIMTE (wow): één zin met keuzes, eindigt in WhatsApp aan Steven -->
+    <section id="jouw-ruimte" class="relative isolate overflow-hidden bg-eiken py-20 text-wit md:py-32" data-zin>
+      <Image src={lamellen} alt="" quality={60} widths={[960, 1600]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover opacity-25" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1b19_0%,#1b1b19d9_40%,#1b1b19_100%)]"></div>
+      <div class="wrap">
+        <p class="rijs max-w-xl text-lg text-as"><span class="font-semibold text-wit">Keertje koffie doen om je wensen te bespreken?</span> Maak de zin af, dan staat je bericht aan Steven klaar.</p>
+        <form class="zin rijs mt-10 text-[1.5rem] min-[400px]:text-[1.75rem] sm:text-4xl md:mt-14 md:text-[3.25rem]" style="--d:.1s" onsubmit="return false">
+          Ik zoek een ontwerp voor{' '}
+          <label class="woord"><span class="sr-only">Welke ruimte</span>
+            <select name="ruimte">
+              {Object.entries(ruimtes).map(([g, opts]) => (
+                <optgroup label={g}>{opts.map((o) => <option value={o}>{o}</option>)}</optgroup>
+              ))}
+            </select><span class="pijl" aria-hidden="true"></span>
+          </label>
+          {' '}in{' '}
+          <label class="woord"><span class="sr-only">Waar</span>
+            <select name="waar">{waar.map((o) => <option value={o}>{o}</option>)}</select><span class="pijl" aria-hidden="true"></span>
+          </label>
+          {' '}in{' '}<span class="whitespace-nowrap"><label class="woord"><span class="sr-only">Plaats</span><input name="plaats" type="text" autocomplete="address-level2" placeholder="plaats" maxlength="40" /></label>.</span>
+          {' '}Ik heb{' '}
+          <span class="whitespace-nowrap"><label class="woord"><span class="sr-only">Hoe ver ben je</span>
+            <select name="fase">{fases.map((o) => <option value={o}>{o}</option>)}</select><span class="pijl" aria-hidden="true"></span>
+          </label>.</span>
+        </form>
+        <div class="rijs mt-14 grid grid-cols-1 gap-8 border-t border-lijn pt-8 lg:grid-cols-12" style="--d:.15s">
+          <div class="lg:col-span-7">
+            <p class="text-sm font-semibold text-as">Je bericht aan Steven</p>
+            <p class="mt-3 max-w-2xl border-l-2 border-messing bg-eiken-2/80 p-5 text-wit/90" data-bericht aria-live="polite">{eerste}</p>
+          </div>
+          <div class="lg:col-span-4 lg:col-start-9 lg:pt-8">
+            <a href={`${site.wa}?text=${encodeURIComponent(eerste)}`} class="knop knop-messing w-full sm:w-auto" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="mt-4 text-sm text-as">Stuur gerust een foto of plattegrond mee. Liever mail? <a href={`mailto:${site.mail}?subject=${encodeURIComponent('Mijn interieur')}&body=${encodeURIComponent(eerste)}`} class="link text-wit" data-mail>{site.mail}</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. REVIEWS -->
+    <section class="bg-steen py-20 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Betrokkenheid en <em class="cursief text-messing-diep">meedenken.</em></h2>
+          <blockquote class="rijs mt-12 md:mt-16" style="--d:.08s">
+            <p class="flex gap-0.5 text-messing-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+            <p class="mt-5 font-kop text-3xl leading-[1.2]">“{reviews.yolanda.tekst}”</p>
+            <footer class="mt-5 text-sm text-grijs"><span class="font-semibold text-inkt">{reviews.yolanda.naam}</span> · Google review</footer>
+          </blockquote>
+          <blockquote class="rijs mt-14 max-w-xl border-t border-lijn-licht pt-10" style="--d:.12s">
+            <p class="flex gap-0.5 text-messing-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+            <p class="mt-4 text-lg">“{reviews.car.tekst}”</p>
+            <footer class="mt-4 text-sm text-grijs"><span class="font-semibold text-inkt">{reviews.car.naam}</span> · Google review</footer>
+          </blockquote>
+          <a href={site.reviews} class="rijs mt-12 inline-flex items-center gap-2.5 text-sm font-semibold no-underline hover:text-messing-diep"><Icoon naam="g" class="h-5 w-5" />{site.google.score} op Google, {site.google.aantal} reviews</a>
+        </div>
+        <figure class="rijs max-lg:hidden lg:col-span-5" style="--d:.1s">
+          <Image src={steven2} alt="Steven Schouten bekijkt een houtstaal bij de wand met materiaalstalen" quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/5] w-full object-cover object-[70%_50%]" />
+          <figcaption class="mt-3 text-sm text-grijs">Materiaal- en kleuradvies</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 7. STUDIO EN CONTACT -->
+    <section id="contact" class="bg-eiken py-20 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Keertje op de koffie?</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-wit/85" style="--d:.05s">De nieuwe ontwerpstudio van Reeset: een plek waar ideeën ontstaan, ontwerpen vorm krijgen en nieuwe samenwerkingen beginnen.</p>
+          <p class="rijs mt-10 font-kop text-3xl leading-tight" style="--d:.1s">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <p class="rijs mt-6 flex items-center gap-3 font-semibold" style="--d:.12s"><span class="h-2.5 w-2.5 flex-none rounded-full bg-messing" aria-hidden="true" data-stip></span><span data-status>Maandag tot en met vrijdag 09.00 tot 17.00 uur</span></p>
+          <div class="rijs mt-9 flex flex-wrap gap-3" style="--d:.15s">
+            <a href={waHoi} class="knop knop-messing"><Icoon naam="wa" />WhatsApp Steven</a>
+            <a href={site.maps} class="knop knop-wit"><Icoon naam="pin" />Plan je route</a>
+          </div>
+          <p class="rijs mt-6 text-sm text-as" style="--d:.2s">Of bel <a href={site.telHref} class="link num text-wit">{site.tel}</a>, of mail <a href={`mailto:${site.mail}`} class="link text-wit">{site.mail}</a>.</p>
+        </div>
+        <div class="rijs lg:col-span-4 lg:col-start-9" style="--d:.1s">
+          <table class="tijden w-full text-sm">
+            <caption class="pb-4 text-left font-kop text-2xl text-wit">Openingstijden</caption>
+            <tbody>
+              {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                <tr data-dag={d} class="border-t border-lijn">
+                  <td class="py-3 text-as">{tijden[d][0]}</td>
+                  <td class="num py-3 text-right text-as">{tijden[d][1] ?? 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p class="mt-4 text-xs text-as">Volgens Google. Kom je langs, stuur dan even een berichtje vooraf.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ wa: site.wa, mail: site.mail, tijden }}>
+    // Projectfilter
+    const pr = document.querySelector('[data-proj]');
+    pr?.querySelectorAll('[data-f]').forEach((b) => b.addEventListener('click', () => {
+      pr.querySelectorAll('[data-f]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      pr.querySelectorAll('[data-soort]').forEach((f) => { f.hidden = b.dataset.f !== 'alles' && f.dataset.soort !== b.dataset.f; f.classList.add('in'); });
+    }));
+
+    // Zin -> bericht
+    const z = document.querySelector('[data-zin]');
+    if (z) {
+      const v = (n) => z.querySelector(`[name="${n}"]`);
+      const maat = (el) => { const sel = el.tagName === 'SELECT'; const sp = document.createElement('span'); sp.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font:inherit;letter-spacing:inherit'; sp.textContent = el.value || el.placeholder; el.parentNode.appendChild(sp); el.style.width = sel ? `calc(${sp.offsetWidth}px + 1.3em)` : `calc(${sp.offsetWidth}px + .15em)`; sp.remove(); };
+      const maak = () => {
+        const plaats = v('plaats').value.trim();
+        const t = `Hallo Steven, ik zoek een ontwerp voor ${v('ruimte').value} in ${v('waar').value}${plaats ? ` in ${plaats}` : ''}. Ik heb ${v('fase').value}. Zullen we een keer koffie drinken om mijn wensen te bespreken?`;
+        z.querySelector('[data-bericht]').textContent = t;
+        z.querySelector('[data-stuur]').href = `${wa}?text=${encodeURIComponent(t)}`;
+        z.querySelector('[data-mail]').href = `mailto:${mail}?subject=${encodeURIComponent('Mijn interieur')}&body=${encodeURIComponent(t)}`;
+      };
+      const pas = () => z.querySelectorAll('select, input').forEach(maat);
+      z.querySelectorAll('select, input').forEach((el) => { el.addEventListener('input', () => { maat(el); maak(); }); el.addEventListener('change', () => { maat(el); maak(); }); });
+      // Pas meten als de zin in beeld komt (geen reflow bij het laden).
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); (document.fonts?.ready || Promise.resolve()).then(() => requestAnimationFrame(pas)); } }, { rootMargin: '400px 0px' });
+      io.observe(z);
+      let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(pas, 150); });
+    }
+
+    // Vandaag + open/gesloten (Nederlandse tijd)
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const d = nu.getDay(), m = nu.getHours() * 60 + nu.getMinutes();
+    document.querySelector(`.tijden tr[data-dag="${d}"]`)?.setAttribute('data-vandaag', '');
+    const s = document.querySelector('[data-status]');
+    const open = tijden[d][1] && m >= 540 && m < 1020;
+    if (s) {
+      if (open) s.textContent = `Nu open, vandaag tot 17.00 uur`;
+      else {
+        let n = d, dagen = 0; do { n = (n + 1) % 7; dagen++; } while (!tijden[n][1]);
+        const vroeg = tijden[d][1] && m < 540;
+        s.textContent = vroeg ? 'Nu gesloten, vandaag open vanaf 09.00 uur' : `Nu gesloten, ${dagen === 1 ? 'morgen' : tijden[n][0].toLowerCase()} weer open vanaf 09.00 uur`;
+        document.querySelector('[data-stip]')?.classList.replace('bg-messing', 'bg-as');
+      }
+    }
+  </script>
+</Base>
