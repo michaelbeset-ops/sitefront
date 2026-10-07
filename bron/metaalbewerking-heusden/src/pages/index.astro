@@ -1,0 +1,307 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Krul from '../components/Krul.astro';
+import { site, tijden, waMet, materialen, bewerkingen, nabewerkingen } from '../data/site';
+
+import balkon from '../assets/balkon.jpg';
+import werkbank from '../assets/werkbank.jpg';
+import trapgat from '../assets/trapgat.jpg';
+import kalf from '../assets/kalf.jpg';
+import hokken from '../assets/hokken.jpg';
+
+// Hero: hun eigen balkonhek (projectfoto 2013). Bron is 1200px breed, dus niet groter laten renderen.
+const hD = await Promise.all([640, 960, 1200].map((w) => getImage({ src: balkon, width: w, quality: 72, format: 'webp' })));
+const srcset = hD.map((x, i) => `${x.src} ${[640, 960, 1200][i]}w`).join(', ');
+
+// Letterlijk van hun pagina Referenties.
+const branches = ['Jachtbouw', 'Scheepsbouw', 'Architecten', 'Klimaatbeheersing', 'Bouwondernemingen', 'Particulieren'];
+
+const titel = 'Metaalbewerking Heusden | RVS, staal en aluminium in Heesbeen';
+const omschrijving = 'Constructie-, las- en reparatiebedrijf voor RVS, staal en aluminium. Lassen, knippen, zetten, ponsen, draaien, frezen en walsen. Industrieweg 15A, Heesbeen (Heusden).';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen balkonhek met krullen -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-indigo-diep text-wit md:min-h-[calc(100svh-5rem)]">
+      <img src={hD[2].src} srcset={srcset} sizes="100vw" alt="Een zwart stalen balkonhek met een rij krullen op een dakterras, met daarachter oude daken en een trapgevel" width="1200" height="900" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[72%_60%] md:object-[50%_55%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#12065059_0%,#120650a6_32%,#120650e0_60%,#120650f5_100%)] md:bg-[linear-gradient(90deg,#120650eb_0%,#120650b8_38%,#1206504d_70%,#12065014_100%),linear-gradient(0deg,#120650a6_0%,#12065000_45%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-24 md:pb-16 lg:pb-20">
+        <p class="text-base font-semibold text-indigo-licht sm:text-lg">Constructie-, las- en reparatiebedrijf in Heesbeen</p>
+        <h1 class="mt-5 max-w-[13ch] text-hero">Maatwerk in RVS, staal en aluminium</h1>
+        <p class="mt-7 max-w-[34rem] text-lg text-wit/90 md:text-xl">Voor bedrijven en particulieren. Vertel wat u nodig heeft, dan bespreekt Paul Schobben de mogelijkheden met u.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#werkbon" class="knop knop-wit">Werk aanvragen<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <div class="mt-12 hidden items-end justify-between gap-8 border-t border-lijn-licht pt-5 text-sm text-mist md:flex">
+          <span class="flex items-center gap-2"><Icoon naam="pin" class="h-4 w-4 text-indigo-licht" />{site.straat}, Industrieterrein {site.plaats}</span>
+          <span>Balkonhek, eigen project</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. BEWERKINGEN: de drie materialen groot, dan hun eigen lijsten -->
+    <section id="bewerkingen" class="py-20 md:py-28" aria-labelledby="mat-titel">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="mat-titel" class="rijs text-reus leading-[.92] text-indigo">
+            {materialen.map((m) => <span class="block">{m}</span>)}
+          </h2>
+          <Krul class="mt-10 w-56 text-indigo md:w-72" />
+          <p class="rijs mt-8 max-w-md text-lg text-grijs">Dé specialist voor al uw RVS-, staal- en aluminiumbewerkingen. Staat uw wens er niet bij? Neem gerust contact op, dan bespreken we de mogelijkheden.</p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <div class="grid gap-x-10 gap-y-12 sm:grid-cols-2">
+            <div class="rijs">
+              <h3 class="border-b-2 border-indigo pb-3 text-2xl">Bewerkingen</h3>
+              <ul class="mt-1">
+                {bewerkingen.map((b, i) => <li class="flex items-baseline gap-3 border-b border-lijn py-2.5 text-lg"><span class="num w-6 text-sm text-grijs">{String(i + 1).padStart(2, '0')}</span>{b}</li>)}
+              </ul>
+            </div>
+            <div class="rijs" style="--d:.08s">
+              <h3 class="border-b-2 border-indigo pb-3 text-2xl">Nabewerkingen</h3>
+              <ul class="mt-1">
+                {nabewerkingen.map((b) => <li class="border-b border-lijn py-2.5 text-lg">{b}</li>)}
+              </ul>
+            </div>
+          </div>
+          <figure class="rijs mt-14">
+            <Image src={werkbank} alt="Een nog onbehandeld stalen hekwerk met spijlen en krullen op een werkbank in de werkplaats, met een lasapparaat ernaast" quality={72} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover object-[50%_45%]" />
+            <figcaption class="mt-2 text-xs text-grijs">Hekwerk op de werkbank, april 2013</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. WERKHAL: donker, met het typeplaatje -->
+    <section id="werkhal" class="bg-indigo-diep text-wit" aria-labelledby="hal-titel">
+      <div class="wrap grid items-center gap-y-14 py-20 md:py-28 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="hal-titel" class="rijs text-3xl">Een grotere hal en een 12 tons kraan</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-mist">Sinds augustus 2015 zit Metaalbewerking Heusden op Industrieterrein Heesbeen, nabij Heusden Vesting. Met de kraan tillen we nog grotere en zwaardere producten.</p>
+          <p class="rijs mt-5 max-w-lg text-lg text-mist">Het doel: een totaaloplossing voor de werkzaamheden die u verlangt, naar volle tevredenheid uitgevoerd.</p>
+          <a href="#werkbon" class="rijs knop knop-wit mt-10 w-fit">Werk aanvragen<Icoon naam="pijl" /></a>
+        </div>
+        <div class="rijs lg:col-span-5 lg:col-start-8" style="--d:.1s">
+          <div class="plaatje px-7 pb-8 pt-9 sm:px-10 sm:pb-10 sm:pt-11">
+            <span class="nagel left-3 top-3"></span><span class="nagel right-3 top-3"></span><span class="nagel bottom-3 left-3"></span><span class="nagel bottom-3 right-3"></span>
+            <p class="slag text-center text-lg uppercase text-indigo sm:text-xl">Metaalbewerking Heusden v.o.f.</p>
+            <dl class="mt-6 border-t-2 border-inkt/70 text-[.9375rem] sm:text-base">
+              {[
+                ['Sinds', '2005'],
+                ['Ervaring', 'meer dan 30 jaar'],
+                ['Kraan', '12 ton'],
+                ['Materiaal', 'RVS, staal, aluminium'],
+                ['Hal', `${site.straat}, ${site.plaats}`],
+              ].map(([k, v]) => (
+                <div class="flex items-baseline justify-between gap-4 border-b border-inkt/25 py-2.5">
+                  <dt class="slag text-xs uppercase text-grijs sm:text-sm">{k}</dt>
+                  <dd class="slag num text-right">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PROJECTEN: hun eigen foto's, groot -->
+    <section id="projecten" class="py-20 md:py-28" aria-labelledby="proj-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-14">
+          <h2 id="proj-titel" class="rijs text-3xl lg:col-span-6">Eigen werk</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Hekwerk, leuningen en stalinrichting: een greep uit de projecten op de huidige website.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-12 md:gap-4">
+          <figure class="rijs col-span-2 md:col-span-5 md:row-span-2">
+            <Image src={trapgat} alt="Een trapgat in een witte ruimte met slanke stalen leuningen rondom" quality={72} widths={[400, 600, 675]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-full" />
+            <figcaption class="mt-2 text-xs text-grijs">Leuningen rond een trapgat, 2013</figcaption>
+          </figure>
+          <figure class="rijs col-span-2 md:col-span-7" style="--d:.08s">
+            <Image src={balkon} alt="Detail van het zwarte balkonhek met krullen tussen de spijlen" quality={70} widths={[560, 840, 1200]} sizes="(min-width: 768px) 55vw, 100vw" class="aspect-[16/9] w-full rounded-sm object-cover object-[60%_62%]" />
+            <figcaption class="mt-2 text-xs text-grijs">Balkonhek met krullen, mei 2013</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-4" style="--d:.12s">
+            <Image src={kalf} alt="Een kalf achter een stalen voerhek met twee voeremmers" quality={68} widths={[360, 560, 800]} sizes="(min-width: 768px) 30vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Voerhek</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-3" style="--d:.16s">
+            <Image src={hokken} alt="Een rij stalen hokken op stro in een stal" quality={68} widths={[300, 450, 640]} sizes="(min-width: 768px) 22vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-auto md:h-[18rem]" />
+            <figcaption class="mt-2 text-xs text-grijs">Kalverhokken</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. OPDRACHTGEVERS: hun eigen referentietekst als typografisch moment -->
+    <section id="opdrachtgevers" class="bg-staal py-20 md:py-28" aria-labelledby="ref-titel">
+      <div class="wrap">
+        <h2 id="ref-titel" class="rijs max-w-3xl text-3xl">Metalen komen bijna overal in voor</h2>
+        <p class="rijs mt-5 max-w-xl text-lg text-grijs">Daarom werkt Metaalbewerking Heusden voor de meest uiteenlopende opdrachtgevers.</p>
+        <ul class="rijs mt-12 flex flex-wrap gap-x-5 gap-y-1 text-[clamp(1.35rem,3.6vw,3.25rem)] font-[700] leading-[1.25] tracking-[-.02em]" style="font-family: var(--font-kop)">
+          {branches.map((b, i) => <li class="flex items-baseline gap-5">{b}{i < branches.length - 1 && <span class="text-indigo" aria-hidden="true">/</span>}</li>)}
+        </ul>
+        <p class="rijs mt-12 max-w-3xl border-t border-lijn pt-6 text-grijs">Referenties op de huidige website: De Ruiter Watersport, Mono Marine, J&amp;M van Delft Ramen en Deuren, Scheepswerf IHC, Tiko BV en Verachtert Nederland BV.</p>
+      </div>
+    </section>
+
+    <!-- 6. WERKBON: soort bewerking, materiaal, aantal, tekening -->
+    <section id="werkbon" class="py-16 md:py-24" aria-labelledby="bon-titel">
+      <div class="wrap">
+        <form class="rijs grid overflow-hidden rounded-md border border-staal-2 bg-wit shadow-sm lg:grid-cols-12" data-bon>
+          <div class="p-6 sm:p-10 lg:col-span-7 lg:p-12">
+            <h2 id="bon-titel" class="text-3xl">Werk aanvragen</h2>
+            <p class="mt-4 max-w-md text-grijs">Vul in wat u al weet. Paul Schobben krijgt het als WhatsApp-bericht of e-mail.</p>
+
+            <div class="mt-9 grid gap-x-6 gap-y-7 sm:grid-cols-2">
+              <label class="block">
+                <span class="text-sm font-semibold">Soort bewerking</span>
+                <select class="veld mt-2" name="bewerking">
+                  {[...bewerkingen, 'Constructie', 'Reparatie', 'Weet ik nog niet'].map((b) => <option value={b.toLowerCase()}>{b}</option>)}
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-sm font-semibold">Nabewerking</span>
+                <select class="veld mt-2" name="nabewerking">
+                  {['Geen', ...nabewerkingen, 'Weet ik nog niet'].map((b) => <option value={b.toLowerCase()}>{b}</option>)}
+                </select>
+              </label>
+              <fieldset class="sm:col-span-2">
+                <legend class="text-sm font-semibold">Materiaal</legend>
+                <div class="mt-3 flex flex-wrap gap-2">
+                  {[...materialen, 'Weet ik nog niet'].map((m, i) => <label><input type="radio" name="materiaal" value={m === 'RVS' ? 'RVS' : m.toLowerCase()} checked={i === 0} class="peer sr-only" /><span class="keus">{m}</span></label>)}
+                </div>
+              </fieldset>
+              <label class="block">
+                <span class="text-sm font-semibold">Aantal stuks</span>
+                <input class="veld num mt-2" type="number" name="aantal" min="1" max="99999" value="1" inputmode="numeric" />
+              </label>
+              <fieldset>
+                <legend class="text-sm font-semibold">Tekening aanwezig?</legend>
+                <div class="mt-2 flex gap-2">
+                  <label><input type="radio" name="tekening" value="ja" class="peer sr-only" /><span class="keus min-h-12">Ja</span></label>
+                  <label><input type="radio" name="tekening" value="nee" checked class="peer sr-only" /><span class="keus min-h-12">Nee</span></label>
+                </div>
+              </fieldset>
+              <label class="block sm:col-span-2">
+                <span class="text-sm font-semibold">Wat moet er gemaakt of gerepareerd worden?</span>
+                <input class="veld mt-2" type="text" name="wat" maxlength="140" placeholder="Bijv. een trapleuning of een beugel" autocomplete="off" />
+              </label>
+            </div>
+          </div>
+
+          <div class="flex flex-col bg-indigo-diep p-6 text-wit sm:p-10 lg:col-span-5 lg:p-12">
+            <p class="slag text-sm uppercase text-indigo-licht">Werkbon</p>
+            <p class="mt-3 rounded-sm bg-indigo p-5 text-[.9375rem] leading-relaxed" data-bericht aria-live="polite"></p>
+            <p class="mt-4 hidden rounded-sm border-l-[3px] border-indigo-licht bg-indigo px-4 py-3 text-[.9375rem]" data-tekening-tip role="status">Stuur de tekening mee: als foto of pdf in WhatsApp, of als bijlage bij de mail.</p>
+            <a href={site.wa} class="knop knop-wit mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-lijn mt-3 w-full" data-mail><Icoon naam="mail" />Of per e-mail</a>
+            <p class="mt-5 text-sm text-mist">Deze werkbon verstuurt zelf niets. WhatsApp of uw mailprogramma opent met dit bericht.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT: adres en openingstijden met live status -->
+    <section id="contact" class="border-t border-lijn py-20 md:py-28" aria-labelledby="contact-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="contact-titel" class="rijs text-3xl">{site.straat}, {site.plaats}</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-grijs">Op Industrieterrein Heesbeen, nabij Heusden Vesting.</p>
+          <dl class="rijs mt-10 max-w-md border-t border-lijn">
+            <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn py-3"><dt class="flex-none font-semibold">Contact</dt><dd>{site.eigenaar}</dd></div>
+            <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn py-3"><dt class="flex-none font-semibold">Telefoon</dt><dd><a href={site.telHref} class="link num">{site.tel}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn py-3"><dt class="flex-none font-semibold">E-mail</dt><dd class="min-w-0 break-all"><a href={`mailto:${site.mail}`} class="link">{site.mail}</a></dd></div>
+            <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn py-3"><dt class="flex-none font-semibold">Adres</dt><dd class="text-right">{site.straat}, {site.postcode} {site.plaats}</dd></div>
+          </dl>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop"><Icoon naam="pin" />Route plannen</a>
+            <a href={waMet('Hallo Paul, ik heb een vraag.')} class="knop knop-lijn-donker"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs border-t-4 border-indigo bg-staal p-7 md:p-9">
+            <div class="flex items-center justify-between gap-4">
+              <h3 class="text-2xl">Open</h3>
+              <p class="flex items-center gap-2 text-sm font-semibold" data-status><span class="h-2.5 w-2.5 rounded-full bg-grijs" data-stip></span><span data-status-tekst>&nbsp;</span></p>
+            </div>
+            <table class="mt-6 w-full text-[.9375rem]">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                  <tr class="border-b border-staal-2" data-dag={d}>
+                    <th scope="row" class="py-2.5 text-left font-semibold capitalize">{tijden[d][0]}</th>
+                    <td class="num py-2.5 text-right text-grijs">{tijden[d][1] ?? 'gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-xs text-grijs">Openingstijden volgens Google.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Werkbon: bouwt een kort bericht op en zet het in de WhatsApp- en mailknop.
+  const f = document.querySelector<HTMLFormElement>('[data-bon]');
+  if (f) {
+    const $ = <T extends Element>(s: string) => f.querySelector<T>(s)!;
+    const wa = $<HTMLAnchorElement>('[data-wa]');
+    const mail = $<HTMLAnchorElement>('[data-mail]');
+    const basis = wa.href.split('?')[0];
+    const zet = () => {
+      const d = new FormData(f);
+      const bew = String(d.get('bewerking'));
+      const nab = String(d.get('nabewerking'));
+      const mat = String(d.get('materiaal'));
+      const n = Math.max(1, parseInt(String(d.get('aantal') || '1'), 10) || 1);
+      const tek = d.get('tekening') === 'ja';
+      const wat = String(d.get('wat') || '').trim();
+      const regels = [
+        'Hallo Paul, ik heb een werkaanvraag.',
+        wat ? `Wat: ${wat}` : '',
+        `Bewerking: ${bew}`,
+        `Materiaal: ${mat}`,
+        nab !== 'geen' ? `Nabewerking: ${nab}` : '',
+        `Aantal: ${n} ${n === 1 ? 'stuk' : 'stuks'}`,
+        `Tekening: ${tek ? 'ja, stuur ik mee' : 'nee'}`,
+        'Kunt u contact met mij opnemen?',
+      ].filter(Boolean);
+      const tekst = regels.join('\n');
+      const el = $('[data-bericht]');
+      el.replaceChildren(...regels.flatMap((r, i) => (i ? [document.createElement('br'), document.createTextNode(r)] : [document.createTextNode(r)])));
+      wa.href = `${basis}?text=${encodeURIComponent(tekst)}`;
+      mail.href = `mailto:${site.mail}?subject=${encodeURIComponent('Werkaanvraag via website')}&body=${encodeURIComponent(tekst)}`;
+      $('[data-tekening-tip]').classList.toggle('hidden', !tek);
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+
+  // Live status volgens de tijden van Google, in Nederlandse tijd.
+  const tijden: Record<number, [number, number] | null> = { 0: null, 1: [480, 1260], 2: [480, 1260], 3: [480, 1260], 4: [480, 1260], 5: [480, 1020], 6: [480, 1020] };
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay(), min = nu.getHours() * 60 + nu.getMinutes();
+  const t = tijden[dag];
+  const open = !!t && min >= t[0] && min < t[1];
+  const rij = document.querySelector<HTMLElement>(`[data-dag="${dag}"]`);
+  rij?.classList.add('bg-wit');
+  rij?.querySelectorAll('th, td').forEach((c) => c.classList.add('px-2'));
+  const st = document.querySelector('[data-status-tekst]');
+  const stip = document.querySelector('[data-stip]');
+  if (st) st.textContent = open ? 'Nu open' : 'Nu gesloten';
+  if (stip) stip.className = `h-2.5 w-2.5 rounded-full ${open ? 'bg-[#2f8a4a]' : 'bg-grijs'}`;
+</script>
