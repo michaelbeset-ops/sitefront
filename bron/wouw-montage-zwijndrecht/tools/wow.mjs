@@ -1,0 +1,11 @@
+import { createRequire } from 'node:module';
+const { chromium } = createRequire('C:/Users/Micha/Downloads/Sitefront/werkwijze/tools/')('playwright');
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4450/sitefront/wouw-montage-zwijndrecht/', { waitUntil: 'networkidle' });
+await p.click('a.knop-bus[data-product]');
+await p.selectOption('#o-wat', 'een reparatie'); await p.fill('#o-plaats', 'Dordrecht'); await p.fill('#o-maat', '250 x 210 cm');
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.selectOption('#o-product', 'rolluiken'); await p.selectOption('#o-wat', 'onderhoud'); console.log(await p.textContent('[data-bericht]'));
+await p.locator('#offerte').scrollIntoViewIfNeeded(); await p.waitForTimeout(1200); await p.locator('#offerte').screenshot({ path: 'shots/wow-1440.png' });
+await p.hover('[data-rij="screens"]'); await p.waitForTimeout(700); await p.locator('#zonwering').screenshot({ path: 'shots/index-hover.png' });
+await b.close();
