@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@import "@fontsource/shrikhand/400.css";
+@import "@fontsource-variable/karla/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Het bruine café aan de Kerkstraat: donker mahoniehout, warm wit en één kleur, het flessengroen van hun krijtborden. */
+  --color-inkt: #1b1411;        /* donker hout, donkere vlakken */
+  --color-inkt-2: #261b16;
+  --color-papier: #f5f3ef;      /* lichte vlakken */
+  --color-papier-2: #ebeae5;
+  --color-tekst: #1d1714;       /* tekst op papier */
+  --color-grijs: #5b534d;       /* bijtekst op papier */
+  --color-groen: #1f5640;       /* het bord: accent op papier */
+  --color-groen-diep: #173f2f;
+  --color-groen-licht: #a9d8bf; /* accent op hout */
+  --color-krijt: #f5f3ef;       /* tekst op hout en bord */
+  --color-zacht: #bdb4ab;       /* bijtekst op hout */
+  --color-lijn: #1d17141f;
+  --color-lijn-inkt: #f5f3ef24;
+  --color-wit: #ffffff;
+
+  --font-kop: "Shrikhand", "Georgia", serif;
+  --font-sans: "Karla Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-label: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .9vw + 1.2rem, 2.125rem);
+  --text-3xl: clamp(2.125rem, 2.6vw + 1.2rem, 3.75rem);
+  --text-hero: clamp(2.375rem, 4.6vw + .9rem, 5.25rem);
+
+  --radius-sm: 4px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-tekst);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-groen); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-groen); outline-offset: 3px; }
+  .op-inkt :focus-visible, .op-inkt:focus-visible { outline-color: var(--color-groen-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border: 1.5px solid transparent; border-radius: var(--radius-full); font-size: 1rem; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .3s var(--ease-zacht), color .3s var(--ease-zacht), border-color .3s var(--ease-zacht), transform .3s var(--ease-zacht); }
+  .knop:hover { transform: translateY(-1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-groen { background: var(--color-groen); color: var(--color-wit); }
+  .knop-groen:hover { background: var(--color-groen-diep); }
+  .knop-wit { border-color: #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-lijn { border-color: var(--color-tekst); color: var(--color-tekst); }
+  .knop-lijn:hover { background: var(--color-tekst); color: var(--color-papier); }
+  .knop-licht { background: var(--color-groen-licht); color: var(--color-inkt); }
+  .knop-licht:hover { background: var(--color-krijt); }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: color .25s; }
+  .link:hover { color: var(--color-groen); }
+  .op-inkt .link:hover { color: var(--color-groen-licht); }
+
+  /* Het krijtbord: flessengroen vlak in een donkere houten lijst, zoals de borden boven hun bar. */
+  .bord { background: var(--color-groen); color: var(--color-krijt); border: 10px solid var(--color-inkt-2); box-shadow: inset 0 0 0 1px #ffffff14, inset 0 0 60px #0000002e; }
+
+  /* Menukaart-regel: gerecht ...... omschrijving, met stippellijn. */
+  .kaartregel { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: .1rem; }
+  .kaartregel .stip { display: none; border-bottom: 2px dotted currentColor; opacity: .28; transform: translateY(-.3em); min-width: 1.5rem; }
+  .kaartregel .wat { text-align: left; }
+  @media (min-width: 640px) {
+    .kaartregel { grid-template-columns: auto 1fr; align-items: baseline; column-gap: .75rem; }
+    .kaartregel .stip { display: block; }
+    .kaartregel .wat { text-align: right; }
+  }
+
+  .veld { width: 100%; min-height: 3rem; padding: .55rem .9rem; border: 1.5px solid #f5f3ef4d; border-radius: var(--radius-sm); background: #0000002b; color: var(--color-krijt); font: inherit; font-weight: 600; color-scheme: dark; transition: border-color .25s; }
+  .veld:hover, .veld:focus { border-color: var(--color-groen-licht); }
+  .veld option { color: var(--color-tekst); background: var(--color-papier); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
