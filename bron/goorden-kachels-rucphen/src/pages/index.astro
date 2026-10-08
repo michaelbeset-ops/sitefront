@@ -1,0 +1,310 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, waHoi, waMet } from '../data/site';
+
+import breed from '../assets/loper-breed.jpg';
+import hoog from '../assets/loper-hoog.jpg';
+import lacunza from '../assets/lacunza.jpg';
+import inbouw from '../assets/inbouw.jpg';
+import reny from '../assets/reny.jpg';
+import rond from '../assets/rond.jpg';
+import cortenstaal from '../assets/cortenstaal.jpg';
+import houtkachels from '../assets/houtkachels.jpg';
+import pand from '../assets/pand.jpg';
+import zonnehemels from '../assets/zonnehemels.jpg';
+import potkachel from '../assets/gelderse-potkachel.jpg';
+import dallas from '../assets/barbas-dallas.jpg';
+import bellfires from '../assets/bellfires.jpg';
+import canterbury from '../assets/barbas-canterbury.jpg';
+
+// Hero: liggende snede van de loper op breed scherm, de hele staande foto op mobiel.
+const hb = await Promise.all([1280, 1800].map((w) => getImage({ src: breed, width: w, format: 'webp', quality: 62 })));
+const hh = await Promise.all([480, 720, 960, 1200].map((w) => getImage({ src: hoog, width: w, format: 'webp', quality: 50 })));
+const srcset = (a: { src: string; attributes: Record<string, unknown> }[]) => a.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+
+const gebruikt = [
+  { img: potkachel, naam: 'Gietijzeren Gelderse potkachel', soort: 'gas · vrijstaand', pos: '50% 60%' },
+  { img: dallas, naam: 'Barbas Dallas gashaard', soort: 'gas · gesloten verbranding', pos: '50% 45%' },
+  { img: bellfires, naam: 'Bellfires Retro Bell', soort: 'gas · inbouw', pos: '50% 50%' },
+  { img: canterbury, naam: 'Barbas Canterbury gashaard', soort: 'gas · gesloten verbranding', pos: '50% 50%' },
+];
+
+const jaren = [
+  ['1993', 'Begonnen aan het ouderlijk huis in Rucphen, met gebruikte gaskachels, gashaarden en gasgevelkachels.'],
+  ['1995', 'Twee jaar later komen daar gebruikte hout- en kolenkachels bij.'],
+  ['1997', 'Een eigen showroom aan de Dorpsstraat in Sint Willebrord.'],
+  ['2002', 'Naast kachels ook zonnebanken, zonnehemels, zonnebanklampen en toebehoren, met de service die erbij hoort.'],
+  ['2013', 'Terug naar Rucphen, in een eigen nieuw pand met 790 vierkante meter showroom, opslag en werkplaats.'],
+];
+
+const startBericht = 'Hallo, ik zoek een gebruikte kachel op aardgas, vrijstaand. Wat heeft u op dit moment in de showroom?';
+
+const titel = 'Goorden Kachels en Zonnehemels | Kachels en haarden in Rucphen';
+const omschrijving = 'Gebruikte en nieuwe kachels en haarden op gas of hout: vrijstaand, inbouw en inzet. Showroom aan de Kraaihei in Rucphen, onderhoud en reparatie. Sinds 1993.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: de loper door hun showroom -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-roet text-wit md:min-h-[100svh]">
+      <Kop />
+      <picture>
+        <source media="(min-width: 768px) and (min-aspect-ratio: 1/1)" srcset={srcset(hb)} sizes="100vw" type="image/webp" />
+        <img src={hh[2].src} srcset={srcset(hh)} sizes="100vw" width="1200" height="1600" alt="De showroom van Goorden: een lange grijze loper met aan beide kanten zwarte houtkachels op steigerhouten plinten, achterin kachels van cortenstaal" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:object-[50%_55%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d1f21cc_0%,#1d1f2133_22%,#1d1f2100_38%,#1d1f2199_62%,#1d1f21f2_88%)] md:bg-[linear-gradient(180deg,#1d1f21b3_0%,#1d1f2100_26%,#1d1f2100_45%,#1d1f21b3_75%,#1d1f21f0_100%),linear-gradient(90deg,#1d1f21d9_0%,#1d1f2180_38%,#1d1f2100_62%)]"></div>
+      <div class="wrap mt-auto pb-10 md:pb-16">
+        <p class="flex items-center gap-2.5 text-sm font-medium text-wit/90"><span class="h-2 w-2 rounded-full bg-vuur" aria-hidden="true"></span>Kachels en haarden · Kraaihei, Rucphen</p>
+        <h1 class="mt-4 max-w-[13ch] text-hero">Een zeer ruim aanbod kachels en haarden.</h1>
+        <p class="mt-5 max-w-xl text-base text-wit/90 sm:text-lg md:text-xl">Gebruikt en nieuw, op gas of hout. U bent van harte welkom om geheel vrijblijvend onze collectie te komen bezichtigen.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#zoeken" class="knop knop-vuur">Welke kachel zoekt u?<Icoon naam="pijl" /></a>
+          <a href={waHoi} class="knop knop-wit max-sm:hidden"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DE SHOWROOM: vrijstaand, inbouw, inzet -->
+    <section id="showroom" class="py-20 md:py-28">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-7">Vrijstaand, inbouw of inzet.</h2>
+          <p class="rijs self-end text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.08s">790 vierkante meter showroom, opslag en werkplaats, aan de Kraaihei in Rucphen.</p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-2 gap-4 md:mt-16 md:grid-cols-12 md:gap-6">
+          <figure class="rijs relative col-span-2 self-start md:col-span-7">
+            <Image src={rond} alt="Ronde en hoge zwarte houtkachels op lichte plinten aan weerszijden van de loper, met een speksteen exemplaar vooraan" quality={60} widths={[640, 960, 1400]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+            <figcaption class="kaartje absolute bottom-4 left-4"><b>Vrijstaand</b>hout</figcaption>
+          </figure>
+          <figure class="rijs relative col-span-1 self-start md:col-span-5 md:mt-12" style="--d:.1s">
+            <Image src={inbouw} alt="Twee inbouwhaarden naast elkaar in een plint van steigerhout, met een witte schouw erboven" quality={60} widths={[400, 640, 900]} sizes="(min-width: 768px) 38vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover object-[50%_45%] md:aspect-square" />
+            <figcaption class="kaartje absolute bottom-4 left-4"><b>Inbouw</b>in de showroom</figcaption>
+          </figure>
+          <figure class="rijs relative col-span-1 self-start md:col-span-4" style="--d:.15s">
+            <Image src={lacunza} alt="Twee zwarte vrijstaande kachels met een houtvak eronder voor een fotowand met bos" quality={60} widths={[400, 640, 900]} sizes="(min-width: 768px) 30vw, 50vw" class="aspect-[3/4] w-full rounded-sm object-cover object-[40%_60%]" />
+            <figcaption class="kaartje absolute bottom-4 left-4"><b>Vrijstaand</b>met houtvak</figcaption>
+          </figure>
+          <figure class="rijs relative col-span-2 self-start md:col-span-8" style="--d:.2s">
+            <Image src={cortenstaal} alt="Kachels van roestbruin cortenstaal op kunstgras voor een fotowand met strandpalen" quality={60} widths={[640, 960, 1400]} sizes="(min-width: 768px) 62vw, 100vw" class="aspect-[16/10] w-full rounded-sm object-cover object-[50%_60%]" />
+            <figcaption class="kaartje absolute bottom-4 left-4"><b>Vrijstaand</b>in de showroom</figcaption>
+          </figure>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3. GEBRUIKT: waar het in 1993 mee begon -->
+    <section id="gebruikt" class="bg-loper-2 py-20 md:py-28">
+      <div class="wrap">
+        <div class="grid grid-cols-1 gap-y-8 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-6">
+            <h2 class="rijs text-4xl">Een goede gebruikte kachel.</h2>
+            <p class="rijs mt-6 max-w-lg text-lg text-grijs" style="--d:.06s">Gas of hout/kolen, open of gesloten toestel. Wat er staat wisselt, dus vraag gerust wat er nu in de showroom staat.</p>
+            <a href={waMet('Hallo, welke gebruikte kachels en haarden staan er op dit moment in de showroom?')} class="rijs knop knop-inkt mt-8" style="--d:.1s"><Icoon naam="wa" />Vraag wat er nu staat</a>
+          </div>
+          <blockquote class="rijs self-end border-l-2 border-vuur pl-5 lg:col-span-5 lg:col-start-8" style="--d:.14s">
+            <p class="text-lg">“{reviews.harold.tekst}”</p>
+            <footer class="mt-2 text-sm text-grijs">{reviews.harold.naam}, Google review</footer>
+          </blockquote>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-4 md:mt-16 md:gap-6 lg:grid-cols-4">
+          {gebruikt.map((g, i) => (
+            <li class={`rijs ${i % 2 ? 'lg:mt-10' : ''}`} style={`--d:${i * .06}s`}>
+              <figure>
+                <Image src={g.img} alt={`${g.naam}, gefotografeerd in de showroom`} quality={58} widths={[320, 480, 640]} sizes="(min-width: 1024px) 23vw, 50vw" class="aspect-[4/5] w-full rounded-sm object-cover" style={`object-position:${g.pos}`} />
+                <figcaption class="mt-3"><span class="block font-kop text-lg leading-tight">{g.naam}</span><span class="text-sm text-grijs">{g.soort}</span></figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 text-sm text-grijs">Voorbeelden van gebruikte kachels van onze website, zonder prijs: vraag naar wat er nu te koop is.</p>
+      </div>
+    </section>
+
+    <!-- 4. KEUZEHULP: een zin die u zelf afmaakt, eindigt als showroomkaartje in WhatsApp -->
+    <section id="zoeken" class="bg-roet py-20 text-wit md:py-28" data-hulp>
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Welke kachel zoekt u?</h2>
+          <p class="rijs mt-5 max-w-md text-lg text-as" style="--d:.05s">Maak de zin af en stuur hem via WhatsApp.</p>
+
+          <p class="zin rijs mt-10 font-kop text-[clamp(1.6rem,2.6vw+.8rem,2.6rem)] leading-[1.5]" style="--d:.1s">
+            Ik zoek een
+            <label class="sr-only" for="staat">Gebruikt of nieuw</label>
+            <select id="staat" data-staat>
+              <option value="gebruikte" selected>gebruikte</option>
+              <option value="nieuwe">nieuwe</option>
+              <option value="gebruikte of nieuwe">gebruikte of nieuwe</option>
+            </select>
+            kachel op
+            <label class="sr-only" for="brandstof">Brandstof</label>
+            <select id="brandstof" data-brandstof>
+              <option value="aardgas" selected>aardgas</option>
+              <option value="propaan">propaan</option>
+              <option value="hout">hout</option>
+              <option value="hout of kolen">hout of kolen</option>
+              <option value="?">gas of hout, weet ik nog niet</option>
+            </select>,
+            <label class="sr-only" for="vorm">Soort toestel</label>
+            <select id="vorm" data-vorm>
+              <option value="vrijstaand" selected>vrijstaand</option>
+              <option value="inbouw">inbouw</option>
+              <option value="inzet">inzet</option>
+              <option value="?">vorm maakt niet uit</option>
+            </select>.
+          </p>
+
+          <div class="rijs mt-8 flex flex-col gap-1" style="--d:.15s">
+            <label class="vink"><input type="checkbox" data-langs />Ik wil graag langskomen in de showroom</label>
+            <label class="vink"><input type="checkbox" data-oud />Ik heb ook een vraag over onderhoud of reparatie</label>
+          </div>
+          <p class="mt-6 max-w-lg text-sm text-as" data-huur hidden>Huurt u? Voor het plaatsen van een houtkachel heeft u eerst toestemming van de verhuurder nodig.</p>
+        </div>
+
+        <div class="rijs lg:col-span-5 lg:pt-4" style="--d:.1s">
+          <div class="relative rounded-sm bg-wit p-6 text-inkt shadow-[0_24px_48px_-24px_#000] md:p-8">
+                        <p class="font-kop text-xl">Uw kaartje voor Goorden</p>
+            <p class="mt-4 border-t border-lijn-licht pt-4 text-[1.0625rem] leading-relaxed" data-bericht aria-live="polite">{startBericht}</p>
+            <a href={waMet(startBericht)} class="knop knop-vuur mt-6 w-full" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="mt-4 text-xs text-grijs">Dit opent WhatsApp naar <span class="num">{site.mob}</span>. U verstuurt het zelf.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ONDERHOUD EN REPARATIE -->
+    <section id="onderhoud" class="py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 items-start gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs lg:col-span-5">
+          <Image src={houtkachels} alt="Zwarte houtkachels met houtvak op een steigerhouten plint voor een donkere wand" quality={60} widths={[480, 720, 960]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_70%]" />
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7 lg:pt-10">
+          <h2 class="rijs text-4xl">Onderhoud en reparatie.</h2>
+          <p class="rijs mt-6 text-lg text-grijs" style="--d:.05s">Ook voor de kachel of haard die u al heeft.</p>
+          <blockquote class="rijs mt-10" style="--d:.1s">
+            <p class="font-kop text-xl leading-snug md:text-2xl">“{reviews.jack.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.jack.naam}, Google review</footer>
+          </blockquote>
+          <blockquote class="rijs mt-8 border-l-2 border-vuur pl-5" style="--d:.14s">
+            <p>“{reviews.sjourke.tekst} …”</p>
+            <footer class="mt-2 text-sm text-grijs">{reviews.sjourke.naam}, Google review</footer>
+          </blockquote>
+          <a href={waMet('Hallo, ik wil graag onderhoud of een reparatie aan mijn kachel of haard. Het merk en type is: ')} class="rijs knop knop-inkt mt-10" style="--d:.18s"><Icoon naam="wa" />Onderhoud aanvragen</a>
+
+          <div class="rijs mt-14 rounded-sm bg-wit p-6 md:p-7" style="--d:.2s">
+            <p class="font-kop text-lg">Stooktip</p>
+            <p class="mt-2 text-grijs">Laat minstens eenmaal per jaar uw rookkanaal vegen. Dit voor een juiste werking van uw rookkanaal en voorkomt schoorsteenbrand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SINDS 1993 -->
+    <section id="over" class="bg-loper-2 pb-20 md:pb-28">
+      <figure class="rijs relative">
+        <Image src={pand} alt="Het grijze pand van Goorden aan de Kraaihei met het oranje portaal en het logo boven de ingang" quality={74} widths={[640, 1135]} sizes="100vw" class="h-[38vw] max-h-[26rem] min-h-[11rem] w-full object-cover object-[70%_50%]" />
+      </figure>
+      <div class="wrap mt-14 grid grid-cols-1 gap-y-12 md:mt-20 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-4">
+          <h2 class="rijs text-4xl">Begonnen in 1993.</h2>
+          <figure class="rijs mt-10 max-w-sm" style="--d:.1s">
+            <Image src={zonnehemels} alt="Twee zonnehemels in de showroom, voor een fotowand met strandpalen" quality={60} widths={[400, 755]} sizes="(min-width: 1024px) 26vw, 90vw" class="aspect-[3/2] w-full rounded-sm object-cover" />
+            <figcaption class="mt-3 text-sm text-grijs">Sinds 2002 ook zonnehemels en zonnebanken.</figcaption>
+          </figure>
+        </div>
+        <ol class="lg:col-span-7 lg:col-start-6">
+          {jaren.map(([jaar, tekst], i) => (
+            <li class="rijs grid grid-cols-[4.75rem_1fr] gap-x-5 border-t border-lijn-licht py-6 md:grid-cols-[7rem_1fr]" style={`--d:${i * .05}s`}>
+              <span class="num font-kop text-2xl text-vuur-diep md:text-3xl">{jaar}</span>
+              <span class="md:text-lg">{tekst}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+      <div class="wrap mt-16 grid gap-x-10 gap-y-10 md:mt-24 md:grid-cols-3">
+        {[reviews.melanie, reviews.gerard, reviews.regina].map((r, i) => (
+          <blockquote class="rijs border-t-2 border-inkt pt-5" style={`--d:${i * .06}s`}>
+            <p class="flex gap-0.5 text-vuur-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-3.5 w-3.5" />)}</p>
+            <p class="mt-3 text-lg">“{r.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{r.naam}, Google review</footer>
+          </blockquote>
+        ))}
+      </div>
+    </section>
+
+    <!-- 7. BEZOEK: het oranje portaal om de ingang -->
+    <section id="bezoek" class="bg-roet pt-20 text-wit md:pt-28">
+      <div class="wrap">
+        <div class="portaal px-5 pb-16 pt-12 sm:px-10 md:px-14 md:pb-24 md:pt-16">
+          <div class="grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+            <div class="lg:col-span-6">
+              <h2 class="rijs text-4xl">Kom kijken aan de Kraaihei.</h2>
+              <p class="rijs mt-6 max-w-md text-lg text-wit/85" style="--d:.05s">{site.straat}, {site.postcode}.</p>
+              <div class="rijs mt-9 flex flex-wrap gap-3" style="--d:.1s">
+                <a href={site.route} class="knop knop-vuur"><Icoon naam="pin" />Route</a>
+                <a href={waMet('Hallo, ik wil graag een afspraak maken om de showroom te bekijken. Het liefst op ')} class="knop knop-wit"><Icoon naam="wa" />Afspraak maken</a>
+              </div>
+            </div>
+            <div class="rijs lg:col-span-5 lg:col-start-8" style="--d:.1s">
+              <table class="w-full text-left">
+                <caption class="sr-only">Openingstijden showroom</caption>
+                <tbody>
+                  {tijden.map((t) => (
+                    <tr class="border-b border-lijn" data-dag={t.d}>
+                      <th scope="row" class="py-4 pr-4 font-medium">{t.dag}</th>
+                      <td class="num py-4 text-right">{t.tijd} uur</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p class="mt-5 text-as">Andere dagen (ook in de avonden en zondag) geheel vrijblijvend op afspraak.</p>
+              <dl class="mt-10 grid gap-5 text-sm sm:grid-cols-2">
+                <div class="border-t border-lijn pt-4"><dt class="text-as">Telefoon</dt><dd class="num mt-1 text-base"><a href={site.telHref} class="link">{site.tel}</a></dd></div>
+                <div class="border-t border-lijn pt-4"><dt class="text-as">Mobiel en WhatsApp</dt><dd class="num mt-1 text-base"><a href={site.mobHref} class="link">{site.mob}</a></dd></div>
+                <div class="border-t border-lijn pt-4 sm:col-span-2"><dt class="text-as">E-mail</dt><dd class="mt-1 text-base"><a href={`mailto:${site.mail}`} class="link break-all">{site.mail}</a></dd></div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ wa: site.wa }}>
+    // Vandaag markeren in de openingstijden.
+    const vandaag = new Date().getDay();
+    document.querySelectorAll(`[data-dag="${vandaag}"]`).forEach((r) => { r.classList.add('text-vuur'); r.querySelector('th').insertAdjacentHTML('beforeend', ' <span class="text-sm text-as">(vandaag)</span>'); });
+
+    const hulp = document.querySelector('[data-hulp]');
+    if (hulp) {
+      const $ = (s) => hulp.querySelector(s);
+      const staat = $('[data-staat]'), brandstof = $('[data-brandstof]'), vorm = $('[data-vorm]'), langs = $('[data-langs]'), oud = $('[data-oud]');
+      const bericht = $('[data-bericht]'), stuur = $('[data-stuur]'), huur = $('[data-huur]');
+      const maak = () => {
+        const b = brandstof.value, v = vorm.value;
+        let t = `Hallo, ik zoek een ${staat.value} kachel`;
+        t += b === '?' ? ', gas of hout weet ik nog niet' : ` op ${b}`;
+        t += v === '?' ? '.' : `, ${v}.`;
+        t += ' Wat heeft u op dit moment in de showroom?';
+        if (oud.checked) t += ' Ook heb ik een vraag over onderhoud of reparatie van mijn huidige kachel.';
+        if (langs.checked) t += ' Ik kom graag langs, wanneer schikt het?';
+        bericht.textContent = t;
+        stuur.href = `${wa}?text=${encodeURIComponent(t)}`;
+        huur.hidden = !b.startsWith('hout');
+      };
+      const maat = document.createElement('canvas').getContext('2d');
+      const pas = (s) => { const cs = getComputedStyle(s); maat.font = `${cs.fontSize} ${cs.fontFamily}`; s.style.width = `calc(${Math.ceil(maat.measureText(s.selectedOptions[0].text).width)}px + 1.6em)`; };
+      const alle = () => [staat, brandstof, vorm].forEach(pas);
+      document.fonts?.ready.then(alle); alle();
+      [staat, brandstof, vorm].forEach((s) => s.addEventListener('change', () => { pas(s); maak(); }));
+      [langs, oud].forEach((c) => c.addEventListener('change', maak));
+      maak();
+    }
+  </script>
+</Base>

@@ -1,0 +1,91 @@
+---
+// Wow: een meetbriefje. Product (alleen uit hun eigen productlijst), wat er moet gebeuren, breedte op de rolmaat, plaats.
+// Eindigt in een vooraf ingevuld WhatsApp-bericht; de foto voegt de klant in WhatsApp zelf toe. Er wordt hier niets verstuurd.
+import { site } from '../data/site';
+import Icoon from './Icoon.astro';
+const groepen: [string, string[]][] = [
+  ['Buiten', ['Screens', 'Knikarmscherm (terras)', 'Uitvalscherm', 'Markies']],
+  ['Rolluiken', ['Rolluik']],
+  ['Binnen', ['Rolgordijn', 'Jaloezie', 'Lamelgordijn', 'Paneelgordijn', 'Vouwgordijn', 'Silhouette gordijn']],
+];
+const vragen = ['Nieuw', 'Reparatie of storing', 'Nieuw doek'];
+---
+<form class="rijs mt-12 grid gap-px overflow-hidden rounded-md bg-lijn shadow-sm md:mt-16 lg:grid-cols-12" data-brief onsubmit="return false" style="--d:.1s">
+  <div class="bg-wit p-6 sm:p-9 lg:col-span-7 lg:p-12">
+    <div class="grid gap-8 sm:grid-cols-2">
+      <label class="block">
+        <span class="text-sm font-semibold text-grijs">Wat moet er komen?</span>
+        <select class="veld mt-1" name="product">
+          {groepen.map(([g, items]) => <optgroup label={g}>{items.map((p) => <option selected={p === 'Screens'}>{p}</option>)}</optgroup>)}
+          <option>Weet ik nog niet</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm font-semibold text-grijs">Plaats</span>
+        <input class="veld mt-1" name="plaats" type="text" autocomplete="address-level2" placeholder="Bijvoorbeeld Alblasserdam" />
+      </label>
+    </div>
+
+    <fieldset class="mt-9">
+      <legend class="text-sm font-semibold text-grijs">Waarvoor?</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {vragen.map((v, i) => (
+          <label class="contents"><input type="radio" name="vraag" value={v} checked={i === 0} class="peer sr-only" /><span class="keus">{v}</span></label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="mt-10">
+      <div class="flex items-baseline justify-between gap-4">
+        <label for="breedte" class="text-sm font-semibold text-grijs">Breedte, ongeveer</label>
+        <output for="breedte" class="kop num text-2xl" data-uit>300 cm</output>
+      </div>
+      <div class="relative mt-3 overflow-hidden rounded-sm">
+        <div class="rolmaat" aria-hidden="true">
+          <div class="rolmaat-cijfers"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6 m</span></div>
+        </div>
+        <input id="breedte" name="breedte" type="range" min="0" max="600" step="10" value="300" class="schuif absolute inset-0" aria-describedby="breedte-hulp" />
+      </div>
+      <p id="breedte-hulp" class="mt-2 text-xs text-grijs">Helemaal naar links: weet ik nog niet. Het precieze meten doen wij.</p>
+    </div>
+  </div>
+
+  <div class="flex flex-col bg-antraciet p-6 text-wit sm:p-9 lg:col-span-5 lg:p-12">
+    <p class="text-sm font-semibold text-mist">Uw bericht</p>
+    <p class="mt-4 flex-1 whitespace-pre-line text-lg leading-relaxed" data-tekst aria-live="polite"></p>
+    <p class="mt-8 flex items-start gap-3 border-t border-lijn-licht pt-5 text-sm text-mist"><Icoon naam="foto" class="mt-0.5 h-5 w-5 flex-none text-zon" />Stuur in WhatsApp een foto van het raam, de gevel of het scherm mee.</p>
+    <a href={site.wa} class="knop mt-6 w-full" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+  </div>
+</form>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-brief]');
+  if (f) {
+    const uit = f.querySelector<HTMLOutputElement>('[data-uit]')!;
+    const tekst = f.querySelector<HTMLElement>('[data-tekst]')!;
+    const knop = f.querySelector<HTMLAnchorElement>('[data-stuur]')!;
+    const zet = () => {
+      const d = new FormData(f);
+      const product = String(d.get('product'));
+      // "Nieuw doek" alleen bij buitenzonwering met een doek.
+      const doek = f.querySelector<HTMLInputElement>('input[value="Nieuw doek"]')!;
+      const metDoek = ['Screens', 'Knikarmscherm (terras)', 'Uitvalscherm', 'Markies', 'Weet ik nog niet'].includes(product);
+      doek.disabled = !metDoek;
+      doek.closest('label')!.querySelector('.keus')!.classList.toggle('opacity-40', !metDoek);
+      if (!metDoek && doek.checked) f.querySelector<HTMLInputElement>('input[value="Nieuw"]')!.checked = true;
+      const vraag = String(new FormData(f).get('vraag'));
+      const b = Number(d.get('breedte'));
+      const plaats = String(d.get('plaats') || '').trim();
+      const maat = b === 0 ? 'weet ik nog niet' : `ongeveer ${b} cm`;
+      uit.textContent = b === 0 ? '?' : `${b} cm`;
+      const wat = product === 'Weet ik nog niet' ? 'zonwering, ik weet nog niet welke soort' : product.toLowerCase();
+      const zin = vraag === 'Nieuw' ? `ik wil graag een offerte voor: ${wat}.` : vraag === 'Nieuw doek' ? `ik wil graag een nieuw doek op mijn ${wat}.` : `ik heb een reparatie of storing aan mijn ${wat}.`;
+      const bericht = `Hallo, ${zin}\nBreedte: ${maat}.${plaats ? `\nPlaats: ${plaats}.` : ''}\nFoto stuur ik hierbij mee.`;
+      tekst.textContent = bericht;
+      knop.href = `https://wa.me/31611092590?text=${encodeURIComponent(bericht)}`;
+    };
+    f.addEventListener('input', zet);
+    f.addEventListener('change', zet);
+    zet();
+  }
+</script>

@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/sora/wght.css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het zonnegeel uit hun logo (#f3cb35). Alleen als vlak, lijn of op donker; nooit als tekst op wit.
+     De rest is nacht-inkt met een zweem van het logoblauw, en koel papierwit. */
+  --color-zon: #f3c530;
+  --color-zon-diep: #e2b10f;
+  --color-nacht: #14172a;        /* donkere secties, footer */
+  --color-nacht-2: #1d2135;
+  --color-inkt: #11131c;
+  --color-papier: #f5f5f2;
+  --color-papier-2: #e9e9e4;
+  --color-wit: #ffffff;
+  --color-grijs: #565a66;        /* bijtekst op papier, 6,6:1 */
+  --color-mist: #b3b7c6;         /* bijtekst op nacht, 9:1 */
+  --color-lijn: #11131c24;
+  --color-lijn-licht: #ffffff24;
+
+  --font-kop: "Sora Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.375rem, .8vw + 1.05rem, 1.875rem);
+  --text-3xl: clamp(2rem, 2.8vw + .9rem, 3.75rem);
+  --text-hero: clamp(2.75rem, 6.4vw + .4rem, 6.75rem);
+
+  --radius-sm: .3rem;
+  --radius-md: .6rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #11131c14, 0 8px 24px #11131c12;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 430;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 700; line-height: 1.04; letter-spacing: -0.035em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-zon); color: var(--color-inkt); }
+  :focus-visible { outline: 2px solid var(--color-zon-diep); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); font-weight: 700; letter-spacing: -0.03em; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-full); font-weight: 700; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-zon); color: var(--color-inkt); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-zon-diep); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-wit); }
+  .knop-inkt:hover { background: var(--color-nacht-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 2px; text-decoration-color: var(--color-zon); text-underline-offset: .24em; transition: text-decoration-color .25s, color .25s; }
+  .link:hover { text-decoration-color: currentColor; }
+
+  /* Assortiment als prijslijst zonder prijzen: naam ..... merk */
+  .lijst li { display: flex; align-items: baseline; gap: .75rem; padding-block: .55rem; }
+  .lijst li::after { content: ""; order: 1; flex: 1; min-width: 1.5rem; border-bottom: 1.5px dotted #ffffff40; transform: translateY(-.3em); }
+  .lijst li .merk { order: 2; color: var(--color-mist); font-size: .9375rem; text-align: right; }
+  .lijst li:not(:has(.merk))::after { display: none; }
+
+  /* Werkstrook: horizontaal scrollen binnen de strook, nooit de pagina */
+  .strook { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; padding-inline: 1.25rem; padding-bottom: 1rem; scrollbar-width: thin; scrollbar-color: var(--color-inkt) transparent; overscroll-behavior-x: contain; }
+  .strook > * { scroll-snap-align: start; flex: none; width: min(78vw, 22rem); }
+  @media (min-width: 768px) { .strook { grid-auto-columns: 26rem; gap: 1.5rem; padding-inline: max(2.5rem, calc((100vw - 80rem) / 2 + 2.5rem)); scroll-padding-inline: max(2.5rem, calc((100vw - 80rem) / 2 + 2.5rem)); } }
+  @media (min-width: 768px) { .strook > * { width: 26rem; } .strook > .breed { width: 40rem; } }
+
+  /* Offerte in één zin */
+  .zin { font-family: var(--font-kop); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(1.4rem, 1.6vw + 1rem, 2.4rem); line-height: 1.7; }
+  .gat { field-sizing: content; min-width: 3ch; max-width: 100%; appearance: none; -webkit-appearance: none; font: inherit; color: var(--color-inkt); background: transparent; border: 0; border-bottom: 3px solid var(--color-inkt); border-radius: 0; padding: 0 .15em; margin: 0 .1em; min-height: 1.5em; transition: border-color .25s, background-color .25s; }
+  .gat:focus { outline: none; border-color: var(--color-zon-diep); background: #f3c53033; }
+  .gat::placeholder { color: #11131c59; }
+  select.gat { padding-right: 1.1em; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2311131c' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .05em center; background-size: .6em; }
+  .vink { display: flex; align-items: center; gap: .75rem; cursor: pointer; font-weight: 600; min-height: 2.75rem; }
+  .vink input { appearance: none; -webkit-appearance: none; width: 1.4rem; height: 1.4rem; flex: none; border: 2px solid var(--color-inkt); border-radius: .3rem; display: grid; place-items: center; cursor: pointer; transition: background-color .2s; }
+  .vink input:checked { background: var(--color-inkt); }
+  .vink input:checked::after { content: ""; width: .7rem; height: .4rem; border: solid var(--color-zon); border-width: 0 0 2.5px 2.5px; transform: translateY(-1px) rotate(-45deg); }
+  .vink input:focus-visible { outline: 2px solid var(--color-zon-diep); outline-offset: 3px; }
+
+  /* Eigen detail: de zon uit hun logo. Stralen lichten op naarmate de offertezin vol raakt. */
+  .straal { stroke: #11131c2e; transition: stroke .5s var(--ease-zacht); }
+  .straal.aan { stroke: var(--color-zon-diep); }
+
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

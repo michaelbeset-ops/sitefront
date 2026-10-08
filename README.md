@@ -290,3 +290,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Ecologic Pelletkachels, Almere | https://voorstel.sitefront.nl/ecologic-pelletkachels-almere/ | gedateerd sjabloon; 4,9/63; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Wooncomfort Halsteren (zonwering, klimaat) | https://voorstel.sitefront.nl/wooncomfort-halsteren/ | geen website (eigen domein = parkeerpagina); 5,0/9; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Comfort Wonen (veranda's, kozijnen), Nieuwegein | https://voorstel.sitefront.nl/comfort-wonen-nieuwegein/ | domein comfortwonen.eu verlopen (te koop op Sedo); 5,0/8; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Zonwering Sam, Alblasserdam | https://voorstel.sitefront.nl/zonwering-sam-alblasserdam/ | verouderde site (2017), piepklein op mobiel; 4,8/26; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Verandahof, Waalwijk | https://voorstel.sitefront.nl/verandahof/ | verandahof.nl is een lege witte pagina; 4,8/16; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Dierkx Zonweringen, Goirle/Tilburg | https://voorstel.sitefront.nl/dierkx-zonwering-tilburg/ | verouderde site (2020), slider laadt 9 s, geen tel-link; 4,5/26; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Goorden Kachels en Zonnehemels, Rucphen | https://voorstel.sitefront.nl/goorden-kachels-rucphen/ | verouderde site; 4,7/15; 06/WhatsApp. | 2026-10-08 | demo premium |

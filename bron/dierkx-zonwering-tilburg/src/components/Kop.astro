@@ -1,0 +1,50 @@
+---
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['familie', 'Het bedrijf'], ['werk', 'Werk'], ['assortiment', 'Assortiment'], ['offerte', 'Offerte'], ['showroom', 'Showroom']];
+---
+<header class:list={['inset-x-0 top-0 z-40 text-wit transition-colors duration-300', thuis ? 'sticky -mb-[4.5rem] md:-mb-20' : 'sticky bg-nacht']} data-kop={thuis ? 'thuis' : undefined}>
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-6 md:h-20">
+    <Merk />
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9375rem] font-semibold">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/90 no-underline transition-colors duration-200 hover:text-zon">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href={site.telHref} class="num hidden text-[.9375rem] font-semibold text-wit no-underline hover:text-zon xl:inline-flex xl:items-center xl:gap-2"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+      <a href={waHoi} class="knop hidden !min-h-11 !px-5 text-[.9375rem] md:inline-flex"><Icoon naam="wa" />WhatsApp</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-sm text-wit lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h18M3 16h18" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-nav" aria-label="Menu" class="hidden border-t border-lijn-licht bg-nacht lg:hidden" data-menu>
+    <ul class="wrap pb-8 pt-2">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="kop block border-b border-lijn-licht py-4 text-2xl text-wit no-underline">{t}</a></li>)}
+      <li><a href={site.telHref} class="num block py-4 text-lg font-semibold text-zon no-underline">Bel {site.tel}</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn bg-papier/95 p-2 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="flex min-h-12 items-center justify-center gap-2 rounded-full border-[1.5px] border-inkt text-[.9375rem] font-bold text-inkt no-underline"><Icoon naam="tel" class="h-4 w-4" />Bellen</a>
+  <a href={waHoi} class="flex min-h-12 items-center justify-center gap-2 rounded-full bg-zon text-[.9375rem] font-bold text-inkt no-underline"><Icoon naam="wa" class="h-5 w-5" />WhatsApp</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  const kop = document.querySelector<HTMLElement>('[data-kop]');
+  const zet = () => kop?.classList.toggle('bg-nacht', scrollY > 120 || k?.getAttribute('aria-expanded') === 'true');
+  if (kop) { zet(); addEventListener('scroll', zet, { passive: true }); }
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); zet(); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); zet(); }));
+  }
+</script>

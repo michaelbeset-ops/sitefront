@@ -1,0 +1,14 @@
+---
+// De halve zon uit hun logo: een kern met stralen die omhoog uitwaaieren. Lijnwerk, kleur via currentColor of .straal.
+interface Props { class?: string; stralen?: number; los?: boolean }
+const { class: cls = '', stralen = 13, los = false } = Astro.props;
+const lijnen = Array.from({ length: stralen }, (_, i) => {
+  const a = Math.PI - (Math.PI * (i + 0.5)) / stralen;
+  const r1 = 34, r2 = i % 2 ? 78 : 92;
+  return { x1: 100 + Math.cos(a) * r1, y1: 100 - Math.sin(a) * r1, x2: 100 + Math.cos(a) * r2, y2: 100 - Math.sin(a) * r2, i };
+});
+---
+<svg viewBox="0 0 200 104" class={cls} fill="none" aria-hidden="true">
+  {lijnen.map((l) => <line x1={l.x1.toFixed(1)} y1={l.y1.toFixed(1)} x2={l.x2.toFixed(1)} y2={l.y2.toFixed(1)} stroke-width="7" stroke-linecap="round" class={los ? 'straal' : undefined} stroke={los ? undefined : 'currentColor'} data-straal={l.i} />)}
+  <path d="M74 100a26 26 0 0 1 52 0Z" fill={los ? '#11131c' : 'currentColor'} />
+</svg>

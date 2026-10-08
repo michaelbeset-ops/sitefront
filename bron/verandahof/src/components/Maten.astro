@@ -1,0 +1,143 @@
+---
+// Wow: maten doorgeven. Bovenaanzicht van de tuin met een raster van 1 meter; de veranda tekent mee.
+// Eindigt in een vooraf ingevuld WhatsApp-bericht. Verstuurt zelf niets.
+import { site } from '../data/site';
+import Icoon from './Icoon.astro';
+const soorten = [
+  ['veranda', 'Veranda'],
+  ['schuifwanden', 'Veranda met glazen schuifwanden'],
+  ['zijwanden', 'Veranda met zijwanden'],
+  ['carport', 'Carport'],
+];
+---
+<div class="grid gap-y-12 md:grid-cols-12 md:gap-x-12" data-maten>
+  <form class="md:col-span-5" onsubmit="return false" aria-label="Maten van je veranda">
+    <fieldset>
+      <legend class="text-sm font-medium text-grijs">Wat wil je laten plaatsen?</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {soorten.map(([w, t], i) => (
+          <label>
+            <input type="radio" name="soort" value={w} checked={i === 1} class="peer sr-only" />
+            <span class="keus">{t}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="mt-10">
+      <div class="flex items-baseline justify-between">
+        <label for="m-b" class="text-sm font-medium text-grijs">Breedte, langs het huis</label>
+        <output for="m-b" class="num font-serif text-2xl" data-uit="b">6 m</output>
+      </div>
+      <input id="m-b" name="b" type="range" min="2" max="12" step="0.5" value="6" class="schuif" />
+    </div>
+    <div class="mt-6">
+      <div class="flex items-baseline justify-between">
+        <label for="m-d" class="text-sm font-medium text-grijs">Diepte, de tuin in</label>
+        <output for="m-d" class="num font-serif text-2xl" data-uit="d">3,5 m</output>
+      </div>
+      <input id="m-d" name="d" type="range" min="2" max="6" step="0.5" value="3.5" class="schuif" />
+    </div>
+
+    <p class="mt-6 text-sm text-grijs">
+      Al eens geplaatst:{" "}
+      <button type="button" class="link num font-medium text-inkt" data-maat="9,3.5">9 x 3,5 m</button>{" "}en{" "}
+      <button type="button" class="link num font-medium text-inkt" data-maat="6,3.5">6 x 3,5 m</button>.
+    </p>
+
+    <div class="mt-10">
+      <label for="m-p" class="text-sm font-medium text-grijs">Plaats</label>
+      <input id="m-p" name="plaats" type="text" autocomplete="address-level2" placeholder="Bijvoorbeeld Waalwijk" class="veld" />
+    </div>
+
+    <a href={site.wa} class="knop mt-10 w-full sm:w-auto" data-stuur target="_blank" rel="noopener"><Icoon naam="wa" />Stuur via WhatsApp</a>
+    <p class="mt-4 text-sm text-grijs">Je verstuurt het zelf, naar <span class="num whitespace-nowrap">{site.tel}</span>. Een foto van je tuin kun je erbij doen.</p>
+  </form>
+
+  <figure class="md:col-span-7">
+    <div class="relative overflow-hidden rounded-sm bg-wit p-5 sm:p-8">
+      <svg viewBox="0 0 640 440" class="h-auto w-full" role="img" aria-labelledby="m-titel" data-tekening>
+        <title id="m-titel">Bovenaanzicht van de veranda tegen het huis</title>
+        <defs>
+          <pattern id="raster" width="1" height="1" patternUnits="userSpaceOnUse" data-raster>
+            <path d="M1 0H0V1" fill="none" stroke="#191c1e" stroke-opacity=".09" stroke-width=".02" />
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="640" height="440" fill="#ffffff" /><clipPath id="knip"><rect x="20" y="20" width="600" height="400" /></clipPath>
+        <g clip-path="url(#knip)"><g data-schaal>
+          <rect x="0" y="0" width="14" height="8" fill="url(#raster)" />
+        </g></g>
+        <!-- huis -->
+        <rect x="20" y="20" width="600" height="26" fill="#23272a" />
+        <text x="32" y="38" fill="#ffffff" font-size="13" font-family="Jost Variable, sans-serif" letter-spacing="1.5">HUIS</text>
+        <!-- veranda -->
+        <g data-veranda>
+          <rect data-dak fill="#48c41a" fill-opacity=".12" stroke="#23272a" stroke-width="3" />
+          <line data-voor stroke="#23272a" stroke-width="3" />
+          <line data-links stroke="#23272a" stroke-width="3" />
+          <line data-rechts stroke="#23272a" stroke-width="3" />
+          <rect data-paal-l fill="#23272a" width="10" height="10" />
+          <rect data-paal-r fill="#23272a" width="10" height="10" />
+        </g>
+        <!-- maatlijnen -->
+        <g stroke="#586064" stroke-width="1" fill="none" data-maatlijn-b><line /><line /><line /></g>
+        <g stroke="#586064" stroke-width="1" fill="none" data-maatlijn-d><line /><line /><line /></g>
+        <text data-tekst-b text-anchor="middle" font-size="15" font-family="Jost Variable, sans-serif" fill="#191c1e"></text>
+        <text data-tekst-d text-anchor="middle" font-size="15" font-family="Jost Variable, sans-serif" fill="#191c1e"></text>
+        <text data-opp x="320" y="0" text-anchor="middle" font-size="26" font-family="Fraunces Variable, serif" fill="#191c1e"></text>
+      </svg>
+    </div>
+    <figcaption class="mt-3 flex flex-wrap justify-between gap-2 text-sm text-grijs">
+      <span>Bovenaanzicht, één hokje is één meter.</span>
+      <span class="flex items-center gap-4"><span class="inline-flex items-center gap-2"><span class="h-[3px] w-5 bg-groen"></span>glas</span><span class="inline-flex items-center gap-2"><span class="h-[5px] w-5 bg-antraciet"></span>wand</span></span>
+    </figcaption>
+  </figure>
+</div>
+
+<script>
+  const wa = 'https://wa.me/31643095927';
+  const root = document.querySelector<HTMLElement>('[data-maten]');
+  if (root) {
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const b = q<HTMLInputElement>('input[name=b]'), d = q<HTMLInputElement>('input[name=d]'), plaats = q<HTMLInputElement>('input[name=plaats]');
+    const nl = (n: number) => String(n).replace('.', ',');
+    const set = (el: Element, a: Record<string, number | string>) => Object.entries(a).forEach(([k, v]) => el.setAttribute(k, String(v)));
+    const namen: Record<string, string> = { veranda: 'een veranda', schuifwanden: 'een veranda met glazen schuifwanden', zijwanden: 'een veranda met zijwanden', carport: 'een carport' };
+    const teken = () => {
+      const B = +b.value, D = +d.value;
+      const svg = q<SVGSVGElement>('[data-tekening]'); const k = Math.min(2.2, Math.max(1, 640 / (svg.clientWidth || 640) * .62));
+      root.querySelectorAll<SVGTextElement>('[data-tekst-b],[data-tekst-d]').forEach((t) => t.setAttribute('font-size', String(15 * k)));
+      q('[data-opp]').setAttribute('font-size', String(26 * Math.min(k, 1.6)));
+      const soort = (root.querySelector<HTMLInputElement>('input[name=soort]:checked')?.value) || 'veranda';
+      q('[data-uit=b]').textContent = `${nl(B)} m`;
+      q('[data-uit=d]').textContent = `${nl(D)} m`;
+      // schaal: max 12 x 6 m past in 520 x 300 px
+      const s = Math.min(470 / 12, 300 / 6);
+      const w = B * s, h = D * s, x = 300 - w / 2, y = 46;
+      const sch = q('[data-schaal]');
+      sch.setAttribute('transform', `translate(${x - Math.ceil((x - 20) / s) * s} ${y}) scale(${s})`);
+      set(sch.firstElementChild!, { width: Math.ceil(620 / s) + 2, height: Math.ceil(374 / s) });
+      set(q('[data-dak]'), { x, y, width: w, height: h, 'stroke-width': 0 });
+      const glas = soort === 'schuifwanden', dicht = soort === 'zijwanden';
+      set(q('[data-voor]'), { x1: x, y1: y + h, x2: x + w, y2: y + h, stroke: glas ? '#48c41a' : '#23272a', 'stroke-width': glas ? 4 : 3, 'stroke-dasharray': glas ? '14 4' : 'none' });
+      for (const [k, xx] of [['links', x], ['rechts', x + w]] as const) set(q(`[data-${k}]`), { x1: xx, y1: y, x2: xx, y2: y + h, stroke: dicht ? '#23272a' : glas ? '#48c41a' : '#23272a', 'stroke-width': dicht ? 7 : glas ? 4 : 1.5, 'stroke-dasharray': glas ? '14 4' : dicht ? 'none' : '4 5' });
+      set(q('[data-paal-l]'), { x: x - 5, y: y + h - 5 });
+      set(q('[data-paal-r]'), { x: x + w - 5, y: y + h - 5 });
+      const mb = q('[data-maatlijn-b]').children, yb = y + h + 30;
+      set(mb[0], { x1: x, y1: yb, x2: x + w, y2: yb }); set(mb[1], { x1: x, y1: yb - 6, x2: x, y2: yb + 6 }); set(mb[2], { x1: x + w, y1: yb - 6, x2: x + w, y2: yb + 6 });
+      set(q('[data-tekst-b]'), { x: x + w / 2, y: yb + 10 + 15 * k }); q('[data-tekst-b]').textContent = `${nl(B)} m breed`;
+      const md = q('[data-maatlijn-d]').children, xd = x + w + 18;
+      set(md[0], { x1: xd, y1: y, x2: xd, y2: y + h }); set(md[1], { x1: xd - 6, y1: y, x2: xd + 6, y2: y }); set(md[2], { x1: xd - 6, y1: y + h, x2: xd + 6, y2: y + h });
+      const td = q('[data-tekst-d]'); set(td, { x: xd + 10, y: y + h / 2 + 5 * k, 'text-anchor': 'start' }); td.textContent = `${nl(D)} m`;
+      const opp = q('[data-opp]'); set(opp, { y: y + h / 2 + 9 }); opp.textContent = `${nl(Math.round(B * D * 10) / 10)} m²`;
+      const p = plaats.value.trim();
+      const tekst = `Hallo Verandahof, ik wil graag een offerte voor ${namen[soort]} van ongeveer ${nl(B)} x ${nl(D)} meter (breed x diep).${p ? ` Plaats: ${p}.` : ''} Ik stuur een foto van mijn tuin mee.`;
+      q<HTMLAnchorElement>('[data-stuur]').href = `${wa}?text=${encodeURIComponent(tekst)}`;
+    };
+    root.addEventListener('input', teken);
+    root.addEventListener('change', teken);
+    addEventListener('resize', teken, { passive: true });
+    root.querySelectorAll<HTMLButtonElement>('[data-maat]').forEach((k) => k.addEventListener('click', () => { const [bb, dd] = k.dataset.maat!.split(','); b.value = bb; d.value = dd; teken(); }));
+    teken();
+  }
+</script>
