@@ -294,3 +294,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Verandahof, Waalwijk | https://voorstel.sitefront.nl/verandahof/ | verandahof.nl is een lege witte pagina; 4,8/16; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Dierkx Zonweringen, Goirle/Tilburg | https://voorstel.sitefront.nl/dierkx-zonwering-tilburg/ | verouderde site (2020), slider laadt 9 s, geen tel-link; 4,5/26; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Goorden Kachels en Zonnehemels, Rucphen | https://voorstel.sitefront.nl/goorden-kachels-rucphen/ | verouderde site; 4,7/15; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Express Kozijnen, Terheijden | https://voorstel.sitefront.nl/express-kozijnen-terheijden/ | verouderde Wix-site, rommelig op mobiel; 4,8/63; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Rike Schoorsteenwerken (kachels, haarden), 's-Hertogenbosch | https://voorstel.sitefront.nl/rike-kachels-den-bosch/ | verouderde site (2018); 5,0/10; 06/WhatsApp. | 2026-10-08 | demo premium |
+| BY ERIK Zonwering, Moordrecht | https://voorstel.sitefront.nl/by-erik-zonwering-moordrecht/ | verouderde site met Engelse sjabloonteksten; 5,0/7; 06/WhatsApp. | 2026-10-08 | demo premium |

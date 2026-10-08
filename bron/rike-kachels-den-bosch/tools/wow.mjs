@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://127.0.0.1:4479/sitefront/rike-kachels-den-bosch/#advies', { waitUntil: 'networkidle' });
+await p.evaluate(()=>document.querySelectorAll('.rijs').forEach(e=>e.classList.add('in')));
+await p.click('[data-zone="dak"]'); await p.selectOption('[data-wat]', 'een reparatie'); await p.check('[data-foto]');
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]','href')));
+await p.click('[data-zone="kamer"]'); await p.selectOption('[data-soort]', 'een pelletkachel');
+console.log(await p.textContent('[data-bericht]'));
+await p.locator('#advies').screenshot({ path: 'shots/wow-1440.png' });
+console.log('errors', errs);
+await b.close();

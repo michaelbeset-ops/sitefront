@@ -1,0 +1,321 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, bereikbaar, reviews, waHoi } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import stapel from '../assets/stapel.jpg';
+import heftruck from '../assets/heftruck.jpg';
+import folie from '../assets/folie.jpg';
+import middelburg from '../assets/middelburg.jpg';
+import badNieuweschans from '../assets/bad-nieuweschans.jpg';
+import roosendaal from '../assets/roosendaal.jpg';
+import rotterdam from '../assets/rotterdam.jpg';
+import gevelGroen from '../assets/gevel-groen.jpg';
+import tuindeuren from '../assets/tuindeuren.jpg';
+import luiken from '../assets/luiken.jpg';
+
+const hb = await Promise.all([640, 960, 1280, 1600].map((w) => getImage({ src: hero, width: w, format: 'webp', quality: 58 })));
+const srcset = (a: { src: string; attributes: Record<string, unknown> }[]) => a.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+
+// Van hun eigen productpagina's (systeemnamen letterlijk).
+const producten = [
+  { pos: 'A-01', naam: 'Kunststof kozijnen', tekst: 'Aluplast Ideal 4000, 4000 New, 7000 New, 7000 NL en 8000 Energeto. EkoSun 6, 7 en 6 NL. In wit, antraciet, zwart en houtlook.' },
+  { pos: 'A-02', naam: 'Aluminium kozijnen', tekst: 'Imperial, Superial en MB-79N. Sterk genoeg voor zeer grote glasvlakken.' },
+  { pos: 'A-03', naam: 'Houten kozijnen', tekst: 'Naturo 68 en Naturo 80, ook met Nederlands profiel. Hout van leveranciers met een FSC-certificaat.' },
+  { pos: 'A-04', naam: 'Deuren en schuifpuien', tekst: 'Voordeuren in kunststof, aluminium en hout. Schuifpuien in kunststof en hout.' },
+  { pos: 'A-05', naam: 'Rolluiken', tekst: 'Rolluiken, screens en roldeuren op maat, elektrisch of op zonne-energie.' },
+  { pos: 'A-06', naam: "Extra's", tekst: 'HR++ of HR+++ glas, sierglas, horren, vensterbanken en PVC-panelen.' },
+];
+
+// "Laatste projecten" van hun homepage, met hun eigen specificaties.
+const projecten = {
+  middelburg: ['Aluplast Ideal 4000 New, 85 mm', 'HR++ met roedes, wit glad RAL 9016', 'Voordeur met melkglas en rvs-sierkader'],
+  bad: ['Aluplast Ideal 4000 New, 85 mm', 'Drievoudig glas met roedes', 'Wit glad RAL 9016'],
+  roosendaal: ['Aluplast Ideal 7000 NL blokprofiel, 120 mm', 'Wit met zwarte afdichting', 'Voordeur met lage aluminium dorpel en SKG**-cilinder'],
+  rotterdam: ['Aluplast Ideal 4000 New, 85 mm', 'Voordeur met melkglas en SKG***-deurgreep', 'Rolluik met standaard kast, wit'],
+};
+
+const stappen = [
+  ['01', 'Meten en offerte', 'Allebei gratis.'],
+  ['02', 'Op maat gemaakt', 'Alle kozijnen worden volledig op maat geproduceerd.'],
+  ['03', 'Thuisbezorgd of ophalen', 'Ophalen kan alleen op afspraak.'],
+  ['04', 'Montage', 'Professionele montage en een luchtdichte afwerking.'],
+];
+
+const titel = 'Express Kozijnen | Kozijnen, deuren en rolluiken op maat, Terheijden';
+const omschrijving = 'Kunststof, aluminium en houten kozijnen, deuren en rolluiken op maat. Gratis offerte en meting. Express Kozijnen, Molenpad, Terheijden.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: een trailer vol kozijnen in folie (eigen foto, Google "Van eigenaar") -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-ral text-wit md:min-h-[100svh]">
+      <Kop />
+      <img src={hb[2].src} srcset={srcset(hb)} sizes="100vw" width="1600" height="1200" alt="Een open huiftrailer vol witte kunststof kozijnen, in folie gewikkeld en op pallets vastgezet, met positiecode A-04 op een van de kozijnen" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[58%_50%] md:object-[50%_55%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#2f3438d9_0%,#2f343840_22%,#2f343826_40%,#2f3438b3_64%,#2f3438f5_90%)] md:bg-[linear-gradient(180deg,#2f343899_0%,#2f343800_20%,#2f343800_50%,#2f343880_78%,#2f3438e0_100%),linear-gradient(90deg,#2f3438d9_0%,#2f343866_36%,#2f343800_58%)]"></div>
+      <div class="wrap mt-auto pb-10 md:pb-16">
+        <p class="kop flex items-center gap-3 text-sm font-medium text-wit/90"><span class="h-2 w-2 bg-huif-licht" aria-hidden="true"></span>Kozijnen, deuren en rolluiken · Terheijden</p>
+        <h1 class="mt-5 max-w-[12ch] text-hero">Kwaliteit kozijnen. <span class="text-huif-licht">Snelle montage.</span></h1>
+        <p class="mt-6 max-w-xl text-base text-wit/90 sm:text-lg md:text-xl">Kunststof, aluminium en hout, op maat gemaakt. Gratis offerte en meting.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#offerte" class="knop knop-huif">Offerte aanvragen<Icoon naam="pijl" /></a>
+          <a href={waHoi} class="knop knop-wit max-sm:hidden"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ALLES OP ÉÉN PLEK: productlijst als pakbon -->
+    <section id="producten" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-5">
+          <div class="md:sticky md:top-10">
+            <h2 class="text-4xl">Alles op één plek.</h2>
+            <p class="mt-5 max-w-md text-lg text-grijs">Ramen, deuren en rolluiken, van levering tot montage.</p>
+            <figure class="rijs mt-10 overflow-hidden rounded-sm">
+              <Image src={stapel} alt="Een stapel nieuwe witte kunststof kozijnen van Aluplast, in folie op pallets, voor een loods" widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[5/4] h-auto w-full object-cover object-[50%_60%]" />
+            </figure>
+          </div>
+        </div>
+        <ol class="md:col-span-7 md:col-start-6 md:pt-2">
+          {producten.map((p, i) => (
+            <li class="regel rijs grid grid-cols-[auto_1fr] items-start gap-x-5 py-7 md:gap-x-8 md:py-9" style={`--d:${i * 0.05}s`}>
+              <span class="pos mt-1.5">{p.pos}</span>
+              <div>
+                <h3 class="text-2xl">{p.naam}</h3>
+                <p class="mt-2.5 max-w-xl text-grijs">{p.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. LAATSTE PROJECTEN -->
+    <section id="projecten" class="bg-wit py-20 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-4">
+          <h2 class="text-4xl">Laatste projecten.</h2>
+          <p class="text-lg text-grijs">Van Middelburg tot Bad Nieuweschans.</p>
+        </div>
+
+        <div class="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-12 md:gap-y-16">
+          <figure class="rijs md:col-span-7">
+            <Image src={middelburg} alt="Witte kunststof voordeur met melkglas en een wit kozijn met roedes in een bakstenen gevel" widths={[560, 840, 1120]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[4/3] h-auto w-full rounded-sm object-cover" />
+            <figcaption class="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2"><span class="pos">B-01</span><span class="kop text-xl font-semibold">Middelburg</span><span class="w-full text-sm text-grijs sm:w-auto">{projecten.middelburg.join(' · ')}</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5 md:mt-16" style="--d:.08s">
+            <Image src={roosendaal} alt="Bakstenen woning met twee dakkapellen, witte kozijnen met roedes en een witte voordeur onder een afdakje" widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-square h-auto w-full rounded-sm object-cover object-[50%_40%]" />
+            <figcaption class="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2"><span class="pos">B-02</span><span class="kop text-xl font-semibold">Roosendaal</span><span class="w-full text-sm text-grijs">{projecten.roosendaal.join(' · ')}</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5">
+            <Image src={badNieuweschans} alt="Rode bakstenen bungalow met nieuwe witte kunststof kozijnen" widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/3] h-auto w-full rounded-sm object-cover" />
+            <figcaption class="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2"><span class="pos">B-03</span><span class="kop text-xl font-semibold">Bad Nieuweschans</span><span class="w-full text-sm text-grijs">{projecten.bad.join(' · ')}</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-7 md:mt-12" style="--d:.08s">
+            <Image src={rotterdam} alt="Witte kunststof voordeur met smalle glasstroken en een wit kozijn met roedes en rolluikkast, achter een wit hekje" widths={[560, 840, 1120]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[16/10] h-auto w-full rounded-sm object-cover" />
+            <figcaption class="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-2"><span class="pos">B-04</span><span class="kop text-xl font-semibold">Rotterdam</span><span class="w-full text-sm text-grijs sm:w-auto">{projecten.rotterdam.join(' · ')}</span></figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-14 grid grid-cols-2 gap-4 md:mt-16 md:grid-cols-12 md:gap-6">
+          <Image src={gevelGroen} alt="Rijtjeswoning met donkergroene kozijnen, voordeur en rolluiken" widths={[400, 640]} sizes="(min-width: 768px) 25vw, 50vw" class="rijs aspect-[4/5] h-auto w-full rounded-sm object-cover md:col-span-3" />
+          <Image src={tuindeuren} alt="Witte openslaande tuindeuren met roedes, gezien vanaf het terras" widths={[400, 640]} sizes="(min-width: 768px) 25vw, 50vw" class="rijs aspect-[4/5] h-auto w-full rounded-sm object-cover md:col-span-3" style="--d:.06s" />
+          <Image src={luiken} alt="Twee witte kozijnen met witte luiken in een grijze gevel" widths={[480, 720, 960]} sizes="(min-width: 768px) 50vw, 100vw" class="rijs col-span-2 aspect-[16/9] h-auto w-full rounded-sm object-cover md:col-span-6 md:aspect-auto md:h-full" style="--d:.12s" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. VAN METING TOT MONTAGE -->
+    <section id="werkwijze" class="bg-ral text-wit">
+      <div class="grid md:grid-cols-2">
+        <div class="relative min-h-[22rem] md:min-h-full">
+          <Image src={heftruck} alt="Een medewerker lost met een meeneemheftruck pallets met kozijnen van een huiftrailer" widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[40%_50%]" />
+        </div>
+        <div class="px-5 py-20 md:px-14 md:py-28 lg:px-20">
+          <h2 class="text-4xl">Van meting tot montage.</h2>
+          <ol class="mt-12 max-w-lg">
+            {stappen.map(([n, k, t], i) => (
+              <li class="rijs grid grid-cols-[auto_1fr] items-start gap-x-6 border-t border-lijn py-6 last:border-b" style={`--d:${i * 0.06}s`}>
+                <span class="pos pos-huif mt-0.5">{n}</span>
+                <div><h3 class="text-xl">{k}</h3><p class="mt-1.5 text-as">{t}</p></div>
+              </li>
+            ))}
+          </ol>
+          <a href="#offerte" class="knop knop-huif mt-10">Offerte aanvragen<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. OFFERTELIJST (wow): posities op een rij -> vooraf ingevuld WhatsApp -->
+    <section id="offerte" class="py-20 md:py-28">
+      <div class="wrap">
+        <div class="max-w-2xl">
+          <h2 class="text-4xl">Zet uw kozijnen op een rij.</h2>
+          <p class="mt-5 text-lg text-grijs">Per positie: wat het is, het materiaal en ongeveer de maat. De exacte maat volgt bij de gratis meting.</p>
+        </div>
+
+        <div class="mt-14 grid gap-x-10 gap-y-12 lg:grid-cols-12">
+          <form class="lg:col-span-7" data-lijst onsubmit="return false" novalidate>
+            <ol class="space-y-4" data-posities></ol>
+            <button type="button" class="knop knop-rand mt-5 min-h-12 w-full sm:w-auto" data-erbij>+ Positie toevoegen</button>
+
+            <div class="mt-10 grid gap-5 sm:grid-cols-2">
+              <div>
+                <label for="kleur" class="veld-label">Kleur</label>
+                <select id="kleur" class="veld" data-kleur>
+                  <option value="">Weet ik nog niet</option><option>wit</option><option>antraciet</option><option>zwart</option><option>houtlook</option>
+                </select>
+              </div>
+              <div>
+                <label for="plaats" class="veld-label">Plaats</label>
+                <input id="plaats" class="veld" type="text" autocomplete="address-level2" placeholder="bijvoorbeeld Breda" data-plaats />
+              </div>
+            </div>
+            <label class="vink mt-5"><input type="checkbox" checked data-foto /> Ik stuur foto's van de huidige kozijnen mee</label>
+          </form>
+
+          <div class="lg:col-span-5">
+            <div class="bg-wit p-6 shadow-[0_1px_2px_#1b1f2214,0_18px_40px_-24px_#1b1f2259] md:p-8 lg:sticky lg:top-8">
+              <div class="flex items-center justify-between gap-4 border-b-2 border-inkt pb-4">
+                <p class="kop text-lg font-semibold">Offerteaanvraag</p>
+                <p class="kop text-sm text-grijs" data-teller>1 positie</p>
+              </div>
+              <pre class="mt-5 whitespace-pre-wrap break-words font-sans text-[.95rem] leading-relaxed text-inkt" data-bericht aria-live="polite"></pre>
+              <a href={waHoi} class="knop knop-huif mt-7 w-full" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+              <p class="mt-4 text-xs text-grijs">Dit opent WhatsApp met dit bericht. Er gaat pas iets weg als u het daar verstuurt.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <template data-rij>
+        <li class="regel grid grid-cols-[auto_1fr] items-start gap-x-4 bg-wit p-4 md:gap-x-5 md:p-5" style="border:0">
+          <span class="pos pos-huif mt-6" data-code>A-01</span>
+          <div class="grid grid-cols-6 gap-3">
+            <div class="col-span-6 sm:col-span-3"><label class="veld-label">Wat</label>
+              <select class="veld" data-wat><option>kozijn met ramen</option><option>voordeur</option><option>achterdeur</option><option>tuindeuren</option><option>schuifpui</option><option>rolluik</option><option>hor</option><option>vensterbank</option></select></div>
+            <div class="col-span-6 sm:col-span-3"><label class="veld-label">Materiaal</label>
+              <select class="veld" data-mat><option>kunststof</option><option>aluminium</option><option>hout</option><option value="">weet ik niet</option></select></div>
+            <div class="col-span-2"><label class="veld-label">Breedte</label><input class="veld num" type="number" inputmode="numeric" min="20" max="900" placeholder="cm" data-b /></div>
+            <div class="col-span-2"><label class="veld-label">Hoogte</label><input class="veld num" type="number" inputmode="numeric" min="20" max="900" placeholder="cm" data-h /></div>
+            <div class="col-span-2"><label class="veld-label">Aantal</label><input class="veld num" type="number" inputmode="numeric" min="1" max="40" value="1" data-n /></div>
+            <div class="col-span-6 -mb-1 flex justify-end"><button type="button" class="min-h-10 text-sm font-medium text-grijs underline underline-offset-4 hover:text-huif" data-weg>Verwijder</button></div>
+          </div>
+        </li>
+      </template>
+    </section>
+
+    <!-- 6. REVIEWS -->
+    <section id="reviews" class="bg-wit py-20 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+          <h2 class="text-4xl">Wat onze klanten zeggen.</h2>
+          <a href={site.reviews} class="flex items-center gap-2.5 text-sm font-medium text-grijs no-underline hover:text-huif"><Icoon naam="g" class="h-5 w-5" /><span class="num">{site.google.score} uit {site.google.aantal} reviews op Google</span></a>
+        </div>
+        <div class="mt-14 grid gap-x-12 gap-y-12 md:grid-cols-12">
+          <blockquote class="rijs md:col-span-7">
+            <p class="kop text-2xl font-medium leading-snug tracking-[-.02em] md:text-[2.15rem] md:leading-[1.2]">&ldquo;{reviews[0].tekst}&rdquo;</p>
+            <footer class="mt-5 text-sm text-grijs"><span class="font-semibold text-inkt">{reviews[0].naam}</span> · Google review</footer>
+          </blockquote>
+          <div class="space-y-10 md:col-span-4 md:col-start-9">
+            {reviews.slice(1, 3).map((r, i) => (
+              <blockquote class="rijs border-t border-lijn-licht pt-6" style={`--d:${(i + 1) * 0.06}s`}>
+                <p>&ldquo;{r.tekst}&rdquo;</p>
+                <footer class="mt-3 text-sm text-grijs"><span class="font-semibold text-inkt">{r.naam}</span> · Google review</footer>
+              </blockquote>
+            ))}
+          </div>
+          {reviews.slice(3).map((r, i) => (
+            <blockquote class="rijs border-t border-lijn-licht pt-6 md:col-span-4" style={`--d:${i * 0.06}s`}>
+              <p class="kop text-xl font-medium leading-snug tracking-[-.015em]">&ldquo;{r.tekst}&rdquo;</p>
+              <footer class="mt-3 text-sm text-grijs"><span class="font-semibold text-inkt">{r.naam}</span> · Google review</footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="bg-ral text-wit">
+      <div class="grid md:grid-cols-12">
+        <div class="px-5 py-20 md:col-span-7 md:px-10 md:py-28 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:pr-16">
+          <h2 class="text-4xl">Bel, app of mail.</h2>
+          <p class="mt-8"><a href={site.telHref} class="num kop text-[clamp(2rem,4.4vw,3.6rem)] font-semibold tracking-[-.03em] text-wit no-underline transition-colors hover:text-huif-licht">{site.tel}</a></p>
+          <p class="mt-3 flex flex-wrap items-center gap-x-3 text-as"><span class="h-2 w-2 rounded-full bg-as" data-stip aria-hidden="true"></span><span data-status>Bereikbaar {bereikbaar.tekst}</span></p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-huif"><Icoon naam="wa" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-wit">E-mail</a>
+          </div>
+          <dl class="mt-14 grid gap-x-10 gap-y-7 border-t border-lijn pt-9 text-sm sm:grid-cols-2">
+            <div><dt class="kop font-semibold text-wit">Adres</dt><dd class="mt-2 text-as">{site.straat}<br />{site.postcode}<br /><a href={site.route} class="link link-licht mt-2 inline-block text-wit">Route plannen</a></dd></div>
+            <div><dt class="kop font-semibold text-wit">Afhalen</dt><dd class="mt-2 text-as">Alleen op afspraak.</dd></div>
+            <div><dt class="kop font-semibold text-wit">E-mail</dt><dd class="mt-2 break-all text-as"><a href={`mailto:${site.mail}`} class="link link-licht">{site.mail}</a></dd></div>
+            <div><dt class="kop font-semibold text-wit">KvK</dt><dd class="num mt-2 text-as">{site.kvk}</dd></div>
+          </dl>
+        </div>
+        <div class="relative min-h-[20rem] md:col-span-5">
+          <Image src={folie} alt="Een groot kozijn, in folie verpakt en met houten latten verstevigd, in de laadbak" widths={[480, 720, 960]} sizes="(min-width: 768px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ wa: site.wa, b: bereikbaar }}>
+    // Live bereikbaarheid (Europe/Amsterdam)
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const min = nu.getHours() * 60 + nu.getMinutes();
+    if (b.dagen.includes(nu.getDay()) && min >= b.van && min < b.tot) {
+      document.querySelector('[data-status]').textContent = 'Nu bereikbaar, tot 17:30';
+      const s = document.querySelector('[data-stip]'); s.classList.remove('bg-as'); s.style.background = '#6fd08c';
+    }
+
+    // Offertelijst
+    const lijst = document.querySelector('[data-posities]');
+    const tpl = document.querySelector('[data-rij]');
+    const bericht = document.querySelector('[data-bericht]');
+    const stuur = document.querySelector('[data-stuur]');
+    const teller = document.querySelector('[data-teller]');
+    const code = (i) => 'A-' + String(i + 1).padStart(2, '0');
+
+    function rijen() { return [...lijst.querySelectorAll('li')]; }
+    function nummer() { rijen().forEach((li, i) => { li.querySelector('[data-code]').textContent = code(i); li.querySelector('[data-weg]').parentElement.hidden = rijen().length === 1; }); }
+    function voegToe(wat) {
+      const li = tpl.content.firstElementChild.cloneNode(true);
+      const i = rijen().length;
+      li.querySelectorAll('label').forEach((l) => { const v = l.nextElementSibling; const id = 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); v.id = id; l.htmlFor = id; });
+      if (wat) li.querySelector('[data-wat]').value = wat;
+      li.querySelector('[data-weg]').addEventListener('click', () => { li.remove(); nummer(); maak(); });
+      lijst.append(li); nummer(); maak();
+      return li;
+    }
+    function maak() {
+      const r = rijen().map((li, i) => {
+        const wat = li.querySelector('[data-wat]').value, mat = li.querySelector('[data-mat]').value;
+        const bb = li.querySelector('[data-b]').value, hh = li.querySelector('[data-h]').value;
+        const n = Math.max(1, parseInt(li.querySelector('[data-n]').value || '1', 10));
+        let t = `${code(i)}: ${n}x ${wat}${mat ? ', ' + mat : ''}`;
+        if (bb && hh) t += `, ca. ${bb} x ${hh} cm`; else if (bb) t += `, ca. ${bb} cm breed`; else if (hh) t += `, ca. ${hh} cm hoog`;
+        return t;
+      });
+      const kleur = document.querySelector('[data-kleur]').value;
+      const plaats = document.querySelector('[data-plaats]').value.trim();
+      const foto = document.querySelector('[data-foto]').checked;
+      let t = 'Hallo Express Kozijnen, graag een offerte voor:\n' + r.join('\n');
+      if (kleur) t += `\nKleur: ${kleur}`;
+      if (plaats) t += `\nPlaats: ${plaats}`;
+      if (foto) t += "\nFoto's van de huidige kozijnen stuur ik hierna mee.";
+      bericht.textContent = t;
+      stuur.href = wa + '?text=' + encodeURIComponent(t);
+      teller.textContent = r.length === 1 ? '1 positie' : r.length + ' posities';
+    }
+    document.querySelector('[data-erbij]').addEventListener('click', () => { if (rijen().length < 12) voegToe('').querySelector('select').focus(); });
+    document.querySelector('[data-lijst]').addEventListener('input', maak);
+    document.querySelector('[data-lijst]').addEventListener('change', maak);
+    voegToe('kozijn met ramen');
+  </script>
+</Base>

@@ -1,0 +1,302 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi } from '../data/site';
+
+import breed from '../assets/hero-breed.jpg';
+import hoog from '../assets/marmer-mobiel.jpg';
+import schouw from '../assets/schouw.jpg';
+import ravelli from '../assets/ravelli.jpg';
+import jacobus from '../assets/jacobus.jpg';
+import stonestove from '../assets/stonestove.jpg';
+import tuinhuis from '../assets/tuinhuis.jpg';
+import inbouwWit from '../assets/inbouw-wit.jpg';
+import gevel from '../assets/gevel.jpg';
+import zolder from '../assets/zolder.jpg';
+import dak from '../assets/dak.jpg';
+import platdak from '../assets/platdak.jpg';
+import buitenhaard from '../assets/buitenhaard.jpg';
+
+// Hero: liggende foto (glazen haard, Google "Van eigenaar") op breed scherm, staande foto (inzet in marmeren schouw) op mobiel.
+const hb = await Promise.all([1024, 1440].map((w) => getImage({ src: breed, width: w, format: 'webp', quality: 66 })));
+const hh = await Promise.all([480, 720, 960, 1200].map((w) => getImage({ src: hoog, width: w, format: 'webp', quality: 50 })));
+const srcset = (a: { src: string; attributes: Record<string, unknown> }[]) => a.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+
+const klanten = ['Particulieren', 'Woningbouwverenigingen', 'Overheidsinstellingen', 'Bungalowparken', 'Verzekeringsmaatschappijen', 'Installatiebedrijven', 'Schade-expertisebureaus', 'Haardenzaken'];
+const [hoofd, ...rest] = reviews;
+
+const startBericht = 'Hallo Rike, het gaat om de kachel of haard in huis. Ik wil graag advies. Ik denk aan een houtkachel.';
+
+const titel = "Rike B.V. | Kachels, haarden en rookkanalen in 's-Hertogenbosch";
+const omschrijving = "Rike Schoorsteenwerken uit 's-Hertogenbosch: kachels, open haarden en rookkanalen op maat. Installatie, onderhoud, inspectie, reparatie en advies.";
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: het vuur, foto van Rike zelf -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-roet text-wit md:min-h-[100svh]">
+      <Kop />
+      <picture>
+        <source media="(min-width: 768px) and (min-aspect-ratio: 1/1)" srcset={srcset(hb)} sizes="100vw" type="image/webp" />
+        <img src={hh[2].src} srcset={srcset(hh)} sizes="100vw" width="1200" height="1227" alt="Haard met vuur, geplaatst door Rike" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:object-[70%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#151515d9_0%,#15151540_20%,#15151500_34%,#151515a6_58%,#151515f5_86%)] md:bg-[linear-gradient(180deg,#151515b3_0%,#15151500_24%,#15151500_50%,#151515b3_100%),linear-gradient(90deg,#151515f0_0%,#151515b3_34%,#15151500_62%)]"></div>
+      <div class="wrap mt-auto pb-10 md:pb-20">
+        <p class="text-sm font-semibold text-wit/90 md:text-base">Rike Schoorsteenwerken, {site.plaats}</p>
+        <h1 class="mt-4 max-w-[12ch] text-hero md:max-w-[19ch]">Van schoorsteenkap tot complete haard.</h1>
+        <p class="mt-5 max-w-lg text-base text-wit/90 sm:text-lg md:text-xl">Kachels, open haarden en rookkanalen, op maat geplaatst door gediplomeerd en gecertificeerd personeel.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#advies" class="knop knop-rood">Advies vragen<Icoon naam="pijl" /></a>
+          <a href={waHoi} class="knop knop-wit max-sm:hidden"><Icoon naam="wa" />WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het rookkanaal: één rode lijn van de haard (2) via het kanaal (3) naar het dak en het advies (4) -->
+    <div class="kanaal">
+
+      <!-- 2. IN DE KAMER: kachels en haarden -->
+      <section id="haarden" class="relative bg-rvs py-20 md:py-24">
+        <span class="stip top-[5.6rem] md:top-[7.6rem]" aria-hidden="true"></span>
+        <div class="wrap pl-10 md:pl-16">
+          <div class="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+            <h2 class="rijs text-4xl lg:col-span-6">Het vuur in huis.</h2>
+            <p class="rijs self-end text-lg text-grijs lg:col-span-5 lg:col-start-8" style="--d:.08s">Kachels, kachelbuizen en open haarden. En de specials: custom-made en design sfeerverwarmingshaarden.</p>
+          </div>
+
+          <div class="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:mt-16 md:grid-cols-12 md:gap-x-6">
+            <figure class="rijs col-span-2 md:col-span-7">
+              <Image src={schouw} widths={[480, 760, 1000]} sizes="(min-width: 768px) 56vw, 100vw" alt="Zwarte gietijzeren houtkachel met vuur, op een zwarte vloerplaat onder een witte schouw" class="aspect-[4/5] w-full object-cover object-[50%_70%] md:aspect-square" />
+            </figure>
+            <div class="col-span-2 flex flex-col gap-10 md:col-span-5 md:pt-24">
+              <figure class="rijs" style="--d:.08s">
+                <Image src={ravelli} widths={[400, 640]} sizes="(min-width: 768px) 38vw, 100vw" alt="Witte pelletkachel met vuur op houten pootjes, in een woonkamer" class="aspect-square w-full object-cover" />
+                <figcaption class="bijschrift"><b>Ravelli pelletkachels</b> geplaatst met rookkanalen</figcaption>
+              </figure>
+              <figure class="rijs" style="--d:.12s">
+                <Image src={inbouwWit} widths={[400, 640]} sizes="(min-width: 768px) 38vw, 100vw" alt="Inbouwhaard in een witte wand onder een schilderij" class="aspect-[4/3] w-full object-cover object-[50%_72%]" />
+              </figure>
+            </div>
+
+            <figure class="rijs col-span-1 md:col-span-4">
+              <Image src={jacobus} widths={[360, 560]} sizes="(min-width: 768px) 30vw, 50vw" alt="Kachel met vuur, geplaatst in een donkere klassieke schouw" class="aspect-[3/4] w-full object-cover md:aspect-[4/5]" />
+              <figcaption class="bijschrift"><b>Jacobus 9</b> eco design</figcaption>
+            </figure>
+            <figure class="rijs col-span-1 md:col-span-4 md:mt-12" style="--d:.08s">
+              <Image src={stonestove} widths={[360, 560]} sizes="(min-width: 768px) 30vw, 50vw" alt="Grijze stenen kachel met vuur en een zwart rookkanaal naar het plafond" class="aspect-[3/4] w-full object-cover md:aspect-[4/5]" />
+              <figcaption class="bijschrift"><b>Stone Stove</b> met dubbelwandig rookkanaal</figcaption>
+            </figure>
+            <figure class="rijs col-span-2 md:col-span-4 md:mt-8" style="--d:.12s">
+              <Image src={tuinhuis} widths={[360, 560]} sizes="(min-width: 768px) 30vw, 100vw" alt="Blauwgroene kachel op een houten vloer in een tuinhuis" class="aspect-[4/3] w-full object-cover object-[50%_55%] md:aspect-[4/5]" />
+              <figcaption class="bijschrift"><b>Dik Geurts</b> in een tuinhuis geplaatst</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. HET KANAAL: rookkanalen, van zolder tot plat dak -->
+      <section id="rookkanalen" class="relative bg-wit py-20 md:py-24">
+        <span class="stip top-[5.6rem] md:top-[7.6rem]" aria-hidden="true"></span>
+        <div class="wrap pl-10 md:pl-16">
+          <div class="grid grid-cols-1 gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+            <h2 class="rijs text-4xl lg:col-span-8">Ruim twintig jaar alles rond rookkanalen.</h2>
+            <p class="rijs text-lg text-grijs lg:col-span-6" style="--d:.08s">Onderhoud, inspectie, reparatie, installatie en advies. Alles op maat en naar wens van de opdrachtgever.</p>
+          </div>
+
+          <div class="mt-12 grid grid-cols-2 gap-4 md:mt-16 md:grid-cols-12 md:gap-6">
+            <figure class="rijs col-span-2 md:col-span-8">
+              <Image src={platdak} widths={[640, 1000, 1400]} sizes="(min-width: 768px) 64vw, 100vw" alt="Rookkanalen van RVS over een plat dak naar een oude bakstenen fabrieksschoorsteen" class="aspect-[16/10] w-full object-cover" />
+            </figure>
+            <figure class="rijs col-span-1 md:col-span-4" style="--d:.08s">
+              <Image src={dak} widths={[360, 560]} sizes="(min-width: 768px) 30vw, 50vw" alt="Zwart rookkanaal met kap door een pannendak" class="aspect-[3/4] h-full w-full object-cover md:aspect-auto" />
+            </figure>
+            <figure class="rijs col-span-1 md:col-span-4" style="--d:.1s">
+              <Image src={gevel} widths={[360, 560]} sizes="(min-width: 768px) 30vw, 50vw" alt="RVS rookkanaal langs de bakstenen zijgevel van een woning tot boven de nok" class="aspect-[3/4] w-full object-cover md:aspect-auto md:h-[24rem]" />
+              <figcaption class="bijschrift"><b>Dubbelwandig rookkanaal</b> langs de gevel</figcaption>
+            </figure>
+            <figure class="rijs col-span-2 md:col-span-8" style="--d:.14s">
+              <Image src={zolder} widths={[480, 760]} sizes="(min-width: 768px) 46vw, 100vw" alt="RVS rookkanaal schuin door een zolderkamer naar het dak" class="aspect-[16/10] w-full object-cover object-[30%_50%] md:aspect-auto md:h-[24rem]" />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ADVIES: doorsnede van het huis, eindigt in WhatsApp -->
+      <section id="advies" class="relative bg-roet py-20 text-wit md:py-24">
+        <span class="stip top-[5.6rem] md:top-[7.6rem]" aria-hidden="true"></span>
+        <div class="wrap pl-10 md:pl-16" data-hulp>
+          <div class="grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+            <div class="lg:col-span-4">
+              <h2 class="rijs text-4xl">Waar zit het?</h2>
+              <p class="rijs mt-5 max-w-sm text-lg text-as" style="--d:.08s">Tik in de doorsnede aan waar uw vraag over gaat. Het bericht staat dan klaar in WhatsApp.</p>
+              <svg viewBox="0 0 300 300" class="rijs mt-10 w-full max-w-[19rem]" role="group" aria-label="Doorsnede van een huis: dak, rookkanaal en kamer" style="--d:.12s">
+                <path d="M30 140 150 40 270 140" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="miter" />
+                <path d="M55 132v148h190V132" fill="none" stroke="#ffffff59" stroke-width="2" />
+                <path d="M55 205h190" stroke="#ffffff33" stroke-width="2" stroke-dasharray="4 6" />
+                <path d="M30 280h240" stroke="#ffffff59" stroke-width="2" />
+                <line x1="196" y1="232" x2="196" y2="38" stroke="#c8101a" stroke-width="5" />
+                <path d="M184 34h24M188 26h16" stroke="#c8101a" stroke-width="5" stroke-linecap="square" />
+                <rect x="176" y="232" width="40" height="40" fill="none" stroke="#ffffff" stroke-width="3" />
+                <path d="M190 262c0-8 6-10 6-16 4 5 8 9 8 16a7 7 0 0 1-14 0Z" fill="#c8101a" />
+                <g class="zone" data-zone="dak" tabindex="0" role="button" aria-label="Dak en schoorsteenkap">
+                  <rect x="150" y="8" width="92" height="74" fill="transparent" stroke="#ffffff00" stroke-width="2" stroke-dasharray="5 5" />
+                  <text x="226" y="20" fill="#a9afb3" font-size="13" font-family="Karla Variable, sans-serif" font-weight="700">dak</text>
+                </g>
+                <g class="zone" data-zone="kanaal" tabindex="0" role="button" aria-label="Rookkanaal">
+                  <rect x="150" y="96" width="92" height="124" fill="transparent" stroke="#ffffff00" stroke-width="2" stroke-dasharray="5 5" />
+                  <text x="250" y="160" fill="#a9afb3" font-size="13" font-family="Karla Variable, sans-serif" font-weight="700">kanaal</text>
+                </g>
+                <g class="zone" data-zone="kamer" tabindex="0" role="button" aria-label="Kachel of haard in de kamer">
+                  <rect x="62" y="222" width="180" height="54" fill="transparent" stroke="#ffffff00" stroke-width="2" stroke-dasharray="5 5" />
+                  <text x="80" y="256" fill="#a9afb3" font-size="13" font-family="Karla Variable, sans-serif" font-weight="700">kamer</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="lg:col-span-7 lg:col-start-6 lg:pt-3">
+              <p class="zin rijs font-kop text-2xl leading-[1.45] md:text-3xl md:leading-[1.35]" style="--d:.1s">
+                Het gaat om
+                <label class="sr-only" for="w-waar">Waar gaat het om</label>
+                <select id="w-waar" data-waar>
+                  <option value="kamer" selected>de kachel of haard in huis</option>
+                  <option value="kanaal">het rookkanaal</option>
+                  <option value="dak">de schoorsteen of kap op het dak</option>
+                </select>.{" "}
+                Ik wil graag
+                <label class="sr-only" for="w-wat">Wat wilt u</label>
+                <select id="w-wat" data-wat>
+                  <option value="advies" selected>advies</option>
+                  <option value="een offerte">een offerte</option>
+                  <option value="onderhoud of een inspectie">onderhoud of een inspectie</option>
+                  <option value="een reparatie">een reparatie</option>
+                </select>.{" "}
+                <span data-soort-zin><span data-soort-pre>Ik denk aan</span>
+                  <label class="sr-only" for="w-soort">Soort kachel of haard</label>
+                  <select id="w-soort" data-soort>
+                    <option value="een houtkachel" selected>een houtkachel</option>
+                    <option value="een pelletkachel">een pelletkachel</option>
+                    <option value="een inbouw- of inzethaard">een inbouw- of inzethaard</option>
+                    <option value="een open haard">een open haard</option>
+                    <option value="een sfeerverwarmingshaard">een sfeerverwarmingshaard</option>
+                    <option value="?">iets, maar weet het nog niet</option>
+                  </select>.</span>
+              </p>
+              <label class="rijs mt-8 flex min-h-11 cursor-pointer items-center gap-3 text-base text-as" style="--d:.14s">
+                <input type="checkbox" class="h-5 w-5 accent-[#c8101a]" data-foto />
+                Ik stuur een foto van de huidige situatie mee.
+              </label>
+
+              <div class="rijs mt-10 border-t border-lijn pt-8" style="--d:.16s">
+                <p class="text-sm font-bold text-as">Uw bericht aan Rike</p>
+                <p class="mt-3 max-w-xl text-lg text-wit" data-bericht aria-live="polite">{startBericht}</p>
+                <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
+                  <a href={`${site.wa}?text=${encodeURIComponent(startBericht)}`} class="knop knop-rood" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+                  <a href={site.mobHref} class="link num font-semibold text-wit">of bel {site.mob}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 5. VOOR WIE: klantenkring en werkgebied -->
+    <section id="voor-wie" class="bg-rvs">
+      <figure class="relative">
+        <Image src={buitenhaard} widths={[640, 1024, 1600, 1920]} sizes="100vw" alt="Overkapping met houten wanden, loungebanken en een haard met televisie erboven, 's avonds verlicht" class="aspect-[4/3] max-h-[44rem] w-full object-cover object-[60%_50%] md:aspect-[21/9]" />
+      </figure>
+      <div class="wrap py-20 md:py-24">
+        <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-4">Voor wie Rike werkt.</h2>
+          <div class="lg:col-span-8">
+            <p class="rijs font-kop text-xl leading-[1.4] min-[400px]:text-2xl md:text-3xl md:leading-[1.4]" style="--d:.08s">
+              {klanten.map((k, i) => <><span class="block sm:inline">{k}{i < klanten.length - 1 && <span class="sr-only">, </span>}</span>{i < klanten.length - 1 && <span class="hidden px-2 text-rood sm:inline" aria-hidden="true">/</span>} </>)}
+            </p>
+            <p class="rijs mt-8 max-w-xl text-lg text-grijs" style="--d:.12s">Niet alleen in Nederland, maar ook in België, Luxemburg, Frankrijk en Duitsland.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. REVIEWS: letterlijk van Google -->
+    <section class="bg-wit py-20 md:py-24">
+      <div class="wrap">
+        <figure class="rijs max-w-4xl">
+          <blockquote class="font-kop text-3xl leading-[1.25]">“{hoofd.tekst}”</blockquote>
+          <figcaption class="mt-5 text-base font-semibold text-grijs">{hoofd.naam}, Google review</figcaption>
+        </figure>
+        <div class="mt-16 grid grid-cols-1 gap-x-12 gap-y-10 border-t border-lijn-licht pt-10 md:grid-cols-3">
+          {rest.map((r, i) => (
+            <figure class="rijs" style={`--d:${i * 0.06}s`}>
+              <blockquote class="text-lg leading-snug">“{r.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm font-semibold text-grijs">{r.naam}, Google review</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="mt-12 text-sm text-grijs"><a href={site.reviews} class="link link-rood inline-flex items-center gap-2"><Icoon naam="g" class="h-4 w-4" /><span class="num">{site.google.score}</span> op Google, {site.google.aantal} reviews</a></p>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="bg-rood py-20 text-wit md:py-24">
+      <div class="wrap grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-4xl">Bel, app of mail.</h2>
+          <p class="rijs mt-5 max-w-md text-lg text-wit/90" style="--d:.08s">Wij reageren gegarandeerd binnen 24 uur.</p>
+        </div>
+        <div class="rijs flex flex-col gap-5 lg:col-span-5 lg:col-start-8 lg:pt-3" style="--d:.12s">
+          <a href={waHoi} class="knop self-start bg-wit text-inkt hover:bg-rvs"><Icoon naam="wa" />WhatsApp {site.mob}</a>
+          <p class="text-lg"><a href={site.mobHref} class="link num">Mobiel {site.mob}</a></p>
+          <p class="text-lg"><a href={site.telHref} class="link num">Kantoor {site.tel}</a></p>
+          <p class="text-lg"><a href={`mailto:${site.mail}`} class="link break-all">{site.mail}</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ wa: site.wa }}>
+    const hulp = document.querySelector('[data-hulp]');
+    if (hulp) {
+      const $ = (s) => hulp.querySelector(s);
+      const waar = $('[data-waar]'), wat = $('[data-wat]'), soort = $('[data-soort]'), soortZin = $('[data-soort-zin]'), pre = $('[data-soort-pre]'), foto = $('[data-foto]');
+      const bericht = $('[data-bericht]'), stuur = $('[data-stuur]');
+      const zones = hulp.querySelectorAll('.zone');
+      const teksten = { kamer: 'de kachel of haard in huis', kanaal: 'het rookkanaal', dak: 'de schoorsteen of kap op het dak' };
+      const maak = () => {
+        let t = `Hallo Rike, het gaat om ${teksten[waar.value]}. Ik wil graag ${wat.value}.`;
+        const kamer = waar.value === 'kamer';
+        soortZin.hidden = !kamer;
+        const bestaand = /onderhoud|reparatie/.test(wat.value);
+        pre.textContent = bestaand ? 'Het is' : 'Ik denk aan';
+        soort.options[soort.options.length - 1].text = bestaand ? 'iets anders' : 'iets, maar weet het nog niet';
+        pas(soort);
+        if (kamer && soort.value !== '?') t += ` ${bestaand ? 'Het is' : 'Ik denk aan'} ${soort.value}.`;
+        if (foto.checked) t += ' Ik stuur een foto van de huidige situatie mee.';
+        bericht.textContent = t;
+        stuur.href = `${wa}?text=${encodeURIComponent(t)}`;
+        zones.forEach((z) => {
+          const aan = z.dataset.zone === waar.value;
+          z.setAttribute('aria-pressed', String(aan));
+          z.querySelector('rect').setAttribute('stroke', aan ? '#ff5a5f' : '#ffffff00');
+          z.querySelector('text').setAttribute('fill', aan ? '#ff5a5f' : '#a9afb3');
+        });
+      };
+      const maat = document.createElement('canvas').getContext('2d');
+      const pas = (s) => { const cs = getComputedStyle(s); maat.font = `${cs.fontSize} ${cs.fontFamily}`; s.style.width = `calc(${Math.ceil(maat.measureText(s.selectedOptions[0].text).width)}px + 1.5em)`; };
+      const alle = () => [waar, wat, soort].forEach(pas);
+      document.fonts?.ready.then(alle); alle();
+      [waar, wat, soort].forEach((s) => s.addEventListener('change', () => { pas(s); maak(); }));
+      foto.addEventListener('change', maak);
+      zones.forEach((z) => {
+        const kies = () => { waar.value = z.dataset.zone; pas(waar); maak(); };
+        z.addEventListener('click', kies);
+        z.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); kies(); } });
+      });
+      maak();
+    }
+  </script>
+</Base>

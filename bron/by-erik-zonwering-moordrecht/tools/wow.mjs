@@ -1,0 +1,12 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://127.0.0.1:4480/sitefront/by-erik-zonwering-moordrecht/', { waitUntil: 'networkidle' });
+await p.click('[data-kies="knikarmscherm"]'); await p.waitForTimeout(900);
+await p.selectOption('[data-plek]', 'het terras');
+await p.locator('[data-breed]').fill('620');
+await p.fill('[data-plaats]', 'Gouda'); await p.fill('[data-naam]', 'Sanne');
+console.log(await p.getAttribute('[data-stuur]', 'href'));
+console.log(await p.textContent('[data-voorbeeld]')); console.log(await p.textContent('[data-hint]'));
+await p.locator('#offerte').screenshot({ path: 'shots/wow-390.png' });
+console.log('errs', errs); await b.close();
