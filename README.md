@@ -284,3 +284,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Loods of Stuff (brocante/vintage), Baarn | https://voorstel.sitefront.nl/loods-of-stuff-baarn/ | geen eigen website, alleen Instagram; 5,0/7; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Alsham Jewelry (goud), Utrecht Overvecht | https://voorstel.sitefront.nl/alsham-jewelry-utrecht/ | geen website, Google-knop naar Arabische Facebookpagina; 4,6/1.289; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Lakeside Café / Terras, Loosdrecht | https://voorstel.sitefront.nl/lakeside-cafe-loosdrecht/ | geen website, geen menukaart online; 4,9/41; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Design4AlleZ (sfeerhaarden), Almere | https://voorstel.sitefront.nl/design4allez-almere/ | oude CCV-webwinkel, vaste breedte, niet mobiel; 4,8/16; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Deut Zonwering, Houten | https://voorstel.sitefront.nl/deut-zonwering-houten/ | verouderde site, geen tel-link, kleine portfoliofoto's; 5,0/15; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Steenaart Zonwering en Rolluiken, Zeist | https://voorstel.sitefront.nl/steenaart-zonwering-zeist/ | verouderde one-pager zonder menu; 4,7/11; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Ecologic Pelletkachels, Almere | https://voorstel.sitefront.nl/ecologic-pelletkachels-almere/ | gedateerd sjabloon; 4,9/63; 06/WhatsApp. | 2026-10-08 | demo premium |

@@ -1,0 +1,15 @@
+import { chromium } from 'playwright'; import fs from 'node:fs';
+const b = await chromium.launch();
+const ctx = await b.newContext({ locale: 'nl-NL', viewport: { width: 1400, height: 1000 } });
+const p = await ctx.newPage();
+const start = 'http://www.despellenwinkelbreda.nl/';
+const r = await p.goto(start, { waitUntil: 'domcontentloaded', timeout: 40000 });
+console.log('final', p.url(), r.status());
+await p.waitForTimeout(2000);
+fs.writeFileSync('bron/web/home.html', await p.content());
+fs.writeFileSync('bron/web/home.txt', await p.evaluate(() => document.body.innerText));
+const links = await p.evaluate(() => [...new Set([...document.querySelectorAll('a[href]')].map(a => a.href + ' | ' + a.innerText.trim().replace(/\s+/g,' ')))]);
+fs.writeFileSync('bron/web/links.txt', links.join('\n'));
+const imgs = await p.evaluate(() => [...document.querySelectorAll('img')].map(i => i.currentSrc || i.src));
+fs.writeFileSync('bron/web/imgs.txt', imgs.join('\n'));
+await b.close();

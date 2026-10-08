@@ -1,0 +1,60 @@
+---
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import Merk from './Merk.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['inbouw', 'Inbouw'], ['assortiment', 'Assortiment'], ['elektrisch', 'Elektrisch'], ['vincent', 'Reviews'], ['showroom', 'Showroom']];
+---
+<header class:list={['top-0 z-40 w-full text-wit transition-colors duration-500', 'sticky', thuis ? 'kop-doorzicht' : 'bg-roet']} data-kop>
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-4 md:h-20">
+    <a href={url('')} class="text-wit no-underline" aria-label="Design4AlleZ, naar de homepage">
+      <Merk class="text-[1.3rem] min-[360px]:text-[1.45rem] md:text-[1.6rem]" />
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9375rem] font-medium">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/85 no-underline transition-colors duration-200 hover:text-gloed">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href={site.telHref} class="num hidden items-center gap-2 text-[.9375rem] font-medium text-wit no-underline hover:text-gloed xl:inline-flex"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+      <a href={waHoi} class="knop hidden !min-h-11 !px-5 text-[.9375rem] md:inline-flex"><Icoon naam="wa" />App Vincent</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-sm text-wit lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" aria-hidden="true"><path d="M3 8h18M3 16h18" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-nav" aria-label="Menu" class="hidden border-t border-lijn-licht bg-roet lg:hidden" data-menu>
+    <ul class="wrap pb-8 pt-2">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="kop block border-b border-lijn-licht py-4 text-2xl font-semibold text-wit no-underline">{t}</a></li>)}
+      <li><a href={h('kiezen')} class="kop block py-4 text-2xl font-semibold text-vlam no-underline">Welke haard past?</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn-licht bg-roet/95 p-2 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="flex min-h-12 items-center justify-center gap-2 rounded-sm text-[.9375rem] font-bold text-wit no-underline" style="box-shadow: inset 0 0 0 1.5px #ffffff59"><Icoon naam="tel" class="h-4 w-4" />Bellen</a>
+  <a href={waHoi} class="flex min-h-12 items-center justify-center gap-2 rounded-sm bg-vlam text-[.9375rem] font-bold text-roet no-underline"><Icoon naam="wa" class="h-5 w-5" />WhatsApp</a>
+</div>
+
+<style>
+  .kop-doorzicht { background: linear-gradient(#121110b3, #12111000); }
+  .kop-doorzicht.vast { background: #121110f2; backdrop-filter: blur(10px); }
+  .kop-doorzicht:has([data-menu]:not(.hidden)) { background: var(--color-roet); }
+</style>
+
+<script>
+  const kop = document.querySelector<HTMLElement>('[data-kop]');
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (kop?.classList.contains('kop-doorzicht')) {
+    const zet = () => kop.classList.toggle('vast', scrollY > 40);
+    zet(); addEventListener('scroll', zet, { passive: true });
+  }
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>

@@ -1,0 +1,315 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, kachels, cv, merken, reviews, waHoi, waMet, url } from '../data/site';
+
+import breed from '../assets/tuinhuis-breed.jpg';
+import hoog from '../assets/tuinhuis-hoog.jpg';
+import groeneWand from '../assets/groene-wand.jpg';
+import dakPannen from '../assets/dak-pannen.jpg';
+import dakLadder from '../assets/dak-ladder.jpg';
+import zwartWit from '../assets/zwart-wit.jpg';
+import rondRaam from '../assets/rond-raam.jpg';
+import ketel from '../assets/biodom-ketel.jpg';
+import plaatsing from '../assets/plaatsing.jpg';
+import yurt from '../assets/yurt.jpg';
+import vlam from '../assets/vlam.jpg';
+
+// Hero: liggende snede op breed scherm, staande foto op mobiel (art direction).
+const hb = await Promise.all([1280, 1920, 2400].map((w) => getImage({ src: breed, width: w, format: 'webp', quality: 72 })));
+const hh = await Promise.all([640, 960, 1200].map((w) => getImage({ src: hoog, width: w, format: 'webp', quality: 70 })));
+const srcset = (a: { src: string; attributes: Record<string, unknown> }[]) => a.map((i) => `${i.src} ${i.attributes.width}w`).join(', ');
+
+const startM2 = 30;
+const startH = 2.6;
+const eersteBericht = waMet(`Hallo Patrick, ik zoek een pelletkachel voor een ruimte van ongeveer ${startM2} m² (2,6 m hoog, ca. 78 m³). Er is al een rookkanaal. Kun je me adviseren?`);
+
+const titel = 'Ecologic Pelletkachels | Pelletkachels en cv-pelletketels in Almere';
+const omschrijving = 'Pelletkachels van Kalor, Winteröfen en Qlima en cv-pelletketels van Biodom. Verkoop, plaatsing en onderhoud door Ecologic Pelletkachels in Almere. Bezichtiging alleen op afspraak.';
+---
+<Base title={titel} description={omschrijving}>
+  <main id="inhoud">
+
+    <!-- 1. HERO: hun Kalor in een houten tuinhuis. Tekst bovenin, de kachel en de vlam blijven vrij. -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.5rem)] flex-col overflow-hidden bg-nacht text-wit md:min-h-[100svh]">
+      <Kop />
+      <picture>
+        <source media="(min-width: 768px) and (min-aspect-ratio: 1/1)" srcset={srcset(hb)} sizes="100vw" type="image/webp" />
+        <img src={hh[1].src} srcset={srcset(hh)} sizes="100vw" width="1200" height="1600" alt="Zwarte Kalor-pelletkachel met brandend vuur in de hoek van een houten tuinhuis, met een zwarte rookgasafvoer tegen de wand, een eikenhouten tafel en een stalen raam met zicht op de tuin" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[38%_70%] md:object-[50%_75%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#121611f2_0%,#121611b8_34%,#12161126_58%,#12161100_75%,#12161166_100%)] md:bg-[linear-gradient(180deg,#121611e0_0%,#1216119c_34%,#12161100_58%,#12161100_82%,#12161199_100%),linear-gradient(90deg,#1216118c_0%,#12161100_50%)]"></div>
+      <div class="wrap pt-28 md:pt-40">
+        <p class="mono text-blad">Pelletkachels · {site.plaats}</p>
+        <h1 class="mt-4 max-w-[13ch] text-hero">Heerlijke warmte uit houtpellets.</h1>
+        <p class="mt-5 max-w-lg text-base text-wit/90 sm:text-lg md:text-xl">Ecologic verkoopt en plaatst pelletkachels en cv-pelletketels van Kalor, Winteröfen, Qlima en Biodom.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#keuzehulp" class="knop knop-blad">Welke kachel past?<Icoon naam="pijl" /></a>
+          <a href={waHoi} class="knop knop-wit max-sm:hidden"><Icoon naam="wa" />WhatsApp Patrick</a>
+        </div>
+      </div>
+      <p class="wrap mono mt-auto pb-6 text-right text-wit/80 max-md:hidden">Kalor in een houten tuinhuis</p>
+    </section>
+
+    <!-- 2. VAN DE KAMER TOT HET DAK: de rookgasafvoer als doorlopende pijp (eigen detail) -->
+    <section id="plaatsing" class="relative overflow-hidden py-20 md:py-32">
+      <div class="wrap relative">
+        <div class="grid grid-cols-1 gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+          <div class="lg:col-span-6">
+            <h2 class="rijs text-4xl">Van de kamer<br />tot het dak.</h2>
+            <p class="rijs mt-6 max-w-md text-lg text-grijs" style="--d:.1s">Een groot rookkanaal is niet nodig zoals bij een houtkachel of openhaard. Dat kan een stuk eenvoudiger door gebruik te maken van een afvoerbuis van 80 mm.</p>
+          </div>
+          <blockquote class="rijs self-end border-l-2 border-blad pl-6 lg:col-span-5 lg:col-start-8" style="--d:.15s">
+            <p class="text-xl leading-snug">“{reviews.henk.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.henk.naam}, Google review</footer>
+          </blockquote>
+        </div>
+
+        <div class="relative mt-14 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-12 md:gap-8">
+          <figure class="rijs md:col-span-5">
+            <Image src={groeneWand} alt="Zilvergrijze pelletkachel met vuur tegen een donkergroene wand, met de zwarte rookgasafvoer recht omhoog" quality={74} widths={[480, 720, 960]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[3/4] w-full rounded-md object-cover object-[50%_45%]" />
+            <figcaption class="mono mt-3 text-grijs">01 · de kachel, met afvoer omhoog</figcaption>
+          </figure>
+          <div class="relative hidden md:col-span-2 md:block" aria-hidden="true">
+            <span class="pijp left-1/2 -translate-x-1/2"></span>
+            <span class="mono absolute left-1/2 top-1/2 ml-5 -translate-y-1/2 whitespace-nowrap text-grijs">Ø 80 mm</span>
+          </div>
+          <div class="grid grid-cols-2 gap-4 md:col-span-5 md:grid-cols-1 md:gap-8">
+            <figure class="rijs" style="--d:.1s">
+              <Image src={dakPannen} alt="Rvs dakdoorvoer met kap, op een plat dak naast rode dakpannen" quality={58} widths={[400, 640, 900]} sizes="(min-width: 768px) 40vw, 50vw" class="aspect-[4/5] w-full rounded-md object-cover md:aspect-[16/10] md:object-[50%_40%]" />
+              <figcaption class="mono mt-3 text-grijs">02 · de doorvoer</figcaption>
+            </figure>
+            <figure class="rijs" style="--d:.2s">
+              <Image src={dakLadder} alt="Monteur op een pannendak naast een ladder, bij de plek van de rookgasafvoer" quality={72} widths={[400, 640, 900]} sizes="(min-width: 768px) 40vw, 50vw" class="aspect-[4/5] w-full rounded-md object-cover md:aspect-[16/10] md:object-[50%_30%]" />
+              <figcaption class="mono mt-3 text-grijs">03 · aan het werk op het dak</figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div class="rijs mt-16 grid grid-cols-1 gap-y-6 border-t border-lijn-licht pt-10 md:mt-24 lg:grid-cols-12 lg:gap-x-12">
+          <h3 class="text-2xl lg:col-span-4">Wat er bij u thuis nodig is</h3>
+          <ul class="divide-y divide-lijn-licht lg:col-span-8">
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 py-4 first:pt-0"><span class="mono pt-1 text-blad-diep">afvoer</span><span>Een afvoerbuis voor rookgassen, die rechtstreeks op de buitengevel aangesloten kan worden.</span></li>
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 py-4"><span class="mono pt-1 text-blad-diep">stroom</span><span>Een standaard stopcontact in de buurt, goed aangesloten en voorzien van een aarding.</span></li>
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 py-4"><span class="mono pt-1 text-blad-diep">vloer</span><span>Een stabiele, brandwerende ondergrond. Is dat niet zo, dan komt er een vloerplaat onder de kachel.</span></li>
+            <li class="grid grid-cols-[4.5rem_1fr] gap-4 py-4"><span class="mono pt-1 text-blad-diep">lucht</span><span>Een normale ventilatie van de woonkamer volstaat.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. KEUZEHULP: m² en hoogte -> m³ -> hun eigen modellen die passen, eindigt in WhatsApp -->
+    <section id="keuzehulp" class="bg-nacht py-20 text-wit md:py-28" data-hulp>
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-4xl">Welke kachel past bij uw kamer?</h2>
+          <p class="rijs mt-5 max-w-md text-lg text-as" style="--d:.05s">Schuif naar de grootte van de ruimte. U ziet welke van onze modellen erbij passen.</p>
+
+          <fieldset class="rijs mt-10" style="--d:.1s">
+            <legend class="text-sm font-medium text-as">Wat wilt u verwarmen?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <label class="keus"><input type="radio" name="soort" value="kamer" checked />Eén ruimte</label>
+              <label class="keus"><input type="radio" name="soort" value="cv" />Het huis, via de cv</label>
+            </div>
+          </fieldset>
+
+          <div class="rijs mt-9" style="--d:.15s">
+            <div class="flex items-baseline justify-between gap-4">
+              <label for="m2" class="text-sm font-medium text-as" data-m2-label>Oppervlakte van de ruimte</label>
+              <output for="m2" class="num text-3xl font-semibold tracking-tight" data-m2-uit>{startM2} m²</output>
+            </div>
+            <input id="m2" type="range" min="8" max="90" step="1" value={startM2} class="schuif mt-2" style="--p:27%" data-m2 />
+            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3" data-hoogte-rij>
+              <label for="hoogte" class="text-sm font-medium text-as">Plafondhoogte</label>
+              <select id="hoogte" class="num min-h-11 rounded-full border border-lijn-2 bg-nacht-2 px-4 text-[.9375rem]" data-hoogte>
+                <option value="2.4">2,4 m</option>
+                <option value="2.6" selected>2,6 m</option>
+                <option value="2.8">2,8 m</option>
+                <option value="3.2">3,2 m</option>
+                <option value="4">4 m of meer</option>
+              </select>
+              <span class="mono text-as" data-m3>= ca. 78 m³</span>
+            </div>
+          </div>
+
+          <fieldset class="rijs mt-9" style="--d:.2s">
+            <legend class="text-sm font-medium text-as">Rookkanaal</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <label class="keus"><input type="radio" name="kanaal" value="al" checked />Er is er al een</label>
+              <label class="keus"><input type="radio" name="kanaal" value="nee" />Nog geen</label>
+              <label class="keus"><input type="radio" name="kanaal" value="weet" />Weet ik niet</label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="rijs lg:col-span-6 lg:pt-3" style="--d:.1s">
+          <div class="rounded-md bg-nacht-2 p-6 md:p-8">
+            <p class="text-sm font-medium text-as" data-uitleg>Geschikt voor ruimtes tot (m³), volgens de modelpagina’s:</p>
+            <ul class="mt-3" data-lijst aria-live="polite">
+              {kachels.filter((k) => k.m3 >= 78).sort((a, b) => a.m3 - b.m3).slice(0, 4).map((k) => (
+                <li><a href={k.href} class="regel border-lijn text-wit hover:text-blad"><span class="text-lg font-medium">{k.naam}</span><span class="mono text-as">{k.kw} · {k.m3} m³</span></a></li>
+              ))}
+            </ul>
+            <p class="mt-8 text-sm font-medium text-as">Uw bericht aan Patrick</p>
+            <p class="mt-3 rounded-sm border border-lijn p-5 text-wit/90" data-bericht>Hallo Patrick, ik zoek een pelletkachel voor een ruimte van ongeveer 30 m² (2,6 m hoog, ca. 78 m³). Er is al een rookkanaal. Kun je me adviseren?</p>
+            <a href={eersteBericht} class="knop knop-blad mt-5 w-full sm:w-auto" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <p class="mt-5 text-xs text-as">Een indicatie op basis van de m³ per model. Patrick kijkt wat er bij u echt past.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MERKEN: grote namen als regels, met hun eigen foto's van geplaatste kachels -->
+    <section id="merken" class="py-20 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Topmerken in verschillende prijsklassen.</h2>
+          <p class="rijs mt-6 max-w-xl text-lg text-grijs" style="--d:.05s">Pelletkachels die een zeer goede kwaliteit bieden met een interessante prijs. Daarbij wordt het design van een pelletkachel natuurlijk niet uit het oog verloren.</p>
+          <ul class="mt-12 border-t-2 border-inkt">
+            {merken.map((m, i) => (
+              <li class="rijs" style={`--d:${i * .06}s`}>
+                <a href={m.href} class="group grid grid-cols-1 gap-x-8 gap-y-1 border-b border-lijn-licht py-6 no-underline sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] sm:items-baseline">
+                  <span class="text-[clamp(2rem,4vw,3.25rem)] font-semibold leading-none tracking-[-.04em] transition-colors group-hover:text-blad-diep">{m.naam}</span>
+                  <span class="flex items-baseline justify-between gap-4 text-grijs"><span>{m.zin}</span><Icoon naam="pijl" class="h-4 w-4 flex-none translate-y-0.5 text-blad-diep transition-transform group-hover:translate-x-1" /></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="grid grid-cols-2 gap-4 lg:col-span-5 lg:gap-5">
+          <figure class="rijs col-span-2">
+            <Image src={zwartWit} alt="Zwarte pelletkachel met brandend vuur in een lichte woonkamer met houten vloer en een plant" quality={74} widths={[480, 720, 960]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/3] w-full rounded-md object-cover object-[50%_60%]" />
+          </figure>
+          <figure class="rijs" style="--d:.1s">
+            <Image src={rondRaam} alt="Ronde grijze pelletkachel in de hoek bij een glazen pui met uitzicht op de tuin" quality={72} widths={[320, 480, 640]} sizes="(min-width: 1024px) 19vw, 50vw" class="aspect-[3/4] w-full rounded-md object-cover object-[50%_70%]" />
+          </figure>
+          <figure class="rijs mt-10" style="--d:.15s">
+            <Image src={ketel} alt="Rode Biodom-pelletketel naast een groot buffervat in een technische ruimte" quality={72} widths={[320, 480, 640]} sizes="(min-width: 1024px) 19vw, 50vw" class="aspect-[3/4] w-full rounded-md object-cover object-[40%_60%]" />
+            <figcaption class="mono mt-2 text-grijs">Biodom, op de cv</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PATRICK: wat klanten over hem schrijven -->
+    <section id="patrick" class="bg-papier-2 py-20 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5 lg:row-span-2">
+          <Image src={plaatsing} alt="Monteur, van achteren gezien, sluit een pelletkachel aan tegen een donkergroene wand in een woonkamer" quality={72} widths={[480, 720, 960]} sizes="(min-width: 1024px) 38vw, 100vw" class="aspect-[4/5] w-full rounded-md object-cover object-[50%_60%]" />
+          <figcaption class="mono mt-3 text-grijs">Plaatsing tegen een groene wand</figcaption>
+        </figure>
+        <div class="lg:col-span-7">
+          <blockquote class="rijs">
+            <p class="text-3xl font-medium leading-[1.12] tracking-[-.025em]">“Je kunt echt zien dat hij van zijn hobby zijn werk heeft gemaakt.”</p>
+            <footer class="mt-5 text-sm text-grijs">{reviews.sylvia.naam}, Google review, over {site.eigenaar}</footer>
+          </blockquote>
+        </div>
+        <div class="grid gap-x-10 gap-y-10 md:grid-cols-2 lg:col-span-7">
+          {[reviews.christian, reviews.dennis, reviews.jeroen, reviews.elfred].map((r, i) => (
+            <blockquote class="rijs border-t border-inkt pt-5" style={`--d:${i * .06}s`}>
+              <p class="flex gap-0.5 text-blad-diep" role="img" aria-label="5 van 5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-3.5 w-3.5" />)}</p>
+              <p class="mt-3">“{r.tekst}”</p>
+              <footer class="mt-3 text-sm text-grijs"><span class="font-medium text-inkt">{r.naam}</span> · {r.wanneer}</footer>
+            </blockquote>
+          ))}
+          <a href={site.reviews} class="rijs inline-flex items-center gap-2.5 text-sm font-medium no-underline hover:text-blad-diep md:col-span-2"><Icoon naam="g" class="h-5 w-5" />Alle reviews op Google</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. CHALET, SERRE, TUINHUIS: ook kleine ruimtes, plus onderhoud -->
+    <section class="py-20 md:py-32">
+      <div class="wrap grid grid-cols-1 items-end gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs lg:col-span-7">
+          <Image src={yurt} alt="Zwarte pelletkachel met vuur in een yurt, naast een rode bank met kussens op een houten vloer" quality={72} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 56vw, 100vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+        </figure>
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Chalet, woonkamer, serre of boot.</h2>
+          <p class="rijs mt-6 text-lg text-grijs" style="--d:.05s">Bij kleine ruimtes heeft u al snel te veel verwarmingsvermogen. De Kalor Mini kan schakelen van 1 tot 5 kW.</p>
+          <blockquote class="rijs mt-8 border-l-2 border-blad pl-6" style="--d:.1s">
+            <p>“{reviews.frank.tekst}”</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.frank.naam}, Google review</footer>
+          </blockquote>
+        </div>
+      </div>
+      <div class="wrap mt-16 grid grid-cols-1 items-center gap-y-10 border-t border-lijn-licht pt-12 md:mt-24 lg:grid-cols-12 lg:gap-x-12">
+        <div class="rijs lg:col-span-7">
+          <h3 class="text-3xl">Jaarlijks onderhoud</h3>
+          <p class="mt-4 max-w-xl text-lg text-grijs">Het groot onderhoud van een pelletkachel moet minimaal 1x per jaar gedaan worden. Ook is het mogelijk om het jaarlijks onderhoud aan uw pelletkachel door ons te laten uitvoeren.</p>
+          <a href={waMet('Hallo Patrick, ik wil graag onderhoud laten doen aan mijn pelletkachel. Het merk en type is: ')} class="knop knop-inkt mt-7"><Icoon naam="wa" />Onderhoud aanvragen</a>
+        </div>
+        <figure class="rijs lg:col-span-4 lg:col-start-9" style="--d:.1s">
+          <Image src={vlam} alt="Close-up van een brandende pelletkachel met open deur en de brandpot" quality={72} widths={[320, 480, 720]} sizes="(min-width: 1024px) 30vw, 100vw" class="aspect-[16/10] w-full rounded-md object-cover object-[50%_62%] lg:aspect-[4/3]" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 7. CONTACT -->
+    <section id="contact" class="bg-nacht py-20 text-wit md:py-28">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <p class="mono rijs text-blad">{site.eigenaar} · {site.plaats}</p>
+          <h2 class="rijs mt-5 text-4xl" style="--d:.05s">Bezichtiging alleen op afspraak.</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-wit/85" style="--d:.1s">Wij helpen u graag verder met vragen of advies over onze producten.</p>
+          <div class="rijs mt-9 flex flex-wrap gap-3" style="--d:.15s">
+            <a href={waMet('Hallo Patrick, ik wil graag een afspraak maken om pelletkachels te bekijken.')} class="knop knop-blad"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="knop knop-wit"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+        </div>
+        <dl class="rijs grid content-end gap-6 text-sm lg:col-span-4 lg:col-start-9" style="--d:.1s">
+          <div class="border-t border-lijn pt-4"><dt class="mono text-as">e-mail</dt><dd class="mt-1 text-base"><a href={`mailto:${site.mail}`} class="link break-all">{site.mail}</a></dd></div>
+          <div class="border-t border-lijn pt-4"><dt class="mono text-as">telefoon en whatsapp</dt><dd class="num mt-1 text-base"><a href={site.telHref} class="link">{site.tel}</a></dd></div>
+          <div class="border-t border-lijn pt-4"><dt class="mono text-as">vestiging</dt><dd class="mt-1 text-base">{site.plaats}</dd></div>
+        </dl>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script define:vars={{ kachels, cv, wa: site.wa }}>
+    const hulp = document.querySelector('[data-hulp]');
+    if (hulp) {
+      const $ = (s) => hulp.querySelector(s);
+      const m2 = $('[data-m2]'), hoogte = $('[data-hoogte]'), lijst = $('[data-lijst]'), bericht = $('[data-bericht]'), stuur = $('[data-stuur]');
+      const komma = (n) => String(n).replace('.', ',');
+      const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+      const regel = (naam, href, spec) => `<li><a href="${href}" class="regel border-lijn text-wit hover:text-blad"><span class="text-lg font-medium">${esc(naam)}</span><span class="mono text-as">${esc(spec)}</span></a></li>`;
+      const maak = () => {
+        const soort = hulp.querySelector('input[name="soort"]:checked').value;
+        const kanaal = hulp.querySelector('input[name="kanaal"]:checked').value;
+        const opp = Number(m2.value), h = Number(hoogte.value), m3 = Math.round(opp * h);
+        m2.style.setProperty('--p', `${((opp - 8) / (90 - 8)) * 100}%`);
+        $('[data-m2-uit]').textContent = `${opp} m²`;
+        $('[data-m3]').textContent = `= ca. ${m3} m³`;
+        $('[data-m2-label]').textContent = soort === 'cv' ? 'Woonoppervlak' : 'Oppervlakte van de ruimte';
+        $('[data-hoogte-rij]').hidden = soort === 'cv';
+        const kTekst = { al: 'Er is al een rookkanaal.', nee: 'Er is nog geen rookkanaal.', weet: 'Ik weet niet of er een rookkanaal is.' }[kanaal];
+        let namen = [];
+        if (soort === 'cv') {
+          $('[data-uitleg]').textContent = 'Cv-pelletkachels en pelletketels uit ons assortiment:';
+          lijst.innerHTML = cv.map((k) => regel(k.naam, k.href, k.kw)).join('');
+        } else {
+          const past = kachels.filter((k) => k.m3 >= m3).sort((a, b) => a.m3 - b.m3).slice(0, 4);
+          if (past.length) {
+            $('[data-uitleg]').textContent = 'Geschikt voor ruimtes tot (m³), volgens de modelpagina’s:';
+            lijst.innerHTML = past.map((k) => regel(k.naam, k.href, `${k.kw} · ${k.m3} m³`)).join('');
+            namen = past.slice(0, 2).map((k) => k.naam);
+          } else {
+            $('[data-uitleg]').textContent = 'Groter dan 270 m³: kijk ook naar een kachel of ketel op de cv.';
+            lijst.innerHTML = cv.slice(0, 3).map((k) => regel(k.naam, k.href, k.kw)).join('');
+          }
+        }
+        const t = soort === 'cv'
+          ? `Hallo Patrick, ik wil een pelletkachel of pelletketel op de cv aansluiten. Ons woonoppervlak is ongeveer ${opp} m². ${kTekst} Kun je me adviseren?`
+          : `Hallo Patrick, ik zoek een pelletkachel voor een ruimte van ongeveer ${opp} m² (${komma(h)} m hoog, ca. ${m3} m³). ${kTekst}${namen.length ? ` Ik zag de ${namen.join(' en de ')}.` : ''} Kun je me adviseren?`;
+        bericht.textContent = t;
+        stuur.href = `${wa}?text=${encodeURIComponent(t)}`;
+      };
+      m2.addEventListener('input', maak); hoogte.addEventListener('change', maak);
+      hulp.querySelectorAll('input[type="radio"]').forEach((r) => r.addEventListener('change', maak));
+      maak();
+    }
+  </script>
+</Base>

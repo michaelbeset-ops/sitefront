@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+await p.goto('http://localhost:4471/sitefront/ecologic-pelletkachels-almere/#keuzehulp', { waitUntil: 'networkidle' });
+await p.fill('[data-m2]', '55'); await p.dispatchEvent('[data-m2]', 'input');
+await p.selectOption('[data-hoogte]', '2.8'); await p.check('input[value="nee"]');
+await p.waitForTimeout(1200);
+console.log(await p.textContent('[data-bericht]')); console.log(decodeURIComponent(await p.getAttribute('[data-stuur]', 'href')));
+await p.locator('#keuzehulp').screenshot({ path: 'shots/wow-1440.png' });
+await p.fill('[data-m2]', '90'); await p.dispatchEvent('[data-m2]', 'input'); await p.selectOption('[data-hoogte]', '4'); console.log(await p.textContent('[data-uitleg]'), '|', await p.textContent('[data-bericht]'));
+await p.check('input[value="cv"]'); console.log(await p.textContent('[data-bericht]'));
+await b.close();

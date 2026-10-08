@@ -1,0 +1,148 @@
+---
+// Wow: wijs op de gevel aan waar de zonwering moet komen. Productkeuze, maat en bediening komen uit hun eigen
+// richtprijs-formulier (deutzonwering.nl/direct-een-offerte-aanvragen). Verstuurt niets: opent WhatsApp met een ingevuld bericht.
+import { site, plaatsen } from '../data/site';
+import Icoon from './Icoon.astro';
+const plekken = [
+  ['dakkapel', 'Dakkapel'],
+  ['boven', 'Raam boven'],
+  ['beneden', 'Raam beneden'],
+  ['deur', 'Tuindeur'],
+  ['terras', 'Terras'],
+  ['binnen', 'Binnen'],
+];
+const tegels = [0, 1, 2, 3, 4, 5, 6];
+---
+<div class="mt-10 grid gap-8 md:mt-12 lg:grid-cols-12 lg:gap-12" data-gevel data-wa={site.wa}>
+  <div class="rijs rounded-sm bg-wit p-4 shadow-sm sm:p-8 lg:col-span-7 lg:flex lg:items-center">
+    <svg viewBox="0 0 560 530" class="block h-auto w-full" role="group" aria-label="Tekening van een huis: kies een plek">
+      <g fill="none" stroke="var(--color-inkt)" stroke-width="2" stroke-linejoin="round">
+        <path d="M58 178 280 44l222 134" />
+        <path d="M80 170v300h400V170" />
+        <path d="M20 470h520" />
+        <rect x="222" y="96" width="116" height="56" />
+        <rect x="120" y="204" width="110" height="86" /><path d="M175 204v86" />
+        <rect x="330" y="204" width="110" height="86" /><path d="M385 204v86" />
+        <rect x="110" y="330" width="180" height="108" /><path d="M170 330v108M230 330v108" />
+        <rect x="340" y="318" width="90" height="152" /><path d="M385 318v152" />
+        <path d="M30 470l-14 50h528l-14-50" stroke-dasharray="4 6" />
+      </g>
+      <g stroke="var(--color-lijn)" stroke-width="1.2">
+        {tegels.map((i) => <path d={`M${40 + i * 80} 476l-10 40`} />)}
+      </g>
+      <g class="zone" data-zone="dakkapel" tabindex="0" role="button" aria-pressed="false" aria-label="Dakkapel"><rect class="vlak" x="214" y="88" width="132" height="72" rx="4" /><circle class="stip" cx="280" cy="124" r="9" /></g>
+      <g class="zone" data-zone="boven" tabindex="0" role="button" aria-pressed="false" aria-label="Raam boven"><path class="vlak" d="M112 196h126v102H112zM322 196h126v102H322z" /><circle class="stip" cx="175" cy="247" r="9" /><circle class="stip" cx="385" cy="247" r="9" /></g>
+      <g class="zone" data-zone="beneden" tabindex="0" role="button" aria-pressed="false" aria-label="Raam beneden"><rect class="vlak" x="102" y="322" width="196" height="124" rx="4" /><circle class="stip" cx="200" cy="384" r="9" /></g>
+      <g class="zone" data-zone="deur" tabindex="0" role="button" aria-pressed="false" aria-label="Tuindeur"><rect class="vlak" x="332" y="310" width="106" height="160" rx="4" /><circle class="stip" cx="385" cy="394" r="9" /></g>
+      <g class="zone" data-zone="terras" tabindex="0" role="button" aria-pressed="false" aria-label="Terras"><path class="vlak" d="M30 472h500l14 48H16z" /><circle class="stip" cx="280" cy="496" r="9" /></g>
+    </svg>
+  </div>
+
+  <form class="rijs lg:col-span-5" style="--d:.08s" data-bon>
+    <fieldset>
+      <legend class="text-sm font-semibold text-grijs"><span class="breed text-blauw">1</span>&nbsp; Waar?</legend>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {plekken.map(([id, t]) => <label><input type="radio" name="plek" value={id} class="sr-only" /><span class="keus">{t}</span></label>)}
+      </div>
+    </fieldset>
+
+    <fieldset class="mt-8">
+      <legend class="text-sm font-semibold text-grijs"><span class="breed text-blauw">2</span>&nbsp; Wat?</legend>
+      <div class="mt-3 flex min-h-[2.75rem] flex-wrap gap-2" data-producten><p class="self-center text-grijs">Kies eerst een plek.</p></div>
+    </fieldset>
+
+    <div class="mt-8 grid gap-6 sm:grid-cols-[11rem_1fr]">
+      <label class="block"><span class="text-sm font-semibold text-grijs"><span class="breed text-blauw">3</span>&nbsp; Breedte, ongeveer</span>
+        <span class="flex items-baseline gap-2"><input type="number" inputmode="numeric" min="30" max="1500" step="10" placeholder="bijv. 300" class="veld num" data-breedte /><span class="text-grijs">cm</span></span>
+      </label>
+      <label class="block"><span class="text-sm font-semibold text-grijs">Bediening</span>
+        <select class="veld" data-bediening>
+          <option value="">Weet ik nog niet</option>
+          <option>motor met afstandsbediening</option>
+          <option>motor met schakelaar</option>
+          <option data-solar>op zonne-energie (solar)</option>
+          <option>met de hand</option>
+        </select>
+      </label>
+      <label class="block sm:col-span-2"><span class="text-sm font-semibold text-grijs">Woonplaats</span>
+        <input type="text" list="plaatsen" autocomplete="address-level2" class="veld" data-plaats />
+        <datalist id="plaatsen">{plaatsen.map((p) => <option value={p} />)}</datalist>
+      </label>
+    </div>
+
+    <div class="mt-8 rounded-sm border border-lijn bg-kalk p-5">
+      <p class="text-sm font-semibold text-grijs">Uw bericht</p>
+      <p class="mt-2 text-[1.0625rem]" data-bericht aria-live="polite"></p>
+    </div>
+    <a href={site.wa} class="knop mt-6 w-full sm:w-auto" data-wa-knop><Icoon naam="wa" />Stuur via WhatsApp</a>
+    <p class="mt-4 flex items-start gap-2 text-sm text-grijs"><Icoon naam="foto" class="mt-0.5 h-4 w-4 flex-none" />Stuur in WhatsApp meteen een foto van de plek mee.</p>
+  </form>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-gevel]');
+  if (root) {
+    const wa = root.dataset.wa!;
+    const opties: Record<string, string[]> = {
+      dakkapel: ['screen', 'rolluik'],
+      boven: ['rolluik', 'screen', 'uitvalscherm', 'markies', 'markisolette'],
+      beneden: ['screen', 'rolluik', 'uitvalscherm', 'markies', 'markisolette', 'raamhor'],
+      deur: ['hordeur', 'rolluik', 'screen'],
+      terras: ['knikarmscherm'],
+      binnen: ['houten jaloezie'],
+    };
+    const waar: Record<string, string> = { dakkapel: 'voor de dakkapel', boven: 'voor een raam boven', beneden: 'voor een raam beneden', deur: 'voor de tuindeur', terras: 'boven het terras', binnen: 'voor binnen' };
+    const zonder = ['raamhor', 'hordeur', 'houten jaloezie'];
+    const q = <T extends Element>(s: string) => root.querySelector<T>(s)!;
+    const lijst = q<HTMLElement>('[data-producten]');
+    const b = q<HTMLInputElement>('[data-breedte]');
+    const bed = q<HTMLSelectElement>('[data-bediening]');
+    const solar = q<HTMLOptionElement>('[data-solar]');
+    const plaats = q<HTMLInputElement>('[data-plaats]');
+    const bericht = q<HTMLElement>('[data-bericht]');
+    const knop = q<HTMLAnchorElement>('[data-wa-knop]');
+    let plek = '';
+    let product = '';
+
+    const tekst = () => {
+      let eerste = 'Hallo Melvin, ik wil graag een richtprijs';
+      if (product) eerste += ` voor een ${product}`;
+      eerste += plek ? ` ${waar[plek]}.` : '.';
+      const delen = [eerste];
+      if (b.value) delen.push(`Breedte ongeveer ${b.value} cm.`);
+      if (bed.value && !zonder.includes(product)) delen.push(`Bediening: ${bed.value}.`);
+      if (plaats.value.trim()) delen.push(`Woonplaats: ${plaats.value.trim()}.`);
+      delen.push('Ik stuur een foto van de plek mee.');
+      return delen.join(' ');
+    };
+    const zet = () => { const t = tekst(); bericht.textContent = t; knop.href = `${wa}?text=${encodeURIComponent(t)}`; };
+
+    const kiesProduct = (p: string) => {
+      product = p;
+      solar.disabled = p === 'knikarmscherm';
+      if (solar.disabled && bed.value === solar.value) bed.value = '';
+      bed.disabled = zonder.includes(p);
+      zet();
+    };
+    const kiesPlek = (z: string) => {
+      plek = z;
+      root.querySelectorAll<SVGGElement>('.zone').forEach((g) => g.setAttribute('aria-pressed', String(g.dataset.zone === z)));
+      const r = root.querySelector<HTMLInputElement>(`input[name=plek][value="${z}"]`);
+      if (r) r.checked = true;
+      const ps = opties[z];
+      lijst.innerHTML = ps.map((p, i) => `<label><input type="radio" name="product" value="${p}" class="sr-only"${i === 0 ? ' checked' : ''}><span class="keus">${p[0].toUpperCase() + p.slice(1)}</span></label>`).join('');
+      lijst.querySelectorAll<HTMLInputElement>('input').forEach((i) => i.addEventListener('change', () => kiesProduct(i.value)));
+      kiesProduct(ps[0]);
+    };
+
+    root.querySelectorAll<SVGGElement>('.zone').forEach((g) => {
+      g.addEventListener('click', () => kiesPlek(g.dataset.zone!));
+      g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); kiesPlek(g.dataset.zone!); } });
+    });
+    root.querySelectorAll<HTMLInputElement>('input[name=plek]').forEach((i) => i.addEventListener('change', () => kiesPlek(i.value)));
+    [b, plaats].forEach((el) => el.addEventListener('input', zet));
+    bed.addEventListener('change', zet);
+    root.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>

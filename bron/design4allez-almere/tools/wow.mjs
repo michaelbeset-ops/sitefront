@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+await p.goto('http://localhost:4468/sitefront/design4allez-almere/#kiezen', { waitUntil: 'networkidle' });
+await p.evaluate(() => document.querySelectorAll('.rijs').forEach(e => e.classList.add('in')));
+const h = async () => decodeURIComponent(await p.getAttribute('[data-stuur]', 'href'));
+console.log(await h());
+await p.selectOption('[data-plek]', 'inbouw'); await p.selectOption('[data-maat]', '152'); console.log(await h());
+await p.selectOption('[data-plek]', 'los'); console.log(await h(), await p.$eval('[data-soort]', s => s.value));
+await p.selectOption('[data-plek]', 'wand'); await p.selectOption('[data-soort]', 'elektrische'); await p.selectOption('[data-maat]', '240'); console.log(await h());
+await p.locator('#kiezen').screenshot({ path: 'shots/wow-1440.png' });
+await b.close();

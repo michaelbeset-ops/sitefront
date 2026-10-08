@@ -1,0 +1,20 @@
+---
+// Eigen detail: de puntdaken uit hun logo, doorgetrokken tot een rij huizen. Tekent zich bij het in beeld komen.
+interface Props { class?: string; licht?: boolean }
+const { class: cls = '', licht = false } = Astro.props;
+const daken: string[] = [];
+const h = [26, 18, 30, 18, 24, 20];
+let x = 0;
+for (let i = 0; x < 1440; i++) {
+  const b = i % 3 === 1 ? 64 : 92;
+  const top = h[i % h.length];
+  daken.push(`M${x} 78 V50 L${x + b / 2} ${50 - top} L${x + b} 50 V78`);
+  x += b;
+}
+const d = `M0 78 H1440 ${daken.join(" ")}`;
+---
+<div class:list={['daklijn rijs overflow-hidden', cls]} aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="xMidYMax slice" class="block h-12 w-full md:h-20" fill="none">
+    <path d={d} pathLength="1" stroke={licht ? 'var(--color-blauw-licht)' : 'var(--color-blauw)'} stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke" />
+  </svg>
+</div>
