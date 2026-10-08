@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await p.goto('http://localhost:4454/sitefront/het-goede-leven-wijk-bij-duurstede/'); await p.waitForTimeout(500);
+await p.evaluate(() => scrollTo(0, 3000)); await p.waitForTimeout(400);
+await p.locator('[data-menu-knop]').click(); await p.waitForTimeout(300);
+console.log(await p.evaluate(() => { const k = document.querySelector('[data-kop]'); const r = k.getBoundingClientRect(); return [k.className, getComputedStyle(k).position, r.top, r.height]; }));
+await p.screenshot({ path: '../../demos/het-goede-leven-wijk-bij-duurstede/shots/r2-menu-390.png' });
+await p.locator('[data-menu-knop]').click(); await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(400);
+await p.locator('[data-menu-knop]').click(); await p.waitForTimeout(300);
+await p.screenshot({ path: '../../demos/het-goede-leven-wijk-bij-duurstede/shots/r2-menu-top-390.png' });
+await b.close();

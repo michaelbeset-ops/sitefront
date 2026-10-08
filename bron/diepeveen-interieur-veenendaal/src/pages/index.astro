@@ -1,0 +1,377 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, waHoi, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/keuken24.jpg';
+import woon from '../assets/diepeveen02.jpg';
+import lattenwand from '../assets/diepeveen07.jpg';
+import bad from '../assets/diepeveen04.jpg';
+import blad from '../assets/keuken25.jpg';
+import tekening from '../assets/diepeveen08.jpg';
+import wand from '../assets/img_2591.jpg';
+import montage from '../assets/diepeveen13.jpg';
+
+import zw1 from '../assets/img_4271.jpg'; import zw2 from '../assets/img_4274.jpg';
+import k21 from '../assets/keuken21.jpg'; import k22 from '../assets/keuken22.jpg'; import k23 from '../assets/keuken23.jpg';
+import sc1 from '../assets/img_2584.jpg'; import sc2 from '../assets/img_2581.jpg'; import sc3 from '../assets/img_2587.jpg';
+import la1 from '../assets/img_2501.jpg'; import la2 from '../assets/img_2498.jpg'; import la3 from '../assets/img_2077.jpg';
+import tv1 from '../assets/img_5277.jpg'; import tv2 from '../assets/img_5273.jpg';
+import sl1 from '../assets/kledingkast_4.jpg'; import sl2 from '../assets/slaapkamer_1.jpg'; import sl3 from '../assets/kledingkast_1.jpg'; import sl4 from '../assets/linnenkast_1.jpg';
+import ba1 from '../assets/badkamermeubel_1.jpg';
+import bu1 from '../assets/bureau_open_laden_1.jpg'; import bu2 from '../assets/img_1710.jpg';
+import cv1 from '../assets/img_7577.jpg'; import cv2 from '../assets/img_7579.jpg';
+import fo1 from '../assets/toiletkast_1a.jpg'; import fo2 from '../assets/toiletkast_3a.jpg';
+import wa1 from '../assets/img_8744.jpg'; import wa2 from '../assets/img_8731.jpg';
+import kp1 from '../assets/kapstok-deur.jpg';
+import gs1 from '../assets/img_4342.jpg'; import gs2 from '../assets/img_4344.jpg';
+import zv1 from '../assets/img_0852.jpg'; import zv2 from '../assets/img_0850.jpg';
+import bk1 from '../assets/img_1870.jpg';
+import sk1 from '../assets/img_1432.jpg'; import sk2 from '../assets/img_1431.jpg';
+import bl1 from '../assets/balie02.jpg'; import bl2 from '../assets/balie01.jpg'; import bl3 from '../assets/balie4.jpg';
+
+// Alle projecten van hun eigen portfoliopagina, nieuwste eerst. Omschrijvingen van de projectpagina's, licht ingekort.
+const projecten = [
+  { titel: 'Zolderkast', plaats: 'Wageningen', fotos: [zw1, zw2], tekst: 'Geheel gemaakt van gemelamineerd MDF. Deuren met soft-close en massief eiken knoppen.' },
+  { titel: 'Moderne keuken', plaats: 'Veenendaal', fotos: [k21, k22, k23], tekst: 'Geheel naar de wensen van de klant ontworpen. Zichtpanelen van eiken fineer, groen geverfd. Blad van Diresco met zwarte spoelbak en patina Quooker.' },
+  { titel: 'Kasten', plaats: 'Sprang-Capelle', fotos: [sc1, sc2, sc3], tekst: 'Veel opbergruimte: één kast met koelkast, één kast die ook de cv-ketel omtimmert, en een inloopkast met saloondeuren.' },
+  { titel: 'Kelderkasten', plaats: 'Laren', fotos: [la1, la2, la3], tekst: 'In opdracht van Hubbers Interieurmakers. Twee kelders met kasten, een berken multiplex wand en een kast voor twee wijnklimaatkasten.' },
+  { titel: 'Tv-haardmeubel', plaats: 'Elst', fotos: [tv1, tv2], tekst: 'Ontworpen door de klant. Het dek is van brandvertragend materiaal, de fronten openen met push to open.' },
+  { titel: 'Slaapkamermeubels', plaats: 'Veenendaal', fotos: [sl1, sl2, sl3, sl4], tekst: 'Bed met achterwand, nachtkastjes, tv-meubel en kledingkast. Op de logeerkamer een linnenkast met schuifdeuren en verlichting.' },
+  { titel: 'Badkamermeubel', plaats: 'Amersfoort', fotos: [ba1], tekst: 'Kleur en indeling bepaald door de klant. Blad van multiplex met HPL, geschikt voor badkamers. Deuren met push to open.' },
+  { titel: 'Bureau', plaats: 'Den Bosch', fotos: [bu1, bu2], tekst: 'Laden en deur met push to open en soft-close. In het blad een elevator met twee keer 230V en twee keer USB.' },
+  { titel: 'Cv-omtimmering', plaats: 'Veenendaal', fotos: [cv1, cv2], tekst: 'Buitenzijde hoogglans wit, binnenin schappen op spurrails. Schuifdeuren met aluminium lijsten die ook als greep dienen.' },
+  { titel: 'Fonteinkast', plaats: 'Veenendaal', fotos: [fo1, fo2], tekst: 'In de kleuren van het toilet. De mozaïektegels uit de nis komen terug in de deur.' },
+  { titel: 'Was- en drogerombouw', plaats: 'Veenendaal', fotos: [wa1, wa2], tekst: 'Machines op een uittrekplateau, zodat de achterkant bereikbaar is zonder te tillen. Met bureau en een bovenkast aan haaklatten.' },
+  { titel: 'Kapstok met kast', plaats: 'Veenendaal', fotos: [kp1], tekst: 'Deur met push to open en in hoogte verstelbare schappen.' },
+  { titel: 'Gekleurde schapjes', plaats: 'Veenendaal', fotos: [gs1, gs2], tekst: 'Door de klant ontworpen en geschilderd. De schappen hangen blind aan de muur op metalen pennen.' },
+  { titel: 'Zolderkast', plaats: 'Veenendaal', fotos: [zv1, zv2], tekst: 'Kledingkast onder de schuine kap. De rechterdeur geeft toegang tot de bergruimte achter de kast.' },
+  { titel: 'Bovenkast met schuifruiten', plaats: 'Den Bosch', fotos: [bk1], tekst: 'Een open bovenkast vervangen door een grotere, afsluitbare kast met twee schuifruiten met slotje.' },
+  { titel: 'Schoenenkast in de hal', plaats: 'Veenendaal', fotos: [sk1, sk2], tekst: 'Schoenenkast en kapstok, met een demontabele ombouw om de verwarming.' },
+  { titel: 'Balies', plaats: 'Swifterbant', fotos: [bl1, bl2, bl3], tekst: 'Met een omgezet RVS-blad, omdat er truck- en traileronderdelen overheen gaan. Zo gaat de balie jaren mee.' },
+];
+
+const stappen = [
+  ['Inventarisatie en advies', 'We bespreken functie, stijl, materiaal en budget, en adviseren wat kan.'],
+  ['Ontwerp en prijsafspraak', 'U krijgt een ontwerp met al uw wensen, een planning en een heldere prijs.'],
+  ['Werktekening en productie', 'Op basis van de werktekening maken we alles op maat in de werkplaats.'],
+  ['Montage en eindcontrole', 'We plaatsen alles, ruimen op en lopen het samen met u na.'],
+];
+
+// Letterlijk van Google, ingekort met "…". Achternaam als initiaal.
+const reviews = [
+  { naam: 'HuizeFRoos', tekst: 'Patrick heeft voor ons een inbouwkast op zolder gemaakt. Meedenken met ontwerp en mogelijkheden, aanpassen aan onze wensen en dat alles strak en exact passend gebouwd.' },
+  { naam: 'Marina B.', tekst: 'We zijn erg blij met het resultaat van de geleverde meubelen. Alles past tot op de millimeter, echt vakwerk.' },
+  { naam: 'Roderick G.', tekst: 'Patrick is een professional en denkt goed mee over het ontwerp. … De kast ziet er mooi uit en is helemaal naar wens.' },
+  { naam: 'Joost C.', tekst: 'Wij hebben bij dit bedrijf onze garage laten voorzien van op maat gemaakte kasten, dit met een fantastisch eindresultaat.' },
+];
+
+const ruimtes = ['de keuken', 'de woonkamer', 'de slaapkamer', 'de zolder', 'de hal', 'de badkamer of het toilet', 'de bijkeuken of garage', 'een werkplek of kantoor', 'een winkel of bedrijfsruimte', 'iets anders'];
+
+const heroD = await getImage({ src: hero, widths: [960, 1440, 1920], width: 1920, format: 'webp', quality: 72 });
+const heroMob = await getImage({ src: heroM, widths: [480, 768, 1024], width: 1024, format: 'webp', quality: 70 });
+
+const titel = 'Diepeveen Interieur | Interieurbouw op maat in Veenendaal';
+const omschrijving = 'Keukens, kasten, badkamermeubels en balies op maat. Ontworpen, gemaakt en gemonteerd door Patrick Diepeveen in Veenendaal.';
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun nieuwste keuken, groen eiken fineer -->
+    <section class="relative isolate flex min-h-[calc(100svh-7.75rem)] flex-col justify-end overflow-hidden bg-grafiet text-wit md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={heroD.srcSet.attribute} sizes="100vw" />
+        <img src={heroMob.src} srcset={heroMob.srcSet.attribute} sizes="100vw" width="1024" height="964" alt="Keuken met groene kasten van eiken fineer, een donker werkblad met witte adering en een patina kraan" fetchpriority="high" loading="eager" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[90%_50%] md:object-[60%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1d1a00_0%,#1b1d1a1a_22%,#1b1d1a8c_42%,#1b1d1ae0_62%,#1b1d1af5_100%)] md:bg-[linear-gradient(90deg,#1b1d1ae6_0%,#1b1d1ab3_32%,#1b1d1a4d_58%,#1b1d1a0d_82%),linear-gradient(0deg,#1b1d1a99_0%,#1b1d1a00_40%)]" aria-hidden="true"></div>
+      <div class="wrap pb-24 pt-[22svh] md:pb-20 md:pt-32 lg:pb-24">
+        <p class="text-sm font-medium text-wit/80">Interieurbouw in {site.plaats}</p>
+        <h1 class="mt-5 max-w-[14ch] text-hero">Maatwerk dat past, tot op de <span class="text-fineer-licht">millimeter</span>.</h1>
+        <p class="mt-6 max-w-[33rem] text-lg text-wit/90 md:mt-7">Patrick Diepeveen ontwerpt, maakt en monteert kasten, keukens en complete interieurs. Voor uw huis of uw bedrijf.</p>
+        <div class="mt-8 flex flex-wrap gap-3 md:mt-9">
+          <a href="#intake" class="knop max-sm:!px-5">Vertel wat u zoekt<Icoon naam="pijl" /></a>
+          <a href="#projecten" class="knop knop-lijn max-sm:!px-5"><span class="sm:hidden">Projecten</span><span class="max-sm:hidden">Bekijk projecten</span></a>
+        </div>
+        <ul class="mt-12 flex flex-wrap gap-x-7 max-sm:hidden gap-y-2 border-t border-lijn-licht pt-5 text-sm text-wit/80">
+          <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-fineer-licht" />Ontwerp, productie en montage</li>
+          <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-fineer-licht" />Particulier en zakelijk</li>
+          <li class="flex items-center gap-2 max-sm:hidden"><Icoon naam="vink" class="h-4 w-4 text-fineer-licht" />Projecten van A tot Z begeleid</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. VAN ÉÉN KAST TOT EEN COMPLETE INRICHTING -->
+    <section class="py-20 md:py-32" aria-labelledby="intro-titel">
+      <div class="wrap grid gap-y-10 lg:grid-cols-12 lg:gap-x-10">
+        <div class="lg:col-span-5 lg:pt-6">
+          <h2 id="intro-titel" class="rijs text-3xl">Van één kast tot een complete inrichting.</h2>
+          <p class="rijs mt-7 max-w-md text-lg text-grijs" style="--d:.1s">Een zolderkast onder de schuine kap, een balie voor een werkplaats, een keuken in groen fineer. Alles wordt eerst getekend, dan gemaakt en daarna door ons geplaatst.</p>
+          <div class="maatlijn rijs mt-12 max-w-md" aria-hidden="true"><i></i><span class="num">op maat</span><i></i></div>
+        </div>
+        <figure class="rijs lg:col-span-7">
+          <Image src={woon} alt="Woonkamer met een eiken balk met inbouwspots boven een wand van natuursteen en een open wandkast" widths={[480, 800, 1024]} sizes="(min-width: 1024px) 58vw, 100vw" quality={74} class="aspect-[3/2] w-full object-cover" />
+        </figure>
+        <figure class="rijs grid grid-cols-2 gap-3 sm:gap-5 lg:col-span-7 lg:col-start-1 lg:grid-cols-[1fr_1.35fr]" style="--d:.1s">
+          <Image src={lattenwand} alt="Wand met verticale houten latten, een zwevend plankje en wandlampen" widths={[360, 600]} sizes="(min-width: 1024px) 24vw, 50vw" quality={74} class="aspect-[3/4] h-full w-full object-cover" />
+          <Image src={bad} alt="Badkamer met een zwevend houten badmeubel, een waskom en een spiegel met verlichting" widths={[360, 600]} sizes="(min-width: 1024px) 32vw, 50vw" quality={74} class="aspect-[3/4] h-full w-full object-cover" />
+        </figure>
+        <figure class="rijs self-end lg:col-span-5" style="--d:.2s">
+          <Image src={blad} alt="Detail van een donker keukenblad met witte adering en een messing greep" widths={[480, 800]} sizes="(min-width: 1024px) 40vw, 100vw" quality={74} class="aspect-[4/3] w-full object-cover" />
+          <figcaption class="mt-3 text-sm text-grijs">Detail van de keuken in Veenendaal: eiken fineer, groen geverfd, met een blad van Diresco.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. PROJECTREGISTER: al hun eigen projecten -->
+    <section id="projecten" class="border-t border-lijn bg-papier-2/60 py-20 md:py-28" aria-labelledby="proj-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-10">
+          <h2 id="proj-titel" class="rijs text-3xl lg:col-span-6">Gemaakt voor één ruimte.</h2>
+          <p class="rijs max-w-md self-end text-lg text-grijs lg:col-span-5 lg:col-start-8">Zeventien projecten, van Wageningen tot Swifterbant. Kies er een voor alle foto's.</p>
+        </div>
+        <div class="mt-12 grid grid-cols-1 gap-y-10 lg:mt-16 lg:grid-cols-12 lg:gap-x-12">
+          <div class="min-w-0 lg:col-span-7">
+            <div class="relative lg:sticky lg:top-28" data-voorbeelden>
+              {projecten.map((p, i) => (
+                <figure data-voorbeeld={i} class:list={['transition-opacity duration-500', i === 0 ? 'relative' : 'pointer-events-none absolute inset-0 opacity-0']} aria-hidden={i === 0 ? undefined : 'true'}>
+                  <Image src={p.fotos[0]} alt={`${p.titel} in ${p.plaats}`} widths={[480, 800, 1100]} sizes="(min-width: 1024px) 56vw, 100vw" quality={72} class="aspect-[4/3] w-full bg-papier-2 object-cover" />
+                  <figcaption class="mt-4 grid gap-1 sm:grid-cols-[auto_1fr] sm:gap-x-6">
+                    <span class="kop text-xl">{p.titel}, {p.plaats}</span>
+                    <span class="text-sm text-grijs sm:text-right">{p.fotos.length} {p.fotos.length === 1 ? 'foto' : "foto's"}</span>
+                    <span class="max-w-xl text-[.9375rem] text-grijs sm:col-span-2">{p.tekst}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+          <ol class="min-w-0 lg:col-span-5" aria-label="Projecten">
+            {projecten.map((p, i) => (
+              <li>
+                <button type="button" class="regel" data-regel={i} aria-current={i === 0 ? 'true' : 'false'} aria-haspopup="dialog" aria-controls={`album-${i}`}>
+                  <span class="num hidden w-7 flex-none text-xs text-grijs min-[380px]:inline">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="kop min-w-0 text-[1.0625rem] sm:text-lg">{p.titel}</span>
+                  <span class="stip" aria-hidden="true"></span>
+                  <span class="whitespace-nowrap text-sm text-grijs">{p.plaats}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+      {projecten.map((p, i) => (
+        <dialog id={`album-${i}`} class="album" aria-labelledby={`album-t-${i}`}>
+          <div class="sticky top-0 z-10 flex items-start justify-between gap-6 border-b border-lijn bg-papier px-5 py-4 md:px-8">
+            <div>
+              <h3 id={`album-t-${i}`} class="text-2xl">{p.titel}, {p.plaats}</h3>
+              <p class="mt-1 max-w-2xl text-[.9375rem] text-grijs">{p.tekst}</p>
+            </div>
+            <button type="button" class="grid h-11 w-11 flex-none place-items-center rounded-full border border-lijn hover:bg-papier-2" data-sluit>
+              <span class="sr-only">Sluiten</span>
+              <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+          </div>
+          <div class:list={['grid gap-3 p-5 md:p-8', p.fotos.length > 1 && 'sm:grid-cols-2']}>
+            {p.fotos.map((f, j) => (
+              <Image src={f} alt={`${p.titel} in ${p.plaats}, foto ${j + 1}`} widths={[480, 800, 1024]} sizes="(min-width: 640px) 50vw, 100vw" quality={72} loading="lazy" class="max-h-[78dvh] w-full bg-papier-2 object-contain" />
+            ))}
+          </div>
+        </dialog>
+      ))}
+    </section>
+
+    <!-- 4. WERKTEKENING EN WERKWIJZE (donker) -->
+    <section id="werkwijze" class="bg-grafiet py-20 text-wit md:py-32" aria-labelledby="ww-titel">
+      <div class="wrap">
+        <div class="grid gap-y-5 lg:grid-cols-12 lg:gap-x-10">
+          <h2 id="ww-titel" class="rijs text-3xl lg:col-span-6">Eerst getekend, dan gemaakt.</h2>
+          <p class="rijs max-w-md self-end text-lg text-mist lg:col-span-5 lg:col-start-8">Patrick is meubelmaker én technisch tekenaar. Elke kast krijgt een werktekening met maten, zodat hij in één keer past.</p>
+        </div>
+        <div class="mt-14 grid items-end gap-5 lg:grid-cols-12 lg:gap-x-6">
+          <figure class="rijs lg:col-span-7">
+            <div class="bg-wit p-3 sm:p-5">
+              <Image src={tekening} alt="Werktekening, vooraanzicht schaal 1:20, van een kastenwand met hoge kasten, drie nissen en lage kasten, met maatlijnen" widths={[600, 1024]} sizes="(min-width: 1024px) 55vw, 100vw" quality={80} class="aspect-[16/9] w-full object-cover object-[50%_52%]" />
+            </div>
+            <figcaption class="mt-3 text-sm text-mist">Werktekening, vooraanzicht op schaal 1:20.</figcaption>
+          </figure>
+          <figure class="rijs lg:col-span-5" style="--d:.15s">
+            <Image src={wand} alt="Geplaatste witte kastenwand met hoge kasten, drie open nissen en lage kasten in een garage" widths={[480, 800, 1024]} sizes="(min-width: 1024px) 40vw, 100vw" quality={74} class="aspect-[4/3] w-full object-cover" />
+            <figcaption class="mt-3 text-sm text-mist">Kastenwand, Sprang-Capelle.</figcaption>
+          </figure>
+        </div>
+
+        <ol class="mt-20 grid gap-y-10 md:grid-cols-2 md:gap-x-10 lg:mt-24 lg:grid-cols-4">
+          {stappen.map(([t, z], i) => (
+            <li class="rijs relative pt-7" style={`--d:${i * 0.08}s`}>
+              <span class="absolute inset-x-0 top-0 h-px bg-mist/40" aria-hidden="true"></span>
+              <span class="absolute left-0 top-[-.45rem] h-[.9rem] w-px bg-fineer-licht" aria-hidden="true"></span>
+              <span class="num kop text-sm text-fineer-licht">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-3 text-xl">{t}</h3>
+              <p class="mt-2 text-[.9375rem] text-mist">{z}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. REVIEWS -->
+    <section id="reviews" class="py-20 md:py-32" aria-labelledby="rev-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 id="rev-titel" class="rijs text-3xl">Wat klanten zeggen.</h2>
+          <a href={site.google.url} class="rijs mt-7 inline-flex items-center gap-3 rounded-full border border-lijn bg-wit px-4 py-2.5 text-sm no-underline text-inkt transition-colors hover:border-inkt">
+            <Icoon naam="g" class="h-5 w-5" />
+            <span class="flex text-fineer" aria-hidden="true">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+            <span class="num">{site.google.score} op Google · {site.google.aantal} reviews</span>
+          </a>
+          <figure class="rijs mt-14">
+            <blockquote class="kop text-2xl leading-snug">“Het vakmanschap is zichtbaar in elk detail: strak afgewerkt, niets aan het toeval overgelaten.”</blockquote>
+            <figcaption class="mt-5 text-sm text-grijs">Dianne D., over haar keuken make-over · Google review</figcaption>
+          </figure>
+        </div>
+        <ul class="grid gap-x-10 sm:grid-cols-2 lg:col-span-7">
+          {reviews.map((r, i) => (
+            <li class="rijs border-t border-lijn py-8" style={`--d:${(i % 2) * 0.08}s`}>
+              <span class="flex text-fineer" role="img" aria-label="5 sterren">{[0, 1, 2, 3, 4].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>
+              <p class="mt-4">“{r.tekst}”</p>
+              <p class="mt-4 text-sm text-grijs">{r.naam} · Google review</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. INTAKE (wow) + CONTACT -->
+    <section id="intake" class="border-t border-lijn bg-papier-2/60 py-20 md:py-28" aria-labelledby="in-titel">
+      <div class="wrap grid gap-y-16 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <h2 id="in-titel" class="rijs text-3xl">Vertel wat u wilt laten maken.</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-grijs">Kies de ruimte en beschrijf het kort. Patrick krijgt uw bericht in WhatsApp; stuur er gerust een paar foto's van de ruimte bij.</p>
+          <form class="rijs mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2" data-intake novalidate>
+            <label class="block">
+              <span class="text-sm font-medium text-grijs">Voor welke ruimte?</span>
+              <select class="veld mt-1" name="ruimte">
+                {ruimtes.map((r) => <option value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>)}
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-sm font-medium text-grijs">Plaats</span>
+              <input class="veld mt-1" name="plaats" type="text" autocomplete="address-level2" placeholder="bijv. Ede" />
+            </label>
+            <label class="block sm:col-span-2">
+              <span class="text-sm font-medium text-grijs">Wat moet er komen?</span>
+              <input class="veld mt-1" name="wat" type="text" placeholder="bijv. een kledingkast onder de schuine kap" />
+            </label>
+            <fieldset class="sm:col-span-2">
+              <legend class="text-sm font-medium text-grijs">Het is voor</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <label><input type="radio" name="voor" value="thuis" class="peer sr-only" checked /><span class="keus">Thuis</span></label>
+                <label><input type="radio" name="voor" value="zaak" class="peer sr-only" /><span class="keus">Ons bedrijf</span></label>
+              </div>
+            </fieldset>
+            <div class="sm:col-span-2">
+              <p class="text-sm font-medium text-grijs">Uw bericht</p>
+              <p class="mt-2 max-w-xl rounded-md rounded-tl-none bg-wit px-4 py-3 text-[.9375rem] shadow-[0_1px_2px_#1b1d1a14]" data-voorbeeldtekst aria-live="polite"></p>
+            </div>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3 sm:col-span-2">
+              <a href={waHoi} class="knop" data-intake-knop><Icoon naam="wa" />Verstuur via WhatsApp</a>
+              <p class="text-sm text-grijs">Er gaat pas iets weg als u het in WhatsApp verstuurt.</p>
+            </div>
+          </form>
+        </div>
+
+        <aside class="lg:col-span-5" aria-label="Contactgegevens">
+          <Image src={montage} alt="Een hand zet met een accuboormachine een scharnier vast in een witte kast" widths={[480, 800]} sizes="(min-width: 1024px) 36vw, 100vw" quality={72} class="rijs aspect-[16/10] w-full object-cover" />
+          <dl class="mt-8 divide-y divide-lijn border-y border-lijn">
+            <div class="flex items-baseline justify-between gap-4 py-4"><dt class="text-grijs">Bellen</dt><dd><a href={site.telHref} class="link num font-medium">{site.tel}</a></dd></div>
+            <div class="flex items-baseline justify-between gap-4 py-4"><dt class="text-grijs">E-mail</dt><dd class="min-w-0 break-all text-right"><a href={`mailto:${site.mail}`} class="link font-medium">{site.mail}</a></dd></div>
+            <div class="flex items-baseline justify-between gap-4 py-4"><dt class="text-grijs">Gevestigd in</dt><dd class="font-medium">{site.plaats}</dd></div>
+          </dl>
+          <p class="mt-6 text-sm text-grijs">Heeft u al een tekening of een ontwerp? Mail het mee, dan kijkt Patrick ernaar.</p>
+          <h3 class="mt-10 flex items-center gap-3 text-xl">Bereikbaar <span class="text-sm text-grijs" data-status></span></h3>
+          <table class="mt-4 w-full text-[.9375rem]">
+            <caption class="sr-only">Bereikbaarheid per dag</caption>
+            <tbody>
+              {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                <tr data-dag={d} class="border-b border-lijn">
+                  <th scope="row" class="py-2 text-left font-normal">{tijden[d][0]}</th>
+                  <td class="num py-2 text-right">{tijden[d][1] ? tijden[d][1]!.replace('-', ' tot ') : 'gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 7. SLOTBALK -->
+    <section class="bg-fineer text-wit" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center md:py-14">
+        <p class="kop max-w-xl text-2xl">Een enkele kast of een complete inrichting? Patrick denkt graag mee.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href={waHoi} class="knop !bg-wit !text-inkt hover:!bg-papier-2"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Projectregister: hover/focus wisselt het grote beeld, klikken opent alle foto's.
+  const figs = [...document.querySelectorAll<HTMLElement>('[data-voorbeeld]')];
+  const regels = [...document.querySelectorAll<HTMLButtonElement>('[data-regel]')];
+  const toon = (i: number) => {
+    figs.forEach((f, j) => {
+      const aan = i === j;
+      f.classList.toggle('opacity-0', !aan); f.classList.toggle('pointer-events-none', !aan);
+      f.classList.toggle('absolute', !aan); f.classList.toggle('inset-0', !aan); f.classList.toggle('relative', aan);
+      if (aan) f.removeAttribute('aria-hidden'); else f.setAttribute('aria-hidden', 'true');
+    });
+    regels.forEach((r, j) => r.setAttribute('aria-current', String(i === j)));
+  };
+  const fijn = matchMedia('(hover: hover) and (min-width: 1024px)');
+  regels.forEach((r, i) => {
+    r.addEventListener('mouseenter', () => fijn.matches && toon(i));
+    r.addEventListener('focus', () => fijn.matches && toon(i));
+    r.addEventListener('click', () => { toon(i); document.querySelector<HTMLDialogElement>(`#album-${i}`)?.showModal(); });
+  });
+  document.querySelectorAll<HTMLDialogElement>('dialog.album').forEach((d) => {
+    d.querySelector('[data-sluit]')?.addEventListener('click', () => d.close());
+    d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+  });
+
+  // Intake: bouwt een kort WhatsApp-bericht.
+  const form = document.querySelector<HTMLFormElement>('[data-intake]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-intake-knop]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeldtekst]');
+  const bericht = () => {
+    if (!form) return '';
+    const f = new FormData(form);
+    const ruimte = String(f.get('ruimte') || '');
+    const wat = String(f.get('wat') || '').trim();
+    const plaats = String(f.get('plaats') || '').trim();
+    const voor = f.get('voor') === 'zaak' ? 'ons bedrijf' : 'thuis';
+    let t = `Hallo Patrick, ik denk aan maatwerk voor ${ruimte}`;
+    t += wat ? `: ${wat.replace(/[.\s]+$/, '')}.` : '.';
+    t += ` Het is voor ${voor}${plaats ? ` in ${plaats}` : ''}.`;
+    t += ' Ik stuur hierna een paar foto\'s van de ruimte mee.';
+    return t;
+  };
+  const werkBij = () => { const t = bericht(); if (vb) vb.textContent = t; if (knop) knop.href = `https://wa.me/31610019019?text=${encodeURIComponent(t)}`; };
+  form?.addEventListener('input', werkBij); form?.addEventListener('change', werkBij);
+  form?.addEventListener('submit', (e) => e.preventDefault());
+  werkBij();
+
+  // Bereikbaar: vandaag markeren en live status (Nederlandse tijd).
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay(); const min = nu.getHours() * 60 + nu.getMinutes();
+  document.querySelector(`[data-dag="${dag}"]`)?.classList.add('font-semibold', 'text-fineer');
+  const st = document.querySelector('[data-status]');
+  if (st) st.textContent = dag >= 1 && dag <= 5 && min >= 450 && min < 1020 ? '· nu bereikbaar' : '· nu buiten werktijd';
+</script>

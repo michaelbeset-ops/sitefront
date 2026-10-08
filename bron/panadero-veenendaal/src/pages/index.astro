@@ -1,0 +1,302 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, kaart, reviews, tijden, waHoi, waVitrine } from '../data/site';
+import hero from '../assets/hero.jpg';
+import wand from '../assets/wand.jpg';
+import zaak from '../assets/zaak.jpg';
+import zalm from '../assets/zalm.jpg';
+import plaat from '../assets/plaat.jpg';
+import meergranen from '../assets/meergranen.jpg';
+import koffie from '../assets/koffie.jpg';
+import cheesecake from '../assets/cheesecake.jpg';
+import vitrine from '../assets/vitrine.jpg';
+---
+<Base title="Panadero, lunchroom in De Scheepjeshof, Veenendaal" description="Marokkaans ontbijt, belegde en warme broodjes, Kaddour grillworst, panini's en cheesecake by Sam. Hier eten, afhalen of bestellen via WhatsApp.">
+  <Kop />
+  <main id="inhoud">
+
+    <!-- Hero: hun eigen flatlay op marmer -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] items-end overflow-hidden text-wit md:min-h-[calc(100svh-5rem)]">
+      <Image src={hero} alt="Van bovenaf: borden met goudrand op wit marmer, met een baguette met groenten, een opgerolde wrap, een meergranenbroodje met ei, brownies en drie cheesecakes op een stokje" quality={72} widths={[480, 720, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[46%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,#161514f2_0%,#161514d0_45%,#16151470_78%,#16151430_100%)] md:bg-[linear-gradient(100deg,#161514e6_0%,#161514b0_40%,#16151433_75%,#16151414_100%)]"></div>
+      <div class="wrap pb-14 pt-32 md:pb-20 lg:pb-24">
+        <p class="text-[.8125rem] font-semibold uppercase tracking-[.2em] text-wit/90">Lunchroom in De Scheepjeshof, Veenendaal</p>
+        <h1 class="mt-4 max-w-[13ch] text-hero">Ontbijt, broodjes &amp; <span class="text-koper-licht">Kaddour</span> grillworst</h1>
+        <p class="mt-6 max-w-[34rem] text-lg md:text-xl">Marokkaans ontbijt, panini's, wraps en cheesecake by Sam. Hier eten, afhalen of laten bezorgen.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#kaart" class="knop">Bestellen van de kaart<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- De menumuur + bestelbriefje -->
+    <section id="kaart" class="bg-papier py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid grid-cols-1 items-end gap-10 lg:grid-cols-12">
+          <div class="lg:col-span-5">
+            <h2 class="text-3xl">De kaart hangt bij ons aan de muur.</h2>
+            <p class="mt-5 max-w-md text-lg text-grijs">Hier staat hij net zo, kolom voor kolom. Tik aan wat je wilt en stuur je briefje via WhatsApp.</p>
+          </div>
+          <figure class="rijs lg:col-span-7">
+            <Image src={wand} alt="Het interieur van Panadero: de hele kaart in zwarte letters op de witte muur boven de toonbank, rechts de vitrine, een okergele bank en groen bladbehang" quality={70} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 56vw, 100vw" class="aspect-[16/9] w-full object-cover object-[50%_30%]" />
+          </figure>
+        </div>
+
+        <div class="mt-20 grid grid-cols-1 gap-14 lg:mt-24 lg:grid-cols-12 lg:gap-10">
+          <div class="muur min-w-0 lg:col-span-9" data-muur>
+            {kaart.map((g) => (
+              <div class="groep" id={`k-${g.id}`}>
+                {g.stijl === 'kader' && (
+                  <>
+                    <h3 class="deco inline-block border-[1.5px] border-inkt px-5 pb-2 pt-3.5 text-[2.25rem] outline outline-[1.5px] outline-offset-[3px] outline-koper">{g.kop}</h3>
+                    <div class="stippel mt-5"></div>
+                  </>
+                )}
+                {g.stijl === 'gestapeld' && (
+                  <>
+                    <p class="deco text-[1.25rem] font-normal tracking-[.18em]">{g.boven}</p>
+                    <h3 class="deco mt-1 text-[2.6rem] font-bold">{g.kop}</h3>
+                    <div class="dubbel mt-3"></div>
+                  </>
+                )}
+                {g.stijl === 'streep' && (
+                  <>
+                    <h3 class="deco text-[2.6rem] font-bold">{g.kop}</h3>
+                    <div class="mt-2 h-[1.5px] bg-koper"></div>
+                  </>
+                )}
+                {g.stijl === 'script' && (
+                  <h3 class="flex items-center gap-3 text-[3.25rem]"><span class="h-[1.5px] w-8 bg-inkt"></span>{g.kop}<span class="h-[1.5px] flex-1 bg-inkt"></span></h3>
+                )}
+                {g.stijl === 'kaddour' && (
+                  <>
+                    <p class="deco flex items-center gap-3 text-[1.5rem] font-normal tracking-[.16em]"><span class="h-[1.5px] w-6 bg-inkt"></span>{g.boven}<span class="h-[1.5px] w-6 bg-inkt"></span></p>
+                    <h3 class="text-[3.25rem] italic">{g.kop}</h3>
+                  </>
+                )}
+                <ul class="mt-3">
+                  {g.items.map(([naam, sub], i) => (
+                    <li class:list={[i >= 5 && g.items.length > 6 && 'extra']}>
+                      <button type="button" class="gerecht" aria-pressed="false" data-gerecht={sub ? `${naam} (${sub})` : naam}>
+                        <span class="naam">{naam}{sub && <small>{sub}</small>}</span>
+                        <span class="lijntje" aria-hidden="true"></span>
+                        <span class="vink" aria-hidden="true"></span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                {g.items.length > 6 && <button type="button" class="meer mt-2 min-h-11 text-sm font-semibold text-koper underline underline-offset-4 md:hidden" aria-expanded="false" data-meer>Alle {g.items.length} tonen</button>}
+                {g.stijl !== 'gestapeld' && g.stijl !== 'kader' && <div class="dubbel mt-4 opacity-70"></div>}
+              </div>
+            ))}
+          </div>
+
+          <aside id="briefje" class="min-w-0 lg:col-span-3" aria-labelledby="briefje-kop">
+            <div class="border border-lijn bg-muur p-6 shadow-[0_1px_2px_#1615140f,0_14px_40px_-18px_#16151440] md:p-7 lg:sticky lg:top-28">
+              <h3 id="briefje-kop" class="text-[2.5rem]">Je briefje</h3>
+              <div class="dubbel mt-3"></div>
+              <ul class="mt-4 space-y-1 text-[1.0625rem]" data-lijst aria-live="polite">
+                <li class="text-grijs" data-leeg>Nog leeg. Tik iets aan op de muur.</li>
+              </ul>
+              <fieldset class="mt-7">
+                <legend class="text-sm font-semibold">Hoe wil je het?</legend>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <label><input type="radio" name="hoe" value="Afhalen" class="sr-only" checked /><span class="keus">Afhalen</span></label>
+                  <label><input type="radio" name="hoe" value="Hier eten" class="sr-only" /><span class="keus">Hier eten</span></label>
+                </div>
+              </fieldset>
+              <div class="mt-5 grid grid-cols-2 gap-5">
+                <label class="block text-sm font-semibold">Hoe laat?<input class="veld font-normal" name="tijd" type="text" inputmode="numeric" placeholder="12:30" autocomplete="off" /></label>
+                <label class="block text-sm font-semibold">Personen<input class="veld font-normal" name="personen" type="number" min="1" max="60" placeholder="1" /></label>
+              </div>
+              <label class="mt-5 block text-sm font-semibold">Je naam<input class="veld font-normal" name="naam" type="text" autocomplete="given-name" /></label>
+              <a href={waHoi} class="knop mt-8 w-full !px-4" data-verstuur><Icoon naam="wa" />Verstuur je briefje</a>
+              <p class="mt-4 text-sm text-grijs">Laten bezorgen? Dat gaat via <a href={site.thuisbezorgd} class="link">Thuisbezorgd</a>.</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Op het bord: hun eigen foto's met letterlijke reviews -->
+    <section id="bord" class="py-24 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-y-12 md:grid-cols-12 md:gap-x-8">
+        <figure class="rijs md:col-span-7">
+          <Image src={zalm} alt="Een ciabatta met zalm, tomaat, sla en saus op een bord met goudrand" quality={70} widths={[480, 720, 960, 1200]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+        </figure>
+        <div class="flex flex-col justify-end md:col-span-5 md:pl-6">
+          <h2 class="text-3xl">Op het bord</h2>
+          <blockquote class="mt-8">
+            <p class="script text-[1.75rem] leading-snug md:text-[2rem]">&ldquo;{reviews.grillworst.tekst}&rdquo;</p>
+            <footer class="mt-3 text-sm text-grijs">{reviews.grillworst.naam}, Google review</footer>
+          </blockquote>
+        </div>
+
+        <figure class="rijs md:col-span-5 md:col-start-1 md:mt-24" style="--d:.1s">
+          <Image src={meergranen} alt="Een meergranenbol met vleeswaren, gekookt ei, sla en dressing" quality={68} widths={[400, 600, 800]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+        </figure>
+        <div class="md:col-span-6 md:col-start-7">
+          <figure class="rijs" style="--d:.2s">
+            <Image src={plaat} alt="Een dubbelgevouwen, goudbruin gebakken plat brood op een bord met goudrand" quality={68} widths={[400, 600, 800]} sizes="(min-width: 768px) 48vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+          </figure>
+          <blockquote class="mt-8 max-w-md">
+            <p class="text-lg">&ldquo;{reviews.gluten.tekst}&rdquo;</p>
+            <footer class="mt-2 text-sm text-grijs">{reviews.gluten.naam}, Google review</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cheesecake by Sam, bij de koffie -->
+    <section id="vitrine" class="bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-x-10">
+        <figure class="rijs md:col-span-5 md:row-span-2">
+          <Image src={vitrine} alt="De vitrine van Panadero met rijen cheesecakes op goudkleurige schaaltjes, met Lotus-koekjes en chocolade erop" quality={70} widths={[360, 540, 720]} sizes="(min-width: 768px) 38vw, 100vw" class="aspect-[4/5] w-full object-cover md:aspect-[9/14]" />
+        </figure>
+        <div class="md:col-span-7 md:pt-10">
+          <h2 class="text-3xl">Cheesecake by Sam, bij je koffie.</h2>
+          <div class="dubbel mt-6 w-24 !border-koper-licht"></div>
+          <p class="mt-6 max-w-lg text-lg text-mist">Uit de vitrine, naast een espresso, chai latte, muntthee of matcha.</p>
+          <a href={waVitrine} class="knop knop-lijn mt-8 !whitespace-normal py-2 text-center"><Icoon naam="wa" />Wat staat er vandaag in de vitrine?</a>
+        </div>
+        <div class="grid grid-cols-2 gap-4 self-end md:col-span-7 md:gap-6">
+          <Image src={cheesecake} alt="Een punt cheesecake met een Lotus-koekje en kruimels op een bord met goudrand" quality={68} widths={[300, 450, 600]} sizes="(min-width: 768px) 28vw, 50vw" class="aspect-square w-full object-cover" />
+          <Image src={koffie} alt="Een latte macchiato in een Segafredo-glas, een espresso en twee taartjes op een gouden schaal" quality={68} widths={[300, 450, 600]} sizes="(min-width: 768px) 28vw, 50vw" class="aspect-square w-full object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <!-- De zaak -->
+    <section id="zaak" class="py-24 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-x-10">
+        <figure class="rijs md:col-span-7">
+          <Image src={zaak} alt="De zithoek van Panadero: zwarte stoelen aan marmeren tafels, een okergele bank tegen groen bladbehang en de toonbank" quality={72} widths={[480, 720, 985]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[985/940] w-full object-cover" />
+        </figure>
+        <div class="flex flex-col justify-center md:col-span-5">
+          <h2 class="text-3xl">Een knus hoekje in De Scheepjeshof</h2>
+          <div class="dubbel mt-6 w-24"></div>
+          <ul class="mt-8 space-y-7">
+            {reviews.rij.map((r) => (
+              <li>
+                <p class="script text-[1.625rem] leading-snug">&ldquo;{r.tekst}&rdquo;</p>
+                <p class="mt-2 text-sm text-grijs">{r.naam}, Google review</p>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-10 flex items-center gap-2 text-sm text-grijs"><Icoon naam="g" class="-mt-1 h-4 w-4" />{site.google.score} op Google, uit {site.google.aantal} reviews</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tijden en route -->
+    <section id="tijden" class="bg-papier py-24 md:py-32">
+      <div class="wrap grid grid-cols-1 gap-14 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-6">
+          <h2 class="text-3xl">Elke dag open</h2>
+          <p class="mt-4 text-lg text-grijs" data-status>Maandag t/m zaterdag 11:00 tot 21:00, zondag vanaf 09:30.</p>
+          <table class="mt-8 w-full max-w-md text-[1.0625rem]">
+            <caption class="sr-only">Openingstijden</caption>
+            <tbody>
+              {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                <tr data-dag={d} class="border-b border-dotted border-inkt/25">
+                  <th scope="row" class="py-2.5 text-left font-normal">{tijden[d].dag}</th>
+                  <td class="py-2.5 text-right tabular-nums">{tijden[d].open} - {tijden[d].dicht}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="md:col-span-5 md:col-start-8 md:pt-4">
+          <div class="dubbel"></div>
+          <p class="script mt-6 text-[2.25rem] leading-tight">{site.straat}</p>
+          <p class="mt-2 text-lg">{site.postcode} {site.plaats}<br />in winkelcentrum {site.centrum}</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.maps} class="knop knop-inkt"><Icoon naam="pin" />Route</a>
+            <a href={waHoi} class="knop"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <p class="mt-8 text-grijs">Bellen kan ook: <a href={site.telHref} class="link whitespace-nowrap text-inkt">{site.tel}</a>. Bezorgen gaat via <a href={site.thuisbezorgd} class="link text-inkt">Thuisbezorgd</a>.</p>
+          <div class="dubbel mt-8"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    import { site, tijden } from '../data/site';
+    // Bestelbriefje: wat je op de muur aantikt, komt in een vooraf ingevuld WhatsApp-bericht.
+    const gekozen: string[] = [];
+    const lijst = document.querySelector<HTMLUListElement>('[data-lijst]')!;
+    const leeg = lijst.querySelector('[data-leeg]')!;
+    const verstuur = document.querySelector<HTMLAnchorElement>('[data-verstuur]')!;
+    const balk = document.querySelector<HTMLAnchorElement>('[data-onderbalk-wa]');
+    const balkTekst = document.querySelector<HTMLElement>('[data-onderbalk-tekst]');
+    const balkHref = balk?.getAttribute('href') || '';
+    const veld = (n: string) => document.querySelector<HTMLInputElement>(`[name="${n}"]`);
+
+    function bericht() {
+      const hoe = document.querySelector<HTMLInputElement>('input[name="hoe"]:checked')?.value || 'Afhalen';
+      const tijd = veld('tijd')?.value.trim();
+      const pers = veld('personen')?.value.trim();
+      const naam = veld('naam')?.value.trim();
+      const r = ['Hoi Panadero, ik wil graag bestellen:'];
+      if (gekozen.length) gekozen.forEach((g) => r.push(`- ${g}`)); else r.push('- ...');
+      r.push('', `${hoe}${tijd ? ` om ${tijd}` : ''}${pers && pers !== '1' ? `, voor ${pers} personen` : ''}`);
+      if (naam) r.push(`Naam: ${naam}`);
+      verstuur.href = `${site.wa}?text=${encodeURIComponent(r.join('\n'))}`;
+    }
+
+    function tekenLijst() {
+      lijst.querySelectorAll('[data-item]').forEach((li) => li.remove());
+      leeg.toggleAttribute('hidden', gekozen.length > 0);
+      gekozen.forEach((g) => {
+        const li = document.createElement('li');
+        li.dataset.item = '';
+        li.className = 'flex items-baseline justify-between gap-3 border-b border-dotted border-inkt/25 py-1.5';
+        const s = document.createElement('span'); s.textContent = g;
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'grid h-9 w-9 flex-none place-items-center text-xl text-grijs hover:text-koper'; b.setAttribute('aria-label', `${g} van je briefje halen`); b.textContent = '×';
+        b.addEventListener('click', () => zet(g, false));
+        li.append(s, b); lijst.append(li);
+      });
+      if (balk && balkTekst) {
+        balkTekst.textContent = gekozen.length ? `Briefje (${gekozen.length})` : 'WhatsApp';
+        balk.setAttribute('href', gekozen.length ? '#briefje' : balkHref);
+      }
+      bericht();
+    }
+
+    function zet(g: string, aan: boolean) {
+      const i = gekozen.indexOf(g);
+      if (aan && i < 0) gekozen.push(g);
+      if (!aan && i >= 0) gekozen.splice(i, 1);
+      document.querySelectorAll<HTMLButtonElement>('[data-gerecht]').forEach((k) => { if (k.dataset.gerecht === g) k.setAttribute('aria-pressed', String(aan)); });
+      tekenLijst();
+    }
+
+    document.querySelectorAll<HTMLButtonElement>('[data-gerecht]').forEach((k) => k.addEventListener('click', () => zet(k.dataset.gerecht!, k.getAttribute('aria-pressed') !== 'true')));
+    document.querySelectorAll('#briefje input').forEach((i) => i.addEventListener('input', bericht));
+    document.querySelectorAll('#briefje input[type=radio]').forEach((i) => i.addEventListener('change', bericht));
+    bericht();
+    document.querySelectorAll<HTMLButtonElement>('[data-meer]').forEach((b) => b.addEventListener('click', () => { const g = b.closest('.groep')!; const o = g.classList.toggle('open'); b.setAttribute('aria-expanded', String(o)); b.textContent = o ? 'Minder tonen' : `Alle ${g.querySelectorAll('li').length} tonen`; }));
+
+    // Vandaag markeren + open/dicht (Nederlandse tijd).
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const d = nu.getDay();
+    const rij = document.querySelector(`[data-dag="${d}"]`);
+    rij?.classList.add('font-bold', 'text-koper');
+    const m = nu.getHours() * 60 + nu.getMinutes();
+    const mm = (t: string) => +t.slice(0, 2) * 60 + +t.slice(3);
+    const t = tijden[d];
+    const status = document.querySelector('[data-status]');
+    if (status) {
+      if (m >= mm(t.open) && m < mm(t.dicht)) status.textContent = `Nu open, vandaag tot ${t.dicht}.`;
+      else if (m < mm(t.open)) status.textContent = `Nu dicht, vandaag open vanaf ${t.open}.`;
+      else { const morgen = tijden[(d + 1) % 7]; status.textContent = `Nu dicht, morgen open vanaf ${morgen.open}.`; }
+    }
+  </script>
+</Base>

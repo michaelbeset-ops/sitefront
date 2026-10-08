@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await p.goto('http://localhost:4454/sitefront/het-goede-leven-wijk-bij-duurstede/'); await p.waitForTimeout(800);
+const href = async () => decodeURIComponent(await p.getAttribute('[data-wa]', 'href'));
+console.log('start:', await href());
+await p.locator('[data-dagen] label').nth(2).click(); await p.selectOption('select[name=personen]', '6'); await p.fill('input[name=naam]', 'Sanne');
+console.log('dag3:', await href(), '|', await p.textContent('[data-k-wanneer]'));
+console.log('tijden:', (await p.$$eval('[data-tijd] option', (o) => o.map((x) => x.textContent))).join(','));
+await p.locator('label:has-text("De volgende proeverij")').click();
+console.log('proef:', await href(), '| dag zichtbaar:', await p.isVisible('[data-dagen]'));
+await p.locator('[data-menu-knop]').click(); console.log('menu open:', await p.isVisible('#menu-nav'));
+await p.screenshot({ path: '../../demos/het-goede-leven-wijk-bij-duurstede/shots/r2-menu-390.png' });
+await b.close();

@@ -1,0 +1,15 @@
+import sharp from 'sharp';
+const S='bron/site/', G='bron/gfoto/', A='src/assets/';
+await sharp(S+'086.jpg').resize(2400).jpeg({quality:80}).toFile(A+'hero.jpg');
+await sharp(G+'eig-02.jpg').jpeg({quality:82}).toFile(A+'biryani.jpg');
+await sharp(G+'eig-03.jpg').jpeg({quality:85}).toFile(A+'pannen.jpg');
+await sharp(S+'Chili-paneer.png').extract({left:0,top:0,width:1348,height:1640}).jpeg({quality:82}).toFile(A+'paneer.jpg');
+await sharp(S+'eten2.jpg').extract({left:0,top:0,width:540,height:673}).jpeg({quality:85}).toFile(A+'eieren.jpg');
+const k=1600/1200;
+await sharp(G+'eig-04.jpg').extract({left:Math.round(90*k),top:Math.round(255*k),width:Math.round(1110*k),height:Math.round(600*k)}).jpeg({quality:82}).toFile(A+'kraam.jpg');
+await sharp(S+'kavitha_map_vlag_klein.png').png().toFile(A+'kavitha.png');
+await sharp(S+'logo_kleur_retina.png').png().toFile(A+'logo.png');
+await sharp(S+'menu_categorie_24.png').png().toFile(A+'india-veg.png');
+await sharp(S+'menu_categorie2_27.png').png().toFile(A+'india-vlees.png');
+await sharp(S+'logo_kleur_retina.png').extract({left:0,top:0,width:120,height:120}).resize(64,64,{fit:'contain',background:{r:0,g:0,b:0,alpha:0}}).png().toFile('public/favicon.png');
+console.log('ok');

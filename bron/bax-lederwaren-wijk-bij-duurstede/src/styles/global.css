@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/rokkitt/wght.css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De winkelpui in de Peperstraat: wit geschilderd hout, glas met witte belettering,
+     en de donkerrode voordeur als enige accent. Alle kleur komt verder uit de hoeden zelf. */
+  --color-kalk: #f4f4f1;          /* wit geschilderd kozijn, koel gebroken wit */
+  --color-kalk-2: #e8e8e3;
+  --color-wit: #ffffff;
+  --color-inkt: #1d2024;          /* etalageglas 's avonds */
+  --color-inkt-2: #2a2e33;
+  --color-grijs: #52565d;         /* bijtekst, 7:1 op kalk */
+  --color-mist: #b9bcc2;          /* bijtekst op inkt */
+  --color-deur: #7b1e2a;          /* de voordeur; wit erop 9:1 */
+  --color-deur-2: #64161f;
+  --color-deur-licht: #ec9aa4;    /* accent op inkt, 7:1 */
+  --color-lijn: #1d202424;
+  --color-lijn-licht: #ffffff2b;
+
+  --font-kop: "Rokkitt Variable", "Rockwell", Georgia, serif;
+  --font-sans: "Hanken Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .8vw + 1.2rem, 2rem);
+  --text-3xl: clamp(2.25rem, 2.6vw + 1.2rem, 3.75rem);
+  --text-hero: clamp(3rem, 5.6vw + 1rem, 6.75rem);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-kalk); }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 420;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 560; line-height: 1; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-deur); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-deur); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-weight: 650; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-deur); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-deur-2); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-wit); }
+  .knop-inkt:hover { background: var(--color-inkt-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-deur); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-deur); }
+  .link-licht { text-decoration-color: var(--color-deur-licht); }
+  .link-licht:hover { color: var(--color-deur-licht); }
+
+  /* Eigen detail: het etalagekader. De witte lijn op hun ruit met de ingekeepte hoeken,
+     nagetekend als kader rond foto's en het zoekbriefje. */
+  .kader { position: relative; --kbg: var(--color-wit); --kr: 1.15rem; }
+  .kader::after { content: ""; position: absolute; inset: .75rem; pointer-events: none; border: 1.5px solid var(--color-inkt); }
+  .kader::before { content: ""; position: absolute; inset: calc(.75rem - 1px); z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(circle at 0 0, var(--kbg) calc(var(--kr) - 1px), var(--color-inkt) calc(var(--kr) - 1px) calc(var(--kr) + .6px), transparent calc(var(--kr) + 1px)) top left / calc(var(--kr) + 3px) calc(var(--kr) + 3px) no-repeat,
+      radial-gradient(circle at 100% 0, var(--kbg) calc(var(--kr) - 1px), var(--color-inkt) calc(var(--kr) - 1px) calc(var(--kr) + .6px), transparent calc(var(--kr) + 1px)) top right / calc(var(--kr) + 3px) calc(var(--kr) + 3px) no-repeat,
+      radial-gradient(circle at 0 100%, var(--kbg) calc(var(--kr) - 1px), var(--color-inkt) calc(var(--kr) - 1px) calc(var(--kr) + .6px), transparent calc(var(--kr) + 1px)) bottom left / calc(var(--kr) + 3px) calc(var(--kr) + 3px) no-repeat,
+      radial-gradient(circle at 100% 100%, var(--kbg) calc(var(--kr) - 1px), var(--color-inkt) calc(var(--kr) - 1px) calc(var(--kr) + .6px), transparent calc(var(--kr) + 1px)) bottom right / calc(var(--kr) + 3px) calc(var(--kr) + 3px) no-repeat; }
+  .kader > * { position: relative; z-index: 2; }
+
+  /* Het huisnummerbordje naast de deur: ·48· */
+  .bordje { display: inline-flex; align-items: center; justify-content: center; min-width: 3.4rem; height: 2.6rem; padding: 0 .55rem; background: var(--color-wit); color: var(--color-inkt); border: 1.5px solid var(--color-inkt); font-family: var(--font-kop); font-weight: 600; font-size: 1.35rem; line-height: 1; letter-spacing: .02em; }
+
+  .spec { display: flex; align-items: baseline; gap: .75rem; padding-block: .8rem; border-bottom: 1px solid var(--color-lijn); }
+  .spec > span:nth-child(2) { flex: 1; border-bottom: 1.5px dotted var(--color-lijn); transform: translateY(-.3em); min-width: 1rem; }
+  .spec > :last-child { text-align: right; }
+
+  /* Zoekbriefje: invulregels als op een kaartje. */
+  .veld { display: inline-block; appearance: none; -webkit-appearance: none; font: inherit; font-family: var(--font-kop); font-size: inherit; font-weight: 600; color: var(--color-deur); background: transparent; border: 0; border-bottom: 2px solid var(--color-inkt); border-radius: 0; padding: 0 .1rem .05rem; min-height: 2.75rem; max-width: 100%; transition: border-color .25s; }
+  .veld:focus { outline: none; border-color: var(--color-deur); box-shadow: 0 2px 0 var(--color-deur); }
+  .veld::placeholder { color: #8b8e94; font-weight: 450; }
+  select.veld { padding-right: 1.5rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237b1e2a' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1rem center; background-size: .9em; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
