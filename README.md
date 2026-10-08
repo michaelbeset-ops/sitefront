@@ -288,3 +288,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Deut Zonwering, Houten | https://voorstel.sitefront.nl/deut-zonwering-houten/ | verouderde site, geen tel-link, kleine portfoliofoto's; 5,0/15; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Steenaart Zonwering en Rolluiken, Zeist | https://voorstel.sitefront.nl/steenaart-zonwering-zeist/ | verouderde one-pager zonder menu; 4,7/11; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Ecologic Pelletkachels, Almere | https://voorstel.sitefront.nl/ecologic-pelletkachels-almere/ | gedateerd sjabloon; 4,9/63; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Wooncomfort Halsteren (zonwering, klimaat) | https://voorstel.sitefront.nl/wooncomfort-halsteren/ | geen website (eigen domein = parkeerpagina); 5,0/9; 06/WhatsApp. | 2026-10-08 | demo premium |
+| Comfort Wonen (veranda's, kozijnen), Nieuwegein | https://voorstel.sitefront.nl/comfort-wonen-nieuwegein/ | domein comfortwonen.eu verlopen (te koop op Sedo); 5,0/8; 06/WhatsApp. | 2026-10-08 | demo premium |
