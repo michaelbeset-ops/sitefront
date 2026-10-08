@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@import "@fontsource/special-elite/400.css";
+@import "@fontsource-variable/familjen-grotesk/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* De loods: betonvloer, zwart viltbord met witte letters, staal. Eén accent: signaalrood,
+     het rood van het 30-bord en de rode trommel tussen de spullen. */
+  --color-beton: #ebebe7;
+  --color-beton-2: #dfdfda;
+  --color-wit: #ffffff;
+  --color-papier: #fbfbf9;
+  --color-vilt: #161615;          /* het letterbord */
+  --color-vilt-2: #232321;
+  --color-grijs: #55554f;         /* bijtekst, 6,3:1 op beton */
+  --color-mist: #b8b8b1;          /* bijtekst op vilt, 9:1 */
+  --color-rood: #c42d1b;          /* signaalrood, wit erop 5,6:1 */
+  --color-rood-licht: #f06a52;    /* accent op vilt, 5,9:1 */
+  --color-staal: #a9aca9;
+  --color-lijn: #16161524;
+  --color-lijn-licht: #ffffff24;
+
+  --font-type: "Special Elite", "Courier New", monospace;
+  --font-sans: "Familjen Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.375rem, .7vw + 1.1rem, 1.75rem);
+  --text-3xl: clamp(2rem, 2.4vw + 1.1rem, 3.5rem);
+  --text-hero: clamp(2.9rem, 6vw + .6rem, 6.4rem);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #16161514, 0 8px 22px #16161512;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-beton); }
+  body {
+    background-color: var(--color-beton);
+    color: var(--color-vilt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-weight: 430;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-type); font-weight: 400; line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .type { font-family: var(--font-type); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-weight: 650; font-size: 1rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-rood); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: #a3230f; transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-vilt); }
+  .knop-vilt { background: var(--color-vilt); color: var(--color-wit); }
+  .knop-vilt:hover { background: var(--color-vilt-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-decoration-color: var(--color-rood); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-rood); }
+  .link-licht { text-decoration-color: var(--color-rood-licht); }
+  .link-licht:hover { color: var(--color-rood-licht); }
+
+  /* Eigen detail 1: het zwarte letterbord uit de loods. Vilt met groeven, aluminium lijst, witte insteekletters. */
+  .bord {
+    position: relative;
+    background-color: var(--color-vilt);
+    background-image: repeating-linear-gradient(180deg, #ffffff0a 0 1px, transparent 1px 7px);
+    border: 7px solid #b7bab6;
+    border-color: #d3d5d1 #9a9d99 #8d908c #c4c6c2;
+    border-radius: 3px;
+    box-shadow: var(--shadow-sm);
+    color: #f4f4f1;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    line-height: 1.55;
+  }
+
+  /* Eigen detail 2: het prijskaartje aan een touwtje, getypt. */
+  .kaartje {
+    position: relative;
+    display: block;
+    background: var(--color-wit);
+    color: var(--color-vilt);
+    padding: 1rem 1.1rem 1.05rem 2.1rem;
+    border-radius: 2px 10px 10px 2px;
+    clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+    font-family: var(--font-type);
+    font-size: .975rem;
+    line-height: 1.45;
+  }
+  .kaartje::before { content: ""; position: absolute; left: 12px; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--color-beton); box-shadow: inset 0 0 0 1.5px #16161540; }
+
+  .spec { display: flex; align-items: baseline; gap: .75rem; padding-block: .7rem; border-bottom: 1px solid var(--color-lijn); }
+  .spec > span:nth-child(2) { flex: 1; border-bottom: 1.5px dotted var(--color-lijn); transform: translateY(-.3em); min-width: 1rem; }
+  .spec > :last-child { text-align: right; }
+
+  .keus { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1.5px solid #ffffff66; border-radius: var(--radius-sm); font-weight: 600; font-size: .9375rem; cursor: pointer; color: var(--color-wit); transition: background-color .2s, color .2s, border-color .2s; }
+  input:checked + .keus { background: var(--color-wit); color: var(--color-vilt); border-color: var(--color-wit); }
+  input:focus-visible + .keus { outline: 2px solid var(--color-rood-licht); outline-offset: 3px; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

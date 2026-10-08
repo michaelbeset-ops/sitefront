@@ -1,0 +1,22 @@
+---
+// De stoffen vlaggetjes onder hun overkapping: een doorhangende slinger met lapjes in wisselende kleur,
+// breedte en lengte. Vast patroon (geen toeval), zodat de lijn bij elke build hetzelfde is.
+interface Props { class?: string; donker?: boolean }
+const { class: cls = '', donker = false } = Astro.props;
+const kleuren = ['#ef7d3c', '#e2577a', '#f7b928', '#2a9d8f', '#155fae', '#c9356a', '#f39a4a', '#6cb4e4', '#8cc63f'];
+const B = 1600, boog = 200, diep = 10;
+const y = (x: number) => 4 + Math.sin(((x % boog) / boog) * Math.PI) * diep;
+const lapjes: { x: number; w: number; h: number; k: string; r: number }[] = [];
+for (let i = 0, x = 3; x < B; i++) {
+  const w = 6 + ((i * 7) % 6);
+  lapjes.push({ x, w, h: 16 + ((i * 11) % 15), k: kleuren[(i * 4 + (i >> 2)) % kleuren.length], r: ((i * 13) % 11) - 5 });
+  x += w + 3 + ((i * 5) % 5);
+}
+const pad = `M0 ${y(0)} ` + Array.from({ length: B / boog }, (_, j) => `Q ${j * boog + boog / 2} ${4 + diep * 2} ${(j + 1) * boog} 4`).join(' ');
+---
+<svg class={cls} viewBox={`0 0 ${B} 48`} preserveAspectRatio="xMidYMin slice" overflow="hidden" aria-hidden="true" focusable="false">
+  <path d={pad} fill="none" stroke={donker ? '#ffffff66' : '#0c1a2b66'} stroke-width="1.2" />
+  {lapjes.map((l) => (
+    <path d={`M${l.x} ${y(l.x)}h${l.w}v${l.h - 4}l-${l.w / 2} 4l-${l.w / 2} -4z`} fill={l.k} transform={`rotate(${l.r} ${l.x + l.w / 2} ${y(l.x)})`} opacity=".93" />
+  ))}
+</svg>

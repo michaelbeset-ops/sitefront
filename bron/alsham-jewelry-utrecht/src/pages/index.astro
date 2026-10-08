@@ -1,0 +1,243 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, stukken, voor, waMet, waHoi, waPrijs } from '../data/site';
+
+import binnen from '../assets/binnen.jpg';
+import binnenStaand from '../assets/binnen-staand.jpg';
+import etalage from '../assets/etalage.jpg';
+import gevel from '../assets/gevel.jpg';
+import munten from '../assets/munten-set.jpg';
+
+const titel = 'Alsham Jewelry | Syrisch goud, 21 karaat, in Overvecht Utrecht';
+const omschrijving = 'Juwelier in Winkelcentrum Overvecht, Utrecht: halskettingen, schakelkettingen, ringen, armbanden en complete sets in Syrisch goud van 21 karaat. Elke dag open, gratis parkeren.';
+
+// Hero: staande foto van de winkel op mobiel, de brede op desktop.
+const heroM = await getImage({ src: binnenStaand, widths: [480, 640, 720], sizes: '100vw', format: 'webp', quality: 46 });
+const heroD = await getImage({ src: binnen, widths: [960, 1280, 1680, 2200], sizes: '100vw', format: 'webp', quality: 62 });
+
+const collectie: [string, string][] = [
+  ['Halskettingen', 'fijn, of met een hanger'],
+  ['Schakelkettingen', 'breed en zwaar geschakeld'],
+  ['Ringen', 'ook voor verloving en bruiloft'],
+  ['Armbanden', 'banden en schakels'],
+  ['Oorbellen en sets', 'ketting, armband, ring en oorbellen bij elkaar'],
+  ['Goud om te sparen', 'vraag ernaar in de winkel'],
+];
+---
+<Base title={titel} description={omschrijving}>
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/webp" media="(max-width: 767px)" imagesrcset={heroM.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" media="(min-width: 768px)" imagesrcset={heroD.srcSet.attribute} imagesizes="100vw" fetchpriority="high" />
+  </Fragment>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. OPENING: hun eigen winkel, marmer en verlichte bogen -->
+    <section class="relative isolate flex min-h-[calc(100svh-4.5rem)] flex-col justify-end overflow-hidden bg-nacht md:min-h-[calc(100svh-5rem)]">
+      <picture>
+        <source media="(min-width: 768px)" srcset={heroD.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <source srcset={heroM.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <img src={heroD.src} alt="De winkel van binnen: verlichte bogen vol ivoorwitte bustes met gouden kettingen, glazen vitrines en een marmeren vloer" width="2400" height="1863" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_60%] md:object-[50%_55%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0c0d0d66_0%,#0c0d0d59_22%,#0c0d0dc7_48%,#0c0d0df7_100%)] lg:bg-[linear-gradient(90deg,#0c0d0de6_0%,#0c0d0da6_34%,#0c0d0d33_62%,#0c0d0d0d_85%),linear-gradient(0deg,#0c0d0dcc_0%,#0c0d0d00_42%)]" aria-hidden="true"></div>
+      <div class="wrap grid items-end gap-y-10 pb-28 pt-32 md:pb-16 lg:grid-cols-12 lg:pb-20">
+        <div class="lg:col-span-8">
+          <p class="text-sm text-ivoor/80">Juwelier in Winkelcentrum Overvecht, Utrecht</p>
+          <h1 class="mt-5 max-w-[12ch] text-hero">Syrisch goud, <em class="text-messing">21 karaat.</em></h1>
+          <p class="mt-7 max-w-[31rem] text-lg text-ivoor/90">Kettingen, ringen, armbanden en complete sets. Elke dag te zien aan de Zamenhofdreef.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop"><Icoon naam="wa" />Vraag het via WhatsApp</a>
+            <a href="#bezoek" class="knop knop-lijn">Route en tijden</a>
+          </div>
+        </div>
+        <div class="hidden justify-self-end text-right text-sm text-ivoor/80 lg:col-span-4 lg:block">
+          <p class="num">Elke dag open</p>
+          <p class="mt-1">Gratis parkeren</p>
+          <p class="mt-1"><a href={site.telHref} class="link num">{site.tel}</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DE NAAM: zoals op de gevel, met de meanderrand -->
+    <section class="py-24 md:py-32" aria-labelledby="naam-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="rijs lg:col-span-6">
+          <p class="ar text-[clamp(3.6rem,9vw,8.5rem)] leading-[1.25] text-ivoor" lang="ar" dir="rtl" style="text-align:left">{site.arabisch}</p>
+          <span class="meander mt-6 max-w-[34rem]" aria-hidden="true"></span>
+          <p class="mt-5 text-sm text-steen">Zo staat het op de gevel, tussen twee meanderranden.</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8 lg:pt-6">
+          <h2 id="naam-titel" class="rijs text-3xl">Goud uit de Sham, in Overvecht</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-steen" style="--d:.06s">Sham is de oude naam voor Damascus en omgeving. Het goud is Syrisch, 21 karaat, en gegarandeerd.</p>
+          <div class="rijs mt-10" style="--d:.12s">
+            <p class="spec"><span class="text-ivoor">Goud</span><span></span><span>Syrisch, 21 karaat</span></p>
+            <p class="spec"><span class="text-ivoor">Keuze</span><span></span><span>voor elke smaak</span></p>
+            <p class="spec"><span class="text-ivoor">Sparen</span><span></span><span>goud om te bewaren</span></p>
+            <p class="spec"><span class="text-ivoor">Verzenden</span><span></span><span>aangetekend per post</span></p>
+            <p class="spec"><span class="text-ivoor">Open</span><span></span><span>elke dag van de week</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. DE ETALAGE: full-bleed -->
+    <figure class="relative">
+      <Image src={etalage} alt="De etalage: gouden halskettingen, sets en armbanden op witte bustes, met een bordje 21K Gold" quality={62} widths={[480, 768, 1200, 1680, 2048]} sizes="100vw" class="h-[78svh] min-h-[26rem] w-full object-cover object-[50%_55%] md:h-[88svh] md:max-h-[60rem]" />
+      <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(0deg,#0c0d0dcc,#0c0d0d00)] pb-6 pt-20">
+        <p class="wrap text-sm text-ivoor/85">De etalage aan de Zamenhofdreef</p>
+      </figcaption>
+    </figure>
+
+    <!-- 4. COLLECTIE: licht, als een vitrinekaart -->
+    <section id="collectie" class="bg-ivoor py-24 text-nacht md:py-32" aria-labelledby="col-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-5">
+          <Image src={munten} alt="Een set met munthangers op een witte buste: brede gouden schakelketting met munt, armband, ring en oorbellen" quality={60} widths={[400, 600, 800, 1000]} sizes="(min-width: 1024px) 38vw, calc(100vw - 2.5rem)" class="aspect-[4/5] w-full rounded-sm object-cover object-[50%_35%]" />
+          <figcaption class="mt-3 text-sm text-steen-d">Set met munthangers: ketting, armband, ring en oorbellen</figcaption>
+        </figure>
+        <div class="lg:col-span-7 lg:pt-4">
+          <h2 id="col-titel" class="rijs text-3xl">Van een dun kettinkje tot de set voor de bruiloft</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-steen-d" style="--d:.06s">Alles ligt in de vitrine. Zoek je iets bijzonders, vraag het gewoon.</p>
+          <ul class="mt-10 border-t border-lijn-d">
+            {collectie.map(([naam, uitleg], i) => (
+              <li class="rijs" style={`--d:${0.04 * i}s`}>
+                <a href={waMet(`Hallo Alsham Jewelry, ik ben op zoek naar ${naam.toLowerCase()}. Wat hebben jullie?`)} class="group flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-lijn-d py-5 text-nacht no-underline">
+                  <span class="kop text-[1.65rem] leading-tight transition-colors duration-300 group-hover:text-messing-d md:text-[2rem]">{naam}</span>
+                  <span class="flex items-center gap-3 text-sm text-steen-d">{uitleg}<Icoon naam="pijl" class="h-4 w-4 flex-none transition-transform duration-300 group-hover:translate-x-1" /></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. WOW: "Ik zoek ..." als één zin -->
+    <section id="ik-zoek" class="bg-ivoor-2 py-24 text-nacht md:py-28" aria-labelledby="zoek-titel">
+      <div class="wrap">
+        <span class="meander meander-d max-w-[16rem]" aria-hidden="true"></span>
+        <h2 id="zoek-titel" class="sr-only">Vraag het via WhatsApp</h2>
+        <form class="mt-10" data-zoek>
+          <p class="kop text-[clamp(1.9rem,3.6vw+.6rem,4rem)] leading-[1.25]">
+            Ik zoek{' '}
+            <label class="sr-only" for="stuk">Wat zoek je?</label>
+            <select id="stuk" class="kies" data-stuk>{stukken.map((s) => <option>{s}</option>)}</select>{' '}
+            <label class="sr-only" for="voor">Voor wie of welke gelegenheid?</label>
+            <select id="voor" class="kies" data-voor>{voor.map((s) => <option>{s}</option>)}</select>.
+          </p>
+          <div class="mt-10 grid gap-8 md:grid-cols-12 md:items-end">
+            <div class="md:col-span-6">
+              <label for="extra" class="text-sm text-steen-d">Iets erbij? Lengte, maat of budget</label>
+              <input id="extra" class="veld" type="text" maxlength="160" placeholder="Bijvoorbeeld: ring maat 17" data-extra />
+            </div>
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-4 md:col-span-6 md:justify-end">
+              <a href={waHoi} class="knop knop-nacht" data-zoek-knop><Icoon naam="wa" />Stuur via WhatsApp</a>
+              <a href={waPrijs} class="link link-d text-sm">Of vraag de goudprijs van vandaag</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. DE WINKEL -->
+    <section id="winkel" class="py-24 md:py-32" aria-labelledby="winkel-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <figure class="rijs lg:col-span-6">
+          <Image src={binnenStaand} alt="Een lange vitrine en bogen met bustes onder een verlicht plafond met Oosters snijwerk" quality={62} widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" class="hidden aspect-[4/5] w-full rounded-sm object-cover md:block" />
+          <Image src={binnen} alt="De winkel van binnen met leren banken bij de vitrines" quality={70} widths={[480, 720, 960]} sizes="100vw" class="aspect-[4/3] w-full rounded-sm object-cover md:hidden" />
+        </figure>
+        <div class="flex flex-col justify-between gap-12 lg:col-span-5 lg:col-start-8">
+          <div>
+            <h2 id="winkel-titel" class="rijs text-3xl">Marmer, notenhout en honderden bustes</h2>
+            <p class="rijs mt-6 max-w-md text-lg text-steen" style="--d:.06s">Binnen hangt alles in verlichte bogen, onder een plafond met Oosters snijwerk. Kijk rustig rond.</p>
+            <p class="rijs mt-4 max-w-md text-lg text-steen" style="--d:.1s">Nieuwe stukken laten we als eerste zien op <a href={site.facebook} class="link text-ivoor">Facebook</a>.</p>
+          </div>
+          <div class="rijs border-t border-lijn pt-6 text-sm text-steen">
+            <p><span class="text-ivoor">Ook in Duitsland:</span> {site.essen}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BEZOEK -->
+    <section id="bezoek" class="bg-ivoor py-24 text-nacht md:py-32" aria-labelledby="bezoek-titel">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="bezoek-titel" class="rijs text-3xl">Zamenhofdreef 41</h2>
+          <p class="rijs mt-5 max-w-sm text-lg text-steen-d" style="--d:.06s">{site.postcode} Utrecht, in Winkelcentrum Overvecht. Parkeren is gratis.</p>
+          <p data-status-groot class="rijs num mt-8 text-lg">Elke dag open</p>
+          <table class="rijs num mt-4 w-full max-w-sm text-[1rem]">
+            <caption class="sr-only">Openingstijden</caption>
+            <tbody>
+              {[1, 2, 3, 4, 5, 6, 0].map((d) => (
+                <tr data-dag={d} class="border-b border-lijn-d">
+                  <th scope="row" class="py-2.5 pr-4 text-left font-light">{tijden[d].dag}</th>
+                  <td class="py-2.5 text-right text-steen-d">{tijden[d].open} tot {tijden[d].dicht}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="rijs mt-10 flex flex-wrap gap-3">
+            <a href={site.route} class="knop knop-nacht"><Icoon naam="pin" />Route plannen</a>
+            <a href={site.telHref} class="knop knop-nacht !bg-transparent !text-nacht shadow-[inset_0_0_0_1px_#0c0d0d66] hover:shadow-[inset_0_0_0_1px_#0c0d0d]"><Icoon naam="tel" />Bellen</a>
+          </div>
+          <p class="mt-8 text-sm text-steen-d"><a href={site.google.url} class="link link-d">{site.google.score} op Google</a>, uit {site.google.aantal} reviews</p>
+        </div>
+        <figure class="rijs lg:col-span-7">
+          <Image src={gevel} alt="De gevel met het Arabische naambord مصوغات الشام tussen meanderranden, boven de verlichte etalage" quality={70} widths={[480, 720, 960, 1280]} sizes="(min-width: 1024px) 54vw, 100vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+          <figcaption class="mt-3 text-sm text-steen-d">Zoek het naambord met de krans</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { tijden } from '../data/site';
+  // Live open/dicht in Nederlandse tijd.
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const d = nu.getDay();
+  const m = nu.getHours() * 60 + nu.getMinutes();
+  const mins = (t: string) => { const [h, mm] = t.split(':').map(Number); return h * 60 + mm; };
+  const vandaag = tijden[d];
+  const open = m >= mins(vandaag.open) && m < mins(vandaag.dicht);
+  const tekst = open ? `Nu open, tot ${vandaag.dicht}` : m < mins(vandaag.open) ? `Vandaag open vanaf ${vandaag.open}` : `Morgen open vanaf ${tijden[(d + 1) % 7].open}`;
+  document.querySelectorAll('[data-status-groot]').forEach((el) => { el.textContent = tekst; });
+  const rij = document.querySelector(`tr[data-dag="${d}"]`);
+  if (rij) { rij.classList.add('font-normal'); rij.querySelector('th')?.classList.replace('font-light', 'font-medium'); rij.querySelector('td')?.classList.replace('text-steen-d', 'text-nacht'); }
+
+  // "Ik zoek ..." wordt een WhatsApp-bericht.
+  const form = document.querySelector<HTMLFormElement>('[data-zoek]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-zoek-knop]');
+  const stuk = document.querySelector<HTMLSelectElement>('[data-stuk]');
+  const voorS = document.querySelector<HTMLSelectElement>('[data-voor]');
+  const extra = document.querySelector<HTMLInputElement>('[data-extra]');
+  const bijwerken = () => {
+    if (!knop || !stuk || !voorS || !extra) return;
+    const r = extra.value.trim(); const e = r ? r[0].toUpperCase() + r.slice(1) : "";
+    const bericht = `Hallo Alsham Jewelry, ik zoek ${stuk.value} ${voorS.value}.${e ? ` ${e}.` : ''} Wat hebben jullie?`;
+    knop.href = `https://wa.me/31621800700?text=${encodeURIComponent(bericht)}`;
+  };
+  // Kiezers zo breed als de gekozen tekst, zodat de zin een zin blijft.
+  const maat = document.createElement('span');
+  maat.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-style:italic;left:-9999px';
+  const pas = (sel: HTMLSelectElement | null) => {
+    if (!sel) return;
+    const cs = getComputedStyle(sel);
+    maat.style.font = cs.font; maat.style.fontStyle = 'italic';
+    maat.textContent = sel.value;
+    sel.parentElement?.appendChild(maat);
+    sel.style.width = `${Math.ceil(maat.getBoundingClientRect().width) + parseFloat(cs.paddingRight) + 2}px`;
+    maat.remove();
+  };
+  [stuk, voorS].forEach((el) => { pas(el); el?.addEventListener('change', () => pas(el)); });
+  document.fonts?.ready.then(() => { pas(stuk); pas(voorS); });
+  [stuk, voorS, extra].forEach((el) => el?.addEventListener('input', bijwerken));
+  form?.addEventListener('submit', (e) => { e.preventDefault(); bijwerken(); if (knop) window.open(knop.href, '_blank'); });
+  bijwerken();
+</script>
