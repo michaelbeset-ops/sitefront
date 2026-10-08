@@ -1,0 +1,10 @@
+import { chromium } from 'playwright'; import fs from 'node:fs';
+const D = 'C:/Users/Micha/Downloads/Sitefront/demos/idylliz-hilversum/bron/web/';
+const b = await chromium.launch(); const c = await b.newContext({ locale: 'nl-NL', viewport: { width: 1280, height: 1000 }, userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' });
+await c.addCookies([{ name: 'SOCS', value: 'CAESHAgBEhJnd3NfMjAyMzA4MTAtMF9SQzIaAm5sIAEaBgiAo_CmBg', domain: '.google.com', path: '/' }]);
+const p = await c.newPage();
+await p.goto('https://www.google.com/maps/place/Idylliz,+edelsmid+atelier/data=!4m7!3m6!1s0x47c66b77cfd5e00d:0x576d22a7ec04bacd!8m2!3d52.206237!4d5.1734837!9m1!1b1?hl=nl', { waitUntil: 'domcontentloaded' });
+await p.waitForTimeout(7000);
+await p.screenshot({ path: D + 'gm-rev.png' });
+const t = await p.evaluate(() => document.body.innerText); console.log(t.slice(0, 2500));
+await b.close();
