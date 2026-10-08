@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets';
+import { url, waHoi, site } from '../data/site';
+import Icoon from './Icoon.astro';
+import logo from '../assets/logo.png';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const nav = [['werk', 'Werk'], ['ambachten', 'Ambachten'], ['restaurator', 'Restaurator'], ['reviews', 'Reviews'], ['werkplaats', 'Werkplaats']];
+---
+<header class="sticky top-0 z-40 border-b border-lijn bg-papier/95 backdrop-blur-md">
+  <div class="wrap flex h-[4.5rem] items-center justify-between gap-3 md:h-20 md:gap-6">
+    <a href={url('')} class="group flex items-center gap-3 text-inkt no-underline">
+      <Image src={logo} alt="" width={36} height={47} densities={[1, 2]} class="h-10 w-auto flex-none min-[360px]:h-11 transition-transform duration-500 group-hover:-rotate-3 md:h-12" loading="eager" />
+      <span class="flex flex-col leading-none">
+        <span class="kop whitespace-nowrap text-[1.15rem] min-[360px]:text-[1.35rem] sm:text-[1.55rem]">De Goede Restauraties</span>
+        <span class="mt-1.5 hidden whitespace-nowrap text-xs text-grijs min-[360px]:block">meubelrestauratie in Utrecht</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex gap-8 text-[.9375rem]">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="text-inkt no-underline transition-colors duration-200 hover:text-rood">{t}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-5">
+      <a href={site.telHref} class="num hidden text-[.9375rem] text-inkt no-underline hover:text-rood xl:inline-flex xl:items-center xl:gap-2"><Icoon naam="tel" class="h-4 w-4" />{site.tel}</a>
+      <a href={h('aanvraag')} class="knop hidden !min-h-11 !px-5 text-[.9375rem] md:inline-flex">Restauratie aanvragen</a>
+      <button type="button" class="grid h-11 w-11 place-items-center rounded-sm text-inkt lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="square" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" /></svg>
+      </button>
+    </div>
+  </div>
+  <nav id="menu-nav" aria-label="Menu" class="hidden border-t border-lijn bg-papier lg:hidden" data-menu>
+    <ul class="wrap pb-8 pt-2">
+      {nav.map(([id, t]) => <li><a href={h(id)} class="kop block border-b border-lijn py-4 text-2xl text-inkt no-underline">{t}</a></li>)}
+      <li><a href={h('aanvraag')} class="kop block border-b border-lijn py-4 text-2xl text-rood no-underline">Restauratie aanvragen</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-lijn bg-papier/95 p-2 backdrop-blur-md md:hidden">
+  <a href={site.telHref} class="flex min-h-12 items-center justify-center gap-2 rounded-sm border border-inkt text-[.9375rem] font-semibold text-inkt no-underline"><Icoon naam="tel" class="h-4 w-4" />Bellen</a>
+  <a href={waHoi} class="flex min-h-12 items-center justify-center gap-2 rounded-sm bg-rood text-[.9375rem] font-semibold text-wit no-underline"><Icoon naam="wa" class="h-5 w-5" />WhatsApp</a>
+</div>
+
+<script>
+  const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
+  const m = document.querySelector<HTMLElement>('[data-menu]');
+  if (k && m) {
+    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+</script>

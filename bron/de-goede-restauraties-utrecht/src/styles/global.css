@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@import "@fontsource/old-standard-tt/400.css";
+@import "@fontsource/old-standard-tt/400-italic.css";
+@import "@fontsource-variable/libre-franklin/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een objectcatalogus: koel museumgrijs zoals het fotodoek achter hun meubels, zwarte inkt,
+     en één accent: het ossenbloedrood van de schaaf in hun wapenschild. Warmte komt alleen uit het hout. */
+  --color-doek: #e3e5e3;          /* fotodoek-grijs, achtergrond van de catalogus */
+  --color-papier: #f4f4f2;        /* gebroken wit */
+  --color-wit: #ffffff;
+  --color-inkt: #1c1e1f;
+  --color-inkt-2: #2a2d2e;
+  --color-grijs: #53585a;         /* bijtekst, 6,4:1 op doek */
+  --color-mist: #b9bebf;          /* bijtekst op inkt, 9:1 */
+  --color-rood: #843f40;          /* schaaf uit het logo, wit erop 7,6:1 */
+  --color-rood-donker: #6c3233;
+  --color-rood-licht: #e0a3a1;    /* accent op inkt, 8:1 */
+  --color-lijn: #1c1e1f26;
+  --color-lijn-licht: #ffffff24;
+
+  --font-kop: "Old Standard TT", "Didot", Georgia, serif;
+  --font-sans: "Libre Franklin Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.4rem, .7vw + 1.15rem, 1.875rem);
+  --text-3xl: clamp(2.1rem, 2.6vw + 1.1rem, 3.75rem);
+  --text-hero: clamp(2.7rem, 5.2vw + .9rem, 6rem);
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px #1c1e1f12, 0 10px 30px #1c1e1f0f;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; background: var(--color-papier); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    font-weight: 380;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.04; letter-spacing: -0.012em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); }
+  .cursief { font-family: var(--font-kop); font-style: italic; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 1rem; letter-spacing: .005em; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-rood); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-rood-donker); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-wit); }
+  .knop-inkt:hover { background: var(--color-inkt-2); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: var(--color-rood); text-underline-offset: .24em; transition: color .25s; }
+  .link:hover { color: var(--color-rood); }
+  .link-licht { text-decoration-color: var(--color-rood-licht); }
+  .link-licht:hover { color: var(--color-rood-licht); }
+
+  /* Catalogusregel onder elk object: nummer, naam, en de omschrijving zoals De Goede die zelf geeft. */
+  .cat { margin-top: .9rem; display: grid; grid-template-columns: auto 1fr; gap: .1rem .9rem; align-items: baseline; }
+  .cat-nr { font-family: var(--font-kop); font-style: italic; font-size: .9375rem; color: var(--color-rood); }
+  .cat-naam { font-family: var(--font-kop); font-size: 1.25rem; line-height: 1.25; }
+  .cat-sub { grid-column: 2; font-size: .875rem; color: var(--color-grijs); }
+
+  .spec { display: flex; align-items: baseline; gap: .75rem; padding-block: .7rem; border-bottom: 1px solid var(--color-lijn); }
+  .spec > span:nth-child(2) { flex: 1; border-bottom: 1px dotted #1c1e1f59; transform: translateY(-.3em); min-width: 1rem; }
+  .spec > :last-child { text-align: right; }
+
+  /* Objectkaart: velden op een lijn, als een ingevuld conserveringsformulier. */
+  .veld { display: block; width: 100%; appearance: none; -webkit-appearance: none; font: inherit; font-size: 1.0625rem; font-weight: 500; color: var(--color-inkt); background: transparent; border: 0; border-bottom: 1px solid var(--color-inkt); border-radius: 0; padding: .55rem 0; min-height: 2.9rem; transition: border-color .25s; }
+  .veld:focus { outline: none; border-color: var(--color-rood); box-shadow: 0 1.5px 0 var(--color-rood); }
+  .veld::placeholder { color: #7d8283; font-weight: 380; }
+  select.veld { padding-right: 1.6rem; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231c1e1f' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .1rem center; background-size: 1rem; }
+  .vink { display: flex; align-items: flex-start; gap: .75rem; padding: .7rem 0; border-bottom: 1px solid var(--color-lijn); cursor: pointer; font-size: 1rem; line-height: 1.4; }
+  .vink-box { flex: none; width: 1.15rem; height: 1.15rem; margin-top: .12rem; border: 1px solid var(--color-inkt); display: grid; place-items: center; transition: background-color .2s; }
+  .vink-box svg { width: .8rem; height: .8rem; opacity: 0; color: var(--color-wit); }
+  input:checked + .vink-box { background: var(--color-rood); border-color: var(--color-rood); }
+  input:checked + .vink-box svg { opacity: 1; }
+  input:focus-visible + .vink-box { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+
+  .js .rijs { opacity: 0; transform: translateY(14px); transition: opacity 1s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+@import "@fontsource/calistoga/400.css";
+@import "@fontsource-variable/onest/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Uit hun zaak: het petrolgroene bladerbehang en de plantenwand. Eén kleur, op kalkwit en op diep bladgroen. */
+  --color-blad: #10302f;        /* donkere vlakken */
+  --color-blad-2: #173e3c;
+  --color-kalk: #f5f4f0;        /* lichte vlakken */
+  --color-kalk-2: #e9ebe6;
+  --color-tekst: #142221;       /* tekst op kalk */
+  --color-grijs: #4c5856;       /* bijtekst op kalk, 7:1 */
+  --color-petrol: #1d5c5a;      /* accent op kalk, 7:1 */
+  --color-petrol-diep: #154644;
+  --color-neon: #9fdcd6;        /* accent op blad, als hun neonbord, 9:1 */
+  --color-wit: #ffffff;
+  --color-krijt: #eef0eb;       /* tekst op blad */
+  --color-zacht: #b3c2be;       /* bijtekst op blad, 8:1 */
+  --color-bord: #1a201f;        /* krijtbord */
+  --color-lijn: #14222120;
+  --color-lijn-blad: #eef0eb26;
+
+  --font-kop: "Calistoga", "Cooper Black", Georgia, serif;
+  --font-sans: "Onest Variable", "Segoe UI", system-ui, sans-serif;
+  --font-bord: Georgia, "Times New Roman", serif;
+
+  --text-label: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, .9vw + 1.2rem, 2.125rem);
+  --text-3xl: clamp(2.25rem, 3vw + 1.15rem, 4rem);
+  --text-hero: clamp(2.75rem, 5.4vw + 1rem, 6.75rem);
+
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 28px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-kalk); }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-tekst);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: 1.02; letter-spacing: -0.015em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-petrol); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-petrol); outline-offset: 3px; }
+  .op-blad :focus-visible, .op-blad:focus-visible { outline-color: var(--color-neon); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border: 1.5px solid transparent; border-radius: var(--radius-full); font-size: 1rem; font-weight: 600; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .3s var(--ease-zacht), color .3s var(--ease-zacht), border-color .3s var(--ease-zacht), transform .3s var(--ease-zacht); }
+  .knop:hover { transform: translateY(-1px); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop-petrol { background: var(--color-petrol); color: var(--color-wit); }
+  .knop-petrol:hover { background: var(--color-petrol-diep); }
+  .knop-wit { border-color: #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-blad); }
+  .knop-lijn { border-color: var(--color-tekst); color: var(--color-tekst); }
+  .knop-lijn:hover { background: var(--color-tekst); color: var(--color-kalk); }
+  .knop-neon { background: var(--color-neon); color: var(--color-blad); }
+  .knop-neon:hover { background: var(--color-krijt); }
+  .knop-krijt { border-color: #eef0eb99; color: var(--color-krijt); }
+  .knop-krijt:hover { background: var(--color-krijt); color: var(--color-bord); }
+
+  .link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; transition: color .25s; }
+  .link:hover { color: var(--color-petrol); }
+  .op-blad .link:hover { color: var(--color-neon); }
+
+  /* Woordmerk: hun gevelbord nagetekend. Klassieke kapitalen, een streep links onder, ONTBIJT & LUNCH rechts. */
+  .merk { font-family: var(--font-bord); font-weight: 700; letter-spacing: .04em; line-height: 1; }
+
+  /* Menukaart: tik een gerecht aan om het op je lijstje te zetten. */
+  .gerecht { position: relative; display: grid; grid-template-columns: minmax(0, auto) 1fr auto; align-items: baseline; column-gap: .75rem; width: 100%; padding: .7rem 0; text-align: left; cursor: pointer; border-bottom: 1px solid var(--color-lijn); transition: color .25s var(--ease-zacht); }
+  .gerecht .stip { border-bottom: 2px dotted currentColor; opacity: .25; transform: translateY(-.3em); min-width: 1rem; }
+  .gerecht .plus { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 999px; border: 1.5px solid var(--color-lijn); color: var(--color-petrol); transition: background-color .25s, color .25s, border-color .25s, transform .25s var(--ease-zacht); align-self: center; }
+  .gerecht .plus svg { width: .9rem; height: .9rem; transition: transform .3s var(--ease-zacht); }
+  .gerecht:hover { color: var(--color-petrol); }
+  .gerecht:hover .plus { border-color: var(--color-petrol); }
+  .gerecht[aria-pressed="true"] { color: var(--color-petrol); }
+  .gerecht[aria-pressed="true"] .plus { background: var(--color-petrol); border-color: var(--color-petrol); color: var(--color-wit); }
+  .gerecht[aria-pressed="true"] .plus svg { transform: rotate(45deg); }
+  .gerecht .wat { grid-column: 1 / -1; margin-top: .15rem; font-size: var(--text-sm); color: var(--color-grijs); }
+
+  /* Krijtbord: krijtletters met een lichte, ruwe rand. */
+  .krijt { color: var(--color-krijt); text-shadow: 0 0 1px #eef0eb80, 0 0 12px #eef0eb1f; }
+  .bordvlak { background-color: var(--color-bord); background-image: radial-gradient(120% 90% at 30% 20%, #2a3331 0%, #1a201f 60%, #141918 100%); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease-zacht), transform 1s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
