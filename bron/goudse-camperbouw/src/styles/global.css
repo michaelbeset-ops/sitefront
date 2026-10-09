@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+@import "@fontsource/bebas-neue/400.css";
+@import "@fontsource-variable/hanken-grotesk/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het rood van het hefdak in hun logo (#c41a2b). Verder tekenpapier, potlood en het zwart van hun fotolabel. */
+  --color-rood: #c41a2b;        /* vlakken, knoppen (wit erop 5,9:1) */
+  --color-rood-licht: #ff6b74;  /* rood als tekst op zwart */
+  --color-rood-diep: #a3121f;   /* hover */
+  --color-papier: #eef0ef;      /* tekenpapier, koel */
+  --color-papier-2: #e2e5e4;
+  --color-raster: #16191a14;    /* fijne ruitlijnen */
+  --color-zwart: #16191a;       /* donkere vlakken, het tapelabel */
+  --color-zwart-2: #202425;
+  --color-wit: #ffffff;
+  --color-inkt: #16191a;
+  --color-potlood: #4f5759;     /* bijtekst op papier */
+  --color-staal: #a9b1b3;       /* bijtekst op zwart */
+  --color-lijn: #ffffff21;
+  --color-lijn-licht: #16191a29;
+
+  --font-kop: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+  --font-sans: "Hanken Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+  --font-tape: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.6rem, 1.2vw + 1.2rem, 2.2rem);
+  --text-3xl: clamp(2.2rem, 2.6vw + 1.3rem, 3.6rem);
+  --text-4xl: clamp(2.8rem, 4.4vw + 1.2rem, 5.6rem);
+  --text-hero: clamp(3.6rem, 8.6vw + .4rem, 9.6rem);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 4rem; background: var(--color-zwart); }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: .9; letter-spacing: .005em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 84rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); font-weight: 400; }
+
+  /* Tekenpapier met fijn ruitraster, zoals een bouwtekening. */
+  .papier { background-image: linear-gradient(var(--color-raster) 1px, transparent 1px), linear-gradient(90deg, var(--color-raster) 1px, transparent 1px); background-size: 2rem 2rem; background-position: -1px -1px; }
+
+  /* Het zwarte label met witte typemachineletters dat ze zelf op hun foto's plakken ("@Goudse camperbouw"). */
+  .tape { display: inline-block; padding: .4rem .75rem .45rem; background: var(--color-zwart); color: var(--color-wit); font-family: var(--font-tape); font-size: .8125rem; line-height: 1.3; letter-spacing: .06em; }
+
+  /* Maatlijn met pijlpunten (tekening) */
+  .maat { position: relative; display: flex; align-items: center; gap: .75rem; font-family: var(--font-tape); font-size: .75rem; letter-spacing: .06em; color: var(--color-potlood); }
+  .maat::before, .maat::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .5; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-family: var(--font-sans); font-size: 1rem; font-weight: 650; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-rood { background: var(--color-rood); color: var(--color-wit); }
+  .knop-rood:hover { background: var(--color-rood-diep); }
+  .knop-wit { border: 1.5px solid #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-zwart); border-color: var(--color-wit); }
+  .knop-rand { border: 1.5px solid var(--color-inkt); color: var(--color-inkt); }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-papier); }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-rood); }
+  .link-licht:hover { color: var(--color-rood-licht); }
+
+  .regel { border-top: 1px solid var(--color-lijn-licht); }
+  .regel-donker { border-top: 1px solid var(--color-lijn); }
+
+  /* Bouwtekening-formulier */
+  .veld { display: block; width: 100%; min-height: 3rem; padding: .6rem .8rem; border: 1.5px solid #16191a40; border-radius: var(--radius-sm); background: var(--color-wit); color: var(--color-inkt); font: inherit; font-size: 1rem; transition: border-color .2s; }
+  .veld:hover { border-color: #16191a80; }
+  .veld:focus { outline: none; border-color: var(--color-rood); box-shadow: 0 0 0 3px #c41a2b26; }
+  textarea.veld { min-height: 5rem; resize: vertical; }
+  .veld-label { display: block; margin-bottom: .4rem; font-size: .875rem; font-weight: 650; color: var(--color-potlood); }
+
+  .soort { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--color-lijn-licht); }
+  @media (min-width: 640px) { .soort { grid-template-columns: 1fr 1fr; } }
+  .soort label { position: relative; display: flex; align-items: center; gap: .75rem; min-height: 3.25rem; padding: .5rem .25rem; border-bottom: 1px solid var(--color-lijn-licht); cursor: pointer; font-weight: 600; }
+  .soort input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .soort i { flex: none; width: 1.1rem; height: 1.1rem; border: 1.5px solid var(--color-inkt); border-radius: 50%; transition: background-color .2s, box-shadow .2s; }
+  .soort input:checked + i { background: var(--color-rood); border-color: var(--color-rood); box-shadow: inset 0 0 0 3px var(--color-papier); }
+  .soort input:focus-visible + i { outline: 2px solid var(--color-rood); outline-offset: 3px; }
+
+  .deel { display: flex; align-items: baseline; gap: .8rem; padding: .55rem 0; border-bottom: 1px dashed #16191a33; cursor: pointer; }
+  .deel input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .deel b { flex: none; display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; border: 1.5px solid var(--color-inkt); border-radius: 50%; font-family: var(--font-tape); font-size: .75rem; font-weight: 600; transition: background-color .2s, color .2s, border-color .2s; }
+  .deel span { font-weight: 550; }
+  .deel input:checked ~ b { background: var(--color-rood); border-color: var(--color-rood); color: var(--color-wit); }
+  .deel input:focus-visible ~ b { outline: 2px solid var(--color-rood); outline-offset: 2px; }
+  .deel:hover span { color: var(--color-rood); }
+
+  /* Onderdelen in de tekening: grijs potlood, rood als gekozen */
+  .tek .d { stroke: #16191a59; transition: stroke .3s, fill .3s, opacity .3s; }
+  .tek .d.aan { stroke: var(--color-rood); }
+  .tek .d-vul.aan { fill: #c41a2b1f; }
+  .tek .label { font-family: var(--font-tape); font-size: 11px; fill: var(--color-potlood); }
+  .tek .nr { fill: var(--color-papier); stroke: #16191a80; transition: fill .3s, stroke .3s; }
+  .tek .nr.aan { fill: var(--color-rood); stroke: var(--color-rood); }
+  .tek .nrt { font-family: var(--font-tape); font-size: 11px; font-weight: 600; fill: var(--color-inkt); transition: fill .3s; }
+  .tek .nrt.aan { fill: var(--color-wit); }
+  .tek .dak-op { transition: transform .5s var(--ease-zacht); transform-origin: 170px 66px; transform-box: view-box; }
+  .tek .dak-op:not(.aan) { transform: scaleY(.2); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

@@ -1,0 +1,322 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Band from '../components/Band.astro';
+import { site, reviews, tijden, waHoi } from '../data/site';
+
+import hero from '../assets/hero-keuenwand.jpg';
+import heroMobiel from '../assets/hero-mobiel.jpg';
+import winkelDiep from '../assets/winkel-diep.jpg';
+import keurek from '../assets/keurek.jpg';
+import pomeransen from '../assets/pomeransen-gj.jpg';
+import pand from '../assets/pand.jpg';
+
+const titel = 'Biljartwinkel Ludo Kools | Keuen, reparatie en advies in Hoogerheide';
+const omschrijving = 'De biljartwinkel waar u terecht kunt voor keuen, reparaties, biljartartikelen en persoonlijk advies. Open op woensdagavond en zaterdag in Hoogerheide.';
+
+// Hero: hun eigen foto van de winkel (Google, geplaatst door Biljartwinkel Ludo Kools zelf).
+const hD = await getImage({ src: hero, widths: [1024, 1440, 1920, 2400], sizes: '100vw', format: 'webp', quality: 60 });
+const hDa = await getImage({ src: hero, widths: [1024, 1440, 1920, 2400], sizes: '100vw', format: 'avif', quality: 46 });
+const hM = await getImage({ src: heroMobiel, widths: [480, 760, 1000], sizes: '100vw', format: 'webp', quality: 48 });
+const hMa = await getImage({ src: heroMobiel, widths: [480, 760, 1000], sizes: '100vw', format: 'avif', quality: 42 });
+
+// Uit hun Facebook-posts en visitekaartje.
+const assortiment = [
+  { wat: 'Keuen', zin: 'Een mooie keuze in vele keuen, in verschillende prijsklassen.' },
+  { wat: 'Pomeransen', zin: 'Onder andere van GJ en Caudron. Ze worden geplaatst terwijl u wacht.' },
+  { wat: 'Reparatie', zin: 'Pomerans of beentje vervangen, met de machine achter de winkel.' },
+  { wat: 'Keutassen en koffers', zin: 'Verschillende tassen en koffers voor uw keu.' },
+  { wat: 'Krijt, handschoenen, ballen', zin: 'De items die elke biljarter wel kan gebruiken.' },
+  { wat: 'Kadobon', zin: 'Leuk voor een verjaardag en voor de feestdagen.' },
+];
+
+const dagen = ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'];
+const volgorde = [1, 2, 3, 4, 5, 6, 0];
+
+const [uitgelicht, ...andere] = reviews;
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Opening: hun eigen foto van de keuenwand, schermvullend -->
+    <section class="relative isolate flex min-h-[100svh] flex-col justify-end overflow-hidden bg-nacht text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={hDa.srcSet.attribute} sizes="100vw" type="image/avif" />
+        <source media="(min-width: 768px)" srcset={hD.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <source srcset={hMa.srcSet.attribute} sizes="100vw" type="image/avif" />
+        <source srcset={hM.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <img src={hD.src} alt="De winkel van binnen: een witte wand met tientallen keuen naast elkaar, een houten tafel met zonnebloemen en stoelen, en een tv met biljart aan de grijze muur" width="2400" height="1407" fetchpriority="high" loading="eager" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_60%] md:object-[60%_55%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#14192200_28%,#141922b8_60%,#141922f2_100%)] md:bg-[linear-gradient(90deg,#141922e6_0%,#14192299_34%,#14192200_60%),linear-gradient(0deg,#141922b3_0%,#14192200_40%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-32 md:pb-16 lg:pb-20">
+        <p class="text-[1.0625rem] font-[650] text-wit/85">Biljartwinkel in Hoogerheide</p>
+        <h1 class="mt-5 max-w-[12ch] text-hero">Koffie, een keu en <em class="font-[480] text-rood-licht">eerlijk advies.</em></h1>
+        <p class="mt-7 max-w-[32rem] text-lg text-wit/90 md:text-xl">Keuen, reparaties, biljartartikelen en persoonlijk advies. Van Ludo Kools, Nederlands kampioen driebanden in 2021.</p>
+        <div class="mt-9 flex flex-wrap items-center gap-3">
+          <a href={waHoi} class="knop"><Icoon naam="wa" />Stuur een WhatsApp</a>
+          <a href="#wat-zoekt-u" class="knop knop-lijn max-sm:hidden">Wat zoekt u?</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. De winkel: de oude garage, de werkplaats erachter -->
+    <section id="winkel" class="pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="winkel-titel">
+      <div class="wrap grid gap-y-10 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5 lg:pt-6">
+          <h2 id="winkel-titel" class="rijs text-3xl">Een biljartwinkel in de oude garage.</h2>
+          <p class="rijs mt-7 max-w-md text-lg text-grijs">Na zijn Nederlandse titel driebanden begon Ludo Kools in 2021 een winkel naast zijn huis. Achter de winkel staan de machine en het gereedschap om keuen te repareren.</p>
+          <Band class="rijs mt-12 max-w-md text-rood" />
+        </div>
+        <figure class="rijs lg:col-span-7">
+          <div class="overflow-hidden rounded-sm">
+            <Image src={winkelDiep} quality={66} alt="Lange winkelruimte met houten vloer, links en rechts rekken vol keuen, vitrinekasten met pomeransen en krijt, en achterin een tafel en een tv" widths={[480, 760, 1079]} sizes="(min-width: 1280px) 700px, (min-width: 1024px) 56vw, 94vw" class="aspect-[4/3] w-full object-cover" />
+          </div>
+        </figure>
+      </div>
+
+      <div class="wrap mt-20 grid items-end gap-y-10 md:mt-28 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs order-2 lg:order-1 lg:col-span-4">
+          <div class="overflow-hidden rounded-sm">
+            <Image src={keurek} quality={66} alt="Keuenrek aan de muur met twee rijen blanke keuen, naast een open deur en een rek met keutassen" widths={[400, 700, 1040]} sizes="(min-width: 1024px) 380px, 94vw" class="aspect-square w-full object-cover" />
+          </div>
+        </figure>
+        <blockquote class="rijs order-1 lg:order-2 lg:col-span-7 lg:col-start-6 lg:pb-6">
+          <p class="font-serif text-[clamp(1.75rem,2.4vw+.9rem,3.2rem)] italic leading-[1.12] tracking-[-.01em]">“Wij staan voor kwaliteit, persoonlijke benadering, goed advies en eerlijke prijzen.”</p>
+          <footer class="mt-6 text-sm text-grijs">Biljartwinkel Ludo Kools op Facebook</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 3. Assortiment: een lijst zoals een prijsbord, zonder prijzen -->
+    <section id="assortiment" class="bg-papier pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="assortiment-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-7">
+          <h2 id="assortiment-titel" class="rijs text-3xl">In de winkel</h2>
+          <ul class="mt-10 border-t border-lijn md:mt-14">
+            {assortiment.map((a, i) => (
+              <li class="rijs grid gap-x-8 gap-y-1 border-b border-lijn py-5 sm:grid-cols-[minmax(0,15rem)_1fr] sm:items-baseline md:py-6" style={`--d:${i * 0.05}s`}>
+                <h3 class="text-[1.6rem] font-[560] leading-tight">{a.wat}</h3>
+                <p class="text-grijs">{a.zin}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="lg:col-span-5 lg:pt-4">
+          <figure class="rijs overflow-hidden rounded-sm">
+            <Image src={pomeransen} quality={66} alt="Doosje met zeven GJ-pomeransen op een houten tafel, met het visitekaartje van Biljartwinkel Ludo Kools ernaast" widths={[480, 760, 1079]} sizes="(min-width: 1024px) 460px, 94vw" class="aspect-[4/5] w-full object-cover object-[50%_40%]" />
+          </figure>
+          <blockquote class="rijs mt-8 border-l-2 border-rood pl-5">
+            <p class="font-serif text-xl italic leading-snug">“Wij hebben top pomeransen beschikbaar en deze worden geplaatst terwijl U hierbij wacht met een lekker kopje koffie.”</p>
+            <footer class="mt-3 text-sm text-grijs">Biljartwinkel Ludo Kools op Facebook</footer>
+          </blockquote>
+        </div>
+      </div>
+      <div class="wrap mt-16 md:mt-24">
+        <blockquote class="rijs mx-auto max-w-3xl text-center">
+          <p class="font-serif text-2xl leading-snug">“Ik wilde het alleen doen als ik ook zelf reparaties kan uitvoeren.”</p>
+          <footer class="mt-4 text-sm text-grijs">Ludo Kools in ZuidWest Update, september 2021</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- 4. Wow: zeg wat u zoekt, de driebandenstoot tekent mee, en het staat klaar in WhatsApp -->
+    <section id="wat-zoekt-u" class="relative overflow-hidden bg-leisteen pb-24 pt-20 text-wit md:pb-32 md:pt-28" aria-labelledby="zoek-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="zoek-titel" class="rijs text-3xl">Wat zoekt u?</h2>
+          <p class="rijs mt-5 max-w-md text-mist">Maak de zin af. Uw vraag gaat dan via WhatsApp naar Ludo.</p>
+
+          <form class="rijs mt-10 font-serif text-[clamp(1.55rem,1.6vw+1rem,2.3rem)] leading-[1.75]" data-zoek>
+            <p>
+              Ik zoek
+              <label class="sr-only" for="z-wat">Wat zoekt u</label>
+              <select id="z-wat" name="wat" class="keuze" data-veld>
+                <option value="een nieuwe keu">een nieuwe keu</option>
+                <option value="een nieuwe pomerans">een nieuwe pomerans</option>
+                <option value="een reparatie aan mijn keu">een reparatie</option>
+                <option value="een keutas of koffer">een keutas of koffer</option>
+                <option value="krijt, een handschoen of ballen">krijt of een handschoen</option>
+                <option value="een kadobon">een kadobon</option>
+                <option value="advies">advies</option>
+              </select>
+              voor
+              <label class="sr-only" for="z-spel">Welk spel speelt u</label>
+              <select id="z-spel" name="spel" class="keuze" data-veld>
+                <option value="driebanden">driebanden</option>
+                <option value="libre">libre</option>
+                <option value="bandstoten">bandstoten</option>
+                <option value="kader">kader</option>
+                <option value="een ander spel">een ander spel</option>
+              </select>
+              en kom het liefst
+              <label class="sr-only" for="z-dag">Wanneer komt u</label>
+              <select id="z-dag" name="dag" class="keuze" data-veld>
+                <option value="zaterdag">zaterdag</option>
+                <option value="woensdagavond">woensdagavond</option>
+                <option value="na overleg">na overleg</option>
+              </select>
+              langs.
+            </p>
+            <label class="mt-8 block font-sans text-[1rem] leading-normal">
+              <span class="text-mist">Nog iets dat Ludo moet weten? (mag leeg)</span>
+              <input type="text" name="extra" class="veld mt-1" placeholder="Bijvoorbeeld lengte, gewicht of budget" autocomplete="off" data-veld />
+            </label>
+            <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4 font-sans">
+              <a href={waHoi} class="knop" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+              <a href={site.telHref} class="link text-[1rem] text-mist">of bel <span class="num whitespace-nowrap">{site.tel}</span></a>
+            </div>
+            <p class="mt-5 max-w-md font-sans text-xs leading-relaxed text-mist">Er wordt niets verstuurd voordat u in WhatsApp zelf op verzenden drukt.</p>
+          </form>
+        </div>
+
+        <div class="rijs self-center lg:col-span-6" style="--d:.1s">
+          <svg viewBox="0 0 580 320" class="w-full" role="img" aria-labelledby="tafel-t">
+            <title id="tafel-t">Bovenaanzicht van een carambole-biljart met een witte, rode en gele bal en de lijn van een driebandenstoot</title>
+            <rect x="0" y="0" width="580" height="320" rx="16" fill="#0f131a" />
+            <rect x="30" y="30" width="520" height="260" fill="#2a3a52" />
+            <rect x="30" y="30" width="520" height="260" fill="none" stroke="#ffffff1f" stroke-width="2" />
+            {[1, 2, 3, 4, 5, 6, 7].map((k) => <g fill="#f3f3f0"><path d={`M${30 + (520 * k) / 8} 11l4 4-4 4-4-4z`} /><path d={`M${30 + (520 * k) / 8} 301l4 4-4 4-4-4z`} /></g>)}
+            {[1, 2, 3].map((k) => <g fill="#f3f3f0"><path d={`M15 ${30 + (260 * k) / 4 - 4}l4 4-4 4-4-4z`} /><path d={`M565 ${30 + (260 * k) / 4 - 4}l4 4-4 4-4-4z`} /></g>)}
+            <path d="M110 230L178 178L290 30L550 120L470 290L412 232" fill="none" stroke="#ff8f80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" pathLength="1" class="stoot" data-stoot />
+            {[[290, 30], [550, 120], [470, 290]].map(([x, y], i) => <g data-band={i} transform={`translate(${x} ${y})`} class="bandpunt"><circle r="11" fill="#141922" stroke="#ff8f80" stroke-width="1.5" /><text y="4.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ff8f80" font-family="Nunito Sans Variable, sans-serif">{i + 1}</text></g>)}
+            <circle r="9" cx="190" cy="170" fill="#c8372f" data-bal="r" />
+            <circle r="9" cx="400" cy="220" fill="#f0b429" data-bal="g" />
+            <circle r="9" cx="110" cy="230" fill="#f7f4ea" data-bal="w" />
+          </svg>
+          <p class="mt-5 text-center text-xs text-mist" aria-live="polite" data-banden>Wit raakt rood, drie banden, dan geel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Reviews: letterlijk van Google -->
+    <section id="reviews" class="pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="reviews-titel">
+      <div class="wrap">
+        <h2 id="reviews-titel" class="sr-only">Reviews</h2>
+        <figure class="rijs mx-auto max-w-4xl text-center">
+          <blockquote>
+            <p class="font-serif text-[clamp(1.7rem,2.2vw+1rem,3rem)] italic leading-[1.18]">“{uitgelicht.tekst}”</p>
+          </blockquote>
+          <figcaption class="mt-7 text-grijs">{uitgelicht.naam}, Google review</figcaption>
+        </figure>
+        <Band class="rijs mx-auto mt-16 max-w-xl text-rood md:mt-20" />
+        <div class="mt-16 grid gap-x-12 gap-y-10 md:mt-20 md:grid-cols-2 lg:grid-cols-3">
+          {andere.map((r, i) => (
+            <figure class="rijs border-t border-lijn pt-6" style={`--d:${(i % 3) * 0.06}s`}>
+              <p class="flex gap-0.5 text-rood" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</p>
+              <blockquote class="mt-4 text-lg leading-relaxed"><p>“{r.tekst}”</p></blockquote>
+              <figcaption class="mt-4 text-sm text-grijs">{r.naam}, Google review</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="rijs mt-14 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-grijs">
+          <Icoon naam="g" class="h-4 w-4" /><span class="num">{site.score}</span> op Google uit {site.aantal} reviews
+          <a href={site.google} class="link ml-1 text-leisteen">Alle reviews lezen</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. Langskomen: tijden, plaats, de gevel -->
+    <section id="langskomen" class="bg-papier pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="langs-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="langs-titel" class="rijs text-3xl">Langskomen in Hoogerheide.</h2>
+          <p class="rijs mt-6 flex items-center gap-2.5 text-lg font-[650]" data-status><span class="h-2.5 w-2.5 rounded-full bg-grijs" data-stip></span><span data-status-tekst>Woensdagavond en zaterdag open</span></p>
+          <table class="rijs mt-8 w-full max-w-md text-[1.0625rem]">
+            <caption class="sr-only">Openingstijden</caption>
+            <tbody>
+              {volgorde.map((d) => (
+                <tr class="border-b border-lijn" data-dag={d}>
+                  <th scope="row" class="py-3 text-left font-[600]">{dagen[d]}</th>
+                  <td class:list={['num py-3 text-right', !tijden[d] && 'text-grijs']}>{tijden[d] ? `${tijden[d]![0]} - ${tijden[d]![1]}` : 'Gesloten'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="rijs mt-10 flex flex-wrap items-center gap-3">
+            <a href={site.route} class="knop knop-donker"><Icoon naam="pin" />Route naar de winkel</a>
+            <a href={waHoi} class="knop"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <p class="rijs mt-6 text-grijs">Telefoon <a href={site.telHref} class="link num whitespace-nowrap text-leisteen">{site.tel}</a></p>
+        </div>
+        <figure class="rijs lg:col-span-5 lg:col-start-8">
+          <div class="overflow-hidden rounded-sm">
+            <Image src={pand} quality={64} alt="Gevel van rode baksteen met het naambord Biljartwinkel Ludo Kools boven een groene dubbele deur, met cortenstalen plantenbakken ernaast" widths={[480, 760, 1100]} sizes="(min-width: 1024px) 460px, 94vw" class="aspect-[4/5] w-full object-cover object-[50%_60%]" />
+          </div>
+          <figcaption class="mt-4 text-sm text-grijs">Herkenbaar aan het naambord boven de deur.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<style is:global>
+  .stoot { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .js .stoot { stroke-dashoffset: 1; }
+  .js .in .stoot { animation: stoot 1.8s var(--ease-zacht) .3s both; }
+  @keyframes stoot { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  [data-bal] { transition: cx .7s var(--ease-zacht), cy .7s var(--ease-zacht); }
+  .js .bandpunt { opacity: 0; }
+  .js .in .bandpunt { animation: punt .4s ease both; }
+  .js .in .bandpunt[data-band="0"] { animation-delay: .9s; } .js .in .bandpunt[data-band="1"] { animation-delay: 1.3s; } .js .in .bandpunt[data-band="2"] { animation-delay: 1.7s; }
+  @keyframes punt { from { opacity: 0; } to { opacity: 1; } }
+</style>
+
+<script>
+  import { tijden } from '../data/site';
+  // Live open/gesloten (tijd in Nederland) en vandaag markeren.
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const d = nu.getDay(), min = nu.getHours() * 60 + nu.getMinutes();
+  const m = (s: string) => +s.slice(0, 2) * 60 + +s.slice(3);
+  const t = tijden[d];
+  const open = !!t && min >= m(t[0]) && min < m(t[1]);
+  document.querySelector(`[data-dag="${d}"]`)?.classList.add('font-[750]', 'text-rood');
+  const st = document.querySelector('[data-status-tekst]');
+  const stip = document.querySelector('[data-stip]');
+  if (st && stip) {
+    if (open) { st.textContent = `Nu open, tot ${t![1]}`; stip.classList.replace('bg-grijs', 'bg-rood'); }
+    else {
+      let n = 1; while (n < 8 && !tijden[(d + n) % 7]) n++;
+      const vandaagNog = t && min < m(t[0]);
+      const dag = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      st.textContent = vandaagNog ? `Nu gesloten, vandaag open vanaf ${t![0]}` : `Nu gesloten, weer open op ${dag[(d + n) % 7]} om ${tijden[(d + n) % 7]![0]}`;
+    }
+  }
+
+  // Zinsbouwer -> WhatsApp, met een driebandenstoot die zich opnieuw tekent.
+  const f = document.querySelector<HTMLFormElement>('[data-zoek]');
+  const wa = document.querySelector<HTMLAnchorElement>('[data-wa]');
+  const stoot = document.querySelector<SVGPathElement>('[data-stoot]');
+  const ballen = { w: document.querySelector('[data-bal="w"]'), r: document.querySelector('[data-bal="r"]'), g: document.querySelector('[data-bal="g"]') };
+  const standen = [
+    { w: [110, 230], r: [190, 170], g: [400, 220], d: 'M110 230L178 178L290 30L550 120L470 290L412 232' },
+    { w: [460, 80], r: [400, 130], g: [150, 90], d: 'M460 80L412 120L300 290L30 200L90 30L142 82' },
+    { w: [280, 250], r: [330, 190], g: [120, 240], d: 'M280 250L322 198L420 30L550 90L360 290L134 242' },
+    { w: [70, 90], r: [130, 70], g: [480, 250], d: 'M70 90L118 74L340 290L550 180L460 30L478 236' },
+  ];
+  let s = 0;
+  const teken = () => {
+    s = (s + 1) % standen.length;
+    const k = standen[s];
+    for (const b of ['w', 'r', 'g'] as const) { ballen[b]?.setAttribute('cx', String(k[b][0])); ballen[b]?.setAttribute('cy', String(k[b][1])); }
+    const p = k.d.slice(1).split('L').map((q) => q.split(' ').map(Number));
+    document.querySelectorAll<SVGGElement>('[data-band]').forEach((g, i) => g.setAttribute('transform', `translate(${p[i + 2][0]} ${p[i + 2][1]})`));
+    if (stoot) { stoot.setAttribute('d', k.d); for (const el of [stoot, ...document.querySelectorAll<SVGGElement>('[data-band]')]) { el.style.animation = 'none'; void el.getBoundingClientRect(); el.style.animation = ''; } }
+  };
+  const bouw = () => {
+    if (!f || !wa) return;
+    const v = new FormData(f);
+    const extra = String(v.get('extra') || '').trim();
+    const dag = String(v.get('dag'));
+    const tekst = `Hoi Ludo, ik zoek ${v.get('wat')} voor ${v.get('spel')}. ` + (dag === 'na overleg' ? 'Wanneer kan ik langskomen?' : `Ik kom het liefst ${dag} langs.`) + (extra ? ` ${extra}` : '');
+    wa.href = `https://wa.me/31648374445?text=${encodeURIComponent(tekst)}`;
+  };
+  f?.querySelectorAll('select').forEach((el) => el.addEventListener('change', () => { bouw(); teken(); }));
+  f?.querySelector('input')?.addEventListener('input', bouw);
+  f?.addEventListener('submit', (e) => e.preventDefault());
+  bouw();
+</script>

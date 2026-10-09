@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ channel: 'chrome', args: ['--headless=new','--disable-blink-features=AutomationControlled'] });
+const c = await b.newContext({ locale: 'nl-NL', viewport: { width: 390, height: 844 }, userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1', isMobile: true, hasTouch: true });
+const p = await c.newPage();
+await p.goto('https://www.google.com/maps/place/Biljartwinkel+Ludo+Kools/data=!4m2!3m1!1s0x47c40d41f2c1b5af:0x7c0c7d176b4e3685?hl=nl', { waitUntil: 'domcontentloaded' });
+await p.waitForTimeout(3000);
+await p.getByRole('button', { name: /Alles afwijzen/ }).first().click({ timeout: 8000 }).catch(e => console.log('geen knop'));
+await p.waitForTimeout(7000);
+await p.getByText('Terug naar web').click().catch(()=>{}); await p.waitForTimeout(2500); await p.screenshot({ path: 'bron/web/google-profiel-390.png' }); await p.mouse.move(195,700); await p.mouse.wheel(0,600); await p.waitForTimeout(1500); await p.screenshot({ path: 'bron/web/google-profiel-390-b.png' });
+console.log((await p.evaluate(() => document.body.innerText)).match(/Website[^\n]*/g));
+await b.close();

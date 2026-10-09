@@ -299,3 +299,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | BY ERIK Zonwering, Moordrecht | https://voorstel.sitefront.nl/by-erik-zonwering-moordrecht/ | verouderde site met Engelse sjabloonteksten; 5,0/7; 06/WhatsApp. | 2026-10-08 | demo premium |
 | Arion Aanhangwagens (verhuur), Leidschendam | https://voorstel.sitefront.nl/arion-aanhangwagens/ | homepage geeft 404; 4,6/22; 06/WhatsApp. | 2026-10-09 | demo premium |
 | Cobo Trailers (paardentrailers, aanhangwagens), Wijk en Aalburg | https://voorstel.sitefront.nl/cobo-trailers/ | verouderde site, lege pagina's; 4,5/15; 06/WhatsApp. | 2026-10-09 | demo premium |
+| Biljartwinkel Ludo Kools, Hoogerheide | https://voorstel.sitefront.nl/biljartwinkel-ludo-kools/ | geen website, alleen Facebook; 4,9/36; 06/WhatsApp. | 2026-10-09 | demo premium |
+| Goudse Camperbouw, Haastrecht | https://voorstel.sitefront.nl/goudse-camperbouw/ | geen website (domein = parkeerpagina); 4,9/31; 06/WhatsApp. | 2026-10-09 | demo premium |

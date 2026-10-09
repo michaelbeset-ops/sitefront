@@ -1,0 +1,10 @@
+import sharp from 'sharp';
+const A = 'src/assets/', F = 'bron/fb/', G = 'bron/google/';
+const cut = async (src, ex, out) => { const m = await sharp(src).extract(ex).jpeg({ quality: 88, mozjpeg: true }).toFile(A + out); console.log(out, m.width, m.height); };
+await cut(F + 'fb-20220829-cover.jpg', { left: 0, top: 452, width: 1385, height: 1144 }, 'hero.jpg');
+await cut(G + 'g05.jpg', { left: 0, top: 130, width: 1600, height: 650 }, 'explorer.jpg');
+await cut(G + 'g06.jpg', { left: 0, top: 152, width: 1575, height: 990 }, 'expert.jpg');
+await cut(G + 'g04.jpg', { left: 0, top: 125, width: 1059, height: 505 }, 'vito.jpg');
+await cut(F + 'fb-20251115.jpg', { left: 0, top: 0, width: 2016, height: 1512 }, 'wand.jpg');
+await cut(F + 'fb-20251213-d.jpg', { left: 0, top: 120, width: 1500, height: 1800 }, 'tafels.jpg');
+await cut(F + 'fb-20251126-b.jpg', { left: 0, top: 300, width: 1152, height: 1500 }, 'eettafel.jpg');

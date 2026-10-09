@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/playfair-display/wght.css";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+@import "@fontsource-variable/nunito-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het rood van de rode bal in hun logo en van de balk aan het plafond.
+     Verder het leisteen van hun visitekaartje en muren, en het kalkwit van de keuenwand. */
+  --color-rood: #b02e27;         /* op kalk 5,9:1 */
+  --color-rood-donker: #8f231d;
+  --color-rood-licht: #ff8f80;   /* op leisteen 7,3:1 */
+  --color-leisteen: #1d2430;
+  --color-nacht: #141922;
+  --color-kalk: #f3f3f0;
+  --color-papier: #e8e8e3;
+  --color-wit: #ffffff;
+  --color-grijs: #535a66;        /* bijtekst op kalk 6,6:1 */
+  --color-mist: #aab1bd;         /* bijtekst op leisteen 7,6:1 */
+  --color-lijn: #1d243026;
+  --color-lijn-licht: #ffffff24;
+  --color-bal-wit: #f7f4ea;
+  --color-bal-geel: #f0b429;
+
+  --font-serif: "Playfair Display Variable", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Nunito Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.15rem, 2.1rem);
+  --text-3xl: clamp(2.2rem, 3vw + 1rem, 4.2rem);
+  --text-hero: clamp(2.9rem, 5.6vw + .8rem, 7rem);
+
+  --radius-sm: .25rem;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--color-kalk); }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-leisteen);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 560; line-height: 1.02; letter-spacing: -0.015em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  fieldset { min-width: 0; }
+  ::selection { background: var(--color-rood); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-full); font-weight: 700; font-size: 1.0625rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-rood); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: var(--color-rood-donker); transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-leisteen); }
+  .knop-donker { background: var(--color-leisteen); }
+  .knop-donker:hover { background: var(--color-nacht); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .24em; transition: opacity .25s; }
+  .link:hover { opacity: .7; }
+
+  /* Eigen detail: de band van een carambole-biljart met zijn "diamanten" (merktekens om de stoot te rekenen).
+     Een dunne lijn met acht vakken en ruitjes op de kruispunten, als lineaal tussen de secties. */
+  .band { position: relative; height: 12px; background:
+      linear-gradient(currentColor, currentColor) 0 50% / 100% 1px no-repeat; }
+  .band i { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; background: currentColor; transform: rotate(45deg); }
+
+  .bal { display: inline-block; width: .74em; height: .74em; border-radius: 999px; vertical-align: -.02em; position: relative;
+    background: radial-gradient(circle at 34% 30%, #ffffffcc 0 8%, transparent 26%), var(--b, var(--color-bal-wit));
+    box-shadow: inset -.06em -.08em .12em #00000033; }
+  .bal::before, .bal::after { content: ""; position: absolute; width: .1em; height: .1em; border-radius: 999px; background: var(--color-rood); }
+  .bal::before { left: 22%; top: 58%; } .bal::after { right: 20%; top: 26%; }
+  .bal-rood { --b: #c8372f; } .bal-rood::before, .bal-rood::after { background: #ffffffcc; }
+  .bal-geel { --b: var(--color-bal-geel); }
+
+  .keuze { appearance: none; -webkit-appearance: none; font: inherit; color: var(--color-rood-licht); background: transparent; border: 0; border-bottom: 2px solid currentColor; border-radius: 0; padding: 0 1.3em 0 .05em; margin-inline: .22em; cursor: pointer; max-width: 100%; field-sizing: content;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - .55em) 55%, calc(100% - .3em) 55%; background-size: .25em .25em, .25em .25em; background-repeat: no-repeat; transition: color .2s; }
+  .keuze:hover { color: var(--color-wit); }
+  .keuze:focus-visible { outline: 2px solid var(--color-wit); outline-offset: 4px; }
+  .keuze option { color: var(--color-leisteen); background: var(--color-wit); font-family: var(--font-sans); font-size: 1rem; }
+
+  .veld { appearance: none; -webkit-appearance: none; width: 100%; font: inherit; color: var(--color-wit); background: transparent; border: 0; border-bottom: 1.5px solid #ffffff59; border-radius: 0; padding: .55rem 0; min-height: 3rem; transition: border-color .2s; }
+  .veld::placeholder { color: #ffffff8c; }
+  .veld:hover { border-color: #ffffffa6; }
+  .veld:focus { outline: none; border-color: var(--color-rood-licht); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}

@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ channel: 'chrome' });
+const p = await (await b.newContext({ viewport: { width: 1440, height: 900 } })).newPage();
+const errs = []; p.on('pageerror', e => errs.push(e.message));
+await p.goto('http://127.0.0.1:4484/sitefront/biljartwinkel-ludo-kools/', { waitUntil: 'networkidle' });
+console.log(await p.getAttribute('[data-wa]', 'href'));
+await p.selectOption('#z-wat', 'een nieuwe pomerans'); await p.selectOption('#z-spel', 'libre'); await p.selectOption('#z-dag', 'na overleg');
+await p.fill('input[name=extra]', 'Mijn keu is 140 cm.');
+console.log(decodeURIComponent(await p.getAttribute('[data-wa]', 'href')));
+await p.locator('#wat-zoekt-u').scrollIntoViewIfNeeded(); await p.waitForTimeout(2600);
+await p.locator('#wat-zoekt-u').screenshot({ path: 'shots/wow-1440.png' });
+console.log('errs', errs.join('|'));
+await b.close();
