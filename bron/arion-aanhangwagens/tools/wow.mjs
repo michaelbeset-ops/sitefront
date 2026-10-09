@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+await p.goto('http://127.0.0.1:4482/sitefront/arion-aanhangwagens/#aanvragen', { waitUntil: 'networkidle' });
+await p.selectOption('select[name=wagen]', 'DeLuxe 1400');
+await p.fill('input[name=van]', '2027-07-11'); await p.fill('input[name=tot]', '2027-07-25');
+await p.check('input[name=topbox]'); await p.check('input[name=topbox2]'); await p.check('input[name=duits]');
+await p.selectOption('select[name=fietsen]', '3'); await p.fill('input[name=naam]', 'Test');
+console.log(await p.textContent('[data-zondag]'));
+console.log(decodeURIComponent(await p.getAttribute('[data-verstuur]', 'href')));
+await p.locator('#bon').scrollIntoViewIfNeeded(); await p.locator('#bon').screenshot({ path: 'shots/wow-390.png' });
+await p.selectOption('select[name=wagen]', 'Comfort 400');
+console.log('duits disabled', await p.isDisabled('input[name=duits]'), 'topbox2', await p.isDisabled('input[name=topbox2]'));
+await b.close();

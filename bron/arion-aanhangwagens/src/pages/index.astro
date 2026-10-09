@@ -1,0 +1,350 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, deluxe, comfort, waHoi } from '../data/site';
+
+import erf from '../assets/erf-stompwijkseweg.jpg';
+import stoelen from '../assets/stoelen-op-topbox.jpg';
+import deksel from '../assets/deluxe-1400-deksel.jpg';
+import comfort400 from '../assets/comfort-400.jpg';
+import topbox from '../assets/topbox-kratten.jpg';
+import fietsen from '../assets/fietsen-onderweg.jpg';
+import honderd from '../assets/deluxe-100.jpg';
+
+const titel = 'Arion Aanhangwagens | Bagagewagen huren in Leidschendam';
+const omschrijving = 'Geremde en ongeremde bagagewagens, een autoambulance en een motortrailer huren bij Arion Aanhangwagens aan de Stompwijkseweg in Leidschendam.';
+
+// Hero: hun eigen erf met het bruggetje en het ARION-bord. Bronfoto is 900 px breed (opgeschaald naar 1800).
+const hD = await getImage({ src: erf, widths: [1100, 1440, 1800], sizes: '100vw', format: 'webp', quality: 70 });
+const hM = await getImage({ src: erf, widths: [900], sizes: '216vw', format: 'webp', quality: 60 });
+
+const [sebastian, renate, tjerk, jdd] = reviews;
+const wagens = [...deluxe.map((w) => ({ ...w, geremd: true })), ...comfort.map((w) => ({ ...w, geremd: false }))];
+---
+<Base title={titel} description={omschrijving}>
+  <Kop />
+  <main id="inhoud">
+
+    <!-- 1. Opening: het bruggetje naar hun erf, met het ARION-bord in het water gespiegeld -->
+    <section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-nacht text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={hD.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <source srcset={hM.srcSet.attribute} sizes="216vw" type="image/webp" />
+        <img src={hD.src} alt="Een houten bruggetje over de sloot naar het erf, met op de rand een wit bord ARION aanhangwagens.nl; achter het hek staan witte bagagewagens op een rij" width="1800" height="900" fetchpriority="high" loading="eager" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%] md:object-[50%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#121428f0_0%,#121428c4_34%,#12142866_58%,#12142800_78%)] md:bg-[linear-gradient(180deg,#121428e6_0%,#121428b3_30%,#12142840_56%,#12142800_70%)]" aria-hidden="true"></div>
+      <div class="wrap pt-32 md:pt-40 lg:pt-44">
+        <p class="flex items-center gap-3 text-[1.0625rem] font-[560] text-wit/90"><span class="strepen text-wit/80" aria-hidden="true"></span>Aanhangwagenverhuur in Leidschendam</p>
+        <h1 class="mt-6 max-w-[15ch] text-hero font-[820]">Ik ga op reis en neem mee&hellip;</h1>
+        <p class="mt-6 max-w-[36rem] text-lg text-wit/90 md:text-xl">Geremde en ongeremde bagagewagens, een autoambulance en een motortrailer. Op te halen aan de Stompwijkseweg, parallel aan de A4.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="#aanvragen" class="knop knop-wit">Vraag of uw wagen vrij is<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-lijn num max-sm:hidden"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+      </div>
+      <p class="absolute bottom-20 right-5 hidden max-w-[12rem] md:block text-right text-xs leading-snug text-wit/80 [text-shadow:0_1px_6px_#000a] md:bottom-8 md:right-10">Het bruggetje naar het erf aan de Stompwijkseweg.</p>
+    </section>
+
+    <!-- 2. Bagagewagens: zeven modellen als typeplaat, geen prijzen -->
+    <section id="wagens" class="pb-24 pt-20 md:pb-32 md:pt-28" aria-labelledby="wagens-titel">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <div class="rijs overflow-hidden rounded-sm lg:sticky lg:top-28">
+            <Image src={stoelen} alt="Geremde bagagewagen met een volle topbox en twee klapstoelen erop, op het erf" widths={[480, 675]} sizes="(min-width: 1024px) 36vw, 100vw" class="aspect-[4/5] w-full object-cover" />
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <h2 id="wagens-titel" class="rijs text-3xl">Zeven bagagewagens, van 400 tot 1.600 liter.</h2>
+          <p class="rijs mt-6 max-w-xl text-lg text-grijs">Alle bagagewagens rijdt u met rijbewijs B. Kies de maat bij uw bagage, en geremd als u de bergen in gaat.</p>
+
+          <div class="rijs mt-12">
+            <div class="flex items-baseline justify-between gap-4 border-b-2 border-inkt pb-3">
+              <h3 class="text-2xl">DeLuxe, geremd</h3>
+              <span class="text-sm font-[600] text-blauw">Afsluitbare deksel met imperiaal</span>
+            </div>
+            <table class="num mt-1 w-full text-left text-[1rem]">
+              <caption class="sr-only">Geremde bagagewagens: inhoud en binnenmaten in centimeters</caption>
+              <thead class="text-xs text-grijs"><tr><th scope="col" class="py-2 font-[560]">Model</th><th scope="col" class="py-2 text-right font-[560]">Inhoud</th><th scope="col" class="py-2 text-right font-[560]">Maat in cm</th></tr></thead>
+              <tbody>{deluxe.map((w) => <tr class="border-t border-lijn"><th scope="row" class="py-3 font-[650]">{w.naam}</th><td class="py-3 text-right">{w.liter} liter</td><td class="py-3 text-right text-grijs">{w.maat}</td></tr>)}</tbody>
+            </table>
+            <p class="mt-4 max-w-xl text-grijs">Bij een noodstop staat u met een geremde bagagewagen tot 4 meter eerder stil. Op wintersport neemt u altijd een geremde.</p>
+          </div>
+
+          <div class="rijs mt-14">
+            <div class="flex items-baseline justify-between gap-4 border-b-2 border-inkt pb-3">
+              <h3 class="text-2xl">Comfort, ongeremd</h3>
+              <span class="text-sm font-[600] text-blauw">Fietsendragers te monteren</span>
+            </div>
+            <table class="num mt-1 w-full text-left text-[1rem]">
+              <caption class="sr-only">Ongeremde bagagewagens: inhoud en binnenmaten in centimeters</caption>
+              <thead class="text-xs text-grijs"><tr><th scope="col" class="py-2 font-[560]">Model</th><th scope="col" class="py-2 text-right font-[560]">Inhoud</th><th scope="col" class="py-2 text-right font-[560]">Maat in cm</th></tr></thead>
+              <tbody>{comfort.map((w) => <tr class="border-t border-lijn"><th scope="row" class="py-3 font-[650]">{w.naam}</th><td class="py-3 text-right">{w.liter} liter</td><td class="py-3 text-right text-grijs">{w.maat}</td></tr>)}</tbody>
+            </table>
+            <p class="mt-4 max-w-xl text-grijs">Ideaal voor de vakantie in Europa. Overdag op pad? Dan is de bagagewagen een kluis bij uw tent.</p>
+          </div>
+
+          <div class="rijs mt-14 grid grid-cols-[1.25fr_1fr] items-end gap-3 md:gap-5">
+            <Image src={deksel} alt="DeLuxe 1400 met de deksel open, voor de werkplaats" widths={[480, 900]} sizes="(min-width: 1024px) 32vw, 56vw" class="aspect-[4/3] w-full rounded-sm object-cover" />
+            <Image src={comfort400} alt="Ongeremde Comfort 400 met imperiaal" widths={[360, 640]} sizes="(min-width: 1024px) 24vw, 42vw" class="aspect-square w-full rounded-sm object-cover" />
+          </div>
+
+          <ul class="rijs mt-12 flex flex-wrap gap-x-7 gap-y-3 border-t border-lijn pt-6 text-[1rem] font-[600]">
+            {['RDW gekeurd', 'Reservewiel', 'Afsluitbaar met slot', 'Imperiaal inbegrepen', 'Betalen bij afhalen'].map((t) => <li class="flex items-center gap-2.5"><Icoon naam="vink" class="h-4 w-4 text-blauw" />{t}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Extra mee: topbox, fietsendragers, 100 km-ontheffing, slot -->
+    <section id="extra" class="bg-nacht pb-24 pt-20 text-wit md:pb-32 md:pt-28" aria-labelledby="extra-titel">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="extra-titel" class="rijs text-3xl">Nog meer mee.</h2>
+          <dl class="mt-12 divide-y divide-lijn-licht border-y border-lijn-licht">
+            <div class="rijs grid grid-cols-[5.5rem_1fr] gap-5 py-7 md:grid-cols-[7rem_1fr]">
+              <dt class="num text-[2.4rem] font-[820] italic leading-none md:text-[3rem]" style="font-stretch:110%">440<span class="sr-only"> liter: topbox</span></dt>
+              <dd><p class="text-xl font-[700]">Topbox</p><p class="mt-1 text-mist">440 liter extra bagage op de aanhanger, met anti-slipmat, vangnet en spanbanden. Op de DeLuxe 1400 en 1600 passen er twee.</p></dd>
+            </div>
+            <div class="rijs grid grid-cols-[5.5rem_1fr] gap-5 py-7 md:grid-cols-[7rem_1fr]">
+              <dt><span class="honderd" aria-hidden="true">100</span><span class="sr-only">100 km-ontheffing</span></dt>
+              <dd><p class="text-xl font-[700]">100 km-ontheffing</p><p class="mt-1 text-mist">In en door Duitsland 100 in plaats van 80 km per uur. Alleen met een geremde bagagewagen, achter een auto met ABS.</p></dd>
+            </div>
+            <div class="rijs grid grid-cols-[5.5rem_1fr] gap-5 py-7 md:grid-cols-[7rem_1fr]">
+              <dt class="pt-1"><svg viewBox="0 0 48 32" class="h-9 w-12 text-wit" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="22" r="8"/><circle cx="37" cy="22" r="8"/><path d="M11 22 19 9h13l5 13M19 9l7 13h-15M28 5h5"/></svg><span class="sr-only">Fietsendragers</span></dt>
+              <dd><p class="text-xl font-[700]">Fietsendragers</p><p class="mt-1 text-mist">Uw eigen fietsen mee naar de eindbestemming.</p></dd>
+            </div>
+            <div class="rijs grid grid-cols-[5.5rem_1fr] gap-5 py-7 md:grid-cols-[7rem_1fr]">
+              <dt class="pt-1"><svg viewBox="0 0 32 32" class="h-9 w-9 text-wit" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="14" width="20" height="14" rx="2"/><path d="M10 14V10a6 6 0 0 1 12 0v4M16 20v3"/></svg><span class="sr-only">Antidiefstalslot</span></dt>
+              <dd><p class="text-xl font-[700]">Antidiefstalslot</p><p class="mt-1 text-mist">Ook rijdend te gebruiken. Zet de aanhanger dag en nacht op slot, ook aangekoppeld.</p></dd>
+            </div>
+          </dl>
+        </div>
+        <div class="grid grid-cols-2 content-start gap-3 md:gap-5 lg:col-span-6 lg:pt-4">
+          <div class="rijs col-span-2 overflow-hidden rounded-sm"><Image src={fietsen} alt="Geremde bagagewagen met drie fietsen op de fietsendragers achter een auto, in de polder" widths={[600]} sizes="(min-width: 1024px) 44vw, 100vw" class="aspect-[4/3] w-full object-cover" /></div>
+          <div class="rijs overflow-hidden rounded-sm" style="--d:.1s"><Image src={topbox} alt="Open topbox op de bagagewagen, met grijze kratten erin" widths={[340, 675]} sizes="(min-width: 1024px) 22vw, 48vw" class="aspect-[3/4] w-full object-cover" /></div>
+          <div class="rijs overflow-hidden rounded-sm" style="--d:.2s"><Image src={honderd} alt="Achterkant van een geremde bagagewagen met het ronde 100-bord en het NL-bord" widths={[340, 675]} sizes="(min-width: 1024px) 22vw, 48vw" class="aspect-[3/4] w-full object-cover object-[0%_50%]" /></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Auto of motor vervoeren: als het witte bord langs hun bruggetje -->
+    <section id="vervoeren" class="overflow-hidden bg-plaat py-24 md:py-32" aria-labelledby="vervoeren-titel">
+      <div class="wrap">
+        <h2 id="vervoeren-titel" class="rijs max-w-[18ch] text-3xl">Een auto of motor vervoeren?</h2>
+        <p class="rijs mt-5 max-w-xl text-lg text-grijs">Antidiefstalslot, spanbanden en lier zitten bij de huur.</p>
+      </div>
+      <div class="bord mt-14 py-12 shadow-[0_1px_0_var(--color-lijn)] md:py-16">
+        <div class="wrap grid gap-y-12 md:grid-cols-2 md:gap-x-14">
+          <div class="rijs">
+            <div class="flex items-center gap-4"><span class="strepen text-blauw" aria-hidden="true"></span><h3 class="text-2xl">Autoambulance</h3></div>
+            <p class="num mt-5 text-[clamp(2.2rem,3vw+1rem,3.6rem)] font-[820] italic leading-none" style="font-stretch:112%">400 × 200 cm</p>
+            <p class="mt-4 max-w-md text-grijs">Een auto, motor of ander voertuig veilig en snel verplaatsen. Let op: hiervoor is rijbewijs E achter B verplicht.</p>
+          </div>
+          <div class="rijs" style="--d:.12s">
+            <div class="flex items-center gap-4"><span class="strepen text-blauw" aria-hidden="true"></span><h3 class="text-2xl">Motortrailer</h3></div>
+            <p class="num mt-5 text-[clamp(2.2rem,3vw+1rem,3.6rem)] font-[820] italic leading-none" style="font-stretch:112%">1.000 kg</p>
+            <p class="mt-4 max-w-md text-grijs">Laadvermogen. Met de lier takelt u de motor eenvoudig op de trailer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Wow: wagen aanvragen, eindigt in een vooraf ingevuld WhatsApp-bericht -->
+    <section id="aanvragen" class="py-24 md:py-32" aria-labelledby="aanvragen-titel">
+      <div class="wrap grid grid-cols-1 gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-4">
+          <h2 id="aanvragen-titel" class="rijs text-3xl">Vraag uw wagen aan.</h2>
+          <p class="rijs mt-6 text-lg text-grijs">Kies een wagen en uw data. Via WhatsApp hoort u of hij vrij is.</p>
+          <p class="rijs mt-8 border-l-2 border-blauw pl-5 text-[1rem] text-grijs">Al gereserveerd en iets wijzigen? Mail dat naar <a href={`mailto:${site.mail}`} class="link break-all text-inkt">{site.mail}</a>. Wijzigingen via WhatsApp nemen we niet in behandeling.</p>
+        </div>
+
+        <form id="bon" class="rijs min-w-0 rounded-sm bg-wit shadow-[0_1px_0_var(--color-lijn),0_24px_48px_-28px_#12142859] lg:col-span-8" novalidate>
+          <div class="flex items-center justify-between gap-4 rounded-t-sm bg-blauw px-6 py-4 text-wit md:px-9">
+            <p class="text-lg font-[760] italic" style="font-stretch:118%">Huuraanvraag</p>
+            <span class="strepen text-wit/80" aria-hidden="true"></span>
+          </div>
+          <div class="grid gap-x-6 gap-y-6 p-6 md:grid-cols-2 md:p-9">
+            <label class="block md:col-span-2">
+              <span class="text-sm font-[650]">Welke wagen?</span>
+              <select name="wagen" class="veld mt-2">
+                <optgroup label="Geremde bagagewagens">{deluxe.map((w) => <option value={w.naam} data-geremd="1">{w.naam} ({w.liter} liter)</option>)}</optgroup>
+                <optgroup label="Ongeremde bagagewagens">{comfort.map((w) => <option value={w.naam} data-geremd="0">{w.naam} ({w.liter} liter)</option>)}</optgroup>
+                <optgroup label="Vervoer">
+                  <option value="Autoambulance" data-geremd="x">Autoambulance</option>
+                  <option value="Motortrailer" data-geremd="x">Motortrailer</option>
+                </optgroup>
+                <option value="" data-geremd="?">Weet ik nog niet, graag advies</option>
+              </select>
+            </label>
+            <label class="block">
+              <span class="text-sm font-[650]">Ophalen</span>
+              <input type="date" name="van" class="veld mt-2 min-w-0" />
+            </label>
+            <label class="block">
+              <span class="text-sm font-[650]">Terugbrengen</span>
+              <input type="date" name="tot" class="veld mt-2 min-w-0" />
+            </label>
+            <p class="-mt-3 text-xs text-grijs md:col-span-2" data-zondag>Op zondag ophalen kan niet, terugbrengen op zondag wel.</p>
+
+            <fieldset class="min-w-0 md:col-span-2" data-extra>
+              <legend class="text-sm font-[650]">Extra mee</legend>
+              <div class="mt-1 grid gap-x-6 md:grid-cols-2">
+                <label class="vink"><input type="checkbox" name="slot" /><span>Antidiefstalslot</span></label>
+                <label class="vink"><input type="checkbox" name="topbox" /><span>Topbox, 440 liter</span></label>
+                <label class="vink"><input type="checkbox" name="topbox2" /><span>Tweede topbox <span class="text-grijs">(DeLuxe 1400 en 1600)</span></span></label>
+                <label class="vink"><input type="checkbox" name="duits" /><span>100 km-ontheffing Duitsland <span class="text-grijs">(geremd)</span></span></label>
+              </div>
+              <label class="mt-3 flex flex-wrap items-center gap-3">
+                <span>Fietsendragers</span>
+                <select name="fietsen" class="veld !min-h-11 !w-24">{[0, 1, 2, 3, 4, 5, 6].map((n) => <option value={n}>{n}</option>)}</select>
+              </label>
+            </fieldset>
+
+            <label class="block md:col-span-2">
+              <span class="text-sm font-[650]">Uw naam</span>
+              <input type="text" name="naam" autocomplete="name" class="veld mt-2" />
+            </label>
+          </div>
+          <div class="border-t border-dashed border-lijn px-6 pb-7 pt-6 md:px-9 md:pb-9">
+            <p class="text-xs font-[650] text-grijs">Uw bericht</p>
+            <p class="mt-2 whitespace-pre-line text-[1rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+            <a href={waHoi} class="knop mt-6 w-full sm:w-auto" data-verstuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. Voor vertrek: uit hun eigen veelgestelde vragen -->
+    <section id="vragen" class="bg-wit py-24 md:py-32" aria-labelledby="vragen-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="vragen-titel" class="rijs text-3xl">Voor u wegrijdt.</h2>
+          <dl class="mt-10 space-y-7">
+            <div class="rijs"><dt class="font-[700]">Meenemen</dt><dd class="mt-1 text-grijs">Een geldig Nederlands rijbewijs, het kentekenbewijs van uw auto en een witte kentekenplaat met het kenteken van uw auto.</dd></div>
+            <div class="rijs"><dt class="font-[700]">Afrekenen</dt><dd class="mt-1 text-grijs">Contant, bij het ophalen. Pinnen of creditcard kan helaas niet. Reserveren kost niets.</dd></div>
+            <div class="rijs"><dt class="font-[700]">Annuleren</dt><dd class="mt-1 text-grijs">Tot 30 dagen voor de ophaaldatum.</dd></div>
+            <div class="rijs"><dt class="font-[700]">Naar het buitenland</dt><dd class="mt-1 text-grijs">Naar België, Denemarken, Duitsland, Frankrijk, Italië, Luxemburg, Oostenrijk, Portugal, Spanje, het Verenigd Koninkrijk en Zwitserland, met een verzekering die bij pech de aanhangwagen terughaalt.</dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <div class="rijs rounded-sm bg-plaat p-7 md:p-10">
+            <p class="text-2xl font-[780] italic" style="font-stretch:112%">Vijf keer ja?</p>
+            <p class="mt-2 text-grijs">Dan rijdt u veilig weg.</p>
+            <ul class="mt-6 divide-y divide-lijn border-y border-lijn" data-check>
+              {['Valt de koppeling goed in de vergrendeling?', 'Zit de handrembreekkabel goed vast?', 'Is de stekker goed bevestigd?', 'Werkt de verlichting van de bagagewagen?', 'Staat de bagagewagen van de handrem?'].map((v) => <li><label class="vink !py-3.5"><input type="checkbox" /><span>{v}</span></label></li>)}
+            </ul>
+            <p class="mt-6 text-[1rem] text-grijs">Bij Arion is er altijd iemand die u helpt en adviseert.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Reviews: letterlijk van Google, score één keer klein -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="reviews-titel">
+      <div class="wrap">
+        <h2 id="reviews-titel" class="sr-only">Reviews</h2>
+        <figure class="rijs max-w-5xl">
+          <blockquote class="text-[clamp(1.6rem,2.2vw+1rem,2.9rem)] font-[680] italic leading-[1.15] tracking-[-0.015em]" style="font-stretch:106%">&ldquo;{renate.tekst}&rdquo;</blockquote>
+          <figcaption class="mt-6 flex items-center gap-3 text-[1rem] text-grijs"><span class="strepen text-blauw" aria-hidden="true"></span>{renate.naam}, Google review</figcaption>
+        </figure>
+        <div class="mt-16 grid gap-x-12 gap-y-10 border-t border-lijn pt-12 md:grid-cols-3">
+          {[sebastian, tjerk, jdd].map((r, i) => (
+            <figure class="rijs" style={`--d:${i * 0.1}s`}>
+              <div class="flex gap-0.5 text-blauw" role="img" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+              <blockquote class="mt-4 text-[1.0625rem]">&ldquo;{r.tekst}&rdquo;</blockquote>
+              <figcaption class="mt-4 text-sm font-[650]">{r.naam}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="mt-12 flex items-center gap-2 text-sm text-grijs"><Icoon naam="g" class="h-4 w-4" /><span class="num">{site.google.score}</span> op Google, uit <span class="num">{site.google.aantal}</span> reviews</p>
+      </div>
+    </section>
+
+    <!-- 8. Route en tijden -->
+    <section id="route" class="bg-nacht py-24 text-wit md:py-32" aria-labelledby="route-titel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <h2 id="route-titel" class="rijs text-3xl">Stompwijkseweg 33-I.</h2>
+          <p class="rijs mt-6 max-w-lg text-lg text-mist">Vanuit Den Haag en vanuit Zoetermeer rijdt u er in 15 minuten heen. Op de Stompwijkseweg rijdt u parallel aan de A4.</p>
+          <div class="rijs mt-9 flex flex-wrap gap-3">
+            <a href={site.route} class="knop knop-wit"><Icoon naam="pin" />Plan uw route</a>
+            <a href={site.telHref} class="knop knop-lijn num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <p class="rijs mt-8 text-mist">{site.straat}, {site.postcode} {site.plaats}</p>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs flex items-center justify-between gap-4 border-b border-lijn-licht pb-4">
+            <p class="text-xl font-[700]">Openingstijden</p>
+            <p class="text-sm font-[650]" data-status></p>
+          </div>
+          <ul class="num divide-y divide-lijn-licht">
+            {tijden.map((t, i) => <li class="rijs flex justify-between gap-4 py-4" data-dag={i}><span>{t.dag}</span><span class="text-right">{t.tekst}</span></li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Huuraanvraag: bouwt een kort WhatsApp-bericht. Er wordt niets verstuurd of opgeslagen.
+  const f = document.querySelector<HTMLFormElement>('#bon');
+  const wa = 'https://wa.me/31641983777';
+  const datum = (v: string) => { if (!v) return ''; const d = new Date(v + 'T12:00:00'); return d.toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }); };
+  const zondag = (v: string) => !!v && new Date(v + 'T12:00:00').getDay() === 0;
+  if (f) {
+    const el = (n: string) => f.elements.namedItem(n) as HTMLInputElement & HTMLSelectElement;
+    const vandaag = new Date(); vandaag.setMinutes(vandaag.getMinutes() - vandaag.getTimezoneOffset());
+    el('van').min = el('tot').min = vandaag.toISOString().slice(0, 10);
+    const zet = () => {
+      const sel = el('wagen'); const opt = sel.selectedOptions[0]; const g = opt?.dataset.geremd;
+      const bagage = g === '1' || g === '0' || g === '?';
+      const groot = /1400|1600/.test(sel.value);
+      el('topbox').disabled = !bagage; el('slot').disabled = false;
+      el('topbox2').disabled = !(groot || g === '?') || !el('topbox').checked;
+      el('duits').disabled = !(g === '1' || g === '?');
+      el('fietsen').disabled = !bagage;
+      for (const n of ['topbox', 'topbox2', 'duits']) if (el(n).disabled) el(n).checked = false;
+      if (el('fietsen').disabled) el('fietsen').value = '0';
+      if (el('tot').value && el('van').value && el('tot').value < el('van').value) el('tot').value = el('van').value;
+      const zin = f.querySelector<HTMLElement>('[data-zondag]');
+      if (zin) { const z = zondag(el('van').value); zin.textContent = z ? 'Let op: op zondag ophalen kan niet. Kies een andere dag.' : 'Op zondag ophalen kan niet, terugbrengen op zondag wel.'; zin.classList.toggle('!text-blauw', z); zin.classList.toggle('font-[650]', z); }
+      const extra: string[] = [];
+      if (el('slot').checked) extra.push('antidiefstalslot');
+      if (el('topbox').checked) extra.push(el('topbox2').checked ? 'twee topboxen' : 'topbox');
+      const fi = Number(el('fietsen').value); if (fi) extra.push(`${fi} fietsendrager${fi > 1 ? 's' : ''}`);
+      if (el('duits').checked) extra.push('100 km-ontheffing Duitsland');
+      const regels = [
+        'Hallo Arion,',
+        sel.value ? `Is de ${sel.value} vrij?` : 'Ik wil graag een aanhanger huren. Welke past bij mij?',
+        `Ophalen: ${datum(el('van').value) || '...'}`,
+        `Terugbrengen: ${datum(el('tot').value) || '...'}`,
+      ];
+      if (extra.length) regels.push(`Graag ook: ${extra.join(', ')}.`);
+      if (el('naam').value.trim()) regels.push(`Groet, ${el('naam').value.trim()}`);
+      const tekst = regels.join('\n');
+      const v = f.querySelector<HTMLElement>('[data-voorbeeld]'); if (v) v.textContent = tekst;
+      const a = f.querySelector<HTMLAnchorElement>('[data-verstuur]'); if (a) a.href = `${wa}?text=${encodeURIComponent(tekst)}`;
+    };
+    f.addEventListener('input', zet); f.addEventListener('change', zet); f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+
+  // Open of dicht, in Nederlandse tijd. Zaterdag alleen in juli en augustus, zondag op afspraak.
+  const s = document.querySelector<HTMLElement>('[data-status]');
+  if (s) {
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const d = nu.getDay(), m = nu.getHours() * 60 + nu.getMinutes(), maand = nu.getMonth();
+    let open = false, rij = -1;
+    if (d >= 1 && d <= 5) { open = m >= 540 && m < 1020; rij = 0; }
+    else if (d === 6) { open = (maand === 6 || maand === 7) && m >= 600 && m < 720; rij = 1; }
+    else rij = 2;
+    s.textContent = d === 0 ? 'Vandaag op afspraak' : open ? 'Nu open' : 'Nu gesloten';
+    s.classList.add(open ? 'text-wit' : 'text-mist');
+    document.querySelector(`[data-dag="${rij}"]`)?.classList.add('font-[700]', 'text-wit');
+  }
+</script>

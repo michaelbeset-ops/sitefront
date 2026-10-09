@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@import "@fontsource/archivo-black/400.css";
+@import "@fontsource-variable/instrument-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het Cobo-oranje uit hun logo (#e36c0a). Verder het beton van hun terrein en het zwart van het hek en de spatlap. */
+  --color-cobo: #e36c0a;        /* oranje: vlakken, tekst op donker */
+  --color-cobo-knop: #c2560a;   /* oranje met wit erop (contrast 5:1) */
+  --color-cobo-diep: #a34a08;   /* oranje als tekst op beton */
+  --color-beton: #ebe9e4;       /* licht vlak */
+  --color-beton-2: #dedbd4;
+  --color-voeg: #1c1d1f1a;      /* naad tussen betonplaten */
+  --color-hek: #1b1c1d;         /* donker vlak */
+  --color-hek-2: #252729;
+  --color-wit: #ffffff;
+  --color-inkt: #1b1c1d;
+  --color-grijs: #55585b;       /* bijtekst op beton */
+  --color-zilver: #b4b7b9;      /* bijtekst op donker, "TRAILERS" in het logo */
+  --color-lijn: #ffffff1f;
+  --color-lijn-licht: #1b1c1d26;
+
+  --font-kop: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --font-sans: "Instrument Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-label: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.4rem, 1vw + 1.05rem, 1.85rem);
+  --text-3xl: clamp(1.75rem, 2.3vw + 1rem, 2.75rem);
+  --text-4xl: clamp(2.1rem, 3.6vw + .8rem, 4rem);
+  --text-hero: clamp(2.6rem, 5.6vw + .3rem, 6.3rem);
+
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 4rem; background: var(--color-hek); }
+  body {
+    background-color: var(--color-beton);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 400; line-height: .98; letter-spacing: -0.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-cobo); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-cobo); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 82rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .kop { font-family: var(--font-kop); }
+  /* Schuin, zoals hun logo COBOTRAILERS */
+  .schuin { font-style: italic; font-synthesis: style; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; padding: 0 1.5rem; border-radius: var(--radius-sm); font-family: var(--font-sans); font-size: 1rem; font-weight: 650; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.15rem; height: 1.15rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-cobo { background: var(--color-cobo-knop); color: var(--color-wit); }
+  .knop-cobo:hover { background: var(--color-cobo-diep); }
+  .knop-wit { border: 1.5px solid #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-hek); border-color: var(--color-wit); }
+  .knop-rand { border: 1.5px solid var(--color-inkt); color: var(--color-inkt); }
+  .knop-rand:hover { background: var(--color-inkt); color: var(--color-beton); }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-cobo-diep); }
+  .link-licht:hover { color: var(--color-cobo); }
+
+  /* Betonplaten: de naden van het terrein waar ze elke trailer fotograferen. */
+  .platen { background-image: linear-gradient(var(--color-voeg) 1px, transparent 1px), linear-gradient(90deg, var(--color-voeg) 1px, transparent 1px); background-size: 12rem 12rem; background-position: -1px -1px; }
+
+  /* De zwarte spatlap met "COBO trailers" achter het wiel: eigen detail. */
+  .spatlap { position: relative; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; padding: .55rem .9rem .7rem; background: var(--color-hek); color: var(--color-wit); border: 2px solid var(--color-wit); outline: 2px solid var(--color-hek); border-radius: 4px 4px 14px 14px; font-family: var(--font-sans); font-weight: 700; line-height: 1; letter-spacing: .01em; }
+  .spatlap b { font-size: 1.05em; letter-spacing: .04em; }
+  .spatlap i { font-style: normal; font-size: .82em; font-weight: 600; margin-top: .12em; }
+
+  .regel { border-top: 1px solid var(--color-lijn-licht); }
+  .regel-donker { border-top: 1px solid var(--color-lijn); }
+
+  /* Formulier */
+  .veld { display: block; width: 100%; min-height: 3rem; padding: .6rem .8rem; border: 1.5px solid #1b1c1d33; border-radius: var(--radius-sm); background: var(--color-wit); color: var(--color-inkt); font: inherit; font-size: 1rem; transition: border-color .2s; }
+  .veld:hover { border-color: #1b1c1d66; }
+  .veld:focus { outline: none; border-color: var(--color-cobo-knop); box-shadow: 0 0 0 3px #e36c0a2e; }
+  select.veld { -webkit-appearance: none; appearance: none; padding-right: 2rem; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-size: 5px 5px; background-position: calc(100% - 1.05rem) 55%, calc(100% - .75rem) 55%; background-repeat: no-repeat; }
+  textarea.veld { min-height: 5.5rem; resize: vertical; }
+  .veld-label { display: block; margin-bottom: .35rem; font-size: .875rem; font-weight: 650; color: var(--color-grijs); }
+  .keuze { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .keuze label { position: relative; cursor: pointer; }
+  .keuze input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border: 1.5px solid #1b1c1d33; border-radius: var(--radius-sm); background: var(--color-wit); font-size: .9375rem; font-weight: 550; transition: background-color .2s, border-color .2s, color .2s; }
+  .keuze input:checked + span { background: var(--color-hek); border-color: var(--color-hek); color: var(--color-wit); }
+  .keuze input:focus-visible + span { outline: 2px solid var(--color-cobo); outline-offset: 2px; }
+
+  .tab { position: relative; padding: .9rem 0; font-weight: 650; font-size: 1.0625rem; color: var(--color-grijs); text-align: left; cursor: pointer; transition: color .2s; }
+  .tab::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: transparent; transition: background-color .2s; }
+  .tab:hover { color: var(--color-inkt); }
+  .tab[aria-selected="true"] { color: var(--color-inkt); }
+  .tab[aria-selected="true"]::after { background: var(--color-cobo); }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+
+  .rij { scrollbar-width: thin; scrollbar-color: #ffffff40 transparent; }
+}
+
+@layer components {
+  .rij-pad { padding-inline: 1.25rem; scroll-padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .rij-pad { padding-inline: max(2.5rem, calc((100vw - 82rem) / 2 + 2.5rem)); scroll-padding-inline: max(2.5rem, calc((100vw - 82rem) / 2 + 2.5rem)); } }
+}

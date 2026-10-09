@@ -1,0 +1,413 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, merken, verhuur, tijden, waHoi, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import paard from '../assets/paard.jpg';
+import kipper from '../assets/kipper.jpg';
+import spatlap from '../assets/spatlap.jpg';
+import debonDak from '../assets/debon-dak.jpg';
+import rAnssems from '../assets/r-anssems.jpg';
+import rBlomert from '../assets/r-blomert.jpg';
+import rIfor from '../assets/r-ifor.jpg';
+import rHuif from '../assets/r-huif.jpg';
+import rCheval from '../assets/r-cheval.jpg';
+import rAuto from '../assets/r-auto.jpg';
+import rDebon from '../assets/r-debon.jpg';
+import rVee from '../assets/r-vee.jpg';
+import rBockmann from '../assets/r-bockmann.jpg';
+import rGesloten from '../assets/r-gesloten.jpg';
+import wHengsten from '../assets/w-hengsten.jpg';
+import wBodem from '../assets/w-bodem.jpg';
+import wVloer from '../assets/w-vloer.jpg';
+
+const rij = [
+  [rCheval, 'Paardentrailer van Cheval Liberté'], [rAuto, 'Autotransporter'], [rAnssems, 'Zwarte paardentrailer van Anssems'],
+  [rHuif, 'Aanhangwagen met huif'], [rIfor, 'Paardentrailer van Ifor Williams'], [rGesloten, 'Gesloten aanhangwagen met klep'],
+  [rBlomert, 'Paardentrailer van Blomert'], [rVee, 'Veetrailer met drie assen'], [rDebon, 'Gesloten aanhangwagen van Debon'],
+  [rBockmann, 'Paardentrailer van Böckmann'],
+] as const;
+
+const soorten = ['Paardentrailer', 'Gesloten aanhangwagen', 'Open aanhangwagen of bakwagen', 'Huifwagen', 'Kipper', 'Autotransporter', 'Machinetransporter', 'Iets anders'];
+const werk = [
+  ['Onderhoudsbeurt', 'Remmen, verlichting, banden, koppeling, bodem en opbouw.'],
+  ['Reparatie', 'Van remschoenen en lagers tot verlichting, vloeren en wanden.'],
+  ['Keuring en controle', 'Wij bereiden uw trailer voor op een keuring waar dat verplicht is.'],
+  ['Speciaalbouw', 'Zadelkasten, rekken, verlichting, bekleding of een complete opbouw.'],
+];
+---
+<Base title="Cobo Trailers | Paardentrailers en aanhangwagens in Wijk en Aalburg" description="In- en verkoop van paardentrailers en aanhangwagens, nieuw en gebruikt. Onderhoud, reparatie en speciaalbouw in Wijk en Aalburg.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen foto van een Cheval Liberté met de klep open, op hun terrein -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-hek text-wit">
+      <Image src={hero} alt="Zwarte paardentrailer met open klep en uitgeklapte oprijplaat, op het terrein van Cobo Trailers" widths={[640, 1024, 1700]} sizes="100vw" class="absolute inset-0 -z-10 h-full w-full object-cover object-[58%_50%] md:object-[50%_45%]" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1c1dcc_0%,#1b1c1d40_20%,#1b1c1d8c_40%,#1b1c1dd9_60%,#1b1c1df5_100%)] md:bg-[linear-gradient(100deg,#1b1c1de6_0%,#1b1c1d99_38%,#1b1c1d1a_66%),linear-gradient(0deg,#1b1c1dcc_0%,transparent_40%)]"></div>
+      <div class="wrap pb-14 pt-36 md:pb-20">
+        <p class="text-sm font-semibold text-zilver md:text-base">Cobo Trailers in Wijk en Aalburg</p>
+        <h1 id="inhoud" class="schuin mt-4 text-hero">Paarden&shy;trailers en <br class="hidden md:block" /><span class="text-cobo">aanhang&shy;wagens</span></h1>
+        <div class="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-xl">
+            <p class="text-lg leading-relaxed text-wit/90 md:text-xl">In- en verkoop, nieuw en gebruikt. Ook onderhoud, reparatie en speciaalbouw.</p>
+            <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <a href="#zoeken" class="knop knop-cobo">Ik zoek een trailer<Icoon naam="pijl" /></a>
+              <a href="#zoeken" data-kies="verkopen" class="link link-licht font-semibold text-wit">Ik wil mijn trailer verkopen</a>
+            </div>
+          </div>
+          <p class="text-sm text-zilver md:text-right">Kijken kan op afspraak<br /><a href={site.telHref} class="num link link-licht text-base font-semibold text-wit">{site.tel}</a></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Aanbod: twee soorten, groot -->
+    <section id="aanbod" class="platen py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-y-10 md:grid-cols-12 md:gap-x-8">
+          <h2 class="rijs text-4xl md:col-span-7">Altijd een ruim aanbod occasions. En nieuw.</h2>
+          <div class="rijs md:col-span-4 md:col-start-9 md:pt-2" style="--d:.1s">
+            <p class="text-grijs">Bij ons kunt u terecht voor een gebruikte of een nieuwe trailer. Wij kijken samen wat het beste bij u past.</p>
+            <p class="mt-6"><a href={site.aanbod} class="knop knop-rand">Bekijk het actuele aanbod<Icoon naam="pijl" /></a></p>
+          </div>
+        </div>
+
+        <div class="mt-16 grid gap-y-14 md:mt-20 md:grid-cols-12 md:gap-x-8">
+          <figure class="rijs min-w-0 md:col-span-7">
+            <div class="overflow-hidden rounded-md bg-beton-2">
+              <Image src={paard} alt="Zwart-witte paardentrailer van Cheval Liberté op het terrein" widths={[480, 760, 1024]} sizes="(min-width: 768px) 56vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+            </div>
+            <figcaption class="mt-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <span class="kop schuin text-3xl">Paardentrailers</span>
+              <span class="text-sm text-grijs">nieuw en gebruikt</span>
+            </figcaption>
+          </figure>
+          <figure class="rijs min-w-0 md:col-span-5 md:mt-28" style="--d:.12s">
+            <div class="overflow-hidden rounded-md bg-beton-2">
+              <Image src={kipper} alt="Aanhangwagen met opgeklapte kipbak" widths={[480, 760]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-square w-full object-cover object-[40%_50%]" />
+            </div>
+            <figcaption class="mt-5 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <span class="kop schuin text-3xl">Aanhangwagens</span>
+              <span class="text-sm text-grijs">open en gesloten</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="rijs regel mt-20 pt-8 md:mt-24 md:grid md:grid-cols-12 md:gap-x-8">
+          <p class="text-sm font-semibold text-grijs md:col-span-3">Merken in ons aanbod van oktober 2026</p>
+          <p class="mt-3 flex flex-wrap text-xl leading-snug md:col-span-9 md:mt-0 md:text-2xl">
+            {merken.map((m, i) => <span class="whitespace-nowrap">{m}{i < merken.length - 1 && <span class="px-2 text-cobo-diep" aria-hidden="true">/</span>}</span>)}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. De rij op het terrein -->
+    <section class="overflow-hidden bg-hek py-24 text-wit md:py-32" aria-labelledby="rij-kop">
+      <div class="wrap grid gap-y-6 md:grid-cols-12 md:gap-x-8">
+        <h2 id="rij-kop" class="rijs text-4xl md:col-span-6">Van paardentrailer tot autotransporter.</h2>
+        <p class="rijs text-zilver md:col-span-5 md:col-start-8 md:self-end" style="--d:.1s">Een greep uit het aanbod van oktober 2026. Het aanbod wisselt, dus vraag gerust wat er nu staat.</p>
+      </div>
+      <ul class="rij rij-pad mt-14 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 md:mt-16 md:gap-5">
+        {rij.map(([img, alt]) => (
+          <li class="w-[78vw] flex-none snap-start sm:w-[46vw] lg:w-[30rem]">
+            <Image src={img} alt={alt} widths={[400, 640]} sizes="(min-width: 1024px) 480px, 78vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+          </li>
+        ))}
+      </ul>
+      <div class="wrap mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+        <a href={site.aanbod} class="knop knop-cobo">Alle trailers met specificaties<Icoon naam="pijl" /></a>
+        <a href={waMet('Hallo Cobo Trailers, wat heeft u op dit moment staan aan ')} class="link link-licht font-semibold">Vraag via WhatsApp wat er nu staat</a>
+      </div>
+    </section>
+
+    <!-- 4. Wow: zoeken, verkopen, werkplaats, huren -> WhatsApp -->
+    <section id="zoeken" class="bg-beton py-24 md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Zoeken, verkopen of laten maken?</h2>
+          <p class="rijs mt-6 max-w-md text-grijs" style="--d:.08s">Kies wat u wilt en vul in wat u weet. WhatsApp opent met uw bericht klaar; u verstuurt het zelf.</p>
+          <figure class="rijs mt-12 hidden lg:block" style="--d:.16s">
+            <Image src={spatlap} alt="Spatlap met COBO trailers achter het wiel van een paardentrailer" widths={[480, 760]} sizes="34vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+          </figure>
+        </div>
+
+        <div class="lg:col-span-7" data-wow>
+          <div role="tablist" aria-label="Waar kunnen wij mee helpen" class="grid grid-cols-2 gap-x-6 border-b border-lijn-licht sm:flex sm:gap-x-8">
+            <button type="button" role="tab" class="tab" id="t-zoeken" aria-controls="p-zoeken" aria-selected="true" data-tab="zoeken">Ik zoek een trailer</button>
+            <button type="button" role="tab" class="tab" id="t-verkopen" aria-controls="p-verkopen" aria-selected="false" tabindex="-1" data-tab="verkopen">Ik wil verkopen</button>
+            <button type="button" role="tab" class="tab" id="t-werk" aria-controls="p-werk" aria-selected="false" tabindex="-1" data-tab="werk">Werkplaats</button>
+            <button type="button" role="tab" class="tab" id="t-huren" aria-controls="p-huren" aria-selected="false" tabindex="-1" data-tab="huren">Huren</button>
+          </div>
+
+          <form class="mt-8" data-form onsubmit="return false">
+            <div role="tabpanel" id="p-zoeken" aria-labelledby="t-zoeken" data-paneel="zoeken" class="grid gap-6 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="z-soort">Wat zoekt u?</label>
+                <select id="z-soort" class="veld" data-v="soort">{soorten.map((s) => <option>{s}</option>)}</select>
+              </div>
+              <fieldset>
+                <legend class="veld-label">Nieuw of gebruikt</legend>
+                <div class="keuze">
+                  <label><input type="radio" name="z-staat" value="nieuw" data-v="staat" /><span>Nieuw</span></label>
+                  <label><input type="radio" name="z-staat" value="gebruikt" data-v="staat" /><span>Gebruikt</span></label>
+                  <label><input type="radio" name="z-staat" value="" data-v="staat" checked /><span>Allebei</span></label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend class="veld-label">Uw rijbewijs</legend>
+                <div class="keuze">
+                  <label><input type="radio" name="z-rb" value="B" data-v="rb" /><span>B</span></label>
+                  <label><input type="radio" name="z-rb" value="BE" data-v="rb" /><span>BE</span></label>
+                  <label><input type="radio" name="z-rb" value="" data-v="rb" checked /><span>Weet ik niet</span></label>
+                </div>
+              </fieldset>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="z-wens">Waarvoor, en wat moet hij kunnen?</label>
+                <textarea id="z-wens" class="veld" data-v="wens" placeholder="Bijvoorbeeld: voor twee paarden, of voor een minigraver"></textarea>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="p-verkopen" aria-labelledby="t-verkopen" data-paneel="verkopen" class="grid hidden gap-6 sm:grid-cols-2">
+              <div>
+                <label class="veld-label" for="v-soort">Wat wilt u verkopen?</label>
+                <select id="v-soort" class="veld" data-v="soort">{soorten.map((s) => <option>{s}</option>)}</select>
+              </div>
+              <div>
+                <label class="veld-label" for="v-jaar">Bouwjaar</label>
+                <input id="v-jaar" class="veld num" inputmode="numeric" maxlength="4" data-v="jaar" placeholder="Bijvoorbeeld 2015" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="v-merk">Merk en type</label>
+                <input id="v-merk" class="veld" data-v="merk" placeholder="Bijvoorbeeld Böckmann, tweepaards" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="v-staat">Staat en bijzonderheden</label>
+                <textarea id="v-staat" class="veld" data-v="wens" placeholder="Banden, bodem, remmen, schade, kenteken"></textarea>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="p-werk" aria-labelledby="t-werk" data-paneel="werk" class="grid hidden gap-6 sm:grid-cols-2">
+              <div>
+                <label class="veld-label" for="w-soort">Om welke trailer gaat het?</label>
+                <select id="w-soort" class="veld" data-v="soort">{soorten.map((s) => <option>{s}</option>)}</select>
+              </div>
+              <div>
+                <label class="veld-label" for="w-wat">Wat is er nodig?</label>
+                <select id="w-wat" class="veld" data-v="wat">{werk.map(([t]) => <option>{t}</option>)}</select>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="w-merk">Merk en type</label>
+                <input id="w-merk" class="veld" data-v="merk" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="w-wens">Toelichting</label>
+                <textarea id="w-wens" class="veld" data-v="wens" placeholder="Wat is er aan de hand, of wat wilt u laten maken?"></textarea>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="p-huren" aria-labelledby="t-huren" data-paneel="huren" class="hidden">
+              <p class="max-w-lg text-lg">Huren regelt u online in onze verhuurplanner op coboverhuur.nl: kies de aanhanger en de periode, en reserveer direct.</p>
+              <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-1.5 text-grijs">{verhuur.map((v) => <li>{v}</li>)}</ul>
+              <p class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <a href={site.verhuur} class="knop knop-cobo">Naar de verhuurplanner<Icoon naam="pijl" /></a>
+                <a href={waMet('Hallo Cobo Trailers, ik wil graag een aanhanger huren van ... tot ...')} class="link font-semibold">Liever via WhatsApp</a>
+              </p>
+            </div>
+
+            <div class="mt-10 grid gap-6 border-t border-lijn-licht pt-8 sm:grid-cols-[1fr_auto] sm:items-end" data-uit>
+              <div>
+                <p class="veld-label">Uw bericht</p>
+                <p class="whitespace-pre-line rounded-md bg-wit p-5 text-[.97rem] leading-relaxed text-inkt shadow-[0_1px_2px_#1b1c1d14]" data-voorbeeld aria-live="polite"></p>
+              </div>
+              <a href={waHoi} class="knop knop-cobo" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkplaats -->
+    <section id="werkplaats" class="bg-hek py-24 text-wit md:py-32">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-8">
+        <div class="md:col-span-5">
+          <h2 class="rijs text-4xl">Veilig op de weg door betrouwbaar vakmanschap.</h2>
+          <p class="rijs mt-6 text-zilver" style="--d:.08s">Elke rit heeft invloed op de conditie van uw trailer. Met een periodieke onderhouds- of controlebeurt ontdekt u gebreken op tijd, en gaat uw trailer langer mee.</p>
+          <p class="rijs mt-4 font-semibold" style="--d:.12s">Voor alle merken aanhangwagens en paardentrailers.</p>
+          <ul class="rijs mt-10" style="--d:.16s">
+            {werk.map(([t, z]) => (
+              <li class="regel-donker grid gap-1 py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
+                <span class="font-semibold text-cobo">{t}</span>
+                <span class="text-zilver">{z}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-10"><a href="#zoeken" data-kies="werk" class="knop knop-wit">Plan onderhoud<Icoon naam="pijl" /></a></p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 md:col-span-6 md:col-start-7 md:gap-5 lg:col-span-5 lg:col-start-8">
+          <figure class="rijs col-span-2 sm:col-span-1 sm:row-span-2">
+            <Image src={wHengsten} alt="Speciaalbouw: hengstenuitvoering met tralies en een stang in een paardentrailer" widths={[360, 480]} sizes="(min-width: 768px) 24vw, 90vw" class="aspect-[3/4] h-full w-full rounded-md object-cover" />
+            <figcaption class="mt-3 text-sm text-zilver">Speciaalbouw: hengstenuitvoering</figcaption>
+          </figure>
+          <figure class="rijs" style="--d:.1s">
+            <Image src={wBodem} alt="Paardentrailer zonder vloer, alleen het frame, in de werkplaats" widths={[360, 480]} sizes="(min-width: 768px) 24vw, 45vw" class="aspect-[3/4] w-full rounded-md object-cover" />
+          </figure>
+          <figure class="rijs" style="--d:.16s">
+            <Image src={wVloer} alt="Paardentrailer met nieuwe lichte vloer" widths={[360, 480]} sizes="(min-width: 768px) 24vw, 45vw" class="aspect-[3/4] w-full rounded-md object-cover" />
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section class="platen py-24 md:py-32" aria-labelledby="rev-kop">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-8">
+        <div class="md:col-span-4">
+          <h2 id="rev-kop" class="rijs text-3xl">Wie er een trailer kocht</h2>
+          <Image src={debonDak} alt="Achterkant van een gesloten Debon-aanhangwagen met COBOTRAILERS op de dakrand" widths={[400, 640]} sizes="(min-width: 768px) 30vw, 90vw" class="rijs mt-10 aspect-[4/3] w-full rounded-md object-cover" />
+        </div>
+        <div class="md:col-span-7 md:col-start-6">
+          <blockquote class="rijs">
+            <p class="kop text-2xl leading-[1.28] md:text-[1.85rem]">"{reviews[0].tekst}"</p>
+            <footer class="mt-5 text-sm text-grijs">{reviews[0].naam}, Google review</footer>
+          </blockquote>
+          <div class="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+            {reviews.slice(1).map((r, i) => (
+              <blockquote class="rijs regel pt-6" style={`--d:${0.06 * i}s`}>
+                <p class="text-[1.02rem] leading-relaxed">"{r.tekst}"</p>
+                <footer class="mt-4 text-sm text-grijs">{r.naam}</footer>
+              </blockquote>
+            ))}
+          </div>
+          <p class="mt-12 text-sm text-grijs"><a href={site.reviews} class="link inline-flex items-center gap-2"><Icoon naam="g" class="h-4 w-4" />{site.google.score} op Google, {site.google.aantal} reviews</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Huren + contact -->
+    <section id="contact" class="bg-hek text-wit">
+      <div id="huren" class="border-b border-lijn">
+        <div class="wrap flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between md:py-14">
+          <p class="max-w-2xl text-xl leading-snug md:text-2xl"><span class="kop schuin text-cobo">Even een aanhanger nodig?</span> Huren gaat via onze verhuurplanner op coboverhuur.nl.</p>
+          <a href={site.verhuur} class="knop knop-wit self-start md:self-auto">Bekijk verhuur<Icoon naam="pijl" /></a>
+        </div>
+      </div>
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 md:py-32">
+        <div class="md:col-span-6">
+          <h2 class="rijs text-4xl">Kom kijken in Wijk en Aalburg.</h2>
+          <p class="rijs mt-6 max-w-md text-zilver" style="--d:.08s">Wilt u een aanhangwagen of paardentrailer bekijken? Maak dan even een afspraak, dan nemen wij de tijd voor u.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-4" style="--d:.12s">
+            <a href={waMet('Hallo Cobo Trailers, ik wil graag langskomen om te kijken. Wanneer komt het uit?')} class="knop knop-cobo"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="knop knop-wit"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+          <p class="rijs mt-10" style="--d:.16s">
+            <span class="block font-semibold">{site.straat}</span>
+            <span class="block text-zilver">{site.postcode}</span>
+            <a href={site.route} class="link link-licht mt-3 inline-flex items-center gap-2 font-semibold"><Icoon naam="pin" class="h-4 w-4" />Route plannen</a>
+            <a href={`mailto:${site.mail}`} class="link link-licht mt-2 block w-fit">{site.mail}</a>
+          </p>
+        </div>
+        <div class="md:col-span-5 md:col-start-8">
+          <table class="rijs w-full text-left" data-tijden>
+            <caption class="mb-4 text-left font-semibold">Openingstijden</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr class="border-t border-lijn" data-dag={t.dag}>
+                  <th scope="row" class="py-3.5 pr-4 font-medium">{t.naam}</th>
+                  <td class="num py-3.5 text-right text-zilver">{t.van ? `${t.van} tot ${t.tot}` : ''}{t.noot && <span class="block text-sm sm:inline sm:pl-2">{t.van ? `(${t.noot})` : t.noot}</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div class="rijs mt-10 flex items-center gap-5" style="--d:.1s">
+            <span class="spatlap text-lg"><b>COBO</b><i>trailers</i></span>
+            <p class="text-sm text-zilver">Kwaliteit wat u achtervolgt.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  // Vandaag markeren in de tijdentabel
+  const vandaag = new Date().getDay();
+  document.querySelector(`[data-tijden] tr[data-dag="${vandaag}"]`)?.classList.add('text-cobo');
+
+  // Wow: tabbladen + vooraf ingevuld WhatsApp-bericht
+  const NR = 'https://wa.me/31651008281';
+  const wow = document.querySelector<HTMLElement>('[data-wow]');
+  if (wow) {
+    const tabs = [...wow.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panelen = [...wow.querySelectorAll<HTMLElement>('[data-paneel]')];
+    const uit = wow.querySelector<HTMLElement>('[data-uit]')!;
+    const voorbeeld = wow.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const stuur = wow.querySelector<HTMLAnchorElement>('[data-stuur]')!;
+    let actief = 'zoeken';
+
+    const waarde = (p: HTMLElement, k: string) => {
+      const els = [...p.querySelectorAll<HTMLInputElement>(`[data-v="${k}"]`)];
+      const el = els.find((e) => e.type !== 'radio' || e.checked);
+      return (el?.value || '').trim();
+    };
+    const lager = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+
+    function bericht() {
+      const p = panelen.find((x) => x.dataset.paneel === actief)!;
+      const soort = lager(waarde(p, 'soort'));
+      const wens = waarde(p, 'wens');
+      const regels: string[] = ['Hallo Cobo Trailers,', ''];
+      if (actief === 'zoeken') {
+        const staat = waarde(p, 'staat'), rb = waarde(p, 'rb');
+        regels.push(soort === 'iets anders' ? 'Ik zoek een trailer.' : `Ik zoek een ${staat ? staat + 'e ' : ''}${soort}.`);
+        if (rb) regels.push(`Ik heb rijbewijs ${rb}.`);
+        if (wens) regels.push(`Waarvoor: ${wens}`);
+        regels.push('', 'Heeft u iets staan dat past?');
+      } else if (actief === 'verkopen') {
+        const merk = waarde(p, 'merk'), jaar = waarde(p, 'jaar');
+        regels.push(`Ik wil mijn ${soort === 'iets anders' ? 'trailer' : soort} verkopen.`);
+        if (merk) regels.push(`Merk en type: ${merk}`);
+        if (jaar) regels.push(`Bouwjaar: ${jaar}`);
+        if (wens) regels.push(`Staat: ${wens}`);
+        regels.push('', 'Ik stuur er foto\'s bij. Bent u geïnteresseerd?');
+      } else if (actief === 'werk') {
+        const wat = waarde(p, 'wat'), merk = waarde(p, 'merk');
+        regels.push(`Ik wil graag een afspraak voor: ${lager(wat)}.`);
+        regels.push(`Het gaat om een ${soort === 'iets anders' ? 'trailer' : soort}${merk ? ` (${merk})` : ''}.`);
+        if (wens) regels.push(`Toelichting: ${wens}`);
+        regels.push('', 'Wanneer kan ik langskomen?');
+      }
+      const tekst = regels.join('\n');
+      voorbeeld.textContent = tekst;
+      stuur.href = `${NR}?text=${encodeURIComponent(tekst)}`;
+    }
+
+    function kies(naam: string, focus = false) {
+      actief = naam;
+      tabs.forEach((t) => { const aan = t.dataset.tab === naam; t.setAttribute('aria-selected', String(aan)); t.tabIndex = aan ? 0 : -1; if (aan && focus) t.focus(); });
+      panelen.forEach((p) => p.classList.toggle('hidden', p.dataset.paneel !== naam));
+      uit.classList.toggle('hidden', naam === 'huren');
+      bericht();
+    }
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => kies(t.dataset.tab!));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        const n = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length;
+        kies(tabs[n].dataset.tab!, true);
+      });
+    });
+    wow.addEventListener('input', bericht);
+    wow.addEventListener('change', bericht);
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => kies(a.dataset.kies!)));
+    bericht();
+  }
+</script>
