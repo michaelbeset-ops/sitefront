@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@import "@fontsource/instrument-serif/latin-400.css";
+@import "@fontsource/instrument-serif/latin-400-italic.css";
+@import "@fontsource-variable/instrument-sans/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Eén kleur: het Ayous-hout van hun fronten (en het bruin van hun logo).
+     Verder het lichte steen van hun werkbladen en het zwart van grill, koeling en kraan. */
+  --color-ayous: #96491d;        /* op beton 6,1:1 */
+  --color-ayous-licht: #d9925f;  /* op houtskool 7,4:1 */
+  --color-ayous-zacht: #96491d1f;
+  --color-houtskool: #1a1918;
+  --color-nacht: #121211;
+  --color-beton: #ececea;
+  --color-steen: #dcdcd8;
+  --color-wit: #ffffff;
+  --color-grijs: #585753;        /* bijtekst op beton, 6,6:1 */
+  --color-mist: #a9a8a3;         /* bijtekst op houtskool, 7,6:1 */
+  --color-lijn: #1a191826;
+  --color-lijn-licht: #ffffff26;
+
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Instrument Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.15rem, 2.1rem);
+  --text-3xl: clamp(2.4rem, 3.4vw + 1rem, 4.6rem);
+  --text-hero: clamp(3.3rem, 7vw + .6rem, 8.4rem);
+
+  --radius-sm: .1875rem;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5rem; background: var(--color-beton); }
+  body {
+    background-color: var(--color-beton);
+    color: var(--color-houtskool);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; line-height: .98; letter-spacing: -0.012em; text-wrap: balance; overflow-wrap: break-word; }
+  p { text-wrap: pretty; }
+  fieldset { min-width: 0; }
+  ::selection { background: var(--color-ayous); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 82rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: 0 1.55rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 1.0625rem; text-decoration: none; white-space: nowrap; cursor: pointer; background: var(--color-ayous); color: var(--color-wit); transition: background-color .3s var(--ease-zacht), transform .3s var(--ease-zacht), color .3s, box-shadow .3s; }
+  .knop:hover { background: #7d3c17; transform: translateY(-2px); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop-lijn { background: transparent; color: var(--color-wit); box-shadow: inset 0 0 0 1.5px #ffffffb3; }
+  .knop-lijn:hover { background: var(--color-wit); color: var(--color-houtskool); }
+  .knop-donker { background: var(--color-houtskool); }
+  .knop-donker:hover { background: var(--color-nacht); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .24em; transition: opacity .25s; }
+  .link:hover { opacity: .7; }
+
+  /* Eigen detail 1: de maatlijn uit een werktekening (pijlpunten, eindstreepjes, maat in het midden),
+     zoals zij elke keuken posten: "📐 346 x 93 x 62 cm (BxHxD)". */
+  .maat { display: flex; align-items: center; gap: .75rem; font-variant-numeric: lining-nums tabular-nums; }
+  .maat::before, .maat::after { content: ""; flex: 1; height: 1px; background: currentColor; opacity: .6; }
+  .maat-kader { position: relative; padding-inline: 1px; }
+  .maat-kader::before, .maat-kader::after { content: ""; position: absolute; top: 50%; width: 1px; height: .9rem; margin-top: -.45rem; background: currentColor; opacity: .7; }
+  .maat-kader::before { left: 0; } .maat-kader::after { right: 0; }
+
+  /* Eigen detail 2: de lamellen van hun Ayous-fronten als ritme (verticale latten met een donkere naad). */
+  .lamellen { background-image: repeating-linear-gradient(90deg, var(--lat, #a85a2a) 0 var(--b, 14px), var(--naad, #3a1d0c) var(--b, 14px) calc(var(--b, 14px) + 3px)); }
+
+  .veld { appearance: none; -webkit-appearance: none; width: 100%; font: inherit; color: var(--color-wit); background: transparent; border: 0; border-bottom: 1.5px solid #ffffff59; border-radius: 0; padding: .55rem 0; min-height: 3rem; transition: border-color .2s; }
+  .veld::placeholder { color: #ffffff80; }
+  .veld:hover { border-color: #ffffffa6; }
+  .veld:focus { outline: none; border-color: var(--color-ayous-licht); }
+
+  .keuze { position: relative; display: inline-flex; align-items: center; gap: .55rem; cursor: pointer; padding: .35rem 0; }
+  .keuze input { position: absolute; opacity: 0; pointer-events: none; }
+  .keuze .bol { width: 1.05rem; height: 1.05rem; flex: none; border: 1.5px solid #ffffff8c; border-radius: 999px; transition: border-color .2s, box-shadow .2s, background .2s; }
+  .keuze .vak { border-radius: 2px; }
+  .keuze input:checked + .bol { border-color: var(--color-ayous-licht); background: var(--color-ayous-licht); box-shadow: inset 0 0 0 3px var(--color-houtskool); }
+  .keuze input:focus-visible + .bol { outline: 2px solid var(--color-wit); outline-offset: 3px; }
+  .keuze:hover .bol { border-color: var(--color-wit); }
+
+  input[type=range].schuif { -webkit-appearance: none; appearance: none; width: 100%; height: 2rem; background: transparent; cursor: pointer; }
+  input[type=range].schuif::-webkit-slider-runnable-track { height: 1px; background: #ffffff8c; }
+  input[type=range].schuif::-moz-range-track { height: 1px; background: #ffffff8c; }
+  input[type=range].schuif::-webkit-slider-thumb { -webkit-appearance: none; width: 1.4rem; height: 1.4rem; margin-top: -.7rem; border-radius: 999px; background: var(--color-ayous-licht); border: 3px solid var(--color-houtskool); box-shadow: 0 0 0 1.5px var(--color-ayous-licht); }
+  input[type=range].schuif::-moz-range-thumb { width: 1.1rem; height: 1.1rem; border-radius: 999px; background: var(--color-ayous-licht); border: 3px solid var(--color-houtskool); box-shadow: 0 0 0 1.5px var(--color-ayous-licht); }
+  input[type=range].schuif:focus-visible { outline: 2px solid var(--color-wit); outline-offset: 4px; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  /* Maatbalken in de lijst groeien open als een rolmaat. */
+  .js .meet { transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .in .meet, .js .meet.in { transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs, .js .meet { opacity: 1; transform: none; transition: none; } }
+}
