@@ -302,3 +302,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Biljartwinkel Ludo Kools, Hoogerheide | https://voorstel.sitefront.nl/biljartwinkel-ludo-kools/ | geen website, alleen Facebook; 4,9/36; 06/WhatsApp. | 2026-10-09 | demo premium |
 | Goudse Camperbouw, Haastrecht | https://voorstel.sitefront.nl/goudse-camperbouw/ | geen website (domein = parkeerpagina); 4,9/31; 06/WhatsApp. | 2026-10-09 | demo premium |
 | JS Buitenkeukens (buitenkeukens op maat), Dordrecht | https://voorstel.sitefront.nl/js-buitenkeukens/ | geen website, alleen Instagram; 5,0/10; 06/WhatsApp. | 2026-10-09 | demo premium |
+| Peet's V2 Service (Harley/V-twin), Kwintsheul | https://voorstel.sitefront.nl/peets-v2-service/ | geen website, alleen privé-Facebook; 4,9/44; 06/WhatsApp. | 2026-10-10 | demo premium |

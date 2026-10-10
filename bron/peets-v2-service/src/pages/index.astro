@@ -1,0 +1,214 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waMet } from '../data/site';
+
+import heroBreed from '../assets/hero-breed.jpg';
+import heroHoog from '../assets/hero-hoog.jpg';
+import werkbank from '../assets/werkbank.jpg';
+import vtwin from '../assets/vtwin.jpg';
+import distributie from '../assets/distributie.jpg';
+import logo from '../assets/logo.png';
+
+// Hero met art direction: liggende snede op desktop, staande foto op mobiel.
+const hb = await Promise.all([960, 1440].map((w) => getImage({ src: heroBreed, width: w, format: 'webp', quality: 72 })));
+const hh = await Promise.all([480, 860].map((w) => getImage({ src: heroHoog, width: w, format: 'webp', quality: 70 })));
+const srcset = (l: { src: string; options: { width?: number } }[]) => l.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+// Werkbon: alleen wat in hun bronnen en reviews staat.
+const klussen = [['onderhoud', 'Onderhoud'], ['olie', 'Olielek of oliedruk'], ['ontsteking', 'Ontsteking'], ['anders', 'Iets anders']] as const;
+const [fred, ...andere] = reviews;
+---
+<Base title="Peet's V2 Service | Onderhoud en reparatie V-twin motoren | Kwintsheul" description="Peet's V2 Service in Kwintsheul: service, onderhoud en reparatie van V-twin motoren, met kennis van Harley-Davidson. Sinds 1992.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen foto, de werkplaats vol Harleys onder het bord "PEET'S HD SERVICE" -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-zwart text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hb)} sizes="100vw" />
+        <img src={hh[1].src} srcset={srcset(hh)} sizes="100vw" width="1152" height="1668" alt="De werkplaats van Peet's V2 Service: twee rijen Harleys, rode motorbruggen en achterin het bord Peet's HD Service" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_30%] md:object-[50%_38%]" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0f1011cc_0%,#0f101126_20%,#0f101140_42%,#0f1011e0_72%,#0f1011fa_100%)] md:bg-[linear-gradient(90deg,#0f1011f0_0%,#0f1011a6_36%,#0f101100_66%),linear-gradient(0deg,#0f1011d9_0%,transparent_42%)]"></div>
+      <div class="wrap pb-24 pt-36 md:pb-20">
+        <p class="text-base font-semibold text-chroom">V-twin werkplaats in Kwintsheul</p>
+        <h1 id="inhoud" class="mt-3 text-hero leading-[.86]">Peet's <span class="text-rood-licht">V2</span><br />Service</h1>
+        <div class="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-xl">
+            <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Service, onderhoud en reparatie van V&#8209;twin motoren. Met kennis van Harley-Davidson, sinds {site.sinds}.</p>
+            <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <a href="#werkbon" class="knop knop-rood">Werkbon appen<Icoon naam="pijl" /></a>
+              <a href={site.telHref} class="num link link-licht font-semibold text-wit">of bel {site.tel}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- TL-buis als overgang: het licht van de hal -->
+  <div class="bg-zwart pb-10 pt-2" aria-hidden="true"><div class="wrap"><div class="tl w-2/3 md:w-1/3"></div></div></div>
+
+  <main>
+    <!-- 2. De werkplaats -->
+    <section id="werkplaats" class="bg-beton py-24 md:py-32">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-5 md:pt-6">
+          <h2 class="rijs text-4xl">Op de brug aan de Bovendijk</h2>
+          <p class="rijs mt-7 max-w-md text-lg text-olie" style="--d:.08s">Onderhoud, oliedruk, ontsteking: rijders komen met hun V&#8209;twin naar Kwintsheul.</p>
+          <figure class="rijs mt-14 hidden md:block" style="--d:.16s">
+            <Image src={vtwin} alt="Close-up van een V-twin: twee cilinders met koelribben, gasklephuis en verchroomde stoterstangen" widths={[420, 721]} sizes="(min-width: 768px) 30vw, 90vw" class="aspect-[4/5] w-full max-w-sm object-cover" />
+            <figcaption class="mt-3 text-sm text-olie">Twee cilinders in een V. Daar draait het hier om.</figcaption>
+          </figure>
+        </div>
+        <figure class="rijs md:col-span-7">
+          <Image src={werkbank} alt="Achterwiel van een zwarte Harley-Davidson op de rode motorbrug, met gereedschap op de werkbank" widths={[640, 1000, 1200]} sizes="(min-width: 768px) 55vw, 100vw" quality={68} class="aspect-[9/10] w-full object-cover" />
+          <figcaption class="mt-3 text-sm text-olie">Op de brug: achterwiel en remschijf van een Harley.</figcaption>
+        </figure>
+        <figure class="md:hidden">
+          <Image src={vtwin} alt="Close-up van een V-twin: twee cilinders met koelribben en verchroomde stoterstangen" widths={[420, 721]} sizes="90vw" class="aspect-[4/5] w-full object-cover" />
+          <figcaption class="mt-3 text-sm text-olie">Twee cilinders in een V. Daar draait het hier om.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. Rijders: letterlijke Google-reviews -->
+    <section id="rijders" class="bg-zwart py-24 text-wit md:py-36">
+      <div class="wrap">
+        <h2 class="sr-only">Wat rijders over Peet zeggen</h2>
+        <figure class="rijs max-w-5xl">
+          <blockquote>
+            <p class="kop text-3xl leading-[1.02] md:text-4xl">“Peet is een echte vakman, doet het onderhoud aan mijn fietsen al meer dan <span class="text-rood-licht">30 jaar</span>.”</p>
+            <p class="mt-8 max-w-2xl text-lg text-chroom">“{fred.tekst.replace('Peet is een echte vakman, doet het onderhoud aan mijn fietsen al meer dan 30 jaar. ', '')}”</p>
+          </blockquote>
+          <figcaption class="mt-6 text-sm text-chroom"><span class="font-semibold text-wit">{fred.naam}</span> · Google review, {fred.wanneer}</figcaption>
+        </figure>
+        <div class="regel-donker mt-20 grid gap-x-16 gap-y-12 pt-12 md:grid-cols-2">
+          {andere.map((r, i) => (
+            <figure class="rijs" style={`--d:${i * 0.08}s`}>
+              <blockquote class="text-lg leading-relaxed text-wit/90">“{r.tekst}”</blockquote>
+              <figcaption class="mt-4 text-sm text-chroom"><span class="font-semibold text-wit">{r.naam}</span> · Google review, {r.wanneer}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="mt-14"><a href={site.reviews} class="link link-licht text-sm font-semibold text-wit">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 4. Wow: de werkbon die eindigt in een vooraf ingevuld WhatsApp-bericht -->
+    <section id="werkbon" class="bg-beton py-24 md:py-32">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-4">
+          <h2 class="rijs text-4xl">Werkbon</h2>
+          <p class="rijs mt-7 max-w-sm text-lg text-olie" style="--d:.08s">Zet erop wat er aan je motor moet gebeuren. WhatsApp opent met de werkbon al ingevuld; versturen doe je zelf.</p>
+          <figure class="rijs mt-12 hidden md:block" style="--d:.16s">
+            <Image src={distributie} alt="Geopende distributiekast van een V-twin met nokkenas-tandwielen en ketting, gereedschap op de rode brug" widths={[420, 721]} sizes="28vw" quality={70} class="aspect-[3/4] w-full max-w-xs object-cover" />
+            <figcaption class="mt-3 text-sm text-olie">Distributie open, gereedschap binnen handbereik.</figcaption>
+          </figure>
+        </div>
+        <form class="werkbon rijs md:col-span-8 md:col-start-5 md:self-start" data-werkbon onsubmit="return false">
+          <div class="flex items-center justify-between gap-4 bg-zwart px-5 py-4 text-wit md:px-8">
+            <p class="kop text-xl leading-none md:text-2xl">Peet's <span class="text-rood-licht">V2</span> Service</p>
+            <p class="kop text-base leading-none tracking-[.12em] text-chroom">Werkbon</p>
+          </div>
+          <div class="grid grid-cols-[minmax(0,1fr)] gap-x-8 gap-y-7 px-5 py-8 md:grid-cols-2 md:px-8 md:py-10">
+            <div>
+              <label for="merk" class="veld-label">Merk</label>
+              <select id="merk" class="veld" data-in>
+                <option>Harley-Davidson</option>
+                <option>Ander merk V-twin</option>
+              </select>
+            </div>
+            <div>
+              <label for="model" class="veld-label">Model en bouwjaar</label>
+              <input id="model" class="veld" type="text" autocomplete="off" placeholder="bv. Dyna, 2004" data-in />
+            </div>
+            <fieldset class="md:col-span-2">
+              <legend class="veld-label mb-2">Wat moet er gebeuren</legend>
+              <div class="grid grid-cols-1 gap-x-8 sm:grid-cols-2">
+                {klussen.map(([v, t]) => (
+                  <label class="vak"><input type="checkbox" name="klus" value={t} data-in /><i></i><span>{t}</span></label>
+                ))}
+              </div>
+            </fieldset>
+            <div class="md:col-span-2">
+              <label for="wat" class="veld-label">Wat merk je aan de motor?</label>
+              <textarea id="wat" class="veld" rows="2" placeholder="bv. tikt bij koude start, lekt olie" data-in></textarea>
+            </div>
+            <div>
+              <label for="naam" class="veld-label">Je naam</label>
+              <input id="naam" class="veld" type="text" autocomplete="given-name" data-in />
+            </div>
+            <div class="flex items-end">
+              <a href={waMet("Hoi Peet, ik heb een werkbon voor mijn motor.")} class="knop knop-rood w-full whitespace-normal text-center" data-stuur><Icoon naam="wa" />Werkbon appen naar Peet</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. Peet: het bord in de hal -->
+    <section id="peet" class="overflow-hidden bg-zwart py-24 text-wit md:py-36">
+      <div class="wrap grid items-center gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-6">
+          <p class="kop num rijs text-[clamp(6rem,18vw,15rem)] leading-[.8] text-transparent [-webkit-text-stroke:1.5px_#ff5c64]">1992</p>
+          <h2 class="rijs mt-8 text-3xl" style="--d:.08s">Een eigen zaak</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-chroom" style="--d:.12s">Peet heeft zijn eigen zaak sinds {site.sinds}. Op het bord achter in de hal staat het al: service for Harley Davidson.</p>
+          <p class="rijs mt-8" style="--d:.16s"><a href={site.facebook} class="link link-licht text-sm font-semibold text-wit">Peet op Facebook</a></p>
+        </div>
+        <div class="rijs md:col-span-6" style="--d:.1s">
+          <div class="bord px-6 py-8 md:px-10 md:py-12">
+            <Image src={logo} alt="Logo van Peet's V2 Service: de naam in rode en zwarte letters met een rode adelaar" widths={[480, 946]} sizes="(min-width: 768px) 40vw, 90vw" class="w-full" />
+          </div>
+          <div class="tl mx-auto mt-10 w-3/4"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contact en route -->
+    <section id="contact" class="bg-beton py-24 md:py-32">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-12 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-6">
+          <h2 class="rijs text-4xl">Langskomen in Kwintsheul</h2>
+          <p class="rijs mt-7 max-w-md text-lg text-olie" style="--d:.08s">Bel of app even voor je langskomt.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-4" style="--d:.12s">
+            <a href={waMet('Hoi Peet, ik wil graag even langskomen met mijn motor. Wanneer komt het uit?')} class="knop knop-rood"><Icoon naam="wa" />WhatsApp Peet</a>
+            <a href={site.telHref} class="knop knop-rand"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+        </div>
+        <div class="md:col-span-5 md:col-start-8">
+          <dl class="rijs divide-y divide-lijn-licht border-y border-lijn-licht" style="--d:.1s">
+            <div class="grid grid-cols-[7rem_1fr] gap-4 py-5"><dt class="kop text-base text-olie">Adres</dt><dd>{site.straat}<br />{site.postcode}<br /><a href={site.route} class="link mt-2 inline-block text-sm font-semibold">Route plannen</a></dd></div>
+            <div class="grid grid-cols-[7rem_1fr] gap-4 py-5"><dt class="kop text-base text-olie">Telefoon</dt><dd><a href={site.telHref} class="link num">{site.tel}</a><br /><span class="text-sm text-olie">ook WhatsApp</span></dd></div>
+            <div class="grid grid-cols-[7rem_1fr] gap-4 py-5"><dt class="kop text-base text-olie">Google</dt><dd><a href={site.reviews} class="link text-sm"><span class="num">{site.google.score}</span> uit {site.google.aantal} reviews</a></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-werkbon]');
+  const a = document.querySelector<HTMLAnchorElement>('[data-stuur]');
+  if (f && a) {
+    const wa = a.href.split('?')[0];
+    const v = (id: string) => (f.querySelector<HTMLInputElement>('#' + id)?.value || '').trim();
+    const zet = () => {
+      const klus = [...f.querySelectorAll<HTMLInputElement>('input[name=klus]:checked')].map((i) => i.value);
+      const r = ['Hoi Peet, ik heb een werkbon voor mijn motor.', '', `Merk: ${v('merk')}`];
+      if (v('model')) r.push(`Model en bouwjaar: ${v('model')}`);
+      if (klus.length) r.push(`Wat: ${klus.join(', ')}`);
+      if (v('wat')) r.push(`Wat ik merk: ${v('wat')}`);
+      if (v('naam')) r.push('', `Groet, ${v('naam')}`);
+      a.href = `${wa}?text=${encodeURIComponent(r.join('\n'))}`;
+    };
+    f.querySelectorAll('[data-in]').forEach((el) => { el.addEventListener('input', zet); el.addEventListener('change', zet); });
+    zet();
+  }
+</script>
