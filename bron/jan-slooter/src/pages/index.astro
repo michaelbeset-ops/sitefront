@@ -1,0 +1,299 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, rubrieken, merken, reviews, waHoi, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import erf from '../assets/erf.jpg';
+import erfBoven from '../assets/erf-boven.jpg';
+import mJd6 from '../assets/m-jd6.jpg';
+import mJd5 from '../assets/m-jd5100.jpg';
+import mNh from '../assets/m-nh.jpg';
+import mVerreiker from '../assets/m-verreiker.jpg';
+import mKipper from '../assets/m-kipper.jpg';
+import mPoot from '../assets/m-pootmachine.jpg';
+import mWoeler from '../assets/m-woeler.jpg';
+import mZaai from '../assets/m-zaaicombi.jpg';
+
+const rij = [
+  [mVerreiker, 'Verreiker', 'Blauwe New Holland verreiker met opgeheven bak voor een groene loods'],
+  [mNh, 'Tractor', 'Blauwe New Holland tractor voor een groene loods'],
+  [mKipper, 'Kipper', 'Groene tandemas-kipper met opgeklapte bak'],
+  [mZaai, 'Grondbewerking en zaaien', 'Blauwe rotorkopeg met groene zaaimachine erop'],
+  [mJd5, 'Tractor', 'Groene John Deere tractor met gele velgen'],
+  [mPoot, 'Zaaimachine', 'Blauwe zaaimachine met witte tank'],
+  [mWoeler, 'Grondbewerking', 'Gele grondbewerker met tanden'],
+] as const;
+
+const soorten = ['Tractor', 'Grondbewerking', 'Zaai-, plant- of pootmachine', 'Bemesting of verzorging', 'Oogstmachine', 'Beregening', 'Tuin- of parkmachine', 'Bouwmachine of shovel', 'Heftruck', 'Aggregaat', 'Banden of velgen', 'Iets anders'];
+---
+<Base title="Jan Slooter Mechanisatiecentrum | Gebruikte machines en tractoren in 's-Gravendeel" description="Gebruikte machines en tractoren, op voorraad aan de Schenkeldijk in 's-Gravendeel en te bezichtigen. Ook bekend als MC-P Nederland.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen luchtfoto van het erf met de rij machines -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-loods text-wit">
+      <Image src={hero} alt="Luchtfoto van het erf aan de Schenkeldijk: een lange rij landbouwmachines en tractoren, met weiland en een sloot op de voorgrond" widths={[480, 768, 1024]} quality={55} sizes="100vw" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_30%]" loading="eager" fetchpriority="high" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#161816c7_0%,#16181633_20%,#16181659_36%,#161816c7_56%,#161816f2_100%)]"></div>
+      <div class="wrap pb-14 pt-36 md:pb-16">
+        <p class="kop text-lg font-bold tracking-[.04em] text-wit [text-shadow:0_1px_12px_#161816] md:text-xl">Mechanisatiecentrum in 's-Gravendeel</p>
+        <h1 id="inhoud" class="mt-3 text-hero">Gebruikte machines <br class="hidden sm:block" />en <span class="text-akker">tractoren</span></h1>
+        <div class="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-xl">
+            <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Op voorraad aan de Schenkeldijk, en u kunt ze komen bekijken.</p>
+            <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <a href={site.aanbod} class="knop knop-akker">Bekijk het aanbod<Icoon naam="pijl" /></a>
+              <a href="#zoeken" class="link link-licht font-semibold text-wit">Zoekt u iets? Vraag het Jan</a>
+            </div>
+          </div>
+          <p class="text-sm text-zilver md:text-right">Bellen of WhatsApp<br /><a href={site.telHref} class="num link link-licht text-lg font-semibold text-wit">{site.tel}</a></p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Aanbod: de rubrieken als lijst, geen voorraad -->
+    <section id="aanbod" class="py-24 md:py-32">
+      <div class="wrap grid gap-y-12 md:grid-cols-12 md:gap-x-8">
+        <div class="md:col-span-5">
+          <h2 class="rijs text-4xl">Van trekker <br />tot aggregaat</h2>
+          <span class="profiel profiel-donker rijs mt-8 w-28" aria-hidden="true"></span>
+          <p class="rijs mt-8 max-w-sm text-grijs" style="--d:.08s">Het aanbod wisselt. Alles wat er staat, met foto's en gegevens, vindt u online.</p>
+          <p class="rijs mt-8" style="--d:.12s"><a href={site.aanbod} class="knop knop-rand">Bekijk het actuele aanbod<Icoon naam="pijl" /></a></p>
+        </div>
+        <div class="md:col-span-7">
+          <p class="text-sm font-semibold text-grijs">Rubrieken in het aanbod van oktober 2026</p>
+          <ul class="mt-4 grid sm:grid-cols-2 sm:gap-x-8">
+            {rubrieken.map((r, i) => (
+              <li class="rijs regel flex items-baseline gap-3 py-3.5" style={`--d:${0.03 * i}s`}>
+                <span class="profiel w-[1.4rem] flex-none self-center" aria-hidden="true"></span>
+                <span class="kop text-[1.6rem] leading-tight md:text-[1.85rem]">{r}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="regel mt-0 pt-6 text-grijs"><span class="font-semibold text-inkt">Merken in dat aanbod:</span> {merken.join(', ')}.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Foto's van hun eigen site -->
+    <section class="overflow-hidden bg-beton-2 py-24 md:py-28" aria-labelledby="rij-kop">
+      <div class="wrap grid gap-y-6 md:grid-cols-12 md:gap-x-8">
+        <h2 id="rij-kop" class="rijs text-4xl md:col-span-7">Een greep uit het aanbod</h2>
+        <p class="rijs text-grijs md:col-span-4 md:col-start-9 md:self-end" style="--d:.1s">Foto's van eerder aanbod. Wat er nu staat, ziet u in het actuele aanbod.</p>
+      </div>
+      <div class="wrap mt-14 grid gap-4 md:grid-cols-12 md:gap-5">
+        <figure class="rijs min-w-0 md:col-span-8">
+          <Image src={mJd6} alt="Groene John Deere tractor met gele velgen voor een groene loods" widths={[640, 1024]} sizes="(min-width: 768px) 64vw, 100vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+          <figcaption class="kop mt-3 text-xl">Tractor</figcaption>
+        </figure>
+        <figure class="rijs hidden min-w-0 md:col-span-4 md:block" style="--d:.1s">
+          <Image quality={68} src={mVerreiker} alt="" widths={[480, 760]} sizes="32vw" class="aspect-[3/4] w-full rounded-md object-cover object-[30%_50%]" />
+          <figcaption class="kop mt-3 text-xl">Verreiker</figcaption>
+        </figure>
+      </div>
+      <ul class="rij rij-pad mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-6 md:mt-5 md:gap-5">
+        {rij.map(([img, t, alt], i) => (
+          <li class={`w-[78vw] flex-none snap-start sm:w-[44vw] lg:w-[24rem] ${i === 0 ? "md:hidden" : ""}`}>
+            <Image quality={68} src={img} alt={alt} widths={[400, 640]} sizes="(min-width: 1024px) 384px, 78vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+            <p class="kop mt-3 text-xl">{t}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 4. Wow: zoeken / vraag over aanbod / langskomen -> WhatsApp -->
+    <section id="zoeken" class="golfplaat bg-loods py-24 text-wit md:py-32">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Zoekt u <span class="text-akker">iets?</span></h2>
+          <p class="rijs mt-6 max-w-md text-zilver" style="--d:.08s">Zeg wat u zoekt, dan weet Jan meteen waar het om gaat. WhatsApp opent met de tekst erin; u verstuurt het zelf.</p>
+          <p class="rijs mt-10 text-sm text-zilver" style="--d:.12s">Of bel: <a href={site.telHref} class="num link link-licht font-semibold text-wit">{site.tel}</a></p>
+        </div>
+
+        <div class="lg:col-span-7" data-wow>
+          <div role="tablist" aria-label="Waar gaat het om" class="flex flex-wrap gap-x-7 border-b border-lijn">
+            <button type="button" role="tab" class="tab" id="t-zoeken" aria-controls="p-zoeken" aria-selected="true" data-tab="zoeken">Ik zoek een machine</button>
+            <button type="button" role="tab" class="tab" id="t-aanbod" aria-controls="p-aanbod" aria-selected="false" tabindex="-1" data-tab="aanbod">Vraag over het aanbod</button>
+            <button type="button" role="tab" class="tab" id="t-kijken" aria-controls="p-kijken" aria-selected="false" tabindex="-1" data-tab="kijken">Komen kijken</button>
+          </div>
+
+          <form class="mt-8" data-form onsubmit="return false">
+            <div role="tabpanel" id="p-zoeken" aria-labelledby="t-zoeken" data-paneel="zoeken" class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label class="veld-label" for="z-soort">Wat zoekt u?</label>
+                <select id="z-soort" class="veld" data-v="soort">{soorten.map((s) => <option>{s}</option>)}</select>
+              </div>
+              <div>
+                <label class="veld-label" for="z-merk">Merk of type (als u dat weet)</label>
+                <input id="z-merk" class="veld" data-v="merk" placeholder="Bijvoorbeeld Fendt of Kverneland" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="z-wens">Waarvoor, en waar moet hij aan voldoen?</label>
+                <textarea id="z-wens" class="veld" data-v="wens" placeholder="Werkbreedte, vermogen, bouwjaar of iets anders"></textarea>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="p-aanbod" aria-labelledby="t-aanbod" data-paneel="aanbod" class="grid hidden gap-6 sm:grid-cols-2">
+              <div>
+                <label class="veld-label" for="a-nr">Nummer uit het aanbod</label>
+                <input id="a-nr" class="veld num" inputmode="numeric" maxlength="8" data-v="nr" placeholder="Bijvoorbeeld 846608" />
+              </div>
+              <div>
+                <label class="veld-label" for="a-wat">Om welke machine gaat het?</label>
+                <input id="a-wat" class="veld" data-v="merk" placeholder="Merk en type" />
+              </div>
+              <div class="sm:col-span-2">
+                <label class="veld-label" for="a-wens">Uw vraag</label>
+                <textarea id="a-wens" class="veld" data-v="wens" placeholder="Staat hij er nog? Kan ik hem komen bekijken?"></textarea>
+              </div>
+            </div>
+
+            <div role="tabpanel" id="p-kijken" aria-labelledby="t-kijken" data-paneel="kijken" class="grid hidden gap-6 sm:grid-cols-2">
+              <div>
+                <label class="veld-label" for="k-dag">Wanneer wilt u komen?</label>
+                <input id="k-dag" class="veld" data-v="dag" placeholder="Bijvoorbeeld zaterdagochtend" />
+              </div>
+              <div>
+                <label class="veld-label" for="k-wat">Wat wilt u bekijken?</label>
+                <input id="k-wat" class="veld" data-v="merk" placeholder="Machine of nummer uit het aanbod" />
+              </div>
+            </div>
+
+            <div class="mt-10 grid gap-6 border-t border-lijn pt-8 sm:grid-cols-[1fr_auto] sm:items-end">
+              <div>
+                <p class="veld-label">Uw bericht aan Jan</p>
+                <p class="whitespace-pre-line rounded-md bg-beton p-5 text-[.97rem] leading-relaxed text-inkt" data-voorbeeld aria-live="polite"></p>
+              </div>
+              <a href={waHoi} class="knop knop-akker" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Het erf: hun luchtfoto groot -->
+    <section id="erf" class="relative isolate flex min-h-[78svh] items-end overflow-hidden bg-loods text-wit md:min-h-[88svh]">
+      <Image quality={68} src={erf} alt="Luchtfoto van het erf in 's-Gravendeel met loodsen, de machines in rijen, het dorp en de polder eromheen" widths={[640, 1024]} sizes="100vw" class="absolute inset-0 -z-10 h-full w-full object-cover object-[45%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#161816f0_0%,#16181680_38%,#16181600_70%)]"></div>
+      <div class="wrap grid gap-y-8 pb-14 md:grid-cols-12 md:gap-x-8 md:pb-20">
+        <h2 class="rijs text-4xl md:col-span-7">Aan de <br />Schenkeldijk</h2>
+        <div class="rijs md:col-span-4 md:col-start-9 md:self-end" style="--d:.1s">
+          <p class="text-lg text-wit/90">Jan Slooter Mechanisatiecentrum, ook bekend als MC-P Nederland. Gevestigd in 's-Gravendeel.</p>
+          <p class="mt-6"><a href={site.route} class="knop knop-wit"><Icoon naam="pin" />Route plannen</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section class="py-24 md:py-32" aria-labelledby="rev-kop">
+      <div class="wrap">
+        <h2 id="rev-kop" class="sr-only">Reviews op Google</h2>
+        <ul class="grid gap-12 md:grid-cols-3 md:gap-8">
+          {reviews.map((r, i) => (
+            <li class="rijs" style={`--d:${0.08 * i}s`}>
+              <span class="profiel w-16" aria-hidden="true"></span>
+              <blockquote class="mt-6">
+                <p class="kop text-[2.1rem] leading-[.98] md:text-[2.6rem]">"{r.tekst}"</p>
+                <footer class="mt-4 text-sm text-grijs">{r.naam}, Google review</footer>
+              </blockquote>
+            </li>
+          ))}
+        </ul>
+        <p class="rijs mt-14 text-sm text-grijs"><a href={site.reviews} class="link inline-flex items-center gap-2"><Icoon naam="g" class="h-4 w-4" />{site.google.score} op Google, {site.google.aantal} reviews</a></p>
+      </div>
+    </section>
+
+    <!-- 7. Contact -->
+    <section id="contact" class="bg-loods text-wit">
+      <div class="wrap grid gap-y-14 py-24 md:grid-cols-12 md:gap-x-8 md:py-32">
+        <div class="md:col-span-6">
+          <h2 class="rijs text-4xl">Kom kijken in <br /><span class="text-akker">'s-Gravendeel</span></h2>
+          <p class="rijs mt-6 max-w-md text-zilver" style="--d:.08s">Voor meer informatie: bel, app of mail Jan.</p>
+          <div class="rijs mt-10 flex flex-wrap gap-4" style="--d:.12s">
+            <a href={waMet('Hallo Jan, ik wil graag langskomen om te kijken. Wanneer komt het uit?')} class="knop knop-akker"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.telHref} class="knop knop-wit"><Icoon naam="tel" /><span class="num">{site.tel}</span></a>
+          </div>
+          <dl class="rijs mt-12 grid gap-6 sm:grid-cols-2" style="--d:.16s">
+            <div class="regel-donker pt-4">
+              <dt class="text-sm text-zilver">Adres</dt>
+              <dd class="mt-1 font-semibold">{site.kort}<br />{site.straat}<br />{site.postcode}</dd>
+              <dd class="mt-2"><a href={site.route} class="link link-licht inline-flex items-center gap-2 text-sm font-semibold"><Icoon naam="pin" class="h-4 w-4" />Route plannen</a></dd>
+            </div>
+            <div class="regel-donker pt-4">
+              <dt class="text-sm text-zilver">E-mail</dt>
+              <dd class="mt-1"><a href={`mailto:${site.mail}`} class="link link-licht font-semibold">{site.mail}</a></dd>
+              <dt class="mt-4 text-sm text-zilver">Aanbod</dt>
+              <dd class="mt-1"><a href={site.aanbod} class="link link-licht font-semibold">Tractors and Machinery</a></dd>
+            </div>
+          </dl>
+        </div>
+        <figure class="rijs md:col-span-5 md:col-start-8" style="--d:.1s">
+          <Image quality={68} src={erfBoven} alt="Het erf recht van boven: de loods met rood dak, het erf vol machines, de sloot en het weiland" widths={[480, 760]} sizes="(min-width: 768px) 40vw, 100vw" class="aspect-square w-full rounded-md object-cover object-[60%_50%]" />
+          <figcaption class="mt-3 text-sm text-zilver">Het erf van boven, Schenkeldijk 36a.</figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  const NR = 'https://wa.me/31653499122';
+  const wow = document.querySelector<HTMLElement>('[data-wow]');
+  if (wow) {
+    const tabs = [...wow.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    const panelen = [...wow.querySelectorAll<HTMLElement>('[data-paneel]')];
+    const voorbeeld = wow.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const stuur = wow.querySelector<HTMLAnchorElement>('[data-stuur]')!;
+    let actief = 'zoeken';
+    const waarde = (p: HTMLElement, k: string) => (p.querySelector<HTMLInputElement>(`[data-v="${k}"]`)?.value || '').trim();
+    const lager = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+
+    function bericht() {
+      const p = panelen.find((x) => x.dataset.paneel === actief)!;
+      const merk = waarde(p, 'merk'), wens = waarde(p, 'wens');
+      const r: string[] = ['Hallo Jan,', ''];
+      if (actief === 'zoeken') {
+        const soort = waarde(p, 'soort');
+        r.push(soort === 'Iets anders' ? 'Ik zoek een machine.' : `Ik zoek: ${lager(soort)}${merk ? ` (${merk})` : ''}.`);
+        if (soort === 'Iets anders' && merk) r.push(`Merk of type: ${merk}`);
+        if (wens) r.push(`Wensen: ${wens}`);
+        r.push('', 'Heeft u iets staan, of kunt u ernaar uitkijken?');
+      } else if (actief === 'aanbod') {
+        const nr = waarde(p, 'nr');
+        r.push(`Ik heb een vraag over ${nr ? `nummer ${nr}` : 'een machine'} uit uw aanbod${merk ? ` (${merk})` : ''}.`);
+        r.push(wens || 'Staat hij er nog?');
+      } else {
+        const dag = waarde(p, 'dag');
+        r.push(`Ik wil graag langskomen aan de Schenkeldijk${merk ? ` om te kijken naar: ${merk}` : ' om te kijken'}.`);
+        r.push(dag ? `Zou ${dag} uitkomen?` : 'Wanneer komt het uit?');
+      }
+      const tekst = r.join('\n');
+      voorbeeld.textContent = tekst;
+      stuur.href = `${NR}?text=${encodeURIComponent(tekst)}`;
+    }
+
+    function kies(naam: string, focus = false) {
+      actief = naam;
+      tabs.forEach((t) => { const aan = t.dataset.tab === naam; t.setAttribute('aria-selected', String(aan)); t.tabIndex = aan ? 0 : -1; if (aan && focus) t.focus(); });
+      panelen.forEach((p) => p.classList.toggle('hidden', p.dataset.paneel !== naam));
+      bericht();
+    }
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => kies(t.dataset.tab!));
+      t.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        kies(tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length].dataset.tab!, true);
+      });
+    });
+    wow.addEventListener('input', bericht);
+    wow.addEventListener('change', bericht);
+    bericht();
+  }
+</script>

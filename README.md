@@ -303,3 +303,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Goudse Camperbouw, Haastrecht | https://voorstel.sitefront.nl/goudse-camperbouw/ | geen website (domein = parkeerpagina); 4,9/31; 06/WhatsApp. | 2026-10-09 | demo premium |
 | JS Buitenkeukens (buitenkeukens op maat), Dordrecht | https://voorstel.sitefront.nl/js-buitenkeukens/ | geen website, alleen Instagram; 5,0/10; 06/WhatsApp. | 2026-10-09 | demo premium |
 | Peet's V2 Service (Harley/V-twin), Kwintsheul | https://voorstel.sitefront.nl/peets-v2-service/ | geen website, alleen privé-Facebook; 4,9/44; 06/WhatsApp. | 2026-10-10 | demo premium |
+| TempoFloors (vloeren), Barendrecht | https://voorstel.sitefront.nl/tempofloors/ | eigen domein geeft 404/parkeerpagina; 5,0/58; 06/WhatsApp. | 2026-10-10 | demo premium |
+| Jan Slooter Mechanisatiecentrum, 's-Gravendeel | https://voorstel.sitefront.nl/jan-slooter/ | verouderde site zonder mobiele weergave; 4,7/26; 06/WhatsApp. | 2026-10-10 | demo premium |
+| Hajdari Boot en Polyester Service, Kerkdriel | https://voorstel.sitefront.nl/hajdari-boot-polyester/ | geen website, alleen Facebook/Instagram; 4,8/12; 06/WhatsApp. | 2026-10-10 | demo premium |
+| S.P.S. Slagmolen Parket Service, Barendrecht | https://voorstel.sitefront.nl/sps-parket/ | geen website (eigen domein 404); 5,0/16; 06/WhatsApp. | 2026-10-10 | demo premium |

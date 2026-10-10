@@ -1,0 +1,19 @@
+---
+// Visgraat als lijntekening: blokken 1 x 4 (zoals hun "Eiken visgraat 12x48 cm"), in de klassieke 45 graden.
+// Berekend: trapvormige rijen (liggend + staand blok) op rooster (1,1) en (4,-4), daarna 45 graden gedraaid.
+interface Props { hoogte?: number; class?: string; s?: number }
+const { hoogte = 120, class: cls = '', s = 9 } = Astro.props;
+const W = 1600, H = hoogte, L = 4, r = Math.SQRT1_2;
+const rot = (x: number, y: number) => [((x - y) * r) * s, ((x + y) * r) * s];
+const rects: number[][][] = [];
+for (let k = -60; k < 60; k++) for (let i = -60; i < 120; i++) {
+  const ox = i + k * L, oy = i - k * L;
+  rects.push([[ox, oy], [ox + L, oy], [ox + L, oy + 1], [ox, oy + 1]]);
+  rects.push([[ox, oy + 1], [ox + 1, oy + 1], [ox + 1, oy + 1 + L], [ox, oy + 1 + L]]);
+}
+const d = rects.map((p) => p.map(([x, y]) => rot(x, y))).filter((p) => p.some(([x, y]) => x > -40 && x < W + 40 && y > -40 && y < H + 40))
+  .map((p) => 'M' + p.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L') + 'Z').join('');
+---
+<svg class={`visgraat ${cls}`} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" style={`height:${H}px`}>
+  <path d={d} fill="none" stroke="currentColor" stroke-width="1" vector-effect="non-scaling-stroke" />
+</svg>

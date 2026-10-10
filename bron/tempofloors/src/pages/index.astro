@@ -1,0 +1,287 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, diensten, werk, reviews, waMet } from '../data/site';
+
+import heroBreed from '../assets/hero-breed.jpg';
+import heroHoog from '../assets/hero-hoog.jpg';
+import punt from '../assets/punt.jpg';
+import licht from '../assets/licht.jpg';
+import trap from '../assets/trap.jpg';
+import deuren from '../assets/deuren.jpg';
+import keuken from '../assets/keuken.jpg';
+import bernini from '../assets/bernini.jpg';
+import sage from '../assets/sage.jpg';
+import pGieten from '../assets/p-gieten.jpg';
+import pGlad from '../assets/p-glad.jpg';
+import pLeggen from '../assets/p-leggen.jpg';
+import pPlint from '../assets/p-plint.jpg';
+
+// Hero met art direction: liggende snede op desktop, staande foto op mobiel.
+const hb = await Promise.all([960, 1600].map((w) => getImage({ src: heroBreed, width: w, format: 'webp', quality: 72 })));
+const hh = await Promise.all([480, 860].map((w) => getImage({ src: heroHoog, width: w, format: 'webp', quality: 70 })));
+const srcset = (l: { src: string; options: { width?: number } }[]) => l.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+// Aanvraag: alleen vloersoorten die op hun eigen foto's/posts staan; beeld = het patroon uit hun eigen werk.
+const soorten = [
+  { id: 'visgraat', label: 'een visgraatvloer', beeld: trap },
+  { id: 'punt', label: 'een Hongaarse punt', beeld: punt },
+  { id: 'recht', label: 'rechte PVC stroken', beeld: licht },
+  { id: 'advies', label: 'advies, ik weet het nog niet', beeld: pLeggen },
+];
+const thumbs = await Promise.all(soorten.map((s) => getImage({ src: s.beeld, width: 640, format: 'webp', quality: 68 })));
+const ruimtes = ['de woonkamer', 'de hal', 'de keuken', 'de slaapkamer', 'de hele woning', 'een kantoor', 'een andere ruimte'];
+const extra = ['Egaliseren', 'Vloerverwarming dichtsmeren', 'Plinten en afwerking', 'Bezorgen'];
+
+const lagen = [
+  { img: pGieten, t: 'Egaline gieten', s: 'Tijd voor een goede basis.', alt: 'Egaline wordt uit een emmer op de ondervloer gegoten' },
+  { img: pGlad, t: 'Spiegelglad', s: 'De vloer volledig glad geëgaliseerd.', alt: 'Een geëgaliseerde vloer die glanst als een spiegel, in een overloop met houten deurposten' },
+  { img: pLeggen, t: 'Plank voor plank', s: 'Uitmeten, lijnen bepalen en inlijmen.', alt: 'Vloerlegger van TempoFloors meet een PVC plank uit op de geëgaliseerde vloer' },
+  { img: pPlint, t: 'Afwerken', s: 'Tot de laatste plank, de plinten en de afwerking.', alt: 'Een witte plint wordt met een kitpistool afgewerkt boven een nieuwe eikenkleurige vloer' },
+];
+const [hoofd, ...andere] = reviews;
+---
+<Base title="TempoFloors | Vloerenlegger uit Barendrecht | Visgraat, PVC en egaliseren" description="TempoFloors, vloerspecialisten uit Barendrecht: verkoop en advies, egaliseren, PVC, klik PVC, visgraat en Hongaarse punt leggen en afwerken.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: eigen foto (Instagram 12 juni 2026), visgraat in zonlicht -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hb)} sizes="100vw" />
+        <img src={hh[1].src} srcset={srcset(hh)} sizes="100vw" width="1200" height="1509" alt="Een nieuw gelegde visgraatvloer in zonlicht, met een witte wand en een donkere keuken" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_70%] md:object-[50%_60%]" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#19161799_0%,#19161700_22%,#19161726_45%,#191617cc_74%,#191617f0_100%)] md:bg-[linear-gradient(90deg,#191617d1_0%,#19161766_40%,#19161700_62%),linear-gradient(0deg,#191617a6_0%,transparent_38%),linear-gradient(180deg,#19161766_0%,transparent_18%)]"></div>
+      <div class="wrap pb-24 pt-36 md:pb-20">
+        <p class="text-base font-semibold text-wit/80">Vloerspecialisten uit Barendrecht</p>
+        <h1 id="inhoud" class="mt-4 max-w-[15ch] text-hero">Een strak eindresultaat begint onder de vloer.</h1>
+        <div class="mt-8 max-w-xl md:mt-10">
+          <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Verkoop en advies, egaliseren, leggen en afwerken. Van de eerste laag primer tot de laatste plank.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href="#aanvraag" class="knop knop-merk">Vloer aanvragen<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="num link link-licht hidden font-semibold text-wit sm:inline">of bel {site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Onder de vloer: hun werkwijze, van ondergrond tot plint (TikTok mei-okt 2026) -->
+    <section id="basis" class="bg-kalk pb-24 pt-10 md:pb-28 md:pt-14">
+      <div class="leg visgraat" aria-hidden="true"></div>
+      <div class="wrap mt-16 grid gap-y-14 md:mt-24 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-12 lg:flex lg:items-end lg:justify-between lg:gap-10">
+          <div>
+            <h2 class="rijs text-4xl">Eerst de basis.</h2>
+            <p class="rijs mt-6 max-w-sm text-lg text-steen" style="--d:.1s">Primer erop, egaline mixen, drogen, schuren. Pas als de ondervloer strak is, gaat de eerste plank erin.</p>
+            </div>
+          <p class="rijs mt-4 max-w-xs text-steen lg:mt-0 lg:text-right" style="--d:.15s">Vloerverwarming smeren we eerst dicht.</p>
+        </div>
+        <ol class="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:col-span-12 lg:grid-cols-4 lg:gap-x-8">
+          {lagen.map((l, i) => (
+            <li class={`rijs ${i % 2 === 1 ? 'mt-14 lg:mt-20' : ''}`} style={`--d:${i * 0.08}s`}>
+              <Image src={l.img} widths={[360, 640]} sizes="(min-width: 1024px) 22vw, 46vw" alt={l.alt} class="aspect-[4/5] w-full rounded-sm object-cover" loading="lazy" />
+              <p class="maat mt-4 text-merk">0{i + 1}</p>
+              <h3 class="mt-1 text-xl md:text-2xl">{l.t}</h3>
+              <p class="mt-2 text-sm text-steen md:text-base">{l.s}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. Vloeren: hun eigen dienstenlijst (Instagram 12 juni 2026), letterlijk -->
+    <section id="vloeren" class="bg-inkt text-wit">
+      <div class="grid md:grid-cols-12">
+        <div class="relative min-h-[26rem] md:col-span-6 md:min-h-full">
+          <Image src={punt} widths={[640, 1000, 1300]} sizes="(min-width: 768px) 50vw, 100vw" alt="Een Hongaarse punt in eikenkleur die door de hele kamer naar achteren loopt" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+        </div>
+        <div class="px-5 py-20 sm:px-10 md:col-span-6 md:px-14 md:py-32 lg:px-20">
+          <h2 class="rijs text-4xl">Visgraat, Hongaarse punt en PVC.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-mist" style="--d:.1s">Wij ontzorgen je van het begin tot eind.</p>
+          <ul class="mt-12 max-w-lg">
+            {diensten.map((d, i) => (
+              <li class="rijs regel-donker flex items-baseline gap-5 py-4 text-lg md:text-xl" style={`--d:${i * 0.04}s`}>
+                <span class="maat w-6 shrink-0 text-merk-licht">{String(i + 1).padStart(2, '0')}</span>{d}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Projecten: eigen foto's en eigen TikTok-bijschriften -->
+    <section id="werk" class="bg-kalk py-24 md:py-28">
+      <div class="wrap">
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <h2 class="rijs max-w-2xl text-4xl">Van Rotterdam tot Brussel.</h2>
+          <p class="rijs text-steen" style="--d:.1s">Elke klus volg je op <a href={site.tiktok} class="link font-semibold text-inkt">TikTok</a> en <a href={site.instagram} class="link font-semibold text-inkt">Instagram</a>.</p>
+        </div>
+
+        <div class="mt-14 grid grid-cols-2 gap-3 md:mt-20 md:grid-cols-12 md:gap-5">
+          <figure class="rijs col-span-2 md:col-span-7 md:row-span-2">
+            <Image src={licht} widths={[640, 1000, 1400]} sizes="(min-width: 768px) 56vw, 100vw" alt="Lichte woonkamer met een nieuwe vloer van brede planken en strepen zonlicht" class="aspect-[4/3] h-full w-full rounded-sm object-cover md:aspect-auto" loading="lazy" />
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.08s">
+            <Image src={bernini} widths={[480, 800]} sizes="(min-width: 768px) 38vw, 50vw" alt="Het team van TempoFloors legt visgraat in een appartement met uitzicht over Rotterdam" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-[5/4]" loading="lazy" />
+            <figcaption class="maat mt-3 text-steen">Berninitoren, Rotterdam</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.14s">
+            <Image src={sage} widths={[480, 800]} sizes="(min-width: 768px) 38vw, 50vw" alt="Klik visgraat in de entree van een kantoorpand met glazen schuifdeuren" class="aspect-[4/5] w-full rounded-sm object-cover md:aspect-[5/4] md:object-[50%_60%]" loading="lazy" />
+            <figcaption class="maat mt-3 text-steen">THE SAGE, Brussel</figcaption>
+          </figure>
+          <figure class="rijs md:col-span-4">
+            <Image src={trap} widths={[480, 800]} sizes="(min-width: 768px) 32vw, 50vw" alt="Visgraatvloer onder een witte open trap" class="aspect-[4/5] w-full rounded-sm object-cover" loading="lazy" />
+          </figure>
+          <figure class="rijs md:col-span-4" style="--d:.08s">
+            <Image src={deuren} widths={[480, 800]} sizes="(min-width: 768px) 32vw, 50vw" alt="Visgraat tot aan de openslaande tuindeuren" class="aspect-[4/5] w-full rounded-sm object-cover" loading="lazy" />
+          </figure>
+          <figure class="rijs col-span-2 md:col-span-4" style="--d:.14s">
+            <Image src={keuken} widths={[480, 800]} sizes="(min-width: 768px) 32vw, 100vw" alt="Doorlopende vloer van de keuken naar de woonkamer, met donkere kasten" class="aspect-[4/3] w-full rounded-sm object-cover md:aspect-[4/5]" loading="lazy" />
+          </figure>
+        </div>
+
+        <div class="mt-16 grid gap-y-8 md:mt-20 md:grid-cols-12 md:gap-x-10">
+          <h3 class="rijs text-2xl md:col-span-4">Dit jaar gelegd</h3>
+          <ul class="md:col-span-8">
+            {werk.map((w) => (
+              <li class="rijs regel grid grid-cols-[5.5rem_1fr] gap-x-4 py-5 md:grid-cols-[7rem_12rem_1fr] md:gap-x-6">
+                <span class="maat pt-1 text-steen">{w.wanneer}</span>
+                <span class="font-semibold md:pt-0.5">{w.waar || 'Project'}</span>
+                <span class="col-start-2 text-steen md:col-start-3">{w.wat}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Klanten: letterlijke Google-reviews, score één keer klein -->
+    <section id="klanten" class="bg-egaline py-24 md:py-28">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <figure class="rijs md:col-span-8">
+          <blockquote class="kop text-3xl font-[520] leading-[1.12] text-inkt">&ldquo;{hoofd.tekst}&rdquo;</blockquote>
+          <figcaption class="mt-8 text-steen"><span class="font-semibold text-inkt">{hoofd.naam}</span>, Google review</figcaption>
+        </figure>
+        <div class="space-y-10 md:col-span-4 md:pt-3">
+          {andere.map((r, i) => (
+            <figure class="rijs regel pt-6" style={`--d:${0.1 + i * 0.08}s`}>
+              <blockquote class="text-lg leading-relaxed">&ldquo;{r.tekst}&rdquo;</blockquote>
+              <figcaption class="mt-3 text-sm text-steen"><span class="font-semibold text-inkt">{r.naam}</span>, Google review</figcaption>
+            </figure>
+          ))}
+          <p class="rijs text-sm text-steen"><a href={site.reviews} class="link font-semibold text-inkt">{site.google.score} op Google, {site.google.aantal} reviews</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Aanvraag (wow): een zin die je zelf afmaakt, wordt een WhatsApp-bericht -->
+    <section id="aanvraag" class="bg-merk py-24 text-wit md:py-28">
+      <div class="wrap grid gap-y-14 md:grid-cols-12 md:gap-x-12">
+        <div class="md:col-span-7">
+          <h2 class="rijs text-4xl">Interesse in een nieuwe vloer?</h2>
+          <p class="rijs mt-5 max-w-md text-lg text-wit/80" style="--d:.08s">Stuur ons gerust een bericht voor een vrijblijvende offerte.</p>
+
+          <form class="mt-14" data-aanvraag novalidate>
+            <p class="kop text-2xl font-[500] leading-[1.7] md:text-[2.15rem] md:leading-[1.6]">
+              Ik zoek
+              <label class="sr-only" for="soort">Soort vloer</label>
+              <select id="soort" name="soort" class="keus" data-soort data-maat>
+                {soorten.map((s) => <option value={s.id}>{s.label}</option>)}
+              </select>
+              voor
+              <label class="sr-only" for="ruimte">Ruimte</label>
+              <select id="ruimte" name="ruimte" class="keus" data-maat>
+                {ruimtes.map((r) => <option>{r}</option>)}
+              </select>,
+              ongeveer
+              <label class="sr-only" for="m2">Vierkante meters</label>
+              <input id="m2" name="m2" class="keus num" type="number" inputmode="numeric" min="1" max="9999" value="40" />
+              m².
+            </p>
+
+            <fieldset class="mt-10">
+              <legend class="veld-label">Ook graag</legend>
+              <div class="mt-4 flex flex-wrap gap-2.5">
+                {extra.map((e) => <label class="vak"><input type="checkbox" name="extra" value={e} /><span>{e}</span></label>)}
+              </div>
+            </fieldset>
+
+            <div class="mt-10 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+              <div><label for="plaats" class="veld-label">Plaats</label><input id="plaats" name="plaats" class="veld" autocomplete="address-level2" placeholder="Bijvoorbeeld Barendrecht" /></div>
+              <div><label for="naam" class="veld-label">Je naam</label><input id="naam" name="naam" class="veld" autocomplete="given-name" /></div>
+            </div>
+
+            <div class="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <a href={site.wa} class="knop knop-vol" data-stuur><Icoon naam="wa" />Stuur via WhatsApp</a>
+              <p class="text-sm text-wit/75">Stuur er gerust een paar foto's van de ruimte bij.</p>
+            </div>
+          </form>
+        </div>
+
+        <aside class="md:col-span-5" aria-label="Voorbeeld uit ons werk en je bericht">
+          <div class="md:sticky md:top-12">
+            <div class="relative hidden aspect-[4/5] overflow-hidden rounded-sm bg-merk-diep md:block">
+              {soorten.map((s, i) => (
+                <img src={thumbs[i].src} width="640" height="800" alt="" data-beeld={s.id} class={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${i === 0 ? 'opacity-100' : 'opacity-0'}`} loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+              ))}
+            </div>
+            <p class="maat mt-3 hidden text-wit/70 md:block">Uit ons eigen werk</p>
+            <div class="border-l-2 border-merk-licht pl-5 md:mt-8">
+              <p class="veld-label text-wit/70">Je bericht</p>
+              <p class="mt-2 whitespace-pre-line text-sm leading-relaxed text-wit/90" data-voorbeeld aria-live="polite"></p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+
+  <script define:vars={{ wa: site.wa, soortLabels: Object.fromEntries(soorten.map((s) => [s.id, s.label])) }}>
+    const f = document.querySelector('[data-aanvraag]');
+    const stuur = document.querySelector('[data-stuur]');
+    const voorbeeld = document.querySelector('[data-voorbeeld]');
+    const beelden = document.querySelectorAll('[data-beeld]');
+    const meet = document.createElement('span');
+    meet.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;';
+    const maat = () => document.querySelectorAll('[data-maat]').forEach((s) => {
+      s.parentNode.appendChild(meet); meet.textContent = s.options[s.selectedIndex].text;
+      s.style.width = `calc(${meet.getBoundingClientRect().width}px + 2.1rem)`; meet.remove();
+    });
+    document.fonts?.ready.then(maat);
+    addEventListener('resize', maat);
+    const maak = () => {
+      maat();
+      const d = new FormData(f);
+      const soort = d.get('soort');
+      const m2 = String(d.get('m2') || '').replace(/[^0-9]/g, '');
+      const extra = d.getAll('extra');
+      const plaats = String(d.get('plaats') || '').trim();
+      const naam = String(d.get('naam') || '').trim();
+      const regels = [];
+      regels.push(soort === 'advies'
+        ? `Hoi TempoFloors, ik zoek een nieuwe vloer voor ${d.get('ruimte')}${m2 ? `, ongeveer ${m2} m²` : ''}. Ik wil graag advies over de soort vloer.`
+        : `Hoi TempoFloors, ik zoek ${soortLabels[soort]} voor ${d.get('ruimte')}${m2 ? `, ongeveer ${m2} m²` : ''}.`);
+      if (extra.length) regels.push(`Ook graag: ${extra.join(', ').toLowerCase()}.`);
+      if (plaats) regels.push(`Plaats: ${plaats}.`);
+      regels.push("Ik stuur een paar foto's van de ruimte mee.");
+      if (naam) regels.push(`Groet, ${naam}`);
+      const tekst = regels.join('\n');
+      voorbeeld.textContent = tekst;
+      stuur.href = `${wa}?text=${encodeURIComponent(tekst)}`;
+      beelden.forEach((b) => b.classList.toggle('opacity-0', b.dataset.beeld !== soort));
+      beelden.forEach((b) => b.classList.toggle('opacity-100', b.dataset.beeld === soort));
+    };
+    f.addEventListener('input', maak);
+    f.addEventListener('change', maak);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    maak();
+  </script>
+</Base>
+

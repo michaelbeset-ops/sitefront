@@ -1,0 +1,240 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Visgraat from '../components/Visgraat.astro';
+import { site, reviews, waMet } from '../data/site';
+
+import heroBreed from '../assets/hero-breed.jpg';
+import heroHoog from '../assets/hero-hoog.jpg';
+import strijklicht from '../assets/strijklicht.jpg';
+import stapGrof from '../assets/stap-grof.jpg';
+import stap120 from '../assets/stap-120.jpg';
+import stapKlaar from '../assets/stap-klaar.jpg';
+import royl from '../assets/royl.jpg';
+import vgLeggen from '../assets/visgraat-leggen.jpg';
+import vgRuimte from '../assets/visgraat-ruimte.jpg';
+import klaarB from '../assets/klaar-b.jpg';
+
+// Hero met art direction: liggende foto op desktop, staande snede op mobiel.
+const hb = await Promise.all([960, 1440, 2000].map((w) => getImage({ src: heroBreed, width: w, format: 'webp', quality: 72 })));
+const hh = await Promise.all([480, 860].map((w) => getImage({ src: heroHoog, width: w, format: 'webp', quality: 70 })));
+const srcset = (l: { src: string; options: { width?: number } }[]) => l.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+// Diensten letterlijk van hun flyer (Facebook, 8 mei 2025).
+const diensten = ['Vloeren schuren', 'Olie- en lakafwerking', 'Renovatie & schadeherstel', 'Onderhoud'];
+
+// Aanvraag: alleen vloersoorten en werk uit hun eigen bronnen (flyer, Facebook-intro, eigen foto's van visgraat leggen).
+const vloeren = ['parketvloer', 'houten vloer', 'visgraatvloer', 'laminaatvloer', 'pvc-vloer', 'stenen vloer'];
+const ruimtes = ['woonkamer', 'keuken', 'slaapkamer', 'eetkamer', 'hal'];
+const wensen = ['laten schuren en oliën', 'laten schuren en lakken', 'laten renoveren', 'een schade laten herstellen', 'laten onderhouden', 'grondig laten reinigen'];
+const startBericht = 'Hoi Edwin, ik heb een parketvloer in de woonkamer. Ik wil hem graag laten schuren en oliën.';
+
+const [nelleke, ...andere] = reviews;
+---
+<Base title="S.P.S. Slagmolen Parket Service | Parketvloeren schuren, oliën en lakken | Barendrecht" description="S.P.S. Slagmolen Parket Service in Barendrecht: vloeren schuren, olie- en lakafwerking, renovatie en schadeherstel van parket, hout en laminaat.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen foto van een eiken vloer bij de tuinpuien (Google, eigenaar, juni 2026) -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hb)} sizes="100vw" />
+        <img src={hh[1].src} srcset={srcset(hh)} sizes="100vw" width="1125" height="1500" alt="Een lange eiken vloer in een lichte kamer met glazen schuifpuien naar de tuin, door S.P.S. geschuurd en afgewerkt" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_60%] md:object-[50%_30%]" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#171514b3_0%,#1715140d_22%,#17151414_44%,#171514cc_72%,#171514f2_100%)] md:bg-[linear-gradient(180deg,#17151499_0%,#17151400_20%),linear-gradient(90deg,#171514d9_0%,#17151480_36%,#17151400_62%),linear-gradient(0deg,#17151499_0%,transparent_38%)]"></div>
+      <div class="wrap pb-32 pt-36 md:pb-20">
+        <p class="text-base font-medium text-wit/80">Parketservice in Barendrecht</p>
+        <h1 id="inhoud" class="mt-4 max-w-[13ch] text-hero leading-[.92]">Je houten vloer weer als nieuw? <em class="text-rood-licht">Wij regelen het.</em></h1>
+        <div class="mt-9 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
+          <div class="max-w-lg">
+            <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Schuren, olie- en lakafwerking, renovatie en schadeherstel. Door Edwin Slagmolen.</p>
+            <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+              <a href="#aanvraag" class="knop knop-rood">Vloer aanvragen<Icoon naam="pijl" /></a>
+              <a href={site.telHref} class="num link link-licht font-medium text-wit">of bel {site.tel}</a>
+            </div>
+          </div>
+          <p class="hidden text-sm text-wit/70 md:block">Eiken vloer, juni 2026</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Vloeren: hun eigen intro (Facebook) en de diensten van hun flyer -->
+    <section id="vloeren" class="py-24 md:py-32">
+      <div class="wrap grid gap-y-16 md:grid-cols-12 md:gap-x-12">
+        <div class="md:col-span-7">
+          <blockquote class="rijs">
+            <p class="kop text-3xl leading-[1.08] text-inkt">“Slagmolen parket service is er voor alle werkzaamheden aan uw houten vloer en laminaat vloer.”</p>
+            <p class="kop mt-5 text-2xl italic leading-snug text-grijs">Tevens voor het grondig reinigen van uw stenen vloer.</p>
+          </blockquote>
+          <ul class="mt-14 md:mt-20">
+            {diensten.map((d, i) => (
+              <li class="rijs regel py-5 last:border-b last:border-lijn-licht" style={`--d:${i * 0.07}s`}>
+                <span class="kop text-2xl font-medium md:text-[2.6rem] md:leading-none">{d}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="rijs mt-8 text-grijs">Vloeren: parket, hout, laminaat en pvc/vinyl.</p>
+        </div>
+        <figure class="rijs md:col-span-5 md:pt-24">
+          <Image src={strijklicht} widths={[480, 760, 1100]} sizes="(min-width: 768px) 38vw, 100vw" alt="Een schuurmachine op een eiken vloer, met zonlicht in strepen over de planken" class="aspect-[3/4] w-full object-cover" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. Werkwijze: een klus van juni 2026 met hun eigen bijschriften van Facebook -->
+    <section id="werkwijze" class="overflow-hidden bg-kalk-2 py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid items-end gap-y-8 md:grid-cols-12 md:gap-x-12">
+          <div class="rijs flex items-end gap-4 text-rood md:col-span-7 md:gap-8" aria-hidden="true">
+            <span class="serif-num text-korrel">50</span>
+            <span class="mb-[6%] h-px flex-1 bg-rood/50"></span>
+            <span class="serif-num text-korrel italic">120</span>
+          </div>
+          <div class="md:col-span-5 md:pb-4">
+            <h2 class="rijs text-4xl">Van korrel 50 naar 120.</h2>
+            <p class="rijs mt-5 max-w-md text-grijs">Zo ging een klus in juni 2026, in Edwins eigen woorden.</p>
+          </div>
+        </div>
+
+        <ol class="mt-16 grid gap-y-14 md:mt-20 md:grid-cols-12 md:gap-x-10">
+          <li class="rijs md:col-span-7">
+            <Image src={stapGrof} widths={[560, 900, 1400]} sizes="(min-width: 768px) 56vw, 100vw" alt="Een woonkamer tijdens het schuren: de oude afwerking is deels van de vloer, de stofzuigerslang ligt erover" class="aspect-[16/10] w-full object-cover" />
+            <p class="mt-5 flex gap-4"><span class="kop text-3xl italic leading-none text-rood">1</span><span class="max-w-md">De vloer eerst grof schuren om de oude afwerking eraf te krijgen.</span></p>
+          </li>
+          <li class="rijs md:col-span-5 md:mt-28" style="--d:.1s">
+            <Image src={stap120} widths={[480, 760, 1080]} sizes="(min-width: 768px) 38vw, 100vw" alt="Dezelfde vloer na het fijn schuren: kaal, licht en egaal hout langs de keuken" class="aspect-[4/5] w-full object-cover" />
+            <p class="mt-5 flex gap-4"><span class="kop text-3xl italic leading-none text-rood">2</span><span>Na vele malen schuren, van grof korrel 50 in 4 stappen naar korrel 120. Daarna nog een fiberpad erover en hij is klaar voor de olie.</span></p>
+          </li>
+          <li class="rijs md:col-span-8 md:col-start-3 md:-mt-6">
+            <Image src={stapKlaar} widths={[640, 1100, 1700]} sizes="(min-width: 768px) 64vw, 100vw" alt="Het resultaat: een donker geoliede eiken vloer met lange planken in een lichte kamer" class="aspect-[16/9] w-full object-cover" />
+            <p class="mt-5 flex items-baseline gap-4"><span class="kop text-3xl italic leading-none text-rood">3</span><span class="kop text-2xl italic">Het eindresultaat</span></p>
+          </li>
+        </ol>
+        <p class="rijs mt-12 text-sm text-grijs md:text-right">Bijschriften: Facebook, 16 juni 2026</p>
+      </div>
+    </section>
+
+    <!-- 4. Olie: hun bericht van 11 augustus 2026 -->
+    <section id="olie" class="bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid items-center gap-y-12 md:grid-cols-12 md:gap-x-14">
+        <figure class="rijs md:col-span-7">
+          <Image src={royl} widths={[560, 900, 1096]} sizes="(min-width: 768px) 56vw, 100vw" alt="Een eiken vloer na schuren en een behandeling met Royl 2K olie, pigment 11, in een lege kamer met zon op de vloer" class="aspect-[1096/700] w-full object-cover" />
+        </figure>
+        <div class="md:col-span-5">
+          <h2 class="rijs text-3xl italic leading-[1.05]">Van vergeeld eiken naar de absolute blikvanger van je interieur!</h2>
+          <p class="rijs mt-7 text-as">“… deze prachtige eiken vloer zat onder een oude, vergeelde laklaag. Na een grondige schuurbeurt en een behandeling met de hoogwaardige Royl 2K olie (pigment 11), straalt het hout weer als nooit tevoren.”</p>
+          <p class="rijs mt-6 text-sm text-wit/60"><a href={site.facebook} class="link link-licht">Facebook, 11 augustus 2026</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Visgraat: eigen foto's van het Google-profiel, met hun eigen bijschriften -->
+    <section id="visgraat" class="pb-24 md:pb-28">
+      <Visgraat hoogte={110} class="text-inkt/15" />
+      <div class="wrap mt-16 grid gap-y-14 md:mt-20 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-4">
+          <h2 class="rijs text-4xl">Visgraat, blok voor blok.</h2>
+          <p class="rijs mt-5 max-w-sm text-grijs">Eiken visgraat, uit het werk van S.P.S.</p>
+        </div>
+        <figure class="rijs md:col-span-4">
+          <Image src={vgLeggen} widths={[420, 640, 900]} sizes="(min-width: 768px) 30vw, 100vw" alt="Eiken visgraatblokken worden in een rij gelegd op een vloer met lijm" class="aspect-[4/5] w-full object-cover" />
+          <figcaption class="kop mt-4 text-xl italic">Visgraat eiken.</figcaption>
+        </figure>
+        <figure class="rijs md:col-span-4 md:mt-32" style="--d:.1s">
+          <Image src={vgRuimte} widths={[420, 640, 900]} sizes="(min-width: 768px) 30vw, 100vw" alt="Een lange ruimte waar een eiken visgraatvloer half gelegd is" class="aspect-[4/5] w-full object-cover" />
+          <figcaption class="kop mt-4 text-xl italic">Eiken visgraat 12x48 cm.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6. Reviews: letterlijk van Google -->
+    <section id="reviews" class="bg-wit py-24 md:py-28">
+      <div class="wrap">
+        <h2 class="sr-only">Reviews</h2>
+        <figure class="rijs mx-auto max-w-5xl">
+          <blockquote class="kop text-3xl leading-[1.12]">“{nelleke.tekst}”</blockquote>
+          <figcaption class="mt-7 text-grijs"><span class="font-semibold text-inkt">{nelleke.naam}</span>, Google review</figcaption>
+        </figure>
+        <div class="mx-auto mt-20 grid max-w-5xl gap-y-10 md:grid-cols-3 md:gap-x-10">
+          {andere.map((r, i) => (
+            <figure class="rijs regel pt-6" style={`--d:${i * 0.08}s`}>
+              <blockquote class="text-lg leading-relaxed">“{r.tekst}”</blockquote>
+              <figcaption class="mt-4 text-sm text-grijs"><span class="font-semibold text-inkt">{r.naam}</span>, Google review</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="rijs mx-auto mt-16 flex max-w-5xl items-center gap-3 text-sm text-grijs">
+          <Icoon naam="g" class="h-5 w-5" />
+          <a href={site.reviews} class="link"><span class="num">{site.google.score}</span> op Google, uit {site.google.aantal} reviews</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- 7. Aanvraag (wow): een zin aanvullen, WhatsApp opent met het bericht klaar -->
+    <section id="aanvraag" class="grid bg-kalk md:grid-cols-12">
+      <div class="relative min-h-[38vh] md:col-span-5 md:min-h-full">
+        <Image src={klaarB} widths={[560, 900, 1300]} sizes="(min-width: 768px) 42vw, 100vw" alt="Een net geoliede eiken vloer met brede planken in een lichte kamer" class="absolute inset-0 h-full w-full object-cover" />
+      </div>
+      <div class="px-5 py-20 md:col-span-7 md:px-14 md:py-32 lg:px-20">
+        <h2 class="rijs text-4xl">Vertel Edwin over je vloer.</h2>
+        <p class="rijs mt-5 max-w-lg text-grijs">Vul de zin aan en WhatsApp opent met je bericht klaar. Een foto van de vloer kun je daar meesturen.</p>
+        <form class="rijs zin mt-12 max-w-2xl" data-aanvraag onsubmit="return false">
+          <p>
+            Hoi Edwin, ik heb een
+            <label class="sr-only" for="vloer">Soort vloer</label>
+            <select id="vloer" class="gat" data-in>{vloeren.map((v) => <option>{v}</option>)}</select>
+            van ongeveer
+            <label class="sr-only" for="m2">Oppervlakte in vierkante meters</label>
+            <input id="m2" class="gat num w-[2.4em] text-center" inputmode="numeric" maxlength="4" placeholder="30" data-in /> m²
+            in de
+            <label class="sr-only" for="ruimte">Ruimte</label>
+            <select id="ruimte" class="gat" data-in>{ruimtes.map((v) => <option>{v}</option>)}</select>.
+            Ik wil hem graag
+            <label class="sr-only" for="wens">Wat je wilt laten doen</label>
+            <select id="wens" class="gat" data-in>{wensen.map((v) => <option>{v}</option>)}</select>.
+          </p>
+          <p class="mt-4">
+            Groet,
+            <label class="sr-only" for="naam">Je naam</label>
+            <input id="naam" class="gat w-[7em]" autocomplete="given-name" placeholder="je naam" data-in />
+          </p>
+        </form>
+        <div class="rijs mt-12 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <a href={waMet(startBericht)} class="knop knop-rood" data-stuur><Icoon naam="wa" />Open in WhatsApp</a>
+          <p class="text-grijs">Bellen kan ook: <a href={site.telHref} class="link num font-medium text-inkt">{site.tel}</a></p>
+        </div>
+        <p class="rijs mt-10 regel max-w-2xl pt-6 text-sm text-grijs">Mailen: <a href={`mailto:${site.mail}`} class="link text-inkt">{site.mail}</a> <span class="px-2" aria-hidden="true">/</span> {site.plaats}</p>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-aanvraag]');
+  const a = document.querySelector<HTMLAnchorElement>('[data-stuur]');
+  if (f && a) {
+    const wa = a.href.split('?')[0];
+    const v = (id: string) => (f.querySelector<HTMLInputElement | HTMLSelectElement>('#' + id)?.value || '').trim();
+    const zet = () => {
+      const m2 = v('m2').replace(/[^\d,.]/g, '');
+      let t = `Hoi Edwin, ik heb een ${v('vloer')}${m2 ? ` van ongeveer ${m2} m²` : ''} in de ${v('ruimte')}. Ik wil hem graag ${v('wens')}.`;
+      if (v('naam')) t += `\n\nGroet, ${v('naam')}`;
+      a.href = `${wa}?text=${encodeURIComponent(t)}`;
+    };
+    // Keuzelijsten zo breed als het gekozen woord, zodat de zin een zin blijft.
+    const maat = document.createElement('span');
+    maat.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-style:italic';
+    f.appendChild(maat);
+    const pas = () => f.querySelectorAll<HTMLSelectElement>('select').forEach((s) => { maat.textContent = s.options[s.selectedIndex].text; s.style.width = `calc(${maat.offsetWidth}px + 1.1em)`; });
+    f.querySelectorAll('[data-in]').forEach((el) => { el.addEventListener('input', zet); el.addEventListener('change', () => { zet(); pas(); }); });
+    zet(); pas();
+    document.fonts?.ready.then(pas);
+  }
+</script>
