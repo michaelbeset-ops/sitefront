@@ -1,0 +1,325 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, park, reviews, plaatsen, waMet } from '../data/site';
+
+import heroBreed from '../assets/hero-breed.jpg';
+import heroHoog from '../assets/hero-hoog.jpg';
+import schaarE from '../assets/schaar-e.jpg';
+import knikDuo from '../assets/knik-duo.jpg';
+import telescoop from '../assets/telescoop.jpg';
+import zwart from '../assets/vrachtwagen-zwart.jpg';
+import wit from '../assets/vrachtwagen-wit.jpg';
+import sticker from '../assets/sticker.jpg';
+
+const hb = await Promise.all([960, 1600, 2200].map((w) => getImage({ src: heroBreed, width: w, format: 'webp', quality: 70 })));
+const hh = await Promise.all([480, 740].map((w) => getImage({ src: heroHoog, width: w, format: 'webp', quality: 60 })));
+const srcset = (l: { src: string; options: { width?: number } }[]) => l.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+const m = (h: number) => String(h).replace('.', ',');
+const bereik = (s: (typeof park)[number]) => {
+  const hs = s.machines.map((x) => x.h);
+  const lo = Math.min(...hs), hi = Math.max(...hs);
+  return lo === hi ? `${m(hi)} m` : `${m(lo)} tot ${m(hi)} m`;
+};
+// Alle machines plat, voor de hoogtemeter
+const alle = park.flatMap((s) => s.machines.map((x) => ({ ...x, soort: s.kort }))).sort((a, b) => a.h - b.h);
+const latLabels = [0, 10, 20, 30, 40];
+
+// Werkgebied: plaatsen geprojecteerd op lengte/breedtegraad (geen kaartdienst, geen cookies)
+const [lonMin, lonMax, latMin, latMax] = [4.25, 4.82, 51.44, 51.62];
+const kaartB = 600, kaartH = Math.round(kaartB * ((latMax - latMin) * 1.6) / (lonMax - lonMin));
+const xy = (p: { lat: number; lon: number }) => [((p.lon - lonMin) / (lonMax - lonMin)) * kaartB, ((latMax - p.lat) / (latMax - latMin)) * kaartH];
+const thuis = plaatsen.find((p) => p.thuis)!;
+---
+<Base title="Rops Verhuur | Hoogwerker verhuur in West-Brabant, vanuit Rucphen" description="Hoogwerkers huren in West-Brabant: schaarliften, knikarm-, telescoop-, spin-, mast- en aanhangerhoogwerkers van 6 tot 43 meter werkhoogte. Geleverd op uw werklocatie met eigen transport.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: eigen foto (ropsverhuur.nl, DSC_0552): drie schaarliften van hoog naar laag, avondlicht -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(hb)} sizes="100vw" />
+        <img src={hh[1].src} srcset={srcset(hh)} sizes="100vw" width="1200" height="1620" alt="Drie blauwe schaarhoogwerkers van Rops Verhuur, uitgeschoven tot verschillende hoogtes, voor een rij bomen in avondlicht" class="absolute inset-0 -z-10 h-full w-full object-cover object-[50%_30%] md:object-[30%_40%]" loading="eager" fetchpriority="high" decoding="async" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1a19b3_0%,#1b1a1900_24%,#1b1a1900_40%,#1b1a19d9_74%,#1b1a19f5_100%)] md:bg-[linear-gradient(90deg,#1b1a19d1_0%,#1b1a1980_38%,#1b1a1900_62%),linear-gradient(180deg,#1b1a1999_0%,#1b1a1900_20%,#1b1a1900_50%,#1b1a19d9_100%)]"></div>
+
+      <!-- Meetlat langs de rechterrand: 0 tot 45 meter, de hoogste machine (43 m) gemarkeerd -->
+      <div class="pointer-events-none absolute bottom-10 right-5 top-28 hidden w-24 md:block lg:right-10" aria-hidden="true">
+        <div class="lat absolute inset-0 text-wit/60"></div>
+        {latLabels.map((l) => <span class="maat absolute right-8 translate-y-1/2 text-wit/70" style={`bottom:${(l / 45) * 100}%`}>{l}</span>)}
+        <span class="absolute right-0 h-[3px] w-14 bg-merk" style={`bottom:${(43 / 45) * 100}%`}></span>
+        <span class="maat absolute right-16 translate-y-1/2 whitespace-nowrap text-wit" style={`bottom:${(43 / 45) * 100}%`}>43 m</span>
+      </div>
+
+      <div class="wrap pb-28 pt-36 md:pb-20 md:pr-40">
+        <p class="text-base font-semibold text-wit/85">Hoogwerker verhuur in West-Brabant</p>
+        <h1 id="inhoud" class="mt-4 max-w-[18ch] text-hero">Van 6 tot 43 meter <br class="hidden sm:block" />werkhoogte.</h1>
+        <div class="mt-8 max-w-xl md:mt-10">
+          <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Schaarliften, knikarmen, telescopen, spin- en masthoogwerkers uit eigen voorraad. Geleverd op uw werklocatie, met eigen transport.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href="#aanvraag" class="knop knop-merk">Hoogwerker aanvragen<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="num link link-licht hidden font-semibold text-wit sm:inline">of bel {site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Wow: de hoogtemeter. Schuif naar je werkhoogte, zie welke machines uit hun eigen aanbod passen, stuur via WhatsApp. -->
+    <section id="aanvraag" class="bg-inkt pb-24 pt-20 text-wit md:pb-32 md:pt-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-5">
+          <h2 class="rijs text-4xl">Hoe hoog moet u werken?</h2>
+          <p class="rijs mt-6 max-w-sm text-lg text-mist" style="--d:.1s">Schuif naar uw werkhoogte. U ziet meteen welke machines uit ons aanbod daarbij passen.</p>
+
+          <div class="mt-12 lg:mt-16">
+            <p class="flex items-baseline gap-3" aria-live="polite">
+              <span class="kop num text-[clamp(6rem,14vw,11rem)] font-[850] leading-[.8] tracking-[-.05em]" data-uit>12</span>
+              <span class="kop text-xl font-semibold text-mist">m werkhoogte</span>
+            </p>
+            <label for="hoogte" class="sr-only">Werkhoogte in meters</label>
+            <input id="hoogte" form="aanvraagform" name="hoogte" type="range" min="0" max="45" step="1" value="12" class="meter mt-8" data-meter />
+            <div class="relative mt-1 h-10 text-wit/45" aria-hidden="true">
+              <div class="lat-plat absolute inset-x-0 top-0 h-4"></div>
+              {[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((l) => <span class="maat absolute top-5 -translate-x-1/2 text-wit/60" style={`left:${(l / 45) * 100}%`}>{l}</span>)}
+            </div>
+          </div>
+        </div>
+
+        <form id="aanvraagform" class="lg:col-span-7 lg:pt-4" data-aanvraag>
+          <fieldset>
+            <legend class="flex w-full items-baseline justify-between gap-4 pb-4 text-sm font-semibold text-mist">
+              <span>Past bij <span class="num text-wit" data-uit-2>12</span> m</span>
+              <span class="hidden sm:inline">werkhoogte</span>
+            </legend>
+            <div class="border-b border-lijn" data-lijst>
+              {alle.map((x, i) => (
+                <label class="optie hidden" data-h={x.h}>
+                  <input type="radio" name="machine" value={`${x.naam} (${x.model})`} />
+                  <span>
+                    <span class="font-semibold">{x.naam}</span>
+                    <span class="block text-sm text-mist">{x.model}{x.bereik ? `, zijdelings ${x.bereik}` : ''}, {x.aandrijving}{x.extra ? `, ${x.extra}` : ''}</span>
+                  </span>
+                  <span class="kop num text-lg font-bold">{m(x.h)} m</span>
+                </label>
+              ))}
+              <p class="hidden border-t border-lijn py-4 text-mist" data-geen>Staat uw hoogwerker er nog niet tussen? Neem contact met ons op en wij helpen u verder!</p>
+              <label class="optie">
+                <input type="radio" name="machine" value="" checked />
+                <span class="font-semibold">Weet ik nog niet, ik hoor graag welke machine past</span>
+                <span></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+            <div>
+              <label for="vanaf" class="veld-label">Vanaf wanneer?</label>
+              <input id="vanaf" name="vanaf" type="date" class="veld" />
+            </div>
+            <div>
+              <label for="duur" class="veld-label">Hoe lang?</label>
+              <select id="duur" name="duur" class="veld">
+                <option>1 dag</option>
+                <option>een paar dagen</option>
+                <option>1 week</option>
+                <option>langer dan een week</option>
+                <option>weet ik nog niet</option>
+              </select>
+            </div>
+            <div>
+              <label for="plaats" class="veld-label">Werklocatie</label>
+              <input id="plaats" name="plaats" type="text" autocomplete="address-level2" placeholder="bijvoorbeeld Etten-Leur" class="veld" />
+            </div>
+            <div>
+              <label for="naam" class="veld-label">Uw naam</label>
+              <input id="naam" name="naam" type="text" autocomplete="name" class="veld" />
+            </div>
+          </div>
+
+          <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href={site.wa} class="knop knop-merk" data-stuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+            <a href={site.telHref} class="num link link-licht font-semibold">of bel {site.tel}</a>
+          </div>
+          <p class="mt-5 max-w-lg text-sm text-mist">U verstuurt het bericht zelf in WhatsApp. Of de machine vrij is en wat het kost, hoort u van ons.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 3. Het park: alle soorten en machines letterlijk van hun site, zonder prijzen -->
+    <section id="park" class="pt-24 md:pt-32">
+      <div class="wrap grid gap-y-8 md:grid-cols-12 md:gap-x-10">
+        <h2 class="rijs text-4xl md:col-span-5">Het park.</h2>
+        <p class="rijs max-w-xl text-lg text-steen md:col-span-6 md:col-start-7 md:pt-3" style="--d:.1s">Elke werkomgeving en elke situatie is anders, daarom hebben wij diverse soorten hoogwerkers in ons aanbod zodat u altijd de juiste machine kunt gebruiken.</p>
+      </div>
+
+      <div class="wrap mt-12 grid grid-cols-12 gap-3 md:mt-16 md:gap-5">
+        <Image src={knikDuo} widths={[800, 1400, 2000]} sizes="(min-width: 768px) 50vw, 100vw" quality={66} alt="Twee knikarmhoogwerkers met uitgeschoven giek naast elkaar op het terrein" class="rijs col-span-12 aspect-[4/3] w-full rounded-sm object-cover md:col-span-6" loading="lazy" />
+        <Image src={schaarE} widths={[400, 700]} sizes="(min-width: 768px) 25vw, 50vw" quality={68} alt="Een elektrische Genie GS-2632 schaarlift op het terrein van Rops Verhuur" class="rijs col-span-6 aspect-[3/4] w-full rounded-sm object-cover md:col-span-3 md:mt-14" loading="lazy" style="--d:.1s" />
+        <Image src={telescoop} widths={[400, 700]} sizes="(min-width: 768px) 25vw, 50vw" quality={68} alt="Telescoophoogwerker met de giek bijna recht omhoog tegen een blauwe lucht" class="rijs col-span-6 aspect-[3/4] w-full rounded-sm object-cover md:col-span-3 md:mt-28" loading="lazy" style="--d:.2s" />
+      </div>
+
+      <div class="wrap mt-14 pb-4 md:mt-20">
+        {park.map((s) => (
+          <article id={`park-${s.id}`} class="grid gap-y-3 border-t border-lijn-licht py-7 md:grid-cols-12 md:gap-x-10 md:py-8">
+            <h3 class="text-xl md:col-span-4 md:text-2xl md:leading-none">{s.naam}</h3>
+            <p class="kop num whitespace-nowrap text-2xl font-[800] text-merk md:col-span-3 md:text-3xl">{bereik(s)}</p>
+            <div class="md:col-span-5 md:pt-1">
+              <ul class="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+                {s.machines.map((x) => <li class="whitespace-nowrap"><span class="font-semibold">{x.model}</span> <span class="num text-steen">{m(x.h)} m</span></li>)}
+              </ul>
+              {s.noot && <p class="mt-2 text-sm text-steen">{s.noot}</p>}
+            </div>
+          </article>
+        ))}
+        <p class="border-t border-lijn-licht pt-7 text-steen">Ook te huur: een valbeveiligingsset (harnas, val-lijn en steigerhaak) en kunststof rijschotten van 2 bij 0,8 m.</p>
+      </div>
+
+    </section>
+
+    <!-- 4. Transport: eigen vrachtwagens (ropsverhuur.nl transport-pagina + Google "Van eigenaar") -->
+    <section id="transport" class="mt-20 bg-inkt text-wit md:mt-28">
+      <div class="relative isolate flex min-h-[62svh] items-end overflow-hidden">
+        <Image src={zwart} widths={[800, 1400, 2200]} sizes="100vw" quality={68} alt="Zwarte Volvo-vrachtwagen van Rops Verhuur met lege oprijvloer, langs een dijk in de mist" class="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_50%]" loading="lazy" />
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1a1900_35%,#1b1a19e6_100%)]"></div>
+        <div class="wrap pb-14 pt-40 md:pb-20">
+          <h2 class="rijs max-w-[18ch] text-4xl">Elke hoogwerker leveren wij op uw werklocatie.</h2>
+          <p class="rijs mt-5 max-w-md text-lg text-wit/85" style="--d:.1s">Met passend vervoer voor elke machine.</p>
+        </div>
+      </div>
+      <div class="wrap grid items-center gap-y-12 py-20 md:grid-cols-12 md:gap-x-10 md:py-24">
+        <Image src={wit} widths={[540, 1080]} sizes="(min-width: 768px) 50vw, 100vw" quality={68} alt="Witte Mercedes-vrachtwagen van Rops Verhuur, geladen met een oranje en een groene hoogwerker" class="rijs aspect-[4/3] w-full rounded-sm object-cover md:col-span-6" loading="lazy" />
+        <div class="space-y-10 md:col-span-5 md:col-start-8">
+          <div>
+            <h3 class="text-2xl">Klein transport</h3>
+            <p class="mt-3 max-w-md text-mist">Machines tot 2,5 ton eigen gewicht vervoeren wij op een aanhanger, waardoor de transportkosten lager uitvallen.</p>
+          </div>
+          <div class="border-t border-lijn pt-10">
+            <h3 class="text-2xl">Groot transport</h3>
+            <p class="mt-3 max-w-md text-mist">Al onze hoogwerkers kunnen wij in eigen beheer transporteren. Zo kunnen we het transport uitvoeren wanneer het u past.</p>
+            <p class="mt-3 max-w-md text-mist">We voldoen aan de milieunormen om de hoogwerker tot in de binnenstad op locatie te brengen. Moet de machine tussendoor naar een andere plek, dan verplaatsen wij hem ook.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkgebied + reviews -->
+    <section id="werkgebied" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-16 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-5">
+          <h2 class="rijs text-4xl">Vanuit Rucphen.</h2>
+          <p class="rijs mt-6 max-w-md text-lg text-steen" style="--d:.1s">Door middel van onze eigen transportmiddelen kunnen wij snel ter plaatse zijn in heel West-Brabant.</p>
+        </div>
+        <figure class="md:col-span-7">
+          <svg viewBox={`-20 -20 ${kaartB + 40} ${kaartH + 40}`} class="w-full" role="img" aria-label="Werkgebied: Rucphen, Etten-Leur, Breda, Zundert en Bergen op Zoom">
+            <g stroke="#1b1a1926" stroke-width="1">
+              {[0, 1, 2, 3, 4, 5, 6].map((i) => <line x1={(i / 6) * kaartB} x2={(i / 6) * kaartB} y1="0" y2={kaartH} />)}
+              {[0, 1, 2, 3].map((i) => <line y1={(i / 3) * kaartH} y2={(i / 3) * kaartH} x1="0" x2={kaartB} />)}
+            </g>
+            {plaatsen.filter((p) => !p.thuis).map((p) => { const [x, y] = xy(p), [hx, hy] = xy(thuis); return <line x1={hx} y1={hy} x2={x} y2={y} stroke="#ad0132" stroke-width="1.5" stroke-dasharray="5 5" />; })}
+            {plaatsen.map((p) => { const [x, y] = xy(p); return (
+              <g>
+                <circle cx={x} cy={y} r={p.thuis ? 10 : 6} fill={p.thuis ? '#ad0132' : '#1b1a19'} />
+                <text x={x + (p.naam === 'Breda' ? -14 : 14)} y={y - 12} text-anchor={p.naam === 'Breda' ? 'end' : 'start'} font-family="Archivo Variable, Arial, sans-serif" font-size={p.thuis ? 30 : 25} font-weight={p.thuis ? 800 : 600} fill="#1b1a19">{p.naam}</text>
+              </g>
+            ); })}
+          </svg>
+          <figcaption class="mt-4 text-sm text-steen">Rucphen, Etten-Leur, Breda, Zundert, Bergen op Zoom en omstreken.</figcaption>
+        </figure>
+      </div>
+
+      <div class="wrap mt-20 grid gap-y-12 md:mt-24 md:grid-cols-12 md:gap-x-10">
+        <blockquote class="rijs md:col-span-7">
+          <p class="kop text-3xl font-[700] leading-[1.08]">“{reviews[0].tekst}”</p>
+          <footer class="mt-6 text-sm text-steen"><span class="font-semibold text-inkt">{reviews[0].naam}</span>, Google review, {reviews[0].wanneer}</footer>
+        </blockquote>
+        <div class="space-y-10 md:col-span-4 md:col-start-9 md:pt-3">
+          {reviews.slice(1).map((r, i) => (
+            <blockquote class="rijs border-t border-lijn-licht pt-6" style={`--d:${0.1 * (i + 1)}s`}>
+              <p class="text-lg">“{r.tekst}”</p>
+              <footer class="mt-3 text-sm text-steen"><span class="font-semibold text-inkt">{r.naam}</span>, Google review, {r.wanneer}</footer>
+            </blockquote>
+          ))}
+          <a href={site.reviews} class="flex items-center gap-2.5 text-sm font-semibold text-inkt no-underline hover:text-merk"><Icoon naam="g" class="h-5 w-5" /><span class="num">{site.google.score} op Google, {site.google.aantal} reviews</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contact: de sticker achterop hun machines ("Hoogwerker huren? Bel: 06 11 39 09 15") -->
+    <section id="contact" class="bg-beton-2 py-20 md:py-28">
+      <div class="wrap grid grid-cols-1 items-center gap-y-14 md:grid-cols-12 md:gap-x-10">
+        <div class="md:col-span-6">
+          <div class="rijs max-w-xl rounded-sm bg-wit p-7 shadow-[0_1px_0_#1b1a1914,0_24px_48px_-28px_#1b1a1959] sm:p-10">
+            <p class="flex items-start gap-1.5 leading-none"><span class="schuin kop text-4xl font-[900] text-merk sm:text-5xl" style="font-stretch:125%">ROPS</span><span class="kop pt-1 text-sm font-[500] tracking-[.2em]" style="font-stretch:125%">VERHUUR</span></p>
+            <h2 class="mt-8 text-4xl">Hoogwerker huren?</h2>
+            <p class="kop num mt-4 text-[clamp(1.6rem,4.6vw,2.2rem)] leading-tight sm:whitespace-nowrap font-[800]"><a href={site.telHref} class="no-underline hover:text-merk">Bel: {site.tel}</a></p>
+            <p class="maat mt-4 text-steen">WWW.ROPSVERHUUR.NL</p>
+          </div>
+          <p class="rijs mt-10 max-w-md text-lg text-steen" style="--d:.1s">Wil je een hoogwerker huren of heb je een vraag? Neem contact met ons op en we helpen je graag verder!</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href={waMet('Hallo Rops Verhuur, ik heb een vraag over het huren van een hoogwerker.')} class="knop knop-merk"><Icoon naam="wa" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="link font-semibold">{site.mail}</a>
+          </div>
+        </div>
+        <div class="md:col-span-5 md:col-start-8">
+          <Image src={sticker} widths={[500, 900]} sizes="(min-width: 768px) 38vw, 100vw" quality={68} alt="Achterkant van een oranje JLG-knikarm met de Rops-sticker: Hoogwerker huren? Bel 06 11 39 09 15" class="rijs aspect-square w-full rounded-sm object-cover" loading="lazy" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+
+  <script define:vars={{ wa: site.wa }}>
+    const f = document.querySelector('[data-aanvraag]');
+    const meter = document.querySelector('[data-meter]');
+    const uit = document.querySelector('[data-uit]');
+    const uit2 = document.querySelector('[data-uit-2]');
+    const opties = [...document.querySelectorAll('[data-h]')];
+    const geen = document.querySelector('[data-geen]');
+    const stuur = document.querySelector('[data-stuur]');
+    const nl = (h) => String(h).replace('.', ',');
+    const toon = () => {
+      const v = +meter.value;
+      uit.textContent = v; uit2.textContent = v;
+      meter.style.setProperty('--p', `${(v / 45) * 100}%`);
+      const pas = opties.map((o) => +o.dataset.h).filter((h) => h >= v);
+      const min = pas.length ? Math.min(...pas) : Infinity;
+      let n = 0;
+      opties.forEach((o) => {
+        const h = +o.dataset.h;
+        const zien = h >= v && h <= Math.max(min, v) + 4 && n < 7;
+        if (zien) n++;
+        o.classList.toggle('hidden', !zien);
+        if (!zien) { const r = o.querySelector('input'); if (r.checked) { r.checked = false; f.querySelector('input[name=machine][value=""]').checked = true; } }
+      });
+      geen.classList.toggle('hidden', n > 0);
+    };
+    const maak = () => {
+      const d = new FormData(f);
+      const v = meter.value;
+      const machine = String(d.get('machine') || '');
+      const vanaf = String(d.get('vanaf') || '');
+      const plaats = String(d.get('plaats') || '').trim();
+      const naam = String(d.get('naam') || '').trim();
+      const r = [`Hallo Rops Verhuur, ik zoek een hoogwerker met ongeveer ${nl(v)} m werkhoogte.`];
+      r.push(machine ? `Voorkeur: ${machine}.` : 'Welke machine past, hoor ik graag van u.');
+      const datum = vanaf ? new Date(vanaf + 'T12:00').toLocaleDateString('nl-NL', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+      r.push(`${datum ? `Vanaf ${datum}, ` : 'Periode: '}${d.get('duur')}.`);
+      if (plaats) r.push(`Werklocatie: ${plaats}.`);
+      r.push('Kunt u laten weten of dit kan?');
+      if (naam) r.push(`Groet, ${naam}`);
+      stuur.href = `${wa}?text=${encodeURIComponent(r.join('\n'))}`;
+    };
+    meter.addEventListener('input', () => { toon(); maak(); });
+    f.addEventListener('input', maak);
+    f.addEventListener('change', maak);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    toon(); maak();
+  </script>
+</Base>

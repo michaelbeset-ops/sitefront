@@ -307,3 +307,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Jan Slooter Mechanisatiecentrum, 's-Gravendeel | https://voorstel.sitefront.nl/jan-slooter/ | verouderde site zonder mobiele weergave; 4,7/26; 06/WhatsApp. | 2026-10-10 | demo premium |
 | Hajdari Boot en Polyester Service, Kerkdriel | https://voorstel.sitefront.nl/hajdari-boot-polyester/ | geen website, alleen Facebook/Instagram; 4,8/12; 06/WhatsApp. | 2026-10-10 | demo premium |
 | S.P.S. Slagmolen Parket Service, Barendrecht | https://voorstel.sitefront.nl/sps-parket/ | geen website (eigen domein 404); 5,0/16; 06/WhatsApp. | 2026-10-10 | demo premium |
+| Rops Hoogwerker Verhuur, Rucphen | https://voorstel.sitefront.nl/rops-hoogwerker-verhuur/ | verouderd sjabloon (© 2019 Company), voorbeeldpagina online; 4,6/22; 06/WhatsApp. | 2026-10-10 | demo premium |
