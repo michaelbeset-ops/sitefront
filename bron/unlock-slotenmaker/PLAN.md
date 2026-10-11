@@ -15,3 +15,9 @@ Archivo (wdth 72%, 800, hoofdletters) + Albert Sans. Merk #14283b, aluminium #c9
 
 ## Bewust vermeden
 Standaardhero met stat-rij, kicker boven elke sectie, gelijke icoonkaarten, wizard met chips, groot reviewcijfer, beige/goud.
+
+## Upgrade B50 (11-10-2026)
+Hero: Unsplash-sfeerfoto (hand opent donkere deur, yx6-oS9EXeQ) in nachtblauw getint; eigen foto's als bewijs in dienstkaarten
+("Eigen foto") en de zakelijk-sectie (Jumbo). Lichtblauw #8dbbe8 (zelfde tint als merk) als knop/accent op donker.
+Secties: hero > cijfers (5,0 / 246 / 24 / 7) > 4 dienstkaarten > werkwijze 01-04 > invulzin-WhatsApp (wow) > particulier en
+zakelijk + 3 kaders > 6 Google-reviewkaarten + badge > werkgebied/contact > slotbalk > footer 4 kolommen.

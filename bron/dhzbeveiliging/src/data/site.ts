@@ -36,12 +36,13 @@ export const assortiment = [
   { naam: 'Camerabewaking', zin: 'Dahua bullet-camera’s en 4K PoE-recorders.', link: s('camerabewaking') },
 ];
 
-// Letterlijk van Google (5 sterren). Naam: voornaam + initiaal.
-export const groot = { naam: 'Wim P.', tekst: 'Al vele jaren ervaring met DHZ. Altijd hulp via telefoon op al je vragen. … Dankzij DHZ kan ik alles met gemak zelf doen. Loop ik ergens vast, dan is een belletje voldoende.' };
+// Letterlijk van Google (alle 5 sterren), ingekort met "…". Naam: voornaam + initiaal.
 export const reviews = [
-  { naam: 'Yuki C.', tekst: 'Buitensirene loeit al 2 uur lang. … Dit bedrijf heeft mij super goed telefonisch geholpen en ben ik en mijn buren af van dat geluid!' },
-  { naam: 'S. M.', tekst: 'De bestelde accu voor mijn alarminstallatie lag snel op de mat. De installatie lukte niet, maar Bart hielp me telefonisch op een zeer plezierige en accurate manier uit de brand.' },
-  { naam: 'Aran A.', tekst: 'Ik belde dit bedrijf op en ben telefonisch direct geholpen. … Al mijn vragen geduldig beantwoord gekregen ook. Een behulpzaam en betrouwbaar bedrijf.' },
+  { naam: 'Wim P.', wanneer: 'een jaar geleden', tekst: 'Geweldig bedrijf! Al vele jaren ervaring met DHZ. Altijd hulp via telefoon op al je vragen. … Dankzij DHZ kan ik alles met gemak zelf doen. Loop ik ergens vast, dan is een belletje voldoende. Topservice!' },
+  { naam: 'Yuki C.', wanneer: '8 maanden geleden', tekst: 'Buitensirene loeit al 2 uur lang. … Dit bedrijf heeft mij super goed telefonisch geholpen en ben ik en mijn buren af van dat geluid!' },
+  { naam: 'S. M.', wanneer: 'een jaar geleden', tekst: 'De bestelde accu voor mijn alarminstallatie lag snel op de mat. De installatie lukte niet, maar Bart hielp me telefonisch op een zeer plezierige en accurate manier uit de brand.' },
+  { naam: 'Aran A.', wanneer: 'een jaar geleden', tekst: 'Ik belde dit bedrijf op en ben telefonisch direct geholpen. … Al mijn vragen geduldig beantwoord gekregen ook. Een behulpzaam en betrouwbaar bedrijf.' },
+  { naam: 'J. M.', wanneer: '4 jaar geleden', tekst: 'Een accu besteld voor ons alarmsysteem via de site. Aangezien ik iedere dag langs Papendrecht rijd, kon ik deze ophalen. De eigenaar (Bart) was niet aanwezig maar had deze netjes klaargezet. …' },
 ];
 
 export const klantenservice = [

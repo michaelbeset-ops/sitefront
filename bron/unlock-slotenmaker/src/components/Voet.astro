@@ -1,32 +1,44 @@
 ---
 import { site, url, waHoi, plaatsen } from '../data/site';
 import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
 const jaar = new Date().getFullYear();
 const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
 const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const diensten = ['Buitengesloten', 'Auto openen', 'Sloten vervangen', 'Inbraakpreventie'];
 ---
 <footer class="bg-merk-diep text-mist">
-  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-sm md:grid-cols-12 md:py-20">
-    <div class="md:col-span-5">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] md:py-20 lg:grid-cols-12 lg:gap-8">
+    <div class="col-span-2 lg:col-span-4">
       <Merk />
-      <p class="mt-6 max-w-xs">Slotenmaker voor particulier en zakelijk, 24 uur per dag.</p>
+      <p class="mt-6 max-w-xs">24/7 slotenmaker voor particulier en zakelijk. Spoedservice, buitengesloten en inbraakbeveiliging in Tilburg en omgeving.</p>
+      <a href={site.reviews} class="mt-6 inline-flex items-center gap-3 rounded-md bg-merk px-4 py-3 text-wit no-underline transition-colors hover:bg-merk-2">
+        <Icoon naam="g" class="h-6 w-6" /><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b><span class="text-sm text-mist">{site.google.aantal} reviews</span>
+      </a>
     </div>
-    <div class="md:col-span-3">
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-wit">Diensten</p>
+      <ul class="mt-4 space-y-2">{diensten.map((d) => <li><a href={h('diensten')} class="no-underline transition-colors hover:text-wit">{d}</a></li>)}</ul>
+    </div>
+    <div class="lg:col-span-2">
       <p class="font-semibold text-wit">Werkgebied</p>
-      <ul class="mt-4 space-y-1.5">{plaatsen.map((p) => <li>{p}</li>)}</ul>
+      <ul class="mt-4 space-y-2">{plaatsen.map((p) => <li>{p}</li>)}</ul>
     </div>
-    <div class="md:col-span-4">
+    <div class="col-span-2 sm:col-span-1 lg:col-span-4">
       <p class="font-semibold text-wit">Contact</p>
-      <p class="mt-4"><a href={site.telHref} class="link num text-wit">{site.tel}</a></p>
-      <p class="mt-1.5"><a href={waHoi} class="link">WhatsApp</a></p>
-      <p class="mt-1.5">Maandag t/m zondag, 24 uur</p>
-      <p class="mt-1.5"><a href={h('reviews')} class="link">{site.google.score} op Google, {site.google.aantal} reviews</a></p>
-      <p class="mt-1.5 num">KvK {site.kvk}</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num flex items-center gap-2 font-semibold text-wit no-underline hover:text-sein"><Icoon naam="tel" class="h-4 w-4 text-sein" />{site.tel}</a></li>
+        <li><a href={waHoi} class="flex items-center gap-2 no-underline hover:text-wit"><Icoon naam="wa" class="h-4 w-4 text-sein" />WhatsApp</a></li>
+        <li class="flex items-center gap-2"><Icoon naam="klok" class="h-4 w-4 text-sein" />Maandag t/m zondag, 24 uur</li>
+        <li class="num pl-6">KvK {site.kvk}</li>
+      </ul>
     </div>
   </div>
-  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
-    <p>© {jaar} {site.naam}, {site.plaats}</p>
-    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  <div class="border-t border-lijn">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-7 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    <p class="wrap pb-20 text-xs md:pb-8">Sfeerfoto's via Unsplash, ter illustratie.{site.voorstel && " Overige foto's van jullie eigen Google-profiel. Reviews letterlijk van Google (stand 11 oktober 2026)."}</p>
   </div>
-  {site.voorstel && <p class="wrap pb-20 text-xs md:pb-8">Foto's van jullie eigen Google-profiel. Reviews letterlijk van Google (stand 11 oktober 2026).</p>}
 </footer>

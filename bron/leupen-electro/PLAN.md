@@ -16,3 +16,10 @@ beveiliging 4 onderdelen, geluid, keuring) > groepenkast -> WhatsApp (wow) > rev
 leupenelectro.nl (statische HTML, Last-Modified 19-05-2014, footer "Copyright 2000-2013", geen viewport, geen https):
 alle 10 pagina's in bron/site. Google "Franz Leupen Service", Beveiligingsservice, 5,0 uit 11, reviews 6 en 10 maanden oud.
 Eigenaar Franz Leupen staat op de eigen homepage. Everdenberg 145 = bedrijventerrein Everdenberg (OSM), adres getoond.
+
+## Upgrade B50 (11-10-2026)
+Hero nu een sfeerfoto (Unsplash PkHf7BUWbtk, handen met meetpennen aan een verdeelkast, desktop gespiegeld) met donker verloop;
+de korrelige eigen onderdeelfoto's eruit (bron/eigen-oud). Eigen onderdelenbord met labels blijft als beeld in "Over ons".
+Nieuwe opbouw: topbar erkenningen > hero (eyebrow, knoppen, Google 5,0 + 24 uur storingen) > cijferrij > 6 fotokaarten >
+over ons (donker, bord + erkenningen) > werkwijze 01-04 + storingsbalk > groepenkast-wow > reviewkaarten + Google-badge >
+contact (kaart met adres, storingen, route) > slotbalk > footer 4 kolommen. Bronnen: src/assets/BRONNEN.txt.

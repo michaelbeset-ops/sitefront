@@ -5,37 +5,49 @@ import Merk from './Merk.astro';
 interface Props { thuis?: boolean }
 const { thuis = true } = Astro.props;
 const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
-const nav = [['assortiment', 'Assortiment'], ['doormelden', 'Doormelden via internet'], ['advies', 'Advies'], ['reviews', 'Reviews'], ['contact', 'Contact']];
+const nav = [['diensten', 'Diensten'], ['assortiment', 'Assortiment'], ['werkwijze', 'Werkwijze'], ['advies', 'Advies'], ['reviews', 'Reviews'], ['contact', 'Contact']];
+// Vinkjes: allemaal van hun eigen site (sinds 1996, eigen monteurs, afhalen na een telefoontje).
+const usp = ['Sinds 1996', 'Eigen beveiligingsmonteurs', 'Afhalen in Papendrecht na een telefoontje'];
 ---
-<header class={thuis ? 'absolute inset-x-0 top-0 z-40' : 'relative z-40 bg-nacht'}>
-  <div class="wrap flex h-20 items-center justify-between gap-3 md:h-24 md:gap-6">
-    <Merk />
-    <nav aria-label="Hoofdmenu" class="hidden lg:block">
-      <ul class="flex gap-7 text-[.97rem] font-medium">
-        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/85 no-underline transition-colors duration-200 hover:text-merk-licht">{t}</a></li>)}
+<div class={thuis ? 'absolute inset-x-0 top-0 z-40' : 'relative z-40 bg-nacht'}>
+  <div class="hidden border-b border-lijn lg:block">
+    <div class="wrap flex h-10 items-center justify-between text-[.84rem] text-wit/75">
+      <ul class="flex gap-7">
+        {usp.map((u) => <li class="flex items-center gap-2"><Icoon naam="vink" class="h-3.5 w-3.5 text-merk-licht" />{u}</li>)}
       </ul>
-    </nav>
-    <div class="flex items-center gap-5">
-      <a href={site.telHref} class="num hidden text-[.97rem] font-medium text-wit no-underline transition-colors hover:text-merk-licht xl:block">{site.tel}</a>
-      <a href={waHoi} class="knop knop-licht hidden min-h-11 px-4 md:inline-flex"><Icoon naam="wa" />WhatsApp</a>
-      <button type="button" class="grid h-11 w-11 place-items-center text-wit lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
-        <span class="sr-only">Menu</span>
-        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
-      </button>
+      <a href={site.reviews} class="flex items-center gap-2 text-wit/75 no-underline hover:text-wit"><span class="sterren text-[.8rem]" aria-hidden="true">★★★★★</span><span class="num">{site.google.score} op Google</span></a>
     </div>
   </div>
-  <nav id="menu-nav" aria-label="Menu" class="hidden bg-nacht lg:hidden" data-menu>
-    <ul class="wrap pb-8 pt-2">
-      {nav.map(([id, t]) => <li><a href={h(id)} class="block border-b border-lijn py-4 text-2xl font-semibold tracking-tight text-wit no-underline">{t}</a></li>)}
-      <li class="pt-6"><a href={site.shop} class="font-medium text-merk-licht no-underline">Naar de webshop</a></li>
-      <li class="pt-3"><a href={site.telHref} class="num font-medium text-mist no-underline">{site.tel}</a></li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <div class="wrap flex h-20 items-center justify-between gap-3 md:h-24 md:gap-6">
+      <Merk />
+      <nav aria-label="Hoofdmenu" class="hidden lg:block">
+        <ul class="flex gap-7 text-[.97rem] font-medium">
+          {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/85 no-underline transition-colors duration-200 hover:text-merk-licht">{t}</a></li>)}
+        </ul>
+      </nav>
+      <div class="flex items-center gap-5">
+        <a href={site.telHref} class="num hidden items-center gap-2 text-[.97rem] font-semibold text-wit no-underline transition-colors hover:text-merk-licht xl:flex"><Icoon naam="tel" class="h-4 w-4 text-merk-licht" />{site.tel}</a>
+        <a href={waHoi} class="knop knop-fel hidden min-h-11 px-5 md:inline-flex"><Icoon naam="wa" />WhatsApp</a>
+        <button type="button" class="grid h-11 w-11 place-items-center text-wit lg:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+          <span class="sr-only">Menu</span>
+          <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
+        </button>
+      </div>
+    </div>
+    <nav id="menu-nav" aria-label="Menu" class="hidden bg-nacht lg:hidden" data-menu>
+      <ul class="wrap pb-8 pt-2">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="block border-b border-lijn py-4 text-2xl font-semibold tracking-tight text-wit no-underline">{t}</a></li>)}
+        <li class="pt-6"><a href={site.shop} class="font-medium text-merk-licht no-underline">Naar de webshop</a></li>
+        <li class="pt-3"><a href={site.telHref} class="num font-medium text-mist no-underline">{site.tel}</a></li>
+      </ul>
+    </nav>
+  </header>
+</div>
 
-<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-nacht md:hidden">
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-nacht shadow-[0_-8px_24px_-12px_#0008] md:hidden">
   <a href={site.telHref} class="flex min-h-14 items-center justify-center gap-2.5 border-r border-lijn text-[.97rem] font-semibold text-wit no-underline"><Icoon naam="tel" class="h-5 w-5 text-merk-licht" />Bellen</a>
-  <a href={waHoi} class="flex min-h-14 items-center justify-center gap-2.5 bg-merk text-[.97rem] font-semibold text-wit no-underline"><Icoon naam="wa" class="h-5 w-5" />WhatsApp</a>
+  <a href={waHoi} class="flex min-h-14 items-center justify-center gap-2.5 bg-merk-fel text-[.97rem] font-semibold text-wit no-underline"><Icoon naam="wa" class="h-5 w-5" />WhatsApp</a>
 </div>
 
 <script>

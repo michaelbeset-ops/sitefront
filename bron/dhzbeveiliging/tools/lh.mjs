@@ -1,6 +1,6 @@
 import { chromium } from 'playwright'; import fs from 'node:fs';
 import lighthouse from 'file:///C:/Users/Micha/AppData/Local/npm-cache/_npx/0f94ee7615faf582/node_modules/lighthouse/core/index.js';
-const b = await chromium.launch({ args: ['--remote-debugging-port=9399'] });
+const b = await chromium.launch({ executablePath: 'C:/Users/Micha/AppData/Local/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-win64/chrome-headless-shell.exe', args: ['--remote-debugging-port=9399'] });
 const r = await lighthouse('http://127.0.0.1:4499/sitefront/dhzbeveiliging/', { port: 9399, output: 'json', logLevel: 'error' });
 fs.writeFileSync('shots/lh.json', r.report);
 console.log(Object.entries(r.lhr.categories).map(([k,v])=>k+':'+Math.round(v.score*100)).join(' '));

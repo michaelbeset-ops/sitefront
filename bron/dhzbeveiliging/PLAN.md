@@ -18,3 +18,9 @@ dhzbeveiliging.nl (CS-Cart, bron/site/pages.json + bron/web/), Google 4,7 uit 31
 reageert op reviews. Foto's: Google-profiel, geplaatst door "DHZbeveiliging.nl" (bron/google/who*.png).
 Beukmolen 45 = woonstraat: geen straat tonen; hun eigen site gebruikt Postbus 168, 3350 AD Papendrecht.
 Eigenaar Bart Verlaan staat op hun eigen pagina "Wie is DHZbeveiliging.nl".
+
+## Upgrade B50 (11-10-2026)
+Hero nu Unsplash-sfeerfoto (woning bij avond, photo-1568605114967-8130f3a36994, ter illustratie); Dahua-dome naar dienstkaart.
+Koppen Archivo 800/900, body Space Grotesk, knoppen merk-fel #2c5cc0. Topbar met vinkjes, chips, over + stat-rij, 3 dienst-fotokaarten,
+assortiment 2 fotokaarten + 8 tekstkaarten, doormelden, werkwijze 01-04, bediendeel (wow), 5 Google-reviewkaarten + scorekaart,
+contactkaart, slotbalk, footer. Volgorde licht/donker afgewisseld.
