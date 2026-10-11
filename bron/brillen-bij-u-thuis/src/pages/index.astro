@@ -1,0 +1,398 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, waHoi } from '../data/site';
+
+// Eigen beeld van brillenbijuthuis.nl; sfeerfoto's van Unsplash. Zie src/assets/BRONNEN.txt.
+import sHero from '../assets/s-hero.jpg';
+import sMeting from '../assets/s-meting.jpg';
+import sHanden from '../assets/s-handen.jpg';
+import eMeting from '../assets/eigen-meting.jpg';
+import eMonturen from '../assets/eigen-monturen.jpg';
+import ePasglazen from '../assets/eigen-pasglazen.jpg';
+import pAafje from '../assets/p-aafje.png';
+import pEnvida from '../assets/p-envida.png';
+import pThebe from '../assets/p-thebe.png';
+import pMeander from '../assets/p-meander.png';
+
+// Teksten uit hun eigen pagina's (Home, Diensten, Over ons) en hun folder.
+const diensten = [
+  { t: 'Oogmeting aan huis', d: 'Een oogmeting is kosteloos, net als ons advies wat daar uit volgt.', l: ['Gemeten met een pasbril, net als bij de oogarts', 'Door een gediplomeerde opticien'], src: sMeting, pos: '50% 50%', alt: 'Bril voor een letterkaart (sfeerfoto)', bron: 'Sfeerfoto' },
+  { t: 'Een bril op maat', d: 'In alle categorieën bieden wij u een ruime keuze in onze monturen.', l: ['Vertebril of leesbril', 'Bifocale of multifocale bril', 'Zonnebril'], src: eMonturen, pos: '50% 60%', alt: 'Lade met monturen die de opticien meeneemt', bron: 'Eigen foto' },
+  { t: 'Thuis afgeleverd', d: 'Wij maken uw bril op maat en leveren hem bij u thuis af.', l: ['Nadien kosteloos bijstellen', 'Teruggave van uw zorgverzekering krijgt u ook bij ons'], src: sHanden, pos: '55% 50%', alt: 'Handen die een bril vasthouden (sfeerfoto)', bron: 'Sfeerfoto' },
+];
+const brillen = ['Vertebril', 'Leesbril', 'Bifocale bril', 'Multifocale bril', 'Zonnebril'];
+
+const stappen = [
+  ['Bel of app', 'Bel of mail voor een afspraak met één van onze gediplomeerde opticiens.'],
+  ['Oogmeting bij u thuis', 'Kosteloos, met een pasbril. Het advies dat daaruit volgt ook.'],
+  ['Bril uitkiezen', 'Uit een ruime keuze in monturen, in alle categorieën.'],
+  ['Thuis afgeleverd', 'Uw bril op maat komt bij u thuis. Nadien kosteloos bijstellen.'],
+];
+
+const partners = [
+  { src: pAafje, alt: 'Allemaal Aafje', h: 'h-14' },
+  { src: pEnvida, alt: 'Envida ledenservice', h: 'h-12' },
+  { src: pThebe, alt: 'Thebe extra', h: 'h-11' },
+  { src: pMeander, alt: 'Meander eXtra', h: 'h-11' },
+];
+
+// De letterkaart: regels worden kleiner, met maatcijfers links en rechts.
+const kaart = [
+  { w: 'OOGMETING', s: 'text-[max(1rem,8.8cqi)]', m: '0,1' },
+  { w: 'AAN HUIS', s: 'text-[max(1.3rem,7.8cqi)]', m: '0,2' },
+  { w: 'KOSTELOOS', s: 'text-[max(1.05rem,6cqi)]', m: '0,4' },
+  { w: 'MET EEN PASBRIL', s: 'text-[max(.85rem,4.2cqi)]', m: '0,6' },
+  { w: 'EN EEN BRIL OP MAAT', s: 'text-[max(.72rem,3.2cqi)]', m: '0,8' },
+  { w: 'BIJ U THUIS AFGELEVERD', s: 'text-[max(.62rem,2.5cqi)]', m: '1,0' },
+];
+
+const sterren = [1, 2, 3, 4, 5];
+---
+<Base title="Brillen bij u thuis | De opticien aan huis door midden en zuid Nederland" description="Oogmeting aan huis en een nieuwe bril bij u thuis. Kosteloze oogmeting en advies, ruime keuze in monturen, bril op maat thuis afgeleverd. Bel 06 555 77 424.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: sfeerfoto (oudere dame met bril in haar stoel thuis), donker verloop -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit" aria-labelledby="inhoud">
+      <Image src={sHero} alt="" widths={[640, 960, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" quality={66} class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_30%] md:object-[50%_40%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d0a2aa6_0%,#1d0a2a33_28%,#1d0a2acc_58%,#1d0a2af7_100%)] md:bg-[linear-gradient(90deg,#1d0a2af7_0%,#1d0a2ae0_34%,#1d0a2a66_62%,#1d0a2a1a_100%),linear-gradient(180deg,#1d0a2ab3_0%,#1d0a2a00_30%,#1d0a2a00_72%,#1d0a2a99_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-28 pt-40 md:pb-20 lg:pt-48">
+        <div class="max-w-[46rem]">
+          <p class="eyebrow eyebrow-licht">De opticien aan huis</p>
+          <h1 id="inhoud" class="mt-5 text-hero">Een nieuwe bril, gewoon bij u <span class="text-merk-licht">thuis.</span></h1>
+          <p class="mt-7 max-w-xl text-xl leading-relaxed text-wit md:text-[1.5rem]">Oogmeting aan huis? Een nieuwe bril aanschaffen bij u thuis? Wij komen naar u toe, door midden en zuid Nederland.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />Bel {site.tel}</a>
+            <a href="#afspraak" class="knop knop-wit"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit">
+            <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-5 w-5 text-merk-licht" />Oogmeting en advies kosteloos</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk-licht" />Ma t/m vr 09:00 tot 17:00</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. De letterkaart + wie we zijn + partners -->
+    <section class="bg-wit py-24 md:py-32" aria-labelledby="t-wie">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-6" aria-label="Letterkaart: oogmeting aan huis, kosteloos, met een pasbril, en een bril op maat, bij u thuis afgeleverd">
+          <div class="rounded-[14px] border border-lijn-licht bg-papier px-4 py-9 sm:px-8 md:py-12">
+            <div class="space-y-4 [container-type:inline-size] md:space-y-5" aria-hidden="true">
+              {kaart.map((r, i) => (
+                <p class="kaartregel">
+                  <span class="maat num">{r.m}</span>
+                  <b class={`${r.s} ${i === 1 ? 'text-merk' : 'text-inkt'}`}>{r.w}</b>
+                  <span class="maat num">{r.m}</span>
+                </p>
+              ))}
+            </div>
+            <div class="mx-auto mt-9 h-[3px] w-24 bg-merk md:mt-11" aria-hidden="true"></div>
+          </div>
+        </figure>
+        <div class="lg:col-span-6">
+          <h2 id="t-wie" class="rijs text-4xl">Wij komen naar u toe!</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-steen" style="--d:.06s">Brillen bij u thuis verricht oogmetingen bij u thuis en kan naar aanleiding daarvan een bril op maat voor u maken en bij u thuis afleveren.</p>
+          <ul class="rijs mt-8 flex flex-wrap gap-3" style="--d:.1s" aria-label="Soorten brillen">
+            {brillen.map((b) => <li class="chip">{b}</li>)}
+          </ul>
+          <div class="rijs mt-12 border-t border-lijn-licht pt-8" style="--d:.14s">
+            <p class="text-lg font-bold">Officieel samenwerkingspartner van</p>
+            <ul class="mt-6 grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-4">
+              {partners.map((p) => (
+                <li class="flex items-center"><Image src={p.src} alt={p.alt} widths={[160, 320]} sizes="160px" class={`${p.h} w-auto max-w-full object-contain`} /></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Diensten: fotokaarten -->
+    <section id="diensten" class="py-24 md:py-32" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-4xl">Van oogmeting tot bril op uw neus.</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Wilt u een bril aanschaffen? Dan betaalt u de bril die u aan wilt schaffen.</p>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+          {diensten.map((v, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <article class="kaart group flex h-full flex-col overflow-hidden">
+                <div class="relative overflow-hidden">
+                  <Image src={v.src} alt={v.alt} widths={[420, 640, 860]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 100vw" quality={70} class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${v.pos}`} />
+                  <span class="absolute left-4 top-4 rounded-full bg-inkt/85 px-3 py-1 text-[.875rem] font-bold text-wit">{v.bron}</span>
+                </div>
+                <div class="flex flex-1 flex-col p-7 sm:p-8">
+                  <h3 class="text-[2rem]">{v.t}</h3>
+                  <p class="mt-3 text-lg text-steen">{v.d}</p>
+                  <ul class="mt-6 space-y-2.5 border-t border-lijn-licht pt-6">
+                    {v.l.map((x) => <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk" />{x}</li>)}
+                  </ul>
+                  <a href="#afspraak" class="mt-auto inline-flex items-center gap-2 pt-8 text-lg font-extrabold text-merk no-underline transition-colors hover:text-merk-diep">Afspraak maken<Icoon naam="pijl" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" /></a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Over ons: eigen foto van een meting met de pasbril -->
+    <section id="over" class="bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-over">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs grid grid-cols-2 gap-4 sm:grid-cols-5 lg:col-span-6">
+          <Image src={eMeting} alt="De opticien meet met een pasbril bij een klant aan tafel, met de kist pasglazen ervoor" widths={[500, 800, 1100]} sizes="(min-width: 1024px) 34vw, 60vw" quality={70} class="col-span-2 aspect-[3/4] h-full w-full rounded-[14px] object-cover object-[40%_40%] sm:col-span-3" />
+          <div class="col-span-2 grid grid-cols-2 gap-4 sm:flex sm:flex-col">
+            <Image src={ePasglazen} alt="Kist met pasglazen en het kaartje van Brillen bij u thuis" widths={[300, 600]} sizes="(min-width: 1024px) 22vw, 40vw" quality={72} class="aspect-square h-full w-full rounded-[14px] object-cover sm:aspect-[3/4] sm:flex-1" />
+            <div class="flex min-w-0 flex-col justify-end rounded-[14px] bg-merk p-4 sm:p-5">
+              <p class="text-[clamp(1.3rem,2.2vw+.6rem,2.5rem)] font-[800] leading-none tracking-[-.03em]">Kosteloos</p>
+              <p class="mt-2 text-[1rem] font-bold leading-snug text-wit/90">oogmeting en advies</p>
+            </div>
+          </div>
+          <figcaption class="col-span-2 sm:col-span-5 text-[.9375rem] text-mist">Eigen foto's van brillenbijuthuis.nl. Gezicht van de klant onherkenbaar gemaakt.</figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="rijs eyebrow eyebrow-licht">Over ons</p>
+          <h2 id="t-over" class="rijs mt-4 text-4xl">"Ouderwets" gemeten, met een pasbril.</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90" style="--d:.06s">Wij meten, net als de oogarts, met een pasbril. Dit omdat je zo een hele natuurgetrouwe manier van kijken krijgt. De pasbril komt immers het dichtst in de buurt bij de bril die u op uw neus heeft staan.</p>
+          <ul class="rijs mt-9 space-y-3" style="--d:.12s">
+            {[
+              ['Gediplomeerde opticien', 'Een oogmeting wordt alleen gedaan door een gediplomeerde opticien.'],
+              ['Altijd up to date', 'Door middel van nascholing houden we de kennis altijd up to date.'],
+              ['Zorgverzekering', 'Recht op een teruggave? Die krijgt u ook bij ons.'],
+            ].map(([t, d]) => (
+              <li class="flex gap-4 rounded-[14px] border border-lijn bg-inkt-2 px-5 py-5">
+                <span class="grid h-10 w-10 flex-none place-items-center rounded-full bg-merk"><Icoon naam="vink" class="h-5 w-5" /></span>
+                <span><b class="block text-lg">{t}</b><span class="text-mist">{d}</span></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-24 md:py-32" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="rijs max-w-2xl">
+          <p class="eyebrow">Werkwijze</p>
+          <h2 id="t-werk" class="mt-4 text-4xl">Zo gaat het.</h2>
+        </div>
+        <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart flex flex-col p-8" style={`--d:${i * 0.06}s`}>
+              <span class="stap-nr num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-6 text-2xl">{t}</h3>
+              <p class="mt-3 text-lg text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-[14px] bg-inkt px-7 py-8 text-wit md:flex-row md:items-center md:px-10">
+          <p class="max-w-2xl text-xl leading-snug">Mocht u buiten onze openingstijden een afspraak willen maken, neem dan even contact met ons op.</p>
+          <a href={site.telHref} class="knop knop-merk num shrink-0"><Icoon naam="tel" />Bel {site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Een stem uit de reviews -->
+    <section class="bg-merk text-wit" aria-label="Uit een review">
+      <figure class="wrap py-20 md:py-24">
+        <blockquote class="rijs max-w-5xl text-[clamp(1.8rem,3vw+.8rem,3.4rem)] font-[800] leading-[1.12] tracking-[-.02em]">“Goed te weten dat de opticien naar je toe komt als je zelf niet meer naar de opticien toe kunt!”</blockquote>
+        <figcaption class="rijs mt-7 text-lg text-wit/90" style="--d:.08s">Adri v. · Google review</figcaption>
+      </figure>
+    </section>
+
+    <!-- 7. Wow: afspraak aan huis aanvragen -> vooraf ingevuld WhatsApp -->
+    <section id="afspraak" class="bg-papier-2 py-24 md:py-32" aria-labelledby="t-afspraak">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Afspraak aan huis</p>
+            <h2 id="t-afspraak" class="mt-4 text-4xl">Waar mogen we langskomen?</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-5 lg:self-end" style="--d:.1s">Kies wat past. U ziet meteen het bericht; versturen doet u zelf in WhatsApp. Of bel ons gewoon.</p>
+        </div>
+
+        <form class="mt-12 grid grid-cols-[minmax(0,1fr)] gap-8 lg:mt-14 lg:grid-cols-12" data-afspraak>
+          <div class="kaart min-w-0 space-y-9 p-5 sm:p-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label"><span class="text-merk">1.</span> Voor wie is de afspraak?</legend>
+              <div class="grid gap-3 sm:grid-cols-3">
+                <label class="keuze"><input type="radio" name="voor" value="mij" checked />Voor mijzelf</label>
+                <label class="keuze"><input type="radio" name="voor" value="ouder" />Voor mijn vader of moeder</label>
+                <label class="keuze"><input type="radio" name="voor" value="ander" />Voor iemand anders</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label"><span class="text-merk">2.</span> Waarvoor?</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="keuze"><input type="radio" name="wat" value="een oogmeting" checked />Oogmeting</label>
+                <label class="keuze"><input type="radio" name="wat" value="een nieuwe bril" />Nieuwe bril</label>
+                <label class="keuze"><input type="radio" name="wat" value="reparatie of bijstellen van een bril" />Reparatie of bijstellen</label>
+                <label class="keuze"><input type="radio" name="wat" value="een zonnebril" />Zonnebril</label>
+              </div>
+            </fieldset>
+            <div class="grid gap-9">
+              <div>
+                <label for="plaats" class="veld-label"><span class="text-merk">3.</span> In welke plaats?</label>
+                <input id="plaats" name="plaats" class="veld" autocomplete="address-level2" placeholder="Bijvoorbeeld Tilburg" />
+              </div>
+              <fieldset>
+                <legend class="veld-label"><span class="text-merk">4.</span> Welk dagdeel?</legend>
+                <div class="grid gap-3 sm:grid-cols-3">
+                  <label class="keuze"><input type="radio" name="dagdeel" value="ochtend" />Ochtend</label>
+                  <label class="keuze"><input type="radio" name="dagdeel" value="middag" />Middag</label>
+                  <label class="keuze"><input type="radio" name="dagdeel" value="" checked />Maakt niet uit</label>
+                </div>
+              </fieldset>
+            </div>
+            <div>
+              <label for="naam" class="veld-label">Uw naam <span class="font-normal text-steen">(mag ook leeg)</span></label>
+              <input id="naam" name="naam" class="veld" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="sticky top-6 rounded-[14px] bg-inkt p-6 text-wit sm:p-9">
+              <p class="text-lg font-bold text-mist">Uw bericht</p>
+              <p class="mt-4 min-h-[9rem] whitespace-pre-line rounded-[12px] bg-inkt-2 px-5 py-5 text-[1.1875rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-groen mt-6 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <div class="mt-7 border-t border-lijn pt-6">
+                <p class="text-mist">Of bel direct:</p>
+                <a href={site.telHref} class="num mt-1 block text-[clamp(2rem,3vw+1rem,2.8rem)] font-[800] leading-tight text-wit no-underline hover:text-merk-licht">{site.tel}</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section class="py-24 md:py-32" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-rev" class="mt-4 text-4xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-6 py-5 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+            <Icoon naam="g" class="h-10 w-10 flex-none" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num text-3xl font-[800] leading-none text-inkt">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span></span>
+              <span class="mt-1 block text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col p-8">
+                <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
+                <blockquote class="mt-5 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5">
+                  <span class="grid h-11 w-11 flex-none place-items-center rounded-full bg-papier-2 text-lg font-bold">{r.naam[0]}</span>
+                  <span><b class="block">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 9. Contact en tijden -->
+    <section id="contact" class="border-t border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow">Contact</p>
+          <h2 id="t-contact" class="rijs mt-4 text-4xl">Bel ons gerust.</h2>
+          <p class="rijs mt-6 max-w-xl text-xl text-steen">Mocht u specifieke vragen hebben waar u geen antwoord op vindt, dan mag u ons altijd bellen of mailen.</p>
+          <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.1rem,9vw,5rem)] font-[800] leading-none tracking-[-.02em] text-inkt no-underline transition-colors hover:text-merk">{site.tel}</a></p>
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--d:.1s">
+            <a href={site.telHref} class="knop knop-merk"><Icoon naam="tel" />Bellen</a>
+            <a href={waHoi} class="knop knop-rand"><Icoon naam="wa" class="text-[#1a7f4b]" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand !whitespace-normal break-all text-[1.0625rem]">{site.mail}</a>
+          </div>
+        </div>
+        <div class="rijs lg:col-span-5" style="--d:.15s">
+          <div class="kaart overflow-hidden">
+            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn-licht px-6 py-5">
+              <p class="text-xl font-extrabold">Openingstijden</p>
+              <p class="flex items-center gap-2 text-[1rem] font-bold" data-status><span class="h-3 w-3 rounded-full bg-papier-3" data-stip></span><span data-status-tekst>Ma t/m vr</span></p>
+            </div>
+            <table class="w-full text-lg">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr class="border-b border-lijn-licht last:border-0 data-[vandaag]:bg-[#fdeef2] data-[vandaag]:font-extrabold" data-dag={t.nr}>
+                    <th scope="row" class="py-3.5 pl-5 pr-2 text-left font-[inherit] sm:px-6">{t.dag}</th>
+                    <td class="num whitespace-nowrap py-3.5 pl-2 pr-5 text-right sm:px-6">{t.open ? `0${t.open[0]}:00 tot ${t.open[1]}:00` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <ul class="divide-y divide-lijn-licht border-t border-lijn-licht">
+              <li class="flex gap-4 p-6"><Icoon naam="pin" class="mt-1 h-6 w-6 flex-none text-merk" /><div><p class="font-extrabold">Wij komen bij u thuis</p><p class="mt-1 text-steen">Door {site.werkgebied}. Gevestigd in {site.plaats}.</p></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-inkt text-wit" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center md:py-16">
+        <p class="text-[clamp(2rem,2.4vw+1rem,3rem)] font-[800] leading-none tracking-[-.02em]">Wij komen naar u <span class="text-merk-licht">toe!</span></p>
+        <a href={site.telHref} class="knop knop-merk num shrink-0"><Icoon naam="tel" />Bel {site.tel}</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Afspraakkaart -> vooraf ingevuld WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-afspraak]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  if (f && vb && knop) {
+    const tekst = () => {
+      const d = new FormData(f);
+      const voor = String(d.get('voor'));
+      const wat = String(d.get('wat') || 'een afspraak');
+      const plaats = String(d.get('plaats') || '').trim();
+      const dagdeel = String(d.get('dagdeel') || '');
+      const naam = String(d.get('naam') || '').trim();
+      const wie = voor === 'ouder' ? ' voor mijn vader of moeder' : voor === 'ander' ? ' voor iemand anders' : '';
+      const r = [`Hallo Brillen bij u thuis, ik wil graag een afspraak aan huis${wie}, voor ${wat}.`];
+      if (plaats) r.push(`Plaats: ${plaats}.`);
+      if (dagdeel) r.push(`Het liefst in de ${dagdeel}.`);
+      if (naam) r.push(`Groet, ${naam}`);
+      return r.join('\n');
+    };
+    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+  // Vandaag in de tijdentabel + nu bereikbaar.
+  const nu = new Date(); const dag = nu.getDay(); const uur = nu.getHours() + nu.getMinutes() / 60;
+  document.querySelector(`[data-dag="${dag}"]`)?.setAttribute('data-vandaag', '');
+  const open = dag >= 1 && dag <= 5 && uur >= 9 && uur < 17;
+  const st = document.querySelector('[data-status-tekst]'); const stip = document.querySelector<HTMLElement>('[data-stip]');
+  if (st && stip) { st.textContent = open ? 'Nu bereikbaar' : 'Nu gesloten'; stip.style.background = open ? '#1a7f4b' : '#c8103c'; }
+</script>

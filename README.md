@@ -313,3 +313,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Leupen Electro (Franz Leupen), Oosterhout | https://voorstel.sitefront.nl/leupen-electro/ | site uit 2013, geen viewport/https; 5,0/11; 06/WhatsApp. | 2026-10-11 | demo premium |
 | Rijwielbedrijf A. Schouw (Antoon Schouw), Etten-Leur | https://voorstel.sitefront.nl/rijwielbedrijf-schouw/ | geen website (Ridley-dealerpagina: "No website"); 4,9/70; 06/WhatsApp. | 2026-10-11 | demo premium |
 | Tegelimporteur, Velddriel | https://voorstel.sitefront.nl/tegelimporteur-velddriel/ | verouderde webwinkel, cookiemuur, taalfouten; 4,7/26; 06/WhatsApp. | 2026-10-11 | demo premium |
+| Brillen bij u thuis (opticien aan huis), Tilburg | https://voorstel.sitefront.nl/brillen-bij-u-thuis/ | verouderde Strato-sitebuilder, geen bel/WhatsApp-knop; 5,0/40; 06/WhatsApp. | 2026-10-11 | demo premium |
