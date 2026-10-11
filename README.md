@@ -308,3 +308,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Hajdari Boot en Polyester Service, Kerkdriel | https://voorstel.sitefront.nl/hajdari-boot-polyester/ | geen website, alleen Facebook/Instagram; 4,8/12; 06/WhatsApp. | 2026-10-10 | demo premium |
 | S.P.S. Slagmolen Parket Service, Barendrecht | https://voorstel.sitefront.nl/sps-parket/ | geen website (eigen domein 404); 5,0/16; 06/WhatsApp. | 2026-10-10 | demo premium |
 | Rops Hoogwerker Verhuur, Rucphen | https://voorstel.sitefront.nl/rops-hoogwerker-verhuur/ | verouderd sjabloon (© 2019 Company), voorbeeldpagina online; 4,6/22; 06/WhatsApp. | 2026-10-10 | demo premium |
+| Unlock Slotenmaker, Tilburg | https://voorstel.sitefront.nl/unlock-slotenmaker/ | site toont "Account Suspended"; 5,0/246; 06/WhatsApp. | 2026-10-11 | demo premium |
+| DHZbeveiliging (Bart Verlaan), Papendrecht | https://voorstel.sitefront.nl/dhzbeveiliging/ | verouderde CS-Cart webwinkel; 4,7/31; 06/WhatsApp. | 2026-10-11 | demo premium |
+| Leupen Electro (Franz Leupen), Oosterhout | https://voorstel.sitefront.nl/leupen-electro/ | site uit 2013, geen viewport/https; 5,0/11; 06/WhatsApp. | 2026-10-11 | demo premium |

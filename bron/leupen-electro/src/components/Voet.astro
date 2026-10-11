@@ -1,0 +1,33 @@
+---
+import { site, url, waHoi } from '../data/site';
+import Merk from './Merk.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const vakken = [['electra', 'Electra'], ['data', 'Data-installaties'], ['beveiliging', 'Alarm, camera en toegang'], ['brand', 'Brandmeldinstallaties'], ['geluid', 'Geluidsinstallaties'], ['keuring', 'Keuring NEN 3140']];
+---
+<footer class="bg-inkt text-mist">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-sm md:grid-cols-12 md:py-20">
+    <div class="md:col-span-4">
+      <Merk />
+      <p class="mt-6 max-w-xs">Erkend elektrotechnisch installatiebureau in {site.plaats}, voor particulier en bedrijf.</p>
+    </div>
+    <div class="md:col-span-4">
+      <p class="font-semibold text-wit">Wat we doen</p>
+      <ul class="mt-4 space-y-1.5">
+        {vakken.map(([id, t]) => <li><a href={h(id)} class="link link-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="md:col-span-4">
+      <p class="font-semibold text-wit">Contact</p>
+      <p class="mt-4"><a href={site.telHref} class="link link-licht num">{site.tel}</a> <a href={waHoi} class="link link-licht">(ook WhatsApp)</a></p>
+      <p class="mt-1.5"><a href={`mailto:${site.mail}`} class="link link-licht">{site.mail}</a></p>
+      <p class="mt-1.5">{site.straat}, {site.postcode} {site.plaats}</p>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} {site.naam}, {site.plaats}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-20 text-xs md:pb-8">Foto's en teksten van jullie eigen website leupenelectro.nl. Reviews letterlijk van Google (stand 11 oktober 2026).</p>}
+</footer>

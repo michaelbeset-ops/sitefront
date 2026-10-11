@@ -1,0 +1,292 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, groepen, waHoi } from '../data/site';
+
+// Alle foto's zijn hun eigen foto's van leupenelectro.nl (achtergronden per pagina), zie tools/prep.mjs.
+import hero from '../assets/hero.jpg';
+import heroHoog from '../assets/hero-hoog.jpg';
+import electra from '../assets/electra.jpg';
+import data from '../assets/data.jpg';
+import brand from '../assets/brand.jpg';
+import alarm from '../assets/alarm.jpg';
+import camera from '../assets/camera.jpg';
+import toegang from '../assets/toegang.jpg';
+import geluid from '../assets/geluid.jpg';
+
+const hb = await Promise.all([1300, 1900].map((w) => getImage({ src: hero, width: w, format: 'webp', quality: 62 })));
+const hh = await Promise.all([480, 700].map((w) => getImage({ src: heroHoog, width: w, format: 'webp', quality: 55 })));
+const srcset = (l: { src: string; options: { width?: number } }[]) => l.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+// Labels op de onderdelen in de hero (positie in procenten van de foto, 1900x1200). Links = label links van de stip.
+const labels = [
+  { x: 35.8, y: 19, ding: 'Schakelklok', vak: 'electra' },
+  { x: 70.6, y: 54.5, ding: 'Telefoon- en data-aansluiting', vak: 'data' },
+  { x: 56.8, y: 84, ding: 'Flitslicht', vak: 'alarm', links: true },
+  { x: 86.5, y: 74, ding: 'Handmelder', vak: 'brand', links: true },
+];
+
+const [eerste, ...rest] = reviews;
+---
+<Base title="Leupen Electro | Electra, data, beveiliging en geluid in Oosterhout" description="Leupen Electro in Oosterhout: erkend elektrotechnisch installatiebureau voor particulier en bedrijf. Electra, data, alarm, camera, toegang, brandmelding, geluid en keuring NEN 3140.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen onderdelenbord (leupenelectro.nl, background-mix-01), met labels zoals in een meterkast -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <div class="bord-foto -z-10" aria-hidden="true">
+        <picture>
+          <source media="(min-width: 768px)" srcset={srcset(hb)} sizes="max(100vw, 158svh)" />
+          <img src={hh[1].src} srcset={srcset(hh)} sizes="max(100vw, 75svh)" width="900" height="1200" alt="" class="absolute inset-0 h-full w-full" loading="eager" fetchpriority="high" decoding="async" />
+        </picture>
+        <div class="hidden md:block">
+          {labels.map((l) => (
+            <span class={`label ${l.links ? 'label-links' : ''}`} style={`left:${l.x}%;top:${l.y}%`}>
+              <span>{l.ding} <b>· {l.vak}</b></span>
+            </span>
+          ))}
+        </div>
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#111a15c0_0%,#111a1530_22%,#111a1540_42%,#111a15e6_72%,#111a15f7_100%)] md:bg-[linear-gradient(90deg,#111a15e6_0%,#111a1599_34%,#111a1500_58%),linear-gradient(180deg,#111a15a6_0%,#111a1500_18%,#111a1500_55%,#111a15cc_100%)]"></div>
+
+      <div class="wrap pb-28 pt-36 md:pb-20">
+        <p class="text-base font-semibold text-wit/85 md:text-lg">Erkend installateur in {site.plaats}</p>
+        <h1 id="inhoud" class="mt-4 text-hero">Electra, data,<br /><span class="text-merk-licht">beveiliging</span><br />en geluid.</h1>
+        <div class="mt-8 max-w-lg md:mt-10">
+          <p class="text-lg leading-relaxed text-wit/90 md:text-xl">Elektrotechnisch installatiebureau, voor particulier en bedrijf.</p>
+          <div class="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+            <a href="#groepen" class="knop knop-merk">Klus doorgeven<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="num link link-licht hidden font-semibold text-wit sm:inline">of bel {site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Over: sinds 2000, de erkenningen als typeplaatje -->
+    <section id="over" class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-6">
+          <h2 class="rijs text-4xl">Sinds september 2000.</h2>
+          <p class="rijs mt-8 max-w-md text-xl leading-relaxed text-steen" style="--d:.1s">Opgericht door Franz Leupen, die begon als eenmanszaak.</p>
+          <p class="rijs mt-6 max-w-md text-steen" style="--d:.15s">Dringende storing? Bel <a href={site.telHref} class="num link font-semibold text-inkt">{site.tel}</a>.</p>
+        </div>
+        <div class="rijs lg:col-span-6 lg:pt-3" style="--d:.2s">
+          <div class="rounded-[4px] border-2 border-inkt bg-wit p-6 sm:p-9">
+            <div class="flex items-baseline justify-between gap-4 border-b-2 border-inkt pb-4">
+              <p class="text-xl font-[800] italic leading-none">Leupen Electro</p>
+              <p class="num text-sm font-semibold text-steen">{site.plaats}</p>
+            </div>
+            <ul class="divide-y divide-lijn-licht">
+              {['Erkend elektrotechnisch installateur', 'Erkend beveiligingsinstallateur', 'Erkend brandmeldinstallateur'].map((e) => (
+                <li class="flex items-center gap-4 py-4 text-lg font-semibold sm:text-xl"><Icoon naam="vink" class="h-6 w-6 flex-none text-merk" />{e}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Wat we aanleggen: per vak hun eigen onderdeel -->
+    <section id="vakken" class="bg-wit pb-24 pt-24 md:pb-32 md:pt-28">
+      <div class="wrap">
+        <h2 class="rijs max-w-3xl text-4xl">Van groepenkast tot omroep.</h2>
+      </div>
+
+      <!-- Electra -->
+      <div id="electra" class="wrap mt-14 grid items-center gap-y-10 md:mt-20 lg:grid-cols-12 lg:gap-x-14">
+        <div class="rijs lg:col-span-7">
+          <Image src={electra} widths={[600, 900, 1200]} sizes="(min-width: 1024px) 56vw, 100vw" alt="Grijze industriële contactdoos met klepje, groen getinte studiofoto" class="aspect-[4/3] w-full object-cover" quality={70} />
+        </div>
+        <div class="lg:col-span-5">
+          <h3 class="rijs text-3xl">Electra</h3>
+          <p class="rijs mt-5 max-w-sm text-lg text-steen" style="--d:.1s">Als erkend elektrotechnisch installateur, in de breedste zin van het woord.</p>
+          <ul class="rijs mt-8 border-t border-lijn-licht text-lg" style="--d:.15s">
+            {['Led-, buiten- en kantoorverlichting', 'Nieuwe groepenkasten', 'Onderhoud en uitbreiding van uw installatie', 'Zonnepanelen', 'Domotica en intercom'].map((t) => (
+              <li class="flex items-center gap-4 border-b border-lijn-licht py-3.5"><span class="h-2.5 w-2.5 flex-none bg-merk" aria-hidden="true"></span>{t}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Data: hun kabelfoto als volle band -->
+      <div id="data" class="relative isolate mt-24 overflow-hidden bg-inkt text-wit md:mt-32">
+        <Image src={data} widths={[800, 1300, 1900]} sizes="100vw" alt="" class="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_50%]" quality={62} />
+        <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#111a15f0_0%,#111a15c7_45%,#111a1533_100%)]"></div>
+        <div class="wrap py-20 md:py-28">
+          <h3 class="rijs text-3xl">Data</h3>
+          <p class="rijs mt-6 max-w-xl text-xl leading-relaxed text-wit/90" style="--d:.1s">Een compleet datanetwerk, van patchkast tot outlet in de muur. UTP, FTP, STP of glasvezel; elke aansluiting gecodeerd en nagemeten, op wens met certificaat.</p>
+          <p class="rijs mt-5 max-w-xl text-mist" style="--d:.15s">Ook wifi, en koppelingen met uw intercom, telefooncentrale of elektrische poort.</p>
+        </div>
+      </div>
+
+      <!-- Beveiliging: vier onderdelen, verspringend -->
+      <div id="beveiliging" class="wrap mt-24 md:mt-32">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-14">
+          <h3 class="rijs text-3xl lg:col-span-5">Beveiliging</h3>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-6 lg:col-start-7 lg:pt-2" style="--d:.1s">Erkend beveiligingsinstallateur en erkend brandmeldinstallateur.</p>
+        </div>
+        <div class="mt-12 grid gap-x-8 gap-y-12 md:grid-cols-12 md:gap-y-12">
+          <figure id="brand" class="rijs md:col-span-7">
+            <Image src={brand} widths={[600, 900, 1200]} sizes="(min-width: 768px) 56vw, 100vw" alt="Handmelder met de tekst Hier duwen, groen getinte studiofoto" class="aspect-[3/2] w-full object-cover" quality={70} />
+            <figcaption class="mt-5 max-w-md"><span class="text-xl font-[800] italic">Brandmelding.</span> <span class="text-steen">Geheel volgens de voorschriften. We begeleiden u in het hele project.</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5 md:pt-20" style="--d:.1s">
+            <Image src={alarm} widths={[500, 800, 1000]} sizes="(min-width: 768px) 38vw, 100vw" alt="Flitslicht van een alarminstallatie, groen getinte studiofoto" class="aspect-square w-full object-cover" quality={70} />
+            <figcaption class="mt-5 max-w-sm"><span class="text-xl font-[800] italic">Alarm.</span> <span class="text-steen">Vakkundig advies en een correcte uitvoering.</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.05s">
+            <Image src={camera} widths={[500, 800, 1000]} sizes="(min-width: 768px) 38vw, 100vw" alt="Printplaat met spoel en condensator, groen getinte studiofoto" class="aspect-square w-full object-cover" quality={70} />
+            <figcaption class="mt-5 max-w-sm"><span class="text-xl font-[800] italic">Camera.</span> <span class="text-steen">Analoog of via IP. Beelden terugkijken op pc of smartphone.</span></figcaption>
+          </figure>
+          <figure class="rijs md:col-span-7 md:pt-16" style="--d:.1s">
+            <Image src={toegang} widths={[600, 900, 1000]} sizes="(min-width: 768px) 56vw, 100vw" alt="Bedieningspaneel met cijfertoetsen en de knoppen Open en Clear, groen getinte studiofoto" class="aspect-[3/2] w-full object-cover" quality={70} />
+            <figcaption class="mt-5 max-w-md"><span class="text-xl font-[800] italic">Toegang.</span> <span class="text-steen">Kaartlezer, codeslot of vingerafdruk, te koppelen aan uw inbraakinstallatie.</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Geluid en keuring -->
+      <div class="wrap mt-24 grid gap-y-14 md:mt-32 lg:grid-cols-12 lg:gap-x-14">
+        <div id="geluid" class="lg:col-span-7">
+          <Image src={geluid} widths={[600, 900, 1100]} sizes="(min-width: 1024px) 56vw, 100vw" alt="Twee XLR-stekkers aan een zwarte microfoonkabel, groen getinte studiofoto" class="rijs aspect-[16/9] w-full object-cover" quality={70} />
+          <h3 class="rijs mt-8 text-3xl">Geluid</h3>
+          <p class="rijs mt-5 max-w-lg text-lg text-steen" style="--d:.1s">Omroep, achtergrondmuziek en 100 volt-installaties, voor sporthal, school, kerk of bedrijf. Geluidssterkte per ruimte in te stellen.</p>
+        </div>
+        <div id="keuring" class="rijs self-end bg-inkt p-8 text-wit sm:p-10 lg:col-span-5" style="--d:.15s">
+          <p class="num text-5xl font-[800] italic leading-none text-merk-licht">NEN 3140</p>
+          <h3 class="mt-8 text-3xl">Keuring</h3>
+          <p class="mt-5 text-mist">Wij keuren uw elektrische arbeidsmiddelen, zoals handgereedschap en vast opgestelde machines. Ook buiten de normale werktijden.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Wow: de groepenkast. Zet de groepen om waar de klus over gaat, en stuur het als WhatsApp-bericht. -->
+    <section id="groepen" class="bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <h2 class="rijs text-4xl lg:col-span-6">Welke groepen gaan aan?</h2>
+          <p class="rijs max-w-md text-lg text-mist lg:col-span-5 lg:col-start-8 lg:pt-3" style="--d:.1s">Zet om waar uw klus over gaat. Het bericht staat klaar in WhatsApp.</p>
+        </div>
+
+        <form class="mt-12 md:mt-16" data-groepen>
+          <fieldset class="kast rijs p-3 text-inkt sm:p-5">
+            <legend class="sr-only">Waar gaat de klus over?</legend>
+            <div class="rail" aria-hidden="true"></div>
+            <div class="grid grid-cols-3 gap-2 py-3 sm:gap-3 md:grid-cols-9">
+              {groepen.map((g, i) => (
+                <label class="automaat">
+                  <input type="checkbox" name="groep" value={g.naam} />
+                  <span class="num text-[.7rem] font-semibold text-steen">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="hendel" aria-hidden="true"></span>
+                  <span class="stand" aria-hidden="true"></span>
+                  <span class="naam">{g.naam}</span>
+                </label>
+              ))}
+            </div>
+            <div class="rail" aria-hidden="true"></div>
+          </fieldset>
+
+          <div class="mt-10 grid gap-x-10 gap-y-8 lg:grid-cols-12">
+            <div class="space-y-7 lg:col-span-7">
+              <fieldset>
+                <legend class="veld-label !text-mist">Voor</legend>
+                <div class="flex flex-wrap gap-3 text-inkt">
+                  <label class="keuze"><input type="radio" name="voor" value="particulier" checked />Particulier</label>
+                  <label class="keuze"><input type="radio" name="voor" value="bedrijf" />Bedrijf</label>
+                </div>
+              </fieldset>
+              <div class="grid gap-7 sm:grid-cols-[1fr_2fr]">
+                <div>
+                  <label for="plaats" class="veld-label !text-mist">Plaats</label>
+                  <input id="plaats" name="plaats" class="veld" autocomplete="address-level2" placeholder="Oosterhout" />
+                </div>
+                <div>
+                  <label for="wat" class="veld-label !text-mist">Wat moet er gebeuren?</label>
+                  <input id="wat" name="wat" class="veld" placeholder="bv. meterkast vernieuwen" />
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-5">
+              <p class="veld-label !text-mist">Uw bericht</p>
+              <p class="min-h-[8.5rem] whitespace-pre-line border-l-4 border-merk bg-inkt-2 px-5 py-4 text-[.98rem] leading-relaxed text-wit/90" data-voorbeeld aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-merk mt-5 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. Reviews -->
+    <section class="py-20 md:py-28">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-12">
+        <figure class="rijs lg:col-span-5">
+          <blockquote>
+            <p class="text-4xl font-[800] italic leading-[1.02] tracking-[-.02em]">“…Mooi uitgevoerd, echte vakman.”</p>
+            <p class="mt-6 max-w-sm text-lg text-steen">“{eerste.tekst.replace(' Mooi uitgevoerd, echte vakman.', '')} …”</p>
+          </blockquote>
+          <figcaption class="mt-4 text-sm text-steen">{eerste.naam}, Google review</figcaption>
+          <a href={site.reviews} class="mt-10 inline-flex items-center gap-2.5 text-sm font-semibold text-steen no-underline hover:text-inkt"><Icoon naam="g" class="h-5 w-5" /><span class="num">{site.google.score} op Google, {site.google.aantal} reviews</span></a>
+        </figure>
+        <div class="lg:col-span-6 lg:col-start-7">
+          {rest.map((r, i) => (
+            <figure class="rijs border-t border-lijn-licht py-8 first:border-t-2 first:border-inkt" style={`--d:${i * .08}s`}>
+              <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+              <blockquote class="mt-4 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+              <figcaption class="mt-3 text-sm text-steen">{r.naam}, Google review</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Contact: slotblok in het logogroen -->
+    <section id="contact" class="bg-merk py-24 text-wit md:py-32">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-12">
+        <div class="lg:col-span-7">
+          <h2 class="rijs text-4xl">Bel, app of mail.</h2>
+          <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.2rem,5vw,4.2rem)] font-[800] italic leading-none text-wit no-underline hover:underline">{site.tel}</a></p>
+          <div class="rijs mt-10 flex flex-wrap gap-4" style="--d:.1s">
+            <a href={waHoi} class="knop knop-inkt"><Icoon naam="wa" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-wit">{site.mail}</a>
+          </div>
+        </div>
+        <div class="rijs self-end lg:col-span-4 lg:col-start-9" style="--d:.15s">
+          <p class="text-xl font-semibold">{site.naam}</p>
+          <p class="mt-2 text-lg text-wit/90">{site.straat}<br />{site.postcode} {site.plaats}</p>
+          <a href={site.route} class="mt-6 inline-flex items-center gap-2 font-semibold text-wit no-underline hover:underline"><Icoon naam="pin" class="h-5 w-5" />Route plannen</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  const f = document.querySelector<HTMLFormElement>('[data-groepen]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  if (f && vb && knop) {
+    const tekst = () => {
+      const d = new FormData(f);
+      const g = d.getAll('groep').map(String);
+      const plaats = String(d.get('plaats') || '').trim();
+      const wat = String(d.get('wat') || '').trim();
+      const r = ['Hallo Leupen Electro, ik heb een klus.'];
+      if (g.length) r.push(`Het gaat om: ${g.join(', ').toLowerCase()}.`);
+      r.push(`Ik ben ${d.get('voor') === 'bedrijf' ? 'een bedrijf' : 'particulier'}${plaats ? ` in ${plaats}` : ''}.`);
+      if (wat) r.push(wat);
+      return r.join('\n');
+    };
+    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>
