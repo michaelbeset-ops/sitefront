@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@import "@fontsource/schibsted-grotesk/latin-500.css";
+@import "@fontsource/schibsted-grotesk/latin-800.css";
+@import "@fontsource/public-sans/latin-400.css";
+@import "@fontsource/public-sans/latin-500.css";
+@import "@fontsource/public-sans/latin-700.css";
+
+/* Alleen de Arabische letters van hun gevelbord (subset, 7 kB). */
+@font-face {
+  font-family: "Roos Arabisch";
+  src: url("../fonts/arabisch-700.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0600-06FF, U+FE70-FEFF;
+}
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Concept: hun zwarte gevelbord met witte letters, het ivoor van de vitrineplateaus,
+     en één kleur: het rood van hun hartvormige sieradendoosjes (Google- en Instagramfoto's). */
+  --color-merk: #b3112e;        /* knoppen, wit erop 6,6:1 */
+  --color-merk-diep: #8f0d24;   /* hover */
+  --color-merk-licht: #ff7088;  /* merk als tekst op zwart */
+  --color-ivoor: #f6f3ee;       /* lichte secties, als de plateaus in de vitrine */
+  --color-ivoor-2: #ebe6de;
+  --color-ivoor-3: #d4cdc3;
+  --color-wit: #ffffff;
+  --color-inkt: #121011;        /* het gevelbord */
+  --color-inkt-2: #1d1a1b;
+  --color-steen: #5c5557;       /* bijtekst op licht */
+  --color-mist: #b9b0ae;        /* bijtekst op donker */
+  --color-lijn: #ffffff24;
+  --color-lijn-licht: #12101124;
+
+  --font-kop: "Schibsted Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Public Sans", "Segoe UI", system-ui, sans-serif;
+  --font-ar: "Roos Arabisch", "Segoe UI", Tahoma, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-3xl: clamp(2.1rem, 2.6vw + 1.1rem, 3.4rem);
+  --text-4xl: clamp(2.3rem, 3.4vw + 1rem, 4.4rem);
+  --text-hero: clamp(2.7rem, 5.4vw + .5rem, 6.4rem);
+
+  --radius-sm: 4px;
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-inkt); }
+  body {
+    background-color: var(--color-ivoor);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: .98; letter-spacing: -.04em; text-wrap: balance; }
+  h3 { letter-spacing: -.025em; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-merk); color: var(--color-wit); }
+  :focus-visible { outline: 2px solid var(--color-merk); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+  .ar { font-family: var(--font-ar); font-weight: 700; letter-spacing: 0; direction: rtl; unicode-bidi: isolate; }
+
+  .eyebrow { display: inline-flex; align-items: center; gap: .75rem; font-size: .8125rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--color-merk); }
+  .eyebrow::before { content: ""; width: 1.6rem; height: 2px; background: currentColor; flex: none; }
+  .eyebrow-licht { color: var(--color-merk-licht); }
+
+  .kaart { background: var(--color-wit); border: 1px solid var(--color-lijn-licht); border-radius: var(--radius-sm); box-shadow: 0 1px 2px #1210110d; }
+  .chip { display: inline-flex; align-items: center; gap: .55rem; min-height: 2.5rem; padding: .4rem 1.05rem; border: 1.5px solid var(--color-ivoor-3); border-radius: 999px; background: var(--color-wit); font-size: .95rem; font-weight: 500; color: var(--color-inkt); text-decoration: none; white-space: nowrap; transition: border-color .2s, color .2s; }
+  a.chip:hover { border-color: var(--color-merk); color: var(--color-merk); }
+
+  .stap-nr { font-family: var(--font-kop); font-weight: 800; font-size: 3.2rem; line-height: 1; letter-spacing: -.05em; color: var(--color-merk); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.25rem; padding: 0 1.6rem; border-radius: var(--radius-sm); font-family: var(--font-sans); font-size: 1.05rem; font-weight: 700; text-decoration: none; white-space: nowrap; cursor: pointer; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.2rem; height: 1.2rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-merk { background: var(--color-merk); color: var(--color-wit); }
+  .knop-merk:hover { background: var(--color-merk-diep); }
+  .knop-wit { border: 1.5px solid #ffffffb3; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-inkt); border-color: var(--color-wit); }
+  .knop-rand { border: 1.5px solid var(--color-ivoor-3); color: var(--color-inkt); background: var(--color-wit); }
+  .knop-rand:hover { border-color: var(--color-merk); color: var(--color-merk); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-wit); }
+  .knop-inkt:hover { background: var(--color-inkt-2); }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-merk); }
+
+  /* Wow: de zoekzin met keuzes in de tekst zelf */
+  .zin { font-family: var(--font-kop); font-weight: 800; font-size: clamp(1.5rem, 2.4vw + 1rem, 3rem); line-height: 1.25; letter-spacing: -.035em; color: var(--color-wit); }
+  .zin-keuze { position: relative; display: inline-block; max-width: 100%; }
+  .zin-keuze select { appearance: none; max-width: 100%; font: inherit; letter-spacing: inherit; color: var(--color-merk-licht); background: transparent; border: 0; border-bottom: 3px solid var(--color-merk-licht); border-radius: 0; padding: 0 1.1em 0 0; cursor: pointer; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - .55em) 55%, calc(100% - .3em) 55%; background-size: .25em .25em; background-repeat: no-repeat; }
+  .zin-keuze select option { color: var(--color-inkt); font-size: 1rem; font-family: var(--font-sans); font-weight: 500; letter-spacing: 0; }
+  .zin-keuze select:focus-visible { outline: 2px solid var(--color-wit); outline-offset: 4px; }
+
+  .ig { position: relative; display: block; cursor: pointer; border-radius: var(--radius-sm); overflow: hidden; }
+  .ig input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 2; }
+  .ig img { width: 100%; aspect-ratio: 9 / 13; object-fit: cover; transition: transform .5s var(--ease-zacht), filter .3s; filter: saturate(.92); }
+  .ig:hover img { transform: scale(1.04); }
+  .ig::after { content: ""; position: absolute; inset: 0; border: 3px solid transparent; border-radius: var(--radius-sm); transition: border-color .2s; pointer-events: none; }
+  .ig:has(input:checked)::after { border-color: var(--color-merk-licht); }
+  .ig:has(input:focus-visible)::after { border-color: var(--color-wit); }
+  .ig-label { display: none; position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem .6rem .5rem; background: linear-gradient(180deg, #12101100, #121011e6); color: var(--color-wit); font-size: .8rem; font-weight: 500; line-height: 1.2; }
+  .ig-vink { position: absolute; top: .5rem; right: .5rem; width: 1.6rem; height: 1.6rem; border-radius: 999px; background: var(--color-merk); color: var(--color-wit); display: grid; place-items: center; opacity: 0; transform: scale(.7); transition: opacity .2s, transform .2s; }
+  .ig:has(input:checked) .ig-vink { opacity: 1; transform: none; }
+
+  .veld { display: block; width: 100%; min-height: 3rem; padding: .55rem .8rem; border: 1.5px solid #ffffff38; border-radius: var(--radius-sm); background: var(--color-inkt-2); color: var(--color-wit); font: inherit; transition: border-color .2s; }
+  .veld::placeholder { color: #9d9492; }
+  .veld:hover { border-color: #ffffff80; }
+  .veld:focus { outline: none; border-color: var(--color-merk-licht); box-shadow: 0 0 0 1px var(--color-merk-licht); }
+  .veld-label { display: block; font-size: .95rem; font-weight: 500; color: var(--color-mist); margin-bottom: .45rem; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
+@media (min-width: 640px) { .ig-label { display: block; } }

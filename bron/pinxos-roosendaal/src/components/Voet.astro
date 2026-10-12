@@ -1,0 +1,48 @@
+---
+import { site, url, waHoi, tijden, hm } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const week = [...tijden.slice(1), tijden[0]];
+---
+<footer class="bg-inkt-3 text-mist">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[.95rem] sm:grid-cols-2 md:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Merk class="h-11" />
+      <p class="mt-6 max-w-xs">Wij van Pinxos brengen jullie graag terug naar een ongedwongen relaxte vakantiesfeer.</p>
+      <div class="mt-7 flex gap-3">
+        <a href={waHoi} class="knop knop-limoen min-h-11 px-5"><Icoon naam="wa" />WhatsApp</a>
+        <a href={site.insta} class="grid h-11 w-11 place-items-center rounded-full border border-lijn text-wit transition-colors hover:border-limoen hover:text-limoen" aria-label="Pinxos op Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.fb} class="grid h-11 w-11 place-items-center rounded-full border border-lijn text-wit transition-colors hover:border-limoen hover:text-limoen" aria-label="Pinxos op Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+      </div>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-wit">Ontdek</p>
+      <ul class="mt-5 space-y-2">
+        {[['pintxos', 'Pintxos'], ['kaart', 'De kaart'], ['plekken', 'Tuin & steeg'], ['feesten', 'Feesten & trouwen'], ['reserveren', 'Tafel aanvragen']].map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-limoen">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-wit">Contact</p>
+      <ul class="mt-5 space-y-2">
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.telHref} class="num no-underline hover:text-limoen">{site.tel}</a> <span class="text-mist/80">(ook WhatsApp)</span></li>
+        <li><a href={site.route} class="no-underline hover:text-limoen">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-wit">Open</p>
+      <ul class="num mt-5 space-y-1.5">
+        {week.map((d) => <li class="flex justify-between gap-4 sm:max-w-60"><span>{d.dag}</span><span class={d.open ? 'text-wit' : ''}>{d.open ? `${hm(d.open)} tot ${hm(d.dicht!)}` : 'gesloten'}</span></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} Pinxos · {site.plaats}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-xs">Foto's van jullie eigen Google-profiel en jullie eerdere website pinxos.nl. Reviews letterlijk van Google (stand 12 oktober 2026).</p>}
+  <div class="h-14 md:hidden" aria-hidden="true"></div>
+</footer>

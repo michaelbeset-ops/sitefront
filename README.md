@@ -314,3 +314,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Rijwielbedrijf A. Schouw (Antoon Schouw), Etten-Leur | https://voorstel.sitefront.nl/rijwielbedrijf-schouw/ | geen website (Ridley-dealerpagina: "No website"); 4,9/70; 06/WhatsApp. | 2026-10-11 | demo premium |
 | Tegelimporteur, Velddriel | https://voorstel.sitefront.nl/tegelimporteur-velddriel/ | verouderde webwinkel, cookiemuur, taalfouten; 4,7/26; 06/WhatsApp. | 2026-10-11 | demo premium |
 | Brillen bij u thuis (opticien aan huis), Tilburg | https://voorstel.sitefront.nl/brillen-bij-u-thuis/ | verouderde Strato-sitebuilder, geen bel/WhatsApp-knop; 5,0/40; 06/WhatsApp. | 2026-10-11 | demo premium |
+| Pinxos, Roosendaal | https://voorstel.sitefront.nl/pinxos-roosendaal/ | eigen domein niet bereikbaar; 533 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Latadia Patisserie | https://voorstel.sitefront.nl/latadia-patisserie/ | domein verwijst door naar bezorgplatform; 445 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Roos Juwelier | https://voorstel.sitefront.nl/roos-juwelier/ | geen eigen website, alleen Instagram; 351 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |

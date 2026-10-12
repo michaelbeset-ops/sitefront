@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await (await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })).newPage();
+await p.goto('http://127.0.0.1:4507/sitefront/roos-juwelier/', { waitUntil: 'networkidle' });
+await p.evaluate(() => document.querySelectorAll('.rijs').forEach(e => e.classList.add('in')));
+await p.selectOption('select[name=soort]', 'een set');
+await p.selectOption('select[name=stijl]', 'Golfstijl');
+await p.selectOption('select[name=voor]', 'voor een bruiloft');
+await p.check('input[value=ig03]', { force: true });
+await p.fill('#extra', 'Ketting van ongeveer 45 cm');
+const href = await p.getAttribute('[data-verstuur]', 'href');
+console.log(decodeURIComponent(href));
+await p.locator('#zoeken').screenshot({ path: 'shots/wow-390.png' });
+await b.close();

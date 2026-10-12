@@ -1,0 +1,16 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })).newPage();
+await p.goto('http://127.0.0.1:4506/sitefront/latadia-patisserie/', { waitUntil: 'networkidle' });
+await p.click('[data-voeg="Künefe"]');
+await p.locator('[data-rij="Baklava, 3 stuks"] [data-plus]').click();
+await p.locator('[data-rij="Baklava, 3 stuks"] [data-plus]').click();
+await p.locator('[data-rij="Lahmacun"] [data-plus]').click();
+await p.locator('label.keuze:has-text("Zaterdag")').click();
+await p.selectOption('#tijd', '17.30 uur');
+await p.fill('#naam', 'Sanne');
+await p.evaluate(() => document.querySelectorAll('.rijs').forEach(e => e.classList.add('in')));
+console.log(await p.locator('[data-voorbeeld]').innerText());
+console.log(decodeURIComponent(await p.locator('[data-verstuur]').getAttribute('href')));
+await p.locator('.bon').scrollIntoViewIfNeeded(); await p.waitForTimeout(500);
+await p.screenshot({ path: 'shots/wow-390.png' });
+await b.close();

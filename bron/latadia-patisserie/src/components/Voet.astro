@@ -1,0 +1,47 @@
+---
+import { site, url, waHoi, tijden, dagNamen, uur } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const kaart = [['patisserie', 'Baklava'], ['patisserie', 'Katmer'], ['patisserie', 'Künefe en kadayıf'], ['keuken', 'Lahmacun'], ['keuken', 'Beyran en tatar mantısı'], ['bestellen', 'Bestelling samenstellen']];
+---
+<footer class="bg-inkt text-mist">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[.95rem] sm:grid-cols-2 md:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Merk />
+      <p class="mt-6 max-w-xs">Turkse patisserie en keuken uit Gaziantep, aan de Schiedamsedijk in Rotterdam. Van onze familietafel naar de jouwe.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href={waHoi} class="knop knop-merk min-h-11 px-5"><Icoon naam="wa" />WhatsApp</a>
+        <a href={site.insta} class="grid h-11 w-11 place-items-center rounded-full border border-lijn text-wit transition-colors hover:border-merk-licht hover:text-merk-licht" aria-label="Latadia op Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Op de kaart</p>
+      <ul class="mt-5 space-y-2">
+        {kaart.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-merk-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-wit">Contact</p>
+      <ul class="mt-5 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline hover:text-merk-licht">{site.tel}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.route} class="no-underline hover:text-merk-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Openingstijden</p>
+      <ul class="num mt-5 space-y-1.5">
+        {[1, 2, 3, 4, 5, 6, 0].map((d) => { const t = tijden[d]; return <li class="flex justify-between gap-4"><span class="text-wit/90">{dagNamen[d]}</span><span>{t ? `${uur(t[0])} - ${uur(t[1])}` : 'Gesloten'}</span></li>; })}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} {site.volledig}, {site.plaats}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  <p class="wrap pb-8 text-xs">Sfeerfoto's via Unsplash, ter illustratie.{site.voorstel && " Foto's van baklava, künefe en tepsi's: Latadia zelf (Google-profiel en Instagram). Kaart en omschrijvingen van jullie eigen Google-menu en bezorgkaart. Reviews letterlijk van Google (stand 12 oktober 2026)."}</p>
+  <div class="h-14 md:hidden" aria-hidden="true"></div>
+</footer>
