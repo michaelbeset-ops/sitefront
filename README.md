@@ -317,3 +317,6 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Pinxos, Roosendaal | https://voorstel.sitefront.nl/pinxos-roosendaal/ | eigen domein niet bereikbaar; 533 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Latadia Patisserie | https://voorstel.sitefront.nl/latadia-patisserie/ | domein verwijst door naar bezorgplatform; 445 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Roos Juwelier | https://voorstel.sitefront.nl/roos-juwelier/ | geen eigen website, alleen Instagram; 351 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Tapijt-tegels.eu, Tilburg | https://voorstel.sitefront.nl/tapijt-tegels-tilburg/ | verouderde site zonder viewport; 4,8/195; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Lokaal de Klik, Dordrecht | https://voorstel.sitefront.nl/lokaal-de-klik/ | site toont ruwe PHP-code; 4,9/118; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Het Handelshuis, Kaatsheuvel | https://voorstel.sitefront.nl/het-handelshuis-kaatsheuvel/ | geen eigen website (oud domein 404); 4,6/154; 06/WhatsApp. | 2026-10-12 | demo premium |

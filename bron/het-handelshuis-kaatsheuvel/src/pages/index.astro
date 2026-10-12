@@ -1,0 +1,483 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi, waMet } from '../data/site';
+
+// Hero: Unsplash-sfeerfoto (ter illustratie). Alle andere foto's komen uit hun eigen Marktplaats-advertenties.
+// Zie src/assets/BRONNEN.txt.
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import cHoek from '../assets/c-hoek.jpg';
+import cBank from '../assets/c-bank.jpg';
+import cRelax from '../assets/c-relax.jpg';
+import cStaop from '../assets/c-staop.jpg';
+import cTafel from '../assets/c-tafel.jpg';
+import cMango from '../assets/c-mango.jpg';
+import maatwerk from '../assets/maatwerk.jpg';
+import sRelax from '../assets/s-relax.jpg';
+import sTafels from '../assets/s-tafels.jpg';
+import sFauteuil from '../assets/s-fauteuil.jpg';
+import sLeer from '../assets/s-leer.jpg';
+
+const hd = await getImage({ src: hero, widths: [960, 1400, 2000, 2400], format: 'webp', quality: 64 });
+const hm = await getImage({ src: heroM, widths: [480, 780, 1100], format: 'webp', quality: 62 });
+const vraag = (wat: string) => waMet(`Hallo Het Handelshuis, ik zoek ${wat}.`);
+
+// Collectie: alleen wat in hun eigen advertenties staat (bron/mp).
+const collectie = [
+  { t: 'Hoekbanken', d: 'In leder, stof en microleer. Veel modellen op voorraad, of in alle maten en kleuren.', src: cHoek, alt: 'Cognac hoekbank in de showroom', wa: 'een hoekbank' },
+  { t: 'Bankstellen', d: '3+2 zits of een losse bank. Ook op maat, in diverse kleuren of volledig in één kleur.', src: cBank, alt: 'Grijs bankstel 3+2 zits tegen een witte bakstenen wand', wa: 'een bankstel' },
+  { t: 'Relaxstoelen', d: 'Keuze uit meer dan 100 modellen. Moderne relaxstoelen voor betaalbare prijzen.', src: cRelax, alt: 'Rij relaxstoelen in warme kleuren voor een rode bakstenen wand', wa: 'een relaxstoel' },
+  { t: 'Sta-op stoelen', d: 'Stoelen die helpen bij opstaan en gaan zitten, ook in microleder en echt leder.', src: cStaop, alt: 'Blauwe sta-op stoel met uitgeklapte voetensteun', wa: 'een sta-op stoel' },
+  { t: 'Eettafels en stoelen', d: 'Eettafels van mango hout, ovaal of rond, en eetkamerstoelen in diverse kleuren.', src: cTafel, alt: 'Boomstam eettafel met groene eetkamerstoelen', wa: 'een eettafel of eetkamerstoelen' },
+  { t: 'Mango houten meubels', d: 'Salontafels, kasten en dressoirs. Veel van mango hout, voor scherpe prijzen.', src: cMango, alt: 'Mango houten tv-meubel en salontafels met zwart staal', wa: 'mango houten meubels' },
+];
+const ook = ['Boxsprings', 'Fauteuils', 'Salontafels', 'Dressoirs', 'Kasten', 'Schilderijen', 'Klokken'];
+
+// Maatwerk: letterlijk uit hun advertenties "Bankstel op maat leverbaar" en "Sta-op stoelen Microleder".
+const opMaat = [
+  'Lounge-gedeelte, extra brede zittingen, hogere rug of andere zitdiepte',
+  'Verstelbare armleuning en verplaatsbare hoofdsteun, ook in een hoekbank',
+  'Diverse kleuren, of de hele bank in één kleur',
+  'Koudschuim vullingen en stalen nosagvering',
+];
+
+const stappen = [
+  ['Stuur uw wens', 'Via WhatsApp of telefoon: wat u zoekt, de maat en gerust een foto van de ruimte.'],
+  ['Kom kijken', `Dinsdag tot en met zaterdag, ${site.open.tekst}. De koffie staat klaar.`],
+  ['Voorraad of op maat', 'Neem een model uit de showroom, of laat een bank maken in uw maat en kleur.'],
+  ['Mee of bezorgd', 'Direct mee met busje of aanhangwagen, of laat het thuis bezorgen.'],
+];
+
+// Meubel zoeken: soorten met standaardmaat voor de tekening (cm), alleen om te schetsen.
+const soorten = [
+  { id: 'Hoekbank', a: 290, b: 220, la: 'Lange kant', lb: 'Korte kant' },
+  { id: 'Bankstel', a: 220, b: 95, la: 'Breedte bank', lb: 'Diepte' },
+  { id: 'Relaxstoel', a: 80, b: 90, la: 'Breedte', lb: 'Diepte' },
+  { id: 'Sta-op stoel', a: 80, b: 90, la: 'Breedte', lb: 'Diepte' },
+  { id: 'Eettafel', a: 200, b: 100, la: 'Lengte', lb: 'Breedte' },
+  { id: 'Boxspring', a: 160, b: 200, la: 'Breedte', lb: 'Lengte' },
+];
+const materialen = ['Leder', 'Stof', 'Microleer', 'Mango hout', 'Weet ik nog niet'];
+const voorkeur = ['Direct mee', 'Op maat', 'Allebei goed'];
+const dagen = ['Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag', 'Zondag'];
+const sterren = [1, 2, 3, 4, 5];
+---
+<Base title="Het Handelshuis | Meubelwinkel in Kaatsheuvel, 1500 m² aan meubels" description="Het Handelshuis in Kaatsheuvel: 1500 m² aan hoekbanken, bankstellen, relaxstoelen, sta-op stoelen en mango houten meubels. Veel op voorraad en direct mee, ook op maat. Dinsdag t/m zaterdag 11.00 tot 17.30 uur.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: Unsplash-sfeerfoto van een leren hoekbank met donker verloop -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit" aria-labelledby="inhoud">
+      <picture>
+        <source media="(max-width: 767px)" srcset={hm.srcSet.attribute} sizes="100vw" />
+        <source media="(min-width: 768px)" srcset={hd.srcSet.attribute} sizes="100vw" />
+        <img src={hd.src} alt="" width="2400" height="1600" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_30%] md:object-[50%_60%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1b1512c7_0%,#1b151266_16%,#1b1512cc_32%,#1b1512e6_52%,#1b1512fa_100%)] md:bg-[linear-gradient(90deg,#1b1512f0_0%,#1b1512b8_38%,#1b151233_72%,#1b15121a_100%),linear-gradient(180deg,#1b1512b3_0%,#1b151200_30%,#1b151200_70%,#1b1512c2_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-32 pt-48 md:pb-20 lg:pt-48">
+        <div class="max-w-3xl">
+          <p class="eyebrow eyebrow-licht">Meubelwinkel in {site.plaats}</p>
+          <h1 id="inhoud" class="mt-6 text-hero">1500 m² aan <span class="text-merk-licht">meubels.</span></h1>
+          <p class="mt-7 max-w-xl text-lg leading-relaxed text-wit/90 md:text-[1.3rem]">Hoekbanken, bankstellen, relaxstoelen, sta-op stoelen en mango houten meubels. Veel op voorraad en direct mee te nemen, of op maat en in uw kleur.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#zoeken" class="knop knop-merk">Meubel zoeken<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2.5 text-[.95rem] text-wit/90">
+            <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-wit">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-4 w-4 text-merk-licht" /><span data-status>Di t/m za {site.open.tekst}</span></li>
+          </ul>
+        </div>
+      </div>
+      <p class="absolute bottom-7 right-10 hidden text-xs text-wit/60 lg:block">Sfeerfoto ter illustratie</p>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Cijfers: alleen echte cijfers uit hun eigen advertenties, Facebook en Google -->
+    <section class="border-b border-lijn-licht bg-wit" aria-label="In het kort">
+      <dl class="wrap grid grid-cols-2 gap-x-6 gap-y-9 py-11 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="mt-2 text-sm text-steen">showroom vol meubels</dt><dd class="num order-first font-kop whitespace-nowrap text-[clamp(2rem,2vw+1.3rem,3.2rem)] font-black leading-none tracking-[-.045em]">1500 m²</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-steen">modellen relaxstoelen om uit te kiezen</dt><dd class="num order-first font-kop whitespace-nowrap text-[clamp(2rem,2vw+1.3rem,3.2rem)] font-black leading-none tracking-[-.045em]">100+</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-steen">vriendelijk geprijsde meubels sinds</dt><dd class="num order-first font-kop whitespace-nowrap text-[clamp(2rem,2vw+1.3rem,3.2rem)] font-black leading-none tracking-[-.045em]">1990</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn-licht lg:pl-10"><dt class="mt-2 text-sm text-steen">op Google, uit {site.google.aantal} reviews</dt><dd class="order-first font-kop whitespace-nowrap text-[clamp(2rem,2vw+1.3rem,3.2rem)] font-black leading-none tracking-[-.045em] text-merk">{site.google.score}</dd></div>
+      </dl>
+    </section>
+
+    <!-- 3. Collectie: fotokaarten met hun eigen foto's -->
+    <section id="collectie" class="py-24 md:py-32" aria-labelledby="t-coll">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Collectie</p>
+            <h2 id="t-coll" class="mt-5 text-4xl">Van hoekbank tot eettafel.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-5 lg:col-start-8" style="--d:.05s">Banken in leder, stof en microleer, relaxstoelen, eettafels, kasten en dressoirs. Het aanbod wisselt, dus vraag gerust wat er nu staat.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:mt-16 lg:grid-cols-3 lg:gap-6">
+          {collectie.map((c, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <article class="kaart group flex h-full flex-col overflow-hidden transition-shadow duration-300 hover:shadow-[0_14px_34px_#1b151219]">
+                <div class="overflow-hidden">
+                  <Image src={c.src} alt={c.alt} widths={[420, 640, 820]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 100vw" quality={72} class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                </div>
+                <div class="flex flex-1 flex-col p-6 sm:p-7">
+                  <h3 class="text-[1.65rem]">{c.t}</h3>
+                  <p class="mt-3 text-steen">{c.d}</p>
+                  <a href={vraag(c.wa)} class="mt-auto inline-flex items-center gap-2 pt-6 font-bold text-merk no-underline transition-colors hover:text-merk-diep">Vraag wat er staat<Icoon naam="pijl" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" /></a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-12 flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-10">
+          <p class="shrink-0 pt-2 font-bold">Ook in de winkel</p>
+          <ul class="flex flex-wrap gap-2.5">
+            {ook.map((t) => <li class="chip">{t}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Direct mee of op maat (donker) -->
+    <section id="op-maat" class="relative overflow-hidden bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-maat">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow eyebrow-licht">Direct mee of op maat</p>
+            <h2 id="t-maat" class="mt-5 text-4xl">Vandaag mee, of in uw maat.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-mist lg:col-span-5 lg:col-start-8" style="--d:.05s">Twee manieren om aan uw nieuwe bank te komen. Allebei in dezelfde showroom.</p>
+        </div>
+
+        <div class="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-12">
+          <article class="rijs flex flex-col rounded-[12px] border border-lijn bg-inkt-2 p-7 sm:p-9 lg:col-span-5">
+            <span class="stap-nr num text-merk-licht" aria-hidden="true">A</span>
+            <h3 class="mt-6 text-3xl">Direct mee</h3>
+            <p class="mt-4 text-lg leading-relaxed text-wit/85">Veel hoekbanken en bankstellen staan op voorraad. Geen weken wachten: kom met een busje of aanhangwagen, betaal en neem hem gelijk mee.</p>
+            <ul class="mt-8 space-y-3 border-t border-lijn pt-7 text-wit/85">
+              <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />Op voorraad en direct leverbaar</li>
+              <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />Liever thuis? Dan bezorgen we het</li>
+              <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />Leder, stof en microleer</li>
+            </ul>
+            <a href={vraag('een bank die ik direct mee kan nemen')} class="knop knop-wit mt-8 self-start whitespace-normal text-center lg:mt-auto"><Icoon naam="wa" />Wat staat er op voorraad?</a>
+          </article>
+
+          <article class="rijs overflow-hidden rounded-[12px] border border-lijn bg-inkt-2 lg:col-span-7" style="--d:.08s">
+            <Image src={maatwerk} alt="Witte U-vormige bank in de showroom, met glazen salontafel" widths={[600, 900, 1024]} sizes="(min-width: 1024px) 56vw, 100vw" quality={72} class="aspect-[16/9] w-full object-cover" />
+            <div class="p-7 sm:p-9">
+              <div class="flex items-baseline gap-5">
+                <span class="stap-nr num text-merk-licht" aria-hidden="true">B</span>
+                <h3 class="text-3xl">Op maat</h3>
+              </div>
+              <p class="mt-4 text-lg leading-relaxed text-wit/85">Uit de vaste collectie maken we banken op de centimeter in de gewenste maat, en uiteraard ook op kleur.</p>
+              <ul class="mt-7 grid gap-3 border-t border-lijn pt-7 text-wit/85 sm:grid-cols-2">
+                {opMaat.map((t) => <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />{t}</li>)}
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Showroom: eigen foto's uit de winkel -->
+    <section id="showroom" class="py-24 md:py-32" aria-labelledby="t-show">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Showroom</p>
+            <h2 id="t-show" class="mt-5 text-4xl">Kom kijken. De koffie staat klaar.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-5 lg:col-start-8" style="--d:.05s">1500 m² met hoekbanken en bankstellen, en een eigen hoek met relaxstoelen, sta-op stoelen en moderne fauteuils. U bent van harte welkom.</p>
+        </div>
+        <div class="mt-12 grid gap-4 md:grid-cols-12 lg:mt-16 lg:gap-5">
+          <figure class="rijs md:col-span-7 md:row-span-2">
+            <Image src={sRelax} alt="Relaxstoelen in blauw, grijs en rood rond een salontafel voor de bakstenen wand" widths={[600, 900, 1024]} sizes="(min-width: 768px) 58vw, 100vw" quality={72} class="h-full min-h-[18rem] w-full rounded-[12px] object-cover" />
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.06s">
+            <Image src={sTafels} alt="Boomstam eettafels met eetkamerstoelen" widths={[480, 720, 1024]} sizes="(min-width: 768px) 40vw, 100vw" quality={72} class="aspect-[4/3] w-full rounded-[12px] object-cover" />
+          </figure>
+          <figure class="rijs md:col-span-5" style="--d:.1s">
+            <Image src={sLeer} alt="Zwarte leren hoekbank met mango houten bijzettafels" widths={[480, 720, 1024]} sizes="(min-width: 768px) 40vw, 100vw" quality={72} class="aspect-[4/3] w-full rounded-[12px] object-cover" />
+          </figure>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-12 lg:mt-5 lg:gap-5">
+          <figure class="rijs md:col-span-5">
+            <Image src={sFauteuil} alt="Twee moderne fauteuils bij een ovale eettafel" widths={[480, 720, 1024]} sizes="(min-width: 768px) 40vw, 100vw" quality={72} class="aspect-[4/3] w-full rounded-[12px] object-cover" />
+          </figure>
+          <div class="rijs flex flex-col justify-between gap-8 rounded-[12px] bg-inkt p-7 text-wit sm:p-9 md:col-span-7" style="--d:.06s">
+            <div>
+              <p class="font-kop text-3xl font-black leading-none tracking-[-.04em]">Dinsdag t/m zaterdag<br /><span class="text-merk-licht">{site.open.tekst}</span></p>
+              <p class="mt-5 text-mist">{site.straat}, {site.plaats}. Zondag en maandag gesloten.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href={site.route} class="knop knop-merk"><Icoon naam="pin" />Route plannen</a>
+              <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section class="border-y border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="rijs max-w-2xl">
+          <p class="eyebrow">Zo werkt het</p>
+          <h2 id="t-werk" class="mt-5 text-4xl">Van zoeken tot zitten.</h2>
+        </div>
+        <ol class="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4 lg:gap-6">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs flex flex-col border-t-2 border-inkt pt-7" style={`--d:${i * 0.06}s`}>
+              <span class="stap-nr num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-6 text-2xl">{t}</h3>
+              <p class="mt-3 text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Wow: meubel zoeken met plattegrond op schaal, eindigt in een vooraf ingevuld WhatsApp-bericht -->
+    <section id="zoeken" class="bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-zoeken">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow eyebrow-licht">Meubel zoeken</p>
+            <h2 id="t-zoeken" class="mt-5 text-4xl">Past hij bij u thuis?</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-mist lg:col-span-5 lg:col-start-8 lg:self-end" style="--d:.1s">Kies wat u zoekt, vul de maat en uw muur in en zie het op schaal. Uw vraag staat daarna klaar in WhatsApp.</p>
+        </div>
+
+        <form class="mt-12 grid gap-x-12 gap-y-12 md:mt-16 lg:grid-cols-12" data-zoek data-soorten={JSON.stringify(soorten)}>
+          <div class="space-y-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label">Wat zoekt u?</legend>
+              <div class="flex flex-wrap gap-2.5">
+                {soorten.map((s, i) => <label class="keuze"><input type="radio" name="soort" value={s.id} checked={i === 0} />{s.id}</label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label">Materiaal</legend>
+              <div class="flex flex-wrap gap-2.5">
+                {materialen.map((m, i) => <label class="keuze"><input type="radio" name="materiaal" value={m} checked={i === 0} />{m}</label>)}
+              </div>
+            </fieldset>
+            <div class="grid gap-7 sm:grid-cols-3">
+              <div>
+                <label for="maat-a" class="veld-label" data-la>Lange kant (cm)</label>
+                <input id="maat-a" name="a" class="veld num" inputmode="numeric" value="290" />
+              </div>
+              <div>
+                <label for="maat-b" class="veld-label" data-lb>Korte kant (cm)</label>
+                <input id="maat-b" name="b" class="veld num" inputmode="numeric" value="220" />
+              </div>
+              <div>
+                <label for="muur" class="veld-label">Uw muur (cm)</label>
+                <input id="muur" name="muur" class="veld num" inputmode="numeric" value="340" />
+              </div>
+            </div>
+            <div class="grid gap-7 sm:grid-cols-2">
+              <fieldset>
+                <legend class="veld-label">Liefst</legend>
+                <div class="flex flex-wrap gap-2.5">
+                  {voorkeur.map((r, i) => <label class="keuze"><input type="radio" name="voorkeur" value={r} checked={i === 2} />{r}</label>)}
+                </div>
+              </fieldset>
+              <div>
+                <label for="kleur" class="veld-label">Kleur (mag ook later)</label>
+                <input id="kleur" name="kleur" class="veld" placeholder="bv. cognac of antraciet" />
+              </div>
+            </div>
+            <label class="keuze"><input type="checkbox" name="kijken" value="ja" checked />Ik kom graag kijken in de showroom</label>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="lg:sticky lg:top-8">
+              <div class="plat p-4" data-plat role="img" aria-label="Plattegrond op schaal van het meubel langs uw muur">
+                <svg data-svg class="block h-auto w-full" viewBox="0 0 400 300" aria-hidden="true"></svg>
+              </div>
+              <p class="mt-3 flex flex-wrap justify-between gap-x-4 gap-y-1 text-xs text-mist"><span>Bovenaanzicht op schaal, hokjes van 50 cm</span><span data-past class="font-bold text-wit"></span></p>
+              <p class="veld-label mt-8">Uw bericht</p>
+              <p class="min-h-[7.5rem] whitespace-pre-line rounded-[10px] border-l-4 border-merk bg-inkt-2 px-5 py-4 text-[.98rem] leading-relaxed text-wit/90" data-voorbeeld aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-merk mt-5 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <p class="mt-3 text-center text-xs text-mist">Stuur in WhatsApp gerust een foto van de ruimte mee.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-rev" class="mt-5 text-4xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+            <Icoon naam="g" class="h-9 w-9 flex-none" />
+            <span>
+              <span class="flex items-center gap-2"><b class="font-kop text-2xl font-black leading-none">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="mt-1 block text-sm text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {reviews.map((r, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col p-7">
+                <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+                <blockquote class="mt-5 flex-1 leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5 text-sm">
+                  <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-linnen-2 font-bold">{r.naam[0]}</span>
+                  <span><b class="block font-bold">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 9. Openingstijden en contact -->
+    <section id="contact" class="border-t border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="min-w-0 lg:col-span-6">
+          <p class="rijs eyebrow">Contact</p>
+          <h2 id="t-contact" class="rijs mt-5 text-3xl sm:text-4xl">Kom langs in {site.plaats}.</h2>
+          <p class="rijs mt-8"><a href={site.telHref} class="num font-kop text-[clamp(2.1rem,4.6vw,3.8rem)] font-black leading-none tracking-[-.045em] text-inkt no-underline transition-colors hover:text-merk">{site.tel}</a></p>
+          <p class="rijs mt-3 text-steen">Bellen of WhatsApp, voor vragen over een meubel of wat er op voorraad staat.</p>
+          <div class="rijs mt-8 flex flex-wrap gap-3" style="--d:.08s">
+            <a href={waHoi} class="knop knop-merk"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.route} class="knop knop-rand"><Icoon naam="pin" />Route plannen</a>
+          </div>
+          <div class="rijs mt-10 flex items-start gap-4" style="--d:.12s">
+            <Icoon naam="pin" class="mt-1 h-5 w-5 flex-none text-merk" />
+            <p><b class="font-bold">{site.naam}</b><br /><span class="text-steen">{site.straat}<br />{site.postcode} {site.plaats}</span></p>
+          </div>
+          <p class="rijs mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm" style="--d:.14s">
+            <a href={site.facebook} class="link">Facebook</a><a href={site.instagram} class="link">Instagram</a><a href={site.marktplaats} class="link">Aanbod op Marktplaats</a>
+          </p>
+        </div>
+        <div class="rijs min-w-0 lg:col-span-6" style="--d:.08s">
+          <div class="kaart overflow-hidden">
+            <div class="flex items-center justify-between gap-4 border-b border-lijn-licht px-4 py-5 sm:px-6">
+              <p class="font-kop text-xl font-black tracking-[-.02em]">Openingstijden</p>
+              <p class="flex items-center gap-2 text-sm font-bold" data-status-kort><span class="h-2.5 w-2.5 rounded-full bg-linnen-3" data-stip></span><span>Openingstijden</span></p>
+            </div>
+            <table class="w-full text-left">
+              <tbody>
+                {dagen.map((d, i) => {
+                  const dag = (i + 1) % 7;
+                  const open = site.open.dagen.includes(dag);
+                  return (
+                    <tr class="border-b border-lijn-licht last:border-0" data-dag={dag}>
+                      <th scope="row" class="py-3.5 pl-4 pr-2 font-medium sm:px-6">{d}</th>
+                      <td class={`num py-3.5 pl-2 pr-4 text-right sm:px-6 ${open ? '' : 'text-steen'}`}>{open ? site.open.tekst : 'Gesloten'}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Slotbalk -->
+    <section class="bg-merk text-wit" aria-label="Meubel zoeken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center md:py-14">
+        <p class="font-kop text-3xl font-black leading-none tracking-[-.04em]">Op zoek naar een nieuwe bank?</p>
+        <a href="#zoeken" class="knop knop-inkt shrink-0">Meubel zoeken<Icoon naam="pijl" /></a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+
+  // Live status: dinsdag t/m zaterdag 11.00 tot 17.30 uur.
+  const nu = new Date();
+  const dag = nu.getDay();
+  const uur = nu.getHours() + nu.getMinutes() / 60;
+  const opendag = site.open.dagen.includes(dag);
+  const open = opendag && uur >= site.open.van && uur < site.open.tot;
+  const s = document.querySelector('[data-status]');
+  const sk = document.querySelector('[data-status-kort] span:last-child');
+  const stip = document.querySelector<HTMLElement>('[data-stip]');
+  const rij = document.querySelector<HTMLElement>(`[data-dag="${dag}"]`);
+  if (rij) { rij.classList.add('bg-linnen'); rij.querySelector('th')?.classList.add('font-bold'); }
+  let t = 'Nu gesloten';
+  if (open) t = 'Nu open, tot 17.30 uur';
+  else if (opendag && uur < site.open.van) t = 'Vandaag open vanaf 11.00 uur';
+  if (s && open) s.textContent = t;
+  if (sk) sk.textContent = t;
+  if (stip) stip.style.background = open ? '#2f9e5b' : '#c4b5a5';
+
+  // Meubel zoeken
+  type Soort = { id: string; a: number; b: number; la: string; lb: string };
+  const f = document.querySelector<HTMLFormElement>('[data-zoek]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  const svg = document.querySelector<SVGSVGElement>('[data-svg]');
+  const plat = document.querySelector<HTMLElement>('[data-plat]');
+  const past = document.querySelector<HTMLElement>('[data-past]');
+  if (f && vb && knop && svg && plat) {
+    const soorten = JSON.parse(f.dataset.soorten || '[]') as Soort[];
+    const ia = f.querySelector<HTMLInputElement>('#maat-a')!;
+    const ib = f.querySelector<HTMLInputElement>('#maat-b')!;
+    const la = f.querySelector<HTMLElement>('[data-la]')!;
+    const lb = f.querySelector<HTMLElement>('[data-lb]')!;
+    const getal = (v: FormDataEntryValue | null, d: number) => { const n = parseInt(String(v || '').replace(/\D/g, ''), 10); return n > 0 && n < 2000 ? n : d; };
+    let vorige = '';
+    const zet = () => {
+      const d = new FormData(f);
+      const soort = soorten.find((x) => x.id === d.get('soort')) || soorten[0];
+      if (soort.id !== vorige) { ia.value = String(soort.a); ib.value = String(soort.b); la.textContent = `${soort.la} (cm)`; lb.textContent = `${soort.lb} (cm)`; vorige = soort.id; }
+      const a = getal(d.get('a'), soort.a), b = getal(d.get('b'), soort.b), muur = getal(d.get('muur'), 340);
+      // Tekening in cm. Muur bovenaan, meubel ertegenaan.
+      const pad = 40, W = Math.max(muur, a) + pad * 2, H = b + pad * 2 + 30;
+      const diepte = soort.id === 'Hoekbank' ? 95 : b;
+      const x0 = pad, y0 = pad + 20;
+      let vorm = '';
+      if (soort.id === 'Hoekbank') vorm = `<path d="M${x0} ${y0}h${a}v${diepte}h-${a - diepte}v${b - diepte}h-${diepte}z" />`;
+      else if (soort.id === 'Eettafel') vorm = `<rect x="${x0}" y="${y0 + 40}" width="${a}" height="${b}" rx="${Math.min(a, b) / 2}" />`;
+      else vorm = `<rect x="${x0}" y="${y0}" width="${a}" height="${b}" rx="8" />`;
+      const hEind = soort.id === 'Eettafel' ? H + 40 : H;
+      svg.setAttribute('viewBox', `0 0 ${W} ${hEind}`);
+      const fs = Math.max(W, hEind) / 22;
+      svg.innerHTML = `
+        <line x1="${x0}" y1="${pad}" x2="${x0 + muur}" y2="${pad}" stroke="#c0b2a5" stroke-width="6" stroke-linecap="round" />
+        <text x="${x0 + muur / 2}" y="${pad - 10}" fill="#c0b2a5" font-size="${fs * .8}" text-anchor="middle" font-family="Public Sans, sans-serif">muur ${muur} cm</text>
+        <g fill="#e8925f33" stroke="#e8925f" stroke-width="3">${vorm}</g>
+        <text x="${x0 + a / 2}" y="${(soort.id === 'Eettafel' ? y0 + 40 : y0) + Math.min(diepte, b) / 2 + fs * .35}" fill="#ffffff" font-size="${fs}" font-weight="700" text-anchor="middle" font-family="Public Sans, sans-serif">${a} x ${b}</text>`;
+      plat.style.backgroundSize = `${(50 / W) * 100}% ${(50 / hEind) * 100}%`;
+      if (past) past.textContent = a <= muur ? `Past langs de muur, ${muur - a} cm over` : `${a - muur} cm langer dan de muur`;
+      const mat = String(d.get('materiaal'));
+      const kleur = String(d.get('kleur') || '').trim();
+      const vk = String(d.get('voorkeur'));
+      const r = [`Hallo Het Handelshuis, ik zoek een ${soort.id.toLowerCase()}.`];
+      r.push(`Materiaal: ${mat.toLowerCase()}${kleur ? `, kleur: ${kleur}` : ''}.`);
+      r.push(`Maat: ongeveer ${a} x ${b} cm, mijn muur is ${muur} cm.`);
+      if (vk === 'Direct mee') r.push('Liefst iets wat op voorraad staat en direct mee kan.');
+      if (vk === 'Op maat') r.push('Ik denk aan een meubel op maat.');
+      if (d.get('kijken')) r.push('Ik kom graag kijken in de showroom.');
+      const tekst = r.join('\n');
+      vb.textContent = tekst;
+      knop.href = `${site.wa}?text=${encodeURIComponent(tekst)}`;
+    };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>
