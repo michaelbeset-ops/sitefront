@@ -1,0 +1,51 @@
+---
+import { site, url, waHoi, tijden, tijdTekst } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const diensten = [['horren', 'Raamhorren'], ['horren', 'Plissé hordeuren'], ['horren', 'Rolluiken en screens'], ['werkwijze', 'Inmeten aan huis'], ['aanvraag', 'Hor aanvragen']];
+---
+<footer class="bg-inkt text-mist">
+  <div class="plisse h-3 opacity-70" aria-hidden="true"></div>
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[1.0625rem] sm:grid-cols-2 md:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Merk />
+      <p class="mt-6 max-w-xs">Horren en hordeuren op maat, van gepoedercoated aluminium. Wij komen vrijblijvend aan huis voor een inmeetafspraak.</p>
+      <a href={site.telHref} class="knop knop-merk num mt-7 min-h-12 px-5"><Icoon naam="tel" />{site.tel}</a>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Aanbod</p>
+      <ul class="mt-5 space-y-2.5">
+        {diensten.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-merk-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Contact</p>
+      <ul class="mt-5 space-y-2.5">
+        <li><a href={site.telHref} class="num no-underline hover:text-merk-licht">{site.tel}</a></li>
+        <li><a href={waHoi} class="no-underline hover:text-merk-licht">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline hover:text-merk-licht">{site.mail}</a></li>
+        <li><a href={site.insta} class="no-underline hover:text-merk-licht">Instagram @horrenspecialist</a></li>
+        <li>Gevestigd in {site.plaats}</li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-wit">Open</p>
+      <ul class="mt-5 space-y-1.5">
+        <li>Ma t/m vr</li>
+        <li class="num text-wit">{tijdTekst(tijden[0].open!)}</li>
+        <li class="pt-2">Zaterdag</li>
+        <li class="num text-wit">{tijdTekst(tijden[5].open!)}</li>
+        <li class="pt-2">Zondag gesloten</li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-[.9375rem]">
+    <p>© {jaar} {site.naam}, {site.plaats}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-[.9375rem]">Teksten en foto's van jullie site horrenspecialist-bsr.nl, Instagram @horrenspecialist en jullie Google-profiel. Sfeerfoto via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 12 oktober 2026).</p>}
+  <div class="h-16 md:hidden" aria-hidden="true"></div>
+</footer>
