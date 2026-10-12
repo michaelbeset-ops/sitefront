@@ -326,3 +326,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Horrenspecialist BSR, Tilburg | https://voorstel.sitefront.nl/horrenspecialist-bsr-tilburg/ | onaffe site, niet op Google; 5,0/32; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Kuiper Uurwerktechniek, Rotterdam | https://voorstel.sitefront.nl/kuiper-uurwerktechniek/ | gedateerde site zonder belknop; 5,0/15; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Kopasol, Ridderkerk | https://voorstel.sitefront.nl/kopasol-ridderkerk/ | geen website (Marktplaats); 5,0/10; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Peek Interieurs, Nieuwegein | https://voorstel.sitefront.nl/peek-interieurs/ | gedateerde site, cookiebalk en knoppen over de inhoud; 5,0/132; 06/WhatsApp. | 2026-10-13 | demo premium |
+| Vlinder Wonen, Spijkenisse | https://voorstel.sitefront.nl/vlinder-wonen/ | domein staat te koop, site weg; 5,0/15; 06/WhatsApp. | 2026-10-13 | demo premium |
+| Tilburg Mobile Bikes | https://voorstel.sitefront.nl/tilburg-mobile-bikes/ | alleen een onaffe Canva-site; 4,9/162; 06/WhatsApp. | 2026-10-13 | demo premium |
+| Wereld Bike, Tilburg | https://voorstel.sitefront.nl/wereld-bike-tilburg/ | geen website, alleen Facebook; 4,6/127; 06/WhatsApp. | 2026-10-13 | demo premium |

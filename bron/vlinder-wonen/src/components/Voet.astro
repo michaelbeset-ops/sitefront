@@ -1,0 +1,49 @@
+---
+import { site, url, waHoi, tijden, dagNamen, uur } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const assortiment = ['Bedden en boxsprings', 'Banken en hoekbanken', 'Tafels en stoelen', 'Kasten en opberging', 'Laminaat en PVC', 'Gordijnen, plissé, lamellen', 'Tapijten en vloerkleden', 'Traprenovatie'];
+const volgorde = [1, 2, 3, 4, 5, 6, 0];
+---
+<footer class="bg-inkt text-mist">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[.95rem] sm:grid-cols-2 md:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Merk />
+      <p class="mt-6 max-w-xs">Alles voor thuis, onder één dak. Meubelwinkel aan de Breestoep in {site.plaats}.</p>
+      <div class="mt-7 flex items-center gap-3">
+        <a href={waHoi} class="knop knop-merk min-h-11 px-5"><Icoon naam="wa" />WhatsApp</a>
+        <a href={site.instagram} class="grid h-11 w-11 place-items-center rounded-full border border-lijn text-wit transition-colors hover:border-merk-licht hover:text-merk-licht" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={site.facebook} class="grid h-11 w-11 place-items-center rounded-full border border-lijn text-wit transition-colors hover:border-merk-licht hover:text-merk-licht" aria-label="Facebook"><Icoon naam="fb" class="h-5 w-5" /></a>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Assortiment</p>
+      <ul class="mt-5 grid grid-cols-1 gap-y-2">
+        {assortiment.map((t) => <li><a href={h('assortiment')} class="no-underline transition-colors hover:text-merk-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-wit">Contact</p>
+      <ul class="mt-5 space-y-2">
+        <li><a href={site.telHref} class="num no-underline hover:text-merk-licht">{site.tel}</a><br /><span class="text-mist/80">ook WhatsApp</span></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.route} class="no-underline hover:text-merk-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Openingstijden</p>
+      <ul class="num mt-5 space-y-1.5">
+        {volgorde.map((d) => <li class="flex justify-between gap-4"><span>{dagNamen[d]}</span><span class="text-wit/90">{tijden[d] ? `${uur(tijden[d]![0])} tot ${uur(tijden[d]![1])}` : 'Gesloten'}</span></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} {site.naam}, {site.plaats}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-xs">Foto's van de winkel en meubels van jullie eigen Google-profiel. Sfeerfoto's via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 13 oktober 2026).</p>}
+  <div class="h-14 md:hidden" aria-hidden="true"></div>
+</footer>

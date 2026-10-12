@@ -1,0 +1,372 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import Fiets from '../components/Fiets.astro';
+import { site, reviews, wereld, tijden, uur, waHoi } from '../data/site';
+
+// Eigen foto's (Google-bedrijfsprofiel en Facebook Wereld Bike) en twee werkplaats-sfeerfoto's van Unsplash, zie src/assets/BRONNEN.txt.
+import wHero from '../assets/w-hero.jpg';
+import wNeon from '../assets/w-neon.jpg';
+import wRij from '../assets/w-rij.jpg';
+import wGevel from '../assets/w-gevel.jpg';
+import wRace from '../assets/w-race.jpg';
+import sWerk from '../assets/s-werk.jpg';
+
+const sterren = [1, 2, 3, 4, 5];
+
+const stappen = [
+  ['Langsbrengen', 'Kom tijdens openingstijden langs, of app eerst wat er mis is.'],
+  ['Eerst overleg', 'Samen kijken wat er moet gebeuren, voordat er iets gebeurt.'],
+  ['Repareren', 'Repareren waar het kan, vervangen waar nodig.'],
+  ['Ophalen', 'Klaar? Dan haal je hem op aan de Korvelseweg.'],
+];
+
+// Keuzes voor het appje (nl / en). Het bericht wordt in de gekozen taal opgebouwd.
+const problemen = [['Lekke band', 'Flat tyre'], ['Ketting', 'Chain'], ['Remmen', 'Brakes'], ['Versnelling', 'Gears'], ['Verlichting', 'Lights'], ['Iets anders', 'Something else']];
+const soorten = [['Stadsfiets', 'City bike'], ['Racefiets', 'Road bike'], ['Elektrische fiets', 'E-bike'], ['Kinderfiets', "Children's bike"], ['Andere fiets', 'Other bike']];
+const staten = [['Rijdt prima', 'Rides fine'], ['Kleine mankementen', 'Small defects'], ['Moet gemaakt worden', 'Needs repair']];
+---
+<Base title="Wereld Bike | Fietsenmaker en tweedehands fietsen, Korvelseweg Tilburg" description="Wereld Bike aan de Korvelseweg 207 in Tilburg: reparatie van fietsen, verkoop van tweedehands fietsen en inkoop van je oude fiets. Open maandag tot en met zaterdag.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen pand bij avond, met de paarse ledstrip in de etalage -->
+    <section class="relative isolate flex min-h-[calc(100svh-3.3rem)] items-end overflow-hidden bg-nacht text-wit md:min-h-[100svh]" aria-labelledby="inhoud">
+      <Image src={wHero} alt="De etalage van Wereld Bike aan de Korvelseweg bij avond, vol fietsen" widths={[640, 960, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" quality={64} class="absolute inset-0 -z-20 h-full w-full object-cover object-[64%_50%] md:object-[50%_45%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0f1113d9_0%,#0f11139e_30%,#0f1113d9_55%,#0f1113fa_100%)] md:bg-[linear-gradient(90deg,#0f1113f2_0%,#0f1113d9_45%,#0f111366_72%,#0f111314_100%),linear-gradient(180deg,#0f1113bf_0%,#0f111300_28%,#0f111300_66%,#0f1113cc_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-[5.25rem] pt-32 md:pb-20 lg:pt-44">
+        <div class="max-w-[64rem]">
+          <p class="eyebrow">Fietsenmaker in {site.plaats}</p>
+          <h1 id="inhoud" class="mt-5 text-hero lg:max-w-[60rem]">Repareren, kopen en verkopen aan de <span class="text-merk-licht">Korvelseweg.</span></h1>
+          <p class="mt-7 max-w-xl text-lg leading-relaxed text-wit/90 md:text-[1.35rem]">Fietsenmaker en tweedehands fietsen onder één dak, op nummer 207.</p>
+          <div class="mt-8 flex flex-wrap gap-3 md:mt-9">
+            <a href="#appje" class="knop knop-merk"><Icoon naam="wa" />App je vraag</a>
+            <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+          <ul class="mt-7 flex flex-wrap gap-x-7 gap-y-2.5 text-[.95rem] text-wit/90">
+            <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-wit">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-4 w-4 text-merk-licht" /><span data-status>Maandag tot en met zaterdag open</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Het eigen detail: de belettering van hun etalageruit, Nederlands en Engels -->
+    <section class="glas relative overflow-hidden text-wit" aria-label="Op de etalageruit">
+      <div class="wrap grid items-center gap-y-8 py-14 md:grid-cols-[1fr_auto_1fr] md:gap-x-12 md:py-16">
+        <p class="belettering text-[clamp(2.3rem,4vw+1rem,4.4rem)]" lang="nl">Inkoop<br />Verkoop<br />Reparatie</p>
+        <Fiets class="hidden h-28 w-36 text-wit md:block lg:h-32 lg:w-40" />
+        <div class="md:text-right">
+          <p class="belettering text-[clamp(2.3rem,4vw+1rem,4.4rem)] text-wit/55" lang="en">Buying<br />Selling<br />Repair</p>
+        </div>
+      </div>
+      <p class="wrap -mt-4 pb-8 text-sm text-mist md:-mt-6">Zo staat het op de ruit van Korvelseweg 207.</p>
+    </section>
+
+    <!-- 3. Wat ze doen: drie ingangen, eigen foto's waar het kan -->
+    <section class="py-24 md:py-32" aria-labelledby="t-wat">
+      <div class="wrap">
+        <h2 id="t-wat" class="rijs max-w-3xl text-4xl">Eén adres voor <span class="text-merk">je fiets.</span></h2>
+        <div class="mt-12 grid gap-6 md:mt-16 md:grid-cols-12 md:gap-8">
+          <article id="reparatie" class="rijs group relative md:col-span-7 md:row-span-2">
+            <a href="#appje" data-tab-link="reparatie" class="block h-full no-underline">
+              <div class="relative h-[26rem] overflow-hidden bg-nacht md:h-full md:min-h-[38rem]">
+                <Image src={sWerk} alt="Fietsenmaker aan het werk aan een achterwiel (sfeerfoto)" widths={[640, 960, 1400]} sizes="(min-width: 768px) 58vw, 100vw" quality={64} class="absolute inset-0 h-full w-full object-cover object-[18%_55%] transition-transform duration-700 group-hover:scale-[1.03]" />
+                <div class="absolute inset-0 bg-[linear-gradient(180deg,#0f111300_40%,#0f1113e6_100%)]" aria-hidden="true"></div>
+                <div class="absolute inset-x-0 bottom-0 p-7 text-wit md:p-10">
+                  <h3 class="text-3xl">Reparatie</h3>
+                  <p class="mt-3 max-w-md text-wit/90">Van lekke band tot groot onderhoud. Eerst wordt besproken wat er moet gebeuren.</p>
+                  <span class="mt-5 inline-flex items-center gap-2 font-bold text-merk-licht">Reparatie aanvragen<Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+                </div>
+              </div>
+            </a>
+          </article>
+          <article id="fietsen" class="rijs group md:col-span-5" style="--d:.08s">
+            <a href="#appje" data-tab-link="zoeken" class="grid h-full grid-cols-[40%_1fr] items-stretch overflow-hidden bg-wit no-underline md:grid-cols-1">
+              <div class="relative min-h-[13rem] overflow-hidden md:h-72">
+                <Image src={wRij} alt="Rijen tweedehands fietsen in de winkel van Wereld Bike" widths={[480, 800, 1100]} sizes="(min-width: 768px) 40vw, 40vw" quality={64} class="absolute inset-0 h-full w-full object-cover object-[50%_60%] transition-transform duration-700 group-hover:scale-[1.03]" />
+              </div>
+              <div class="p-6 md:p-8">
+                <h3 class="text-2xl">Tweedehands fietsen</h3>
+                <p class="mt-2 text-steen">Van studentenfiets tot topkwaliteit, binnen in de winkel en buiten voor de deur.</p>
+                <span class="mt-4 inline-flex items-center gap-2 font-bold text-merk">Fiets zoeken<Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+              </div>
+            </a>
+          </article>
+          <article id="inkoop" class="rijs group md:col-span-5" style="--d:.16s">
+            <a href="#appje" data-tab-link="verkopen" class="grid h-full grid-cols-[40%_1fr] items-stretch overflow-hidden bg-wit no-underline md:grid-cols-1">
+              <div class="relative min-h-[13rem] overflow-hidden md:h-72">
+                <Image src={wRace} alt="Racefietsen in de etalage van Wereld Bike" widths={[480, 800, 1400]} sizes="(min-width: 768px) 40vw, 40vw" quality={64} class="absolute inset-0 h-full w-full object-cover object-[60%_50%] transition-transform duration-700 group-hover:scale-[1.03]" />
+              </div>
+              <div class="p-6 md:p-8">
+                <h3 class="text-2xl">Fiets verkopen</h3>
+                <p class="mt-2 text-steen">Oude fiets over? Wereld Bike koopt ook in.</p>
+                <span class="mt-4 inline-flex items-center gap-2 font-bold text-merk">Fiets aanbieden<Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Zo gaat een reparatie: donker, met hun neonbord -->
+    <section class="bg-nacht py-24 text-wit md:py-32" aria-labelledby="t-stap">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="rijs relative lg:col-span-6">
+          <div class="relative aspect-[4/3] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[34rem]">
+            <Image src={wNeon} alt="De winkel van Wereld Bike met het neonbord: een fiets met wereldbollen als wielen" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 45vw, 100vw" quality={64} class="absolute inset-0 h-full w-full object-cover object-[93%_38%]" />
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:py-6">
+          <h2 id="t-stap" class="rijs text-4xl">Zo gaat een <span class="text-merk-licht">reparatie.</span></h2>
+          <ol class="mt-12 border-t border-lijn">
+            {stappen.map(([t, d], i) => (
+              <li class="rijs grid grid-cols-[3.5rem_1fr] gap-x-5 border-b border-lijn py-6 sm:grid-cols-[4.5rem_1fr]" style={`--d:${i * 0.06}s`}>
+                <span class="kop num text-[2.6rem] leading-none text-merk-licht sm:text-[3.2rem]" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div><h3 class="text-2xl">{t}</h3><p class="mt-1.5 text-mist">{d}</p></div>
+              </li>
+            ))}
+          </ol>
+          <figure class="rijs mt-10">
+            <blockquote class="kop text-[1.35rem] font-semibold leading-snug tracking-[-.01em] text-wit md:text-[1.6rem]">“Ookal liep de fietsenmaker tegen meer werk aan dan aanvankelijk verwacht kostte het me geen cent extra.”</blockquote>
+            <figcaption class="mt-4 text-sm text-mist">{reviews[0].naam}, Google review</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Wow: het appje klaarzetten, in het Nederlands of Engels, getoond als belettering op hun etalageglas -->
+    <section id="appje" class="glas py-24 text-wit md:py-32" aria-labelledby="t-app">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <h2 id="t-app" class="rijs text-4xl">Zet je appje <span class="text-merk-licht">klaar.</span></h2>
+          <p class="rijs mt-6 max-w-md text-lg text-wit/85">Kies wat je nodig hebt. Het bericht staat daarna klaar in WhatsApp, je verstuurt het zelf.</p>
+          <div class="rijs mt-8 inline-flex border border-lijn p-1 text-sm font-bold" role="group" aria-label="Taal van het bericht">
+            <button type="button" class="min-h-10 px-4 transition-colors" data-taal="nl" aria-pressed="true">Nederlands</button>
+            <button type="button" class="min-h-10 px-4 transition-colors" data-taal="en" aria-pressed="false" lang="en">English</button>
+          </div>
+
+        <p class="rijs mt-8 text-wit/85">Bellen kan ook: <a href={site.telHref} class="link num font-bold text-wit">{site.tel}</a></p>
+        </div>
+        <form class="rijs lg:col-span-7" data-app style="--d:.08s">
+          <div class="flex flex-wrap gap-x-2 border-b border-lijn" role="tablist" aria-label="Waar gaat het over">
+            <button type="button" role="tab" class="tab" id="tab-reparatie" aria-controls="p-reparatie" aria-selected="true" data-tab="reparatie">Reparatie</button>
+            <button type="button" role="tab" class="tab" id="tab-zoeken" aria-controls="p-zoeken" aria-selected="false" data-tab="zoeken">Fiets zoeken</button>
+            <button type="button" role="tab" class="tab" id="tab-verkopen" aria-controls="p-verkopen" aria-selected="false" data-tab="verkopen">Fiets verkopen</button>
+          </div>
+
+          <div id="p-reparatie" role="tabpanel" aria-labelledby="tab-reparatie" class="pt-8" data-paneel="reparatie">
+            <fieldset>
+              <legend class="veld-label">Wat is er aan de hand?</legend>
+              <div class="flex flex-wrap gap-2.5">
+                {problemen.map(([nl, en]) => <label class="keuze"><input type="checkbox" name="probleem" value={nl} data-en={en} />{nl}</label>)}
+              </div>
+            </fieldset>
+          </div>
+
+          <div id="p-zoeken" role="tabpanel" aria-labelledby="tab-zoeken" class="hidden pt-8" data-paneel="zoeken">
+            <div class="grid gap-6 sm:grid-cols-2">
+              <label class="block"><span class="veld-label">Je lengte (cm)</span><input class="veld num" type="number" name="lengte" inputmode="numeric" min="90" max="220" placeholder="bijvoorbeeld 178" /></label>
+              <label class="block"><span class="veld-label">Budget (ongeveer)</span><input class="veld" type="text" name="budget" placeholder="bijvoorbeeld 150 euro" /></label>
+            </div>
+          </div>
+
+          <div id="p-verkopen" role="tabpanel" aria-labelledby="tab-verkopen" class="hidden pt-8" data-paneel="verkopen">
+            <label class="block"><span class="veld-label">Merk en type</span><input class="veld" type="text" name="merk" placeholder="bijvoorbeeld Gazelle damesfiets" /></label>
+            <fieldset class="mt-6">
+              <legend class="veld-label">Staat van de fiets</legend>
+              <div class="flex flex-wrap gap-2.5">
+                {staten.map(([nl, en], i) => <label class="keuze"><input type="radio" name="staat" value={nl} data-en={en} checked={i === 0} />{nl}</label>)}
+              </div>
+            </fieldset>
+          </div>
+
+          <fieldset class="mt-6">
+            <legend class="veld-label">Soort fiets</legend>
+            <div class="flex flex-wrap gap-2.5">
+              {soorten.map(([nl, en], i) => <label class="keuze"><input type="radio" name="soort" value={nl} data-en={en} checked={i === 0} />{nl}</label>)}
+            </div>
+          </fieldset>
+          <label class="mt-6 block"><span class="veld-label">Nog iets kwijt? (mag leeg)</span><textarea class="veld min-h-24" name="extra" rows="2" placeholder="bijvoorbeeld: achterband loopt steeds leeg"></textarea></label>
+
+          <div class="mt-8 border border-lijn bg-[#0000003d] p-6 md:p-8">
+            <p class="text-xs font-bold uppercase tracking-[.16em] text-mist">Je bericht</p>
+            <p class="mt-3 whitespace-pre-line text-[1.05rem] font-semibold leading-relaxed text-wit" data-voorbeeld aria-live="polite"></p>
+          </div>
+          <a href={waHoi} class="knop knop-merk mt-6 w-full sm:w-auto" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Open in WhatsApp</a>
+        </form>
+      </div>
+    </section>
+
+    <!-- 6. Reviews -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <h2 id="t-rev" class="rijs text-4xl lg:col-span-7">Wat klanten <span class="text-merk">zeggen.</span></h2>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-colors hover:border-nacht lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+            <Icoon naam="g" class="h-9 w-9 flex-none" />
+            <span>
+              <span class="flex items-center gap-2"><b class="kop num text-[1.7rem] leading-none">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="mt-1 block text-sm text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {reviews.map((r, i) => (
+            <li class={`rijs ${i > 3 ? 'hidden md:block' : ''}`} style={`--d:${(i % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col border-t-4 border-t-merk p-7">
+                <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+                <blockquote class="mt-5 flex-1 leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5 text-sm">
+                  <span class="grid h-9 w-9 flex-none place-items-center bg-papier-2 font-bold">{r.naam[0]}</span>
+                  <span><b class="block font-bold">{r.naam}</b><span class="text-steen">Google review</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+
+        <div class="rijs mt-16 bg-nacht p-7 text-wit md:mt-20 md:p-10">
+          <h3 class="text-2xl">Ook in andere talen.</h3>
+          <ul class="mt-8 grid gap-8 md:grid-cols-3 md:gap-10">
+            {wereld.map((r) => (
+              <li>
+                <figure>
+                  <p class="text-xs font-bold uppercase tracking-[.16em] text-merk-licht">{r.taal}</p>
+                  <blockquote class="mt-3 leading-relaxed text-wit/90" lang={r.taal === 'Polski' ? 'pl' : 'en'}>“{r.tekst}”</blockquote>
+                  <figcaption class="mt-3 text-sm text-mist">{r.naam}, Google review</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Tijden en route, met de gevel zoals hij nu is -->
+    <section id="route" class="border-t border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-route">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="rijs relative min-w-0 lg:col-span-5">
+          <div class="relative aspect-[4/5] overflow-hidden bg-nacht lg:aspect-auto lg:h-full lg:min-h-[36rem]">
+            <Image src={wGevel} alt="De gevel van Wereld Bike overdag, met fietsen op de stoep en het rode logo op de ruit" widths={[480, 800, 1020]} sizes="(min-width: 1024px) 38vw, 100vw" quality={64} class="absolute inset-0 h-full w-full object-cover" />
+          </div>
+        </div>
+        <div class="rijs min-w-0 lg:col-span-7" style="--d:.08s">
+          <h2 id="t-route" class="text-4xl">Korvelseweg <span class="text-merk">207.</span></h2>
+          <p class="mt-5 text-lg text-steen">{site.postcode} {site.plaats}. De fietsen staan buiten voor de deur.</p>
+          <div class="mt-10 border border-lijn-licht">
+            <div class="flex items-center justify-between gap-4 border-b border-lijn-licht px-6 py-5">
+              <p class="kop text-[1.5rem] leading-none">Openingstijden</p>
+              <p class="flex items-center gap-2 text-sm font-bold" data-nu><span class="h-2.5 w-2.5 rounded-full bg-papier-3" data-stip></span><span data-nu-tekst>Volgens Google</span></p>
+            </div>
+            <table class="w-full text-left">
+              <caption class="sr-only">Openingstijden per dag</caption>
+              <tbody>
+                {[1, 2, 3, 4, 5, 6, 0].map((i) => (
+                  <tr class="border-b border-lijn-licht last:border-0" data-dag={i}>
+                    <th scope="row" class="px-6 py-3 font-medium">{tijden[i].dag}</th>
+                    <td class={`num px-6 py-3 text-right ${tijden[i].open === null ? 'text-steen' : 'font-bold'}`}>{tijden[i].open === null ? 'Gesloten' : `${uur(tijden[i].open!)} - ${uur(tijden[i].dicht!)}`}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.route} class="knop knop-nacht">Route plannen<Icoon naam="pijl" /></a>
+            <a href={waHoi} class="knop knop-merk"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <ul class="mt-8 space-y-3">
+            <li class="flex items-center gap-4"><Icoon naam="tel" class="h-5 w-5 flex-none text-merk" /><a href={site.telHref} class="link num text-lg font-bold">{site.tel}</a><span class="text-sm text-steen">ook WhatsApp</span></li>
+            <li class="flex items-center gap-4"><Icoon naam="mail" class="h-5 w-5 flex-none text-merk" /><a href={`mailto:${site.mail}`} class="link break-all text-lg font-bold">{site.mail}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Slotbalk -->
+    <section class="bg-merk text-wit" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center md:py-14">
+        <p class="kop text-[clamp(1.9rem,2.6vw+1rem,2.8rem)] leading-none">Fiets stuk? Stuur even een appje.</p>
+        <a href="#appje" class="knop knop-nacht shrink-0"><Icoon naam="wa" />Appje klaarzetten</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site, tijden } from '../data/site';
+  // Live open/gesloten (tijden volgens Google), in de hero en bij de tabel.
+  const nu = new Date(); const d = nu.getDay(); const h = nu.getHours() + nu.getMinutes() / 60;
+  const t = tijden[d]; const open = t.open !== null && h >= t.open && h < (t.dicht as number);
+  const volgende = () => { for (let i = 1; i <= 7; i++) { const x = tijden[(d + i) % 7]; if (x.open !== null) return `${i === 1 ? 'morgen' : x.dag.toLowerCase()} om ${String(x.open).padStart(2, '0')}:00`; } return ''; };
+  const vandaagLater = t.open !== null && h < t.open;
+  const zin = open ? `Nu open, vandaag tot ${t.dicht}:00` : vandaagLater ? `Vandaag open vanaf ${String(t.open).padStart(2, '0')}:00` : `Nu gesloten, weer open ${volgende()}`;
+  const st = document.querySelector('[data-status]'); if (st) st.textContent = zin;
+  const nt = document.querySelector('[data-nu-tekst]'); if (nt) nt.textContent = open ? 'Nu open' : 'Nu gesloten';
+  const stip = document.querySelector<HTMLElement>('[data-stip]'); if (stip) stip.style.background = open ? '#2f8a3a' : '#c41f2a';
+  document.querySelector(`[data-dag="${d}"]`)?.classList.add('bg-papier', 'font-bold');
+
+  // Het appje: tabbladen, taal en een vooraf ingevuld WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-app]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  let tab = 'reparatie'; let taal: 'nl' | 'en' = 'nl';
+  const waarde = (naam: string) => { const el = f?.querySelector<HTMLInputElement>(`[name="${naam}"]:checked`); return el ? (taal === 'en' ? el.dataset.en || el.value : el.value) : ''; };
+  const lijst = (naam: string) => [...(f?.querySelectorAll<HTMLInputElement>(`[name="${naam}"]:checked`) || [])].map((el) => (taal === 'en' ? el.dataset.en || el.value : el.value));
+  const veld = (naam: string) => String(new FormData(f!).get(naam) || '').trim();
+  const tekst = () => {
+    const soort = waarde('soort'); const extra = veld('extra');
+    const nl = taal === 'nl'; const r = [nl ? 'Hallo Wereld Bike,' : 'Hi Wereld Bike,'];
+    const klein = (s: string) => (nl ? s.toLowerCase() : s.toLowerCase());
+    if (tab === 'reparatie') {
+      const p = lijst('probleem');
+      r.push(nl ? `Mijn ${klein(soort)} moet gerepareerd worden${p.length ? `: ${p.join(', ').toLowerCase()}` : ''}.` : `My ${klein(soort)} needs a repair${p.length ? `: ${p.join(', ').toLowerCase()}` : ''}.`);
+      if (extra) r.push(extra);
+      r.push(nl ? 'Wanneer kan ik hem langsbrengen?' : 'When can I bring it in?');
+    } else if (tab === 'zoeken') {
+      const l = veld('lengte'); const b = veld('budget');
+      r.push(nl ? `Ik zoek een tweedehands ${klein(soort)}.` : `I am looking for a second-hand ${klein(soort)}.`);
+      if (l) r.push(nl ? `Mijn lengte: ${l} cm.` : `My height: ${l} cm.`);
+      if (b) r.push(nl ? `Budget: ongeveer ${b}.` : `Budget: about ${b}.`);
+      if (extra) r.push(extra);
+      r.push(nl ? 'Hebben jullie iets voor mij?' : 'Do you have something for me?');
+    } else {
+      const m = veld('merk'); const s = waarde('staat');
+      r.push(nl ? `Ik wil mijn ${klein(soort)} verkopen${m ? ` (${m})` : ''}. Staat: ${s.toLowerCase()}.` : `I would like to sell my ${klein(soort)}${m ? ` (${m})` : ''}. Condition: ${s.toLowerCase()}.`);
+      if (extra) r.push(extra);
+      r.push(nl ? "Ik stuur er foto's bij." : 'I will send some photos.');
+    }
+    return r.join('\n');
+  };
+  const zet = () => { if (!vb || !knop) return; const tk = tekst(); vb.textContent = tk; knop.href = `${site.wa}?text=${encodeURIComponent(tk)}`; };
+  const kiesTab = (nieuw: string, focus = false) => {
+    tab = nieuw;
+    document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) => { const aan = b.dataset.tab === tab; b.setAttribute('aria-selected', String(aan)); b.tabIndex = aan ? 0 : -1; if (aan && focus) b.focus(); });
+    document.querySelectorAll<HTMLElement>('[data-paneel]').forEach((p) => p.classList.toggle('hidden', p.dataset.paneel !== tab));
+    zet();
+  };
+  if (f) {
+    f.addEventListener('input', zet); f.addEventListener('change', zet); f.addEventListener('submit', (e) => e.preventDefault());
+    const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+    tabs.forEach((b, i) => {
+      b.addEventListener('click', () => kiesTab(b.dataset.tab!));
+      b.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]; kiesTab(n.dataset.tab!, true); } });
+    });
+    document.querySelectorAll<HTMLAnchorElement>('[data-tab-link]').forEach((a) => a.addEventListener('click', () => kiesTab(a.dataset.tabLink!)));
+    document.querySelectorAll<HTMLButtonElement>('[data-taal]').forEach((b) => b.addEventListener('click', () => {
+      taal = b.dataset.taal as 'nl' | 'en';
+      document.querySelectorAll<HTMLButtonElement>('[data-taal]').forEach((x) => { const aan = x === b; x.setAttribute('aria-pressed', String(aan)); x.classList.toggle('bg-wit', aan); x.classList.toggle('text-nacht', aan); });
+      zet();
+    }));
+    document.querySelector<HTMLButtonElement>('[data-taal="nl"]')?.classList.add('bg-wit', 'text-nacht');
+    kiesTab('reparatie');
+  }
+</script>
