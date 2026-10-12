@@ -1,0 +1,418 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi, waMet } from '../data/site';
+
+// Eigen beeld van kuiperuurwerktechniek.nl; sfeerfoto's van Unsplash. Zie src/assets/BRONNEN.txt.
+import sHeroD from '../assets/s-hero-d.jpg';
+import sHeroM from '../assets/s-hero-m.jpg';
+import sKast from '../assets/s-kast.jpg';
+import eUurwerk from '../assets/e-uurwerk.jpg';
+import eWijzer from '../assets/e-wijzerplaat.jpg';
+import eStof from '../assets/e-stof.jpg';
+import eVijl from '../assets/e-robbert-vijl.jpg';
+import eRobbert from '../assets/e-robbert.jpg';
+import eRad from '../assets/e-rad.jpg';
+import eKlok from '../assets/e-klok.jpg';
+import eBinnen from '../assets/e-binnenwerk.jpg';
+import eRotterdam from '../assets/e-rotterdam.jpg';
+
+// Hero: brede uitsnede voor desktop, staande foto voor mobiel.
+const heroD = await getImage({ src: sHeroD, widths: [1280, 1920, 2560], sizes: '100vw', format: 'webp', quality: 62 });
+const heroM = await getImage({ src: sHeroM, widths: [480, 780, 1100], sizes: '100vw', format: 'webp', quality: 62 });
+
+// Cijfers uit hun eigen site (Informatie, Home, Restauratie).
+const stats = [
+  ['2014', 'afgestudeerd als uurwerktechnicus in Schoonhoven'],
+  ['2 jaar', 'garantie, standaard bij elke reparatie'],
+  ['2 weken', 'wordt de klok na de reparatie gecontroleerd'],
+  ['€ 0', 'voorrijkosten als u akkoord gaat met de reparatie'],
+];
+
+// "Een klok kunnen we onderverdelen in drie onderdelen" (pagina Restauratie).
+const delen = [
+  { r: 'I', t: 'Uurwerk', d: 'Het hart van de klok. Het uurwerk gaat geheel uit elkaar, alle tappen worden met de hand gepolijst en alle slijtagepunten opgelost.', l: ['Gereinigd en getrommeld', 'Gemonteerd, afgesteld, verse olie', 'Twee weken gecontroleerd op tijd en slagwerk'], src: eUurwerk, pos: '50% 50%', alt: 'Raderwerk van een uurwerk op de werkbank', bron: 'Eigen foto' },
+  { r: 'II', t: 'Kast', d: 'Vaak is de kast uitgedroogd. Hij wordt ingesmeerd met was: dat vult de barsten en het hout gaat weer mooi glimmen.', l: ['Barstjes door wisselende luchtvochtigheid', 'Een stukje eraf? Meestal te herstellen', 'Zo nodig in overleg met een meubelmaker'], src: sKast, pos: '50% 30%', alt: 'Houten pendule aan een behangen wand (sfeerfoto)', bron: 'Sfeerfoto' },
+  { r: 'III', t: 'Wijzerplaat', d: 'Beschilderen, emailleren, graveren, verzilveren, vergulden. Waar nodig wordt samengewerkt met andere vakmensen.', l: ['Zilverlaag weggepoetst? Gemakkelijk te herstellen', 'Geschilderde cijfers: in overleg met een schilder'], src: eWijzer, pos: '50% 40%', alt: 'Wijzerplaat met Romeinse cijfers in een vergulde rand', bron: 'Eigen foto' },
+];
+
+const stappen = [
+  ['Bel, mail of app', 'U kunt altijd bellen, mailen of whatsappen. Robbert werkt alleen op afspraak.'],
+  ['Bekijken bij u thuis', 'Robbert bekijkt de klok en overlegt met u wat er gedaan moet worden.'],
+  ['Naar de werkbank', 'De klok wordt bij u thuis opgehaald. Akkoord met de reparatie? Dan geen voorrijkosten.'],
+  ['Reparatie en controle', 'Ambachtelijk handwerk. Daarna wordt de klok twee weken gecontroleerd.'],
+  ['Weer thuis', 'De klok wordt netjes thuisgebracht, met twee jaar garantie.'],
+];
+const romeins = ['I', 'II', 'III', 'IV', 'V'];
+
+const sterren = [1, 2, 3, 4, 5];
+---
+<Base title="Kuiper Uurwerktechniek | Uw klokkenmaker in Rotterdam" description="Klokkenmaker Robbert Kuiper repareert en restaureert moderne en antieke klokken. De klok wordt bij u thuis opgehaald en thuisgebracht, met twee jaar garantie. Bel 06 169 317 02.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: sfeerfoto van een oude tafelklok in het donker -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-[#010101] text-wit" aria-labelledby="inhoud">
+      <picture>
+        <source media="(min-width: 768px)" srcset={heroD.srcSet.attribute} sizes="100vw" type="image/webp" />
+        <img src={heroM.src} srcset={heroM.srcSet.attribute} sizes="100vw" alt="" loading="eager" fetchpriority="high" decoding="async" width="1400" height="1720" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_18%] md:object-[70%_50%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#010101b3_0%,#01010126_22%,#010101a6_46%,#010101f2_70%,#010101_100%)] md:bg-[linear-gradient(90deg,#010101f2_0%,#010101b3_40%,#01010100_66%),linear-gradient(180deg,#01010199_0%,#01010100_26%,#01010100_78%,#010101b3_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-24 pt-36 md:pb-16 md:pt-44 lg:pt-44">
+        <div class="max-w-[46rem]">
+          <p class="eyebrow eyebrow-licht">Klokkenmaker in Rotterdam</p>
+          <h1 id="inhoud" class="mt-5 text-hero md:mt-6">Ambachtelijk handwerk voor uw <span class="text-merk">klok.</span></h1>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-wit/90 md:mt-7 md:text-[1.4rem]">Reparaties en restauraties van moderne en antieke klokken<span class="hidden sm:inline">, van simpele wandklok tot gecompliceerd uurwerk</span>. De klok wordt bij u thuis opgehaald en netjes weer thuisgebracht.</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-9">
+            <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />Bel {site.tel}</a>
+            <a href="#aanvraag" class="knop knop-wit"><Icoon naam="wa" />Klok aanmelden</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit/90">
+            <li class="flex items-center gap-2"><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-wit">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-5 w-5 text-merk" />Twee jaar garantie</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk" />Alleen op afspraak</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Cijfers uit hun eigen site -->
+    <section class="border-b border-lijn-licht bg-wit" aria-label="In het kort">
+      <ul class="wrap grid grid-cols-2 lg:grid-cols-4">
+        {stats.map(([n, t], i) => (
+          <li class={`rijs py-9 pr-4 md:py-12 ${i % 2 ? 'pl-5 md:pl-8 border-l border-lijn-licht' : ''} ${i === 2 ? 'border-t border-lijn-licht lg:border-l lg:border-t-0 lg:pl-8' : ''} ${i === 3 ? 'border-t border-lijn-licht lg:border-t-0' : ''}`} style={`--d:${i * 0.05}s`}>
+            <p class="num text-[clamp(2.1rem,2.8vw+1rem,3.4rem)] font-[800] leading-none tracking-[-.035em] text-inkt">{n}</p>
+            <p class="mt-3 max-w-[15rem] text-[1.0625rem] leading-snug text-steen">{t}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- 3. De klokkenmaker -->
+    <section class="py-24 md:py-28" aria-labelledby="t-vak">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs relative lg:col-span-5">
+          <Image src={eVijl} alt="Robbert Kuiper vijlt een messing onderdeel in de bankschroef" widths={[400, 532]} sizes="(min-width: 1024px) 34vw, 90vw" quality={74} class="aspect-[4/5] w-full rounded-[6px] object-cover object-[60%_50%] sm:w-[82%]" />
+          <Image src={eRad} alt="Een rad van een uurwerk tussen duim en vinger" widths={[260, 500]} sizes="(min-width: 1024px) 16vw, 40vw" quality={74} class="absolute -bottom-8 right-0 aspect-square w-[44%] rounded-[6px] border-[6px] border-wijzer object-cover shadow-[0_18px_40px_#16130f33] sm:w-[38%]" />
+        </figure>
+        <div class="pt-6 lg:col-span-7 lg:pt-0">
+          <p class="rijs eyebrow"><i>I</i>De klokkenmaker</p>
+          <h2 id="t-vak" class="rijs mt-5 text-4xl">Geduld, precisie en liefde voor het vak.</h2>
+          <p class="rijs mt-7 max-w-2xl text-xl leading-relaxed text-steen" style="--d:.06s">Het repareren van een uurwerk vereist een bijzonder vakmanschap. Klokkenmaker Robbert Kuiper is gespecialiseerd in het maken en repareren van uurwerken, waaronder allerlei soorten klokken. Van simpele wandklokken tot gecompliceerde uurwerken.</p>
+          <blockquote class="rijs mt-9 border-l-2 border-merk pl-6 font-[family-name:var(--font-kop)] text-[clamp(1.5rem,1.2vw+1.1rem,2.1rem)] font-[600] italic leading-snug text-inkt" style="--d:.1s">“Alle reparaties zijn ambachtelijk handwerk en vaak zeer arbeidsintensief.”</blockquote>
+          <div class="rijs mt-10 flex flex-col gap-3 sm:flex-row" style="--d:.14s">
+            <a href="#aanvraag" class="knop knop-nacht">Klok aanmelden<Icoon naam="pijl" /></a>
+            <a href="#robbert" class="knop knop-rand">Over Robbert</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Reparatie: drie onderdelen als fotokaarten -->
+    <section id="reparatie" class="bg-wijzer-2 py-24 md:py-28" aria-labelledby="t-rep">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><i>II</i>Reparatie en restauratie</p>
+            <h2 id="t-rep" class="mt-5 text-4xl">Een klok in drie delen.</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Zoals bij auto’s moet een klok eens in de zoveel tijd een onderhoudsbeurt krijgen.</p>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+          {delen.map((v, i) => (
+            <li class={`rijs ${i === 2 ? 'md:col-span-2 lg:col-span-1' : ''}`} style={`--d:${i * 0.06}s`}>
+              <article class="kaart group flex h-full flex-col overflow-hidden">
+                <div class="relative overflow-hidden">
+                  <Image src={v.src} alt={v.alt} widths={[420, 640, 760]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 100vw" quality={72} class={`aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] ${i === 2 ? 'md:aspect-[2/1] lg:aspect-[4/3]' : ''}`} style={`object-position:${v.pos}`} />
+                  <span class="absolute left-4 top-4 rounded-[4px] bg-nacht/85 px-3 py-1 text-[.875rem] font-semibold text-wit">{v.bron}</span>
+                  <span class="absolute bottom-3 right-4 font-[family-name:var(--font-kop)] text-[3.2rem] font-[700] leading-none text-wit drop-shadow-[0_2px_10px_#000a]" aria-hidden="true">{v.r}</span>
+                </div>
+                <div class="flex flex-1 flex-col p-7 sm:p-8">
+                  <h3 class="text-[2.1rem]">{v.t}</h3>
+                  <p class="mt-3 text-lg text-steen">{v.d}</p>
+                  <ul class="mt-6 space-y-2.5 border-t border-lijn-licht pt-6">
+                    {v.l.map((x) => <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-donker" />{x}</li>)}
+                  </ul>
+                  <a href="#aanvraag" class="mt-auto inline-flex items-center gap-2 pt-8 text-lg font-bold text-merk-donker no-underline transition-colors hover:text-inkt">Klok aanmelden<Icoon naam="pijl" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" /></a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Waarom een klok stopt (donker) -->
+    <section class="bg-nacht py-24 text-wit md:py-28" aria-labelledby="t-stop">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-6">
+          <p class="rijs eyebrow eyebrow-licht"><i>III</i>Slijtage</p>
+          <h2 id="t-stop" class="rijs mt-5 text-4xl">Waarom een klok stopt met lopen.</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90" style="--d:.06s">De grootste boosdoener is de slijtage, ingedikte olie en stof. Alle lagerpunten in een klok zijn gesmeerd met olie. Na jaren zorgt een combinatie van olie, slijtageresten en stof voor een dikke smeer.</p>
+          <ol class="rijs mt-9 space-y-3" style="--d:.1s">
+            {[
+              ['De olie dikt in', 'Het wordt een soort fijne pasta, wat funest is voor de klok.'],
+              ['De lagers slijten uit', 'Tandraderen gaan steeds verder uit elkaar staan.'],
+              ['Krachtverlies', 'Steeds meer krachtverlies in het uurwerk, tot de klok stopt.'],
+            ].map(([t, d], i) => (
+              <li class="flex gap-5 rounded-[6px] border border-lijn bg-nacht-2 px-5 py-5">
+                <span class="w-9 flex-none pt-0.5 font-[family-name:var(--font-kop)] text-[1.6rem] font-[700] leading-none text-merk" aria-hidden="true">{romeins[i]}</span>
+                <span><b class="block text-lg">{t}</b><span class="text-mist">{d}</span></span>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <figure class="rijs grid grid-cols-2 gap-4 lg:col-span-6">
+          <Image src={eStof} alt="Stoffig binnenwerk van een uurwerk" widths={[300, 497]} sizes="(min-width: 1024px) 22vw, 46vw" quality={74} class="row-span-2 h-full w-full rounded-[6px] object-cover" />
+          <Image src={eBinnen} alt="Binnenwerk van een uurwerk" widths={[300, 450]} sizes="(min-width: 1024px) 22vw, 46vw" quality={74} class="aspect-square w-full rounded-[6px] object-cover" />
+          <div class="flex flex-col justify-end rounded-[6px] bg-merk p-4 text-nacht sm:p-6">
+            <p class="font-[family-name:var(--font-kop)] text-[clamp(1.5rem,2.2vw+.7rem,2.6rem)] font-[800] leading-none">Verse olie</p>
+            <p class="mt-2 text-[1rem] font-semibold leading-snug">na reiniging en afstellen</p>
+          </div>
+          <figcaption class="col-span-2 text-[.9375rem] text-mist">Eigen foto's van kuiperuurwerktechniek.nl: stof en slijtage in een uurwerk.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 6. Band: gegraveerd Rotterdam (eigen foto) -->
+    <figure class="relative bg-nacht" aria-label="Gegraveerde naam Rotterdam op een oude wijzerplaat">
+      <Image src={eRotterdam} alt="Gegraveerde naam Rotterdam op een oude wijzerplaat" widths={[800, 1440, 1920]} sizes="100vw" quality={70} class="h-[200px] w-full object-cover object-[45%_50%] md:h-[340px]" />
+      <figcaption class="absolute bottom-3 right-4 rounded-[4px] bg-nacht/80 px-3 py-1 text-[.875rem] text-mist md:right-10">Eigen foto</figcaption>
+    </figure>
+
+    <!-- 7. Werkwijze -->
+    <section id="werkwijze" class="py-24 md:py-28" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><i>IV</i>Werkwijze</p>
+            <h2 id="t-werk" class="mt-5 text-4xl">Van uw kamer naar de werkbank, en terug.</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Robbert werkt vanuit huis, aan een werkbank waar vrijwel alle reparaties kunnen worden uitgevoerd.</p>
+        </div>
+        <ol class="mt-12 grid gap-px overflow-hidden rounded-[6px] border border-lijn-licht bg-lijn-licht sm:grid-cols-2 lg:mt-16 lg:grid-cols-5">
+          {stappen.map(([t, d], i) => (
+            <li class={`rijs flex flex-col bg-wit p-7 lg:p-8 ${i === 4 ? 'sm:col-span-2 lg:col-span-1' : ''}`} style={`--d:${i * 0.05}s`}>
+              <span class="stap-nr" aria-hidden="true">{romeins[i]}</span>
+              <h3 class="mt-6 text-[1.7rem]">{t}</h3>
+              <p class="mt-3 text-lg text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-[6px] bg-nacht px-7 py-8 text-wit md:flex-row md:items-center md:px-10">
+          <p class="max-w-2xl text-xl leading-snug">Let op, Robbert werkt alleen op afspraak. Bel of app even, dan staat u niet voor een dichte deur.</p>
+          <a href={site.telHref} class="knop knop-merk num shrink-0"><Icoon naam="tel" />Bel {site.tel}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Over Robbert (donker walnoot) -->
+    <section id="robbert" class="bg-walnoot py-24 text-wit md:py-28" aria-labelledby="t-robbert">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-5">
+          <Image src={eRobbert} alt="Robbert Kuiper aan zijn werkbank" widths={[500, 800, 1200]} sizes="(min-width: 1024px) 36vw, 92vw" quality={72} class="aspect-[4/5] w-full rounded-[6px] object-cover object-[62%_50%]" />
+          <figcaption class="mt-3 text-[.9375rem] text-mist">Robbert Kuiper aan de werkbank. Eigen foto van kuiperuurwerktechniek.nl.</figcaption>
+        </figure>
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow eyebrow-licht"><i>V</i>Over Robbert</p>
+          <h2 id="t-robbert" class="rijs mt-5 text-4xl">“Hallo, ik ben Robbert Kuiper.”</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90" style="--d:.06s">In 2014 ben ik als uurwerktechnicus in Schoonhoven afgestudeerd. Tijdens mijn studie liep ik stage bij Joost Jongerius restauraties. Hier leerde ik uitgebreid het vak, speciale technieken en handelingen. Sinds mijn stage ben ik niet meer weggegaan.</p>
+          <ul class="rijs mt-9 grid gap-3 sm:grid-cols-3" style="--d:.12s">
+            {[
+              ['Schoonhoven', 'Afgestudeerd als uurwerktechnicus in 2014.'],
+              ['Joost Jongerius', 'Drie dagen in de week actief bij Joost Jongerius restauraties.'],
+              ['Ook horloges', 'Samen met horlogemaker Dirk Oskam, ook als u een horloge heeft.'],
+            ].map(([t, d]) => (
+              <li class="flex flex-col rounded-[6px] border border-lijn bg-nacht/40 px-5 py-6">
+                <Icoon naam="vink" class="h-6 w-6 text-merk" />
+                <b class="mt-4 block font-[family-name:var(--font-kop)] text-[1.45rem] font-[700] leading-tight">{t}</b>
+                <span class="mt-2 text-mist">{d}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="rijs mt-10 flex flex-wrap items-center gap-5" style="--d:.16s">
+            <a href={site.insta} class="knop knop-wit"><Icoon naam="insta" />Werk op Instagram</a>
+            <span class="flex items-center gap-3">
+              <Image src={eKlok} alt="Gerestaureerde wandklok met koperen gewichten" widths={[120, 240]} sizes="64px" quality={74} class="h-16 w-16 rounded-full object-cover object-[50%_30%]" />
+              <span class="text-mist">Meer foto’s van zijn werk op Instagram.</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Een stem uit de reviews -->
+    <section class="bg-merk text-nacht" aria-label="Uit een review">
+      <figure class="wrap py-20 md:py-24">
+        <blockquote class="rijs max-w-5xl font-[family-name:var(--font-kop)] text-[clamp(2rem,3.2vw+.9rem,3.8rem)] font-[800] leading-[1.08] tracking-[-.015em]">“Mijn klok gaat nergens anders meer heen.”</blockquote>
+        <figcaption class="rijs mt-7 text-lg font-semibold" style="--d:.08s">M. K. · Google review</figcaption>
+      </figure>
+    </section>
+
+    <!-- 10. Wow: klok aanmelden -> vooraf ingevuld WhatsApp -->
+    <section id="aanvraag" class="bg-wijzer-2 py-24 md:py-28" aria-labelledby="t-aanvraag">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow"><i>VI</i>Klok aanmelden</p>
+            <h2 id="t-aanvraag" class="mt-5 text-4xl">Wat is er met uw klok?</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-5 lg:self-end" style="--d:.1s">Kies wat past. U ziet meteen het bericht; versturen doet u zelf in WhatsApp. Een foto van de klok kunt u daar meesturen.</p>
+        </div>
+
+        <form class="mt-12 grid grid-cols-[minmax(0,1fr)] gap-8 lg:mt-14 lg:grid-cols-12" data-aanvraag>
+          <div class="kaart min-w-0 space-y-9 p-5 sm:p-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label"><i>I.</i> Wat voor klok is het?</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="keuze"><input type="radio" name="soort" value="een wandklok" checked />Wandklok</label>
+                <label class="keuze"><input type="radio" name="soort" value="een staande klok" />Staande klok</label>
+                <label class="keuze"><input type="radio" name="soort" value="een tafelklok of pendule" />Tafelklok of pendule</label>
+                <label class="keuze"><input type="radio" name="soort" value="een klok" />Weet ik niet precies</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label"><i>II.</i> Wat is er aan de hand?</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="keuze"><input type="radio" name="wat" value="Hij loopt niet meer." checked />Hij loopt niet meer</label>
+                <label class="keuze"><input type="radio" name="wat" value="Hij loopt niet op tijd." />Loopt niet op tijd</label>
+                <label class="keuze"><input type="radio" name="wat" value="Het slagwerk klopt niet." />Slagwerk klopt niet</label>
+                <label class="keuze"><input type="radio" name="wat" value="Het gaat om de kast of de wijzerplaat." />Kast of wijzerplaat</label>
+                <label class="keuze sm:col-span-2"><input type="radio" name="wat" value="Ik denk dat hij een onderhoudsbeurt nodig heeft." />Toe aan een onderhoudsbeurt</label>
+              </div>
+            </fieldset>
+            <div>
+              <label for="plaats" class="veld-label"><i>III.</i> Waar staat de klok?</label>
+              <input id="plaats" name="plaats" class="veld" autocomplete="address-level2" placeholder="Bijvoorbeeld Rotterdam" />
+            </div>
+            <label class="keuze"><input type="checkbox" name="foto" value="ja" checked class="!rounded-[4px]" /><span class="flex items-center gap-2"><Icoon naam="foto" class="h-5 w-5 text-merk-donker" />Ik stuur een foto van de klok mee</span></label>
+            <div>
+              <label for="naam" class="veld-label">Uw naam <span class="font-normal text-steen">(mag ook leeg)</span></label>
+              <input id="naam" name="naam" class="veld" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="sticky top-6 rounded-[6px] bg-nacht p-6 text-wit sm:p-9">
+              <p class="text-lg font-semibold text-mist">Uw bericht aan Robbert</p>
+              <p class="mt-4 min-h-[9rem] whitespace-pre-line rounded-[6px] bg-nacht-2 px-5 py-5 text-[1.1875rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-groen mt-6 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <div class="mt-7 border-t border-lijn pt-6">
+                <p class="text-mist">Of bel direct:</p>
+                <a href={site.telHref} class="num mt-1 block text-[clamp(1.9rem,3vw+.9rem,2.6rem)] font-[800] tracking-[-.02em] leading-tight text-wit no-underline hover:text-merk">{site.tel}</a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Reviews -->
+    <section class="py-24 md:py-28" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="rijs max-w-2xl">
+          <p class="eyebrow"><i>VII</i>Reviews</p>
+          <h2 id="t-rev" class="mt-5 text-4xl">Wat klanten zeggen.</h2>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+          <li class="rijs">
+            <a href={site.reviews} class="flex h-full flex-col justify-between rounded-[6px] bg-nacht p-8 text-wit no-underline transition-colors hover:bg-walnoot">
+              <span class="flex items-center gap-3"><span class="grid h-12 w-12 place-items-center rounded-full bg-wit"><Icoon naam="g" class="h-7 w-7" /></span><span class="text-lg font-semibold">Google reviews</span></span>
+              <span class="mt-10 block">
+                <span class="num block text-[5rem] font-[800] leading-none tracking-[-.04em]">{site.google.score}</span>
+                <span class="mt-3 flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-6 w-6" />)}</span>
+                <span class="mt-3 block text-mist">{site.google.aantal} reviews, allemaal 5 sterren. Bekijk ze op Google <Icoon naam="pijl" class="inline h-5 w-5" /></span>
+              </span>
+            </a>
+          </li>
+          {reviews.map((r, i) => (
+            <li class="rijs" style={`--d:${((i + 1) % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col p-8">
+                <div class="flex gap-0.5 text-merk-donker" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
+                <blockquote class="mt-5 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5">
+                  <span class="grid h-11 w-11 flex-none place-items-center rounded-full bg-wijzer-2 font-[family-name:var(--font-kop)] text-lg font-bold">{r.naam[0]}</span>
+                  <span><b class="block">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 12. Contact -->
+    <section id="contact" class="border-t border-lijn-licht bg-wit py-24 md:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow"><i>VIII</i>Contact</p>
+          <h2 id="t-contact" class="rijs mt-5 text-4xl">Bel, mail of app.</h2>
+          <p class="rijs mt-6 max-w-xl text-xl text-steen">U kunt altijd bellen, mailen of whatsappen voor informatie.</p>
+          <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.2rem,9vw,4.8rem)] font-[800] leading-none tracking-[-.03em] text-inkt no-underline transition-colors hover:text-merk-donker">{site.tel}</a></p>
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--d:.1s">
+            <a href={site.telHref} class="knop knop-merk"><Icoon naam="tel" />Bellen</a>
+            <a href={waHoi} class="knop knop-rand"><Icoon naam="wa" class="text-[#1a7f4b]" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand !whitespace-normal break-all text-[1.0625rem]">{site.mail}</a>
+          </div>
+        </div>
+        <div class="rijs lg:col-span-5" style="--d:.15s">
+          <div class="kaart overflow-hidden">
+            <div class="flex items-center justify-between gap-4 bg-nacht px-6 py-5 text-wit">
+              <p class="font-[family-name:var(--font-kop)] text-2xl font-[700]">Alleen op afspraak</p>
+              <Icoon naam="klok" class="h-8 w-8 flex-none text-merk" />
+            </div>
+            <ul class="divide-y divide-lijn-licht">
+              <li class="flex gap-4 p-6"><Icoon naam="praat" class="mt-1 h-6 w-6 flex-none text-merk-donker" /><div><p class="font-bold">Even bellen of appen</p><p class="mt-1 text-steen">Voorkom dat u voor een dichte deur staat.</p></div></li>
+              <li class="flex gap-4 p-6"><Icoon naam="pin" class="mt-1 h-6 w-6 flex-none text-merk-donker" /><div><p class="font-bold">Werkbank aan huis in {site.plaats}</p><p class="mt-1 text-steen">De klok wordt bij u thuis opgehaald en weer thuisgebracht.</p></div></li>
+              <li class="flex gap-4 p-6"><Icoon naam="vink" class="mt-1 h-6 w-6 flex-none text-merk-donker" /><div><p class="font-bold">Twee jaar garantie</p><p class="mt-1 text-steen">Er wordt standaard twee jaar garantie gegeven.</p></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13. Slotbalk -->
+    <section class="relative isolate overflow-hidden bg-nacht text-wit" aria-label="Klok aanmelden">
+      <Image src={eWijzer} alt="" widths={[760]} sizes="40vw" quality={60} class="absolute inset-y-0 right-0 -z-10 hidden h-full w-[42%] object-cover opacity-40 md:block" />
+      <div class="absolute inset-y-0 right-0 -z-10 hidden w-[42%] bg-[linear-gradient(90deg,#0d0c0a_0%,#0d0c0a00_60%)] md:block" aria-hidden="true"></div>
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center md:py-20">
+        <p class="font-[family-name:var(--font-kop)] text-[clamp(2.1rem,2.6vw+1rem,3.4rem)] font-[800] leading-none tracking-[-.015em]">Stuur een foto van uw <span class="text-merk">klok.</span></p>
+        <a href={waMet('Hallo Robbert, hierbij een foto van mijn klok.')} class="knop knop-merk shrink-0"><Icoon naam="wa" />WhatsApp Robbert</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Klok aanmelden -> vooraf ingevuld WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-aanvraag]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  if (f && vb && knop) {
+    const tekst = () => {
+      const d = new FormData(f);
+      const soort = String(d.get('soort') || 'een klok');
+      const wat = String(d.get('wat') || '');
+      const plaats = String(d.get('plaats') || '').trim();
+      const naam = String(d.get('naam') || '').trim();
+      const r = [`Hallo Robbert, ik heb ${soort} die ik graag wil laten nakijken. ${wat}`.trim()];
+      if (plaats) r.push(`De klok staat in ${plaats}.`);
+      if (d.get('foto')) r.push('Ik stuur een foto van de klok mee.');
+      if (naam) r.push(`Groet, ${naam}`);
+      return r.join('\n');
+    };
+    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+</script>

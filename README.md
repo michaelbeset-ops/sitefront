@@ -322,3 +322,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Het Handelshuis, Kaatsheuvel | https://voorstel.sitefront.nl/het-handelshuis-kaatsheuvel/ | geen eigen website (oud domein 404); 4,6/154; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Teppratanporn, Schiedam | https://voorstel.sitefront.nl/teppratanporn-schiedam/ | geen eigen website; 4,8/259; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Flinn Winkelcafé, Vianen | https://voorstel.sitefront.nl/flinn-winkelcafe/ | geen eigen website (Canva-linkpagina); 4,4/137; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Zien & Zo van der Heijden, Oosterhout | https://voorstel.sitefront.nl/zien-en-zo-oosterhout/ | site uit 2016, schuift zijwaarts op mobiel; 4,9/86; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Horrenspecialist BSR, Tilburg | https://voorstel.sitefront.nl/horrenspecialist-bsr-tilburg/ | onaffe site, niet op Google; 5,0/32; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Kuiper Uurwerktechniek, Rotterdam | https://voorstel.sitefront.nl/kuiper-uurwerktechniek/ | gedateerde site zonder belknop; 5,0/15; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Kopasol, Ridderkerk | https://voorstel.sitefront.nl/kopasol-ridderkerk/ | geen website (Marktplaats); 5,0/10; 06/WhatsApp. | 2026-10-12 | demo premium |

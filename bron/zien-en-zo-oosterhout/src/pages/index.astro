@@ -1,0 +1,411 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, uur, waHoi } from '../data/site';
+
+// Al het beeld is van hun eigen site (vanderheijden-opticiens.nl) of hun Google-profiel. Zie src/assets/BRONNEN.txt.
+import pandAvond from '../assets/pand-avond.jpg';
+import pandAvondM from '../assets/pand-avond-m.jpg';
+import pandDag from '../assets/pand-dag.jpg';
+import winkel from '../assets/winkel.jpg';
+import opticien from '../assets/opticien-g.jpg';
+import dOog from '../assets/d-oogmeting.jpg';
+import dBril from '../assets/d-brillen.jpg';
+import dMulti from '../assets/d-multifocaal.jpg';
+import dLens from '../assets/d-lenzen.jpg';
+import dKind from '../assets/d-kinderen.jpg';
+import dZon from '../assets/d-zon.jpg';
+
+// Teksten uit hun eigen pagina's (Oogzorg, Brillen, Brillenglazen, Contactlenzen, Myopie, Zonnebrillen).
+const diensten = [
+  { t: 'Oogmeting en bril-check', d: 'Een gratis oogmeting en bril-check, dat doen wij graag voor u.', l: ['Zo weet u of uw ogen niet achteruit zijn gegaan', 'Wij checken uw huidige bril op mankementen'], src: dOog, pos: '45% 40%', alt: 'Oogmeting met een spleetlamp' },
+  { t: 'Brillen en monturen', d: 'Wij kijken met u naar kleur, design, pasvorm en prijsklasse.', l: ['Ieder seizoen de nieuwste brillen', 'Loop eens binnen om de collectie te bekijken'], src: dBril, pos: '55% 35%', alt: 'Jongeman met een bril in een gang' },
+  { t: 'Brillenglazen en multifocaal', d: 'Scherp zicht op alle afstanden, zonder van bril te hoeven wisselen.', l: ['Multifocale glazen en bureauglazen', 'Ontspiegeling en meekleurende glazen'], src: dMulti, pos: '40% 35%', alt: 'Vader en zoon, allebei met een bril' },
+  { t: 'Contactlenzen', d: 'Op basis van uw wensen kijken we altijd welke contactlens het best bij uw ogen en uw leven past.', l: ['Dag-, maand- en harde lenzen', 'Multifocale, cilinder-, nacht- en hybride lenzen'], src: dLens, pos: '50% 50%', alt: 'Een contactlens op een vingertop bij een blauw oog' },
+  { t: 'Kinderogen en myopie', d: 'Wij kijken daarbij verder dan het zicht van vandaag: wij kijken naar het zicht van nu én van morgen.', l: ['Erkend Myopie Management Expert', 'Kinderbrillen voor jongens en meisjes'], src: dKind, pos: '50% 30%', alt: 'Jongen met een bril voor een boekenkast' },
+  { t: 'Zonnebrillen, ook op sterkte', d: 'Uw ogen hebben bescherming nodig, maar dat wilt u natuurlijk wel op stijlvolle wijze doen.', l: ['Een gevarieerde collectie zonnebrillen', 'Kinderzonnebrillen met goede UV-bescherming'], src: dZon, pos: '50% 30%', alt: 'Jongeman met een zonnebril' },
+];
+
+// Merken die op hun eigen site staan (home, Brillen, Brillenglazen, Contactlenzen).
+const merken = [
+  ['Monturen', ['MODO', 'Look', 'Dutz', 'Johann von Goisern', 'Henry Jullien', 'CHARMANT', 'Serengeti']],
+  ['Brillenglazen', ['Zeiss', 'Essilor', 'Varilux', 'Rodenstock']],
+  ['Contactlenzen', ['CooperVision', 'Alcon']],
+] as const;
+
+const stappen = [
+  ['Afspraak maken', 'Bel, app of plan zelf in via de online agenda. U bent er dan zeker van dat u niet hoeft te wachten.'],
+  ['Oogmeting', 'Gratis oogmeting en bril-check, met moderne apparatuur en door gediplomeerde opticiens.'],
+  ['Uitzoeken', 'Wij kijken met u naar kleur, design, pasvorm en prijsklasse.'],
+  ['Ophalen', 'Uw nieuwe bril haalt u op in de winkel aan de Nieuwstraat.'],
+];
+
+const sterren = [1, 2, 3, 4, 5];
+// Hero: staande uitsnede op mobiel, het hele pand (zonder bord in beeld) op desktop.
+const heroD = await Promise.all([1400, 2000, 2400].map((w) => getImage({ src: pandAvond, width: w, format: 'webp', quality: 64 })));
+const heroM = await Promise.all([640, 900, 1100].map((w) => getImage({ src: pandAvondM, width: w, format: 'webp', quality: 62 })));
+const srcset = (l: { src: string; attributes: Record<string, any> }[], ws: number[]) => l.map((x, i) => `${x.src} ${ws[i]}w`).join(', ');
+const werkdagen = tijden.filter((t) => t.open);
+---
+<Base title="Zien & Zo van der Heijden | Uw particuliere opticien in Oosterhout sinds 1956" description="Opticien aan de Nieuwstraat 2 in Oosterhout. Gratis oogmeting en bril-check, brillen, brillenglazen, contactlenzen en zonnebrillen. Bel 0162 45 32 88.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen pand in de avond, de verlichte etalages -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit" aria-labelledby="inhoud">
+      <picture>
+        <source media="(min-width: 768px)" srcset={srcset(heroD, [1400, 2000, 2400])} sizes="100vw" />
+        <img src={heroM[1].src} srcset={srcset(heroM, [640, 900, 1100])} sizes="100vw" alt="" width="1100" height="1306" loading="eager" fetchpriority="high" decoding="async" class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_70%] md:object-[50%_100%]" />
+      </picture>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#141312d9_0%,#14131259_26%,#141312b3_52%,#141312fa_100%)] md:bg-[linear-gradient(90deg,#141312f7_0%,#141312e6_36%,#14131273_60%,#14131214_100%),linear-gradient(180deg,#141312cc_0%,#14131200_30%,#14131200_70%,#141312b3_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-28 pt-40 md:pb-20 lg:pt-48">
+        <div class="max-w-[46rem]">
+          <p class="eyebrow eyebrow-licht">Opticien in Oosterhout</p>
+          <h1 id="inhoud" class="mt-5 text-hero">Uw particuliere opticien sinds <span class="text-merk">1956.</span></h1>
+          <p class="mt-7 max-w-xl text-xl leading-relaxed text-wit md:text-[1.5rem]">U heeft maar twee ogen en die moeten met goede zorg worden behandeld. Met deze gedachten adviseren wij u zo optimaal mogelijk.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />Bel {site.tel}</a>
+            <a href="#afspraak" class="knop knop-wit"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit">
+            <li class="flex items-center gap-2"><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk" /><span data-hero-open>Di t/m za open</span></li>
+            <li class="flex items-center gap-2"><Icoon naam="pin" class="h-5 w-5 text-merk" />{site.adres}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Stat-rij met echte cijfers -->
+    <section class="bg-inkt text-wit" aria-label="In het kort">
+      <div class="wrap grid grid-cols-2 border-t border-lijn lg:grid-cols-4">
+        {[
+          ['1956', 'opticien in Oosterhout sinds'],
+          ['4,9', `uit ${site.google.aantal} reviews op Google`],
+          ['Gratis', 'oogmeting en bril-check'],
+          ['Di t/m za', 'open in de Nieuwstraat'],
+        ].map(([g, k], i) => (
+          <div class={`py-9 pr-4 md:py-12 ${i % 2 ? 'pl-5 border-l border-lijn' : ''} ${i === 2 ? 'border-t border-lijn lg:border-t-0 lg:border-l lg:pl-5' : ''} ${i === 3 ? 'border-t border-lijn lg:border-t-0' : ''}`}>
+            <p class="num text-[clamp(2rem,3vw+1rem,3.4rem)] font-[800] leading-none tracking-[-.02em] text-merk" style="font-family: var(--font-kop)">{g}</p>
+            <p class="mt-3 text-[1rem] text-mist">{k}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 3. Welkom: hun eigen tekst + de winkel binnen -->
+    <section class="bg-papier py-24 md:py-32" aria-labelledby="t-welkom">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-5">
+          <p class="rijs eyebrow">Welkom</p>
+          <h2 id="t-welkom" class="rijs mt-4 text-4xl">Een goede opticien met hart voor het vak.</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-steen" style="--d:.06s">Van der Heijden Optiek staat garant voor goede oogzorg. Tevens bent u ook op uw plek als u op zoek bent naar de mooiste zonnebril of bril.</p>
+          <p class="rijs mt-5 text-lg leading-relaxed text-steen" style="--d:.1s">Onze gediplomeerde opticiens en moderne apparatuur staan garant voor de juiste analyse en een innovatieve oplossing.</p>
+          <a href="#diensten" class="rijs link mt-8 inline-block text-lg font-semibold" style="--d:.14s">Bekijk wat we doen</a>
+        </div>
+        <figure class="rijs lg:col-span-7">
+          <Image src={winkel} alt="De winkel van binnen: wanden vol monturen, twee ronde tafels en de meetapparatuur achterin" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 56vw, 100vw" quality={72} class="aspect-[4/3] w-full rounded-[6px] object-cover object-[42%_50%] md:aspect-[16/10]" />
+          <figcaption class="mt-3 text-[.9375rem] text-steen">De winkel aan de Nieuwstraat 2.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 4. Diensten: fotokaarten -->
+    <section id="diensten" class="bg-wit py-24 md:py-32" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Diensten</p>
+            <h2 id="t-diensten" class="mt-4 text-4xl">Een bril, lenzen of advies over uw ogen.</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Bij Zien &amp; Zo van der Heijden kunt u daar allemaal voor terecht.</p>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
+          {diensten.map((v, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <article class="kaart group flex h-full flex-col overflow-hidden">
+                <div class="overflow-hidden">
+                  <Image src={v.src} alt={v.alt} widths={[420, 640, 860]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 100vw" quality={70} class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${v.pos}`} />
+                </div>
+                <div class="flex flex-1 flex-col p-7 sm:p-8">
+                  <h3 class="text-[1.75rem]">{v.t}</h3>
+                  <p class="mt-3 text-lg text-steen">{v.d}</p>
+                  <ul class="mt-6 hidden space-y-2.5 border-t border-lijn-licht pt-6 sm:block">
+                    {v.l.map((x) => <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-tekst" />{x}</li>)}
+                  </ul>
+                  <a href="#afspraak" class="mt-auto inline-flex items-center gap-2 pt-8 text-lg font-semibold text-inkt no-underline transition-colors hover:text-merk-tekst">Afspraak maken<Icoon naam="pijl" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" /></a>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-[6px] bg-papier-2 px-7 py-8 md:flex-row md:items-center md:px-10">
+          <div class="max-w-3xl">
+            <p class="text-xl font-semibold">Heeft u een aanvullende verzekering?</p>
+            <p class="mt-2 text-steen">Dan kunt u veelal een deel van de kosten voor brillen declareren bij uw zorgverzekeraar. Voor de exacte dekking verwijzen wij u naar uw verzekeringspolis of kom even langs in onze winkel.</p>
+          </div>
+          <a href={site.telHref} class="knop knop-inkt num shrink-0"><Icoon naam="tel" />Even bellen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. De winkel: donker, eigen foto's -->
+    <section id="winkel" class="bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-winkel">
+      <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <figure class="rijs lg:col-span-6">
+          <Image src={opticien} alt="De opticien voor de etalage van Zien & Zo van der Heijden" widths={[600, 900, 1300]} sizes="(min-width: 1024px) 46vw, 100vw" quality={72} class="aspect-[4/5] w-full rounded-[6px] object-cover object-[38%_40%] sm:aspect-[4/3]" />
+          <figcaption class="mt-3 text-[.9375rem] text-mist">Voor de etalage aan de Nieuwstraat. Foto van jullie Google-profiel.</figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="rijs eyebrow eyebrow-licht">De winkel</p>
+          <h2 id="t-winkel" class="rijs mt-4 text-4xl">Loop eens binnen.</h2>
+          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90" style="--d:.06s">Een bril kiezen is een unieke ervaring. Om de nieuwste brillen ieder seizoen weer in de winkel te hebben, bezoeken wij beurzen. Daardoor zijn wij zeer goed op de hoogte van de laatste brilmode.</p>
+          <ul class="rijs mt-9 space-y-3" style="--d:.12s">
+            {[
+              ['Alle tijd', '"Ze nemen hier echt de tijd voor me."', 'Susan K.'],
+              ['Niets opgedrongen', '"Er wordt goed advies gegeven maar de beslissing blijft bij de klant."', 'Sabien v.'],
+              ['Geen haastwerk', '"Goede professionele oogmeting."', 'Toon K.'],
+            ].map(([t, d, n]) => (
+              <li class="flex gap-4 rounded-[6px] border border-lijn bg-inkt-2 px-5 py-5">
+                <span class="grid h-10 w-10 flex-none place-items-center rounded-[4px] bg-merk text-inkt"><Icoon naam="vink" class="h-5 w-5" /></span>
+                <span><b class="block text-lg text-wit">{t}</b><span class="text-mist">{d} <span class="whitespace-nowrap text-[.9375rem]">{n}, Google</span></span></span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Merken (alleen wat op hun eigen site staat) -->
+      <div class="wrap mt-20 md:mt-28">
+        <div class="rijs border-t border-lijn pt-12">
+          <p class="text-lg font-semibold">Enkele merken in ons assortiment</p>
+          <div class="mt-8 grid gap-10 md:grid-cols-3">
+            {merken.map(([k, lijst]) => (
+              <div>
+                <p class="eyebrow eyebrow-licht">{k}</p>
+                <ul class="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+                  {lijst.map((m) => <li class="text-[1.375rem] font-[600] tracking-[-.01em] text-wit" style="font-family: var(--font-kop)">{m}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section id="werkwijze" class="py-24 md:py-32" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="rijs max-w-2xl">
+          <p class="eyebrow">Werkwijze</p>
+          <h2 id="t-werk" class="mt-4 text-4xl">Zo gaat het.</h2>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-3 sm:gap-6 lg:mt-16 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart flex flex-col p-5 sm:p-8" style={`--d:${i * 0.06}s`}>
+              <span class="stap-nr num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-5 text-[1.375rem] sm:mt-6 sm:text-2xl">{t}</h3>
+              <p class="mt-3 text-[1rem] text-steen sm:text-lg">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Een stem uit de reviews -->
+    <section class="bg-merk text-inkt" aria-label="Uit een review">
+      <figure class="wrap py-20 md:py-24">
+        <blockquote class="rijs max-w-5xl text-[clamp(1.8rem,3vw+.8rem,3.4rem)] font-[800] leading-[1.12] tracking-[-.02em]" style="font-family: var(--font-kop)">“Al 45 jaar kom ik als klant bij Zien &amp; Zo (Voorheen Van der Heijden). En niet voor niets.”</blockquote>
+        <figcaption class="rijs mt-7 text-lg" style="--d:.08s">Helga B. · Google review</figcaption>
+      </figure>
+    </section>
+
+    <!-- 8. Wow: afspraak aanvragen -> vooraf ingevuld WhatsApp -->
+    <section id="afspraak" class="bg-papier-2 py-24 md:py-32" aria-labelledby="t-afspraak">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:gap-x-12">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Afspraak maken</p>
+            <h2 id="t-afspraak" class="mt-4 text-4xl">Waarvoor wilt u langskomen?</h2>
+          </div>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-5 lg:self-end" style="--d:.1s">Kies wat past. U ziet meteen het bericht; versturen doet u zelf in WhatsApp. Of bel ons gewoon.</p>
+        </div>
+
+        <form class="mt-12 grid grid-cols-[minmax(0,1fr)] gap-8 lg:mt-14 lg:grid-cols-12" data-afspraak>
+          <div class="kaart min-w-0 space-y-9 p-5 sm:p-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label"><span class="text-merk-tekst">1.</span> Waarvoor?</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="keuze"><input type="radio" name="wat" value="een oogmeting" checked />Oogmeting</label>
+                <label class="keuze"><input type="radio" name="wat" value="een oogmeting en een montuur uitzoeken" />Oogmeting + montuur uitzoeken</label>
+                <label class="keuze"><input type="radio" name="wat" value="contactlenzen aanmeten" />Contactlenzen aanmeten</label>
+                <label class="keuze"><input type="radio" name="wat" value="een contactlenscontrole" />Contactlenscontrole</label>
+                <label class="keuze"><input type="radio" name="wat" value="een oogheelkundig onderzoek" />Oogheelkundig onderzoek</label>
+                <label class="keuze"><input type="radio" name="wat" value="een Kijk Verder oogcheck voor mijn kind" />Oogcheck voor mijn kind</label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label"><span class="text-merk-tekst">2.</span> Welke dag het liefst?</legend>
+              <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
+                {werkdagen.map((t) => <label class="keuze justify-center px-2"><input type="radio" name="dag" value={t.dag.toLowerCase()} class="sr-only" /><span>{t.dag.slice(0, 2)}</span></label>)}
+                <label class="keuze justify-center px-2"><input type="radio" name="dag" value="" class="sr-only" checked /><span>Maakt niet uit</span></label>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label"><span class="text-merk-tekst">3.</span> Welk dagdeel?</legend>
+              <div class="grid gap-3 sm:grid-cols-3">
+                <label class="keuze"><input type="radio" name="dagdeel" value="ochtend" />Ochtend</label>
+                <label class="keuze"><input type="radio" name="dagdeel" value="middag" />Middag</label>
+                <label class="keuze"><input type="radio" name="dagdeel" value="" checked />Maakt niet uit</label>
+              </div>
+            </fieldset>
+            <div>
+              <label for="naam" class="veld-label">Uw naam <span class="font-normal text-steen">(mag ook leeg)</span></label>
+              <input id="naam" name="naam" class="veld" autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="sticky top-6 rounded-[6px] bg-inkt p-6 text-wit sm:p-9">
+              <p class="text-lg font-semibold text-mist">Uw bericht</p>
+              <p class="mt-4 min-h-[9rem] whitespace-pre-line rounded-[4px] bg-inkt-2 px-5 py-5 text-[1.125rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-groen mt-6 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <div class="mt-7 border-t border-lijn pt-6">
+                <p class="text-mist">Of bel direct:</p>
+                <a href={site.telHref} class="num mt-1 block text-[clamp(2rem,3vw+1rem,2.8rem)] font-[800] leading-tight text-wit no-underline hover:text-merk" style="font-family: var(--font-kop)">{site.tel}</a>
+                <p class="mt-5 text-mist">Liever zelf een tijd kiezen? <a href={site.agenda} class="font-semibold text-merk underline underline-offset-4" target="_blank" rel="noopener">Online agenda</a></p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section class="py-24 md:py-32" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-rev" class="mt-4 text-4xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-6 py-5 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+            <Icoon naam="g" class="h-10 w-10 flex-none" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num text-3xl font-[800] leading-none text-inkt" style="font-family: var(--font-kop)">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span></span>
+              <span class="mt-1 block text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class={`rijs ${i > 3 ? 'hidden md:block' : ''}`} style={`--d:${(i % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col p-8">
+                <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
+                <blockquote class="mt-5 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5">
+                  <span class="grid h-11 w-11 flex-none place-items-center rounded-[4px] bg-papier-2 text-lg font-semibold">{r.naam[0]}</span>
+                  <span><b class="block">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10. Contact en tijden -->
+    <section id="contact" class="border-t border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-contact">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow">Contact</p>
+          <h2 id="t-contact" class="rijs mt-4 text-4xl">Kom gerust langs in de winkel.</h2>
+          <p class="rijs mt-6 max-w-xl text-xl text-steen">Of neem telefonisch contact op als u vragen heeft!</p>
+          <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.1rem,9vw,5rem)] font-[800] leading-none tracking-[-.02em] text-inkt no-underline transition-colors hover:text-merk-tekst" style="font-family: var(--font-kop)">{site.tel}</a></p>
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--d:.1s">
+            <a href={site.telHref} class="knop knop-merk"><Icoon naam="tel" />Bellen</a>
+            <a href={waHoi} class="knop knop-rand"><Icoon naam="wa" class="text-[#1a7f4b]" />WhatsApp</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand">{site.mail}</a>
+          </div>
+          <figure class="rijs mt-12">
+            <Image src={pandDag} alt="De gevel van Zien & Zo van der Heijden aan de Nieuwstraat, overdag" widths={[600, 900, 1300]} sizes="(min-width: 1024px) 52vw, 100vw" quality={72} class="aspect-[16/10] w-full rounded-[6px] object-cover object-[50%_60%]" />
+          </figure>
+        </div>
+        <div class="rijs lg:col-span-5" style="--d:.15s">
+          <div class="kaart overflow-hidden lg:sticky lg:top-6">
+            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn-licht px-6 py-5">
+              <p class="text-xl font-semibold">Openingstijden</p>
+              <p class="flex items-center gap-2 text-[1rem] font-semibold" data-status><span class="h-3 w-3 rounded-full bg-papier-3" data-stip></span><span data-status-tekst>Di t/m za</span></p>
+            </div>
+            <table class="w-full text-[1.0625rem] sm:text-lg">
+              <caption class="sr-only">Openingstijden</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr class="border-b border-lijn-licht last:border-0 data-[vandaag]:bg-[#fbf1df] data-[vandaag]:font-semibold" data-dag={t.nr}>
+                    <th scope="row" class="py-3.5 pl-4 pr-2 text-left font-[inherit] sm:px-6">{t.dag}</th>
+                    <td class="num whitespace-nowrap py-3.5 pl-2 pr-4 text-right sm:px-6">{t.open ? `${uur(t.open[0])} tot ${uur(t.open[1])}` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <ul class="divide-y divide-lijn-licht border-t border-lijn-licht">
+              <li class="flex gap-4 p-6"><Icoon naam="pin" class="mt-1 h-6 w-6 flex-none text-merk-tekst" /><div><p class="font-semibold">{site.adres}</p><p class="text-steen">{site.postcode} {site.plaats}</p><a href={site.route} class="link mt-2 inline-block font-semibold" target="_blank" rel="noopener">Route plannen</a></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-inkt text-wit" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center md:py-16">
+        <p class="text-[clamp(2rem,2.4vw+1rem,3rem)] font-[800] leading-none tracking-[-.02em]" style="font-family: var(--font-kop)">Tot snel in onze winkel in <span class="text-merk">Oosterhout!</span></p>
+        <a href={site.telHref} class="knop knop-merk num shrink-0"><Icoon naam="tel" />Bel {site.tel}</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Afspraakkaart -> vooraf ingevuld WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-afspraak]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  if (f && vb && knop) {
+    const tekst = () => {
+      const d = new FormData(f);
+      const wat = String(d.get('wat') || 'een afspraak');
+      const dag = String(d.get('dag') || '');
+      const dagdeel = String(d.get('dagdeel') || '');
+      const naam = String(d.get('naam') || '').trim();
+      const r = [`Hallo Zien & Zo, ik wil graag een afspraak maken voor ${wat}.`];
+      if (dag && dagdeel) r.push(`Het liefst op ${dag}, in de ${dagdeel}.`);
+      else if (dag) r.push(`Het liefst op ${dag}.`);
+      else if (dagdeel) r.push(`Het liefst in de ${dagdeel}.`);
+      if (naam) r.push(`Groet, ${naam}`);
+      return r.join('\n');
+    };
+    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+  // Vandaag in de tijdentabel + nu open/gesloten. Di t/m vr 09:30-17:30, za 09:30-16:00.
+  const nu = new Date(); const dag = nu.getDay(); const uur = nu.getHours() + nu.getMinutes() / 60;
+  document.querySelector(`[data-dag="${dag}"]`)?.setAttribute('data-vandaag', '');
+  const sluit = dag >= 2 && dag <= 5 ? 17.5 : dag === 6 ? 16 : 0;
+  const open = sluit > 0 && uur >= 9.5 && uur < sluit;
+  const st = document.querySelector('[data-status-tekst]'); const stip = document.querySelector<HTMLElement>('[data-stip]');
+  if (st && stip) { st.textContent = open ? 'Nu open' : 'Nu gesloten'; stip.style.background = open ? '#1a7f4b' : '#b3261e'; }
+  const ho = document.querySelector('[data-hero-open]');
+  if (ho && open) ho.textContent = `Vandaag open tot ${sluit === 16 ? '16:00' : '17:30'}`;
+</script>
