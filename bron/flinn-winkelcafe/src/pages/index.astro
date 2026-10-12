@@ -1,0 +1,643 @@
+---
+import { Image, Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi, tijden, dagNamen, uur } from '../data/site';
+
+// Eigen foto's: Canva-pagina van Flinn, Google-profiel "Van eigenaar" en hun Instagram. Sfeerfoto: Unsplash.
+// Zie src/assets/BRONNEN.txt.
+import hero from '../assets/hero.jpg';
+import heroM from '../assets/hero-m.jpg';
+import gevel from '../assets/gevel.jpg';
+import pand from '../assets/pand.jpg';
+import molens from '../assets/molens.jpg';
+import bar from '../assets/bar.jpg';
+import zitje from '../assets/zitje.jpg';
+import gebak from '../assets/gebak.jpg';
+import bowl from '../assets/bowl.jpg';
+import koeken from '../assets/koeken.jpg';
+import latte from '../assets/latte.jpg';
+import iced from '../assets/iced.jpg';
+import burrata from '../assets/burrata.jpg';
+import etalage from '../assets/etalage.jpg';
+import uWinkel from '../assets/u-winkel.jpg';
+
+const sterren = [1, 2, 3, 4, 5];
+
+// De kaart: namen en ingrediënten letterlijk van hun eigen menukaart (Canva-PDF van 21 aug 2026, gelinkt op hun
+// Canva-pagina; bron/web/menukaart.txt). Geen prijzen.
+const kaart = [
+  {
+    id: 'ontbijt', tab: 'Ontbijt', titel: 'All day breakfast', foto: bowl, alt: 'Yoghurtbowl met granola, banaan en bessen op een houten tafel', bijschrift: 'Yoghurtbowl, foto van Flinn.',
+    groepen: [{ kop: '', items: [
+      ['Wake upper', "jus d'orange | bananenbrood | yoghurtbowltje"],
+      ['Yoghurtbowl choco', 'yoghurt | vers fruit | chocoflakes | granola'],
+      ['Yoghurtbowl wizzy', 'yoghurt | vers fruit | walnoten | granola'],
+      ['Acai bowl', 'acai | kokosyoghurt | vers fruit | granola'],
+      ['Fluffy pancakes zoet', 'yoghurt | vers fruit | granola'],
+      ['Fluffy pancakes hartig', 'guacamole | zalm | furikake'],
+      ['Fluffy pancakes combi', 'combi van 2 hartige en 1 zoete pancakes'],
+      ['Scrambled eggs', 'scrambled eggs | avocado | granaatappelpitjes | crispy chili oil'],
+    ] }],
+  },
+  {
+    id: 'lunch', tab: 'Lunch', titel: "Broodjes, tosti's en salades", foto: burrata, alt: 'Salade met burrata en een broodje met burrata en ham, van bovenaf', bijschrift: 'Burrata op de nieuwe lunchkaart, foto van Flinn.',
+    groepen: [
+      { kop: 'Broodjes', items: [
+        ['Oude kaas', 'oude kaas | mangochutney'],
+        ['Gezond', 'ham | kaas | gekookt eitje | mangochutney'],
+        ['Hummus', 'pompoenhummus | diverse groenten'],
+        ['Gerookte zalm', 'avocadosmash | zalm | furikake'],
+        ['Tonijnsalade', 'tonijnsalade | kappertjes | rode ui'],
+        ['Pulled chicken', 'pulled chicken | barbecuesaus'],
+        ['Geitenkaas & rode biet', 'geitenkaas | rode biet | walnoten | honing'],
+        ['Gekookt eitje', 'avocadosmash | gekookt eitje | mangochutney'],
+        ['Burrata', 'pesto | burrata | granaatappelpitjes | basilicumolie | balsamico'],
+      ] },
+      { kop: "Tosti's", items: [
+        ['Popeye', 'kaas | spinazie | tomaat | rode ui'],
+        ['Melted salmon', 'zalm | rode ui | kaas'],
+        ['Italiaans', 'paprika | ham | kaas | spianata romana | rode ui'],
+        ['Brie', 'brie | walnoten | honing'],
+        ['Tuna melt', 'tonijn | rode ui | kaas'],
+        ['En verder', 'kaas, kaas/ham, geitenkaas & rode biet, pulled chicken'],
+      ] },
+      { kop: 'Soep, salades en meer', items: [
+        ['Huisgemaakte soep van de dag', 'als maaltijdsoep met brood, of klein'],
+        ['12 o’clock', 'tosti | broodje | dagsoepje'],
+        ['Clubsandwich', 'hummus of oude kaas, met avocadosmash, komkommer, radijs, tomaat, wortel en rucola'],
+        ['Salades', 'basis van rucola, spinazie en diverse groenten, met zalm, tonijnsalade, brie, pulled chicken, geitenkaas of burrata'],
+      ] },
+    ],
+  },
+  {
+    id: 'koffie', tab: 'Koffie & lattes', titel: 'Koffie en special lattes', foto: latte, alt: 'Melk wordt in een cappuccino geschonken, latte art in een wit kopje', bijschrift: 'Koffiemoment bij Flinn, foto van Flinn.',
+    groepen: [
+      { kop: 'Koffie', items: [
+        ['Espresso, americano, cortado', 'ook espresso macchiato en een extra shot'],
+        ['Cappuccino, flat white, latte', 'latte macchiato, café latte en koffie verkeerd'],
+        ['Iced coffee en iced latte', 'ook decafé'],
+        ['Plantaardige melk', 'haver, amandel, soja of kokos'],
+      ] },
+      { kop: 'Special lattes', items: [
+        ['Chai latte', 'spicy of vanille, of als dirty chai latte'],
+        ['Matcha, beetroot, kurkuma of butterfly latte', ''],
+        ['Lekker erbij', 'mango- of aardbeipuree, of cold foam'],
+      ] },
+      { kop: 'Even geen koffie', items: [
+        ['Verse gember- of muntthee', 'en thee van Twistea'],
+        ['Warme chocomel', 'met slagroom als je wilt'],
+      ] },
+    ],
+  },
+  {
+    id: 'drinken', tab: 'Smoothies & borrel', titel: 'Smoothies, limonade en een borrel', foto: iced, alt: 'Drie ijskoude drankjes in bekers: mango, matcha en iced latte', bijschrift: 'Iced drinks, foto van Flinn.',
+    groepen: [
+      { kop: 'Smoothies', items: [
+        ['Green smoothie', 'spinazie | banaan | appelsap | kokosyoghurt'],
+        ['Yellow smoothie', 'mango | passievrucht | banaan | yoghurt'],
+        ['Pink smoothie', 'aardbei | banaan | appel | yoghurt'],
+      ] },
+      { kop: 'Fris en borrel', items: [
+        ['Organic lemonades', 'aardbei, citroen, framboos, munt, citroengras gember, lavendel of vlierbloesem'],
+        ['Bier', 'Hertog Jan, Leffe Blond, en 0.0 van Heineken en Birra Moretti'],
+        ['Wijn en bubbels', 'wit, rood, rosé en prosecco'],
+      ] },
+    ],
+  },
+  {
+    id: 'kids', tab: 'Voor de kleintjes', titel: 'Voor de kleintjes', foto: koeken, alt: 'Koeken en muffins op een glazen taartplateau', bijschrift: 'Iets lekkers uit de vitrine, foto van Flinn.',
+    groepen: [{ kop: '', items: [
+      ['Pancakes', 'met siroop en/of poedersuiker'],
+      ['Kindertosti', 'kleine pita tosti kaas met ketchup'],
+      ['Broodje aap', 'broodje met pindakaas en banaan'],
+    ] }],
+  },
+];
+
+const stappen = [
+  ['Kies wat en wanneer', 'Een tafel, een high tea of een feestje, met dag, tijd en aantal personen.'],
+  ['Check je bericht', 'Je reservering staat als bericht klaar, met je dieetwensen erbij.'],
+  ['Verstuur via WhatsApp', 'Jij drukt zelf op verzenden. Je reservering staat vast als Flinn hem bevestigt.'],
+];
+---
+<Base title="Flinn Winkelcafé | Ontbijt, lunch, high tea en winkel in hartje Vianen" description="Flinn Winkelcafé op de Voorstraat in Vianen: ontbijt, lunch, koffie en taart, high tea, borrel en een winkel om rond te neuzen. Dinsdag tot en met zaterdag 10.00 tot 17.00, zondag 11.00 tot 17.00.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen terrasfoto (Canva-pagina), op mobiel de proostfoto van hetzelfde terras -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit" aria-labelledby="inhoud">
+      <Picture src={hero} alt="" widths={[960, 1400, 1600]} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" quality={64} class="absolute inset-0 -z-20 hidden h-full w-full object-cover object-[50%_60%] md:block" />
+      <Picture src={heroM} alt="" widths={[480, 760, 917]} sizes="100vw" formats={['avif', 'webp']} loading="eager" fetchpriority="high" quality={62} class="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_35%] md:hidden" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#2a1d17b8_0%,#2a1d1733_28%,#2a1d17bf_58%,#2a1d17f7_100%)] md:bg-[linear-gradient(90deg,#2a1d17f0_0%,#2a1d17c4_36%,#2a1d1740_68%,#2a1d1714_100%),linear-gradient(180deg,#2a1d17a6_0%,#2a1d1700_30%,#2a1d1700_70%,#2a1d17b3_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-28 pt-36 md:pb-20 lg:pt-48">
+        <div class="max-w-3xl">
+          <p class="eyebrow eyebrow-licht">Winkelcafé in hartje {site.plaats}</p>
+          <h1 id="inhoud" class="mt-6 text-hero">Schuif aan bij <span class="accent-licht">Flinn.</span></h1>
+          <p class="mt-7 max-w-xl text-lg leading-relaxed text-wit/90 md:text-[1.3rem]">Ontbijt, lunch, koffie en taart. High tea, borrel en een winkel om rond te neuzen. Iedereen is welkom.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#reserveren" class="knop knop-merk"><Icoon naam="wa" />Reserveren</a>
+            <a href="#kaart" class="knop knop-wit">Bekijk de kaart</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-2.5 text-[.95rem] text-wit/90">
+            <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-wit">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-4 w-4 text-merk-licht" /><span data-status>Dinsdag tot en met zondag open</span></li>
+            <li class="flex items-center gap-2"><Icoon naam="tel" class="h-4 w-4 text-merk-licht" /><a href={site.telHref} class="num text-wit/90 no-underline hover:text-wit">{site.tel}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Wat je er doet: de woorden uit hun eigen Instagram-bio -->
+    <section class="border-b border-lijn-licht bg-wit" aria-label="Bij Flinn">
+      <div class="wrap flex flex-wrap items-center gap-2.5 py-7 md:gap-3 md:py-8">
+        <span class="mr-2 text-sm font-bold uppercase tracking-[.16em] text-steen">Bij Flinn</span>
+        {['Ontbijt', 'Lunch', 'Koffie', 'Taart', 'High tea', 'Borrel', 'Events', 'Shop'].map((c) => <span class="chip">{c}</span>)}
+      </div>
+    </section>
+
+    <!-- 3. Wie zijn wij: hun eigen tekst (Canva-pagina), foto's van binnen, drie letterlijke reviewzinnen -->
+    <section id="welkom" class="py-24 md:py-32" aria-labelledby="t-wel">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-6 lg:pt-4">
+          <p class="rijs eyebrow">Wie zijn wij</p>
+          <h2 id="t-wel" class="rijs mt-5 text-4xl">Een plek waar je je <span class="accent">thuis</span> voelt.</h2>
+          <p class="rijs mt-8 max-w-xl text-xl leading-relaxed">Een plek waar je komt voor koffie, gezelligheid én iets leuks om mee naar huis te nemen.</p>
+          <p class="rijs mt-5 max-w-xl text-lg text-steen">Wij willen bij Flinn ervoor zorgen dat jij je thuis voelt. Schuif aan voor een ontbijt of lunch, vier bij ons met koffie en gebak of neem lekker de tijd om rond te neuzen.</p>
+          <blockquote class="rijs mt-12 border-l-4 border-merk pl-6">
+            <p class="font-kop text-[clamp(1.6rem,1.4vw+1.1rem,2.2rem)] uppercase leading-[1.05]">“Het zit in aandacht. In sfeer. In gezien worden.”</p>
+            <footer class="mt-3 text-sm text-steen">Team Flinn over gastvrijheid, op Instagram</footer>
+          </blockquote>
+        </div>
+        <div class="lg:col-span-6">
+          <div class="grid grid-cols-5 gap-4">
+            <figure class="rijs col-span-3">
+              <Image src={bar} alt="De bar van Flinn met houten letters BAR, planten en lampen" widths={[360, 560, 800, 1080]} sizes="(min-width: 1024px) 28vw, 60vw" quality={66} class="aspect-[4/5] w-full rounded-[20px] object-cover" />
+            </figure>
+            <figure class="rijs col-span-2 mt-14" style="--d:.06s">
+              <Image src={zitje} alt="Twee cognackleurige fauteuils bij het raam, met planten" widths={[240, 400, 600]} sizes="(min-width: 1024px) 19vw, 40vw" quality={64} class="aspect-[3/5] w-full rounded-[20px] object-cover" />
+            </figure>
+          </div>
+          <p class="mt-3 text-sm text-steen">Binnen bij Flinn, foto's van Flinn.</p>
+        </div>
+        <ul class="grid gap-5 sm:grid-cols-3 lg:col-span-12 lg:gap-6">
+          {[
+            ['Huiskamergevoel', '…er hangt echt een gezellig huiskamergevoel.', 'Sanne M.'],
+            ['Binnen en buiten', 'Zowel gezellige plekjes binnen als buiten op terras.', 'Maartje'],
+            ['Dieetwensen', 'Met allergie werd goed rekening gehouden.', 'W. de B.'],
+          ].map(([t, q, n], i) => (
+            <li class="rijs kaart flex flex-col p-6 md:p-7" style={`--d:${i * 0.06}s`}>
+              <span class="text-xs font-bold uppercase tracking-[.14em] text-merk">{t}</span>
+              <p class="mt-3 flex-1 text-lg font-medium leading-snug">“{q}”</p>
+              <p class="mt-4 text-sm text-steen">{n}, Google review</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. De kaart: hun eigen menukaart, in tabs -->
+    <section id="kaart" class="bg-room-2 py-24 md:py-32" aria-labelledby="t-kaart">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">De kaart</p>
+            <h2 id="t-kaart" class="mt-5 text-4xl">Van fluffy pancakes tot <span class="accent">tosti.</span></h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-5 lg:col-start-8">Bij onze gerechten heb je keuze uit Zweedse pita flatbread (vegan en glutenarm), wit of donker volkoren brood.</p>
+        </div>
+
+        <div class="rijs mt-12" role="tablist" aria-label="Onderdelen van de kaart" data-tabs>
+          <div class="flex flex-wrap gap-2.5">
+            {kaart.map((k, i) => <button type="button" role="tab" class="tab" id={`tab-${k.id}`} aria-controls={`p-${k.id}`} aria-selected={i === 0 ? 'true' : 'false'} data-tab={k.id}>{k.tab}</button>)}
+          </div>
+        </div>
+
+        {kaart.map((k, i) => (
+          <div id={`p-${k.id}`} role="tabpanel" aria-labelledby={`tab-${k.id}`} class={`paneel mt-10 grid gap-10 lg:grid-cols-12 lg:gap-14 ${i > 0 ? 'js-verberg' : ''}`} data-paneel={k.id}>
+            <figure class="lg:col-span-5">
+              <Image src={k.foto} alt={k.alt} widths={[420, 640, 900]} sizes="(min-width: 1024px) 36vw, 100vw" quality={66} class="aspect-[4/3] w-full rounded-[20px] object-cover lg:aspect-[4/5]" />
+              <figcaption class="mt-3 text-sm text-steen">{k.bijschrift}</figcaption>
+            </figure>
+            <div class="lg:col-span-7">
+              <h3 class="font-kop text-3xl font-normal uppercase tracking-normal">{k.titel}</h3>
+              <div class={`mt-4 ${k.groepen.length > 1 ? 'grid gap-x-10 md:grid-cols-2' : ''}`}>
+                {k.groepen.map((g) => (
+                  <div class={k.groepen.length > 2 && g.kop === 'Broodjes' ? 'md:row-span-2' : ''}>
+                    {g.kop && <p class="mb-1 mt-6 text-sm font-bold uppercase tracking-[.16em] text-merk">{g.kop}</p>}
+                    <div class={k.groepen.length === 1 ? 'md:grid md:grid-cols-2 md:gap-x-10' : ''}>
+                      {g.items.map(([t, d]) => (
+                        <div class="gerecht">
+                          <h3>{t}</h3>
+                          {d && <p>{d}</p>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <p class="rijs mt-14 flex flex-col gap-4 rounded-[20px] bg-wit p-6 text-steen sm:flex-row sm:items-center md:p-7">
+          <Icoon naam="praat" class="h-7 w-7 flex-none text-merk" />
+          <span>Vega en vegan staan op de kaart aangegeven. Niet alle ingrediënten staan op de kaart: bij vragen over allergieën of dieetwensen kun je bij een van onze collega's terecht.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 5. High tea: donker, tekst en prijzen van hun eigen menukaart -->
+    <section id="high-tea" class="bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-tea">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-16">
+        <div class="lg:col-span-6 lg:order-2 lg:pt-6">
+          <p class="rijs eyebrow eyebrow-licht">Onze high tea's</p>
+          <h2 id="t-tea" class="rijs mt-5 text-4xl">Hartig, zoet en <span class="accent-licht">onbeperkt thee.</span></h2>
+          <p class="rijs mt-8 max-w-xl text-xl leading-relaxed text-wit/90">Geniet van een uitgebreid assortiment hartige en zoete lekkernijen, met vooraf een vers soepje en onbeperkt thee.</p>
+          <dl class="rijs mt-10 divide-y divide-lijn border-y border-lijn">
+            <div class="flex items-baseline justify-between gap-6 py-5"><dt><b class="block text-lg">High tea</b><span class="text-mist">Je reserveert de high tea vooraf.</span></dt><dd class="num whitespace-nowrap font-kop text-3xl">€ 20,95 <span class="font-sans text-base text-mist">p.p.</span></dd></div>
+            <div class="flex items-baseline justify-between gap-6 py-5"><dt><b class="block text-lg">High tea deluxe</b><span class="text-mist">Onder andere extra belegde broodjes en jus d'orange.</span></dt><dd class="num whitespace-nowrap font-kop text-3xl">+ € 6</dd></div>
+            <div class="flex items-baseline justify-between gap-6 py-5"><dt><b class="block text-lg">Prosecco erbij?</b></dt><dd class="num whitespace-nowrap font-kop text-3xl">+ € 6</dd></div>
+          </dl>
+          <a href="#reserveren" class="rijs knop knop-merk mt-10" data-kies="High tea">High tea reserveren<Icoon naam="pijl" /></a>
+        </div>
+        <div class="lg:col-span-6 lg:order-1">
+          <div class="grid grid-cols-2 gap-4">
+            <Image src={gebak} alt="Taart onder een glazen stolp naast een terrarium met planten" widths={[360, 560, 800]} sizes="(min-width: 1024px) 23vw, 50vw" quality={64} class="rijs col-span-2 aspect-[16/10] w-full rounded-[20px] object-cover" />
+            <Image src={koeken} alt="Chocoladekoeken en muffins op een glazen plateau" widths={[300, 480, 700]} sizes="(min-width: 1024px) 23vw, 50vw" quality={64} class="rijs aspect-square w-full rounded-[20px] object-cover" style="--d:.05s" />
+            <Image src={molens} alt="Twee oude koffiemolens aan een witte deur, met hangende plant" widths={[300, 480, 649]} sizes="(min-width: 1024px) 23vw, 50vw" quality={64} class="rijs aspect-square w-full rounded-[20px] object-cover" style="--d:.1s" />
+          </div>
+          <p class="mt-3 text-sm text-mist">Foto's van Flinn.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Winkel: de woorden op hun eigen raam, Instagram (Mable, shop-in-shop) en een Unsplash-sfeerfoto -->
+    <section id="winkel" class="py-24 md:py-32" aria-labelledby="t-win">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-8">
+            <p class="eyebrow">De winkel</p>
+            <h2 id="t-win" class="mt-5 text-4xl">Food, lifestyle, interieur, <span class="accent">vintage</span> en cadeaus.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-4">Neem lekker de tijd om rond te neuzen. Er is altijd iets leuks om mee naar huis te nemen.</p>
+        </div>
+
+        <ul class="mt-14 grid gap-6 md:grid-cols-3 lg:mt-16 lg:gap-7">
+          {[
+            { t: 'Cadeaus, interieur en vintage', d: 'Van een hebbedingetje voor jezelf tot een cadeautje voor een ander. Kijk rond tussen de koffie door.', src: uWinkel, alt: 'Schappen vol aardewerk en vazen in een winkel', cap: 'Sfeerfoto ter illustratie (Unsplash).', w: [420, 640, 900] },
+            { t: 'Sieraden en kleding', d: 'De najaarscollectie sieraden van Mable is binnen. En in de shop-in-shop van Lingeloft kun je kleding voelen, passen en combineren.', src: etalage, alt: 'Het raam van Flinn met het ronde logo, iemand houdt een krant omhoog', cap: 'Het raam van Flinn, foto van Flinn.', w: [420, 640, 900] },
+            { t: 'Voorstraat 11 en 13', d: 'Twee panden in het hartje van Vianen, met een terras voor de deur.', src: pand, alt: 'Tekening van het pand van Flinn met de woorden food, lifestyle, interieur, vintage en cadeaux op het raam', cap: 'Ons pand, getekend. Van de pagina van Flinn.', w: [420, 640, 703] },
+          ].map((v, i) => (
+            <li class="rijs" style={`--d:${i * 0.07}s`}>
+              <article class="kaart group flex h-full flex-col overflow-hidden">
+                <div class="overflow-hidden">
+                  <Image src={v.src} alt={v.alt} widths={v.w} sizes="(min-width: 768px) 31vw, 100vw" quality={66} class="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] md:aspect-[4/5]" />
+                </div>
+                <div class="flex flex-1 flex-col p-7">
+                  <h3 class="text-[1.45rem]">{v.t}</h3>
+                  <p class="mt-3 flex-1 text-steen">{v.d}</p>
+                  <p class="mt-5 text-xs text-steen">{v.cap}</p>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Zo werkt reserveren -->
+    <section class="border-t border-lijn-licht bg-wit py-24 md:py-28" aria-labelledby="t-hoe">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Reserveren</p>
+            <h2 id="t-hoe" class="mt-5 text-4xl">Zo werkt <span class="accent">reserveren.</span></h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-5 lg:col-start-8">Een high tea reserveer je vooraf. Ook voor een tafel, een groep of een feestje stuur je eenvoudig een appje.</p>
+        </div>
+        <ol class="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-3 lg:mt-14">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs border-t-2 border-inkt pt-6" style={`--d:${i * 0.06}s`}>
+              <span class="stap-nr num">0{i + 1}</span>
+              <h3 class="mt-4 text-xl sm:text-2xl">{t}</h3>
+              <p class="mt-2 text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Wow: reservering samenstellen, vooraf ingevuld WhatsApp (zoals hun eigen reserveerlink, maar compleet) -->
+    <section id="reserveren" class="relative overflow-hidden bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-res">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow eyebrow-licht">Reserveren via WhatsApp</p>
+            <h2 id="t-res" class="mt-5 text-4xl">Zet je <span class="accent-licht">tafel</span> klaar.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-mist lg:col-span-5 lg:col-start-8">Kies wat, wanneer en met hoeveel. Je reservering komt als bericht klaar te staan in WhatsApp.</p>
+        </div>
+
+        <form class="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-14" data-res>
+          <div class="lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label">Wat wil je reserveren?</legend>
+              <div class="grid gap-2.5 sm:grid-cols-2">
+                {[
+                  ['Tafel', 'Voor ontbijt, lunch of koffie'],
+                  ['High tea', '€ 20,95 p.p., vooraf reserveren'],
+                  ['High tea deluxe', 'Voor € 6 extra'],
+                  ['Feestje of groep', 'Borrel of event'],
+                ].map(([t, s], i) => <label class="keuze keuze-groot"><input type="radio" name="soort" value={t} checked={i === 0} /><span class="font-bold">{t}</span><small>{s}</small></label>)}
+              </div>
+            </fieldset>
+
+            <fieldset class="mt-9">
+              <legend class="veld-label">Welke dag?</legend>
+              <div class="flex flex-wrap gap-2.5" data-dagen>
+                <label class="keuze"><input type="radio" name="dag" value="zo snel mogelijk" checked />Zo snel mogelijk</label>
+              </div>
+            </fieldset>
+
+            <div class="mt-9 grid gap-7 sm:grid-cols-2">
+              <div>
+                <label for="tijd" class="veld-label">Hoe laat?</label>
+                <select id="tijd" name="tijd" class="veld num" data-tijd></select>
+              </div>
+              <div>
+                <p class="veld-label" id="l-pers">Met hoeveel personen?</p>
+                <span class="teller" role="group" aria-labelledby="l-pers">
+                  <button type="button" data-min aria-label="Eén persoon minder">−</button>
+                  <output class="num" aria-live="polite" data-pers>2</output>
+                  <button type="button" data-plus aria-label="Eén persoon erbij">+</button>
+                </span>
+              </div>
+            </div>
+
+            <label class="keuze mt-7 hidden" data-prosecco><input type="checkbox" name="prosecco" value="ja" />Prosecco erbij (+ € 6)</label>
+
+            <fieldset class="mt-9">
+              <legend class="veld-label">Dieetwensen of allergie?</legend>
+              <div class="flex flex-wrap gap-2.5">
+                {['Lactosevrij', 'Glutenvrij', 'Vegan', 'Vega', 'Allergie'].map((t) => <label class="keuze"><input type="checkbox" name="dieet" value={t.toLowerCase()} />{t}</label>)}
+              </div>
+            </fieldset>
+
+            <div class="mt-9 grid gap-7 sm:grid-cols-2">
+              <div>
+                <label for="naam" class="veld-label">Op welke naam?</label>
+                <input id="naam" name="naam" class="veld" autocomplete="given-name" placeholder="Je voornaam" />
+              </div>
+              <div>
+                <label for="extra" class="veld-label">Nog iets?</label>
+                <input id="extra" name="extra" class="veld" placeholder="Bijvoorbeeld: graag op het terras" />
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="lg:sticky lg:top-8">
+              <div class="tafelkaart px-7 pb-7 pt-9 text-center">
+                <p class="text-[.7rem] font-bold uppercase tracking-[.5em] text-steen">F L I N N</p>
+                <p class="mt-3 font-kop text-4xl uppercase leading-none text-merk">Gereserveerd</p>
+                <p class="mt-3 text-lg font-bold" data-k-naam>voor jou</p>
+                <div class="mt-5 grid grid-cols-3 border-t border-dashed border-room-3 pt-5 text-sm">
+                  <div><p class="text-steen">Dag</p><p class="num font-bold" data-k-dag>-</p></div>
+                  <div><p class="text-steen">Tijd</p><p class="num font-bold" data-k-tijd>-</p></div>
+                  <div><p class="text-steen">Personen</p><p class="num font-bold" data-k-pers>2</p></div>
+                </div>
+                <p class="mt-4 text-sm font-medium text-steen" data-k-soort>Tafel</p>
+              </div>
+              <p class="veld-label mt-10">Jouw bericht</p>
+              <p class="min-h-[6.5rem] whitespace-pre-line rounded-[10px] border-l-4 border-merk-licht bg-inkt-2 px-5 py-4 text-[.98rem] leading-relaxed text-wit/90" data-voorbeeld aria-live="polite">Hi Flinn! Ik zou graag een tafel willen reserveren.</p>
+              <a href={waHoi} class="knop knop-merk mt-5 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <p class="mt-3 text-center text-xs text-mist">Liever bellen? <a href={site.telHref} class="num text-wit/90 underline-offset-2">{site.tel}</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section id="reviews" class="py-24 md:py-32" aria-labelledby="t-rev">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-rev" class="mt-5 text-4xl">Wat gasten <span class="accent">zeggen.</span></h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+            <Icoon naam="g" class="h-9 w-9 flex-none" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-normal leading-none">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="mt-1 block text-sm text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {reviews.map((r, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <figure class="kaart flex h-full flex-col p-7">
+                <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</div>
+                <blockquote class="mt-5 flex-1 leading-relaxed">“{r.tekst}”</blockquote>
+                <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5 text-sm">
+                  <span class="grid h-9 w-9 flex-none place-items-center rounded-full bg-room-2 font-bold">{r.naam[0]}</span>
+                  <span><b class="block font-bold">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10. Bezoek: tijden met vandaag gemarkeerd, adres, route, faciliteiten van Google -->
+    <section id="bezoek" class="border-t border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-bez">
+      <div class="wrap grid gap-y-12 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <Image src={gevel} alt="Twee stoelen met kussens voor het raam van Flinn in de zon" widths={[360, 540, 646]} sizes="(min-width: 1024px) 34vw, 100vw" quality={66} class="rijs aspect-[4/5] w-full rounded-[20px] object-cover" />
+          <p class="mt-3 text-sm text-steen">Voor de deur op de Voorstraat, foto van Flinn.</p>
+        </div>
+        <div class="lg:col-span-7">
+          <p class="rijs eyebrow">Bezoek</p>
+          <h2 id="t-bez" class="rijs mt-5 text-4xl">Kom langs op de <span class="accent">Voorstraat.</span></h2>
+          <p class="rijs mt-8"><a href={site.telHref} class="num font-kop text-[clamp(2.1rem,4.6vw,3.8rem)] leading-none text-inkt no-underline transition-colors hover:text-merk">{site.tel}</a></p>
+          <div class="rijs mt-8 flex flex-wrap gap-3" style="--d:.08s">
+            <a href="#reserveren" class="knop knop-merk"><Icoon naam="wa" />Reserveren</a>
+            <a href={site.route} class="knop knop-rand"><Icoon naam="pin" />Route plannen</a>
+          </div>
+          <div class="rijs kaart mt-10 overflow-hidden" style="--d:.12s">
+            <div class="grid sm:grid-cols-2">
+              <div class="flex gap-4 border-b border-lijn-licht p-6 sm:border-b-0 sm:border-r">
+                <Icoon naam="pin" class="mt-0.5 h-5 w-5 flex-none text-merk" />
+                <div>
+                  <p class="font-bold">{site.volledig}</p><p class="mt-1 text-steen">{site.straat}<br />{site.postcode} {site.plaats}</p>
+                  <p class="mt-3"><a href={`mailto:${site.mail}`} class="link text-steen">{site.mail}</a></p>
+                  <ul class="mt-5 space-y-1.5 text-[.95rem] text-steen">
+                    {['Terras voor de deur', 'Honden welkom', 'Kindermenu en kinderstoelen', 'Rolstoeltoegankelijke ingang'].map((t) => <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 flex-none text-merk" />{t}</li>)}
+                  </ul>
+                </div>
+              </div>
+              <div class="flex gap-4 p-6">
+                <Icoon naam="klok" class="mt-0.5 h-5 w-5 flex-none text-merk" />
+                <div class="w-full">
+                  <p class="font-bold" data-status-kort>Openingstijden</p>
+                  <ul class="num mt-2 space-y-1 text-steen">
+                    {[1, 2, 3, 4, 5, 6, 0].map((d) => { const t = tijden[d]; return <li class="-mx-2 flex justify-between gap-4 rounded-md px-2" data-dagrij={d}><span>{dagNamen[d]}</span><span>{t ? `${uur(t[0])} - ${uur(t[1])}` : 'Gesloten'}</span></li>; })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <a href={site.route} class="flex items-center justify-between gap-3 bg-inkt px-6 py-4 font-bold text-wit no-underline transition-colors hover:bg-merk">Route naar Voorstraat 11, Vianen<Icoon naam="pijl" class="h-5 w-5" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-merk text-wit" aria-label="Reserveren">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-12 md:flex-row md:items-center md:py-14">
+        <p class="font-kop text-4xl uppercase leading-none">Iedereen is welkom.</p>
+        <a href="#reserveren" class="knop knop-inkt shrink-0">Reserveren<Icoon naam="pijl" /></a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<style>
+  :global(.js .js-verberg) { display: none; }
+</style>
+
+<script>
+  import { site, tijden, dagNamen, uur } from '../data/site';
+
+  // Live status
+  const nu = new Date();
+  const dag = nu.getDay();
+  const u = nu.getHours() + nu.getMinutes() / 60;
+  const t = tijden[dag];
+  const open = !!t && u >= t[0] && u < t[1];
+  const volgende = () => { for (let i = 1; i <= 7; i++) { const d = (dag + i) % 7; if (tijden[d]) return d; } return 2; };
+  let tekst: string;
+  if (open) tekst = `Nu open, tot ${uur(t![1])} uur`;
+  else if (t && u < t[0]) tekst = `Vandaag open vanaf ${uur(t[0])} uur`;
+  else { const v = volgende(); tekst = `Nu gesloten, ${dagNamen[v].toLowerCase()} weer open vanaf ${uur(tijden[v]![0])}`; }
+  const s = document.querySelector('[data-status]'); if (s) s.textContent = tekst;
+  const sk = document.querySelector('[data-status-kort]'); if (sk) sk.textContent = tekst;
+  document.querySelector(`[data-dagrij="${dag}"]`)?.classList.add('bg-room-2', 'font-bold', 'text-inkt');
+
+  // Kaart: tabs
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tab]')];
+  const toon = (id: string) => {
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === id)));
+    document.querySelectorAll<HTMLElement>('[data-paneel]').forEach((p) => p.classList.toggle('js-verberg', p.dataset.paneel !== id));
+  };
+  tabs.forEach((b, i) => {
+    b.addEventListener('click', () => toon(b.dataset.tab!));
+    b.addEventListener('keydown', (e) => {
+      const n = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (n) { const x = tabs[(i + n + tabs.length) % tabs.length]; x.focus(); toon(x.dataset.tab!); }
+    });
+  });
+
+  // Reserveren
+  const f = document.querySelector<HTMLFormElement>('[data-res]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  const tijdSel = document.querySelector<HTMLSelectElement>('[data-tijd]');
+  const dagenBox = document.querySelector<HTMLElement>('[data-dagen]');
+  const persOut = document.querySelector<HTMLElement>('[data-pers]');
+  const prosecco = document.querySelector<HTMLElement>('[data-prosecco]');
+  const k = (n: string) => document.querySelector<HTMLElement>(`[data-k-${n}]`)!;
+  if (f && vb && knop && tijdSel && dagenBox && persOut && prosecco) {
+    let pers = 2;
+    const maanden = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+
+    // De eerstvolgende 8 open dagen als keuzes (vandaag alleen als er nog tijd is).
+    dagenBox.innerHTML = '';
+    const opties: Date[] = [];
+    for (let i = 0; opties.length < 8 && i < 21; i++) {
+      const d = new Date(nu.getFullYear(), nu.getMonth(), nu.getDate() + i);
+      const tt = tijden[d.getDay()];
+      if (!tt) continue;
+      if (i === 0 && u >= tt[1] - 1) continue;
+      opties.push(d);
+    }
+    opties.forEach((d, i) => {
+      const l = document.createElement('label'); l.className = 'keuze num';
+      const kort = i === 0 && d.getDate() === nu.getDate() ? 'Vandaag' : i <= 1 && d.getDate() === nu.getDate() + 1 ? 'Morgen' : `${dagNamen[d.getDay()].slice(0, 2).toLowerCase()} ${d.getDate()} ${maanden[d.getMonth()]}`;
+      const lang = `${dagNamen[d.getDay()].toLowerCase()} ${d.getDate()} ${['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'][d.getMonth()]}`;
+      l.innerHTML = `<input type="radio" name="dag" ${i === 0 ? 'checked' : ''} />`;
+      const inp = l.querySelector('input')!; inp.value = lang; inp.dataset.wd = String(d.getDay()); inp.dataset.kort = kort; inp.dataset.vandaag = String(d.toDateString() === nu.toDateString());
+      l.append(kort); dagenBox.append(l);
+    });
+
+    const vulTijden = () => {
+      const r = f.querySelector<HTMLInputElement>('input[name="dag"]:checked');
+      const tt = tijden[Number(r?.dataset.wd ?? 2)] ?? [10, 17];
+      const oud = tijdSel.value;
+      tijdSel.innerHTML = '';
+      for (let x = tt[0]; x <= tt[1] - 1; x += 0.5) {
+        if (r?.dataset.vandaag === 'true' && x <= u) continue;
+        const o = document.createElement('option'); o.value = o.textContent = `${uur(x)} uur`; tijdSel.append(o);
+      }
+      if ([...tijdSel.options].some((o) => o.value === oud)) tijdSel.value = oud;
+      else if (tijdSel.options.length > 4 && !(r?.dataset.vandaag === 'true')) tijdSel.selectedIndex = Math.min(4, tijdSel.options.length - 1);
+    };
+
+    const zet = () => {
+      const d = new FormData(f);
+      const soort = String(d.get('soort') || 'Tafel');
+      const r = f.querySelector<HTMLInputElement>('input[name="dag"]:checked');
+      const dagTxt = String(d.get('dag') || '');
+      const tijd = String(d.get('tijd') || '');
+      const naam = String(d.get('naam') || '').trim();
+      const extra = String(d.get('extra') || '').trim();
+      const dieet = d.getAll('dieet').map(String);
+      const isTea = soort.startsWith('High tea');
+      prosecco.classList.toggle('hidden', !isTea);
+      const pros = isTea && d.get('prosecco') === 'ja';
+
+      k('naam').textContent = naam ? `voor ${naam}` : 'voor jou';
+      k('dag').textContent = r?.dataset.kort ?? '-';
+      k('tijd').textContent = tijd.replace(' uur', '') || '-';
+      k('pers').textContent = String(pers);
+      k('soort').textContent = soort + (pros ? ' met prosecco' : '') + (dieet.length ? `, ${dieet.join(', ')}` : '');
+
+      const wat = soort === 'Tafel' ? 'een tafel' : soort === 'Feestje of groep' ? 'een plek voor een feestje of groep' : `een ${soort.toLowerCase()}`;
+      const regels = [`Hi Flinn! Ik zou graag ${wat} willen reserveren voor ${dagTxt} om ${tijd} voor ${pers} ${pers === 1 ? 'persoon' : 'personen'}.`];
+      if (pros) regels.push('Graag met prosecco erbij.');
+      if (dieet.length) regels.push(`Dieetwensen: ${dieet.join(', ')}.`);
+      if (extra) regels.push(extra);
+      if (naam) regels.push(`Op naam van ${naam}.`);
+      regels.push('Kunnen jullie dit bevestigen?');
+      const txt = regels.join('\n');
+      vb.textContent = txt;
+      knop.href = `${site.wa}?text=${encodeURIComponent(txt)}`;
+    };
+
+    const min = f.querySelector<HTMLButtonElement>('[data-min]')!;
+    const plus = f.querySelector<HTMLButtonElement>('[data-plus]')!;
+    const stel = (n: number) => { pers = Math.max(1, Math.min(30, n)); persOut.textContent = String(pers); min.disabled = pers === 1; plus.disabled = pers === 30; zet(); };
+    min.addEventListener('click', () => stel(pers - 1));
+    plus.addEventListener('click', () => stel(pers + 1));
+
+    // "High tea reserveren" uit de high-tea-sectie
+    document.querySelectorAll<HTMLAnchorElement>('[data-kies]').forEach((a) => a.addEventListener('click', () => {
+      const r = f.querySelector<HTMLInputElement>(`input[name="soort"][value="${a.dataset.kies}"]`); if (r) { r.checked = true; zet(); }
+    }));
+
+    f.addEventListener('change', (e) => { if ((e.target as HTMLInputElement).name === 'dag') vulTijden(); zet(); });
+    f.addEventListener('input', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    vulTijden(); stel(2);
+  }
+</script>

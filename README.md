@@ -320,3 +320,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tapijt-tegels.eu, Tilburg | https://voorstel.sitefront.nl/tapijt-tegels-tilburg/ | verouderde site zonder viewport; 4,8/195; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Lokaal de Klik, Dordrecht | https://voorstel.sitefront.nl/lokaal-de-klik/ | site toont ruwe PHP-code; 4,9/118; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Het Handelshuis, Kaatsheuvel | https://voorstel.sitefront.nl/het-handelshuis-kaatsheuvel/ | geen eigen website (oud domein 404); 4,6/154; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Teppratanporn, Schiedam | https://voorstel.sitefront.nl/teppratanporn-schiedam/ | geen eigen website; 4,8/259; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Flinn Winkelcafé, Vianen | https://voorstel.sitefront.nl/flinn-winkelcafe/ | geen eigen website (Canva-linkpagina); 4,4/137; 06/WhatsApp. | 2026-10-12 | demo premium |

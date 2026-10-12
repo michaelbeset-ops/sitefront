@@ -1,0 +1,17 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })).newPage();
+await p.goto('http://127.0.0.1:4512/sitefront/flinn-winkelcafe/', { waitUntil: 'networkidle' });
+await p.click('[data-tab="lunch"]'); console.log('lunch zichtbaar', await p.locator('[data-paneel="lunch"]').isVisible(), await p.locator('[data-paneel="ontbijt"]').isVisible());
+await p.click('[data-kies="High tea"]');
+await p.locator('[data-dagen] label').nth(3).click();
+await p.selectOption('[data-tijd]', '13.00 uur');
+await p.click('[data-plus]'); await p.click('[data-plus]');
+await p.locator('label.keuze:has-text("Prosecco")').click();
+await p.locator('label.keuze:has-text("Glutenvrij")').click();
+await p.fill('#naam', 'Sanne');
+await p.evaluate(() => document.querySelectorAll('.rijs').forEach(e => e.classList.add('in')));
+console.log(await p.locator('[data-voorbeeld]').innerText());
+console.log(decodeURIComponent(await p.locator('[data-verstuur]').getAttribute('href')));
+await p.locator('.tafelkaart').scrollIntoViewIfNeeded(); await p.waitForTimeout(500);
+await p.screenshot({ path: 'shots/wow-390.png' });
+await b.close();
