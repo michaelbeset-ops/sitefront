@@ -2,7 +2,13 @@
 import sharp from 'sharp';
 const A = 'src/assets/'; const q = { quality: 82, mozjpeg: true };
 const I = 'bron/site/img/';
-// 1. Pasbril-meting (headerfoto van hun site). Gezicht van de klant onherkenbaar: zachte ovale vervaging.
+// 1. Pasbril-meting (headerfoto van hun site). Op verzoek van Michael (13-10-2026) onvervaagd, zoals op hun eigen site.
+await sharp(I + 'o_image1.jpeg').rotate().resize(1500).jpeg(q).toFile(A + 'eigen-meting.jpg');
+// Paul past een montuur bij een klant (image0, bovenste deel).
+await sharp(I + 'o_image0.jpeg').rotate().extract({ left: 0, top: 350, width: 2600, height: 1733 }).resize(1400).jpeg(q).toFile(A + 'eigen-passen.jpg');
+// Pasbril (pagina Diensten, IMG_0205).
+await sharp(I + 'r8_IMG_0205.JPG').rotate().jpeg(q).toFile(A + 'eigen-pasbril.jpg');
+/* Oude, vervaagde versie:
 const src = sharp(I + 'o_image1.jpeg');
 const { width: W, height: H } = await src.metadata();
 const box = { left: 1300, top: 930, width: 600, height: 760 };
@@ -11,6 +17,7 @@ const mask = Buffer.from(`<svg width="${box.width}" height="${box.height}"><defs
 const blurM = await sharp(blur).composite([{ input: mask, blend: 'dest-in' }]).png().toBuffer();
 const comp = await sharp(I + 'o_image1.jpeg').composite([{ input: blurM, left: box.left, top: box.top }]).toBuffer();
 await sharp(comp).resize(1500).jpeg(q).toFile(A + 'eigen-meting.jpg');
+*/
 // 2. Monturenlade (onderkant van image0, zonder gezichten)
 await sharp(I + 'o_image0.jpeg').extract({ left: 0, top: 1700, width: 2600, height: 1767 }).resize(1400).jpeg(q).toFile(A + 'eigen-monturen.jpg');
 // 3. Pasglazenkist met hun kaartje
