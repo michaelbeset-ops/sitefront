@@ -7,7 +7,7 @@ export const GET: APIRoute = ({ site: domein }) => {
   const open = tijden.filter((t) => t.open).map((t) => t.dag.toLowerCase());
   const tekst = `# ${site.naam}
 
-> De opticien aan huis door ${site.werkgebied}, gevestigd in ${site.plaats}. Oogmeting en advies kosteloos bij u thuis, gemeten met een pasbril door een gediplomeerde opticien. Teruggave van uw zorgverzekering krijgt u ook bij ons.
+> De opticien aan huis door ${site.werkgebied}, gevestigd in ${site.plaats}. Oogmeting en advies kosteloos bij u thuis, gemeten met een pasbril door een gediplomeerde opticien. Heeft u recht op een teruggave van uw zorgverzekering, dan dient u de factuur van Brillen bij u thuis daar in; de zorgverzekering betaalt uit.
 
 ## Contact
 
