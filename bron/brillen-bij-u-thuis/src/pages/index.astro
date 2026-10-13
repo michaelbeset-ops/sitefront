@@ -10,6 +10,7 @@ import { site, reviews, tijden, waHoi, zorg, faq } from '../data/site';
 import sHero from '../assets/s-hero.jpg';
 import ePasbril from '../assets/eigen-pasbril.jpg';
 import ePassen from '../assets/eigen-passen.jpg';
+import eMonturen from '../assets/eigen-monturen.jpg';
 import eMeting from '../assets/eigen-meting.jpg';
 import ePasglazen from '../assets/eigen-pasglazen.jpg';
 import pAafje from '../assets/p-aafje.png';
@@ -20,7 +21,7 @@ import pMeander from '../assets/p-meander.png';
 // Teksten uit hun eigen pagina's (Home, Diensten, Over ons) en hun folder.
 const diensten = [
   { t: 'Oogmeting aan huis', d: 'Een oogmeting is kosteloos, net als ons advies wat daar uit volgt.', l: ['Gemeten met een pasbril, net als bij de oogarts', 'Door een gediplomeerde opticien'], src: ePasbril, pos: 'object-[50%_45%]', alt: 'De pasbril waarmee de opticien uw ogen meet', bron: 'Eigen foto' },
-  { t: 'Een bril op maat', d: 'In alle categorieën bieden wij u een ruime keuze in onze monturen.', l: ['Vertebril of leesbril', 'Bifocale of multifocale bril', 'Zonnebril'], src: ePassen, pos: 'object-[50%_30%]', alt: 'De opticien past bij een klant thuis een montuur, met de lade monturen ervoor', bron: 'Eigen foto' },
+  { t: 'Een bril op maat', d: 'In alle categorieën bieden wij u een ruime keuze in onze monturen.', l: ['Vertebril of leesbril', 'Bifocale of multifocale bril', 'Zonnebril'], src: eMonturen, pos: 'object-[50%_60%]', alt: 'Lade met monturen die de opticien meeneemt', bron: 'Eigen foto' },
 ];
 const brillen = ['Vertebril', 'Leesbril', 'Bifocale bril', 'Multifocale bril', 'Zonnebril'];
 
@@ -56,25 +57,35 @@ const d = ['[--d:0s]', '[--d:.06s]', '[--d:.12s]', '[--d:.18s]'];
   <div class="relative">
     <Kop />
 
-    {/* 1. Hero: sfeerfoto (oudere dame met bril in haar stoel thuis), donker verloop */}
-    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit" aria-labelledby="inhoud">
-      <Image src={sHero} alt="" widths={[640, 960, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" quality={66} class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_30%] md:object-[50%_40%]" />
-      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1d0a2aa6_0%,#1d0a2a33_28%,#1d0a2acc_58%,#1d0a2af7_100%)] md:bg-[linear-gradient(90deg,#1d0a2af7_0%,#1d0a2ae0_34%,#1d0a2a66_62%,#1d0a2a1a_100%),linear-gradient(180deg,#1d0a2ab3_0%,#1d0a2a00_30%,#1d0a2a00_72%,#1d0a2a99_100%)]" aria-hidden="true"></div>
+    {/* 1. Hero (optie B, gekozen 13-10-2026).
+        Mobiel: tekst bovenaan op donker, daaronder hun eigen foto van een passessie bij een klant thuis.
+        Vanaf 768px: tekst over de sfeerfoto met verloop, zoals eerst. */}
+    <section class="relative isolate overflow-hidden bg-inkt text-wit md:flex md:min-h-[100svh] md:items-end" aria-labelledby="inhoud">
+      {/* sizes houdt de foto op mobiel minimaal: daar is hij verborgen, maar de browser haalt hem toch op. */}
+      <Image src={sHero} alt="" widths={[640, 960, 1400, 2000, 2400]} sizes="(min-width: 768px) 100vw, 1px" loading="eager" fetchpriority="high" quality={66} class="absolute inset-0 -z-20 hidden h-full w-full object-cover object-[50%_40%] md:block" />
+      <div class="absolute inset-0 -z-10 hidden md:block md:bg-[linear-gradient(90deg,#1d0a2af7_0%,#1d0a2ae0_34%,#1d0a2a66_62%,#1d0a2a1a_100%),linear-gradient(180deg,#1d0a2ab3_0%,#1d0a2a00_30%,#1d0a2a00_72%,#1d0a2a99_100%)]" aria-hidden="true"></div>
 
-      <div class="wrap w-full pb-28 pt-40 md:pb-20 lg:pt-48">
+      <div class="wrap w-full pt-28 md:pb-20 md:pt-40 lg:pt-48">
         <div class="max-w-[46rem]">
-          <h1 id="inhoud"><span class="eyebrow eyebrow-licht block">Opticien aan huis</span><span class="mt-5 block text-hero">Een nieuwe bril, gewoon bij u <span class="text-merk-licht">thuis.</span></span></h1>
-          <p class="mt-7 max-w-xl text-xl leading-relaxed text-wit md:text-[1.5rem]">Oogmeting aan huis? Een nieuwe bril aanschaffen bij u thuis? Wij komen naar u toe, door midden en zuid Nederland.</p>
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />Bel {site.tel}</a>
-            <a href="#afspraak" class="knop knop-wit"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+          <h1 id="inhoud"><span class="eyebrow eyebrow-licht block">Opticien aan huis</span><span class="mt-4 block text-[clamp(2.4rem,9vw,2.9rem)] md:hidden">Wij komen naar u <span class="text-merk-licht">toe!</span></span><span class="mt-5 hidden text-hero md:block">Een nieuwe bril, gewoon bij u <span class="text-merk-licht">thuis.</span></span></h1>
+          <p class="mt-5 max-w-xl text-xl leading-relaxed text-wit/90 md:hidden">Een nieuwe bril, gewoon bij u thuis. Oogmeting en advies kosteloos.</p>
+          <p class="mt-7 hidden max-w-xl text-[1.5rem] leading-relaxed text-wit md:block">Oogmeting aan huis? Een nieuwe bril aanschaffen bij u thuis? Wij komen naar u toe, door midden en zuid Nederland.</p>
+          <div class="mt-7 grid grid-cols-2 gap-3 md:mt-9 md:flex md:flex-wrap">
+            <a href={site.telHref} class="knop knop-merk num !px-3 md:!px-7"><Icoon naam="tel" /><span class="md:hidden">Bellen</span><span class="hidden md:inline">Bel {site.tel}</span></a>
+            <a href="#afspraak" class="knop knop-wit !px-3 md:!px-7"><Icoon naam="wa" /><span class="md:hidden">WhatsApp</span><span class="hidden md:inline">Afspraak via WhatsApp</span></a>
           </div>
-          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit">
+          <ul class="mt-9 hidden flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit md:flex">
             <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
             <li class="flex items-center gap-2"><Icoon naam="vink" class="h-5 w-5 text-merk-licht" />Oogmeting en advies kosteloos</li>
             <li class="flex items-center gap-2"><Icoon naam="polis" class="h-5 w-5 text-merk-licht" /><a href="#zorgverzekering" class="text-wit underline decoration-merk-licht decoration-2 underline-offset-4 hover:text-merk-licht">Teruggave zorgverzekering</a></li>
           </ul>
         </div>
+      </div>
+
+      <div class="relative mt-8 md:hidden">
+        <Image src={ePassen} alt="De opticien past bij een klant thuis een montuur, met de lade monturen ervoor" widths={[400, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" quality={64} class="aspect-[4/3] w-full object-cover object-[50%_30%]" />
+        <div class="absolute inset-x-0 top-0 h-16 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]" aria-hidden="true"></div>
+        <p class="absolute bottom-4 left-5 flex items-center gap-2 rounded-full bg-wit px-4 py-2 text-[1rem] font-bold text-inkt"><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="num">{site.google.score}</span><span class="font-normal text-steen">{site.google.aantal} reviews op Google</span></p>
       </div>
     </section>
   </div>
