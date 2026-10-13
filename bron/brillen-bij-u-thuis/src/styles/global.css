@@ -124,3 +124,38 @@
 @media (max-width: 359px) {
   .knop { padding: 0 1.1rem; font-size: 1.0625rem; gap: .5rem; }
 }
+
+/* Veegrij: op mobiel staan kaarten naast elkaar en veeg je van links naar rechts, in plaats van eindeloos naar beneden.
+   De volgende kaart steekt een stukje in beeld, zodat duidelijk is dat er meer is. Vanaf 768px wordt het een gewoon grid. */
+@layer components {
+  .rail { display: flex; gap: 1rem; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 1.25rem; margin-inline: -1.25rem; padding: .25rem 1.25rem .75rem; scrollbar-width: none; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail > li { flex: 0 0 min(84%, 23rem); scroll-snap-align: start; }
+  .rail:focus-visible { outline-offset: -3px; }
+  @media (min-width: 768px) {
+    .rail { display: grid; gap: 1.5rem; overflow: visible; margin-inline: 0; padding: 0; }
+    .rail > li { flex: none; }
+  }
+  .rail-nav { margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  @media (min-width: 768px) { .rail-nav { display: none; } }
+  .pijlknop { display: grid; place-items: center; width: 3.25rem; height: 3.25rem; border: 2px solid var(--color-papier-3); border-radius: 999px; background: var(--color-wit); color: var(--color-inkt); cursor: pointer; transition: border-color .2s, color .2s, opacity .2s; }
+  .pijlknop:hover { border-color: var(--color-merk); color: var(--color-merk); }
+  .pijlknop:disabled { opacity: .4; cursor: default; }
+
+  /* Veelgestelde vragen: uitklappen met <details>, werkt zonder JavaScript. */
+  .vraag { border-radius: 14px; background: var(--color-wit); border: 1px solid var(--color-lijn-licht); }
+  .vraag summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 4rem; padding: 1rem 1.25rem; font-size: 1.25rem; font-weight: 800; line-height: 1.3; cursor: pointer; list-style: none; }
+  @media (min-width: 640px) { .vraag summary { padding: 1.1rem 1.75rem; } }
+  .vraag summary::-webkit-details-marker { display: none; }
+  .vraag summary:focus-visible { outline-offset: -3px; border-radius: 14px; }
+  .vraag-plus { position: relative; width: 2.25rem; height: 2.25rem; flex: none; border-radius: 999px; background: var(--color-papier-2); }
+  .vraag-plus::before, .vraag-plus::after { content: ""; position: absolute; inset: 50% auto auto 50%; width: .95rem; height: 2.5px; border-radius: 2px; background: var(--color-merk); transform: translate(-50%, -50%); transition: transform .25s var(--ease-zacht); }
+  .vraag-plus::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .vraag[open] .vraag-plus::after { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+/* Op smalle schermen passen twee keuzes naast elkaar, zodat het formulier niet eindeloos doorloopt. */
+@media (max-width: 639px) {
+  .keuze { gap: .5rem; padding: .55rem .65rem; font-size: 1.0625rem; min-height: 3.5rem; }
+  .keuze input { width: 1.25rem; height: 1.25rem; }
+}

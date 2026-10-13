@@ -1,5 +1,5 @@
 import { chromium } from 'playwright';
-const U = 'http://127.0.0.1:4504/sitefront/brillen-bij-u-thuis/';
+const U = process.env.URL || 'http://127.0.0.1:4504/brillen-bij-u-thuis/';
 const b = await chromium.launch();
 for (const [w, h] of [[1440, 900], [390, 844]]) {
   const p = await (await b.newContext({ viewport: { width: w, height: h }, isMobile: w < 500, hasTouch: w < 500, deviceScaleFactor: 1 })).newPage();

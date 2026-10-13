@@ -4,12 +4,11 @@ import Base from '../layouts/Base.astro';
 import Kop from '../components/Kop.astro';
 import Voet from '../components/Voet.astro';
 import Icoon from '../components/Icoon.astro';
-import { site, reviews, tijden, waHoi } from '../data/site';
+import { site, reviews, tijden, waHoi, zorg, faq } from '../data/site';
 
 // Eigen beeld van brillenbijuthuis.nl; sfeerfoto's van Unsplash. Zie src/assets/BRONNEN.txt.
 import sHero from '../assets/s-hero.jpg';
 import sMeting from '../assets/s-meting.jpg';
-import sHanden from '../assets/s-handen.jpg';
 import eMeting from '../assets/eigen-meting.jpg';
 import eMonturen from '../assets/eigen-monturen.jpg';
 import ePasglazen from '../assets/eigen-pasglazen.jpg';
@@ -20,9 +19,8 @@ import pMeander from '../assets/p-meander.png';
 
 // Teksten uit hun eigen pagina's (Home, Diensten, Over ons) en hun folder.
 const diensten = [
-  { t: 'Oogmeting aan huis', d: 'Een oogmeting is kosteloos, net als ons advies wat daar uit volgt.', l: ['Gemeten met een pasbril, net als bij de oogarts', 'Door een gediplomeerde opticien'], src: sMeting, pos: '50% 50%', alt: 'Bril voor een letterkaart (sfeerfoto)', bron: 'Sfeerfoto' },
-  { t: 'Een bril op maat', d: 'In alle categorieën bieden wij u een ruime keuze in onze monturen.', l: ['Vertebril of leesbril', 'Bifocale of multifocale bril', 'Zonnebril'], src: eMonturen, pos: '50% 60%', alt: 'Lade met monturen die de opticien meeneemt', bron: 'Eigen foto' },
-  { t: 'Thuis afgeleverd', d: 'Wij maken uw bril op maat en leveren hem bij u thuis af.', l: ['Nadien kosteloos bijstellen', 'Teruggave van uw zorgverzekering krijgt u ook bij ons'], src: sHanden, pos: '55% 50%', alt: 'Handen die een bril vasthouden (sfeerfoto)', bron: 'Sfeerfoto' },
+  { t: 'Oogmeting aan huis', d: 'Een oogmeting is kosteloos, net als ons advies wat daar uit volgt.', l: ['Gemeten met een pasbril, net als bij de oogarts', 'Door een gediplomeerde opticien'], src: sMeting, pos: 'object-[50%_50%]', alt: 'Bril voor een letterkaart (sfeerfoto)', bron: 'Sfeerfoto' },
+  { t: 'Een bril op maat', d: 'In alle categorieën bieden wij u een ruime keuze in onze monturen.', l: ['Vertebril of leesbril', 'Bifocale of multifocale bril', 'Zonnebril'], src: eMonturen, pos: 'object-[50%_60%]', alt: 'Lade met monturen die de opticien meeneemt', bron: 'Eigen foto' },
 ];
 const brillen = ['Vertebril', 'Leesbril', 'Bifocale bril', 'Multifocale bril', 'Zonnebril'];
 
@@ -30,7 +28,7 @@ const stappen = [
   ['Bel of app', 'Bel of mail voor een afspraak met één van onze gediplomeerde opticiens.'],
   ['Oogmeting bij u thuis', 'Kosteloos, met een pasbril. Het advies dat daaruit volgt ook.'],
   ['Bril uitkiezen', 'Uit een ruime keuze in monturen, in alle categorieën.'],
-  ['Thuis afgeleverd', 'Uw bril op maat komt bij u thuis. Nadien kosteloos bijstellen.'],
+  ['Teruggave zorg\u00ADverzekering', 'Recht op een teruggave? Die krijgt u ook bij ons. U dient de factuur in bij uw zorgverzekering.'],
 ];
 
 const partners = [
@@ -47,12 +45,14 @@ const kaart = [
   { w: 'KOSTELOOS', s: 'text-[max(1.05rem,6cqi)]', m: '0,4' },
   { w: 'MET EEN PASBRIL', s: 'text-[max(.85rem,4.2cqi)]', m: '0,6' },
   { w: 'EN EEN BRIL OP MAAT', s: 'text-[max(.72rem,3.2cqi)]', m: '0,8' },
-  { w: 'BIJ U THUIS AFGELEVERD', s: 'text-[max(.62rem,2.5cqi)]', m: '1,0' },
+  { w: 'TERUGGAVE ZORGVERZEKERING', s: 'text-[max(.58rem,2.25cqi)]', m: '1,0' },
 ];
 
 const sterren = [1, 2, 3, 4, 5];
+// Vertraging voor het binnenkomen, als class: een style-attribuut zou door de CSP geblokkeerd worden.
+const d = ['[--d:0s]', '[--d:.06s]', '[--d:.12s]', '[--d:.18s]'];
 ---
-<Base title="Brillen bij u thuis | De opticien aan huis door midden en zuid Nederland" description="Oogmeting aan huis en een nieuwe bril bij u thuis. Kosteloze oogmeting en advies, ruime keuze in monturen, bril op maat thuis afgeleverd. Bel 06 555 77 424.">
+<Base title="Opticien aan huis, oogmeting gratis | Brillen bij u thuis" description="Opticien aan huis in midden en zuid Nederland. Gratis oogmeting en advies bij u thuis. Teruggave zorgverzekering krijgt u ook bij ons. Bel 06 555 77 424." schema>
   <div class="relative">
     <Kop />
 
@@ -63,8 +63,7 @@ const sterren = [1, 2, 3, 4, 5];
 
       <div class="wrap w-full pb-28 pt-40 md:pb-20 lg:pt-48">
         <div class="max-w-[46rem]">
-          <p class="eyebrow eyebrow-licht">De opticien aan huis</p>
-          <h1 id="inhoud" class="mt-5 text-hero">Een nieuwe bril, gewoon bij u <span class="text-merk-licht">thuis.</span></h1>
+          <h1 id="inhoud"><span class="eyebrow eyebrow-licht block">Opticien aan huis</span><span class="mt-5 block text-hero">Een nieuwe bril, gewoon bij u <span class="text-merk-licht">thuis.</span></span></h1>
           <p class="mt-7 max-w-xl text-xl leading-relaxed text-wit md:text-[1.5rem]">Oogmeting aan huis? Een nieuwe bril aanschaffen bij u thuis? Wij komen naar u toe, door midden en zuid Nederland.</p>
           <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />Bel {site.tel}</a>
@@ -73,7 +72,7 @@ const sterren = [1, 2, 3, 4, 5];
           <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1.0625rem] text-wit">
             <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
             <li class="flex items-center gap-2"><Icoon naam="vink" class="h-5 w-5 text-merk-licht" />Oogmeting en advies kosteloos</li>
-            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk-licht" />Ma t/m vr 09:00 tot 17:00</li>
+            <li class="flex items-center gap-2"><Icoon naam="polis" class="h-5 w-5 text-merk-licht" /><a href="#zorgverzekering" class="text-wit underline decoration-merk-licht decoration-2 underline-offset-4 hover:text-merk-licht">Teruggave zorgverzekering</a></li>
           </ul>
         </div>
       </div>
@@ -84,7 +83,7 @@ const sterren = [1, 2, 3, 4, 5];
     <!-- 2. De letterkaart + wie we zijn + partners -->
     <section class="bg-wit py-24 md:py-32" aria-labelledby="t-wie">
       <div class="wrap grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-16">
-        <figure class="rijs lg:col-span-6" aria-label="Letterkaart: oogmeting aan huis, kosteloos, met een pasbril, en een bril op maat, bij u thuis afgeleverd">
+        <figure class="rijs lg:col-span-6" aria-label="Letterkaart: oogmeting aan huis, kosteloos, met een pasbril, en een bril op maat. Teruggave van uw zorgverzekering.">
           <div class="rounded-[14px] border border-lijn-licht bg-papier px-4 py-9 sm:px-8 md:py-12">
             <div class="space-y-4 [container-type:inline-size] md:space-y-5" aria-hidden="true">
               {kaart.map((r, i) => (
@@ -100,11 +99,11 @@ const sterren = [1, 2, 3, 4, 5];
         </figure>
         <div class="lg:col-span-6">
           <h2 id="t-wie" class="rijs text-4xl">Wij komen naar u toe!</h2>
-          <p class="rijs mt-7 text-xl leading-relaxed text-steen" style="--d:.06s">Brillen bij u thuis verricht oogmetingen bij u thuis en kan naar aanleiding daarvan een bril op maat voor u maken en bij u thuis afleveren.</p>
-          <ul class="rijs mt-8 flex flex-wrap gap-3" style="--d:.1s" aria-label="Soorten brillen">
+          <p class="rijs mt-7 text-xl leading-relaxed text-steen [--d:.06s]">Brillen bij u thuis verricht oogmetingen bij u thuis en kan naar aanleiding daarvan een bril op maat voor u maken.</p>
+          <ul class="rijs mt-8 flex flex-wrap gap-3 [--d:.1s]" aria-label="Soorten brillen">
             {brillen.map((b) => <li class="chip">{b}</li>)}
           </ul>
-          <div class="rijs mt-12 border-t border-lijn-licht pt-8" style="--d:.14s">
+          <div class="rijs mt-12 border-t border-lijn-licht pt-8 [--d:.14s]">
             <p class="text-lg font-bold">Officieel samenwerkingspartner van</p>
             <ul class="mt-6 grid grid-cols-2 items-center gap-x-8 gap-y-6 sm:grid-cols-4">
               {partners.map((p) => (
@@ -116,26 +115,23 @@ const sterren = [1, 2, 3, 4, 5];
       </div>
     </section>
 
-    <!-- 3. Diensten: fotokaarten -->
+    <!-- 3. Diensten: twee fotokaarten en de zorgverzekering. Op mobiel een veegrij, zodat niet alles onder elkaar staat. -->
     <section id="diensten" class="py-24 md:py-32" aria-labelledby="t-diensten">
       <div class="wrap">
-        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div class="rijs lg:col-span-7">
-            <p class="eyebrow">Diensten</p>
-            <h2 id="t-diensten" class="mt-4 text-4xl">Van oogmeting tot bril op uw neus.</h2>
-          </div>
-          <p class="rijs max-w-md text-xl text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Wilt u een bril aanschaffen? Dan betaalt u de bril die u aan wilt schaffen.</p>
+        <div class="rijs max-w-3xl">
+          <p class="eyebrow">Diensten</p>
+          <h2 id="t-diensten" class="mt-4 text-4xl">Van oogmeting tot bril op uw neus.</h2>
         </div>
-        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-          {diensten.map((v, i) => (
-            <li class="rijs" style={`--d:${i * 0.06}s`}>
+        <ul id="r-diensten" class="rail rijs mt-10 md:grid-cols-2 lg:mt-16 lg:grid-cols-3" tabindex="0" aria-label="Diensten, veeg opzij voor meer">
+          {diensten.map((v) => (
+            <li>
               <article class="kaart group flex h-full flex-col overflow-hidden">
                 <div class="relative overflow-hidden">
-                  <Image src={v.src} alt={v.alt} widths={[420, 640, 860]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 100vw" quality={70} class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${v.pos}`} />
-                  <span class="absolute left-4 top-4 rounded-full bg-inkt/85 px-3 py-1 text-[.875rem] font-bold text-wit">{v.bron}</span>
+                  <Image src={v.src} alt={v.alt} widths={[420, 640, 860]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 46vw, 85vw" quality={70} class={`aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] ${v.pos}`} />
+                  {site.voorstel && <span class="absolute left-4 top-4 rounded-full bg-inkt/85 px-3 py-1 text-[.875rem] font-bold text-wit">{v.bron}</span>}
                 </div>
-                <div class="flex flex-1 flex-col p-7 sm:p-8">
-                  <h3 class="text-[2rem]">{v.t}</h3>
+                <div class="flex flex-1 flex-col p-6 sm:p-8">
+                  <h3 class="text-[clamp(1.6rem,1vw+1.3rem,2rem)]">{v.t}</h3>
                   <p class="mt-3 text-lg text-steen">{v.d}</p>
                   <ul class="mt-6 space-y-2.5 border-t border-lijn-licht pt-6">
                     {v.l.map((x) => <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk" />{x}</li>)}
@@ -145,7 +141,50 @@ const sterren = [1, 2, 3, 4, 5];
               </article>
             </li>
           ))}
+          <li class="md:col-span-2 lg:col-span-1">
+            <article class="group flex h-full flex-col rounded-[14px] bg-merk p-6 text-wit sm:p-8">
+              <span class="grid h-16 w-16 place-items-center rounded-full bg-wit text-merk"><Icoon naam="polis" class="h-9 w-9" /></span>
+              <h3 class="mt-8 text-[clamp(1.6rem,1vw+1.3rem,2rem)]">Teruggave zorg&shy;verzekering</h3>
+              <p class="mt-3 text-lg leading-relaxed">{zorg.kort}</p>
+              <ul class="mt-6 space-y-2.5 border-t border-wit/30 pt-6">
+                <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none" />U dient de factuur zelf in</li>
+                <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none" />Uitbetaald op uw eigen rekening</li>
+              </ul>
+              <a href="#zorgverzekering" class="mt-auto inline-flex items-center gap-2 pt-8 text-lg font-extrabold text-wit no-underline">Zo werkt het<Icoon naam="pijl" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" /></a>
+            </article>
+          </li>
         </ul>
+        <div class="rail-nav" data-rail="r-diensten">
+          <p class="num text-steen" aria-hidden="true"><b class="text-inkt" data-tel>1</b> van 3 · veeg opzij</p>
+          <div class="flex gap-3">
+            <button type="button" class="pijlknop" data-vorige aria-controls="r-diensten" aria-label="Vorige dienst"><Icoon naam="pijl" class="h-6 w-6 rotate-180" /></button>
+            <button type="button" class="pijlknop" data-volgende aria-controls="r-diensten" aria-label="Volgende dienst"><Icoon naam="pijl" class="h-6 w-6" /></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3b. Zorgverzekering: op verzoek van de klant groot en duidelijk. Tekst letterlijk van hun pagina Diensten. -->
+    <section id="zorgverzekering" class="border-y border-lijn-licht bg-wit py-20 md:py-28" aria-labelledby="t-zorg">
+      <div class="wrap grid gap-y-10 lg:grid-cols-12 lg:gap-x-16">
+        <div class="rijs lg:col-span-6">
+          <p class="eyebrow flex items-center gap-3"><Icoon naam="polis" class="h-6 w-6" />Zorgverzekering</p>
+          <h2 id="t-zorg" class="mt-5 text-4xl">Teruggave van uw zorg&shy;verzekering? <span class="text-merk">Die krijgt u ook bij ons.</span></h2>
+          <p class="mt-7 max-w-xl text-xl leading-relaxed text-steen">Mocht u vanuit uw zorgverzekering recht hebben op een teruggave, dan krijgt u die ook bij ons.</p>
+        </div>
+        <div class="rijs lg:col-span-6 lg:pt-10 [--d:.08s]">
+          <ol class="space-y-4">
+            <li class="flex gap-5 rounded-[14px] bg-papier p-6 sm:p-7">
+              <span class="stap-nr num text-[2.6rem]" aria-hidden="true">1</span>
+              <p class="text-lg leading-relaxed"><b class="block text-xl">Factuur indienen</b>U dient de factuur van ons in bij uw zorgverzekering.</p>
+            </li>
+            <li class="flex gap-5 rounded-[14px] bg-papier p-6 sm:p-7">
+              <span class="stap-nr num text-[2.6rem]" aria-hidden="true">2</span>
+              <p class="text-lg leading-relaxed"><b class="block text-xl">Geld terug</b>Uw zorgverzekering betaalt de declaratie uit op de rekening waar de premie van afgeschreven wordt.</p>
+            </li>
+          </ol>
+          <p class="mt-6 text-lg text-steen">Of u recht heeft op een teruggave, en hoeveel, staat in uw polis. Twijfelt u? <a href={site.telHref} class="link num font-bold text-inkt">Bel ons gerust</a>.</p>
+        </div>
       </div>
     </section>
 
@@ -161,13 +200,13 @@ const sterren = [1, 2, 3, 4, 5];
               <p class="mt-2 text-[1rem] font-bold leading-snug text-wit/90">oogmeting en advies</p>
             </div>
           </div>
-          <figcaption class="col-span-2 sm:col-span-5 text-[.9375rem] text-mist">Eigen foto's van brillenbijuthuis.nl. Gezicht van de klant onherkenbaar gemaakt.</figcaption>
+          {site.voorstel && <figcaption class="col-span-2 sm:col-span-5 text-[.9375rem] text-mist">Eigen foto's van brillenbijuthuis.nl. Gezicht van de klant onherkenbaar gemaakt.</figcaption>}
         </figure>
         <div class="lg:col-span-6">
           <p class="rijs eyebrow eyebrow-licht">Over ons</p>
           <h2 id="t-over" class="rijs mt-4 text-4xl">"Ouderwets" gemeten, met een pasbril.</h2>
-          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90" style="--d:.06s">Wij meten, net als de oogarts, met een pasbril. Dit omdat je zo een hele natuurgetrouwe manier van kijken krijgt. De pasbril komt immers het dichtst in de buurt bij de bril die u op uw neus heeft staan.</p>
-          <ul class="rijs mt-9 space-y-3" style="--d:.12s">
+          <p class="rijs mt-7 text-xl leading-relaxed text-wit/90 [--d:.06s]">Wij meten, net als de oogarts, met een pasbril. Dit omdat je zo een hele natuurgetrouwe manier van kijken krijgt. De pasbril komt immers het dichtst in de buurt bij de bril die u op uw neus heeft staan.</p>
+          <ul class="rijs mt-9 space-y-3 [--d:.12s]">
             {[
               ['Gediplomeerde opticien', 'Een oogmeting wordt alleen gedaan door een gediplomeerde opticien.'],
               ['Altijd up to date', 'Door middel van nascholing houden we de kennis altijd up to date.'],
@@ -183,25 +222,28 @@ const sterren = [1, 2, 3, 4, 5];
       </div>
     </section>
 
-    <!-- 5. Werkwijze -->
+    <!-- 5. Werkwijze: op mobiel een veegrij -->
     <section id="werkwijze" class="py-24 md:py-32" aria-labelledby="t-werk">
       <div class="wrap">
         <div class="rijs max-w-2xl">
           <p class="eyebrow">Werkwijze</p>
           <h2 id="t-werk" class="mt-4 text-4xl">Zo gaat het.</h2>
         </div>
-        <ol class="mt-12 grid gap-6 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
-          {stappen.map(([t, d], i) => (
-            <li class="rijs kaart flex flex-col p-8" style={`--d:${i * 0.06}s`}>
+        <ol id="r-werk" class="rail rijs mt-10 md:grid-cols-2 lg:mt-16 xl:grid-cols-4" tabindex="0" aria-label="Werkwijze in vier stappen, veeg opzij voor meer">
+          {stappen.map(([t, dd], i) => (
+            <li class="kaart flex flex-col p-7 sm:p-8">
               <span class="stap-nr num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <h3 class="mt-6 text-2xl">{t}</h3>
-              <p class="mt-3 text-lg text-steen">{d}</p>
+              <p class="mt-3 text-lg text-steen">{dd}</p>
             </li>
           ))}
         </ol>
-        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-[14px] bg-inkt px-7 py-8 text-wit md:flex-row md:items-center md:px-10">
-          <p class="max-w-2xl text-xl leading-snug">Mocht u buiten onze openingstijden een afspraak willen maken, neem dan even contact met ons op.</p>
-          <a href={site.telHref} class="knop knop-merk num shrink-0"><Icoon naam="tel" />Bel {site.tel}</a>
+        <div class="rail-nav" data-rail="r-werk">
+          <p class="num text-steen" aria-hidden="true">Stap <b class="text-inkt" data-tel>1</b> van {stappen.length}</p>
+          <div class="flex gap-3">
+            <button type="button" class="pijlknop" data-vorige aria-controls="r-werk" aria-label="Vorige stap"><Icoon naam="pijl" class="h-6 w-6 rotate-180" /></button>
+            <button type="button" class="pijlknop" data-volgende aria-controls="r-werk" aria-label="Volgende stap"><Icoon naam="pijl" class="h-6 w-6" /></button>
+          </div>
         </div>
       </div>
     </section>
@@ -210,7 +252,7 @@ const sterren = [1, 2, 3, 4, 5];
     <section class="bg-merk text-wit" aria-label="Uit een review">
       <figure class="wrap py-20 md:py-24">
         <blockquote class="rijs max-w-5xl text-[clamp(1.8rem,3vw+.8rem,3.4rem)] font-[800] leading-[1.12] tracking-[-.02em]">“Goed te weten dat de opticien naar je toe komt als je zelf niet meer naar de opticien toe kunt!”</blockquote>
-        <figcaption class="rijs mt-7 text-lg text-wit/90" style="--d:.08s">Adri v. · Google review</figcaption>
+        <figcaption class="rijs mt-7 text-lg text-wit/90 [--d:.08s]">Adri v. · Google review</figcaption>
       </figure>
     </section>
 
@@ -222,7 +264,7 @@ const sterren = [1, 2, 3, 4, 5];
             <p class="eyebrow">Afspraak aan huis</p>
             <h2 id="t-afspraak" class="mt-4 text-4xl">Waar mogen we langskomen?</h2>
           </div>
-          <p class="rijs max-w-md text-xl text-steen lg:col-span-5 lg:self-end" style="--d:.1s">Kies wat past. U ziet meteen het bericht; versturen doet u zelf in WhatsApp. Of bel ons gewoon.</p>
+          <p class="rijs max-w-md text-xl text-steen lg:col-span-5 lg:self-end [--d:.1s]">Kies wat past. U ziet meteen het bericht en verstuurt het zelf, via WhatsApp of e-mail. Of bel ons gewoon.</p>
         </div>
 
         <form class="mt-12 grid grid-cols-[minmax(0,1fr)] gap-8 lg:mt-14 lg:grid-cols-12" data-afspraak>
@@ -237,10 +279,10 @@ const sterren = [1, 2, 3, 4, 5];
             </fieldset>
             <fieldset>
               <legend class="veld-label"><span class="text-merk">2.</span> Waarvoor?</legend>
-              <div class="grid gap-3 sm:grid-cols-2">
+              <div class="grid gap-3 min-[375px]:grid-cols-2">
                 <label class="keuze"><input type="radio" name="wat" value="een oogmeting" checked />Oogmeting</label>
                 <label class="keuze"><input type="radio" name="wat" value="een nieuwe bril" />Nieuwe bril</label>
-                <label class="keuze"><input type="radio" name="wat" value="reparatie of bijstellen van een bril" />Reparatie of bijstellen</label>
+                <label class="keuze"><input type="radio" name="wat" value="reparatie van een bril" />Reparatie</label>
                 <label class="keuze"><input type="radio" name="wat" value="een zonnebril" />Zonnebril</label>
               </div>
             </fieldset>
@@ -251,7 +293,7 @@ const sterren = [1, 2, 3, 4, 5];
               </div>
               <fieldset>
                 <legend class="veld-label"><span class="text-merk">4.</span> Welk dagdeel?</legend>
-                <div class="grid gap-3 sm:grid-cols-3">
+                <div class="grid gap-3 min-[375px]:grid-cols-2 sm:grid-cols-3 min-[375px]:[&>label:last-child]:col-span-2 sm:[&>label:last-child]:col-span-1">
                   <label class="keuze"><input type="radio" name="dagdeel" value="ochtend" />Ochtend</label>
                   <label class="keuze"><input type="radio" name="dagdeel" value="middag" />Middag</label>
                   <label class="keuze"><input type="radio" name="dagdeel" value="" checked />Maakt niet uit</label>
@@ -268,7 +310,8 @@ const sterren = [1, 2, 3, 4, 5];
             <div class="sticky top-6 rounded-[14px] bg-inkt p-6 text-wit sm:p-9">
               <p class="text-lg font-bold text-mist">Uw bericht</p>
               <p class="mt-4 min-h-[9rem] whitespace-pre-line rounded-[12px] bg-inkt-2 px-5 py-5 text-[1.1875rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
-              <a href={waHoi} class="knop knop-groen mt-6 w-full" data-verstuur target="_blank" rel="noopener"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <a href={waHoi} class="knop knop-groen mt-6 w-full" data-verstuur target="_blank" rel="noopener noreferrer"><Icoon naam="wa" />Versturen via WhatsApp</a>
+              <a href={`mailto:${site.mail}`} class="knop knop-wit mt-3 w-full" data-mail>Liever per e-mail</a>
               <div class="mt-7 border-t border-lijn pt-6">
                 <p class="text-mist">Of bel direct:</p>
                 <a href={site.telHref} class="num mt-1 block text-[clamp(2rem,3vw+1rem,2.8rem)] font-[800] leading-tight text-wit no-underline hover:text-merk-licht">{site.tel}</a>
@@ -279,7 +322,7 @@ const sterren = [1, 2, 3, 4, 5];
       </div>
     </section>
 
-    <!-- 8. Reviews -->
+    <!-- 8. Reviews: op mobiel een veegrij -->
     <section class="py-24 md:py-32" aria-labelledby="t-rev">
       <div class="wrap">
         <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
@@ -287,7 +330,7 @@ const sterren = [1, 2, 3, 4, 5];
             <p class="eyebrow">Reviews</p>
             <h2 id="t-rev" class="mt-4 text-4xl">Wat klanten zeggen.</h2>
           </div>
-          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-6 py-5 no-underline transition-shadow hover:shadow-md lg:col-span-4 lg:col-start-9 lg:justify-self-end" style="--d:.06s">
+          <a href={site.reviews} target="_blank" rel="noopener noreferrer" class="rijs kaart flex items-center gap-4 self-start px-6 py-5 no-underline transition-shadow hover:shadow-[0_6px_18px_#1d0a2a1f] lg:col-span-4 lg:col-start-9 lg:justify-self-end [--d:.06s]">
             <Icoon naam="g" class="h-10 w-10 flex-none" />
             <span>
               <span class="flex items-center gap-2"><b class="num text-3xl font-[800] leading-none text-inkt">{site.google.score}</b><span class="flex text-merk" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span></span>
@@ -295,20 +338,46 @@ const sterren = [1, 2, 3, 4, 5];
             </span>
           </a>
         </div>
-        <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:mt-14 lg:grid-cols-3">
-          {reviews.map((r, i) => (
-            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
-              <figure class="kaart flex h-full flex-col p-8">
+        <ul id="r-rev" class="rail rijs mt-10 md:grid-cols-2 lg:mt-14 lg:grid-cols-3" tabindex="0" aria-label="Reviews, veeg opzij voor meer">
+          {reviews.map((r) => (
+            <li>
+              <figure class="kaart flex h-full flex-col p-6 sm:p-8">
                 <div class="flex gap-0.5 text-merk" role="img" aria-label="5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
                 <blockquote class="mt-5 flex-1 text-lg leading-relaxed">“{r.tekst}”</blockquote>
                 <figcaption class="mt-6 flex items-center gap-3 border-t border-lijn-licht pt-5">
                   <span class="grid h-11 w-11 flex-none place-items-center rounded-full bg-papier-2 text-lg font-bold">{r.naam[0]}</span>
-                  <span><b class="block">{r.naam}</b><span class="text-steen">Google review, {r.wanneer}</span></span>
+                  <span><b class="block">{r.naam}</b><span class="text-steen">Google review</span></span>
                 </figcaption>
               </figure>
             </li>
           ))}
         </ul>
+        <div class="rail-nav" data-rail="r-rev">
+          <p class="num text-steen" aria-hidden="true"><b class="text-inkt" data-tel>1</b> van {reviews.length} · veeg opzij</p>
+          <div class="flex gap-3">
+            <button type="button" class="pijlknop" data-vorige aria-controls="r-rev" aria-label="Vorige review"><Icoon naam="pijl" class="h-6 w-6 rotate-180" /></button>
+            <button type="button" class="pijlknop" data-volgende aria-controls="r-rev" aria-label="Volgende review"><Icoon naam="pijl" class="h-6 w-6" /></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8b. Veelgestelde vragen: alleen antwoorden uit hun eigen teksten. Zelfde inhoud staat als FAQPage in de JSON-LD en in llms.txt. -->
+    <section id="vragen" class="bg-papier-2 py-24 md:py-32" aria-labelledby="t-vragen">
+      <div class="wrap grid gap-y-10 lg:grid-cols-12 lg:gap-x-16">
+        <div class="rijs lg:col-span-4">
+          <p class="eyebrow">Vragen</p>
+          <h2 id="t-vragen" class="mt-4 text-4xl">Goed om te weten.</h2>
+          <p class="mt-6 text-xl text-steen">Staat uw vraag er niet bij? Bel <a href={site.telHref} class="link num font-bold text-inkt">{site.tel}</a>.</p>
+        </div>
+        <div class="rijs space-y-3 lg:col-span-8 [--d:.06s]">
+          {faq.map(([v, a], i) => (
+            <details class="vraag" open={i === 1}>
+              <summary>{v}<span class="vraag-plus" aria-hidden="true"></span></summary>
+              <p class="px-5 pb-6 text-lg leading-relaxed text-steen sm:px-7">{a}</p>
+            </details>
+          ))}
+        </div>
       </div>
     </section>
 
@@ -320,13 +389,13 @@ const sterren = [1, 2, 3, 4, 5];
           <h2 id="t-contact" class="rijs mt-4 text-4xl">Bel ons gerust.</h2>
           <p class="rijs mt-6 max-w-xl text-xl text-steen">Mocht u specifieke vragen hebben waar u geen antwoord op vindt, dan mag u ons altijd bellen of mailen.</p>
           <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.1rem,9vw,5rem)] font-[800] leading-none tracking-[-.02em] text-inkt no-underline transition-colors hover:text-merk">{site.tel}</a></p>
-          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--d:.1s">
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap [--d:.1s]">
             <a href={site.telHref} class="knop knop-merk"><Icoon naam="tel" />Bellen</a>
-            <a href={waHoi} class="knop knop-rand"><Icoon naam="wa" class="text-[#1a7f4b]" />WhatsApp</a>
+            <a href={waHoi} target="_blank" rel="noopener noreferrer" class="knop knop-rand"><Icoon naam="wa" class="text-[#1a7f4b]" />WhatsApp</a>
             <a href={`mailto:${site.mail}`} class="knop knop-rand !whitespace-normal break-all text-[1.0625rem]">{site.mail}</a>
           </div>
         </div>
-        <div class="rijs lg:col-span-5" style="--d:.15s">
+        <div class="rijs lg:col-span-5 [--d:.15s]">
           <div class="kaart overflow-hidden">
             <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn-licht px-6 py-5">
               <p class="text-xl font-extrabold">Openingstijden</p>
@@ -369,6 +438,7 @@ const sterren = [1, 2, 3, 4, 5];
   const f = document.querySelector<HTMLFormElement>('[data-afspraak]');
   const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
   const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  const mail = document.querySelector<HTMLAnchorElement>('[data-mail]');
   if (f && vb && knop) {
     const tekst = () => {
       const d = new FormData(f);
@@ -384,11 +454,41 @@ const sterren = [1, 2, 3, 4, 5];
       if (naam) r.push(`Groet, ${naam}`);
       return r.join('\n');
     };
-    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; };
+    const zet = () => { const t = tekst(); vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`; if (mail) mail.href = `mailto:${site.mail}?subject=${encodeURIComponent('Afspraak aan huis')}&body=${encodeURIComponent(t)}`; };
     f.addEventListener('input', zet); f.addEventListener('change', zet);
     f.addEventListener('submit', (e) => e.preventDefault());
     zet();
   }
+  // Veegrijen: teller bijwerken en pijlknoppen voor wie niet weet dat je kunt vegen.
+  document.querySelectorAll<HTMLElement>('[data-rail]').forEach((nav) => {
+    const rij = document.getElementById(nav.dataset.rail!);
+    if (!rij) return;
+    const items = [...rij.children] as HTMLElement[];
+    const tel = nav.querySelector('[data-tel]');
+    const vorige = nav.querySelector<HTMLButtonElement>('[data-vorige]');
+    const volgende = nav.querySelector<HTMLButtonElement>('[data-volgende]');
+    const huidig = () => {
+      const x = rij.scrollLeft + rij.clientWidth * 0.3;
+      let n = 0; items.forEach((el, i) => { if (el.offsetLeft - rij.offsetLeft <= x) n = i; });
+      return rij.scrollLeft + rij.clientWidth >= rij.scrollWidth - 4 ? items.length - 1 : n;
+    };
+    const ga = (i: number) => {
+      const el = items[Math.max(0, Math.min(items.length - 1, i))];
+      const glad = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+      rij.scrollTo({ left: el.offsetLeft - rij.offsetLeft - parseFloat(getComputedStyle(rij).scrollPaddingLeft || '0'), behavior: glad ? 'smooth' : 'auto' });
+    };
+    const zet = () => {
+      const n = huidig();
+      if (tel) tel.textContent = String(n + 1);
+      if (vorige) vorige.disabled = rij.scrollLeft < 4;
+      if (volgende) volgende.disabled = n === items.length - 1;
+    };
+    vorige?.addEventListener('click', () => ga(huidig() - 1));
+    volgende?.addEventListener('click', () => ga(huidig() + 1));
+    rij.addEventListener('scroll', () => requestAnimationFrame(zet), { passive: true });
+    zet();
+  });
+
   // Vandaag in de tijdentabel + nu bereikbaar.
   const nu = new Date(); const dag = nu.getDay(); const uur = nu.getHours() + nu.getMinutes() / 60;
   document.querySelector(`[data-dag="${dag}"]`)?.setAttribute('data-vandaag', '');

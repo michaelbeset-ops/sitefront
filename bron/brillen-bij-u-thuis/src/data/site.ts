@@ -3,7 +3,7 @@
 //   "De opticien aan huis door midden en zuid Nederland". Oogmeting kosteloos, net als het advies. Meten "ouderwets" met een pasbril.
 //   Teruggave zorgverzekering. Gediplomeerde opticien, nascholing. Vertebril, leesbril, bifocale, multifocale bril, zonnebril.
 //   Officieel samenwerkingspartner van Allemaal Aafje, Envida ledenservice, Thebe extra en Meander eXtra.
-//   Bedrijfsgegevens: Piketberg 6, 5025 HZ Tilburg (woonwijk: alleen de plaats tonen), 06 555 77 424, brillenbijuthuis@gmail.com,
+//   Bedrijfsgegevens: adres in Tilburg (woonadres: alleen de plaats tonen), 06 555 77 424, brillenbijuthuis@gmail.com,
 //   KvK 88768937. Tijden: homepage ma-vr 09:00-18:00, bedrijfsgegevens ma t/m vr 09:00-17:00, Google ma-do 09:00-17:00.
 //   We tonen 09:00-17:00 (bedrijfsgegevens + Google).
 // - Folder op Google (Van eigenaar): "Gratis oogmeting en advies bij u thuis", "Ruime keuze in monturen", "Nadien kosteloos bijstellen",
@@ -24,6 +24,25 @@ export const site = {
   themeColor: '#1d0a2a',
   voorstel: import.meta.env.PUBLIC_VOORSTEL === '1',
 };
+
+// Letterlijk van hun pagina Diensten. Op verzoek van de klant (12-10-2026) prominent op de site; "thuis afgeleverd" en "kosteloos bijstellen" eruit.
+// Op verzoek van Paul (13-10-2026) ook eruit: alles over bijstellen, "afspraken buiten openingstijden" en "dan betaalt u de bril die u aan wilt schaffen".
+export const zorg = {
+  kop: 'Teruggave van uw zorgverzekering? Die krijgt u ook bij ons.',
+  kort: 'Recht op een teruggave vanuit uw zorgverzekering? Die krijgt u ook bij ons.',
+  uitleg: 'Mocht u vanuit uw zorgverzekering recht hebben op een teruggave? Dan krijgt u die ook bij ons. Als u uw factuur indient bij uw zorgverzekering betalen zij de declaratie uit op de rekening waar de premie van afgeschreven wordt.',
+};
+
+// Vragen en antwoorden, alleen met feiten uit hun eigen site (Home, Over ons, Diensten, Bedrijfsgegevens).
+// Staat zichtbaar op de pagina en als FAQPage in JSON-LD, zodat zoekmachines en AI-assistenten dezelfde antwoorden vinden.
+export const faq: [string, string][] = [
+  ['Kost een oogmeting aan huis iets?', 'Nee. Een oogmeting is kosteloos, net als ons advies wat daar uit volgt.'],
+  ['Krijg ik een teruggave van mijn zorgverzekering?', 'Mocht u vanuit uw zorgverzekering recht hebben op een teruggave, dan krijgt u die ook bij ons. U dient de factuur in bij uw zorgverzekering. Zij betalen de declaratie uit op de rekening waar de premie van afgeschreven wordt.'],
+  ['Waar komen jullie langs?', 'Wij komen bij u thuis, door midden en zuid Nederland. Wij zijn gevestigd in Tilburg.'],
+  ['Hoe meten jullie mijn ogen?', 'Wij meten, net als de oogarts, "ouderwets" met een pasbril. Zo krijgt u een hele natuurgetrouwe manier van kijken: de pasbril komt het dichtst in de buurt bij de bril die u op uw neus heeft staan. De meting wordt alleen gedaan door een gediplomeerde opticien.'],
+  ['Welke brillen kan ik bij jullie kopen?', 'Een vertebril, een leesbril, een bifocale bril, een multifocale bril of een zonnebril. In alle categorieën bieden wij een ruime keuze in monturen.'],
+  ['Wanneer zijn jullie bereikbaar?', 'Maandag tot en met vrijdag van 09:00 tot 17:00 uur.'],
+];
 
 // Maandag = 1 ... zondag = 0. Bron: bedrijfsgegevens-pagina ("Maandag tot en met vrijdag van 09:00 tot 17:00 uur") en Google.
 export const tijden: { dag: string; nr: number; open?: [number, number] }[] = [

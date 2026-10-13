@@ -1,10 +1,51 @@
 ---
 import '../styles/global.css';
 import kopUrl from '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2?url';
-import { site, url } from '../data/site';
+import { site, url, faq, tijden } from '../data/site';
 
-interface Props { title: string; description: string; }
-const { title, description } = Astro.props;
+interface Props { title: string; description: string; schema?: boolean; noindex?: boolean }
+const { title, description, schema = false, noindex = false } = Astro.props;
+const canoniek = new URL(Astro.url.pathname, Astro.site).href;
+const thuis = new URL(url(''), Astro.site).href;
+
+// Gestructureerde gegevens, alleen in de definitieve build (in een voorstel hoort geen JSON-LD die naar hun domein wijst).
+// Geen straat: Piketberg 6 is een woonadres. Geen reviewscore: Google toont die niet voor eigen reviews.
+const ld = !site.voorstel && schema && {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['Optician', 'LocalBusiness'],
+      '@id': `${thuis}#bedrijf`,
+      name: site.naam,
+      description: 'De opticien aan huis door midden en zuid Nederland. Kosteloze oogmeting en advies bij u thuis, gemeten met een pasbril door een gediplomeerde opticien. Teruggave van uw zorgverzekering krijgt u ook bij ons.',
+      url: thuis,
+      image: new URL(url('og.jpg'), Astro.site).href,
+      logo: new URL(url('favicon.svg'), Astro.site).href,
+      telephone: '+31655577424',
+      email: site.mail,
+      address: { '@type': 'PostalAddress', addressLocality: site.plaats, addressCountry: 'NL' },
+      areaServed: [{ '@type': 'AdministrativeArea', name: 'Midden-Nederland' }, { '@type': 'AdministrativeArea', name: 'Zuid-Nederland' }],
+      hasMap: site.reviews,
+      openingHoursSpecification: [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: tijden.filter((t) => t.open).map((t) => `https://schema.org/${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][t.nr]}`),
+        opens: '09:00', closes: '17:00',
+      }],
+      knowsAbout: ['oogmeting aan huis', 'vertebril', 'leesbril', 'bifocale bril', 'multifocale bril', 'zonnebril'],
+      makesOffer: [
+        { '@type': 'Offer', price: '0', priceCurrency: 'EUR', itemOffered: { '@type': 'Service', name: 'Oogmeting aan huis', description: 'Kosteloze oogmeting en advies bij u thuis, met een pasbril.' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Bril op maat', description: 'Vertebril, leesbril, bifocale, multifocale of zonnebril uit een ruime keuze in monturen.' } },
+      ],
+      identifier: { '@type': 'PropertyValue', propertyID: 'KvK', value: site.kvk },
+    },
+    { '@type': 'WebSite', '@id': `${thuis}#site`, url: thuis, name: site.naam, inLanguage: 'nl-NL', publisher: { '@id': `${thuis}#bedrijf` } },
+    {
+      '@type': 'FAQPage',
+      '@id': `${thuis}#vragen`,
+      mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+    },
+  ],
+};
 ---
 <!doctype html>
 <html lang="nl">
@@ -13,7 +54,10 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    {site.voorstel || noindex ? <meta name="robots" content="noindex, nofollow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+    {!site.voorstel && !noindex && <link rel="canonical" href={canoniek} />}
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content={site.themeColor} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="preload" as="font" type="font/woff2" href={kopUrl} crossorigin />
@@ -24,17 +68,20 @@ const { title, description } = Astro.props;
     <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:url" content={canoniek} />
     <meta property="og:site_name" content={site.naam} />
+    <meta property="og:image:alt" content="Brillen bij u thuis, de opticien aan huis" />
     <meta name="twitter:card" content="summary_large_image" />
+    {!site.voorstel && <link rel="alternate" type="text/plain" title="Samenvatting voor AI-assistenten" href={url('llms.txt')} />}
+    {ld && <script type="application/ld+json" set:html={JSON.stringify(ld)} />}
     <script is:inline>document.documentElement.classList.add('js')</script>
   </head>
   <body class="min-h-dvh">
     {site.voorstel && (
       <div class="relative z-50 bg-merk text-wit">
-        <p class="wrap py-2 text-[.875rem] font-medium leading-snug" style="font-family: system-ui, sans-serif">
+        <p class="wrap py-2 font-[system-ui,sans-serif] text-[.875rem] font-medium leading-snug">
           Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiele website.{" "}
-          <a href="https://www.sitefront.nl" class="font-bold underline underline-offset-2">sitefront.nl</a>
+          <a href="https://www.sitefront.nl" rel="noopener" class="font-bold underline underline-offset-2">sitefront.nl</a>
         </p>
       </div>
     )}

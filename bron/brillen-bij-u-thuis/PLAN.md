@@ -14,4 +14,16 @@ zorgverzekering) > werkwijze 01-04 + buiten openingstijden > reviewcitaat (rood)
 
 ## Bronnen
 brillenbijuthuis.nl (5 pagina's + 2 privacy-pdf's) in bron/site; folder en profiel op Google in bron/google (5,0 uit 40, nieuwste review
-een week oud). Adres Piketberg 6 is een woonwijk: alleen Tilburg tonen. Naam opticien staat alleen in reviews: niet getoond.
+een week oud). Het adres is een woonadres: alleen Tilburg tonen. Naam opticien staat alleen in reviews: niet getoond.
+
+## Ronde 2 (12-10-2026), op verzoek van Michael
+- Tekst: "thuis afgeleverd" en "nadien kosteloos bijstellen" overal eruit (dienstkaart, werkwijze, letterkaart, topbalk, footer, formulier).
+- 13-10-2026 (Paul): ook "afspraken buiten openingstijden" en "dan betaalt u de bril die u aan wilt schaffen" eruit.
+- Zorgverzekering prominent: eigen sectie #zorgverzekering (tekst letterlijk van hun pagina Diensten), rode dienstkaart, menu-item,
+  topbalk, hero, werkwijze stap 4 en een FAQ-vraag.
+- Mobiel: diensten, werkwijze en reviews zijn veegrijen (scroll-snap) met teller en pijlknoppen; vanaf 768px gewoon grid.
+  Afspraakformulier compacter (keuzes twee naast elkaar vanaf 375px).
+- SEO/AI: twee builds. `npm run build` = definitief voor brillenbijuthuis.nl: canonical, robots index, JSON-LD (Optician + WebSite +
+  FAQPage), robots.txt die ook AI-crawlers toelaat, llms.txt, sitemap. `npm run build:voorstel` = demo: noindex, Disallow, geen JSON-LD.
+- Beveiliging: CSP als meta-tag met hashes (Astro security.csp), geen style-attributen, referrer-policy, rel="noopener noreferrer"
+  op externe links, .well-known/security.txt, 404-pagina met noindex, .nojekyll.
