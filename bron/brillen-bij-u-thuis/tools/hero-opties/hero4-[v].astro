@@ -1,0 +1,155 @@
+---
+// TIJDELIJK (14-10-2026): zes mobiele uitwerkingen van hero 4. Niet deployen.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Kop from '../../components/Kop.astro';
+import Icoon from '../../components/Icoon.astro';
+import { site, reviews } from '../../data/site';
+import eMeting from '../../assets/eigen-meting.jpg';
+import pAafje from '../../assets/p-aafje.png';
+import pEnvida from '../../assets/p-envida.png';
+import pThebe from '../../assets/p-thebe.png';
+import pMeander from '../../assets/p-meander.png';
+
+export function getStaticPaths() { return ['a', 'b', 'c', 'd', 'e', 'f'].map((v) => ({ params: { v } })); }
+const v = Astro.params.v;
+const sterren = [1, 2, 3, 4, 5];
+const partners = [
+  { src: pAafje, alt: 'Allemaal Aafje', h: 'max-h-10' },
+  { src: pEnvida, alt: 'Envida ledenservice', h: 'max-h-8' },
+  { src: pThebe, alt: 'Thebe extra', h: 'max-h-7' },
+  { src: pMeander, alt: 'Meander eXtra', h: 'max-h-7' },
+];
+const ans = reviews[0];
+const foto = 'De opticien meet met een pasbril bij een klant aan tafel';
+---
+<Base title={`Hero 4${v}`} description="Hero-variant" noindex>
+  <div class="relative">
+    <Kop licht={v === 'e'} />
+
+    {v === 'a' && (
+      /* A. Foto, kop en vertrouwen. Geen knoppen in de hero: de belbalk onderin doet dat. */
+      <section class="bg-inkt pb-12 text-wit" aria-labelledby="inhoud">
+        <div class="relative h-[44svh] min-h-[19rem]">
+          <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[45%_28%]" />
+          <div class="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]"></div>
+          <div class="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(0deg,#1d0a2a,#1d0a2a00)]"></div>
+        </div>
+        <div class="wrap -mt-2">
+          <p class="eyebrow eyebrow-licht">Gediplomeerde opticien aan huis</p>
+          <h1 id="inhoud" class="mt-3 text-[clamp(2.3rem,9vw,2.9rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk-licht">oogarts.</span></h1>
+          <p class="mt-4 text-xl leading-relaxed text-wit/90">Gewoon bij u thuis. Oogmeting en advies kosteloos.</p>
+          <p class="mt-5 flex items-center gap-2 text-[1.0625rem]"><span class="flex text-merk-licht">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">5,0</b><span class="whitespace-nowrap text-mist">uit 40 Google-reviews</span></p>
+          <p class="mt-7 text-[.9375rem] font-bold text-mist">Officieel samenwerkingspartner van</p>
+          <ul class="mt-3 grid grid-cols-4 gap-2">{partners.map((p) => <li class="grid h-14 place-items-center rounded-[10px] bg-wit p-1.5"><Image src={p.src} alt={p.alt} widths={[200]} sizes="80px" class={`${p.h} w-auto object-contain`} /></li>)}</ul>
+        </div>
+      </section>
+    )}
+
+    {v === 'b' && (
+      /* B. De kop staat over de foto, onderin. Daaronder de harde punten. */
+      <section class="bg-inkt pb-12 text-wit" aria-labelledby="inhoud">
+        <div class="relative h-[66svh] min-h-[28rem]">
+          <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[45%_25%]" />
+          <div class="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]"></div>
+          <div class="absolute inset-0 bg-[linear-gradient(0deg,#1d0a2a_0%,#1d0a2ae6_22%,#1d0a2a00_55%)]"></div>
+          <div class="wrap absolute inset-x-0 bottom-0 pb-2">
+            <p class="eyebrow eyebrow-licht">Opticien aan huis</p>
+            <h1 id="inhoud" class="mt-3 text-[clamp(2.3rem,9vw,2.9rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk-licht">oogarts.</span></h1>
+          </div>
+        </div>
+        <div class="wrap">
+          <ul class="mt-6 space-y-3 text-lg">
+            <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />Gediplomeerde opticien, bij u thuis</li>
+            <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk-licht" />Oogmeting en advies kosteloos</li>
+            <li class="flex gap-3"><Icoon naam="ster" class="mt-1 h-5 w-5 flex-none text-merk-licht" /><span><b class="num">5,0</b> uit 40 Google-reviews</span></li>
+          </ul>
+          <ul class="mt-7 grid grid-cols-4 gap-2">{partners.map((p) => <li class="grid h-14 place-items-center rounded-[10px] bg-wit p-1.5"><Image src={p.src} alt={p.alt} widths={[200]} sizes="80px" class={`${p.h} w-auto object-contain`} /></li>)}</ul>
+        </div>
+      </section>
+    )}
+
+    {v === 'c' && (
+      /* C. Foto met een echte review erover, dan de kop. */
+      <section class="bg-inkt pb-12 text-wit" aria-labelledby="inhoud">
+        <div class="relative h-[42svh] min-h-[18rem]">
+          <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[45%_28%]" />
+          <div class="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]"></div>
+        </div>
+        <div class="wrap">
+          <figure class="relative -mt-14 rounded-[16px] bg-wit p-5 text-inkt shadow-[0_10px_30px_#00000040]">
+            <div class="flex items-center gap-2"><span class="flex text-merk">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="text-[.9375rem] text-steen"><b class="num text-inkt">5,0</b> uit 40 Google-reviews</span></div>
+            <blockquote class="mt-2 text-lg font-bold leading-snug">“Zeer vriendelijk en kundig geholpen!”</blockquote>
+            <figcaption class="mt-1 text-[.9375rem] text-steen">{ans.naam}, Google review</figcaption>
+          </figure>
+          <p class="eyebrow eyebrow-licht mt-8">Gediplomeerde opticien aan huis</p>
+          <h1 id="inhoud" class="mt-3 text-[clamp(2.3rem,9vw,2.9rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk-licht">oogarts.</span></h1>
+          <p class="mt-4 text-xl leading-relaxed text-wit/90">Gewoon bij u thuis. Oogmeting en advies kosteloos.</p>
+        </div>
+      </section>
+    )}
+
+    {v === 'd' && (
+      /* D. Met knoppen in de hero; de belbalk onderin verschijnt pas als je voorbij deze knoppen scrolt. */
+      <section class="bg-inkt pb-12 text-wit" aria-labelledby="inhoud">
+        <div class="relative h-[40svh] min-h-[17rem]">
+          <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[45%_28%]" />
+          <div class="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]"></div>
+          <div class="absolute inset-x-0 bottom-0 h-16 bg-[linear-gradient(0deg,#1d0a2a,#1d0a2a00)]"></div>
+        </div>
+        <div class="wrap -mt-2">
+          <p class="eyebrow eyebrow-licht">Gediplomeerde opticien aan huis</p>
+          <h1 id="inhoud" class="mt-3 text-[clamp(2.2rem,8.6vw,2.8rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk-licht">oogarts.</span></h1>
+          <p class="mt-4 text-xl leading-relaxed text-wit/90">Gewoon bij u thuis. Oogmeting en advies kosteloos.</p>
+          <div class="mt-6 grid grid-cols-2 gap-3" data-hero-knoppen>
+            <a href={site.telHref} class="knop knop-merk !px-3"><Icoon naam="tel" />Bellen</a>
+            <a href="#afspraak" class="knop knop-wit !px-3"><Icoon naam="wa" />WhatsApp</a>
+          </div>
+          <p class="mt-5 flex items-center gap-2 text-[1.0625rem]"><span class="flex text-merk-licht">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">5,0</b><span class="whitespace-nowrap text-mist">uit 40 Google-reviews</span></p>
+        </div>
+      </section>
+    )}
+
+    {v === 'e' && (
+      /* E. Licht: dezelfde opbouw op wit papier, foto met afgeronde onderkant. */
+      <section class="bg-papier pb-12" aria-labelledby="inhoud">
+        <div class="pt-24">
+          <div class="wrap">
+            <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="aspect-[4/3] w-full rounded-[22px] object-cover object-[45%_28%]" />
+          </div>
+        </div>
+        <div class="wrap mt-6">
+          <p class="flex items-center gap-2 text-[1.0625rem]"><span class="flex text-merk">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">5,0</b><span class="whitespace-nowrap text-steen">uit 40 Google-reviews</span></p>
+          <h1 id="inhoud" class="mt-4 text-[clamp(2.3rem,9vw,2.9rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk">oogarts.</span></h1>
+          <p class="mt-4 text-xl leading-relaxed text-steen">Door een gediplomeerde opticien, gewoon bij u thuis. Oogmeting en advies kosteloos.</p>
+          <p class="mt-7 text-[.9375rem] font-bold text-steen">Officieel samenwerkingspartner van</p>
+          <ul class="mt-3 grid grid-cols-4 gap-2">{partners.map((p) => <li class="grid h-14 place-items-center rounded-[10px] border border-lijn-licht bg-wit p-1.5"><Image src={p.src} alt={p.alt} widths={[200]} sizes="80px" class={`${p.h} w-auto object-contain`} /></li>)}</ul>
+        </div>
+      </section>
+    )}
+
+    {v === 'f' && (
+      /* F. Foto met daaroverheen een witte kaart: kop en de drie harde punten in één blok. */
+      <section class="bg-inkt pb-12" aria-labelledby="inhoud">
+        <div class="relative h-[46svh] min-h-[19rem]">
+          <Image src={eMeting} alt={foto} widths={[500, 800, 1200]} sizes="100vw" loading="eager" fetchpriority="high" class="h-full w-full object-cover object-[45%_28%]" />
+          <div class="absolute inset-x-0 top-0 h-32 bg-[linear-gradient(180deg,#1d0a2a,#1d0a2a00)]"></div>
+        </div>
+        <div class="wrap">
+          <div class="relative -mt-20 rounded-[18px] bg-wit p-6 shadow-[0_14px_40px_#00000040]">
+            <p class="eyebrow">Opticien aan huis</p>
+            <h1 id="inhoud" class="mt-3 text-[clamp(2rem,7.6vw,2.5rem)]">Gemeten met een pasbril, net als bij de <span class="text-merk">oogarts.</span></h1>
+            <ul class="mt-5 space-y-2.5 border-t border-lijn-licht pt-5 text-lg">
+              <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk" />Gediplomeerde opticien, bij u thuis</li>
+              <li class="flex gap-3"><Icoon naam="vink" class="mt-1 h-5 w-5 flex-none text-merk" />Oogmeting en advies kosteloos</li>
+              <li class="flex gap-3"><Icoon naam="ster" class="mt-1 h-5 w-5 flex-none text-merk" /><span><b class="num">5,0</b> uit 40 Google-reviews</span></li>
+            </ul>
+          </div>
+          <p class="mt-7 text-[.9375rem] font-bold text-mist">Officieel samenwerkingspartner van</p>
+          <ul class="mt-3 grid grid-cols-4 gap-2">{partners.map((p) => <li class="grid h-14 place-items-center rounded-[10px] bg-wit p-1.5"><Image src={p.src} alt={p.alt} widths={[200]} sizes="80px" class={`${p.h} w-auto object-contain`} /></li>)}</ul>
+        </div>
+      </section>
+    )}
+    <div class="h-[120vh] bg-papier"></div>
+  </div>
+</Base>

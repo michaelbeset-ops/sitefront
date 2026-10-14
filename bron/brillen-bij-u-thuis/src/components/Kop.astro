@@ -2,32 +2,33 @@
 import { url, waHoi, site } from '../data/site';
 import Icoon from './Icoon.astro';
 import Merk from './Merk.astro';
-interface Props { thuis?: boolean }
-const { thuis = true } = Astro.props;
+// licht: donkere tekst, voor een hero met een lichte achtergrond.
+interface Props { thuis?: boolean; licht?: boolean }
+const { thuis = true, licht = false } = Astro.props;
 const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
 const nav = [['diensten', 'Diensten'], ['zorgverzekering', 'Zorgverzekering'], ['over', 'Over ons'], ['werkwijze', 'Werkwijze'], ['afspraak', 'Afspraak'], ['contact', 'Contact']];
 // Eerste twee letterlijk van hun folder (Google, "Van eigenaar"); de derde van hun pagina Diensten.
 const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen', 'Teruggave zorgverzekering'];
 ---
 <header class={thuis ? 'absolute inset-x-0 top-0 z-40' : 'relative z-40 bg-inkt'}>
-  <div class="hidden border-b border-lijn lg:block">
-    <div class="wrap flex h-12 items-center justify-between gap-6 text-[1rem] font-semibold text-wit/90">
+  <div class={`hidden border-b xl:block ${licht ? 'border-lijn-licht' : 'border-lijn'}`}>
+    <div class={`wrap flex h-12 items-center justify-between gap-6 text-[1rem] font-semibold ${licht ? 'text-steen' : 'text-wit/90'}`}>
       <ul class="flex gap-8">
-        {usp.map((e) => <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-merk-licht" />{e}</li>)}
+        {usp.map((e) => <li class="flex items-center gap-2"><Icoon naam="vink" class={`h-4 w-4 ${licht ? 'text-merk' : 'text-merk-licht'}`} />{e}</li>)}
       </ul>
-      <a href={site.telHref} class="num flex items-center gap-2 text-wit no-underline hover:text-merk-licht"><Icoon naam="tel" class="h-4 w-4 text-merk-licht" />{site.tel}</a>
+      <a href={site.telHref} class={`num flex items-center gap-2 no-underline ${licht ? 'text-inkt hover:text-merk' : 'text-wit hover:text-merk-licht'}`}><Icoon naam="tel" class={`h-4 w-4 ${licht ? 'text-merk' : 'text-merk-licht'}`} />{site.tel}</a>
     </div>
   </div>
   <div class="wrap flex h-24 items-center justify-between gap-3 md:h-28 md:gap-6">
-    <Merk />
+    <Merk donker={licht} />
     <nav aria-label="Hoofdmenu" class="hidden xl:block">
       <ul class="flex gap-6 text-[1.125rem] font-bold xl:gap-8">
-        {nav.map(([id, t]) => <li><a href={h(id)} class="text-wit/90 no-underline transition-colors duration-200 hover:text-merk-licht">{t}</a></li>)}
+        {nav.map(([id, t]) => <li><a href={h(id)} class={`no-underline transition-colors duration-200 ${licht ? 'text-inkt hover:text-merk' : 'text-wit/90 hover:text-merk-licht'}`}>{t}</a></li>)}
       </ul>
     </nav>
     <div class="flex items-center gap-4">
       <a href={site.telHref} class="knop knop-merk num hidden min-h-12 px-5 text-[1.0625rem] md:inline-flex"><Icoon naam="tel" />Bel {site.tel}</a>
-      <button type="button" class="grid h-12 w-12 place-items-center rounded-full border-2 border-wit/40 text-wit xl:hidden" aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
+      <button type="button" class={`grid h-12 w-12 place-items-center rounded-full border-2 xl:hidden ${licht ? 'border-inkt/25 text-inkt' : 'border-wit/40 text-wit'}`} aria-expanded="false" aria-controls="menu-nav" data-menu-knop>
         <span class="sr-only">Menu</span>
         <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 8h16M4 16h16" /></svg>
       </button>
@@ -42,7 +43,7 @@ const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen'
   </nav>
 </header>
 
-<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-inkt shadow-[0_-4px_16px_#1d0a2a40] md:hidden">
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-inkt shadow-[0_-4px_16px_#1d0a2a40] transition-transform duration-300 data-[weg]:translate-y-full md:hidden" data-belbalk>
   <a href={site.telHref} class="flex min-h-16 items-center justify-center gap-2.5 bg-merk text-[1.1875rem] font-extrabold text-wit no-underline"><Icoon naam="tel" class="h-6 w-6" />Bellen</a>
   <a href={waHoi} target="_blank" rel="noopener noreferrer" class="flex min-h-16 items-center justify-center gap-2.5 text-[1.1875rem] font-extrabold text-wit no-underline"><Icoon naam="wa" class="h-6 w-6 text-[#5fd68f]" />WhatsApp</a>
 </div>
@@ -53,5 +54,12 @@ const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen'
   if (k && m) {
     k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
     m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  }
+  // Belbalk onderin pas tonen als de knoppen in de hero uit beeld zijn, anders staan Bellen en WhatsApp dubbel.
+  const balk = document.querySelector<HTMLElement>('[data-belbalk]');
+  const heroKnoppen = document.querySelector('[data-hero-knoppen]');
+  if (balk && heroKnoppen) {
+    balk.toggleAttribute('data-weg', true);
+    new IntersectionObserver(([e]) => balk.toggleAttribute('data-weg', e.isIntersecting || e.boundingClientRect.top > innerHeight)).observe(heroKnoppen);
   }
 </script>
