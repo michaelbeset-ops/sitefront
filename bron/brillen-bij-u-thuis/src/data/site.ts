@@ -55,15 +55,16 @@ export const tijden: { dag: string; nr: number; open?: [number, number] }[] = [
   { dag: 'Zondag', nr: 0 },
 ];
 
-// Letterlijk van Google (5 sterren, opgehaald 11-10-2026, bron/google/reviews.json), ingekort met "…". Naam: voornaam + initiaal.
-// Bewust geen reviews over afstellen, bezorgen of bijstellen: dat wil de klant niet op de site (12/13-10-2026).
+// Letterlijk van Google (5 sterren), ingekort met "…". Naam: voornaam + initiaal. Zoals de klant ze goedkeurde (13-10-2026);
+// Adri stond toen als los citaat in een rode balk.
 export const reviews = [
-  { naam: 'Adri v.', tekst: 'Heel fijn dat jullie, op korte termijn, bij onze moeder in een verpleeghuis, konden langskomen. … Goed te weten dat de opticien naar je toe komt als je zelf niet meer naar de opticien toe kunt!' },
-  { naam: 'Nicole d.', tekst: 'Aanrader! Paul van Brillen bij u thuis neemt alle tijd voor je. Heeft een mooie collectie aan verschillende monturen om uit te kiezen. Daarnaast is hij zeer vakkundig en geeft goed advies.' },
+  { naam: 'Adri v.', tekst: 'Goed te weten dat de opticien naar je toe komt als je zelf niet meer naar de opticien toe kunt!' },
   { naam: 'Ans S.', tekst: 'Zeer vriendelijk en kundig geholpen! Fijn dat dit binnen het verzorgingshuis mogelijk was en mijn moeder in haar relaxstoel kon blijven zitten.' },
   { naam: 'Wouter B.', tekst: 'Meting aan huis gehad en het was zeer vriendelijk en professioneel. … geen aankoop opgedrongen gekregen dus dat is ook zeker een plus.' },
-  { naam: 'Karlijn v.', tekst: 'Super tevreden over brillenbijuthuis. Ogen meten en brillen uitzoeken bij mij thuis! Super service en Paul weet waar hij over praat en geeft goed advies.' },
+  { naam: 'Karin T.', tekst: 'De medewerker kwam netjes op tijd, was prettig in de omgang en beschikte over veel kennis. … Het is ontzettend fijn dat ze thuis of in het verpleeghuis langs komen, vooral voor minder mobiele mensen.' },
   { naam: 'Ton v.', tekst: 'Absoluut 5 sterren, hele fijne, geduldige verkoper, die echt alle tijd nam in het verzorgingshuis van mijn oom. En zelfs een snelle en gratis reparatie toen zijn bril na een val kapot was gegaan.' },
+  { naam: 'Beppie K.', tekst: 'Ik heb bij BRILLEN BIJ U THUIS een oogmeting laten doen en brillen uitgezocht en ben daar zeer tevreden over. Fijn dat ze aan huis komen en zoveel keuze aan brillen, helemaal TOP!!' },
+  { naam: 'Jo K.', tekst: 'Deze week bij mijn moeder voor reparatie aan de bril en oogmeting gedaan. Zeer vriendelijk en rustig overkomend tegenover mijn moeder.' },
 ];
 
 // Over Paul, letterlijk uit Google-reviews. Voor het blok "Maak kennis".
