@@ -28,3 +28,16 @@ een week oud). Het adres is een woonadres: alleen Tilburg tonen. Naam opticien s
   FAQPage), robots.txt die ook AI-crawlers toelaat, llms.txt, sitemap. `npm run build:voorstel` = demo: noindex, Disallow, geen JSON-LD.
 - Beveiliging: CSP als meta-tag met hashes (Astro security.csp), geen style-attributen, referrer-policy, rel="noopener noreferrer"
   op externe links, .well-known/security.txt, 404-pagina met noindex, .nojekyll.
+
+## Eigen repo en deploy (14-10-2026)
+- `.github/workflows/deploy.yml` bouwt en publiceert bij elke push naar main (1 à 2 minuten) op GitHub Pages.
+- Nu preview: https://michaelbeset-ops.github.io/brillen-bij-u-thuis/ (noindex). Livegang: PREVIEW op 'false' in de workflow, DNS zetten, custom domain in Settings > Pages.
+- `bron/` staat niet meer in de repo (adres, opgehaalde gegevens); lokaal bewaren. Let op: in de git-geschiedenis staat het nog.
+
+## Verbeterplan uitgevoerd (14-10-2026)
+- Hero overal 4A: Paul die meet met de pasbril, 5,0 op Google, partners. Stockfoto van de oma niet meer gebruikt.
+- Van 11 naar 8 blokken: hero, vertrouwensstrook, diensten (zorgverzekering in de rode kaart), Maak kennis (Paul + 2 reviews over hem),
+  werkwijze (compact), reviews, vragen, afspraak + contact samen. Weg: letterkaart, los zorgblok, rode citaatbalk, slotbalk.
+- Ritme: sectiekoppen max ~54px, ruimte per blok 56/80/96px. Lengte desktop 11.025 -> 7.058px, mobiel 13.700 -> 9.494px.
+- Naam Paul: uit zijn eigen privacybeleid (Paul Jansen) en de Google-reviews; Michael gaf akkoord om hem te noemen.
+- Geen portret, diploma, prijzen of plaatsenlijst: niet aangeleverd, bewust weggelaten.

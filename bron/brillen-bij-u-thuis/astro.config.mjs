@@ -9,8 +9,9 @@ import sitemap from '@astrojs/sitemap';
 const voorstel = process.env.PUBLIC_VOORSTEL === '1';
 
 export default defineConfig({
-  site: voorstel ? 'https://voorstel.sitefront.nl' : 'https://brillenbijuthuis.nl',
-  base: voorstel ? '/brillen-bij-u-thuis' : '/',
+  // SITE_URL en BASE_PATH overschrijven dit, voor de preview op github.io (zie .github/workflows/deploy.yml).
+  site: process.env.SITE_URL || (voorstel ? 'https://voorstel.sitefront.nl' : 'https://brillenbijuthuis.nl'),
+  base: process.env.BASE_PATH || (voorstel ? '/brillen-bij-u-thuis' : '/'),
   trailingSlash: 'ignore',
   devToolbar: { enabled: false },
   markdown: { syntaxHighlight: false },

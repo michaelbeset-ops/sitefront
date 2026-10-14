@@ -6,7 +6,7 @@ import Merk from './Merk.astro';
 interface Props { thuis?: boolean; licht?: boolean }
 const { thuis = true, licht = false } = Astro.props;
 const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
-const nav = [['diensten', 'Diensten'], ['zorgverzekering', 'Zorgverzekering'], ['over', 'Over ons'], ['werkwijze', 'Werkwijze'], ['afspraak', 'Afspraak'], ['contact', 'Contact']];
+const nav = [['diensten', 'Diensten'], ['zorgverzekering', 'Zorgverzekering'], ['over', 'Over Paul'], ['werkwijze', 'Werkwijze'], ['afspraak', 'Afspraak'], ['contact', 'Contact']];
 // Eerste twee letterlijk van hun folder (Google, "Van eigenaar"); de derde van hun pagina Diensten.
 const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen', 'Teruggave zorgverzekering'];
 ---
@@ -34,13 +34,28 @@ const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen'
       </button>
     </div>
   </div>
-  <nav id="menu-nav" aria-label="Menu" class="hidden bg-inkt xl:hidden" data-menu>
-    <ul class="wrap pb-8 pt-2">
-      {nav.map(([id, t]) => <li><a href={h(id)} class="block border-b border-lijn py-4 text-3xl font-[800] text-wit no-underline">{t}</a></li>)}
-      <li class="pt-6"><a href={site.telHref} class="num text-xl font-bold text-wit no-underline">{site.tel}</a></li>
-      <li class="pt-3"><a href={waHoi} target="_blank" rel="noopener noreferrer" class="font-bold text-merk-licht no-underline">WhatsApp</a></li>
-    </ul>
-  </nav>
+  {/* Mobiel menu: een volledig scherm, zodat je niet half door de hero heen kijkt. Grote tikvlakken voor oudere bezoekers. */}
+  <div id="menu-nav" class="fixed inset-0 z-50 hidden flex-col overflow-y-auto bg-inkt text-wit data-[open]:flex xl:hidden" role="dialog" aria-modal="true" aria-label="Menu" data-menu>
+    <div class="wrap flex h-24 flex-none items-center justify-between md:h-28">
+      <Merk />
+      <button type="button" class="grid h-12 w-12 place-items-center rounded-full border-2 border-wit/40" data-menu-dicht>
+        <span class="sr-only">Menu sluiten</span>
+        <svg viewBox="0 0 24 24" class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+    </div>
+    <nav aria-label="Menu" class="wrap flex-1">
+      <ul class="border-t border-lijn">
+        {nav.map(([id, t]) => <li><a href={h(id)} class="flex items-center justify-between border-b border-lijn py-4 text-[1.75rem] font-[800] text-wit no-underline">{t}<Icoon naam="pijl" class="h-6 w-6 text-merk-licht" /></a></li>)}
+      </ul>
+    </nav>
+    <div class="wrap flex-none pb-8 pt-8">
+      <div class="grid gap-3">
+        <a href={site.telHref} class="knop knop-merk num w-full"><Icoon naam="tel" />Bel {site.tel}</a>
+        <a href={waHoi} target="_blank" rel="noopener noreferrer" class="knop knop-wit w-full"><Icoon naam="wa" />WhatsApp</a>
+      </div>
+      <p class="mt-5 text-center text-mist">Bereikbaar ma t/m vr, 09:00 tot 17:00</p>
+    </div>
+  </div>
 </header>
 
 <div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 bg-inkt shadow-[0_-4px_16px_#1d0a2a40] transition-transform duration-300 data-[weg]:translate-y-full md:hidden" data-belbalk>
@@ -51,9 +66,20 @@ const usp = ['Gratis oogmeting en advies bij u thuis', 'Ruime keuze in monturen'
 <script>
   const k = document.querySelector<HTMLButtonElement>('[data-menu-knop]');
   const m = document.querySelector<HTMLElement>('[data-menu]');
-  if (k && m) {
-    k.addEventListener('click', () => { const o = k.getAttribute('aria-expanded') !== 'true'; k.setAttribute('aria-expanded', String(o)); m.classList.toggle('hidden', !o); });
-    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => { k.setAttribute('aria-expanded', 'false'); m.classList.add('hidden'); }));
+  const dicht = document.querySelector<HTMLButtonElement>('[data-menu-dicht]');
+  if (k && m && dicht) {
+    const zet = (open: boolean) => {
+      k.setAttribute('aria-expanded', String(open));
+      m.toggleAttribute('data-open', open);
+      document.documentElement.style.overflow = open ? 'hidden' : '';
+      // De belbalk valt anders over het menu heen; het menu heeft zelf de bel- en WhatsApp-knop.
+      document.querySelector('[data-belbalk]')?.classList.toggle('hidden', open);
+      (open ? dicht : k).focus();
+    };
+    k.addEventListener('click', () => zet(true));
+    dicht.addEventListener('click', () => zet(false));
+    m.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => zet(false)));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && m.hasAttribute('data-open')) zet(false); });
   }
   // Belbalk onderin pas tonen als de knoppen in de hero uit beeld zijn, anders staan Bellen en WhatsApp dubbel.
   const balk = document.querySelector<HTMLElement>('[data-belbalk]');
