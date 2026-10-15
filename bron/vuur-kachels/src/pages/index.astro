@@ -1,0 +1,495 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, waHoi, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import band from '../assets/band.jpg';
+import cornelis from '../assets/cornelis.jpg';
+import tulikiviCornelis from '../assets/tulikivi-cornelis.jpg';
+import showroom from '../assets/showroom.jpg';
+import showroomB from '../assets/showroom-b.jpg';
+import dak from '../assets/dak.jpg';
+import pAndel from '../assets/p-andel.jpg';
+import pOdin from '../assets/p-odin.jpg';
+import pKrabbendijke from '../assets/p-krabbendijke.jpg';
+import pTerneuzen from '../assets/p-terneuzen.jpg';
+import pScherpenisse from '../assets/p-scherpenisse.jpg';
+import pGravendeel from '../assets/p-gravendeel.jpg';
+import pHond from '../assets/p-hond.jpg';
+import pVossemeer from '../assets/p-vossemeer.jpg';
+import pHang from '../assets/p-hang.jpg';
+import pJacobus from '../assets/p-jacobus.jpg';
+import pHoofdplaat from '../assets/p-hoofdplaat.jpg';
+import buiten from '../assets/buiten.jpg';
+
+// Aanbod: soorten en teksten uit hun eigen pagina's (houtkachel-laten-plaatsen, open-haard-ombouwen, speksteenkachel, projecten).
+const aanbod = [
+  { t: 'Houtkachels', z: 'Klassiek of modern, van compact tot een kachel die een groot deel van het huis verwarmt.', img: pJacobus, alt: 'Zwarte houtkachel met pijp naar het plafond, geplaatst door VUUR!' },
+  { t: 'Open haard ombouwen', z: 'Schouw en schoorsteen blijven waar het kan. Of alles gaat eruit voor iets nieuws.', img: pVossemeer, alt: 'Gerenoveerde schouw met eiken balk en een Altech Vision Cook' },
+  { t: 'Speksteenkachels', z: 'Geven na het doven nog uren warmte af. Het grootste aanbod is van het Nederlandse merk Altech.', img: pHoofdplaat, alt: 'Massieve Tulikivi speksteenkachel tegen een groene wand in Hoofdplaat' },
+  { t: 'Inbouwhaarden', z: 'In een nis, een bestaande schouw of meegebouwd in een nieuwe tuinkamer.', img: pGravendeel, alt: 'Spartherm inbouwhaard in een tuinkamer in aanbouw in \'s-Gravendeel' },
+  { t: 'Hanghaarden', z: 'Aan het plafond bevestigd, dus geen vloeroppervlak nodig en bijna overal te plaatsen.', img: pHang, alt: 'Ronde hangende houtkachel van Dik Geurts' },
+  { t: 'Buitenhaarden', z: 'Voor terras, tuin of overkapping, onder meer van het merk Reny.', img: buiten, alt: 'Cortenstalen buitenhaard op een terras aan het water' },
+];
+
+const merken = ['Altech', 'Barbas', 'Brunner', 'Jydepejsen', 'Spartherm', 'Tulikivi', 'Dik Geurts', 'Charlton & Jenrick', 'Nestor Martin', 'Reny'];
+
+// Projecten: plaats en onderwerp letterlijk uit hun projectpagina's.
+const projecten = [
+  { plaats: 'Andel', t: 'Nieuwe sfeer met een Barbas haard', img: pAndel, alt: 'Barbas inbouwhaard in een nieuwe aanbouw met houten spanten', cls: 'sm:col-span-2' },
+  { plaats: 'Scherpenisse', t: 'Driezijdige hangende Charlton & Jenrick Purevision', img: pScherpenisse, alt: 'Hangende houtkachel met glas aan drie kanten' },
+  { plaats: 'Werkendam', t: 'Nestor Martin Stanford 9 in een nis, en de hond is fan', img: pHond, alt: 'Gietijzeren houtkachel in een nis met een hond op de tegelvloer' },
+  { plaats: 'Krabbendijke', t: 'Van open haard naar Brunner liftdeurhaard', img: pKrabbendijke, alt: 'Brunner hoekhaard in een witte ombouw naast een deur' },
+  { plaats: 'Terneuzen', t: 'Inbouwhaard vervangen voor een Tulikivi Jero Puro', img: pTerneuzen, alt: 'Ronde Tulikivi speksteenkachel op een zwarte vloerplaat' },
+];
+
+// Kachelwijzer: keuzes. "Huidige situatie" volgt hun eigen offerteformulier.
+const soorten = ['Houtkachel', 'Speksteenkachel', 'Inbouwhaard', 'Hanghaard', 'Buitenhaard', 'Elektrisch of bio-ethanol', 'Weet ik nog niet'];
+const situaties = ['Open haard (werkt)', 'Open haard (dicht)', 'Houtkachel', 'Ander type kachel of haard', 'Nog niets'];
+const kanalen = ['Ja', 'Nee', 'Weet ik niet'];
+
+const stappen = [
+  ['Showroom of thuis', 'Kom kijken in Sint-Annaland, of Cornelis komt bij u langs om de situatie te bekijken.'],
+  ['Advies', 'Welke kachel past bij uw ruimte en interieur, en wat is er nodig aan rookkanaal en ventilatie.'],
+  ['Vrijblijvende offerte', 'Op papier wat het kost, ook als er gesloopt of gerenoveerd moet worden.'],
+  ['Plaatsing', 'Montage en aansluiting volgens de geldende normen, met een nette afwerking.'],
+  ['Stoken', 'Alles wordt schoon en netjes achtergelaten. Daarna is het vuur van u.'],
+];
+
+const kaders = [
+  ['Eerlijk advies', '"Cornelis heeft ons een eerlijk en gedegen advies gegeven. Niet opdringerig."', 'Natascha B., Google'],
+  ['Transparant', '"Onze manier van offreren en werken is volledig transparant; alles wordt volledig met de klant besproken."', 'vuurnogvlam.nl'],
+  ['Eén aanspreekpunt', '"Van begin (in de winkel, met goed advies) tot eind (de plaatsing) met één iemand te maken te hebben."', 'Jasper S., Google'],
+];
+---
+<Base title="VUUR! Kachels en haarden | Showroom in Sint-Annaland" description="Houtkachels, speksteenkachels, inbouw-, hang- en buitenhaarden. Showroom van Cornelis Mekelenkamp in Sint-Annaland, van advies tot plaatsing en rookkanaal.">
+  <Kop />
+  <main id="inhoud">
+    <!-- HERO -->
+    <section class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-roet text-wit">
+      <Image src={hero} alt="" widths={[640, 960, 1400, 1920, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="foto absolute inset-0 -z-20 object-[42%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#16110ee6_0%,#16110e99_45%,#16110e1a_80%,#16110e00_100%)]"></div>
+      <div class="absolute inset-x-0 bottom-0 -z-10 h-2/5 bg-gradient-to-t from-roet to-transparent"></div>
+      <div class="wrap flex flex-1 flex-col justify-end pb-24 pt-36 md:pb-20 lg:pt-48">
+        <p class="eyebrow eyebrow-licht">Kachels en haarden in Sint-Annaland</p>
+        <h1 class="mt-5 max-w-[11ch] text-hero font-[900]">Laat de <span class="text-gloed">vonken</span> overslaan.</h1>
+        <p class="mt-7 max-w-[34rem] text-[1.1875rem] leading-relaxed text-wit/90 md:text-[1.375rem]">De showroom van Cornelis Mekelenkamp. Begonnen als schoorsteenveger, ruim 20 jaar ervaring met rookkanalen. Advies, kachel en plaatsing van één vakman.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href={waHoi} class="knop knop-gloed min-h-14 px-7 text-[1.0625rem]"><Icoon naam="wa" class="h-5 w-5" />Plan een showroombezoek</a>
+          <a href="#wijzer" class="knop knop-rand min-h-14 px-7 text-[1.0625rem]">Naar de kachelwijzer<Icoon naam="pijl" class="h-5 w-5" /></a>
+        </div>
+        <ul class="mt-10 flex flex-wrap gap-x-7 gap-y-3 border-t border-lijn pt-6 text-[1rem] text-wit/85">
+          <li class="flex items-center gap-2"><span class="flex text-gloed"><Icoon naam="ster" class="h-4 w-4" /></span><span class="num font-bold text-wit">{site.google.score}</span> op Google · {site.google.aantal} reviews</li>
+          <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-gloed" /><span data-status-kort>Showroom zaterdag 9.30 tot 14.30</span></li>
+          <li><a href={site.telHref} class="num flex items-center gap-2 font-bold text-wit no-underline hover:text-gloed"><Icoon naam="tel" class="h-5 w-5 text-gloed" />{site.tel}</a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CIJFERS + MERKEN -->
+    <section class="bg-as" aria-label="In het kort">
+      <div class="wrap grid grid-cols-2 gap-x-6 overflow-hidden border-b border-lijn-licht lg:grid-cols-4">
+        {[
+          ['ruim 20', 'jaar ervaring met het renoveren en aanleggen van rookkanalen'],
+          [site.google.score, `gemiddeld uit ${site.google.aantal} Google-reviews`],
+          ['1.350 kg', 'speksteen: de Tulikivi die VUUR! in Hoofdplaat plaatste'],
+          ['3 kanten', 'glas bij de hangende Purevision in Scherpenisse'],
+        ].map(([g, t]) => (
+          <div class="py-8 sm:pr-8 lg:py-12">
+            <p class="num text-[2rem] sm:text-[2.75rem] font-[900] leading-none tracking-[-.04em] text-roet" style="font-family: var(--font-kop)">{g}</p>
+            <p class="mt-3 max-w-[16rem] text-[.9375rem] leading-snug text-steen sm:text-[1rem]">{t}</p>
+          </div>
+        ))}
+      </div>
+      <div class="wrap flex flex-wrap items-center gap-x-3 gap-y-3 py-8">
+        <p class="mr-3 text-[.9375rem] font-bold uppercase tracking-[.14em] text-steen" style="font-family: var(--font-kop)">Onder meer</p>
+        {merken.map((m) => <span class="rounded-full border border-lijn-licht bg-wit px-4 py-1.5 text-[.9375rem] font-semibold">{m}</span>)}
+      </div>
+    </section>
+
+    <!-- AANBOD -->
+    <section id="aanbod" class="bg-as pb-24 pt-20 md:pb-32 md:pt-28">
+      <div class="wrap">
+        <div class="grid gap-6 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Aanbod</p>
+            <h2 class="mt-4 text-4xl">Van speksteen tot <span class="text-gloed-tekst">buitenhaard</span>.</h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">In de showroom staat een wisselend assortiment in actuele stijlen. Ook elektrisch of bio-ethanol stoken behoort tot de mogelijkheden.</p>
+        </div>
+        <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {aanbod.map((a) => (
+            <li class="rijs group relative overflow-hidden rounded-3xl bg-roet text-wit">
+              <a href={waMet(`Hallo Cornelis, ik heb een vraag over ${a.t.toLowerCase()}.`)} class="block no-underline">
+                <div class="aspect-[5/4] overflow-hidden sm:aspect-[4/5]">
+                  <Image src={a.img} alt={a.alt} widths={[420, 640, 900]} sizes="(min-width:1024px) 400px, (min-width:640px) 50vw, 100vw" class="foto transition-transform duration-700 ease-[var(--ease-zacht)] group-hover:scale-[1.04]" />
+                </div>
+                <div class="absolute inset-0 bg-[linear-gradient(180deg,#16110e1a_0%,#16110eb3_45%,#16110ef2_100%)] sm:bg-[linear-gradient(180deg,#16110e00_40%,#16110ef0_100%)]"></div>
+                <div class="absolute inset-x-0 bottom-0 p-6 md:p-7">
+                  <h3 class="text-[1.75rem] text-wit">{a.t}</h3>
+                  <p class="mt-2 text-[1rem] leading-snug text-wit/85">{a.z}</p>
+                  <span class="mt-4 inline-flex items-center gap-2 text-[.9375rem] font-bold text-gloed">Vraag het Cornelis<Icoon naam="pijl" class="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ROOKKANAAL -->
+    <section id="kanaal" class="bg-roet py-24 text-wit md:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <figure class="relative">
+            <div class="aspect-[4/3] overflow-hidden rounded-3xl sm:aspect-[3/4]">
+              <Image src={dak} alt="Een vakman plaatst een nieuw rookkanaal door het dak" widths={[480, 720, 1000]} sizes="(min-width:1024px) 460px, 100vw" class="foto" />
+            </div>
+            <figcaption class="mt-3 text-[.9375rem] text-rook">Een nieuw rookkanaal door het dak. Foto uit een Google-review.</figcaption>
+          </figure>
+        </div>
+        <div class="lg:col-span-7 lg:pt-6">
+          <p class="eyebrow eyebrow-licht">Het rookkanaal</p>
+          <h2 class="mt-4 text-4xl">Een goede kachel begint bij het <span class="text-gloed">kanaal</span>.</h2>
+          <p class="mt-7 max-w-xl text-lg text-rook">Cornelis begon zijn carrière als schoorsteenveger en werkt al ruim 20 jaar aan rookkanalen. Bij een nieuwe kachel adviseert hij dus ook over het kanaal en de ventilatie, en de aansluiting gebeurt volgens de geldende normen.</p>
+          <div class="mt-10 rounded-3xl border border-lijn bg-roet-2 p-7 md:p-9">
+            <p class="text-[.9375rem] font-bold uppercase tracking-[.14em] text-gloed" style="font-family: var(--font-kop)">Uit een eigen project</p>
+            <p class="mt-4 text-lg text-wit/90">Geen trek meer, de rook kwam terug de kamer in en het kanaal was afgetimmerd met hout. Er kwam direct een stookverbod, daarna een volledig nieuw rookkanaal van Metaloterm AT en een nieuwe Reny Optima 60 met boezem.</p>
+            <blockquote class="mt-6 border-l-2 border-gloed pl-5 text-xl font-semibold leading-snug text-wit" style="font-family: var(--font-kop)">"Ze vroegen zelfs voorzichtig of er geen addertje onder het gras zat."</blockquote>
+          </div>
+          <ul class="mt-10 grid gap-4 sm:grid-cols-3">
+            {kaders.map(([t, q, w]) => (
+              <li class="rounded-2xl border border-lijn p-5">
+                <p class="font-bold text-wit" style="font-family: var(--font-kop)">{t}</p>
+                <p class="mt-2 text-[.9375rem] leading-snug text-rook">{q}</p>
+                <p class="mt-3 text-[.8125rem] font-semibold uppercase tracking-[.1em] text-gloed">{w}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- WERKWIJZE -->
+    <section class="bg-as-2 py-24 md:py-28">
+      <div class="wrap">
+        <p class="eyebrow">Zo gaat het</p>
+        <h2 class="mt-4 max-w-2xl text-4xl">Van eerste kop koffie tot het <span class="text-gloed-tekst">eerste vuur</span>.</h2>
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-3xl bg-as-3 sm:grid-cols-2 lg:grid-cols-5">
+          {stappen.map(([t, z], i) => (
+            <li class="rijs bg-as p-7 md:p-8">
+              <p class="num text-[2.5rem] font-[900] leading-none text-gloed" style="font-family: var(--font-kop)">0{i + 1}</p>
+              <h3 class="mt-6 text-[1.375rem]">{t}</h3>
+              <p class="mt-3 text-[1rem] text-steen">{z}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- KACHELWIJZER (wow) -->
+    <section id="wijzer" class="relative overflow-hidden bg-roet py-24 text-wit md:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="eyebrow eyebrow-licht">Kachelwijzer</p>
+          <h2 class="mt-4 text-4xl">Vertel wat u <span class="text-gloed">zoekt</span>. Cornelis denkt mee.</h2>
+          <p class="mt-6 max-w-xl text-lg text-rook">Vier vragen, dan staat uw bericht klaar in WhatsApp. Er wordt niets verstuurd voordat u zelf op verzenden drukt.</p>
+
+          <form class="mt-12 space-y-10" data-wijzer>
+            <fieldset>
+              <legend class="text-[1.25rem] font-bold" style="font-family: var(--font-kop)"><span class="text-gloed">1.</span> Waar denkt u aan?</legend>
+              <div class="mt-4 flex flex-wrap gap-2.5">
+                {soorten.map((s, i) => <label class="keuze"><input type="radio" name="soort" value={s} checked={i === 0} /><span>{s}</span></label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="text-[1.25rem] font-bold" style="font-family: var(--font-kop)"><span class="text-gloed">2.</span> Wat staat er nu?</legend>
+              <div class="mt-4 flex flex-wrap gap-2.5">
+                {situaties.map((s, i) => <label class="keuze"><input type="radio" name="situatie" value={s} checked={i === 0} /><span>{s}</span></label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="text-[1.25rem] font-bold" style="font-family: var(--font-kop)"><span class="text-gloed">3.</span> Is er een rookkanaal of schoorsteen?</legend>
+              <div class="mt-4 flex flex-wrap gap-2.5">
+                {kanalen.map((s, i) => <label class="keuze"><input type="radio" name="kanaal" value={s} checked={i === 0} /><span>{s}</span></label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="text-[1.25rem] font-bold" style="font-family: var(--font-kop)"><span class="text-gloed">4.</span> De ruimte</legend>
+              <div class="mt-5 grid gap-6 sm:grid-cols-2">
+                <label class="block">
+                  <span class="flex items-baseline justify-between text-[1rem] text-rook">Oppervlakte <output class="num text-xl font-bold text-wit" data-m2-uit>35 m²</output></span>
+                  <input type="range" name="m2" min="10" max="120" step="5" value="35" class="mt-3 w-full accent-[#f0851f]" />
+                </label>
+                <label class="block">
+                  <span class="text-[1rem] text-rook">Woonplaats</span>
+                  <input type="text" name="plaats" autocomplete="address-level2" placeholder="Bijvoorbeeld Tholen" class="mt-2 block min-h-13 w-full rounded-full border border-lijn bg-roet-2 px-5 text-wit placeholder:text-wit/45 focus:border-gloed focus:outline-none" />
+                </label>
+              </div>
+              <div class="mt-6 flex flex-wrap gap-2.5">
+                <label class="keuze"><input type="radio" name="waar" value="showroom" checked /><span>Ik kom naar de showroom</span></label>
+                <label class="keuze"><input type="radio" name="waar" value="thuis" /><span>Liever advies bij mij thuis</span></label>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+
+        <aside class="lg:col-span-5" aria-label="Uw bericht">
+          <div class="lg:sticky lg:top-8">
+            <div class="rounded-[2rem] border border-lijn bg-roet-2 p-6 md:p-8">
+              <svg viewBox="0 0 320 200" class="w-full" role="img" aria-label="Schets van een huis met kachel en rookkanaal" data-schets>
+                <path d="M30 190V92L160 22l130 70v98" fill="none" stroke="#ffffff33" stroke-width="2" />
+                <path d="M20 190h280" stroke="#ffffff33" stroke-width="2" />
+                <g data-pijp>
+                  <path d="M178 150V60" stroke="#f0851f" stroke-width="6" stroke-linecap="round" data-pijp-lijn />
+                  <path d="M170 60h16v-14h-16z" fill="#f0851f" data-pijp-kap />
+                </g>
+                <text x="198" y="74" fill="#f0851f" font-size="13" font-weight="700" data-pijp-tekst>rookkanaal</text>
+                <rect x="160" y="150" width="36" height="40" rx="5" fill="#2e2520" stroke="#f0851f" stroke-width="2" />
+                <path d="M178 182c-6 0-8-4-8-7 0-4 4-6 5-10 1 3 3 4 4 6 1-2 1-4 0-6 4 2 7 6 7 10 0 4-3 7-8 7Z" fill="#f0851f" />
+                <text x="60" y="176" fill="#c9beb3" font-size="13" data-schets-m2>35 m²</text>
+              </svg>
+              <p class="mt-6 text-[.9375rem] font-bold uppercase tracking-[.14em] text-gloed" style="font-family: var(--font-kop)">Uw bericht aan Cornelis</p>
+              <p class="mt-3 whitespace-pre-line rounded-2xl rounded-tl-sm bg-[#dcf8c6] p-5 text-[1rem] leading-relaxed text-[#111b21]" data-bericht aria-live="polite"></p>
+              <a href={waHoi} class="knop knop-gloed mt-6 min-h-14 w-full px-6 text-[1.0625rem]" data-wa><Icoon naam="wa" class="h-5 w-5" />Open in WhatsApp</a>
+              <p class="mt-4 flex items-start gap-2 text-[.9375rem] text-rook"><Icoon naam="foto" class="mt-0.5 h-5 w-5 flex-none text-gloed" />Stuur gerust foto's van de huidige situatie mee. Die vraagt VUUR! ook bij een offerte.</p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- PROJECTEN -->
+    <section id="projecten" class="bg-as py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-6 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Projecten</p>
+            <h2 class="mt-4 text-4xl">Geplaatst van Terneuzen tot <span class="text-gloed-tekst">Andel</span>.</h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">Een greep uit wat er op hun eigen projectenpagina staat, met de foto's die daar bij horen.</p>
+        </div>
+        <ul class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {projecten.map((p) => (
+            <li class={`rijs group ${p.cls ?? ''}`}>
+              <figure>
+                <div class={`overflow-hidden rounded-3xl ${p.cls ? 'aspect-[4/3] sm:aspect-[8/5] lg:aspect-[1.64/1]' : 'aspect-[4/3] sm:aspect-[4/5]'}`}>
+                  <Image src={p.img} alt={p.alt} widths={[420, 640, 960]} sizes={p.cls ? '(min-width:1024px) 790px, 100vw' : '(min-width:1024px) 390px, (min-width:640px) 50vw, 100vw'} class="foto transition-transform duration-700 group-hover:scale-[1.03]" />
+                </div>
+                <figcaption class="mt-4">
+                  <p class="flex items-center gap-1.5 text-[.875rem] font-bold uppercase tracking-[.12em] text-gloed-tekst" style="font-family: var(--font-kop)"><Icoon naam="pin" class="h-4 w-4" />{p.plaats}</p>
+                  <p class="mt-1.5 text-[1.125rem] font-bold leading-snug" style="font-family: var(--font-kop)">{p.t}</p>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+          <li class="rijs group sm:col-span-2 lg:col-span-3">
+            <figure class="grid overflow-hidden rounded-3xl bg-roet text-wit lg:grid-cols-12">
+              <div class="aspect-[16/9] overflow-hidden lg:col-span-8 lg:aspect-auto">
+                <Image src={pOdin} alt="Dik Geurts Odin tunnelhaard aan het plafond in een lichte woonkamer" widths={[640, 960, 1400]} sizes="(min-width:1024px) 830px, 100vw" class="foto" />
+              </div>
+              <figcaption class="flex flex-col justify-center p-7 md:p-10 lg:col-span-4">
+                <p class="flex items-center gap-1.5 text-[.875rem] font-bold uppercase tracking-[.12em] text-gloed" style="font-family: var(--font-kop)"><Icoon naam="pin" class="h-4 w-4" />Sint-Annaland</p>
+                <p class="mt-3 text-2xl font-[850] leading-tight" style="font-family: var(--font-kop)">Moderne blikvanger met een Dik Geurts Odin tunnelhaard</p>
+                <p class="mt-4 text-rook">De wens van de klant: een haard die vanuit meerdere kanten zichtbaar is en een centrale plek in de ruimte krijgt.</p>
+              </figcaption>
+            </figure>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- OVER CORNELIS -->
+    <section id="over" class="bg-as-2 py-24 md:py-32">
+      <div class="wrap grid items-center gap-14 lg:grid-cols-12">
+        <div class="relative lg:col-span-6">
+          <div class="aspect-[4/3] overflow-hidden rounded-3xl">
+            <Image src={cornelis} alt="Cornelis Mekelenkamp voor de etalage van VUUR! aan de Voorstraat" widths={[640, 960, 1400]} sizes="(min-width:1024px) 600px, 100vw" class="foto object-[60%_30%]" />
+          </div>
+          <figure class="absolute -bottom-16 right-3 w-[30%] max-w-[13rem] sm:-bottom-10 sm:right-8 sm:w-[38%] rotate-[2deg] rounded-2xl bg-wit p-2 shadow-[0_18px_40px_#16110e40]">
+            <div class="aspect-[2/3] overflow-hidden rounded-xl">
+              <Image src={tulikiviCornelis} alt="Cornelis naast de Tulikivi speksteenkachel in Hoofdplaat" widths={[320, 480]} sizes="208px" class="foto" />
+            </div>
+            <figcaption class="px-1 pb-1 pt-2 text-[.8125rem] leading-snug text-steen">Hoofdplaat: 1.350 kg speksteen</figcaption>
+          </figure>
+        </div>
+        <div class="pt-14 lg:col-span-5 lg:col-start-8 lg:pt-0">
+          <p class="eyebrow">Over VUUR!</p>
+          <h2 class="mt-4 text-4xl">Van schoorsteen&shy;veger tot <span class="text-gloed-tekst">kachelman</span>.</h2>
+          <p class="mt-7 text-lg text-steen">Cornelis Mekelenkamp begon zijn carrière als schoorsteenveger. Inmiddels heeft hij ruim 20 jaar ervaring met het renoveren en aanleggen van rookkanalen, en een eigen showroom aan de Voorstraat in Sint-Annaland.</p>
+          <p class="mt-5 text-lg text-steen">In de reviews komt vaak terug dat hij de tijd neemt en meedenkt. Of, zoals een klant schreef:</p>
+          <blockquote class="mt-6 border-l-2 border-gloed pl-5 text-[1.375rem] font-bold leading-snug" style="font-family: var(--font-kop)">"Een vakman die zo ambachtelijk en met zoveel plezier zijn werk uitvoert is zeldzaam …"</blockquote>
+          <p class="mt-3 pl-5 text-[.9375rem] text-steen">Natascha B., Google review</p>
+          <a href={waHoi} class="knop knop-roet mt-10 min-h-14 px-7"><Icoon naam="wa" class="h-5 w-5 text-gloed" />Maak een afspraak met Cornelis</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="bg-roet py-24 text-wit md:py-32">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow eyebrow-licht">Reviews</p>
+            <h2 class="mt-4 text-4xl">Wat klanten <span class="text-gloed">zeggen</span>.</h2>
+          </div>
+          <a href={site.reviews} class="flex items-center gap-4 rounded-2xl border border-lijn bg-roet-2 px-5 py-4 no-underline transition-colors hover:border-gloed">
+            <span class="grid h-12 w-12 place-items-center rounded-full bg-wit"><Icoon naam="g" class="h-7 w-7" /></span>
+            <span>
+              <span class="flex items-center gap-2"><span class="num text-2xl font-[900] text-wit" style="font-family: var(--font-kop)">{site.google.score}</span><span class="flex text-gloed">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-[.9375rem] text-rook">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class={`rijs flex-col rounded-3xl border border-lijn bg-roet-2 p-7 ${i > 3 ? 'hidden md:flex' : 'flex'}`} >
+              <span class="flex text-gloed" role="img" aria-label="5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+              <p class="mt-5 flex-1 text-[1.0625rem] leading-relaxed text-wit/90">"{r.tekst}"</p>
+              <p class="mt-6 flex items-center justify-between gap-3 border-t border-lijn pt-5 text-[.9375rem]">
+                <span class="font-bold text-wit">{r.naam}</span>
+                <span class="flex items-center gap-1.5 text-rook"><Icoon naam="g" class="h-4 w-4" />Google review</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- SHOWROOM -->
+    <section id="showroom" class="bg-as py-24 md:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-7">
+          <p class="eyebrow">Showroom</p>
+          <h2 class="mt-4 text-4xl">Kom de warmte <span class="text-gloed-tekst">voelen</span>.</h2>
+          <p class="mt-6 max-w-xl text-lg text-steen">Aan de Voorstraat staan diverse opstellingen, zodat u ziet wat er kan. Wilt u uitgebreid advies, maak dan vooraf een afspraak, dan heeft Cornelis alle tijd voor u.</p>
+          <div class="mt-10 grid grid-cols-5 gap-4">
+            <div class="col-span-3 aspect-[4/5] overflow-hidden rounded-3xl sm:aspect-[7/5]">
+              <Image src={showroom} alt="Showroom van VUUR! met houtkachels op een houten vloer en wanden met brandhout" widths={[480, 800, 1200]} sizes="(min-width:1024px) 430px, 60vw" class="foto" />
+            </div>
+            <div class="col-span-2 aspect-[2/3] overflow-hidden rounded-3xl sm:aspect-[7/7.5]">
+              <Image src={showroomB} alt="Rij kachels in de lichte showroom" widths={[320, 560]} sizes="(min-width:1024px) 280px, 40vw" class="foto object-[50%_60%]" />
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:pt-10">
+          <div class="rounded-3xl bg-wit p-7 shadow-[0_1px_2px_#16110e14] md:p-9">
+            <p class="flex items-center gap-2.5 text-[1rem] font-bold" data-status><span class="h-2.5 w-2.5 rounded-full bg-as-3" data-status-stip></span><span data-status-tekst>Openingstijden showroom</span></p>
+            <table class="mt-6 w-full text-[1.0625rem]">
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.nr} class="border-b border-lijn-licht last:border-0">
+                    <th scope="row" class="py-2.5 text-left font-semibold">{t.dag}</th>
+                    <td class="num py-2.5 text-right text-steen">{t.open ? `${String(Math.floor(t.open[0])).padStart(2, '0')}.${t.open[0] % 1 ? '30' : '00'} – ${Math.floor(t.open[1])}.${t.open[1] % 1 ? '30' : '00'}` : t.tekst ?? 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-4 text-[.9375rem] text-steen">Laatste zaterdag van de maand gesloten. Advies bij u thuis gaat op afspraak.</p>
+            <div class="mt-8 border-t border-lijn-licht pt-7">
+              <p class="flex items-start gap-3 text-lg"><Icoon naam="pin" class="mt-1 h-5 w-5 flex-none text-gloed-tekst" /><span>{site.straat}<br />{site.postcode} {site.plaats}</span></p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href={site.route} class="knop knop-roet min-h-12 px-6">Route plannen<Icoon naam="pijl" class="h-4 w-4" /></a>
+                <a href={waHoi} class="knop knop-rand-donker min-h-12 px-6"><Icoon naam="wa" class="h-5 w-5" />Afspraak</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="relative isolate overflow-hidden bg-roet py-24 text-wit md:py-36">
+      <Image src={band} alt="" widths={[640, 1200, 2000]} sizes="100vw" class="foto absolute inset-0 -z-20 object-[50%_60%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#16110ef5_0%,#16110ed9_50%,#16110e80_100%)]"></div>
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-7">
+          <p class="eyebrow eyebrow-licht">Contact</p>
+          <h2 class="mt-4 text-4xl">Benieuwd wat er bij u <span class="text-gloed">kan</span>?</h2>
+          <p class="mt-6 max-w-lg text-lg text-wit/85">Stuur een appje met een foto van de huidige situatie, of bel even. Een offerte is vrijblijvend.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-gloed min-h-14 px-7 text-[1.0625rem]"><Icoon naam="wa" class="h-5 w-5" />WhatsApp Cornelis</a>
+            <a href={site.telHref} class="knop knop-rand num min-h-14 px-7 text-[1.0625rem]"><Icoon naam="tel" class="h-5 w-5" />{site.tel}</a>
+          </div>
+        </div>
+        <ul class="space-y-4 text-lg lg:col-span-4 lg:col-start-9">
+          <li class="flex items-center gap-3"><Icoon naam="tel" class="h-5 w-5 text-gloed" /><a href={site.vastHref} class="num text-wit no-underline hover:text-gloed">{site.vast}</a><span class="text-rook">(winkel)</span></li>
+          <li class="flex items-center gap-3"><Icoon naam="praat" class="h-5 w-5 text-gloed" /><a href={`mailto:${site.mail}`} class="break-all text-wit no-underline hover:text-gloed">{site.mail}</a></li>
+          <li class="flex items-center gap-3"><Icoon naam="pin" class="h-5 w-5 text-gloed" /><a href={site.route} class="text-wit no-underline hover:text-gloed">{site.straat}, {site.plaats}</a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <script>
+    // Live status showroom: zaterdag 9.30-14.30, behalve de laatste zaterdag van de maand; vrijdag op afspraak.
+    const nu = new Date();
+    const dag = nu.getDay();
+    const uur = nu.getHours() + nu.getMinutes() / 60;
+    const laatsteZaterdag = (d: Date) => d.getDay() === 6 && new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7).getMonth() !== d.getMonth();
+    document.querySelector(`tr[data-dag="${dag}"]`)?.classList.add('bg-gloed-zacht');
+    const rij = document.querySelector<HTMLElement>(`tr[data-dag="${dag}"] th`);
+    if (rij) rij.classList.add('pl-3');
+    const open = dag === 6 && !laatsteZaterdag(nu) && uur >= 9.5 && uur < 14.5;
+    const t = document.querySelector('[data-status-tekst]');
+    const s = document.querySelector('[data-status-stip]');
+    const k = document.querySelector('[data-status-kort]');
+    if (t && s) {
+      if (open) { t.textContent = 'Nu open tot 14.30'; s.className = 'h-2.5 w-2.5 rounded-full bg-[#3fa65a]'; }
+      else { t.textContent = dag === 5 ? 'Vandaag op afspraak' : 'Nu gesloten. Op afspraak kan meer.'; s.className = 'h-2.5 w-2.5 rounded-full bg-gloed'; }
+    }
+    if (k && open) k.textContent = 'Showroom nu open tot 14.30';
+
+    // Kachelwijzer -> vooraf ingevuld WhatsApp-bericht.
+    const f = document.querySelector<HTMLFormElement>('[data-wijzer]');
+    const uit = document.querySelector<HTMLElement>('[data-bericht]');
+    const wa = document.querySelector<HTMLAnchorElement>('[data-wa]');
+    const m2uit = document.querySelector<HTMLElement>('[data-m2-uit]');
+    const schetsM2 = document.querySelector<SVGTextElement>('[data-schets-m2]');
+    const pijp = document.querySelector<SVGPathElement>('[data-pijp-lijn]');
+    const kap = document.querySelector<SVGPathElement>('[data-pijp-kap]');
+    const pijpTekst = document.querySelector<SVGTextElement>('[data-pijp-tekst]');
+    const bouw = () => {
+      if (!f || !uit || !wa) return;
+      const d = new FormData(f);
+      const soort = String(d.get('soort'));
+      const situatie = String(d.get('situatie'));
+      const kanaal = String(d.get('kanaal'));
+      const m2 = String(d.get('m2'));
+      const plaats = String(d.get('plaats') || '').trim();
+      const thuis = d.get('waar') === 'thuis';
+      if (m2uit) m2uit.textContent = `${m2} m²`;
+      if (schetsM2) schetsM2.textContent = `${m2} m²`;
+      if (pijp && kap && pijpTekst) {
+        const ja = kanaal === 'Ja', nee = kanaal === 'Nee';
+        pijp.setAttribute('stroke-dasharray', ja ? '' : '6 8');
+        pijp.setAttribute('stroke', nee ? '#ffffff55' : '#f0851f');
+        kap.setAttribute('fill', nee ? '#ffffff55' : '#f0851f');
+        pijpTekst.textContent = ja ? 'rookkanaal' : nee ? 'nog geen kanaal' : 'kanaal?';
+        pijpTekst.setAttribute('fill', nee ? '#c9beb3' : '#f0851f');
+      }
+      const regels = [
+        'Hallo Cornelis,',
+        '',
+        `Ik denk aan: ${soort.toLowerCase()}`,
+        `Nu staat er: ${situatie.toLowerCase()}`,
+        `Rookkanaal of schoorsteen: ${kanaal.toLowerCase()}`,
+        `Ruimte: ongeveer ${m2} m²`,
+        plaats ? `Woonplaats: ${plaats}` : '',
+        '',
+        thuis ? 'Ik heb liever advies bij mij thuis. Wanneer komt het uit?' : 'Ik kom graag langs in de showroom. Wanneer komt het uit?',
+      ].filter((r, i, a) => r !== '' || (a[i - 1] ?? '') !== '');
+      const tekst = regels.join('\n');
+      uit.textContent = tekst;
+      wa.href = `https://wa.me/31651690802?text=${encodeURIComponent(tekst)}`;
+    };
+    f?.addEventListener('input', bouw);
+    f?.addEventListener('change', bouw);
+    bouw();
+  </script>
+</Base>

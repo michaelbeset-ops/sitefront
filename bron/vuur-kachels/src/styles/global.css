@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/red-hat-display/wght.css";
+@import "@fontsource-variable/red-hat-text/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Roet (de binnenkant van een kachel), as (de lichte vlakken) en het oranje uit hun eigen VUUR!-logo als enige kleur. */
+  --color-gloed: #f0851f;        /* logo-oranje: knoppen met roet-tekst (7,9:1) */
+  --color-gloed-diep: #d96f0c;   /* hover */
+  --color-gloed-tekst: #974505;  /* oranje als tekst op licht */
+  --color-gloed-zacht: #fbe7d3;
+  --color-roet: #16110e;
+  --color-roet-2: #211a16;
+  --color-roet-3: #2e2520;
+  --color-as: #f4efe8;
+  --color-as-2: #e9e2d8;
+  --color-as-3: #d2c8bb;
+  --color-wit: #ffffff;
+  --color-steen: #5a4f47;        /* bijtekst op licht */
+  --color-rook: #c9beb3;         /* bijtekst op donker */
+  --color-lijn: #ffffff1f;
+  --color-lijn-licht: #16110e1c;
+
+  --font-sans: "Red Hat Text Variable", "Segoe UI", system-ui, sans-serif;
+  --font-kop: "Red Hat Display Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-3xl: clamp(2.1rem, 2.4vw + 1.2rem, 3.4rem);
+  --text-4xl: clamp(2.5rem, 3.4vw + 1.2rem, 4.6rem);
+  --text-hero: clamp(3.1rem, 6.6vw + .3rem, 7.6rem);
+
+  --radius-sm: .25rem;
+  --radius-xl: .75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-roet); }
+  body {
+    background-color: var(--color-as);
+    color: var(--color-roet);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 880; line-height: .96; letter-spacing: -.035em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-gloed); color: var(--color-roet); }
+  :focus-visible { outline: 3px solid var(--color-gloed); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  /* Eyebrow met een klein rookkanaal-teken: een pijp met een bocht. */
+  .eyebrow { display: inline-flex; align-items: center; gap: .65rem; font-family: var(--font-kop); font-size: .9375rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; color: var(--color-gloed-tekst); }
+  .eyebrow::before { content: ""; width: .7rem; height: 1.15rem; flex: none; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 24'%3E%3Cpath d='M3 0h5v3H3zM4 3h3v10H4zM2 13h7v2H2zM0 15h11v9H0z'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 24'%3E%3Cpath d='M3 0h5v3H3zM4 3h3v10H4zM2 13h7v2H2zM0 15h11v9H0z'/%3E%3C/svg%3E") center/contain no-repeat; }
+  .eyebrow-licht { color: var(--color-gloed); }
+
+  /* Het rookkanaal: een dunne verticale pijp die per sectie vanuit de kop omlaag loopt, met een kraag. */
+  .kanaal { position: relative; }
+  .kanaal::before { content: ""; position: absolute; left: 0; top: 0; width: 2px; height: 4.5rem; background: linear-gradient(to bottom, transparent, var(--color-gloed)); transform: translateY(-5.5rem); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; border-radius: 999px; font-family: var(--font-kop); font-weight: 800; letter-spacing: -.005em; text-decoration: none; transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), border-color .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop:active { transform: translateY(1px); }
+  .knop-gloed { background: var(--color-gloed); color: var(--color-roet); }
+  .knop-gloed:hover { background: var(--color-gloed-diep); }
+  .knop-rand { border: 1.5px solid #ffffff8c; color: var(--color-wit); }
+  .knop-rand:hover { border-color: var(--color-wit); background: #ffffff14; }
+  .knop-roet { background: var(--color-roet); color: var(--color-wit); }
+  .knop-roet:hover { background: var(--color-roet-3); }
+  .knop-rand-donker { border: 1.5px solid #16110e40; color: var(--color-roet); }
+  .knop-rand-donker:hover { border-color: var(--color-roet); }
+
+  .link { color: inherit; text-decoration: underline; text-decoration-color: var(--color-gloed); text-decoration-thickness: 2px; text-underline-offset: 4px; transition: color .2s; }
+  .link:hover { color: var(--color-gloed-tekst); }
+
+  .foto { width: 100%; height: 100%; object-fit: cover; }
+
+  .rijs { opacity: 1; }
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease-zacht), transform .8s var(--ease-zacht); }
+  .js .rijs.in { opacity: 1; transform: none; }
+
+  /* Keuzeknoppen in de kachelwijzer. */
+  .keuze { position: relative; display: block; cursor: pointer; }
+  .keuze input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .keuze span { display: flex; align-items: center; min-height: 3.25rem; padding: .7rem 1.1rem; border: 1.5px solid var(--color-lijn); border-radius: 999px; color: var(--color-as); font-weight: 600; line-height: 1.25; transition: border-color .2s, background-color .2s, color .2s; }
+  .keuze:hover span { border-color: #ffffff59; }
+  .keuze input:checked + span { background: var(--color-gloed); border-color: var(--color-gloed); color: var(--color-roet); font-weight: 750; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-gloed); outline-offset: 3px; }
+}

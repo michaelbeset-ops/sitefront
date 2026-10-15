@@ -1,0 +1,378 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, soorten, klachten, waHoi, waMet } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import doek from '../assets/doek.jpg';
+import veranda from '../assets/w-veranda.jpg';
+import knikDonker from '../assets/w-knikarm-donker.jpg';
+import oranje from '../assets/w-oranje.jpg';
+import gestreept from '../assets/w-gestreept.jpg';
+import screenDicht from '../assets/w-screen-dicht.jpg';
+import knikWit from '../assets/w-knikarm-wit.jpg';
+import balkon from '../assets/w-balkon.jpg';
+import screensKleur from '../assets/w-screens-kleur.jpg';
+import screens from '../assets/w-screens.jpg';
+import villa from '../assets/w-villa.jpg';
+import groen from '../assets/w-groen.jpg';
+
+// Woorden uit de reviews en het profiel.
+const chips = ['Zonnescherm', 'Knikarmscherm', 'Screens', 'Defecte arm', 'Draaimechanisme', 'Elektrische bediening', 'Afstellen, smeren, schoonmaken'];
+
+const diensten = [
+  { titel: 'Reparatie', tekst: 'Een defecte arm, een kapot draaimechanisme of een scherm dat niet meer opengaat.', foto: screenDicht, alt: 'Antraciet screen, helemaal neergelaten onder een witte overkapping' },
+  { titel: 'Onderhoud', tekst: 'Inspectie, afstellen, smeren en schoonmaken, ook van een scherm dat al jaren meegaat.', foto: veranda, alt: 'Overkapping met opgerold screen boven een terras met loungebank' },
+  { titel: 'Montage', tekst: 'Nieuwe zonneschermen en screens, strak gemonteerd.', foto: knikWit, alt: 'Wit uitvalscherm boven de terrasdeuren van een nieuwbouwwoning' },
+  { titel: 'Van draaien naar elektrisch', tekst: 'Een kapot draaimechanisme vervangen door elektrische bediening.', foto: knikDonker, alt: 'Antraciet zonnescherm uitgerold boven de achtergevel van een rijtjeshuis' },
+];
+
+const stappen = [
+  { t: 'Appen of bellen', p: `Stuur een appje met uitleg en een foto, of bel ${site.tel}.` },
+  { t: 'Afspraak', p: 'Daarna volgt een afspraak bij u thuis.' },
+  { t: 'Aan het werk', p: 'Repareren, afstellen, smeren of monteren.' },
+  { t: 'Klaar als het werkt', p: 'Uit een review: "gaat pas weg als alles keurig hangt en werkt".' },
+];
+
+const werk = [
+  { f: groen, alt: 'Drie groen-wit gestreepte schermen boven een erker', c: 'col-span-2 md:col-span-7 md:row-span-2', h: 'h-72 md:h-full' },
+  { f: screens, alt: 'Grijze screens voor de ramen van een vrijstaand huis met erker', c: 'md:col-span-5', h: 'h-44 sm:h-60 md:h-full' },
+  { f: gestreept, alt: 'Oranje-wit gestreepte schermen aan een jaren dertig gevel', c: 'md:col-span-5', h: 'h-44 sm:h-60 md:h-full' },
+  { f: villa, alt: 'Screens voor alle ramen van een bakstenen villa', c: 'md:col-span-4', h: 'h-44 sm:h-60 md:h-full' },
+  { f: oranje, alt: 'Oranje screen op een galerij van een appartementencomplex', c: 'md:col-span-4', h: 'h-44 sm:h-60 md:h-full' },
+  { f: balkon, alt: 'Grijs screen voor een balkon op hoogte', c: 'col-span-2 md:col-span-4', h: 'h-44 sm:h-60 md:h-full' },
+];
+
+const rij = [1, 2, 3, 4, 5, 6, 0];
+---
+<Base title={`${site.naam} | Onderhoud, reparatie en montage in ${site.plaats}`} description={`${site.voluit} in ${site.plaats}. Reparatie, onderhoud en montage van zonneschermen, knikarmschermen en screens. Bel of app ${site.tel}.`}>
+  <main id="inhoud">
+    <div class="relative">
+    <Kop />
+    <!-- HERO -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <Image src={hero} alt="Groen-wit gestreept zonnescherm tegen een blauwe lucht" widths={[640, 960, 1400, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[80%_30%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(0deg,#142019_6%,#142019d9_34%,#14201966_62%,#14201933_100%)] md:bg-[linear-gradient(90deg,#142019f0_0%,#142019c7_38%,#14201940_72%,#14201914_100%),linear-gradient(0deg,#142019cc_0%,#14201900_40%)]" aria-hidden="true"></div>
+      <div class="wrap pb-28 pt-36 md:pb-24 md:pt-44">
+        <p class="eyebrow eyebrow-licht">Zonwering in {site.plaats}</p>
+        <h1 class="mt-6 max-w-[14ch] text-hero font-[900]">Gaat uw scherm niet meer <span class="text-merk-licht">open?</span></h1>
+        <p class="mt-7 max-w-xl text-[1.1875rem] leading-relaxed text-wit/90 md:text-[1.375rem]">Riant repareert, onderhoudt en monteert zonwering. Stuur een appje met uw vraag en een foto erbij.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#schermcheck" class="knop knop-merk">Start de schermcheck<Icoon naam="pijl" /></a>
+          <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <ul class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-[1rem] text-wit/85">
+          <li class="flex items-center gap-2"><span class="flex text-ster" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="num">{site.google.score} op Google, {site.google.aantal} reviews</span></li>
+          <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk-licht" /><span data-status>Ma t/m vr 08:30 - 17:00, za 12:00 - 17:00</span></li>
+          <li class="flex items-center gap-2"><Icoon naam="wa" class="h-5 w-5 text-merk-licht" />Ook via WhatsApp</li>
+        </ul>
+      </div>
+    </section>
+
+    </div>
+
+    <!-- CHIPS, met de volant van een zonnescherm als onderrand -->
+    <section aria-label="Waar Riant mee helpt" class="relative bg-merk text-wit">
+      <div class="wrap flex flex-wrap gap-2.5 py-7 md:justify-center">
+        {chips.map((c) => <span class="rounded-full border border-wit/30 px-4 py-2 text-[.9375rem] font-semibold">{c}</span>)}
+      </div>
+      <span class="volant volant-vol absolute inset-x-0 top-full" aria-hidden="true"></span>
+    </section>
+
+    <!-- DIENSTEN -->
+    <section id="diensten" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-6 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Wat Riant doet</p>
+            <h2 class="mt-5 text-4xl">Repareren, onderhouden <span class="text-merk">en monteren.</span></h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">Van een knikarmscherm van meer dan 25 jaar oud tot nieuwe screens.</p>
+        </div>
+        <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {diensten.map((d) => (
+            <a href="#schermcheck" class="kaart rijs group flex flex-col overflow-hidden no-underline text-inkt">
+              <div class="overflow-hidden">
+                <Image src={d.foto} alt={d.alt} widths={[400, 640, 800]} sizes="(min-width: 1024px) 23vw, (min-width: 640px) 46vw, 92vw" class="aspect-[16/10] w-full object-cover sm:aspect-[4/3] transition-transform duration-700 group-hover:scale-[1.04]" />
+              </div>
+              <div class="flex flex-1 flex-col p-6">
+                <h3 class="text-2xl">{d.titel}</h3>
+                <p class="mt-3 flex-1 text-steen">{d.tekst}</p>
+                <span class="mt-5 inline-flex items-center gap-2 font-bold text-merk">Vraag het aan<Icoon naam="pijl" class="h-5 w-5 transition-transform group-hover:translate-x-1" /></span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- VERHAAL: een review als tijdlijn -->
+    <section class="relative overflow-hidden bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <p class="eyebrow eyebrow-licht">Uit een Google-review</p>
+          <h2 class="mt-5 text-4xl">Zondagavond <span class="text-merk-licht">een appje.</span></h2>
+          <p class="mt-6 max-w-md text-lg text-mist">Een knikarmscherm van meer dan 25 jaar ging niet meer open. Zo beschrijft Dick d.H. wat er daarna gebeurde.</p>
+          <div class="mt-10 overflow-hidden rounded-[var(--radius-lg)]">
+            <Image src={screensKleur} alt="Lichte screens op kleur van het gebouw, op een balkon met planten" widths={[480, 800]} sizes="(min-width: 1024px) 36vw, 92vw" class="aspect-[4/3] w-full object-cover object-[50%_40%]" />
+          </div>
+        </div>
+        <ol class="relative space-y-6 lg:col-span-7 lg:pt-4">
+          <li class="rijs rounded-[var(--radius-lg)] border border-lijn bg-inkt-2 p-7 md:p-9">
+            <p class="text-[.9375rem] font-bold uppercase tracking-[.14em] text-merk-licht">Zondagavond</p>
+            <p class="mt-3 text-xl leading-snug md:text-2xl">"Ik heb zondag! avond een appje gestuurd met de uitleg van het probleem."</p>
+          </li>
+          <li class="rijs rounded-[var(--radius-lg)] border border-lijn bg-inkt-2 p-7 md:ml-10 md:p-9">
+            <p class="text-[.9375rem] font-bold uppercase tracking-[.14em] text-merk-licht">Dezelfde avond</p>
+            <p class="mt-3 text-xl leading-snug md:text-2xl">"… appte nog dezelfde avond terug en gaf tijdens telefonisch onderhoud enkele tips. Één van de tips hielp en het scherm werkte weer."</p>
+          </li>
+          <li class="rijs rounded-[var(--radius-lg)] border border-lijn bg-inkt-2 p-7 md:ml-20 md:p-9">
+            <p class="text-[.9375rem] font-bold uppercase tracking-[.14em] text-merk-licht">De volgende avond</p>
+            <p class="mt-3 text-xl leading-snug md:text-2xl">"… is de volgende avond langsgekomen voor inspectie, afstellen en smeren."</p>
+          </li>
+          <li class="rijs flex gap-4 pt-2 md:ml-20">
+            <span class="mt-1 grid h-10 w-10 flex-none place-items-center rounded-full bg-merk"><Icoon naam="praat" class="h-5 w-5" /></span>
+            <p class="text-mist"><span class="font-bold text-wit">Reactie van Riant op Google:</span> "de koffie was heerlijk als er nog eens wat is ,kom ik graag weer langs"</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SCHERMCHECK (wow) -->
+    <section id="schermcheck" class="relative isolate overflow-hidden py-24 md:py-32">
+      <Image src={doek} alt="" widths={[800, 1400, 1800]} sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover" aria-hidden="true" />
+      <div class="absolute inset-0 -z-10 bg-doek/80" aria-hidden="true"></div>
+      <div class="wrap">
+        <div class="kaart mx-auto max-w-5xl overflow-hidden">
+          <div class="grid lg:grid-cols-12">
+            <form class="p-6 sm:p-10 lg:col-span-7" data-check>
+              <p class="eyebrow">Schermcheck</p>
+              <h2 class="mt-5 text-3xl">Wat is er met <span class="text-merk">uw scherm?</span></h2>
+              <p class="mt-4 text-steen">Kies wat past. Er wordt nog niets verstuurd: u ziet eerst het bericht.</p>
+
+              <fieldset class="mt-9">
+                <legend class="font-[family-name:var(--font-kop)] text-xl font-[800]"><span class="text-merk">1.</span> Wat voor zonwering?</legend>
+                <div class="mt-4 grid gap-2.5 sm:grid-cols-2">
+                  {soorten.map((s, i) => <label class="keus"><input type="radio" name="soort" value={s} checked={i === 0} /><span>{s}</span></label>)}
+                </div>
+              </fieldset>
+
+              <fieldset class="mt-9">
+                <legend class="font-[family-name:var(--font-kop)] text-xl font-[800]"><span class="text-merk">2.</span> Wat is er aan de hand?</legend>
+                <div class="mt-4 grid gap-2.5 sm:grid-cols-2">
+                  {klachten.map((k, i) => <label class="keus"><input type="radio" name="klacht" value={k} checked={i === 0} /><span>{k}</span></label>)}
+                </div>
+              </fieldset>
+
+              <div class="mt-9">
+                <label for="leeftijd" class="flex items-baseline justify-between gap-4 font-[family-name:var(--font-kop)] text-xl font-[800]"><span><span class="text-merk">3.</span> Hoe oud is het scherm?</span><output id="leeftijd-uit" class="num text-merk" for="leeftijd">ongeveer 10 jaar</output></label>
+                <input id="leeftijd" name="leeftijd" type="range" min="0" max="30" step="1" value="10" class="mt-5 w-full accent-[#1d6146]" />
+                <div class="num mt-1 flex justify-between text-[.875rem] text-steen"><span>nieuw</span><span>15 jaar</span><span>30+ jaar</span></div>
+              </div>
+
+              <div class="mt-9">
+                <label for="plaats" class="font-[family-name:var(--font-kop)] text-xl font-[800]"><span class="text-merk">4.</span> Waar woont u? <span class="text-base font-normal text-steen">(plaats of wijk)</span></label>
+                <input id="plaats" name="plaats" type="text" autocomplete="address-level2" placeholder="Bijvoorbeeld Delft, Tanthof" class="mt-4 min-h-13 w-full rounded-[var(--radius-md)] border-[1.5px] border-doek-3 bg-wit px-4 py-3 text-base outline-none focus:border-merk" />
+              </div>
+            </form>
+
+            <div class="flex flex-col bg-inkt text-wit lg:col-span-5">
+              <div class="flex items-center gap-3 border-b border-lijn px-6 py-5 sm:px-8">
+                <span class="grid h-11 w-11 flex-none place-items-center rounded-full bg-doek">
+                  <svg viewBox="0 0 44 30" class="h-6 w-8" aria-hidden="true"><path d="M2 3h40l-3 14H5z" fill="#f6f2e8" /><path d="M8.2 3h6.4l-1.2 14H6.4zM20.8 3h6.4l.6 14h-7.4zM33.4 3h6.4L37 17h-5.6z" fill="#1d6146" /><path d="M2 3h40" stroke="#142019" stroke-width="2.4" stroke-linecap="round" /></svg>
+                </span>
+                <span class="leading-tight"><span class="block font-bold">{site.naam}</span><span class="num text-[.875rem] text-mist">{site.tel}</span></span>
+                <Icoon naam="wa" class="ml-auto h-6 w-6 text-[#5fd68f]" />
+              </div>
+              <div class="flex flex-1 flex-col justify-end bg-[repeating-linear-gradient(90deg,#ffffff05_0_28px,transparent_28px_56px)] px-6 py-8 sm:px-8">
+                <p class="mx-auto mb-6 rounded-full bg-inkt-3 px-3 py-1 text-[.8125rem] font-semibold text-mist">Voorbeeld, nog niet verstuurd</p>
+                <div class="ml-auto w-[92%] rounded-[var(--radius-md)] rounded-tr-none bg-[#1f4a35] p-5 text-[1.0625rem] leading-relaxed shadow-kaart">
+                  <p class="whitespace-pre-line" data-voorbeeld aria-live="polite"></p>
+                </div>
+                <p class="mt-5 flex gap-3 text-[.9375rem] text-mist"><Icoon naam="foto" class="h-5 w-5 flex-none text-merk-licht" />Stuur in WhatsApp een foto van het scherm mee.</p>
+              </div>
+              <div class="border-t border-lijn px-6 py-6 sm:px-8">
+                <a href={waHoi} class="knop knop-merk w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+                <a href={site.telHref} class="num mt-4 block text-center text-[1rem] font-semibold text-wit/80 no-underline hover:text-wit">of bel {site.tel}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WERK -->
+    <section id="werk" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-6 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Uit het werk</p>
+            <h2 class="mt-5 text-4xl">Gestreept, strak <span class="text-merk">of op kleur.</span></h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">Foto's van het Google-profiel van {site.naam}.</p>
+        </div>
+        <div class="mt-14 grid grid-cols-2 gap-3 md:auto-rows-[18rem] md:grid-cols-12 md:gap-4">
+          {werk.map((w) => (
+            <figure class={`rijs overflow-hidden rounded-[var(--radius-lg)] bg-doek-2 ${w.c}`}>
+              <Image src={w.f} alt={w.alt} widths={[480, 800, 1200]} sizes="(min-width: 768px) 50vw, 92vw" class={`w-full object-cover ${w.h}`} />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- WERKWIJZE -->
+    <section class="border-y border-lijn-licht bg-wit py-24 md:py-28">
+      <div class="wrap">
+        <p class="eyebrow">Zo gaat het</p>
+        <h2 class="mt-5 max-w-2xl text-4xl">Van appje <span class="text-merk">tot werkend scherm.</span></h2>
+        <ol class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map((s, i) => (
+            <li class="rijs rounded-[var(--radius-lg)] bg-doek p-7">
+              <span class="num font-[family-name:var(--font-kop)] text-[3.25rem] leading-none font-[900] tracking-tight text-merk">0{i + 1}</span>
+              <h3 class="mt-5 text-2xl">{s.t}</h3>
+              <p class="mt-3 text-steen">{s.p}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="py-24 md:py-32">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 class="mt-5 text-4xl">Wat klanten <span class="text-merk">zeggen.</span></h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-6 py-4 no-underline text-inkt">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex text-ster" aria-hidden="true">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+              <span class="num mt-1 block text-[.9375rem] font-semibold">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <div class="mt-14 columns-1 gap-5 md:columns-2 lg:columns-3">
+          {reviews.map((r) => (
+            <figure class="kaart rijs mb-5 break-inside-avoid p-7">
+              <div class="flex text-ster" role="img" aria-label="5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</div>
+              <blockquote class="mt-4 text-[1.0625rem] leading-relaxed">"{r.tekst}"</blockquote>
+              <figcaption class="mt-6 flex items-center justify-between gap-4 border-t border-lijn-licht pt-5 text-[.9375rem]">
+                <span class="font-bold">{r.naam}</span>
+                <span class="flex items-center gap-2 text-steen"><Icoon naam="g" class="h-4 w-4" />{r.wanneer}</span>
+              </figcaption>
+            </figure>
+          ))}
+          <div class="mb-5 break-inside-avoid rounded-[var(--radius-lg)] bg-merk p-7 text-wit">
+            <p class="font-[family-name:var(--font-kop)] text-2xl font-[850] leading-tight tracking-tight">Ook een scherm dat niet meer wil?</p>
+            <a href={waHoi} class="knop knop-wit mt-6"><Icoon naam="wa" />App Riant</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT + TIJDEN -->
+    <section id="contact" class="bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid grid-cols-1 gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="eyebrow eyebrow-licht">Contact</p>
+          <h2 class="mt-5 text-4xl">App of bel <span class="text-merk-licht">Riant.</span></h2>
+          <p class="mt-6 max-w-md text-lg text-mist">{site.voluit}, {site.plaats}.</p>
+          <div class="mt-10 grid gap-3 sm:max-w-md">
+            <a href={waHoi} class="knop knop-merk justify-start"><Icoon naam="wa" />WhatsApp sturen</a>
+            <a href={site.telHref} class="knop knop-rand num justify-start"><Icoon naam="tel" />{site.tel}</a>
+            <a href={site.reviews} class="knop knop-rand justify-start"><Icoon naam="pin" />Bekijk op Google Maps</a>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rounded-[var(--radius-lg)] border border-lijn bg-inkt-2 p-7 md:p-9">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-2xl">Openingstijden</h3>
+              <span class="hidden items-center gap-2 rounded-full bg-inkt-3 px-3 py-1.5 text-[.875rem] font-bold" data-nu><span class="h-2.5 w-2.5 rounded-full" data-stip></span><span data-nu-tekst></span></span>
+            </div>
+            <table class="num mt-6 w-full text-[1.0625rem]">
+              <tbody>
+                {rij.map((i) => (
+                  <tr class="border-t border-lijn" data-dag={i}>
+                    <th scope="row" class="py-3 text-left font-semibold">{tijden[i].dag}</th>
+                    <td class="py-3 text-right text-mist">{tijden[i].open ? `${tijden[i].open} - ${tijden[i].dicht}` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOTBALK -->
+    <section class="relative bg-merk text-wit">
+      <span class="volant volant-donker absolute inset-x-0 top-0" aria-hidden="true"></span>
+      <div class="wrap flex flex-col items-start justify-between gap-6 pb-14 pt-20 md:flex-row md:items-center">
+        <p class="max-w-2xl font-[family-name:var(--font-kop)] text-3xl font-[850] leading-[1.05] tracking-tight">Scherm stuk of toe aan onderhoud?</p>
+        <a href={waHoi} class="knop knop-wit flex-none"><Icoon naam="wa" />App uw vraag</a>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  // Schermcheck: bouwt het WhatsApp-bericht op, verstuurt zelf niets.
+  const f = document.querySelector<HTMLFormElement>('[data-check]');
+  const v = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const a = document.querySelector<HTMLAnchorElement>('[data-wa]');
+  const uit = document.querySelector<HTMLOutputElement>('#leeftijd-uit');
+  const jaar = (n: number) => (n === 0 ? 'nieuw' : n >= 30 ? '30 jaar of ouder' : `ongeveer ${n} jaar`);
+  function bouw() {
+    if (!f || !v || !a) return;
+    const d = new FormData(f);
+    const n = Number(d.get('leeftijd'));
+    if (uit) uit.textContent = jaar(n);
+    const soort = String(d.get('soort'));
+    const plaats = String(d.get('plaats') || '').trim();
+    const regels = [
+      'Hallo Riant Zonwering,',
+      '',
+      `Soort: ${soort === 'Weet ik niet' ? 'weet ik niet precies' : soort.toLowerCase()}`,
+      `Wat is er: ${String(d.get('klacht')).toLowerCase()}`,
+      `Leeftijd scherm: ${jaar(n)}`,
+      plaats ? `Plaats: ${plaats}` : '',
+      '',
+      'Ik stuur een foto mee.',
+    ].filter((r, i, l) => !(r === '' && l[i - 1] === ''));
+    const tekst = regels.join('\n');
+    v.textContent = tekst;
+    a.href = `https://wa.me/31616168814?text=${encodeURIComponent(tekst)}`;
+  }
+  f?.addEventListener('input', bouw);
+  f?.addEventListener('change', bouw);
+  f?.addEventListener('submit', (e) => e.preventDefault());
+  bouw();
+
+  // Vandaag markeren + nu open/gesloten (tijd in Nederland).
+  const tijden: Record<number, [string, string] | null> = { 0: null, 1: ['08:30', '17:00'], 2: ['08:30', '17:00'], 3: ['08:30', '17:00'], 4: ['08:30', '17:00'], 5: ['08:30', '17:00'], 6: ['12:00', '17:00'] };
+  const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+  const dag = nu.getDay();
+  const min = nu.getHours() * 60 + nu.getMinutes();
+  const m = (s: string) => Number(s.slice(0, 2)) * 60 + Number(s.slice(3));
+  const t = tijden[dag];
+  const open = !!t && min >= m(t[0]) && min < m(t[1]);
+  document.querySelector(`[data-dag="${dag}"]`)?.classList.add('text-merk-licht', 'font-bold');
+  const badge = document.querySelector<HTMLElement>('[data-nu]');
+  if (badge) {
+    badge.classList.remove('hidden'); badge.classList.add('inline-flex');
+    badge.querySelector<HTMLElement>('[data-stip]')!.style.background = open ? '#5fd68f' : '#e8a33a';
+    badge.querySelector<HTMLElement>('[data-nu-tekst]')!.textContent = open ? 'Nu open' : 'Nu gesloten';
+  }
+  const st = document.querySelector<HTMLElement>('[data-status]');
+  if (st) {
+    if (open && t) st.textContent = `Vandaag open tot ${t[1]}`;
+    else if (t && min < m(t[0])) st.textContent = `Vandaag open vanaf ${t[0]}`;
+  }
+</script>

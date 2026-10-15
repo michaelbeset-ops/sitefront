@@ -330,3 +330,11 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Vlinder Wonen, Spijkenisse | https://voorstel.sitefront.nl/vlinder-wonen/ | domein staat te koop, site weg; 5,0/15; 06/WhatsApp. | 2026-10-13 | demo premium |
 | Tilburg Mobile Bikes | https://voorstel.sitefront.nl/tilburg-mobile-bikes/ | alleen een onaffe Canva-site; 4,9/162; 06/WhatsApp. | 2026-10-13 | demo premium |
 | Wereld Bike, Tilburg | https://voorstel.sitefront.nl/wereld-bike-tilburg/ | geen website, alleen Facebook; 4,6/127; 06/WhatsApp. | 2026-10-13 | demo premium |
+| VUUR! Kachels en haarden, Sint-Annaland | https://voorstel.sitefront.nl/vuur-kachels/ | site breder dan scherm op mobiel; 4,8/66; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Kozijn-Adviseur, Rotterdam | https://voorstel.sitefront.nl/kozijn-adviseur/ | gedateerde site; 5,0/61; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Tegelhandel Rien Peeman, Middelharnis | https://voorstel.sitefront.nl/tegelhandel-rien-peeman/ | domein bestaat niet meer; 4,7/48; 06/WhatsApp. | 2026-10-15 | demo premium |
+| De Haan Zonwering, Sleeuwijk | https://voorstel.sitefront.nl/de-haan-zonwering/ | homepage alleen busfoto en oude actie; 5,0/23; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Good Kitchenstore, Rotterdam | https://voorstel.sitefront.nl/good-kitchenstore/ | desktopsite op mobiel, cookiemuur; 4,8/20; 06/WhatsApp. | 2026-10-15 | demo premium |
+| EU Naturalstones, Spijkenisse | https://voorstel.sitefront.nl/eu-naturalstones/ | site niet aan Google gekoppeld, pop-up over hero; 4,8/44; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Riant Zonwering, Delft | https://voorstel.sitefront.nl/riant-zonwering/ | geen website; 5,0/17; 06/WhatsApp. | 2026-10-15 | demo premium |
+| MDL stoffering, Oosterhout | https://voorstel.sitefront.nl/mdl-stoffering/ | site uit 2015, projectpagina's geven fout; 4,3/18; 06/WhatsApp. | 2026-10-15 | demo premium |

@@ -1,0 +1,50 @@
+---
+import { site, url, waHoi, tijden } from '../data/site';
+import Merk from './Merk.astro';
+import Icoon from './Icoon.astro';
+const jaar = new Date().getFullYear();
+const thuis = Astro.url.pathname.replace(/\/$/, '') === import.meta.env.BASE_URL.replace(/\/$/, '');
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const aanbod = ['Vloertegels', 'Wandtegels', 'Keukenbladen', 'Badkamer en wc', 'Tuintegels', 'Steenstrips', 'Keramisch parket', 'Maatwerk'];
+const week = [...tijden.slice(1), tijden[0]];
+const uur = (n: number) => `${String(n).padStart(2, '0')}.00`;
+---
+<footer class="bg-nero text-mist">
+  <div class="wrap grid gap-x-10 gap-y-12 py-16 text-[.95rem] sm:grid-cols-2 md:py-24 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Merk />
+      <p class="mt-6 max-w-xs">Tegels en natuursteen uit eigen import, met een showroom in {site.plaats}. Leveren en plaatsen doet ons eigen team.</p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href={waHoi} class="knop knop-oranje min-h-11 px-5"><Icoon naam="wa" />WhatsApp</a>
+        <a href={site.insta} class="knop knop-wit min-h-11 px-4" aria-label="EU Naturalstones op Instagram"><Icoon naam="insta" /></a>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Aanbod</p>
+      <ul class="mt-5 grid grid-cols-2 gap-x-6 gap-y-2 lg:grid-cols-1">
+        {aanbod.map((t) => <li><a href={h('aanbod')} class="no-underline transition-colors hover:text-oranje">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-wit">Contact</p>
+      <ul class="mt-5 space-y-2">
+        <li><a href={site.telHref} class="num no-underline hover:text-oranje">{site.tel}</a> <span class="text-mist/80">(ook WhatsApp)</span></li>
+        <li><a href={`mailto:${site.mail}`} class="no-underline hover:text-oranje">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.route} class="no-underline hover:text-oranje">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-wit">Showroom</p>
+      <ul class="num mt-5 space-y-1.5">
+        {week.map((d) => <li class="flex justify-between gap-4"><span>{d.kort}</span><span class="text-wit/90">{d.open === null ? 'gesloten' : `${uur(d.open)}-${uur(d.dicht!)}`}</span></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 border-t border-lijn py-7 text-xs">
+    <p>© {jaar} {site.bedrijf} · KvK {site.kvk}</p>
+    <p class="flex flex-wrap gap-x-6 gap-y-2"><a href={url('privacy/')} class="no-underline hover:text-wit">Privacyverklaring</a><span>Website door Sitefront</span></p>
+  </div>
+  {site.voorstel && <p class="wrap pb-8 text-xs">Teksten, stalen en projectfoto's van jullie eigen website eu-naturalstones.com en jullie Google-profiel. Reviews letterlijk van Google (stand 15 oktober 2026).</p>}
+  <div class="h-14 md:hidden" aria-hidden="true"></div>
+</footer>

@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/red-hat-display/wght.css";
+@import "@fontsource-variable/red-hat-text/wght.css";
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Zwart van hun logo, wolwit als ongeverfd tapijtgaren, en één warme kleur: oker, als het eiken op hun eigen foto's. */
+  --color-merk: #d4a43e;        /* knoppen (inkt erop 7,7:1), accent op donker */
+  --color-merk-hover: #e2b553;
+  --color-merk-diep: #7d5812;   /* merk als tekst op licht (5,6:1) */
+  --color-merk-zacht: #f4e7c9;
+  --color-wol: #f3efe8;
+  --color-wol-2: #e8e2d8;
+  --color-wol-3: #d3cbbd;
+  --color-wit: #ffffff;
+  --color-inkt: #1b1916;
+  --color-inkt-2: #24211d;
+  --color-inkt-3: #302c27;
+  --color-steen: #5c554c;       /* bijtekst op licht */
+  --color-mist: #b9b0a3;        /* bijtekst op donker */
+  --color-lijn: #ffffff21;
+  --color-lijn-licht: #1b19161f;
+
+  --font-sans: "Red Hat Text Variable", "Segoe UI", system-ui, sans-serif;
+  --font-kop: "Red Hat Display Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.875rem;
+  --text-sm: 1rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1vw + 1.2rem, 2rem);
+  --text-3xl: clamp(2rem, 2.2vw + 1.2rem, 3.2rem);
+  --text-4xl: clamp(2.3rem, 3.2vw + 1.1rem, 4.25rem);
+  --text-hero: clamp(2.9rem, 6vw + .5rem, 6.9rem);
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 1.5rem; background: var(--color-inkt); }
+  body {
+    background-color: var(--color-wol);
+    color: var(--color-inkt);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 850; line-height: .97; letter-spacing: -.035em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-merk); color: var(--color-inkt); }
+  :focus-visible { outline: 3px solid var(--color-merk); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .num { font-variant-numeric: lining-nums tabular-nums; }
+
+  /* De snede: een schuin afgesneden hoek, zoals het schuine voetje van de L in hun logo en de snede van een stoffeerdersmes. */
+  .snede { clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--s, 1.6rem)), calc(100% - var(--s, 1.6rem)) 100%, 0 100%); }
+  .snede-l { clip-path: polygon(0 0, 100% 0, 100% 100%, var(--s, 1.6rem) 100%, 0 calc(100% - var(--s, 1.6rem))); }
+
+  /* Eyebrow met een trapje ervoor (drie treden). */
+  .eyebrow { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-kop); font-size: .95rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; color: var(--color-merk-diep); }
+  .eyebrow::before { content: ""; width: 1.1rem; height: .9rem; flex: none; background: currentColor; clip-path: polygon(0 100%, 0 66%, 33% 66%, 33% 33%, 66% 33%, 66% 0, 100% 0, 100% 100%); }
+  .eyebrow-licht { color: var(--color-merk); }
+
+  .kaart { background: var(--color-wit); box-shadow: 0 1px 2px #1b19160f, 0 0 0 1px var(--color-lijn-licht); }
+
+  .chip { display: inline-flex; align-items: center; min-height: 2.6rem; padding: .35rem 1.05rem; border: 1px solid var(--color-wol-3); background: var(--color-wit); font-size: 1rem; font-weight: 650; color: var(--color-inkt); white-space: nowrap; }
+  .chip-donker { border-color: #ffffff2e; background: transparent; color: var(--color-wol); }
+
+  .stap-nr { font-family: var(--font-kop); font-weight: 300; font-size: 3.6rem; line-height: .85; letter-spacing: -.04em; color: var(--color-merk); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.5rem; padding: 0 1.7rem; font-family: var(--font-kop); font-size: 1.0625rem; font-weight: 750; letter-spacing: .005em; text-decoration: none; white-space: nowrap; cursor: pointer; --s: .8rem; clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--s)), calc(100% - var(--s)) 100%, 0 100%); transition: background-color .25s var(--ease-zacht), color .25s var(--ease-zacht), box-shadow .25s var(--ease-zacht), transform .25s var(--ease-zacht); }
+  .knop svg { width: 1.25rem; height: 1.25rem; flex: none; }
+  .knop:active { transform: translateY(1px); }
+  .knop-merk { background: var(--color-merk); color: var(--color-inkt); }
+  .knop-merk:hover { background: var(--color-merk-hover); }
+  .knop-wit, .knop-rand { clip-path: none; }
+  .knop-wit { box-shadow: inset 0 0 0 1.5px #ffffffb8; color: var(--color-wit); }
+  .knop-wit:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px var(--color-wol-3); color: var(--color-inkt); background: var(--color-wit); }
+  .knop-rand:hover { box-shadow: inset 0 0 0 1.5px var(--color-inkt); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-wol); }
+  .knop-inkt:hover { background: var(--color-inkt-3); }
+  .knop-groen { background: #1a7f4b; color: var(--color-wit); }
+  .knop-groen:hover { background: #136039; }
+
+  .link { text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-size: 100% 1.5px; background-position: 0 100%; background-repeat: no-repeat; padding-bottom: 1px; transition: color .25s; }
+  .link:hover { color: var(--color-merk-diep); }
+
+  /* Aanvraag: keuzes als stalen. */
+  .keuze { position: relative; display: flex; align-items: center; gap: .7rem; min-height: 3.25rem; padding: .55rem .95rem; border: 1.5px solid var(--color-wol-3); background: var(--color-wit); font-size: 1.0625rem; font-weight: 650; color: var(--color-inkt); cursor: pointer; transition: border-color .2s, background-color .2s; }
+  .keuze:hover { border-color: #8f877b; }
+  .keuze input { appearance: none; width: 1.15rem; height: 1.15rem; flex: none; border: 1.5px solid #8f877b; background: var(--color-wit); display: grid; place-items: center; margin: 0; }
+  .keuze input::after { content: ""; width: .6rem; height: .6rem; background: var(--color-inkt); clip-path: polygon(0 0, 100% 0, 100% 55%, 55% 100%, 0 100%); transform: scale(0); transition: transform .15s; }
+  .keuze input:checked { border-color: var(--color-inkt); }
+  .keuze input:checked::after { transform: scale(1); }
+  .keuze:has(input:checked) { border-color: var(--color-inkt); background: var(--color-merk-zacht); }
+  .keuze:has(input:focus-visible) { outline: 3px solid var(--color-merk); outline-offset: 2px; }
+
+  .veld { display: block; width: 100%; min-height: 3.25rem; padding: .6rem .9rem; border: 1.5px solid var(--color-wol-3); background: var(--color-wit); color: var(--color-inkt); font: inherit; font-size: 1.0625rem; transition: border-color .2s; }
+  .veld::placeholder { color: #6d665c; }
+  .veld:hover { border-color: #8f877b; }
+  .veld:focus { outline: none; border-color: var(--color-inkt); box-shadow: 0 0 0 1px var(--color-inkt); }
+  .veld-label { display: block; font-family: var(--font-kop); font-size: 1.0625rem; font-weight: 780; color: var(--color-inkt); margin-bottom: .55rem; }
+
+  .js .rijs { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease-zacht), transform .9s var(--ease-zacht); transition-delay: var(--d, 0s); }
+  .js .rijs.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js .rijs { opacity: 1; transform: none; transition: none; } }
+}
+
+@media (max-width: 420px) {
+  .keuze { padding: .5rem .7rem; gap: .55rem; font-size: 1rem; }
+}
+@media (max-width: 359px) {
+  .keuze { font-size: .9375rem; }
+  .knop { padding: 0 1rem; font-size: 1rem; gap: .5rem; }
+}

@@ -1,0 +1,399 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, reviews, citaten, waHoi } from '../data/site';
+
+import hero from '../assets/hero.jpg';
+import sWand from '../assets/s-wand.jpg';
+import sVloer from '../assets/s-vloer.jpg';
+import sBadkamer from '../assets/s-badkamer.jpg';
+import sTerracotta from '../assets/s-terracotta.jpg';
+import showA from '../assets/showroom-a.jpg';
+import showB from '../assets/showroom-b.jpg';
+import pSteen from '../assets/p-natuursteen.jpg';
+import pVloer from '../assets/p-vloer.jpg';
+import pLeggen from '../assets/p-leggen.jpg';
+import sTravertin from '../assets/s-travertin.jpg';
+
+// Alle teksten komen uit hun vorige website (webarchief, bron/archief) of van Google; zie src/data/site.ts.
+const aanbod = [
+  { t: 'Wandtegels', s: 'Voor badkamer, keuken en toilet. Voor ieder budget een passende oplossing.', img: sWand, alt: 'Badkamer met marmerlook wandtegels (sfeerfoto)' },
+  { t: 'Vloertegels', s: 'Tegels voor de vloer, samen uitgezocht binnen uw budget.', img: sVloer, alt: 'Woonkamer met lichte vloertegels (sfeerfoto)' },
+  { t: 'Natuursteen', s: 'Al sinds 1983 leveren en brengen wij natuursteen aan.', img: sBadkamer, alt: 'Badkamer in donkere steen (sfeerfoto)' },
+  { t: 'Vloerverwarming', s: 'Ook het toepassen van vloerverwarming behoort tot de mogelijkheden.', img: pVloer, alt: 'Grote vloertegels in een woonkamer, foto van Tegelhandel Peeman' },
+  { t: 'Tegelzetten', s: 'Uw tegels gelegd door vakkundige tegelzetters.', img: pLeggen, alt: 'Tegels worden gelegd, met waterpas en lijmkam, foto van Tegelhandel Peeman' },
+  { t: 'Uw eigen merk', s: 'Staat uw merk er niet tussen? Wij hebben het wellicht of kunnen het voor u bestellen.', img: showB, alt: 'Tegelwand in de showroom van Tegelhandel Peeman' },
+];
+const punten = ['De liefde voor het vak', 'Vakkundige tegelzetters', 'De vakkennis', 'Het geduld waarmee men de klanten bedient', 'De vriendelijkheid', 'De recht-door-zee mentaliteit'];
+const stappen = [
+  { t: 'Kom langs', s: 'Een ruime showroom met alle bekende tegelmerken uit binnen- en buitenland. Kom gerust eens langs.' },
+  { t: 'Wensen en budget', s: 'Maak ons uw wensen en uw budget kenbaar en wij bieden passende tegelmerken aan.' },
+  { t: 'Samen kiezen', s: 'Samen vinden we de mooiste tegels voor uw budget.' },
+  { t: 'Leveren en leggen', s: 'Wij leveren uw wand- en vloertegels en brengen ze aan, met vakkundige tegelzetters.' },
+];
+
+const ruimtes = ['Badkamer', 'Keuken', 'Woonkamer', 'Toilet', 'Hal of entree', 'Anders'];
+const stijlen = [
+  { id: 'marmer', t: 'Marmerlook', c: '#ebe7e1' },
+  { id: 'beton', t: 'Betonlook', c: '#a19c95' },
+  { id: 'hout', t: 'Houtlook', c: '#b88a5f' },
+  { id: 'steen', t: 'Natuursteen', c: '#5d6165' },
+  { id: 'klei', t: 'Terracotta', c: '#b0603b' },
+  { id: 'wit', t: 'Effen wit', c: '#f7f6f3' },
+];
+const formaten = ['30 x 60', '60 x 60', '60 x 120', '120 x 120', '20 x 120', 'Weet ik nog niet'];
+---
+<Base title={`${site.naam} | Wand- en vloertegels en natuursteen in ${site.plaats}`} description={`Tegelhandel Rien Peeman in ${site.plaats}: al sinds 1983 wand- en vloertegels en natuursteen, geleverd en gelegd. Groot in assortiment en klein in prijs.`}>
+  <Kop />
+  <main id="inhoud">
+    <!-- HERO -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit">
+      <Image src={hero} alt="" widths={[640, 960, 1400, 2000, 2400]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1f1c1acc_0%,#1f1c1a66_30%,#1f1c1a8c_58%,#1f1c1af2_100%)] md:bg-[linear-gradient(90deg,#1f1c1af2_0%,#1f1c1ac4_42%,#1f1c1a40_75%,#1f1c1a26_100%)]"></div>
+      <div class="wrap pb-24 pt-36 md:pb-24 md:pt-52">
+        <p class="eyebrow eyebrow-licht">Tegelhandel in {site.plaats} · sinds 1983</p>
+        <h1 class="mt-6 max-w-[15ch] text-hero">Groot in <span class="text-klei-licht">assortiment</span> en klein in prijs.</h1>
+        <p class="mt-7 max-w-xl text-[1.1875rem] leading-relaxed text-wit/90 md:text-[1.375rem]">Wand- en vloertegels en natuursteen, geleverd en aangebracht. In onze showroom wordt u nog “ouderwets degelijk” geholpen.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#planner" class="knop knop-klei"><Icoon naam="tegel" />Tegels aanvragen</a>
+          <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />{site.tel}</a>
+        </div>
+        <ul class="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-[1rem] font-semibold text-wit/90">
+          <li><a href={site.reviews} class="inline-flex items-center gap-2 no-underline hover:text-wit"><span class="flex text-[#f5b93a]">{[1,2,3,4,5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="num">{site.google.score}</span> op Google · {site.google.aantal} reviews</a></li>
+          <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-klei-licht" /><span data-nu>Showroom: ma t/m vr 09:30 tot 16:30</span></li>
+          <li class="flex items-center gap-2"><Icoon naam="pin" class="h-5 w-5 text-klei-licht" />{site.plaats}, Goeree-Overflakkee</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CIJFERS -->
+    <section class="border-b border-lijn-licht bg-wit">
+      <div class="wrap grid grid-cols-2 lg:grid-cols-4">
+        <div class="border-r border-lijn-licht py-9 pr-4 md:py-12">
+          <p class="num text-[2.6rem] font-[800] leading-none md:text-[3.4rem]" style="font-family: var(--font-serif)">1983</p>
+          <p class="mt-2 text-steen">sinds dit jaar in de tegelbranche</p>
+        </div>
+        <div class="py-9 pl-5 md:py-12 lg:border-r lg:border-lijn-licht lg:px-8">
+          <p class="num text-[2.6rem] font-[800] leading-none md:text-[3.4rem]" style="font-family: var(--font-serif)">{site.google.score}<span class="text-klei">★</span></p>
+          <p class="mt-2 text-steen">gemiddeld uit {site.google.aantal} Google-reviews</p>
+        </div>
+        <div class="border-r border-t border-lijn-licht py-9 pr-4 md:py-12 lg:border-t-0 lg:px-8">
+          <p class="text-[1.3rem] font-[800] leading-tight sm:text-[1.6rem] md:text-[2rem]" style="font-family: var(--font-serif)">Wand, vloer en natuursteen</p>
+          <p class="mt-2 text-steen">geleverd en aangebracht</p>
+        </div>
+        <div class="border-t border-lijn-licht py-9 pl-5 md:py-12 lg:border-t-0 lg:px-8">
+          <p class="text-[1.3rem] font-[800] leading-tight sm:text-[1.6rem] md:text-[2rem]" style="font-family: var(--font-serif)">Leveren én leggen</p>
+          <p class="mt-2 text-steen">met vakkundige tegelzetters</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASSORTIMENT -->
+    <section id="assortiment" class="voegen py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-8 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Assortiment</p>
+            <h2 class="mt-5 text-4xl">Voor ieder budget een <span class="text-klei">passende</span> oplossing</h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">Naar wens van de klant kunnen we bijna alles leveren. U kunt met elk budget bij ons terecht.</p>
+        </div>
+        <div class="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {aanbod.map((a, i) => (
+            <a href="#planner" class="rijs group kaart flex flex-col overflow-hidden no-underline" style={`--d:${(i % 3) * 0.08}s`}>
+              <div class="aspect-[16/10] overflow-hidden bg-kalk-2 sm:aspect-[4/3]">
+                <Image src={a.img} alt={a.alt} widths={[480, 760, 1000]} sizes="(min-width:1024px) 380px, (min-width:640px) 50vw, 100vw" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+              </div>
+              <div class="flex flex-1 items-start justify-between gap-4 p-6 md:p-7">
+                <div>
+                  <h3 class="text-2xl">{a.t}</h3>
+                  <p class="mt-2 text-steen">{a.s}</p>
+                </div>
+                <span class="mt-1 grid h-10 w-10 flex-none place-items-center border border-kalk-3 text-klei transition-colors group-hover:border-klei group-hover:bg-klei group-hover:text-wit"><Icoon naam="pijl" class="h-5 w-5" /></span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOWROOM + FAMILIE -->
+    <section id="showroom" class="voegen-donker bg-inkt py-24 text-wit md:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-6">
+          <div class="grid grid-cols-5 gap-3">
+            <div class="rijs col-span-3 overflow-hidden">
+              <Image src={showA} alt="Showroom van Tegelhandel Peeman met tegelwanden en legtafels" widths={[500, 800]} sizes="(min-width:1024px) 360px, 60vw" class="aspect-[3/4] h-full w-full object-cover" />
+            </div>
+            <div class="col-span-2 grid gap-3">
+              <div class="rijs overflow-hidden" style="--d:.1s"><Image src={pSteen} alt="Gepolijste stenen vloer in een hal, foto van Tegelhandel Peeman" widths={[400, 640]} sizes="(min-width:1024px) 240px, 40vw" class="aspect-square h-full w-full object-cover object-[30%_60%]" /></div>
+              <div class="rijs overflow-hidden" style="--d:.2s"><Image src={sTerracotta} alt="Terracotta tegels (sfeerfoto)" widths={[400, 640]} sizes="(min-width:1024px) 240px, 40vw" class="aspect-square h-full w-full object-cover" /></div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:pt-4">
+          <p class="eyebrow eyebrow-licht">Familiebedrijf</p>
+          <h2 class="mt-5 text-4xl">Rien en Marja Peeman, al sinds 1983 in de tegels</h2>
+          <div class="mt-7 space-y-4 text-lg text-mist">
+            <p>Rien en Marja Peeman hebben veel ervaring in de tegelbranche. Na diverse uitbreidingen in de loop der jaren is het nu een complete, overzichtelijke en ruime showroom met alle bekende tegelmerken uit binnen- en buitenland.</p>
+            <p>Vanuit onze liefde voor het vak helpen wij u graag bij het vinden van de mooiste tegels.</p>
+          </div>
+          <p class="mt-10 font-bold text-wit">Onze sterke punten</p>
+          <ul class="mt-4 grid grid-cols-2 gap-px bg-lijn sm:grid-cols-3">
+            {punten.map((p) => <li class="flex min-h-24 items-end bg-inkt-2 p-4 text-[1rem] font-semibold leading-snug text-wit">{p}</li>)}
+          </ul>
+          <figure class="mt-10 border-l-2 border-klei-licht pl-5">
+            <blockquote class="text-xl italic text-wit" style="font-family: var(--font-serif)">“Zoveel mooie complimenten maakt ons ‘tegel-hart’ warm!”</blockquote>
+            <figcaption class="mt-2 text-[.9375rem] text-mist">Reactie van de eigenaar op een Google-review</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEGELPLANNER -->
+    <section id="planner" class="bg-kalk-2 py-24 md:py-32">
+      <div class="wrap">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Tegelplanner</p>
+          <h2 class="mt-5 text-4xl">Stel uw <span class="text-klei">tegelvraag</span> samen</h2>
+          <p class="mt-5 text-lg text-steen">Kies ruimte, stijl, formaat en het aantal vierkante meters. U ziet direct een indruk, en uw keuzes gaan als bericht naar WhatsApp. Er wordt pas iets verstuurd als u dat daar zelf doet.</p>
+        </div>
+        <form class="mt-12 grid gap-10 lg:grid-cols-12" data-planner>
+          <div class="space-y-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label">1. Welke ruimte?</legend>
+              <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                {ruimtes.map((r, i) => <label class="keuze"><input type="radio" name="ruimte" value={r} checked={i === 0} />{r}</label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label">2. Welke stijl?</legend>
+              <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                {stijlen.map((s, i) => <label class="keuze"><input type="radio" name="stijl" value={s.id} data-t={s.t} checked={i === 0} />{s.t}<span class="staal" data-staal={s.id} style={`background:${s.c}`}></span></label>)}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend class="veld-label">3. Welk formaat (cm)?</legend>
+              <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+                {formaten.map((f, i) => <label class="keuze num"><input type="radio" name="formaat" value={f} checked={i === 2} />{f}</label>)}
+              </div>
+            </fieldset>
+            <div>
+              <label for="m2" class="veld-label">4. Hoeveel vierkante meter? <span class="num text-klei" data-m2-tekst>12 m²</span></label>
+              <input id="m2" name="m2" type="range" min="1" max="120" value="12" class="schuif" />
+            </div>
+            <div class="grid gap-9 sm:grid-cols-2">
+              <fieldset>
+                <legend class="veld-label">5. Laten leggen?</legend>
+                <div class="grid gap-2.5">
+                  <label class="keuze"><input type="radio" name="leggen" value="ja, graag leveren en leggen" checked />Leveren en leggen</label>
+                  <label class="keuze"><input type="radio" name="leggen" value="nee, alleen leveren" />Alleen leveren</label>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend class="veld-label">6. Vloerverwarming?</legend>
+                <div class="grid gap-2.5">
+                  <label class="keuze"><input type="radio" name="vv" value="ja" />Ja</label>
+                  <label class="keuze"><input type="radio" name="vv" value="nee" />Nee</label>
+                  <label class="keuze"><input type="radio" name="vv" value="weet ik nog niet" checked />Weet ik nog niet</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="lg:sticky lg:top-8">
+              <div class="kaart overflow-hidden">
+                <div class="relative aspect-square" data-vlak aria-hidden="true"></div>
+                <div class="border-t border-lijn-licht p-6 md:p-7">
+                  <p class="text-[.9375rem] font-semibold uppercase tracking-[.12em] text-steen">Indruk van 2 bij 2 meter</p>
+                  <p class="mt-2 text-2xl font-[800]" style="font-family: var(--font-serif)" data-samen>Badkamer, marmerlook, 60&nbsp;x&nbsp;120</p>
+                  <p class="num mt-1 text-steen" data-aantal>12 m², ongeveer 17 tegels (zonder snijverlies)</p>
+                  <a href={waHoi} class="knop knop-groen mt-6 w-full" data-wa><Icoon naam="wa" />Verstuur via WhatsApp</a>
+                  <p class="mt-3 text-[.9375rem] text-steen">Liever even bellen? <a href={site.telHref} class="link num font-semibold text-inkt">{site.tel}</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- WERKWIJZE -->
+    <section id="werkwijze" class="voegen py-24 md:py-32">
+      <div class="wrap">
+        <div class="grid gap-8 md:grid-cols-12 md:items-end">
+          <div class="md:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 class="mt-5 text-4xl">Van showroom tot <span class="text-klei">gelegde</span> vloer</h2>
+          </div>
+          <p class="text-lg text-steen md:col-span-5">Onze jarenlange ervaring staat garant voor een mooi resultaat.</p>
+        </div>
+        <ol class="mt-14 grid gap-px bg-lijn-licht sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map((s, i) => (
+            <li class="rijs bg-wit p-7 md:p-8" style={`--d:${i * 0.08}s`}>
+              <p class="stap-nr num">0{i + 1}</p>
+              <h3 class="mt-6 text-2xl">{s.t}</h3>
+              <p class="mt-3 text-steen">{s.s}</p>
+            </li>
+          ))}
+        </ol>
+        <div class="mt-5 grid gap-5 md:grid-cols-3">
+          <div class="overflow-hidden md:col-span-2"><Image src={sTravertin} alt="Badkamer met wand en wastafel in natuursteenlook (sfeerfoto)" widths={[640, 1000, 1400]} sizes="(min-width:768px) 66vw, 100vw" class="aspect-[16/9] h-full w-full object-cover" /></div>
+          <div class="kaart flex flex-col justify-between p-7 md:p-8">
+            <p class="text-xl leading-snug" style="font-family: var(--font-serif)">Vanaf Goeree-Overflakkee bedienen wij onze klanten in de regio Zuid-Holland, Zeeland en ver daarbuiten.</p>
+            <a href="#bezoek" class="mt-8 inline-flex items-center gap-2 font-bold text-klei no-underline hover:text-klei-diep">Bezoek de showroom<Icoon naam="pijl" class="h-5 w-5" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section id="reviews" class="bg-wit py-24 md:py-32">
+      <div class="wrap">
+        <div class="flex flex-wrap items-end justify-between gap-8">
+          <div>
+            <p class="eyebrow">Reviews</p>
+            <h2 class="mt-5 text-4xl">Wat klanten zeggen</h2>
+          </div>
+          <a href={site.reviews} class="kaart flex items-center gap-4 px-5 py-4 no-underline transition-colors hover:border-klei">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><span class="num text-2xl font-[800]" style="font-family: var(--font-serif)">{site.google.score}</span><span class="flex text-[#e8a317]">{[1,2,3,4,5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-[.9375rem] text-steen">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class={`rijs kaart flex flex-col p-7 ${i === 0 ? 'lg:row-span-1' : ''}`} style={`--d:${(i % 3) * 0.08}s`}>
+              <span class="flex text-[#e8a317]">{[1,2,3,4,5].map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+              <p class="mt-4 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</p>
+              <p class="mt-6 flex items-center justify-between border-t border-lijn-licht pt-4 text-[.9375rem]"><span class="font-bold">{r.naam}</span><span class="flex items-center gap-1.5 text-steen"><Icoon naam="g" class="h-4 w-4" />Google review</span></p>
+            </li>
+          ))}
+          <li class="rijs flex flex-col justify-between bg-inkt p-7 text-wit" style="--d:.16s">
+            <div class="space-y-4">
+              {citaten.map((c) => <p class="text-lg leading-snug" style="font-family: var(--font-serif)">“{c}”</p>)}
+            </div>
+            <p class="mt-6 border-t border-lijn pt-4 text-[.9375rem] text-mist">Uit het reviewoverzicht op Google</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- BEZOEK -->
+    <section id="bezoek" class="voegen py-24 md:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Bezoek en contact</p>
+          <h2 class="mt-5 text-4xl">Kom gerust eens <span class="text-klei">langs</span></h2>
+          <p class="mt-5 text-lg text-steen">Heeft u een vraag of zoekt u een bepaald merk? Bel, app of mail ons, of loop binnen in de showroom.</p>
+          <ul class="mt-9 space-y-4 text-lg">
+            <li class="flex items-start gap-3"><Icoon naam="pin" class="mt-1 h-6 w-6 flex-none text-klei" /><span>{site.postcode} {site.plaats}<br /><a href={site.route} class="link text-[1rem] font-semibold">Route via Google Maps</a></span></li>
+            <li class="flex items-center gap-3"><Icoon naam="tel" class="h-6 w-6 flex-none text-klei" /><a href={site.telHref} class="link num font-semibold">{site.tel}</a></li>
+            <li class="flex items-center gap-3"><Icoon naam="mail" class="h-6 w-6 flex-none text-klei" /><a href={`mailto:${site.mail}`} class="link break-all font-semibold">{site.mail}</a></li>
+          </ul>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-groen"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.route} class="knop knop-rand"><Icoon naam="pin" />Route plannen</a>
+          </div>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <div class="kaart p-7 md:p-9">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-2xl">Openingstijden</h3>
+              <p class="inline-flex items-center gap-2 text-[.9375rem] font-bold" data-status><span class="h-2.5 w-2.5 rounded-full bg-kalk-3" data-dot></span><span data-status-tekst>Openingstijden</span></p>
+            </div>
+            <table class="num mt-6 w-full text-[1.0625rem]">
+              <tbody>
+                {tijden.map((t) => (
+                  <tr class="border-t border-lijn-licht" data-dag={t.nr}>
+                    <th scope="row" class="py-3 text-left font-semibold">{t.dag}</th>
+                    <td class="py-3 text-right text-steen">{t.tekst}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-[.9375rem] text-steen">Tijden volgens ons Google-profiel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLOTBALK -->
+    <section class="bg-klei text-wit">
+      <div class="wrap flex flex-col items-start justify-between gap-8 py-14 md:flex-row md:items-center md:py-16">
+        <p class="max-w-2xl text-3xl" style="font-family: var(--font-serif); font-weight: 800; line-height: 1.05; letter-spacing: -.02em">Samen vinden we de mooiste tegels voor uw budget.</p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#planner" class="knop bg-wit text-inkt hover:bg-kalk">Tegels aanvragen</a>
+          <a href={site.telHref} class="knop knop-wit num"><Icoon naam="tel" />Bel ons</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Live open/gesloten (tijden van Google).
+  const T: Record<number, [number, number] | null> = { 1: [9.5, 16.5], 2: [9.5, 16.5], 3: [9.5, 16.5], 4: [9.5, 16.5], 5: [9.5, 16.5], 6: [9, 13], 0: null };
+  const nu = new Date(); const d = nu.getDay(); const u = nu.getHours() + nu.getMinutes() / 60;
+  const fmt = (x: number) => `${String(Math.floor(x)).padStart(2, '0')}:${String(Math.round((x % 1) * 60)).padStart(2, '0')}`;
+  const v = T[d]; const open = !!v && u >= v[0] && u < v[1];
+  document.querySelector(`tr[data-dag="${d}"]`)?.classList.add('bg-klei-zacht', 'font-bold');
+  const st = document.querySelector('[data-status-tekst]'); const dot = document.querySelector('[data-dot]');
+  if (st) st.textContent = open ? `Nu open tot ${fmt(v![1])}` : 'Nu gesloten';
+  dot?.classList.remove('bg-kalk-3'); dot?.classList.add(open ? 'bg-[#1a7f4b]' : 'bg-klei');
+  const hn = document.querySelector('[data-nu]');
+  if (hn) {
+    if (open) hn.textContent = `Vandaag open tot ${fmt(v![1])}`;
+    else { let k = 0, n = d, w = v && u < v[0] ? v : null; while (!w && k < 7) { k++; n = (n + 1) % 7; w = T[n]; }
+      const dagen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+      if (w) hn.textContent = `Gesloten · ${k === 0 ? 'vandaag' : k === 1 ? 'morgen' : dagen[n]} open om ${fmt(w[0])}`; }
+  }
+
+  // Tegelplanner: tekent een vlak van 2 bij 2 meter in het gekozen formaat en maakt een WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-planner]');
+  const vlak = document.querySelector<HTMLElement>('[data-vlak]');
+  const kleur: Record<string, string> = {
+    marmer: 'linear-gradient(115deg,transparent 40%,#b9b2a833 42%,transparent 46%),linear-gradient(35deg,transparent 60%,#a59d9233 62%,transparent 66%),#ebe7e1',
+    beton: 'radial-gradient(circle at 30% 40%,#ffffff1a,transparent 60%),#a19c95',
+    hout: 'repeating-linear-gradient(90deg,#00000010 0 2px,transparent 2px 9px),linear-gradient(90deg,#b88a5f,#c79a6d 50%,#ad7f55)',
+    steen: 'radial-gradient(circle at 70% 30%,#ffffff14,transparent 55%),#5d6165',
+    klei: 'radial-gradient(circle at 40% 60%,#00000018,transparent 60%),#b0603b',
+    wit: '#f7f6f3',
+  };
+  const voeg: Record<string, string> = { marmer: '#cfc8bd', beton: '#7f7a74', hout: '#8a6542', steen: '#3e4245', klei: '#e5d4c3', wit: '#d9d5cf' };
+  function teken() {
+    if (!f || !vlak) return;
+    const fd = new FormData(f);
+    const stijl = String(fd.get('stijl')); const ft = String(fd.get('formaat')); const m2 = Number(fd.get('m2'));
+    const st = (f.querySelector(`input[name=stijl]:checked`) as HTMLInputElement)?.dataset.t || '';
+    const mt = ft.match(/(\d+) x (\d+)/); const w = mt ? +mt[2] : 60; const h = mt ? +mt[1] : 60;
+    // Tegels van w x h cm op een vlak van 200 x 200 cm; elke tegel een eigen vlak met een voeg van 3px.
+    const tw = (w / 200) * 100, th = (h / 200) * 100;
+    const kol = Math.ceil(200 / w), rij = Math.ceil(200 / h);
+    vlak.style.background = voeg[stijl];
+    const bg = stijl === 'hout' && w > h ? 'repeating-linear-gradient(0deg,#00000010 0 2px,transparent 2px 9px),linear-gradient(0deg,#b88a5f,#c79a6d 50%,#ad7f55)' : kleur[stijl];
+    let html = '';
+    for (let r = 0; r < rij; r++) for (let c = 0; c < kol; c++) {
+      const off = stijl === 'hout' && r % 2 ? -tw / 2 : 0;
+      html += `<span style="position:absolute;left:calc(${c * tw + off}% + 1.5px);top:calc(${r * th}% + 1.5px);width:calc(${tw}% - 3px);height:calc(${th}% - 3px);background:${bg}"></span>`;
+      if (stijl === 'hout' && r % 2 && c === kol - 1) html += `<span style="position:absolute;left:calc(${(c + 1) * tw + off}% + 1.5px);top:calc(${r * th}% + 1.5px);width:calc(${tw}% - 3px);height:calc(${th}% - 3px);background:${bg}"></span>`;
+    }
+    vlak.innerHTML = html; vlak.style.overflow = 'hidden';
+    const ruimte = String(fd.get('ruimte'));
+    const aantal = mt ? Math.ceil((m2 * 10000) / (w * h)) : 0;
+    const m2t = document.querySelector('[data-m2-tekst]'); if (m2t) m2t.textContent = `${m2} m²`;
+    const sam = document.querySelector('[data-samen]'); if (sam) sam.textContent = `${ruimte}, ${st.toLowerCase()}, ${ft === 'Weet ik nog niet' ? 'formaat nog open' : ft.replace(/ /g, ' ')}`;
+    const an = document.querySelector('[data-aantal]'); if (an) an.textContent = mt ? `${m2} m², ongeveer ${aantal} tegels (zonder snijverlies)` : `${m2} m², formaat kiezen we samen`;
+    const tekst = `Hallo Tegelhandel Peeman, ik zoek tegels.\nRuimte: ${ruimte}\nStijl: ${st}\nFormaat: ${ft === 'Weet ik nog niet' ? 'weet ik nog niet' : ft + ' cm'}\nOppervlak: ongeveer ${m2} m²\nLeggen: ${fd.get('leggen')}\nVloerverwarming: ${fd.get('vv')}\nWanneer kan ik langskomen in de showroom?`;
+    const wa = document.querySelector<HTMLAnchorElement>('[data-wa]'); if (wa) wa.href = `${site.wa}?text=${encodeURIComponent(tekst)}`;
+  }
+  f?.addEventListener('input', teken); f?.addEventListener('change', teken); f?.addEventListener('submit', (e) => e.preventDefault());
+  teken();
+</script>

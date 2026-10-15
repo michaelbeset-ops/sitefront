@@ -1,0 +1,491 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, waHoi, waMet } from '../data/site';
+
+// Alle foto's van hun eigen site goodkitchenstore.nl. Zie src/assets/BRONNEN.txt en tools/prep.mjs.
+import hero from '../assets/hero.jpg';
+import ontwerp from '../assets/ontwerp-3d.jpg';
+import werkblad from '../assets/werkblad.jpg';
+import apparatuur from '../assets/apparatuur.jpg';
+import montage from '../assets/montage.jpg';
+import leiding from '../assets/leiding.jpg';
+import montageB from '../assets/montage-b.jpg';
+import badkamer from '../assets/badkamer.jpg';
+import pLandelijk from '../assets/p-landelijk.jpg';
+import pLichtU from '../assets/p-licht-u.jpg';
+import pEilandHout from '../assets/p-eiland-hout.jpg';
+import pVisgraat from '../assets/p-visgraat.jpg';
+import pSchier from '../assets/p-schiereiland.jpg';
+import pWitHout from '../assets/p-wit-hout.jpg';
+import pKraan from '../assets/p-kraan.jpg';
+import pKast from '../assets/p-kast.jpg';
+
+// Teksten van hun eigen homepage, ontwerpen-pagina en boek-nu-pagina (letterlijk of licht ingekort).
+const diensten = [
+  { t: 'Ontwerp in 3D', d: 'Uw keuken eerst als realistische tekening, zodat u een duidelijk beeld krijgt van hoe hij er in de praktijk uitziet.', src: ontwerp, pos: '50% 50%', alt: '3D-ontwerp van een keuken met donkere fronten en een wit kookeiland', icoon: 'kubus' },
+  { t: 'Werkbladen', d: 'Wij leveren vrijwel alle soorten werkbladen. U kiest het blad dat bij uw keuken past.', src: werkblad, pos: '50% 62%', alt: 'Zwart werkblad met witte ader en verlichting onder de bovenkasten', icoon: 'meet' },
+  { t: 'A-merken apparatuur', d: 'Een ruime keuze aan A-merken apparatuur, van inbouwoven tot Quooker.', src: apparatuur, pos: '50% 40%', alt: 'Kastenwand in houtdecor met ingebouwde apparatuur', icoon: 'stekker' },
+  { t: 'Montage en stucwerk', d: 'De volledige montage, het stucwerk erbij en desgewenst verwijderen wij uw oude keuken.', src: montageB, pos: '50% 50%', alt: 'Hoge kastenwand in donker houtdecor met inbouwovens en plintverlichting', icoon: 'huis' },
+  { t: 'Leidingwerk en elektra', d: 'Water, afvoer, elektra en groepenkasten, afgestemd op uw nieuwe keuken.', src: pKraan, pos: '50% 55%', alt: 'Spoelbak met kraan in een houten werkblad', icoon: 'druppel' },
+  { t: 'Badkamers', d: 'Ook complete badkamers: van ontwerp en advies tot de volledige installatie en afwerking.', src: badkamer, pos: '50% 50%', alt: 'Badkamer met marmerlook wanden, zwevend meubel en inloopdouche', icoon: 'druppel' },
+];
+const chips = ['Parallelopstelling', 'U-opstelling', 'Eilandopstelling', 'Werkbladen', 'Inbouwapparatuur', 'Quooker', 'Groepenkasten', 'Badkamers'];
+
+const feiten = [
+  ['kubus', 'Ontwerp in een 3D-programma'],
+  ['meet', 'Vrijwel alle soorten werkbladen'],
+  ['stekker', 'Ruime keuze aan A-merken apparatuur'],
+  ['huis', 'Inmeten en bespreken bij u thuis'],
+];
+
+const stappen = [
+  ['Afspraak maken', 'Bel of app voor een afspraak met een van de adviseurs. De showroom is uitsluitend op afspraak.'],
+  ['Advies en inmeten', 'Deskundig advies en een nauwkeurige inmeting. Desgewenst komen wij daarvoor bij u langs.'],
+  ['Ontwerp in 3D', 'U ziet uw keuken als realistische tekening. Fronten kunt u mee naar huis nemen om de kleur te bekijken.'],
+  ['Levering en montage', 'Plaatsing, leiding- en stucwerk, en desgewenst halen wij uw oude keuken eruit.'],
+];
+
+const projecten = [
+  { src: pVisgraat, t: 'Greeploos op een visgraatvloer', cls: 'col-span-2 sm:col-span-1 lg:col-span-5 lg:row-span-2', ratio: 'aspect-[4/5] lg:aspect-auto lg:h-full', pos: '50% 50%' },
+  { src: pEilandHout, t: 'Kookeiland met houten bar', cls: 'col-span-2 sm:col-span-1 lg:col-span-7', ratio: 'aspect-[16/9]', pos: '50% 50%' },
+  { src: pSchier, t: 'Schiereiland in donker front', cls: 'lg:col-span-3', ratio: 'aspect-[4/5]', pos: '50% 50%' },
+  { src: pLandelijk, t: 'Kaderfronten met houten achterwand', cls: 'lg:col-span-4', ratio: 'aspect-[4/5] lg:aspect-auto lg:h-full', pos: '50% 40%' },
+  { src: pLichtU, t: 'Lichte U-keuken', cls: 'lg:col-span-4', ratio: 'aspect-[4/3]', pos: '50% 50%' },
+  { src: pKast, t: 'Hoge kastenwand met plintlicht', cls: 'lg:col-span-4', ratio: 'aspect-[4/3]', pos: '50% 35%' },
+  { src: pWitHout, t: 'Witte hoekkeuken, houten wand', cls: 'lg:col-span-4', ratio: 'aspect-[4/3]', pos: '50% 50%' },
+];
+
+// Opstellingen: hun eigen inspiratiepagina (ingekort). Rechte wand en hoek zijn keuzes voor de bezoeker zelf.
+const opstellingen = [
+  { id: 'recht', t: 'Rechte wand', uitleg: '' },
+  { id: 'hoek', t: 'Hoekkeuken', uitleg: '' },
+  { id: 'u', t: 'U-opstelling', uitleg: 'De keuken loopt langs drie zijden van de ruimte. Veel werkblad en opbergruimte, zeer praktisch als u graag en vaak kookt.' },
+  { id: 'parallel', t: 'Parallel', uitleg: 'Twee keukenblokken aan tegenoverliggende wanden met een loopruimte ertussen. Vooral geschikt voor langere of smallere ruimtes.' },
+  { id: 'eiland', t: 'Met eiland', uitleg: 'Naast de keuken tegen de wand een los kookeiland. Een open uitstraling, en de keuken wordt een centrale plek in huis.' },
+];
+const wensen = ['Werkblad', 'Inbouwapparatuur', 'Quooker', 'Leidingen verleggen', 'Elektra of groepenkast', 'Oude keuken verwijderen', 'Stucwerk'];
+
+const sterren = [1, 2, 3, 4, 5];
+---
+<Base title="Good Kitchenstore | Kwaliteitskeukens en apparatuur in Rotterdam" description="Keukenwinkel in Rotterdam: ontwerp in 3D, werkbladen, A-merken apparatuur, leiding- en stucwerk en volledige montage. Showroom op afspraak. Bel 06 21 53 89 98.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: hun eigen foto van het marmeren eiland -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-front text-wit lg:items-center" aria-labelledby="inhoud">
+      <div class="absolute inset-y-0 right-0 -z-20 w-full lg:w-[56%]">
+        <Image src={hero} alt="Kookeiland met marmeren blad en hanglampen, geplaatst door Good Kitchenstore" widths={[480, 720, 960, 1200]} sizes="(min-width: 1024px) 56vw, 100vw" loading="eager" fetchpriority="high" quality={66} class="h-full w-full object-cover object-[50%_30%] lg:object-[50%_62%]" />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#141414d9_0%,#14141426_14%,#14141499_28%,#141414e6_50%,#141414_100%)] lg:bg-[linear-gradient(90deg,#141414_0%,#141414_44%,#141414b3_54%,#14141426_72%,#14141400_100%),linear-gradient(180deg,#141414b3_0%,#14141400_26%,#14141400_80%,#14141480_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-28 pt-44 md:pb-24 lg:pb-16 lg:pt-44">
+        <div class="max-w-[46rem] lg:max-w-[40rem]">
+          <p class="eyebrow eyebrow-licht max-lg:!text-wit">Keukenwinkel in Rotterdam</p>
+          <h1 id="inhoud" class="mt-6 text-hero">Uw <span class="text-merk-licht">droomkeuken</span>, van ontwerp tot montage</h1>
+          <p class="mt-7 max-w-[34rem] text-[1.1875rem] leading-relaxed text-wit/90 md:text-[1.3125rem]">Wij verzorgen het leiding- en stucwerk, de volledige montage en kunnen desgewenst uw oude keuken verwijderen.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href={waHoi} class="knop knop-merk"><Icoon naam="wa" />Plan een afspraak</a>
+            <a href="#planner" class="knop knop-wit">Stel uw keuken samen<Icoon naam="pijl" /></a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[1rem] text-wit/90">
+            <li><a href={site.reviews} class="flex items-center gap-2 text-wit/90 no-underline hover:text-wit"><span class="flex text-led">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><span class="num font-bold">{site.google.score}</span> op Google, {site.google.aantal} reviews</a></li>
+            <li class="flex items-center gap-2"><Icoon naam="kalender" class="h-5 w-5 text-merk-licht" />Showroom op afspraak</li>
+            <li><a href={site.telHref} class="num flex items-center gap-2 font-bold text-wit no-underline hover:text-merk-licht"><Icoon naam="tel" class="h-5 w-5 text-merk-licht" />{site.tel}</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Showroom en wat ze leveren -->
+    <section class="py-20 md:py-28" aria-labelledby="t-showroom">
+      <div class="wrap grid items-center gap-x-16 gap-y-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="eyebrow rijs">Kwaliteitskeukens en apparatuur</p>
+          <h2 id="t-showroom" class="rijs mt-5 text-4xl">Compacte showroom, <span class="text-merk">ruime</span> keuze</h2>
+          <p class="rijs mt-7 max-w-xl text-lg text-steen">Wij werken met een compacte showroom en uitsluitend op afspraak. Desgewenst komen wij bij u langs om direct in te meten en uw keukenwensen te bespreken.</p>
+          <ul class="mt-10 grid gap-4 sm:grid-cols-2">
+            {feiten.map(([i, t], n) => (
+              <li class="kaart rijs flex items-center gap-4 p-5" style={`--d:${n * 0.06}s`}>
+                <span class="grid h-12 w-12 flex-none place-items-center rounded-md bg-front text-merk-licht"><Icoon naam={i} class="h-6 w-6" /></span>
+                <span class="font-bold leading-snug">{t}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="rijs relative lg:col-span-6">
+          <Image src={montage} alt="Geplaatste hoekkeuken in donker houtdecor met verlichting onder de plint" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" quality={70} class="aspect-[4/3] w-full rounded-md object-cover" />
+          <div class="absolute -bottom-6 left-5 right-5 rounded-md bg-front px-6 py-5 text-wit shadow-[0_18px_40px_-18px_#14141499] md:left-auto md:right-8 md:max-w-[19rem]">
+            <p class="text-[.9375rem] font-semibold uppercase tracking-[.14em] text-merk-licht">Ook buiten de showroom</p>
+            <p class="mt-1.5 font-semibold leading-snug">Inmeten en uw wensen bespreken, gewoon bij u thuis.</p>
+          </div>
+        </div>
+      </div>
+      <div class="wrap mt-20">
+        <ul class="flex flex-wrap gap-2.5" aria-label="Opstellingen en producten">
+          {chips.map((c) => <li class="chip">{c}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Diensten als fotokaarten -->
+    <section id="diensten" class="bg-wit py-20 md:py-28" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow rijs">Diensten</p>
+            <h2 id="t-diensten" class="rijs mt-5 text-4xl">Het <span class="text-merk">complete</span> pakket</h2>
+          </div>
+          <p class="rijs text-lg text-steen lg:col-span-5">Wij bieden het complete pakket voor een zorgeloze installatie van uw keuken. Van het eerste ontwerp tot het laatste stopcontact.</p>
+        </div>
+        <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {diensten.map((d, n) => (
+            <li class="rijs group overflow-hidden rounded-md border border-lijn-licht bg-blad" style={`--d:${(n % 3) * 0.07}s`}>
+              <div class="relative overflow-hidden">
+                <Image src={d.src} alt={d.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" quality={68} class="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]" style={`object-position:${d.pos}`} />
+                <span class="absolute left-4 top-4 grid h-11 w-11 place-items-center rounded-md bg-front text-merk-licht"><Icoon naam={d.icoon} class="h-5 w-5" /></span>
+              </div>
+              <div class="p-6 md:p-7">
+                <h3 class="text-2xl">{d.t}</h3>
+                <p class="mt-3 text-steen">{d.d}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Elders een keuken gekocht? Hun specialisme -->
+    <section class="relative overflow-hidden bg-front py-24 text-wit md:py-32" aria-labelledby="t-elders">
+      <div class="wrap grid items-center gap-x-16 gap-y-12 lg:grid-cols-12">
+        <div class="rijs relative order-last lg:order-first lg:col-span-6">
+          <Image src={leiding} alt="Kookeiland met spoelbak en zwarte kraan op een houten werkblad" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 46vw, 100vw" quality={70} class="aspect-[5/4] w-full rounded-md object-cover object-[60%_50%]" />
+          <div class="plintlicht absolute -bottom-px left-6 right-6"></div>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="eyebrow eyebrow-licht rijs">Leidingwerk en elektra</p>
+          <h2 id="t-elders" class="rijs mt-5 text-4xl">Elders een keuken <span class="text-merk-licht">gekocht?</span></h2>
+          <p class="rijs mt-7 text-lg text-mist">Heeft u elders een keuken gekocht en geen partij voor het verleggen van leidingen? Wij zijn hierin gespecialiseerd en zorgen voor een vakkundige aanleg van water en afvoer.</p>
+          <p class="rijs mt-4 text-lg text-mist">Ook voor het aanpassen van groepenkasten en het verzorgen van elektra kunt u bij ons terecht.</p>
+          <ul class="mt-9 grid gap-3 sm:grid-cols-2">
+            {['Leidingen verleggen', 'Water en afvoer', 'Groepenkast aanpassen', 'Elektra verzorgen'].map((t) => (
+              <li class="rijs flex items-center gap-3 rounded-md border border-lijn bg-front-2 px-4 py-3.5 font-semibold"><Icoon naam="vink" class="h-5 w-5 flex-none text-merk-licht" />{t}</li>
+            ))}
+          </ul>
+          <a href={waMet('Hallo Good Kitchenstore, ik heb elders een keuken gekocht en zoek iemand voor het leidingwerk en/of de elektra. Kunnen jullie helpen?')} class="knop knop-merk rijs mt-10"><Icoon naam="wa" />Vraag het via WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-20 md:py-28" aria-labelledby="t-werkwijze">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow rijs">Werkwijze</p>
+            <h2 id="t-werkwijze" class="rijs mt-5 text-4xl">In vier stappen naar uw <span class="text-merk">nieuwe</span> keuken</h2>
+          </div>
+          <p class="rijs text-lg text-steen lg:col-span-5">Tijdens het bezoek voorzien wij u van deskundig advies en zorgen wij voor een nauwkeurige inmeting.</p>
+        </div>
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-md border border-lijn-licht bg-blad-3 sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map(([t, d], n) => (
+            <li class="rijs bg-wit p-7 md:p-8" style={`--d:${n * 0.07}s`}>
+              <span class="stap-nr num">0{n + 1}</span>
+              <h3 class="mt-5 text-xl">{t}</h3>
+              <p class="mt-3 text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- 6. Keukenplanner: de wow-functie -->
+    <section id="planner" class="bg-wit py-20 md:py-28" aria-labelledby="t-planner">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow rijs">Keukenplanner</p>
+            <h2 id="t-planner" class="rijs mt-5 text-4xl">Schets uw keuken in <span class="text-merk">één</span> minuut</h2>
+          </div>
+          <p class="rijs text-lg text-steen lg:col-span-5">Kies een opstelling en de lengte van de wand, vink aan wat u nodig heeft. U ziet direct een plattegrond, en stuurt uw schets via WhatsApp mee naar de showroom.</p>
+        </div>
+
+        <form id="planner-form" class="mt-14 grid gap-8 lg:grid-cols-12" novalidate>
+          <div class="space-y-10 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label"><span class="num text-merk">1.</span> Welke opstelling?</legend>
+              <div class="grid grid-cols-2 gap-3 sm:grid-cols-5">
+                {opstellingen.map((o, n) => (
+                  <label class={`opst ${n === 4 ? 'col-span-2 sm:col-span-1' : ''}`}>
+                    <input type="radio" name="opstelling" value={o.id} checked={n === 1} class="sr-only" data-uitleg={o.uitleg} data-naam={o.t} />
+                    <svg viewBox="0 0 48 48" fill="currentColor" aria-hidden="true">
+                      {o.id === 'recht' && <rect x="6" y="8" width="36" height="9" rx="1" />}
+                      {o.id === 'hoek' && <path d="M6 8h36v9H15v23H6z" />}
+                      {o.id === 'u' && <path d="M6 8h36v32h-9V17H15v23H6z" />}
+                      {o.id === 'parallel' && <><rect x="6" y="8" width="36" height="9" rx="1" /><rect x="6" y="31" width="36" height="9" rx="1" /></>}
+                      {o.id === 'eiland' && <><rect x="6" y="8" width="36" height="9" rx="1" /><rect x="13" y="28" width="22" height="10" rx="1" /></>}
+                    </svg>
+                    <span>{o.t}</span>
+                  </label>
+                ))}
+              </div>
+              <p id="opst-uitleg" class="mt-4 min-h-[3.2em] max-w-2xl text-[1rem] text-steen" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset>
+              <legend class="veld-label"><span class="num text-merk">2.</span> Lengte van de langste wand: <output id="lengte-out" class="num text-merk">3,6 m</output></legend>
+              <input id="lengte" name="lengte" type="range" aria-label="Lengte van de langste wand in meters" min="2" max="8" step="0.1" value="3.6" class="schuif" aria-describedby="lengte-hulp" />
+              <p id="lengte-hulp" class="num flex justify-between text-[.9375rem] text-steen"><span>2 m</span><span>ongeveer, wij meten het precies in</span><span>8 m</span></p>
+            </fieldset>
+
+            <fieldset>
+              <legend class="veld-label"><span class="num text-merk">3.</span> Wat heeft u nodig?</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                {wensen.map((w) => <label class="keuze"><input type="checkbox" name="wens" value={w} />{w}</label>)}
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="veld-label"><span class="num text-merk">4.</span> Eerste afspraak</legend>
+              <div class="grid gap-3 sm:grid-cols-2">
+                <label class="keuze"><input type="radio" name="waar" value="in de showroom (op afspraak)" checked />In de showroom</label>
+                <label class="keuze"><input type="radio" name="waar" value="bij mij thuis, om in te meten" />Bij mij thuis inmeten</label>
+              </div>
+              <div class="mt-5 grid gap-4 sm:grid-cols-2">
+                <div><label for="p-naam" class="veld-label">Uw naam</label><input id="p-naam" name="naam" class="veld" autocomplete="name" placeholder="Voornaam" /></div>
+                <div><label for="p-plaats" class="veld-label">Plaats</label><input id="p-plaats" name="plaats" class="veld" autocomplete="address-level2" placeholder="Bijvoorbeeld Rotterdam" /></div>
+              </div>
+            </fieldset>
+          </div>
+
+          <aside class="lg:col-span-5" aria-label="Uw schets">
+            <div class="sticky top-6 overflow-hidden rounded-md bg-front text-wit">
+              <div class="flex items-center justify-between border-b border-lijn px-6 py-4">
+                <p class="text-[.9375rem] font-semibold uppercase tracking-[.14em] text-merk-licht">Uw schets</p>
+                <p id="schets-label" class="num text-[.9375rem] text-mist">Hoekkeuken, 3,6 m</p>
+              </div>
+              <div class="relative bg-[radial-gradient(#ffffff14_1px,transparent_1px)] [background-size:18px_18px] px-6 py-8">
+                <svg id="plan" viewBox="0 0 320 230" class="mx-auto block h-auto w-full max-w-[26rem]" role="img" aria-label="Plattegrond van de gekozen opstelling"></svg>
+              </div>
+              <div class="border-t border-lijn px-6 py-6">
+                <p class="text-[.9375rem] text-mist">Uw WhatsApp-bericht</p>
+                <p id="bericht" class="mt-2 whitespace-pre-line text-[1rem] leading-relaxed text-wit/90"></p>
+                <a id="planner-wa" href={waHoi} class="knop knop-groen mt-6 w-full"><Icoon naam="wa" />Verstuur via WhatsApp</a>
+                <p class="mt-3 text-[.875rem] text-mist">Er wordt niets verstuurd voordat u zelf op verzenden drukt in WhatsApp.</p>
+              </div>
+            </div>
+          </aside>
+        </form>
+      </div>
+    </section>
+
+    <!-- 7. Projecten -->
+    <section id="projecten" class="bg-front py-24 text-wit md:py-32" aria-labelledby="t-projecten">
+      <div class="wrap">
+        <div class="grid gap-y-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="eyebrow eyebrow-licht rijs">Projecten</p>
+            <h2 id="t-projecten" class="rijs mt-5 text-4xl">Opgeleverde <span class="text-merk-licht">keukens</span></h2>
+          </div>
+          <p class="rijs text-lg text-mist lg:col-span-5">Een greep uit de keukens die wij ontwierpen, leverden en plaatsten. Van strak en greeploos tot landelijk met houten accenten.</p>
+        </div>
+        <ul class="mt-14 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-5">
+          {projecten.map((p) => (
+            <li class={`rijs group relative overflow-hidden rounded-md ${p.cls}`}>
+              <Image src={p.src} alt={p.t} widths={[400, 640, 960]} sizes="(min-width: 1024px) 40vw, (min-width: 640px) 50vw, 100vw" quality={68} class={`w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] ${p.ratio}`} style={`object-position:${p.pos}`} />
+              <p class="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,#14141400,#141414d9)] px-3 pb-3 pt-10 text-[.9375rem] font-semibold leading-snug sm:px-5 sm:pb-4 sm:text-base">{p.t}</p>
+            </li>
+          ))}
+          <li class="rijs flex flex-col justify-between gap-6 rounded-md bg-merk p-7 col-span-2 lg:col-span-12 lg:flex-row lg:items-center">
+            <p class="max-w-2xl text-xl font-semibold leading-snug">Zelf zo'n keuken? Stuur een foto van uw huidige keuken of plattegrond mee, dan denken wij met u mee.</p>
+            <a href={waMet('Hallo Good Kitchenstore, ik stuur een foto van mijn huidige keuken/plattegrond mee. Kunnen jullie meedenken over een nieuwe keuken?')} class="knop flex-none bg-wit text-front hover:bg-blad"><Icoon naam="wa" />Foto sturen</a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-20 md:py-28" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <p class="eyebrow rijs">Reviews</p>
+        <h2 id="t-reviews" class="rijs mt-5 text-4xl">Wat klanten <span class="text-merk">zeggen</span></h2>
+        <ul class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <li class="rijs flex flex-col justify-between rounded-md bg-front p-7 text-wit">
+            <div class="flex items-center gap-3"><span class="grid h-12 w-12 place-items-center rounded-full bg-wit"><Icoon naam="g" class="h-6 w-6" /></span><span class="font-semibold">Google reviews</span></div>
+            <div class="mt-10">
+              <p class="num text-[4.5rem] leading-none" style="font-family: var(--font-kop); font-weight: 860; font-stretch: 70%;">{site.google.score}</p>
+              <p class="mt-2 flex text-led">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</p>
+              <p class="mt-3 text-mist">Gemiddeld uit {site.google.aantal} reviews</p>
+              <a href={site.reviews} class="link mt-6 inline-block font-semibold text-wit">Alle reviews op Google</a>
+            </div>
+          </li>
+          {reviews.map((r, n) => (
+            <li class="kaart rijs flex flex-col p-7" style={`--d:${(n % 3) * 0.07}s`}>
+              <p class="flex text-merk">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}<span class="sr-only">5 van 5 sterren</span></p>
+              <blockquote class="mt-4 flex-1 text-[1.0625rem] leading-relaxed">"{r.tekst}"</blockquote>
+              <p class="mt-6 flex items-center justify-between gap-3 border-t border-lijn-licht pt-4 text-[.9375rem]"><span class="font-bold">{r.naam}</span><span class="flex items-center gap-1.5 text-steen"><Icoon naam="g" class="h-4 w-4" />Google review</span></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 9. Contact, showroom en tijden -->
+    <section id="contact" class="bg-wit py-20 md:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-x-16 gap-y-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <p class="eyebrow rijs">Contact</p>
+          <h2 id="t-contact" class="rijs mt-5 text-4xl">Plan uw <span class="text-merk">afspraak</span></h2>
+          <p class="rijs mt-7 max-w-xl text-lg text-steen">Heeft u vragen, wilt u een offerte of een afspraak maken? Bel of app ons. We geven graag vrijblijvend advies.</p>
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href={site.telHref} class="knop knop-merk num"><Icoon naam="tel" />{site.tel}</a>
+            <a href={waHoi} class="knop knop-rand"><Icoon naam="wa" class="text-[#157a45]" />WhatsApp</a>
+          </div>
+          <div class="kaart rijs mt-10 grid gap-6 p-7 sm:grid-cols-2">
+            <div>
+              <p class="flex items-center gap-2 font-bold"><Icoon naam="pin" class="h-5 w-5 text-merk" />Showroom</p>
+              <p class="mt-2 text-steen">{site.straat}<br />{site.postcode} {site.plaats}</p>
+              <a href={site.route} class="link mt-3 inline-block font-semibold">Route plannen</a>
+            </div>
+            <div>
+              <p class="flex items-center gap-2 font-bold"><Icoon naam="kalender" class="h-5 w-5 text-merk" />Uitsluitend op afspraak</p>
+              <p class="mt-2 text-steen">Desgewenst komen wij bij u langs om direct in te meten.</p>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <div class="rijs overflow-hidden rounded-md border border-lijn-licht bg-blad">
+            <div class="flex items-center justify-between gap-4 border-b border-lijn-licht px-6 py-5">
+              <p class="flex items-center gap-2 font-bold"><Icoon naam="klok" class="h-5 w-5 text-merk" />Bereikbaar</p>
+              <p id="nu-open" class="text-[.9375rem] font-semibold text-steen"></p>
+            </div>
+            <table class="num w-full text-left text-[1.0625rem]">
+              <caption class="sr-only">Tijden volgens Google</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.nr} class="border-b border-lijn-licht last:border-0">
+                    <th scope="row" class="px-6 py-3 font-semibold">{t.dag}</th>
+                    <td class="whitespace-nowrap px-6 py-3 text-right text-steen">{t.open[0]}:00 - {t.open[1]}:00</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="border-t border-lijn-licht px-6 py-4 text-[.9375rem] text-steen">Tijden volgens Google. Een bezoek aan de showroom altijd op afspraak.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slotbalk -->
+    <section class="bg-merk text-wit" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between md:py-14">
+        <p class="text-3xl" style="font-family: var(--font-kop); font-weight: 860; font-stretch: 74%; text-transform: uppercase; line-height: .95;">Bij ons bent u aan het juiste adres voor uw droomkeuken.</p>
+        <a href={waHoi} class="knop flex-none bg-front text-wit hover:bg-front-3"><Icoon naam="wa" />Plan een afspraak</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+
+  <script>
+    // Tijden: vandaag markeren en live bereikbaar/gesloten.
+    const tabel = document.querySelectorAll<HTMLTableRowElement>('tr[data-dag]');
+    const nu = new Date();
+    const dag = nu.getDay();
+    const uur = nu.getHours() + nu.getMinutes() / 60;
+    tabel.forEach((r) => {
+      if (Number(r.dataset.dag) !== dag) return;
+      r.classList.add('bg-wit');
+      r.querySelector('th')?.insertAdjacentHTML('beforeend', ' <span class="ml-1 text-[.875rem] font-semibold text-merk">vandaag</span>');
+      const t = r.querySelector('td')?.textContent?.match(/(\d+):00 - (\d+):00/);
+      const el = document.getElementById('nu-open');
+      if (t && el) {
+        const open = uur >= Number(t[1]) && uur < Number(t[2]);
+        el.innerHTML = open ? '<span class="inline-block h-2.5 w-2.5 rounded-full bg-[#1f9d55] align-middle"></span> Nu bereikbaar' : 'Nu gesloten';
+      }
+    });
+
+    // Keukenplanner: live plattegrond + vooraf ingevuld WhatsApp-bericht.
+    const form = document.getElementById('planner-form') as HTMLFormElement | null;
+    const plan = document.getElementById('plan');
+    const out = document.getElementById('lengte-out');
+    const label = document.getElementById('schets-label');
+    const uitleg = document.getElementById('opst-uitleg');
+    const bericht = document.getElementById('bericht');
+    const wa = document.getElementById('planner-wa') as HTMLAnchorElement | null;
+    const WA = 'https://wa.me/31621538998?text=';
+    const fmt = (n: number) => n.toFixed(1).replace('.', ',');
+
+    function teken(opst: string, len: number) {
+      if (!plan) return;
+      const W = 320, H = 230, m = 24, maxL = Math.max(len, 5);
+      const s = (W - 2 * m) / maxL;              // px per meter bij 8 m
+      const L = Math.max(len * s, 2 * s);
+      const d = 0.62 * s;                        // kastdiepte ca. 60 cm
+      const x0 = (W - L) / 2, y0 = m;
+      const side = Math.min(L * 0.62, H - 2 * m - 26);
+      const wand = '#5b5650', kast = '#e9e4dc', blad = '#ff6b62';
+      let r = '';
+      const rect = (x: number, y: number, w: number, h: number, f = kast) => { r += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${f}" />`; };
+      const lijn = (x1: number, y1: number, x2: number, y2: number) => { r += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${wand}" stroke-width="4" stroke-linecap="square" />`; };
+      // muren
+      lijn(x0 - 4, y0 - 4, x0 + L + 4, y0 - 4);
+      if (opst === 'hoek' || opst === 'u') lijn(x0 - 4, y0 - 4, x0 - 4, y0 + side);
+      if (opst === 'u') lijn(x0 + L + 4, y0 - 4, x0 + L + 4, y0 + side);
+      // kasten
+      rect(x0, y0, L, d);
+      if (opst === 'hoek' || opst === 'u') rect(x0, y0 + d, d, side - d);
+      if (opst === 'u') rect(x0 + L - d, y0 + d, d, side - d);
+      if (opst === 'parallel') { const y2 = y0 + Math.min(side, 3.2 * s) ; lijn(x0 - 4, y2 + d + 4, x0 + L + 4, y2 + d + 4); rect(x0, y2, L, d); }
+      if (opst === 'eiland') { const iw = Math.max(L * 0.55, 1.6 * s), ih = 0.95 * s; rect((W - iw) / 2, y0 + d + 1.2 * s, iw, ih, '#d3ccc1'); r += `<text x="${W / 2}" y="${(y0 + d + 1.2 * s + ih / 2 + 4).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="700" fill="#141414" font-family="system-ui,sans-serif">EILAND</text>`; }
+      // spoelbak en kookplaat
+      r += `<rect x="${(x0 + L * 0.28).toFixed(1)}" y="${(y0 + d * 0.22).toFixed(1)}" width="${(0.5 * s).toFixed(1)}" height="${(d * 0.56).toFixed(1)}" rx="3" fill="none" stroke="#8a837a" stroke-width="1.5" />`;
+      const kx = x0 + L * 0.66;
+      [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(([a, b]) => { r += `<circle cx="${(kx + a * 0.26 * s).toFixed(1)}" cy="${(y0 + d * 0.32 + b * d * 0.36).toFixed(1)}" r="${(0.09 * s).toFixed(1)}" fill="none" stroke="#141414" stroke-width="1.5" />`; });
+      // maatlijn
+      const yM = H - 14;
+      r += `<line x1="${x0.toFixed(1)}" y1="${yM}" x2="${(x0 + L).toFixed(1)}" y2="${yM}" stroke="${blad}" stroke-width="1.5" /><line x1="${x0.toFixed(1)}" y1="${yM - 5}" x2="${x0.toFixed(1)}" y2="${yM + 5}" stroke="${blad}" stroke-width="1.5" /><line x1="${(x0 + L).toFixed(1)}" y1="${yM - 5}" x2="${(x0 + L).toFixed(1)}" y2="${yM + 5}" stroke="${blad}" stroke-width="1.5" />`;
+      r += `<text x="${W / 2}" y="${yM - 6}" text-anchor="middle" font-size="12" font-weight="700" fill="${blad}" font-family="system-ui,sans-serif">${fmt(len)} m</text>`;
+      plan.innerHTML = r;
+    }
+
+    function update() {
+      if (!form) return;
+      const fd = new FormData(form);
+      const opstInput = form.querySelector<HTMLInputElement>('input[name=opstelling]:checked');
+      const opst = String(fd.get('opstelling') || 'hoek');
+      const naamOpst = opstInput?.dataset.naam || '';
+      const len = Number(fd.get('lengte') || 3.6);
+      const w = fd.getAll('wens').map(String);
+      const waar = String(fd.get('waar') || '');
+      const naam = String(fd.get('naam') || '').trim();
+      const plaats = String(fd.get('plaats') || '').trim();
+      if (out) out.textContent = `${fmt(len)} m`;
+      if (label) label.textContent = `${naamOpst}, ${fmt(len)} m`;
+      if (uitleg) uitleg.textContent = opstInput?.dataset.uitleg || '';
+      teken(opst, len);
+      const regels = [
+        `Hallo Good Kitchenstore${naam ? `, ik ben ${naam}` : ''}. Ik denk aan een nieuwe keuken:`,
+        `- Opstelling: ${naamOpst.toLowerCase()}`,
+        `- Langste wand: ongeveer ${fmt(len)} meter`,
+        w.length ? `- Graag ook: ${w.join(', ')}` : '',
+        `- Eerste afspraak: ${waar}`,
+        plaats ? `- Plaats: ${plaats}` : '',
+        'Wanneer komt het jullie uit?',
+      ].filter(Boolean);
+      const tekst = regels.join('\n');
+      if (bericht) bericht.textContent = tekst;
+      if (wa) wa.href = WA + encodeURIComponent(tekst);
+    }
+    form?.addEventListener('input', update);
+    form?.addEventListener('change', update);
+    form?.addEventListener('submit', (e) => e.preventDefault());
+    update();
+  </script>
+</Base>
