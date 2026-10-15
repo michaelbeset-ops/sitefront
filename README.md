@@ -340,3 +340,11 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | MDL stoffering, Oosterhout | https://voorstel.sitefront.nl/mdl-stoffering/ | site uit 2015, projectpagina's geven fout; 4,3/18; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Pvc & Tegel Design, Schoonhoven | https://voorstel.sitefront.nl/pvc-tegel-design/ | geen website; 5,0/18; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Polak Parket, Tilburg | https://voorstel.sitefront.nl/polak-parket/ | website leeg ('Hallo wereld'), alleen Facebook; 4,3/31; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Watchmeisters, Rijswijk | https://voorstel.sitefront.nl/watchmeisters/ | site al maanden 'tijdelijk gesloten'; 5,0/33; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Anybed, Den Haag | https://voorstel.sitefront.nl/anybed/ | gedateerde Jimdo-site; 5,0/34; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Vieille France, Biest-Houtakker | https://voorstel.sitefront.nl/vieille-france/ | site uit 2019, niet mobielvriendelijk; 4,6/48; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Bei Couture, Rotterdam | https://voorstel.sitefront.nl/bei-couture/ | site toont foutmelding; 5,0/51; 06/WhatsApp. | 2026-10-15 | demo premium |
+| HYPE pop-up Delft | https://voorstel.sitefront.nl/hype-delft/ | desktopsite verkleind op mobiel; 4,9/143; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Marina Hellevoetsluis | https://voorstel.sitefront.nl/marina-hellevoetsluis/ | homepage zonder tekst, tarieven 2025; 4,4/284; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Brabant Bicycle, Den Bosch | https://voorstel.sitefront.nl/brabant-bicycle/ | geen website; 5,0/28; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Fietsbaas, Gouda | https://voorstel.sitefront.nl/fietsbaas-gouda/ | site 'under construction'; 4,6/32; 06/WhatsApp. | 2026-10-15 | demo premium |
