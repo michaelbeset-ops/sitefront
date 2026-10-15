@@ -348,3 +348,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Marina Hellevoetsluis | https://voorstel.sitefront.nl/marina-hellevoetsluis/ | homepage zonder tekst, tarieven 2025; 4,4/284; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Brabant Bicycle, Den Bosch | https://voorstel.sitefront.nl/brabant-bicycle/ | geen website; 5,0/28; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Fietsbaas, Gouda | https://voorstel.sitefront.nl/fietsbaas-gouda/ | site 'under construction'; 4,6/32; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Privéwellness Bella Vita, Zoetermeer | https://voorstel.sitefront.nl/bella-vita-wellness/ | site 'onder constructie'; 5,0/118; 06/WhatsApp. | 2026-10-15 | demo premium |
+| De Kledingkundige, Rotterdam | https://voorstel.sitefront.nl/de-kledingkundige/ | site niet bereikbaar; 5,0/765; 06/WhatsApp. | 2026-10-15 | demo premium |
