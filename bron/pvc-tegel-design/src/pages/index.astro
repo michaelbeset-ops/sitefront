@@ -1,0 +1,542 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, tijden, waHoi, waMet } from '../data/site';
+
+// Alleen eigen beeld: Google-profiel en In de Krimpenerwaard. Zie src/assets/BRONNEN.txt en tools/prep.mjs.
+import hero from '../assets/hero.jpg';
+import duo from '../assets/duo.jpg';
+import pand from '../assets/pand.jpg';
+import showroom from '../assets/showroom.jpg';
+import keuken from '../assets/keuken.jpg';
+import haard from '../assets/haard.jpg';
+import leggen from '../assets/leggen.jpg';
+import trapA from '../assets/trap-a.jpg';
+import trapB from '../assets/trap-b.jpg';
+import keukenvloer from '../assets/keukenvloer.jpg';
+import igPortugees from '../assets/ig-portugees.jpg';
+import igSalon from '../assets/ig-salon.jpg';
+import igKeuken from '../assets/ig-keuken.jpg';
+import igTrap from '../assets/ig-trap.jpg';
+import igPlank from '../assets/ig-plank.jpg';
+import raam from '../assets/raam.jpg';
+
+// Alleen wat in Google, Instagram of In de Krimpenerwaard staat.
+const chips = ['Pvc-vloeren', 'Pvc-tegels', 'Weense en Hongaarse punt', 'Trappen bekleden', 'Badkamertegels', 'Keukentegels', 'Portugese tegels', '3D-tegels', 'Egaliseren', 'Plinten', 'Zandcementvloer', 'Sanitair', 'Verbouwingen'];
+
+const cijfers = [
+  [site.google.score, `op Google, ${site.google.aantal} reviews`],
+  ['2026', 'eigen winkel aan de Lopikerstraat'],
+  ['2', 'vakmannen: Kevin tegels, Danny pvc'],
+  ['Za', 'open van 10:00 tot 16:00'],
+];
+
+const vakken = [
+  {
+    id: 'tegels', naam: 'Kevin', vak: 'Tegels', src: keuken, pos: '50% 55%', alt: 'Keuken met lichte wandtegels achter het kookgedeelte',
+    t: 'Badkamer, keukenwand, vloer of terras.',
+    d: 'In de winkel staan tegels voor binnen en buiten, van Portugese patroontegels tot 3D-tegels. Kevin legt ze zelf.',
+    punten: ['Advies over de kleur van voegen en kitranden', 'Staaltjes mee naar huis om rustig te kijken', 'Badkamer of keuken helemaal betegeld'],
+    wa: 'Hallo Kevin, ik heb een vraag over tegels.',
+  },
+  {
+    id: 'pvc', naam: 'Danny', vak: 'Pvc', src: trapB, pos: '50% 50%', alt: 'Traptreden bekleed met pvc in houtlook',
+    t: 'Vloeren en trappen in plak-pvc.',
+    d: 'Planken of tegels, ook in Weense en Hongaarse punt. Het liefst zonder maatverschil: dan ligt de vloer strak en kierloos.',
+    punten: ['Egaliseren, en zo nodig eerst een zandcementvloer', 'Trappen bekleden met pvc', 'Plinten geplakt en strak afgewerkt'],
+    wa: 'Hallo Danny, ik heb een vraag over een pvc-vloer.',
+  },
+];
+
+const werk = [
+  { src: trapA, alt: 'Trap bekleed met pvc in donkere houtlook, met witte stootborden', t: 'Trap bekleed met pvc', cls: 'col-span-2 row-span-2' },
+  { src: igPortugees, alt: 'Portugese patroontegels buiten voor een pui', t: 'Portugese tegels, ook voor buiten', cls: '' },
+  { src: igSalon, alt: 'Lichte pvc-tegelvloer in een schoonheidssalon met behandelstoel', t: 'Pvc-tegels in een schoonheidssalon', cls: '' },
+  { src: haard, alt: 'Wandtegels in tinten beige rond een inbouwhaard', t: 'Tinten beige rond de haard', cls: '' },
+  { src: igKeuken, alt: 'Keukenwand met lichte glanzende staande tegels', t: 'Keukenrenovatie, begonnen in de winkel', cls: '' },
+  { src: leggen, alt: 'Grote vloertegels tijdens het leggen, met uitlijnclips in de voegen', t: 'Tijdens het leggen', cls: '' },
+  { src: keukenvloer, alt: 'Grote lichte tegels op de keukenvloer', t: 'Tegelvloer in de keuken', cls: '' },
+  { src: igTrap, alt: 'Draaiende trap van boven gezien, bekleed met lichte pvc', t: 'Traprenovatie met een bestseller', cls: '' },
+  { src: igPlank, alt: 'Close-up van een pvc-vloer in punt-patroon', t: 'Strak en kierloos', cls: '' },
+];
+
+const praktijk = [
+  { t: 'Geen maatverschil', d: 'Planken van hetzelfde formaat, zodat de vloer er strak en kierloos in ligt.' },
+  { t: 'Eerst de ondergrond', d: 'Bij een schoonheidssalon vingen ze bijna 6 cm afschot op met een nieuwe zandcementvloer. Daarna plinten, egaliseren en pvc-tegels.' },
+  { t: 'Voeg, kit en hoekprofiel', d: 'Kevin geeft tips voor de kleur van voegen, hoekprofielen en kit. De keuze blijft bij jou.' },
+  { t: 'Staaltjes mee', d: 'Twijfel je over een kleur? Neem staaltjes mee en bekijk alles thuis rustig.' },
+];
+
+const stappen = [
+  ['Kom langs in de winkel', 'Zaterdag van 10:00 tot 16:00. Liever doordeweeks? Maak een afspraak, dan staat de koffie klaar.'],
+  ['Uitzoeken met advies', 'Tegels en pvc zien en voelen, met advies vanuit de praktijk. Staaltjes mag je meenemen.'],
+  ['Ondergrond in orde', 'Egaliseren, of eerst een zandcementvloer als de vloer afloopt. Dan pas wordt er gelegd.'],
+  ['Leggen en afwerken', 'Kevin legt de tegels, Danny de pvc. Met plinten, voegen en kitwerk, en alles netjes opgeruimd.'],
+];
+
+const kaders = [
+  ['Afspraak is afspraak', 'Komt afspraken na, is op tijd en werkt netjes, schrijven klanten.'],
+  ['Denkt mee', 'Over voegkleur, plintmaat en legpatroon: details waar je vooraf niet aan denkt.'],
+  ['Netjes opgeruimd', 'Alles wordt keurig opgeruimd, schrijven klanten.'],
+];
+
+const projecten = [
+  ['pvc', 'Pvc-vloer'], ['trap', 'Trap bekleden'], ['badkamer', 'Badkamer betegelen'], ['keuken', 'Keukenwand'], ['tegelvloer', 'Tegelvloer'], ['buiten', 'Terras of buiten'],
+];
+const formaten = [['klein', 'Klein, zoals 10 x 10'], ['strook', 'Strook, zoals 7,5 x 30'], ['groot', 'Groot, zoals 60 x 60'], ['xl', 'Extra groot, zoals 60 x 120']];
+const kleuren = [['wit', 'Wit', '#f3f1ea'], ['beige', 'Beige', '#d9c6a8'], ['zilvergrijs', 'Zilvergrijs', '#b9bcc0'], ['blauw', 'Blauw', '#2d4f9e']];
+const voegen = [['licht', 'Licht', '#eceae4'], ['midden', 'Grijs', '#9b9a96'], ['donker', 'Antraciet', '#3a3c40']];
+const patronen = [['planken', 'Planken'], ['weense', 'Weense punt'], ['hongaarse', 'Hongaarse punt'], ['tegels', 'Pvc-tegels'], ['weet', 'Weet ik nog niet']];
+
+const sterren = [1, 2, 3, 4, 5];
+---
+<Base title="Pvc & Tegel Design | Pvc-vloeren en tegels in Schoonhoven" description="Winkel voor pvc en tegels aan de Lopikerstraat 52 in Schoonhoven. Uitzoeken met advies uit de praktijk, gelegd door Kevin en Danny. Zaterdag open 10:00 tot 16:00. Bel 06 51 14 11 80.">
+  <div class="relative">
+    <Kop />
+
+    <!-- 1. Hero: inkt-paneel + de stalenwand uit hun winkel -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-inkt text-wit lg:items-center" aria-labelledby="inhoud">
+      <div class="absolute inset-0 -z-20 lg:left-1/2">
+        <Image src={hero} alt="De wandkast met tegelstalen in de winkel aan de Lopikerstraat" widths={[480, 750, 1000, 1500]} sizes="(min-width: 1024px) 50vw, 100vw" loading="eager" fetchpriority="high" quality={66} class="h-full w-full object-cover object-[50%_40%]" />
+      </div>
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#12151db3_0%,#12151d1f_20%,#12151d59_32%,#12151de0_48%,#12151dfa_74%)] lg:left-1/2 lg:bg-[linear-gradient(180deg,#12151de0_0%,#12151d00_24%,#12151d00_78%,#12151d80_100%)]" aria-hidden="true"></div>
+
+      <div class="wrap w-full pb-24 pt-40 md:pb-20 lg:py-40">
+        <div class="max-w-[38rem] lg:max-w-[calc(50%-2rem)]">
+          <p class="eyebrow eyebrow-licht">Pvc en tegels in Schoonhoven</p>
+          <h1 id="inhoud" class="mt-6 text-hero">Van staaltje tot <span class="text-merk-licht">strak</span> gelegd.</h1>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-wit/95 sm:text-xl md:mt-7 md:text-[1.375rem]">Pvc en tegels voor je vloer, je muur, je trap en terras. Je zoekt ze uit in de winkel, Kevin en Danny leggen ze zelf.</p>
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            <a href="#planner" class="knop knop-merk">Plan je vloer of tegelwerk<Icoon naam="pijl" /></a>
+            <a href={site.telHref} class="knop knop-wit num hidden sm:inline-flex"><Icoon naam="tel" />Bel {site.tel}</a>
+          </div>
+          <ul class="mt-8 flex flex-wrap gap-x-7 gap-y-3 text-[1rem] text-wit">
+            <li class="flex items-center gap-2"><span class="flex text-merk-licht" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-5 w-5 text-merk-licht" />Zaterdag open, doordeweeks op afspraak</li>
+          </ul>
+        </div>
+      </div>
+      <p class="absolute bottom-6 right-10 hidden bg-inkt/70 px-3 py-1.5 text-[.875rem] text-wit/85 lg:block">De stalenwand in de winkel</p>
+    </section>
+  </div>
+
+  <main>
+    <!-- 2. Cijfers + wat ze doen -->
+    <section class="border-b border-lijn-licht bg-wit" aria-label="Pvc & Tegel Design in het kort">
+      <div class="wrap">
+        <dl class="grid grid-cols-2 lg:grid-cols-4">
+          {cijfers.map(([g, t], i) => (
+            <div class={`rijs border-lijn-licht py-9 md:py-12 ${i % 2 ? 'border-l pl-5 md:pl-10' : 'pr-5'} ${i > 1 ? 'border-t lg:border-t-0' : ''} ${i === 2 ? 'lg:border-l lg:pl-10' : ''}`} style={`--d:${i * 0.05}s`}>
+              <dt class="sr-only">{t}</dt>
+              <dd class="num text-[clamp(2.2rem,3.2vw+1rem,3.6rem)] font-[800] leading-none tracking-[-.04em]" style="font-family: var(--font-kop)">{g}</dd>
+              <dd class="mt-3 max-w-[14rem] text-steen">{t}</dd>
+            </div>
+          ))}
+        </dl>
+        <ul class="rijs flex flex-wrap gap-2.5 border-t border-lijn-licht py-8" aria-label="Wat ze leveren en leggen">
+          {chips.map((m) => <li class="chip">{m}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Twee vakken -->
+    <section id="vakken" class="py-24 md:py-32" aria-labelledby="t-vakken">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Twee vakken onder één dak</p>
+            <h2 id="t-vakken" class="mt-5 text-4xl">Kevin de tegels. Danny de <span class="text-merk">pvc.</span></h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Van advies uit de praktijk tot product en uitvoering. Wat je in de winkel uitzoekt, leggen ze zelf.</p>
+        </div>
+        <ul class="voegen mt-14 md:grid-cols-2">
+          {vakken.map((v, i) => (
+            <li class="rijs flex flex-col bg-wit" style={`--d:${i * 0.08}s`} id={v.id}>
+              <div class="relative overflow-hidden">
+                <Image src={v.src} alt={v.alt} widths={[480, 720, 1000]} sizes="(min-width: 768px) 50vw, 100vw" quality={68} class="aspect-[4/3] w-full object-cover" style={`object-position:${v.pos}`} />
+                <p class="absolute left-0 top-0 bg-merk px-4 py-2.5 text-[1rem] font-bold uppercase tracking-[.12em] text-wit">{v.vak}</p>
+              </div>
+              <div class="flex flex-1 flex-col p-7 md:p-10">
+                <p class="text-[.9375rem] font-bold uppercase tracking-[.12em] text-steen">{v.naam}</p>
+                <h3 class="mt-2 text-[clamp(1.6rem,1.2vw+1.2rem,2.2rem)]">{v.t}</h3>
+                <p class="mt-4 text-lg text-steen">{v.d}</p>
+                <ul class="mt-6 space-y-3 border-t border-lijn-licht pt-6">
+                  {v.punten.map((p) => <li class="flex gap-3"><Icoon naam="vink" class="mt-0.5 h-5 w-5 flex-none text-merk" />{p}</li>)}
+                </ul>
+                <a href={waMet(v.wa)} class="mt-auto inline-flex items-center gap-2 pt-8 font-extrabold text-merk no-underline transition-colors hover:text-merk-diep">Vraag het {v.naam}<Icoon naam="pijl" class="h-5 w-5" /></a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. Werk: tegelraster met voegen -->
+    <section id="werk" class="border-y border-lijn-licht bg-wit py-24 md:py-32" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div class="rijs">
+            <p class="eyebrow">Werk</p>
+            <h2 id="t-werk" class="mt-5 text-4xl">Uit de winkel, op de vloer.</h2>
+          </div>
+          <a href={site.insta} class="rijs knop knop-rand self-start md:self-auto"><Icoon naam="insta" />Meer op Instagram</a>
+        </div>
+        <ul class="voegen mt-12 grid-cols-2 md:grid-cols-4">
+          {werk.map((w, i) => (
+            <li class={`rijs relative overflow-hidden bg-kalk ${w.cls}`} style={`--d:${(i % 4) * 0.05}s`}>
+              <Image src={w.src} alt={w.alt} widths={[360, 560, 900]} sizes={w.cls.includes('col-span-2') ? '(min-width: 768px) 50vw, 100vw' : '(min-width: 768px) 25vw, 50vw'} quality={66} class={`h-full w-full object-cover ${w.cls.includes('row-span-2') ? 'aspect-square' : 'aspect-square'}`} />
+              <p class="absolute bottom-0 left-0 bg-inkt/80 px-3 py-1.5 text-[.875rem] font-semibold text-wit md:text-[.9375rem]">{w.t}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 5. Advies uit de praktijk (donker) -->
+    <section class="bg-inkt py-24 text-wit md:py-32" aria-labelledby="t-praktijk">
+      <div class="wrap grid gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-5">
+          <p class="rijs eyebrow eyebrow-licht">Advies uit de praktijk</p>
+          <h2 id="t-praktijk" class="rijs mt-5 text-4xl">Het product moet <span class="text-merk-licht">kloppen.</span></h2>
+          <blockquote class="rijs mt-9 border-l-[3px] border-merk-licht pl-6">
+            <p class="text-[1.375rem] leading-snug text-wit md:text-[1.5rem]">“Voor echt mooi resultaat, moet het product altijd hetzelfde formaat hebben.”</p>
+            <footer class="mt-4 text-mist">Kevin</footer>
+          </blockquote>
+        </div>
+        <ul class="voegen voegen-donker sm:grid-cols-2 lg:col-span-7">
+          {praktijk.map((p, i) => (
+            <li class="rijs bg-inkt-2 p-7 md:p-9" style={`--d:${i * 0.06}s`}>
+              <span class="num text-[.9375rem] font-bold text-merk-licht">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-4 text-[1.5rem]">{p.t}</h3>
+              <p class="mt-3 text-mist">{p.d}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section class="py-24 md:py-32" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="rijs max-w-2xl">
+          <p class="eyebrow">Zo gaat het</p>
+          <h2 id="t-stappen" class="mt-5 text-4xl">In vier stappen naar een vloer die af is.</h2>
+        </div>
+        <ol class="voegen mt-14 sm:grid-cols-2 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs bg-wit p-7 md:p-8" style={`--d:${i * 0.06}s`}>
+              <span class="stap-nr num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="mt-6 text-[1.5rem]">{t}</h3>
+              <p class="mt-3 text-steen">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Over Kevin en Danny -->
+    <section id="over" class="border-t border-lijn-licht bg-kalk-2 py-24 md:py-32" aria-labelledby="t-over">
+      <div class="wrap grid items-center gap-y-12 lg:grid-cols-12 lg:gap-x-16">
+        <div class="rijs relative lg:col-span-6">
+          <div class="voegen">
+            <Image src={duo} alt="Kevin en Danny voor hun winkel aan de Lopikerstraat" widths={[480, 720, 1000, 1400]} sizes="(min-width: 1024px) 46vw, 100vw" quality={70} class="aspect-[4/5] w-full object-cover object-[50%_30%]" />
+          </div>
+          <p class="absolute -bottom-5 right-4 bg-merk px-5 py-3 text-[1rem] font-bold text-wit md:right-8">Kevin en Danny</p>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="rijs eyebrow">Over de winkel</p>
+          <h2 id="t-over" class="rijs mt-5 text-4xl">Twee jonge vakmannen, één eigen winkel.</h2>
+          <div class="rijs mt-7 space-y-5 text-lg text-steen">
+            <p>Kevin en Danny zijn allebei van jongs af aan in het vak gerold. Kevin legt de tegels, Danny is stoffeerder in pvc en studeerde als eerste in Nederland cum laude af als woning- en projectstoffeerder.</p>
+            <p>In januari 2026 openden ze hun eigen winkel aan de Lopikerstraat, uit één wens: alleen nog werken met materiaal van kwaliteit. Waarom Schoonhoven? Kevin: “We wonen hier zelf, de stad is prachtig én omdat deze kwaliteit hier nog ontbrak.”</p>
+          </div>
+          <blockquote class="rijs mt-8 bg-wit p-6 md:p-7">
+            <p class="text-[1.25rem] font-semibold leading-snug text-inkt">“We willen gewoon dat mensen lang kunnen genieten van het eindresultaat.”</p>
+          </blockquote>
+          <ul class="voegen mt-8 sm:grid-cols-3">
+            {kaders.map(([t, d], i) => (
+              <li class="rijs bg-wit p-5" style={`--d:${i * 0.05}s`}>
+                <p class="font-extrabold">{t}</p>
+                <p class="mt-2 text-[1rem] text-steen">{d}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Wow: vloer- en tegelplanner -> WhatsApp -->
+    <section id="planner" class="bg-wit py-24 md:py-32" aria-labelledby="t-planner">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Vloerplanner</p>
+            <h2 id="t-planner" class="mt-5 text-4xl">Stel je vloer of tegelwerk samen.</h2>
+          </div>
+          <p class="rijs max-w-md text-lg text-steen lg:col-span-4 lg:col-start-9" style="--d:.05s">Kies wat je wilt, zie het voorbeeld en stuur het met één tik naar Kevin en Danny via WhatsApp.</p>
+        </div>
+
+        <form class="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-14" data-plan>
+          <div class="space-y-9 lg:col-span-7">
+            <fieldset>
+              <legend class="veld-label">Wat wil je laten doen?</legend>
+              <div class="grid gap-2.5 sm:grid-cols-2 md:grid-cols-3">
+                {projecten.map(([v, t], i) => <label class="keuze"><input type="radio" name="wat" value={v} checked={i === 0} />{t}</label>)}
+              </div>
+            </fieldset>
+
+            <fieldset data-voor="pvc">
+              <legend class="veld-label">Legpatroon</legend>
+              <div class="grid gap-2.5 sm:grid-cols-2 md:grid-cols-3">
+                {patronen.map(([v, t], i) => <label class="keuze"><input type="radio" name="patroon" value={v} checked={i === 0} />{t}</label>)}
+              </div>
+            </fieldset>
+
+            <fieldset data-voor="tegel">
+              <legend class="veld-label">Formaat tegel</legend>
+              <div class="grid gap-2.5 sm:grid-cols-2">
+                {formaten.map(([v, t], i) => <label class="keuze"><input type="radio" name="formaat" value={v} checked={i === 2} />{t}</label>)}
+              </div>
+            </fieldset>
+
+            <div class="grid gap-9 sm:grid-cols-2" data-voor="tegel">
+              <fieldset>
+                <legend class="veld-label">Kleur tegel</legend>
+                <div class="grid grid-cols-2 gap-2.5">
+                  {kleuren.map(([v, t, c], i) => <label class="keuze"><input type="radio" name="kleur" value={v} checked={i === 2} /><span class="h-4 w-4 flex-none border border-lijn-licht" style={`background:${c}`}></span>{t}</label>)}
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend class="veld-label">Kleur voeg</legend>
+                <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-1">
+                  {voegen.map(([v, t, c], i) => <label class="keuze"><input type="radio" name="voeg" value={v} checked={i === 0} /><span class="h-4 w-4 flex-none border border-lijn-licht" style={`background:${c}`}></span>{t}</label>)}
+                </div>
+              </fieldset>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="m2" class="veld-label">Ongeveer hoeveel m²?</label>
+                <input id="m2" name="m2" inputmode="decimal" class="veld num" placeholder="Bijvoorbeeld 35" autocomplete="off" />
+              </div>
+              <div>
+                <label for="ruimte" class="veld-label">Welke ruimte?</label>
+                <input id="ruimte" name="ruimte" class="veld" placeholder="Woonkamer, badkamer, trap" autocomplete="off" />
+              </div>
+            </div>
+
+            <fieldset>
+              <legend class="veld-label">Ook nodig?</legend>
+              <div class="grid gap-2.5 sm:grid-cols-3">
+                <label class="keuze"><input type="checkbox" name="extra" value="egaliseren" />Egaliseren</label>
+                <label class="keuze"><input type="checkbox" name="extra" value="plinten" />Plinten</label>
+                <label class="keuze"><input type="checkbox" name="extra" value="trap erbij" />Trap erbij</label>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="veld-label">Hoe wil je verder?</legend>
+              <div class="grid gap-2.5 sm:grid-cols-3">
+                <label class="keuze"><input type="radio" name="hoe" value="zaterdag" checked />Zaterdag langskomen</label>
+                <label class="keuze"><input type="radio" name="hoe" value="afspraak" />Afspraak doordeweeks</label>
+                <label class="keuze"><input type="radio" name="hoe" value="bellen" />Bel me terug</label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="lg:sticky lg:top-8">
+              <div class="voegen bg-inkt">
+                <svg viewBox="0 0 400 300" class="block h-auto w-full bg-kalk" role="img" aria-label="Voorbeeld van je keuze (illustratie)" data-beeld></svg>
+              </div>
+              <p class="mt-3 text-[.9375rem] text-steen" data-beeld-label>Voorbeeld (illustratie)</p>
+              <div class="mt-7 border border-lijn-licht bg-kalk p-6">
+                <p class="text-[.9375rem] font-bold uppercase tracking-[.12em] text-steen">Je bericht</p>
+                <p class="mt-3 whitespace-pre-line text-[1.0625rem] leading-relaxed" data-voorbeeld aria-live="polite"></p>
+              </div>
+              <a href={waHoi} class="knop knop-groen mt-5 w-full" data-verstuur><Icoon naam="wa" />Verstuur via WhatsApp</a>
+              <p class="mt-3 text-[.9375rem] text-steen">Opent WhatsApp met dit bericht. Er wordt pas iets verstuurd als jij op verzenden tikt.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Reviews -->
+    <section id="reviews" class="border-t border-lijn-licht py-24 md:py-32" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-5 text-4xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs flex items-center gap-4 self-start border border-lijn-licht bg-wit px-5 py-4 no-underline md:self-auto">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num text-2xl text-inkt">{site.google.score}</b><span class="flex text-[#e3a21a]" aria-hidden="true">{sterren.map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-[.9375rem] text-steen">{site.google.aantal} reviews op Google, allemaal 5 sterren</span>
+            </span>
+          </a>
+        </div>
+        <ul class="voegen mt-12 md:grid-cols-2 lg:grid-cols-3">
+          {reviews.map((r, i) => (
+            <li class="rijs flex flex-col bg-wit p-7 md:p-8" style={`--d:${(i % 3) * 0.06}s`}>
+              <div class="flex items-center justify-between gap-3">
+                <span class="flex text-[#e3a21a]" role="img" aria-label="5 van 5 sterren">{sterren.map(() => <Icoon naam="ster" class="h-5 w-5" />)}</span>
+                <span class="bg-merk-zacht px-2.5 py-1 text-[.875rem] font-bold text-merk">{r.over}</span>
+              </div>
+              <p class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</p>
+              <p class="mt-6 border-t border-lijn-licht pt-5 text-[.9375rem]"><b>{r.naam}</b><span class="text-steen"> · Google review · {r.wanneer}</span></p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 10. Winkel, tijden en contact -->
+    <section id="winkel" class="bg-wit pb-14 pt-24 md:pb-16 md:pt-32" aria-labelledby="t-winkel">
+      <div class="wrap grid grid-cols-[minmax(0,1fr)] gap-y-14 lg:grid-cols-12 lg:gap-x-14">
+        <div class="lg:col-span-6">
+          <p class="rijs eyebrow">De winkel</p>
+          <h2 id="t-winkel" class="rijs mt-5 text-4xl">Zien en voelen aan de Lopikerstraat.</h2>
+          <p class="rijs mt-6 max-w-xl text-lg text-steen">Wil je het assortiment zien en voelen? Dat doet bijna iedereen. Kom op zaterdag langs, of bel voor een afspraak op een andere dag.</p>
+          <p class="rijs mt-8"><a href={site.telHref} class="num text-[clamp(2.1rem,7vw,4.2rem)] font-[800] leading-none tracking-[-.04em] text-inkt no-underline transition-colors hover:text-merk" style="font-family: var(--font-kop)">{site.tel}</a></p>
+          <div class="rijs mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap" style="--d:.1s">
+            <a href={waHoi} class="knop knop-merk"><Icoon naam="wa" />WhatsApp</a>
+            <a href={site.route} class="knop knop-rand"><Icoon naam="pin" />Route plannen</a>
+            <a href={`mailto:${site.mail}`} class="knop knop-rand">{site.mail}</a>
+          </div>
+        </div>
+        <div class="rijs lg:col-span-6" style="--d:.15s">
+          <div class="border border-lijn-licht bg-kalk">
+            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn-licht px-6 py-5">
+              <p class="text-xl font-extrabold">Openingstijden</p>
+              <p class="flex items-center gap-2 text-[.9375rem] font-bold"><span class="h-3 w-3 bg-voeg" data-stip></span><span data-status-tekst>Zaterdag open</span></p>
+            </div>
+            <table class="w-full">
+              <caption class="sr-only">Openingstijden van de winkel</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr class="border-b border-lijn-licht last:border-0 data-[vandaag]:bg-merk-zacht data-[vandaag]:font-extrabold" data-dag={t.nr}>
+                    <th scope="row" class="py-3 pl-5 pr-2 text-left font-[inherit] sm:px-6">{t.dag}</th>
+                    <td class="num whitespace-nowrap py-3 pl-2 pr-5 text-right sm:px-6">{t.open ? `${t.open[0]}:00 tot ${t.open[1]}:00` : 'Op afspraak'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="mt-6 flex gap-4 border border-lijn-licht p-6">
+            <Icoon naam="pin" class="mt-1 h-6 w-6 flex-none text-merk" />
+            <div>
+              <p class="font-extrabold">{site.naam}</p>
+              <p class="mt-1 text-steen">{site.straat}, {site.postcode} {site.plaats}</p>
+              <a href={site.route} class="link mt-3 inline-block font-bold">Route plannen</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bg-wit pb-24 md:pb-32">
+      <div class="wrap"><ul class="voegen grid-cols-2 md:grid-cols-3" aria-label="De winkel aan de Lopikerstraat">
+        <li class="col-span-2 md:col-span-1"><Image src={pand} alt="De gevel van de winkel aan de Lopikerstraat 52" widths={[400, 640, 900]} sizes="(min-width: 768px) 33vw, 100vw" quality={66} class="aspect-[4/3] h-full w-full object-cover object-[50%_72%] md:aspect-[4/5]" /></li>
+        <li><Image src={showroom} alt="Pvc-stalen op een rij in de winkel" widths={[320, 560, 900]} sizes="(min-width: 768px) 33vw, 50vw" quality={66} class="aspect-[4/5] h-full w-full object-cover object-[40%_60%]" /></li>
+        <li><Image src={raam} alt="Het winkelraam met huisnummer 52 en het logo op het glas" widths={[320, 560, 900]} sizes="(min-width: 768px) 33vw, 50vw" quality={66} class="aspect-[4/5] h-full w-full object-cover object-[50%_45%]" /></li>
+      </ul></div>
+    </div>
+
+    <!-- 11. Slotbalk -->
+    <section class="patroon text-wit" aria-label="Langskomen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-16 md:flex-row md:items-center md:py-20">
+        <p class="max-w-3xl text-[clamp(2rem,2.6vw+1rem,3.2rem)] font-[800] leading-[1.02] tracking-[-.035em]" style="font-family: var(--font-kop)">Zaterdag open. Doordeweeks op afspraak.</p>
+        <a href={waHoi} class="knop knop-vol-wit shrink-0"><Icoon naam="wa" />Stuur een WhatsApp</a>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+</Base>
+
+<script>
+  import { site } from '../data/site';
+  // Planner: tekent een voorbeeld (tegelraster met gekozen formaat/kleur/voeg, of pvc-planken) en bouwt een WhatsApp-bericht.
+  const f = document.querySelector<HTMLFormElement>('[data-plan]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const knop = document.querySelector<HTMLAnchorElement>('[data-verstuur]');
+  const svg = document.querySelector<SVGSVGElement>('[data-beeld]');
+  const lab = document.querySelector<HTMLElement>('[data-beeld-label]');
+  const NS = 'http://www.w3.org/2000/svg';
+  const W = 400, H = 300;
+  const KLEUR: Record<string, string> = { wit: '#f3f1ea', beige: '#d9c6a8', zilvergrijs: '#b9bcc0', blauw: '#2d4f9e' };
+  const VOEG: Record<string, string> = { licht: '#eceae4', midden: '#9b9a96', donker: '#3a3c40' };
+  const MAAT: Record<string, [number, number]> = { klein: [30, 30], strook: [22, 88], groot: [96, 96], xl: [96, 192] };
+  const NAAM: Record<string, string> = { pvc: 'een pvc-vloer', trap: 'een trap bekleden', badkamer: 'mijn badkamer betegelen', keuken: 'tegels voor mijn keukenwand', tegelvloer: 'een tegelvloer', buiten: 'tegels voor terras of buiten' };
+  const FORMAAT: Record<string, string> = { klein: 'klein (zoals 10 x 10)', strook: 'strook (zoals 7,5 x 30)', groot: 'groot (zoals 60 x 60)', xl: 'extra groot (zoals 60 x 120)' };
+  const PATROON: Record<string, string> = { planken: 'planken', weense: 'Weense punt', hongaarse: 'Hongaarse punt', tegels: 'pvc-tegels', weet: 'weet ik nog niet' };
+  const HOE: Record<string, string> = { zaterdag: 'Ik kom graag op zaterdag in de winkel kijken.', afspraak: 'Kan ik doordeweeks een afspraak maken in de winkel?', bellen: 'Willen jullie mij terugbellen?' };
+  let zaad = 3;
+  const rnd = () => { zaad = (zaad * 9301 + 49297) % 233280; return zaad / 233280; };
+  const r = (x: number, y: number, w: number, h: number, fill: string, stroke = 'none', sw = 0) => {
+    const e = document.createElementNS(NS, 'rect');
+    e.setAttribute('x', String(x)); e.setAttribute('y', String(y)); e.setAttribute('width', String(w)); e.setAttribute('height', String(h));
+    e.setAttribute('fill', fill); if (sw) { e.setAttribute('stroke', stroke); e.setAttribute('stroke-width', String(sw)); }
+    svg!.appendChild(e);
+  };
+  const tint = (hex: string, v: number) => { const n = parseInt(hex.slice(1), 16); const c = [n >> 16, (n >> 8) & 255, n & 255].map((x) => Math.max(0, Math.min(255, Math.round(x + v)))); return `rgb(${c.join(',')})`; };
+  function tegels(formaat: string, kleur: string, voeg: string, verband: boolean) {
+    if (!svg) return; zaad = 3; svg.innerHTML = '';
+    const [tw, th] = MAAT[formaat]; const g = formaat === 'klein' ? 3 : 4; const k = KLEUR[kleur];
+    r(0, 0, W, H, VOEG[voeg]);
+    for (let y = 0, i = 0; y < H; y += th + g, i++) {
+      const off = verband && i % 2 ? -(tw + g) / 2 : 0;
+      for (let x = off; x < W; x += tw + g) r(x, y, tw, th, tint(k, (rnd() - .5) * (kleur === 'blauw' ? 26 : 14)));
+    }
+  }
+  function planken() {
+    if (!svg) return; zaad = 9; svg.innerHTML = '';
+    const tinten = ['#a8835c', '#9c7752', '#b28d64', '#957049', '#a37e57'];
+    const h = 30, l = 170;
+    r(0, 0, W, H, '#6e5338');
+    for (let y = 0, i = 0; y < H; y += h, i++) for (let x = -((i * 67) % l); x < W; x += l) r(x, y, l - 1.5, h - 1.5, tinten[Math.floor(rnd() * tinten.length)]);
+  }
+  function trap() {
+    if (!svg) return; zaad = 5; svg.innerHTML = '';
+    r(0, 0, W, H, '#ecebe5');
+    for (let i = 0; i < 6; i++) { const y = 30 + i * 44; const x = 40 + i * 30; r(x, y, W - x, 14, '#8a6743'); r(x, y + 14, W - x, 30, '#ffffff', '#d8d6ce', 1); }
+  }
+  if (f && vb && knop && svg) {
+    const zet = () => {
+      const d = new FormData(f);
+      const wat = String(d.get('wat'));
+      const isPvc = wat === 'pvc'; const isTrap = wat === 'trap'; const isTegel = !isPvc && !isTrap;
+      f.querySelectorAll<HTMLElement>('[data-voor]').forEach((el) => { const v = el.dataset.voor; el.style.display = (v === 'pvc' && isPvc) || (v === 'tegel' && isTegel) ? '' : 'none'; });
+      const formaat = String(d.get('formaat')); const kleur = String(d.get('kleur')); const voeg = String(d.get('voeg')); const patroon = String(d.get('patroon'));
+      if (isTegel) { tegels(formaat, kleur, voeg, formaat === 'strook'); if (lab) lab.textContent = `Tegel ${FORMAAT[formaat].split(' (')[0]}, ${kleur}, voeg ${voeg === 'midden' ? 'grijs' : voeg === 'donker' ? 'antraciet' : 'licht'} (illustratie)`; }
+      else if (isPvc) { if (patroon === 'tegels') { tegels('groot', 'beige', 'midden', false); } else planken(); if (lab) lab.textContent = `Pvc, ${PATROON[patroon]} (illustratie, kleuren in de winkel)`; }
+      else { trap(); if (lab) lab.textContent = 'Trap bekleed met pvc (illustratie)'; }
+      const ruimte = String(d.get('ruimte') || '').trim();
+      const m2 = String(d.get('m2') || '').replace(/[^\d,.]/g, '');
+      const extra = d.getAll('extra').map(String);
+      const regels = [`Hallo Kevin en Danny, ik wil graag ${NAAM[wat]}.`];
+      if (isTegel) regels.push(`Formaat: ${FORMAAT[formaat]}, kleur ${kleur}, voeg ${voeg === 'midden' ? 'grijs' : voeg === 'donker' ? 'antraciet' : 'licht'}.`);
+      if (isPvc) regels.push(`Legpatroon: ${PATROON[patroon]}.`);
+      if (ruimte || m2) regels.push(`Ruimte: ${ruimte || 'nog niet bekend'}${m2 ? `, ongeveer ${m2} m²` : ''}.`);
+      if (extra.length) regels.push(`Ook nodig: ${extra.join(', ')}.`);
+      regels.push(HOE[String(d.get('hoe'))]);
+      const t = regels.join('\n');
+      vb.textContent = t; knop.href = `${site.wa}?text=${encodeURIComponent(t)}`;
+    };
+    f.addEventListener('input', zet); f.addEventListener('change', zet);
+    f.addEventListener('submit', (e) => e.preventDefault());
+    zet();
+  }
+  // Vandaag in de tijdentabel + live status (zaterdag 10:00 tot 16:00, verder op afspraak).
+  const nu = new Date(); const dag = nu.getDay(); const uur = nu.getHours() + nu.getMinutes() / 60;
+  document.querySelector(`[data-dag="${dag}"]`)?.setAttribute('data-vandaag', '');
+  const open = dag === 6 && uur >= 10 && uur < 16;
+  const st = document.querySelector('[data-status-tekst]'); const stip = document.querySelector<HTMLElement>('[data-stip]');
+  if (st && stip) { st.textContent = open ? 'Nu open' : 'Nu op afspraak'; stip.style.background = open ? '#1a7f4b' : '#22459a'; }
+</script>

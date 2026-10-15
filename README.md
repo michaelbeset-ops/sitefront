@@ -338,3 +338,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | EU Naturalstones, Spijkenisse | https://voorstel.sitefront.nl/eu-naturalstones/ | site niet aan Google gekoppeld, pop-up over hero; 4,8/44; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Riant Zonwering, Delft | https://voorstel.sitefront.nl/riant-zonwering/ | geen website; 5,0/17; 06/WhatsApp. | 2026-10-15 | demo premium |
 | MDL stoffering, Oosterhout | https://voorstel.sitefront.nl/mdl-stoffering/ | site uit 2015, projectpagina's geven fout; 4,3/18; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Pvc & Tegel Design, Schoonhoven | https://voorstel.sitefront.nl/pvc-tegel-design/ | geen website; 5,0/18; 06/WhatsApp. | 2026-10-15 | demo premium |
+| Polak Parket, Tilburg | https://voorstel.sitefront.nl/polak-parket/ | website leeg ('Hallo wereld'), alleen Facebook; 4,3/31; 06/WhatsApp. | 2026-10-15 | demo premium |
