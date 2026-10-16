@@ -350,3 +350,8 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Fietsbaas, Gouda | https://voorstel.sitefront.nl/fietsbaas-gouda/ | site 'under construction'; 4,6/32; 06/WhatsApp. | 2026-10-15 | demo premium |
 | Privéwellness Bella Vita, Zoetermeer | https://voorstel.sitefront.nl/bella-vita-wellness/ | site 'onder constructie'; 5,0/118; 06/WhatsApp. | 2026-10-15 | demo premium |
 | De Kledingkundige, Rotterdam | https://voorstel.sitefront.nl/de-kledingkundige/ | site niet bereikbaar; 5,0/765; 06/WhatsApp. | 2026-10-15 | demo premium |
+| FY living, Gouda | https://voorstel.sitefront.nl/fy-living/ | geen website, alleen Instagram; 5,0/19; 06/WhatsApp. | 2026-10-16 | demo premium |
+| Katoen & Koffie, Brielle | https://voorstel.sitefront.nl/katoen-en-koffie/ | kale oude site, Lorem ipsum, webshop dicht; 4,7/26; 06/WhatsApp. | 2026-10-16 | demo premium |
+| Compacte Campers Verhuur, Bunnik | https://voorstel.sitefront.nl/compacte-campers/ | http-site met cookiemuur; 4,8/217; 06/WhatsApp. | 2026-10-16 | demo premium |
+| Fleurs Depot, Breda | https://voorstel.sitefront.nl/fleurs-depot/ | Wix-site uit 2015; 4,9/17; 06/WhatsApp. | 2026-10-16 | demo premium |
+| Van Alfen Restore and Selling, Tiel | https://voorstel.sitefront.nl/van-alfen-restore/ | geen website; 5,0/49; 06/WhatsApp. | 2026-10-16 | demo premium |
