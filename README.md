@@ -366,3 +366,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | HKN Interieur, Helmond | https://voorstel.sitefront.nl/hkn-interieur/ | geen website; 5,0/15; 06/WhatsApp. | 2026-10-17 | demo premium |
 | Kast van Klaas, Leiden | https://voorstel.sitefront.nl/kastvanklaas/ | gedateerde site, kop breekt op mobiel; 4,6/13; 06/WhatsApp. | 2026-10-17 | demo premium |
 | Sta op en relax, Schijndel | https://voorstel.sitefront.nl/sta-op-en-relax/ | geen website; 4,8/39; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Cenci Meubelstoffeerderij, Beusichem | https://voorstel.sitefront.nl/cenci-meubelstoffeerderij/ | site in plaatjes, 2900px breed op mobiel; 4,6/13; 06/WhatsApp. | 2026-10-17 | demo premium |
