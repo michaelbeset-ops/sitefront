@@ -361,3 +361,8 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | VanLonden.com, Bavel | https://voorstel.sitefront.nl/vanlonden/ | gedateerde site, cookiemuur; 4,9/135; 06/WhatsApp. | 2026-10-17 | demo premium |
 | T. de Waard wonen en slapen, Lekkerkerk | https://voorstel.sitefront.nl/t-de-waard/ | gedateerde http-site; 4,7/6; 06/WhatsApp. | 2026-10-17 | demo premium |
 | Yvonne's Brocante, Kaatsheuvel | https://voorstel.sitefront.nl/yvonnes-brocante/ | geen website (domein weg); 4,8/56; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Nautic Refit, Kortenhoef | https://voorstel.sitefront.nl/nautic-refit/ | geen website (Marktplaats); 4,8/10; 06/WhatsApp. | 2026-10-17 | demo premium |
+| RoLeo, Veldhoven | https://voorstel.sitefront.nl/roleo/ | pop-up en zijwaarts scrollen op mobiel; 5,0/13; 06/WhatsApp. | 2026-10-17 | demo premium |
+| HKN Interieur, Helmond | https://voorstel.sitefront.nl/hkn-interieur/ | geen website; 5,0/15; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Kast van Klaas, Leiden | https://voorstel.sitefront.nl/kastvanklaas/ | gedateerde site, kop breekt op mobiel; 4,6/13; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Sta op en relax, Schijndel | https://voorstel.sitefront.nl/sta-op-en-relax/ | geen website; 4,8/39; 06/WhatsApp. | 2026-10-17 | demo premium |
