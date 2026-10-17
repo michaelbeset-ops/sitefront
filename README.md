@@ -355,3 +355,9 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Compacte Campers Verhuur, Bunnik | https://voorstel.sitefront.nl/compacte-campers/ | http-site met cookiemuur; 4,8/217; 06/WhatsApp. | 2026-10-16 | demo premium |
 | Fleurs Depot, Breda | https://voorstel.sitefront.nl/fleurs-depot/ | Wix-site uit 2015; 4,9/17; 06/WhatsApp. | 2026-10-16 | demo premium |
 | Van Alfen Restore and Selling, Tiel | https://voorstel.sitefront.nl/van-alfen-restore/ | geen website; 5,0/49; 06/WhatsApp. | 2026-10-16 | demo premium |
+| Ut Meubelhuiske, Kaatsheuvel | https://voorstel.sitefront.nl/ut-meubelhuiske/ | geen website; 4,4/25; 06/WhatsApp. | 2026-10-17 | demo premium |
+| De Houten Schaal, Made | https://voorstel.sitefront.nl/de-houten-schaal/ | gedateerde site, tekst in plaatje; 4,9/53; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Aquafun4you, Tilburg | https://voorstel.sitefront.nl/aquafun4you/ | site uit 2015, geen hero; 4,9/45; 06/WhatsApp. | 2026-10-17 | demo premium |
+| VanLonden.com, Bavel | https://voorstel.sitefront.nl/vanlonden/ | gedateerde site, cookiemuur; 4,9/135; 06/WhatsApp. | 2026-10-17 | demo premium |
+| T. de Waard wonen en slapen, Lekkerkerk | https://voorstel.sitefront.nl/t-de-waard/ | gedateerde http-site; 4,7/6; 06/WhatsApp. | 2026-10-17 | demo premium |
+| Yvonne's Brocante, Kaatsheuvel | https://voorstel.sitefront.nl/yvonnes-brocante/ | geen website (domein weg); 4,8/56; 06/WhatsApp. | 2026-10-17 | demo premium |
