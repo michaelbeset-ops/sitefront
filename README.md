@@ -383,3 +383,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Kardi Dresses, Bergschenhoek | https://voorstel.sitefront.nl/kardi-dresses/ | alleen Salonized-boekingspagina; 4,7/71; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Ebrar Gordijnen, Den Haag | https://voorstel.sitefront.nl/ebrar-gordijnen/ | domein bestaat niet meer; 4,6/23; 06/WhatsApp. | 2026-10-19 | demo premium |
 | Rolluik Reparatie Rucphen | https://voorstel.sitefront.nl/rolluik-reparatie-rucphen/ | JouwWeb, 'We rusten even uit'; 4,8/26; 06/WhatsApp. | 2026-10-19 | demo premium |
+| Huyser Interieur, Oude-Tonge | https://voorstel.sitefront.nl/huyser-interieur/ | (c)2016, scrollt zijwaarts op mobiel; 5,0; 06/WhatsApp. | 2026-10-19 | demo premium |
