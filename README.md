@@ -370,3 +370,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Oranje Perde, Den Haag | https://voorstel.sitefront.nl/oranje-perde/ | geen website; 4,9/70; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Vrolijk Kozijnen, Den Haag | https://voorstel.sitefront.nl/vrolijk-kozijnen/ | oude frameset, niet mobiel; 5,0/25; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Tegeloutlet Center, Uithoorn | https://voorstel.sitefront.nl/tegeloutlet-center/ | geen website; 4,6/13; 06/WhatsApp. | 2026-10-18 | demo premium |
+| Guldmann (Homecare & Stepless), Enschede | https://voorstel.sitefront.nl/guldmann-nl/ | thuis-info verstopt tussen zorginstellingen; 06 accountmanager. | 2026-10-18 | demo premium |
+| Care2Live, Oud-Beijerland | https://voorstel.sitefront.nl/care2live/ | gedateerde WordPress, dode pagina; 4,7/36; 06/WhatsApp. | 2026-10-18 | demo premium |
+| TRAMA, Vriezenveen | https://voorstel.sitefront.nl/trama/ | site uit 2008, geen viewport; geen 06 bekend. | 2026-10-18 | demo premium |
+| Jachthuis Goeree-Overflakkee, Stellendam | https://voorstel.sitefront.nl/jachthuis-go/ | scrollt zijwaarts op mobiel; 4,7/32; 06/WhatsApp. | 2026-10-18 | demo premium |
