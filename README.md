@@ -377,3 +377,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Benevolentia, 's-Gravenzande | https://voorstel.sitefront.nl/benevolentia/ | geen werkende site (403); 4,5/17; 06/WhatsApp. | 2026-10-18 | demo premium |
 | MyWay Atelier, Dordrecht | https://voorstel.sitefront.nl/myway-atelier/ | site offline (certificaat verlopen, 403); 4,7/20; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Scheffers Interieurbouw, Heerjansdam | https://voorstel.sitefront.nl/scheffers-interieurbouw/ | site onbereikbaar; 5,0/3; 06/WhatsApp. | 2026-10-18 | demo premium |
+| JDD Interieurs, Wassenaar | https://voorstel.sitefront.nl/jdd-interieurs/ | geen website (Instagram/Werkspot); 5,0/7; 06/WhatsApp. | 2026-10-18 | demo premium |
