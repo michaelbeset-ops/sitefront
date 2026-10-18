@@ -374,3 +374,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Care2Live, Oud-Beijerland | https://voorstel.sitefront.nl/care2live/ | gedateerde WordPress, dode pagina; 4,7/36; 06/WhatsApp. | 2026-10-18 | demo premium |
 | TRAMA, Vriezenveen | https://voorstel.sitefront.nl/trama/ | site uit 2008, geen viewport; geen 06 bekend. | 2026-10-18 | demo premium |
 | Jachthuis Goeree-Overflakkee, Stellendam | https://voorstel.sitefront.nl/jachthuis-go/ | scrollt zijwaarts op mobiel; 4,7/32; 06/WhatsApp. | 2026-10-18 | demo premium |
+| Benevolentia, 's-Gravenzande | https://voorstel.sitefront.nl/benevolentia/ | geen werkende site (403); 4,5/17; 06/WhatsApp. | 2026-10-18 | demo premium |
+| MyWay Atelier, Dordrecht | https://voorstel.sitefront.nl/myway-atelier/ | site offline (certificaat verlopen, 403); 4,7/20; 06/WhatsApp. | 2026-10-18 | demo premium |
