@@ -381,3 +381,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Go Fast Scheveningen, Den Haag | https://voorstel.sitefront.nl/go-fast-scheveningen/ | domein bestaat niet meer; 4,7/66; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Topshopper, Fijnaart | https://voorstel.sitefront.nl/topshopper/ | geen website (domein leeg); 4,6/163; 06/WhatsApp. | 2026-10-18 | demo premium |
 | Kardi Dresses, Bergschenhoek | https://voorstel.sitefront.nl/kardi-dresses/ | alleen Salonized-boekingspagina; 4,7/71; 06/WhatsApp. | 2026-10-18 | demo premium |
+| Ebrar Gordijnen, Den Haag | https://voorstel.sitefront.nl/ebrar-gordijnen/ | domein bestaat niet meer; 4,6/23; 06/WhatsApp. | 2026-10-19 | demo premium |
