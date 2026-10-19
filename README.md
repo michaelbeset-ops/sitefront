@@ -387,3 +387,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | SloepBreda | https://voorstel.sitefront.nl/sloepbreda/ | domein kapot (SSL/STRATO); twijfel-lead. | 2026-10-19 | demo premium |
 | Meubelmakerij m'n Broer, Oudenbosch | https://voorstel.sitefront.nl/meubelmakerij-mn-broer/ | site kapot (400 / parkeerpagina); 5,0/3; 06/WhatsApp. | 2026-10-19 | demo premium |
 | RS Flooring, Waddinxveen | https://voorstel.sitefront.nl/rs-flooring/ | site geeft kritieke fout (HTTP 500); 4,9/25; 06/WhatsApp. | 2026-10-19 | demo premium |
+| Quant-i, Hoogmade | https://voorstel.sitefront.nl/quant-i/ | niet mobiel, offertepagina toont PHP-code; 5,0/30; 06/WhatsApp. | 2026-10-19 | demo premium |
