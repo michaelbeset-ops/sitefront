@@ -399,3 +399,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | ALMA interieurstudio, Vlaardingen | https://voorstel.sitefront.nl/alma-interieurstudio/ | site 'binnenkort' sinds 2025; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Bruidsmode Atelier Amsterdam | https://voorstel.sitefront.nl/bruidsmode-atelier-amsterdam/ | site uit plaatjes, niet mobiel; 4,8/111; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Handymen-Pools kozijnen, Roosendaal | https://voorstel.sitefront.nl/handymen-kozijnen-roosendaal/ | Google-link kapot, tweede site half Pools/foutmeldingen; 5,0/5; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Weinholt Watersport, Leimuiden | https://voorstel.sitefront.nl/weinholt-watersport/ | niet mobiel, PHP-fouten; 06/WhatsApp. | 2026-10-20 | demo premium |
