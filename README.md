@@ -391,3 +391,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Keizer Meubels, Mijdrecht | https://voorstel.sitefront.nl/keizer-meubels/ | site 'Binnenkort online' sinds 2023, SSL verlopen; 4,6/33; 06/WhatsApp. | 2026-10-19 | demo premium |
 | Parket4you, Numansdorp | https://voorstel.sitefront.nl/parket4you/ | tabellen-site, niet mobiel; 5,0/4; 06/WhatsApp. | 2026-10-19 | demo premium |
 | Houdbaar Hout, Werkhoven | https://voorstel.sitefront.nl/houdbaar-hout/ | domein 'Bijna live' sinds 2022; 5,0/28; 06/WhatsApp. | 2026-10-19 | demo premium |
+| Ensink Watersport, Nieuwkoop | https://voorstel.sitefront.nl/ensink-watersport/ | geen website; 4,5/8; 06/WhatsApp (randgeval). | 2026-10-19 | demo premium |
