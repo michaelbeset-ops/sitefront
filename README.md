@@ -395,3 +395,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Stoffeeratelier Brunink, Den Haag | https://voorstel.sitefront.nl/stoffeeratelier-brunink/ | frameset/WordPress-blog, niet mobiel; 4,6/25; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Shahba Wonen, Rijswijk | https://voorstel.sitefront.nl/shahba-wonen/ | site onbereikbaar (SSL/DNS); 4,4/118; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Hoekje Interior, Kudelstaart | https://voorstel.sitefront.nl/hoekje-interior/ | domein geeft 404 (Wix); 5,0/7; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Gelcoat GOAT, Stellendam | https://voorstel.sitefront.nl/gelcoat-goat/ | geen website (alleen Instagram 46K); 5,0/8; 06/WhatsApp. | 2026-10-20 | demo premium |
