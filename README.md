@@ -397,3 +397,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Hoekje Interior, Kudelstaart | https://voorstel.sitefront.nl/hoekje-interior/ | domein geeft 404 (Wix); 5,0/7; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Gelcoat GOAT, Stellendam | https://voorstel.sitefront.nl/gelcoat-goat/ | geen website (alleen Instagram 46K); 5,0/8; 06/WhatsApp. | 2026-10-20 | demo premium |
 | ALMA interieurstudio, Vlaardingen | https://voorstel.sitefront.nl/alma-interieurstudio/ | site 'binnenkort' sinds 2025; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Bruidsmode Atelier Amsterdam | https://voorstel.sitefront.nl/bruidsmode-atelier-amsterdam/ | site uit plaatjes, niet mobiel; 4,8/111; 06/WhatsApp. | 2026-10-20 | demo premium |
