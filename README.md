@@ -404,3 +404,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Lifestyle Raamdecoraties, Eindhoven | https://voorstel.sitefront.nl/lifestyle-raamdecoraties/ | verouderd (Covid-tekst, 'binnenkort'); 4,7/109; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Luxury Gardens, Eindhoven | https://voorstel.sitefront.nl/luxury-gardens/ | site opgeschort door hoster; 5,0/4; 06/WhatsApp. | 2026-10-20 | demo premium |
 | ONCU FASHION, Arnhem | https://voorstel.sitefront.nl/oncu-fashion/ | geen werkende site (domein te koop); 4,9/35; 06/WhatsApp. | 2026-10-20 | demo premium |
+| RaamRenova / SP Holland, Tiel | https://voorstel.sitefront.nl/sp-holland-kozijnen/ | geen website (alleen Facebook); 5,0/4; 06/WhatsApp. | 2026-10-20 | demo premium |
