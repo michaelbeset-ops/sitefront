@@ -401,3 +401,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Handymen-Pools kozijnen, Roosendaal | https://voorstel.sitefront.nl/handymen-kozijnen-roosendaal/ | Google-link kapot, tweede site half Pools/foutmeldingen; 5,0/5; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Weinholt Watersport, Leimuiden | https://voorstel.sitefront.nl/weinholt-watersport/ | niet mobiel, PHP-fouten; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Trustwatersport, Oude Meer | https://voorstel.sitefront.nl/trustwatersport/ | Mijnwebwinkel, scrollt zijwaarts; 4,5/52; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Lifestyle Raamdecoraties, Eindhoven | https://voorstel.sitefront.nl/lifestyle-raamdecoraties/ | verouderd (Covid-tekst, 'binnenkort'); 4,7/109; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Luxury Gardens, Eindhoven | https://voorstel.sitefront.nl/luxury-gardens/ | site opgeschort door hoster; 5,0/4; 06/WhatsApp. | 2026-10-20 | demo premium |
