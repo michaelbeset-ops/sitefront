@@ -385,3 +385,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Rolluik Reparatie Rucphen | https://voorstel.sitefront.nl/rolluik-reparatie-rucphen/ | JouwWeb, 'We rusten even uit'; 4,8/26; 06/WhatsApp. | 2026-10-19 | demo premium |
 | Huyser Interieur, Oude-Tonge | https://voorstel.sitefront.nl/huyser-interieur/ | (c)2016, scrollt zijwaarts op mobiel; 5,0; 06/WhatsApp. | 2026-10-19 | demo premium |
 | SloepBreda | https://voorstel.sitefront.nl/sloepbreda/ | domein kapot (SSL/STRATO); twijfel-lead. | 2026-10-19 | demo premium |
+| Meubelmakerij m'n Broer, Oudenbosch | https://voorstel.sitefront.nl/meubelmakerij-mn-broer/ | site kapot (400 / parkeerpagina); 5,0/3; 06/WhatsApp. | 2026-10-19 | demo premium |
