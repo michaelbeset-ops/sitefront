@@ -393,3 +393,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Houdbaar Hout, Werkhoven | https://voorstel.sitefront.nl/houdbaar-hout/ | domein 'Bijna live' sinds 2022; 5,0/28; 06/WhatsApp. | 2026-10-19 | demo premium |
 | Ensink Watersport, Nieuwkoop | https://voorstel.sitefront.nl/ensink-watersport/ | geen website; 4,5/8; 06/WhatsApp (randgeval). | 2026-10-19 | demo premium |
 | Stoffeeratelier Brunink, Den Haag | https://voorstel.sitefront.nl/stoffeeratelier-brunink/ | frameset/WordPress-blog, niet mobiel; 4,6/25; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Shahba Wonen, Rijswijk | https://voorstel.sitefront.nl/shahba-wonen/ | site onbereikbaar (SSL/DNS); 4,4/118; 06/WhatsApp. | 2026-10-20 | demo premium |
