@@ -424,3 +424,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Raymies Auto Services, Delft | https://voorstel.sitefront.nl/raymies-auto-services/ | domein toont parkeerpagina; 4,7/22; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Onyx Cars, Hellevoetsluis | https://voorstel.sitefront.nl/onyx-cars/ | geen website; 4,8/36; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Carflex Dongen | https://voorstel.sitefront.nl/carflex-dongen/ | geen website; 4,7/85; 06/WhatsApp. | 2026-10-20 | demo premium |
+| DGR Installatie & Onderhoud, Capelle | https://voorstel.sitefront.nl/dgr-installatie/ | site databasefout (HTTP 500); 5,0/11; 06/WhatsApp. | 2026-10-20 | demo premium |
