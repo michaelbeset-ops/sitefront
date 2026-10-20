@@ -419,3 +419,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autobedrijf All-In, Tiel | https://voorstel.sitefront.nl/autobedrijf-all-in/ | domein bestaat niet; 4,8/32; 06/WhatsApp. | 2026-10-20 | demo premium |
 | A.S. Automotive, Ridderkerk | https://voorstel.sitefront.nl/as-automotive/ | geen website; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Garage Boumy, Gouda | https://voorstel.sitefront.nl/garage-boumy/ | JouwWeb, alleen openingstijden, lege pagina's; 4,8/82; 06/WhatsApp. | 2026-10-20 | demo premium |
+| S.E.M Auto's, Oosterhout | https://voorstel.sitefront.nl/sem-autos/ | site zeer traag, lege pagina's; 4,8/33; 06/WhatsApp. | 2026-10-20 | demo premium |
