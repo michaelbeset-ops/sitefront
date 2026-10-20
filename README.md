@@ -434,3 +434,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Wrap Garage, Goes | https://voorstel.sitefront.nl/de-wrap-garage/ | Wix niet mobiel, 404-pagina's; 4,9/30; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Vloermeesters | https://voorstel.sitefront.nl/vloermeesters/ | geen werkende website; 5,0/11; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Autobedrijf Florence, Spijkenisse | https://voorstel.sitefront.nl/autobedrijf-florence/ | domein bestaat niet; 4,6/34; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Pari Le Chique, Den Haag | https://voorstel.sitefront.nl/pari-le-chique/ | WP 4.9 met Latijnse vultekst, SSL-fout; 5,0/94; 06/WhatsApp. | 2026-10-20 | demo premium |
