@@ -410,3 +410,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | VH Design, Bunschoten-Spakenburg | https://voorstel.sitefront.nl/vh-design/ | scrollt zijwaarts, 'under construction', lorem-URL's; 5,0/100; 06/WhatsApp. | 2026-10-20 | demo premium |
 | AutoLogisch, Alblasserdam | https://voorstel.sitefront.nl/autologisch/ | geen website (alleen Marktplaats); 4,9/37; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Damaskeukens, Bergen op Zoom | https://voorstel.sitefront.nl/damaskeukens/ | geen website (alleen Instagram); 06/WhatsApp. | 2026-10-20 | demo premium |
+| EM Badkamers & Vloeren, Gouda | https://voorstel.sitefront.nl/em-badkamers-vloeren/ | geen website; 5,0/34; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Autobedrijf Kaya, Vlissingen | https://voorstel.sitefront.nl/autobedrijf-kaya/ | domein bestaat niet; 4,4/51; 06/WhatsApp. | 2026-10-20 | demo premium |
