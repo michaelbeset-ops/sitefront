@@ -408,3 +408,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Sander Geveke Meubels op Maat, Baarn | https://voorstel.sitefront.nl/sandergeveke-meubels/ | domein verwijst naar Facebook; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Nuri Wonen, Sliedrecht | https://voorstel.sitefront.nl/nuri-wonen/ | template-restanten (loodgieterstekst), stockfoto's; 4,9/59; 06/WhatsApp. | 2026-10-20 | demo premium |
 | VH Design, Bunschoten-Spakenburg | https://voorstel.sitefront.nl/vh-design/ | scrollt zijwaarts, 'under construction', lorem-URL's; 5,0/100; 06/WhatsApp. | 2026-10-20 | demo premium |
+| AutoLogisch, Alblasserdam | https://voorstel.sitefront.nl/autologisch/ | geen website (alleen Marktplaats); 4,9/37; 06/WhatsApp. | 2026-10-20 | demo premium |
