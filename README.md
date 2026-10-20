@@ -438,3 +438,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Thijs Scharenberg meubelmaker, Velp | https://voorstel.sitefront.nl/thijs-scharenberg/ | Adobe Muse 2017, niet mobiel; 4,8/21; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Jachtwerf De Overkant, Rijsenhout | https://voorstel.sitefront.nl/jachtwerf-de-overkant/ | domein bestaat niet; 4,8/5; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Livora Home, Eindhoven | https://voorstel.sitefront.nl/livora-home/ | geen website; 5,0/8; 06/WhatsApp. | 2026-10-20 | demo premium |
+| HomeStyle24, Valkenswaard | https://voorstel.sitefront.nl/homestyle24/ | webshop-domein dood (404); 4,5/106; 06/WhatsApp. | 2026-10-20 | demo premium |
