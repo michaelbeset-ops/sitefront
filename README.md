@@ -432,3 +432,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Wrapped! Car & Interiorstyling, Tilburg | https://voorstel.sitefront.nl/wrapped-carstyling/ | site 'kritieke fout' (HTTP 500); 4,8/53; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Custom-Sign, Geldermalsen | https://voorstel.sitefront.nl/custom-sign/ | Adobe Muse 2012, niet mobiel; 4,7/14; 06/WhatsApp. | 2026-10-20 | demo premium |
 | De Wrap Garage, Goes | https://voorstel.sitefront.nl/de-wrap-garage/ | Wix niet mobiel, 404-pagina's; 4,9/30; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Vloermeesters | https://voorstel.sitefront.nl/vloermeesters/ | geen werkende website; 5,0/11; 06/WhatsApp. | 2026-10-20 | demo premium |
