@@ -436,3 +436,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Autobedrijf Florence, Spijkenisse | https://voorstel.sitefront.nl/autobedrijf-florence/ | domein bestaat niet; 4,6/34; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Pari Le Chique, Den Haag | https://voorstel.sitefront.nl/pari-le-chique/ | WP 4.9 met Latijnse vultekst, SSL-fout; 5,0/94; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Thijs Scharenberg meubelmaker, Velp | https://voorstel.sitefront.nl/thijs-scharenberg/ | Adobe Muse 2017, niet mobiel; 4,8/21; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Jachtwerf De Overkant, Rijsenhout | https://voorstel.sitefront.nl/jachtwerf-de-overkant/ | domein bestaat niet; 4,8/5; 06/WhatsApp. | 2026-10-20 | demo premium |
