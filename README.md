@@ -422,3 +422,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | S.E.M Auto's, Oosterhout | https://voorstel.sitefront.nl/sem-autos/ | site zeer traag, lege pagina's; 4,8/33; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Garage Papendrecht | https://voorstel.sitefront.nl/garage-papendrecht/ | site gaf 403 (Hostinger), checken; 4,7/175; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Raymies Auto Services, Delft | https://voorstel.sitefront.nl/raymies-auto-services/ | domein toont parkeerpagina; 4,7/22; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Onyx Cars, Hellevoetsluis | https://voorstel.sitefront.nl/onyx-cars/ | geen website; 4,8/36; 06/WhatsApp. | 2026-10-20 | demo premium |
