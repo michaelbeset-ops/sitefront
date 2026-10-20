@@ -416,3 +416,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Klimaat montage Van Dijk, Bergen op Zoom | https://voorstel.sitefront.nl/klimaat-montage-van-dijk/ | domein bestaat niet; 5,0/34; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Vos & Vos Automotive, Zoetermeer | https://voorstel.sitefront.nl/vos-en-vos-automotive/ | geen website; 5,0/44; 06/WhatsApp. | 2026-10-20 | demo premium |
 | AODZ (Alles onder de zon), Papendrecht | https://voorstel.sitefront.nl/aodz-zonnepanelen/ | site time-out; 4,9/166; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Autobedrijf All-In, Tiel | https://voorstel.sitefront.nl/autobedrijf-all-in/ | domein bestaat niet; 4,8/32; 06/WhatsApp. | 2026-10-20 | demo premium |
