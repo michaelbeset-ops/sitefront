@@ -406,3 +406,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | ONCU FASHION, Arnhem | https://voorstel.sitefront.nl/oncu-fashion/ | geen werkende site (domein te koop); 4,9/35; 06/WhatsApp. | 2026-10-20 | demo premium |
 | RaamRenova / SP Holland, Tiel | https://voorstel.sitefront.nl/sp-holland-kozijnen/ | geen website (alleen Facebook); 5,0/4; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Sander Geveke Meubels op Maat, Baarn | https://voorstel.sitefront.nl/sandergeveke-meubels/ | domein verwijst naar Facebook; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Nuri Wonen, Sliedrecht | https://voorstel.sitefront.nl/nuri-wonen/ | template-restanten (loodgieterstekst), stockfoto's; 4,9/59; 06/WhatsApp. | 2026-10-20 | demo premium |
