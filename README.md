@@ -430,3 +430,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | MR Cardesign, Roosendaal | https://voorstel.sitefront.nl/mr-cardesign/ | Dreamweaver-site, niet mobiel; 4,9/35; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Custom Drive, Utrecht | https://voorstel.sitefront.nl/custom-drive/ | domein bestaat niet; 4,9/28; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Wrapped! Car & Interiorstyling, Tilburg | https://voorstel.sitefront.nl/wrapped-carstyling/ | site 'kritieke fout' (HTTP 500); 4,8/53; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Custom-Sign, Geldermalsen | https://voorstel.sitefront.nl/custom-sign/ | Adobe Muse 2012, niet mobiel; 4,7/14; 06/WhatsApp. | 2026-10-20 | demo premium |
