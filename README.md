@@ -439,3 +439,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Jachtwerf De Overkant, Rijsenhout | https://voorstel.sitefront.nl/jachtwerf-de-overkant/ | domein bestaat niet; 4,8/5; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Livora Home, Eindhoven | https://voorstel.sitefront.nl/livora-home/ | geen website; 5,0/8; 06/WhatsApp. | 2026-10-20 | demo premium |
 | HomeStyle24, Valkenswaard | https://voorstel.sitefront.nl/homestyle24/ | webshop-domein dood (404); 4,5/106; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Jachthaven de Stuw, Amersfoort | https://voorstel.sitefront.nl/jachthaven-de-stuw/ | frames-site zonder viewport; 4,4/30; 06/WhatsApp. | 2026-10-21 | demo premium |
