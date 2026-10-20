@@ -412,3 +412,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Damaskeukens, Bergen op Zoom | https://voorstel.sitefront.nl/damaskeukens/ | geen website (alleen Instagram); 06/WhatsApp. | 2026-10-20 | demo premium |
 | EM Badkamers & Vloeren, Gouda | https://voorstel.sitefront.nl/em-badkamers-vloeren/ | geen website; 5,0/34; 06/WhatsApp. | 2026-10-20 | demo premium |
 | Autobedrijf Kaya, Vlissingen | https://voorstel.sitefront.nl/autobedrijf-kaya/ | domein bestaat niet; 4,4/51; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Bob Auto's, Sliedrecht | https://voorstel.sitefront.nl/bob-autos/ | geen website; 4,7/22; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Klimaat montage Van Dijk, Bergen op Zoom | https://voorstel.sitefront.nl/klimaat-montage-van-dijk/ | domein bestaat niet; 5,0/34; 06/WhatsApp. | 2026-10-20 | demo premium |
+| Vos & Vos Automotive, Zoetermeer | https://voorstel.sitefront.nl/vos-en-vos-automotive/ | geen website; 5,0/44; 06/WhatsApp. | 2026-10-20 | demo premium |
+| AODZ (Alles onder de zon), Papendrecht | https://voorstel.sitefront.nl/aodz-zonnepanelen/ | site time-out; 4,9/166; 06/WhatsApp. | 2026-10-20 | demo premium |
