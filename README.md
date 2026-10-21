@@ -445,3 +445,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Dapper Gordijnen, Amsterdam | https://voorstel.sitefront.nl/dapper-gordijnen/ | geen website; 5,0/50; 06/WhatsApp. | 2026-10-21 | demo premium |
 | Doornbos Yachtservice, Volendam | https://voorstel.sitefront.nl/doornbos-yachtservice/ | gratis Webnode-site, leeg; 5,0/2; 06/WhatsApp. | 2026-10-21 | demo premium |
 | Decoline Gordijnspecialist, Amsterdam | https://voorstel.sitefront.nl/decoline-gordijnen/ | domein geeft Turkse foutpagina; 4,7/44; 06/WhatsApp. | 2026-10-21 | demo premium |
+| Zeilmakerij Stienstra, Maasbommel | https://voorstel.sitefront.nl/zeilmakerij-stienstra/ | geen viewport, 980px op mobiel; 4,6/9; 06/WhatsApp. | 2026-10-21 | demo premium |
