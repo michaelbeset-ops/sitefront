@@ -450,3 +450,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Smeets Vloeren, Helmond | https://voorstel.sitefront.nl/smeets-vloeren/ | Elementor 2020, geen reviews/openingstijden; 5,0/117; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Duin Tegels, Ammerzoden | https://voorstel.sitefront.nl/duin-tegels/ | WordPress kritieke fout (HTTP 500); 4,7; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Zitnova, Culemborg | https://voorstel.sitefront.nl/zitnova/ | site onbereikbaar; 5,0/3; 06/WhatsApp. | 2026-10-22 | demo premium |
+| Noirwoods Furniture, Beers | https://voorstel.sitefront.nl/noirwoods-furniture/ | site opent niet (SSL/Cloudflare 1001); 5,0/3; 06/WhatsApp. | 2026-10-22 | demo premium |
