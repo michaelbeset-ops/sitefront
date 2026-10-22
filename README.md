@@ -456,3 +456,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Oba Stoffeerderij, Numansdorp | https://voorstel.sitefront.nl/oba-stoffeerderij/ | geen website; 5,0/23; 06/WhatsApp. | 2026-10-22 | demo premium |
 | TDV Watersport, Nederhorst den Berg | https://voorstel.sitefront.nl/tdv-watersport/ | gelinkte site geeft HTTP 500; 4,5/32; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Zomers Glas, Rolluiken & Zonwering, Geldermalsen | https://voorstel.sitefront.nl/zomers-zonwering/ | lege pagina (HTTP 500); 4,8/5; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Juul Hoogelander Maatwerk, 's-Gravenzande | https://voorstel.sitefront.nl/juul-hoogelander-maatwerk/ | domein stuurt naar Instagram; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
