@@ -459,3 +459,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Juul Hoogelander Maatwerk, 's-Gravenzande | https://voorstel.sitefront.nl/juul-hoogelander-maatwerk/ | domein stuurt naar Instagram; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Jachthaven Rio Molino, Bleiswijk | https://voorstel.sitefront.nl/jachthaven-rio-molino/ | WordPress kritieke fout (HTTP 500); 4,4/94; 06/WhatsApp. | 2026-10-23 | demo premium |
 | De Meubelmakert, Rotterdam | https://voorstel.sitefront.nl/de-meubelmakert/ | domein stuurt naar Instagram; 5,0/11; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Effect, Haarlem | https://voorstel.sitefront.nl/effect-haarlem/ | site jaren 2000, geen viewport, actie 2013; 4,9/11; 06/WhatsApp. | 2026-10-23 | demo premium |
