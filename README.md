@@ -447,3 +447,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Decoline Gordijnspecialist, Amsterdam | https://voorstel.sitefront.nl/decoline-gordijnen/ | domein geeft Turkse foutpagina; 4,7/44; 06/WhatsApp. | 2026-10-21 | demo premium |
 | Zeilmakerij Stienstra, Maasbommel | https://voorstel.sitefront.nl/zeilmakerij-stienstra/ | geen viewport, 980px op mobiel; 4,6/9; 06/WhatsApp. | 2026-10-21 | demo premium |
 | Zeilmakerij Herma de Jong, Burgh-Haamstede | https://voorstel.sitefront.nl/zeilmakerij-herma-de-jong/ | EverWeb, 480px vast op mobiel, niet zoombaar; 4,9/70; 06/WhatsApp. | 2026-10-22 | demo premium |
+| Smeets Vloeren, Helmond | https://voorstel.sitefront.nl/smeets-vloeren/ | Elementor 2020, geen reviews/openingstijden; 5,0/117; 06/WhatsApp. | 2026-10-22 | demo premium |
