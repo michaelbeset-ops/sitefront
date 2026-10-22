@@ -463,3 +463,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Studio Lot Interieur, Den Bosch | https://voorstel.sitefront.nl/studio-lot-interieur/ | site geeft 401 Unauthorized; 5,0/17; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Meubelmaker Nikolaas Schoo, Amsterdam | https://voorstel.sitefront.nl/nikolaas-schoo/ | geen viewport, verkleinde desktop op mobiel; 5,0/6; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Ab Zuurbier Zonweringen, Haarlem | https://voorstel.sitefront.nl/ab-zuurbier-zonweringen/ | Wix-domein niet gekoppeld; 5,0/1; 06/WhatsApp. | 2026-10-23 | demo |
+| Hor-ex Raamdecoratie, Grave | https://voorstel.sitefront.nl/hor-ex-raamdecoratie/ | site achter wachtwoord (401); 5,0/3; 06/WhatsApp. | 2026-10-23 | demo premium |
