@@ -449,3 +449,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Zeilmakerij Herma de Jong, Burgh-Haamstede | https://voorstel.sitefront.nl/zeilmakerij-herma-de-jong/ | EverWeb, 480px vast op mobiel, niet zoombaar; 4,9/70; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Smeets Vloeren, Helmond | https://voorstel.sitefront.nl/smeets-vloeren/ | Elementor 2020, geen reviews/openingstijden; 5,0/117; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Duin Tegels, Ammerzoden | https://voorstel.sitefront.nl/duin-tegels/ | WordPress kritieke fout (HTTP 500); 4,7; 06/WhatsApp. | 2026-10-22 | demo premium |
+| Zitnova, Culemborg | https://voorstel.sitefront.nl/zitnova/ | site onbereikbaar; 5,0/3; 06/WhatsApp. | 2026-10-22 | demo premium |
