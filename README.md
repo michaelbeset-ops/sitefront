@@ -460,3 +460,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Jachthaven Rio Molino, Bleiswijk | https://voorstel.sitefront.nl/jachthaven-rio-molino/ | WordPress kritieke fout (HTTP 500); 4,4/94; 06/WhatsApp. | 2026-10-23 | demo premium |
 | De Meubelmakert, Rotterdam | https://voorstel.sitefront.nl/de-meubelmakert/ | domein stuurt naar Instagram; 5,0/11; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Effect, Haarlem | https://voorstel.sitefront.nl/effect-haarlem/ | site jaren 2000, geen viewport, actie 2013; 4,9/11; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Studio Lot Interieur, Den Bosch | https://voorstel.sitefront.nl/studio-lot-interieur/ | site geeft 401 Unauthorized; 5,0/17; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Meubelmaker Nikolaas Schoo, Amsterdam | https://voorstel.sitefront.nl/nikolaas-schoo/ | geen viewport, verkleinde desktop op mobiel; 5,0/6; 06/WhatsApp. | 2026-10-23 | demo premium |
