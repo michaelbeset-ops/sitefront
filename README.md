@@ -451,3 +451,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Duin Tegels, Ammerzoden | https://voorstel.sitefront.nl/duin-tegels/ | WordPress kritieke fout (HTTP 500); 4,7; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Zitnova, Culemborg | https://voorstel.sitefront.nl/zitnova/ | site onbereikbaar; 5,0/3; 06/WhatsApp. | 2026-10-22 | demo premium |
 | Noirwoods Furniture, Beers | https://voorstel.sitefront.nl/noirwoods-furniture/ | site opent niet (SSL/Cloudflare 1001); 5,0/3; 06/WhatsApp. | 2026-10-22 | demo premium |
+| Mark Spaargaren Watersport, Aalsmeer | https://voorstel.sitefront.nl/mark-spaargaren-watersport/ | domein stuurt naar Facebook-profiel; 5,0/9; 06/WhatsApp. | 2026-10-22 | demo premium |
