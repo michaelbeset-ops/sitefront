@@ -477,3 +477,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Midland Watersports, Veenendaal | https://voorstel.sitefront.nl/midland-watersports/ | geen mobiele weergave; 4,4/79; Facebook. | 2026-10-24 | demo premium |
 | Sunpro Zonwering, Bergambacht | https://voorstel.sitefront.nl/sunpro-zonwering/ | site offline (leeg); 4,8/29; Facebook. | 2026-10-24 | demo premium |
 | Culemborgse Zonwering, Culemborg | https://voorstel.sitefront.nl/culemborgse-zonwering/ | gedateerde site, niets klikbaar, widgetfout; 4,3/15; 06/WhatsApp. | 2026-10-24 | demo premium |
+| Frank Zonwering, Nijmegen | https://voorstel.sitefront.nl/frank-zonwering/ | desktop op mobiel, lege offertepagina; 4,6/66; 06/WhatsApp. | 2026-10-24 | demo premium |
