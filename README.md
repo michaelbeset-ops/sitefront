@@ -467,3 +467,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Mancave Mantique, Amersfoort | https://voorstel.sitefront.nl/mancave-mantique/ | alleen Linktree, domein naar Instagram; 5,0/7; 06/WhatsApp. | 2026-10-23 | demo premium |
 | InterLab, Rotterdam | https://voorstel.sitefront.nl/interlab/ | Google-link naar verdwenen Instagram; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Heideman Interior Works, Uithoorn | https://voorstel.sitefront.nl/heideman-interior-works/ | site al jaren under construction; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Bedden en babyhuis Schaatsenberg, Utrecht | https://voorstel.sitefront.nl/schaatsenberg/ | webwinkel ~2010, niet mobiel; 4,9/42; Facebook. | 2026-10-23 | demo premium |
