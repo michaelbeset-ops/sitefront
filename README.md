@@ -469,3 +469,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Heideman Interior Works, Uithoorn | https://voorstel.sitefront.nl/heideman-interior-works/ | site al jaren under construction; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Bedden en babyhuis Schaatsenberg, Utrecht | https://voorstel.sitefront.nl/schaatsenberg/ | webwinkel ~2010, niet mobiel; 4,9/42; Facebook. | 2026-10-23 | demo premium |
 | Groeneveld Keukens, Den Haag | https://voorstel.sitefront.nl/groeneveld-keukens/ | WordPress kritieke fout; 4,6/38; Facebook. | 2026-10-23 | demo premium |
+| van Wijk Keuken en Bad, Lepelstraat | https://voorstel.sitefront.nl/van-wijk-keuken-en-bad/ | oude Joomla, schuift op mobiel, (c)2015; 4,3/17; Facebook. | 2026-10-23 | demo premium |
