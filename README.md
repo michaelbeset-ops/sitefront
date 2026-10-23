@@ -474,3 +474,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Broersvest Meubelen, Schiedam | https://voorstel.sitefront.nl/broersvest-meubelen/ | geen site, Google-link naar spamgids; 104 reviews; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Dekon Watersport, Hardinxveld-Giessendam | https://voorstel.sitefront.nl/dekon-watersport/ | certificaatfout, WP-thema 2014, lorem ipsum; 4,8/37; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Suntec Zonwering, Zoeterwoude | https://voorstel.sitefront.nl/suntec-zonwering/ | PHP Fatal error; 4,9/106; Facebook. | 2026-10-24 | demo premium |
+| Midland Watersports, Veenendaal | https://voorstel.sitefront.nl/midland-watersports/ | geen mobiele weergave; 4,4/79; Facebook. | 2026-10-24 | demo premium |
