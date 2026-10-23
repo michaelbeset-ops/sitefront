@@ -471,3 +471,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Groeneveld Keukens, Den Haag | https://voorstel.sitefront.nl/groeneveld-keukens/ | WordPress kritieke fout; 4,6/38; Facebook. | 2026-10-23 | demo premium |
 | van Wijk Keuken en Bad, Lepelstraat | https://voorstel.sitefront.nl/van-wijk-keuken-en-bad/ | oude Joomla, schuift op mobiel, (c)2015; 4,3/17; Facebook. | 2026-10-23 | demo premium |
 | Unique Wonen, Rotterdam | https://voorstel.sitefront.nl/unique-wonen/ | leeg wit scherm (HTTP 500); 4,5/91; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Broersvest Meubelen, Schiedam | https://voorstel.sitefront.nl/broersvest-meubelen/ | geen site, Google-link naar spamgids; 104 reviews; 06/WhatsApp. | 2026-10-23 | demo premium |
