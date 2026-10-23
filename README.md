@@ -465,3 +465,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Ab Zuurbier Zonweringen, Haarlem | https://voorstel.sitefront.nl/ab-zuurbier-zonweringen/ | Wix-domein niet gekoppeld; 5,0/1; 06/WhatsApp. | 2026-10-23 | demo |
 | Hor-ex Raamdecoratie, Grave | https://voorstel.sitefront.nl/hor-ex-raamdecoratie/ | site achter wachtwoord (401); 5,0/3; 06/WhatsApp. | 2026-10-23 | demo premium |
 | Mancave Mantique, Amersfoort | https://voorstel.sitefront.nl/mancave-mantique/ | alleen Linktree, domein naar Instagram; 5,0/7; 06/WhatsApp. | 2026-10-23 | demo premium |
+| InterLab, Rotterdam | https://voorstel.sitefront.nl/interlab/ | Google-link naar verdwenen Instagram; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
+| Heideman Interior Works, Uithoorn | https://voorstel.sitefront.nl/heideman-interior-works/ | site al jaren under construction; 5,0/10; 06/WhatsApp. | 2026-10-23 | demo premium |
