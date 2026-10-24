@@ -482,3 +482,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | RAL Vloeren, Culemborg | https://voorstel.sitefront.nl/ral-vloeren/ | schuift op mobiel, offerteknoppen geven fout; 22 reviews; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Vloerencentrum De Hoekse, Oud-Beijerland | https://voorstel.sitefront.nl/vloerencentrum-de-hoekse/ | site laadt niet; 4,8/36; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Licht & Leuk, Oost-Souburg | https://voorstel.sitefront.nl/licht-en-leuk/ | alleen 'bezig met onze website' sinds juni; 4,7/212; 06/WhatsApp. | 2026-10-24 | demo premium |
+| Camping De Brashoeve, Kerkwerve | https://voorstel.sitefront.nl/camping-de-brashoeve/ | 'tijdelijk offline'; 4,6/102; 06/WhatsApp. | 2026-10-24 | demo premium |
