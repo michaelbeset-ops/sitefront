@@ -479,3 +479,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Culemborgse Zonwering, Culemborg | https://voorstel.sitefront.nl/culemborgse-zonwering/ | gedateerde site, niets klikbaar, widgetfout; 4,3/15; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Frank Zonwering, Nijmegen | https://voorstel.sitefront.nl/frank-zonwering/ | desktop op mobiel, lege offertepagina; 4,6/66; 06/WhatsApp. | 2026-10-24 | demo premium |
 | ZorgComfort Alblasserwaard, Sliedrecht | https://voorstel.sitefront.nl/zorgcomfort-alblasserwaard/ | CCV-webshop schuift op mobiel; 4,3/53; 06/WhatsApp. | 2026-10-24 | demo premium |
+| RAL Vloeren, Culemborg | https://voorstel.sitefront.nl/ral-vloeren/ | schuift op mobiel, offerteknoppen geven fout; 22 reviews; 06/WhatsApp. | 2026-10-24 | demo premium |
