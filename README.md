@@ -486,3 +486,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Hoeve Buitenlust, Eemdijk | https://voorstel.sitefront.nl/hoeve-buitenlust/ | site laadt niet; 4,5/121; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Camping Slingeland, Giessenburg | https://voorstel.sitefront.nl/camping-slingeland/ | PHP Fatal error; 4,4/213; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Vienna Konditorei, Den Haag | https://voorstel.sitefront.nl/vienna-konditorei/ | geen site, Google-link naar Instagram (2022); 379 reviews; 06/WhatsApp. | 2026-10-24 | demo premium |
+| 't Achterommetje, Den Haag | https://voorstel.sitefront.nl/t-achterommetje/ | geen mobiele weergave, oude eigenaar op site; 437 reviews; Facebook. | 2026-10-24 | demo premium |
