@@ -490,3 +490,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Meneer Frans, Haarlem | https://voorstel.sitefront.nl/meneer-frans/ | Wix met '@wix #wix'-placeholder; 413 reviews; Facebook. | 2026-10-24 | demo premium |
 | Camping De Toffe Peer, Driewegen | https://voorstel.sitefront.nl/camping-de-toffe-peer/ | 503 Service Unavailable; 4,6/93; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Camping Polderland, 's-Gravendeel | https://voorstel.sitefront.nl/camping-polderland/ | jaren-2000 site zonder viewport; 322 reviews; 06/WhatsApp. | 2026-10-24 | demo premium |
+| Minicamping 't Vressels Bos, Sint-Oedenrode | https://voorstel.sitefront.nl/minicamping-vressels-bos/ | Wix-menu valt af op laptop; 4,5/150; 06/WhatsApp. | 2026-10-24 | demo premium |
