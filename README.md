@@ -529,3 +529,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Ganzepoel, Hoedekenskerke | https://voorstel.sitefront.nl/de-ganzepoel/ | site niet mobiel (577px); 4,6/50; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Recreatieboerderij de Zeemeeuw, Ossenisse | https://voorstel.sitefront.nl/recreatieboerderij-de-zeemeeuw/ | gedateerd, leeg grijs vlak op mobiel; 4,7/188; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Daantje's Koffie- en Theehuis, Oirschot | https://voorstel.sitefront.nl/daantjes-oirschot/ | site niet mobiel, geen menu; 4,8/90; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Theetuin 't Groene Broek, Hardinxveld-Giessendam | https://voorstel.sitefront.nl/theetuin-t-groene-broek/ | oude site niet mobiel (800px); 4,7/60; 06/WhatsApp. | 2026-10-25 | demo premium |
