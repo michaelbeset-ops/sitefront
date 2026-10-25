@@ -516,3 +516,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Rivercity Bootverhuur, Rotterdam | https://voorstel.sitefront.nl/rivercity-bootverhuur/ | site gepauzeerd (402); 4,9/175; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Botenverhuur van Egmond, Leiderdorp | https://voorstel.sitefront.nl/botenverhuur-van-egmond/ | kale site, /contact 404; 4,6/244; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Minicamping Terra Promessa, Scharendijke | https://voorstel.sitefront.nl/terra-promessa/ | site niet mobiel, tarieven 2023; 4,3/47; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping De Ossewei, Achtmaal | https://voorstel.sitefront.nl/camping-de-ossewei/ | frameset-site niet mobiel; 4,6/105; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping Robertsoord, Eerbeek | https://voorstel.sitefront.nl/camping-robertsoord/ | site 503 Service Unavailable; 4,4/137; 06/WhatsApp. | 2026-10-25 | demo premium |
