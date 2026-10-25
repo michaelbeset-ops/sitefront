@@ -515,3 +515,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Volta-Electra, Maassluis | https://voorstel.sitefront.nl/volta-electra/ | oude site niet mobiel; 4,3/26; contactformulier. | 2026-10-25 | demo premium |
 | Rivercity Bootverhuur, Rotterdam | https://voorstel.sitefront.nl/rivercity-bootverhuur/ | site gepauzeerd (402); 4,9/175; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Botenverhuur van Egmond, Leiderdorp | https://voorstel.sitefront.nl/botenverhuur-van-egmond/ | kale site, /contact 404; 4,6/244; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Minicamping Terra Promessa, Scharendijke | https://voorstel.sitefront.nl/terra-promessa/ | site niet mobiel, tarieven 2023; 4,3/47; 06/WhatsApp. | 2026-10-25 | demo premium |
