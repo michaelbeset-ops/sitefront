@@ -536,3 +536,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tegelhandel Da Vinci, Arnhem | https://voorstel.sitefront.nl/tegelhandel-da-vinci/ | domein toont Coming Soon-template; 4,6/93; 06/WhatsApp (dealerlijst). | 2026-10-25 | demo premium |
 | CLOOZ doors, Barneveld | https://voorstel.sitefront.nl/clooz-doors/ | site 503 Service Unavailable; 4,6/49; Facebook. | 2026-10-25 | demo premium |
 | Lunchroom Op de Hoek, Den Haag | https://voorstel.sitefront.nl/lunchroom-op-de-hoek/ | geen foto's, menukaart als losse plaatjes; 310 reviews; Facebook. | 2026-10-26 | demo premium |
+| De Huiskamer, Wormer | https://voorstel.sitefront.nl/de-huiskamer-wormer/ | geen menu/tijden op site, oud; 4,6/256; Facebook. | 2026-10-26 | demo premium |
