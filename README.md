@@ -503,3 +503,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Zonweringspaleis, Sint Jansteen | https://voorstel.sitefront.nl/zonweringspaleis/ | vakantiemelding in okt, foto afgesneden op mobiel; 4,7/33; Facebook. | 2026-10-25 | demo premium |
 | Interieur Ter Doel, Verrebroek (BE) | https://voorstel.sitefront.nl/interieur-ter-doel/ | site niet mobiel; 4,8/21; Facebook. | 2026-10-25 | demo premium |
 | van Wijngaarden Interieur, Montfoort | https://voorstel.sitefront.nl/van-wijngaarden-interieur/ | site toont alleen PHP-foutmeldingen; 4,6/12; Facebook. | 2026-10-25 | demo premium |
+| Boerderijcamping De Berkebomen, Ermelo | https://voorstel.sitefront.nl/camping-de-berkebomen/ | frames-site zonder mobiele weergave; 4,6/141; 06/WhatsApp. | 2026-10-25 | demo premium |
