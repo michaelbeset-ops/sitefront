@@ -502,3 +502,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Camping Krijger, Meliskerke | https://voorstel.sitefront.nl/camping-krijger/ | site niet mobiel (980px); 4,8/139; Facebook. | 2026-10-25 | demo premium |
 | Zonweringspaleis, Sint Jansteen | https://voorstel.sitefront.nl/zonweringspaleis/ | vakantiemelding in okt, foto afgesneden op mobiel; 4,7/33; Facebook. | 2026-10-25 | demo premium |
 | Interieur Ter Doel, Verrebroek (BE) | https://voorstel.sitefront.nl/interieur-ter-doel/ | site niet mobiel; 4,8/21; Facebook. | 2026-10-25 | demo premium |
+| van Wijngaarden Interieur, Montfoort | https://voorstel.sitefront.nl/van-wijngaarden-interieur/ | site toont alleen PHP-foutmeldingen; 4,6/12; Facebook. | 2026-10-25 | demo premium |
