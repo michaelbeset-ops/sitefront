@@ -525,3 +525,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Natuurkampeerterrein 't Beekdal, Chaam | https://voorstel.sitefront.nl/camping-t-beekdal/ | site niet mobiel (961px); 4,7/183; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Lunchhuis Ons Thuis, Noordwijk | https://voorstel.sitefront.nl/lunchhuis-ons-thuis/ | WordPress kritieke fout; 4,6/266; Facebook. | 2026-10-25 | demo premium |
 | Koffiebar GRANOS, Doesburg | https://voorstel.sitefront.nl/koffiebar-granos/ | geen site, Google-knop naar Facebook; 4,8/226; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Janssen 'n van Dongen, Prinsenbeek | https://voorstel.sitefront.nl/janssen-n-van-dongen/ | domein stuurt naar Linktree; 116 reviews; Facebook. | 2026-10-25 | demo premium |
