@@ -494,3 +494,11 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Delano Wonen & Tuin, Culemborg | https://voorstel.sitefront.nl/delano-wonen-tuin/ | geen site, Google-knop naar Facebook; 4,4/291; Facebook. | 2026-10-24 | demo premium |
 | Van Beek Badkamers, Nijkerkerveen | https://voorstel.sitefront.nl/van-beek-badkamers/ | site geeft WordPress-foutmelding; 4,6/30; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Camping De Herberg, Veen | https://voorstel.sitefront.nl/camping-de-herberg/ | site niet mobiel (1140px); 4,4/62; 06/WhatsApp. | 2026-10-25 | demo premium |
+| De Kermisrose + Theetuin De Stokroos, Nieuwerkerk | https://voorstel.sitefront.nl/de-kermisrose/ | homepage past niet op telefoon; 4,6/355; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping 't Anker, Nieuwe-Tonge | https://voorstel.sitefront.nl/camping-t-anker/ | site lege witte pagina (500); 4,2/164; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping Het Poolse Kruis, Axel | https://voorstel.sitefront.nl/het-poolse-kruis/ | site niet mobiel (1200px); 4,7/33; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Barika Meubelen, Antwerpen (BE) | https://voorstel.sitefront.nl/barika-meubelen/ | geen eigen site; 4,6/712; BE-mobiel/WhatsApp. | 2026-10-25 | demo premium |
+| Botenverhuur Hoogerwerf, Nieuwkoop | https://voorstel.sitefront.nl/botenverhuur-hoogerwerf/ | site niet mobiel, nieuws 2014; 4,6/33; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping Krijger, Meliskerke | https://voorstel.sitefront.nl/camping-krijger/ | site niet mobiel (980px); 4,8/139; Facebook. | 2026-10-25 | demo premium |
+| Zonweringspaleis, Sint Jansteen | https://voorstel.sitefront.nl/zonweringspaleis/ | vakantiemelding in okt, foto afgesneden op mobiel; 4,7/33; Facebook. | 2026-10-25 | demo premium |
+| Interieur Ter Doel, Verrebroek (BE) | https://voorstel.sitefront.nl/interieur-ter-doel/ | site niet mobiel; 4,8/21; Facebook. | 2026-10-25 | demo premium |
