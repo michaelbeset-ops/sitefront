@@ -530,3 +530,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Recreatieboerderij de Zeemeeuw, Ossenisse | https://voorstel.sitefront.nl/recreatieboerderij-de-zeemeeuw/ | gedateerd, leeg grijs vlak op mobiel; 4,7/188; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Daantje's Koffie- en Theehuis, Oirschot | https://voorstel.sitefront.nl/daantjes-oirschot/ | site niet mobiel, geen menu; 4,8/90; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Theetuin 't Groene Broek, Hardinxveld-Giessendam | https://voorstel.sitefront.nl/theetuin-t-groene-broek/ | oude site niet mobiel (800px); 4,7/60; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Theehuis 't Huis in 't Groen, Uden | https://voorstel.sitefront.nl/t-huis-in-t-groen/ | geen website; 78 reviews; 06/WhatsApp. | 2026-10-25 | demo premium |
