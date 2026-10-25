@@ -509,3 +509,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Hoda Wonen, Nijkerk | https://voorstel.sitefront.nl/hoda-wonen/ | site toont alleen 'Uncaught Exception'; 4,9/35; Facebook. | 2026-10-25 | demo premium |
 | Camping 't Mussenist, Ossenisse | https://voorstel.sitefront.nl/camping-t-mussenist/ | site lege witte pagina (500); 4,5/216; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Veluwse Tafelbladen, Harderwijk | https://voorstel.sitefront.nl/veluwse-tafelbladen/ | domein bestaat niet meer; 5,0/99; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Bootbemiddeling.nl, Kerkdriel | https://voorstel.sitefront.nl/bootbemiddeling/ | site laadt niet (time-out); 37 reviews; Facebook. | 2026-10-25 | demo premium |
