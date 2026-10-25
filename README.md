@@ -526,3 +526,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Lunchhuis Ons Thuis, Noordwijk | https://voorstel.sitefront.nl/lunchhuis-ons-thuis/ | WordPress kritieke fout; 4,6/266; Facebook. | 2026-10-25 | demo premium |
 | Koffiebar GRANOS, Doesburg | https://voorstel.sitefront.nl/koffiebar-granos/ | geen site, Google-knop naar Facebook; 4,8/226; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Janssen 'n van Dongen, Prinsenbeek | https://voorstel.sitefront.nl/janssen-n-van-dongen/ | domein stuurt naar Linktree; 116 reviews; Facebook. | 2026-10-25 | demo premium |
+| De Ganzepoel, Hoedekenskerke | https://voorstel.sitefront.nl/de-ganzepoel/ | site niet mobiel (577px); 4,6/50; 06/WhatsApp. | 2026-10-25 | demo premium |
