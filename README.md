@@ -507,3 +507,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Kampeerboerderij De Spochthoorn, Nijkerk | https://voorstel.sitefront.nl/kampeerboerderij-de-spochthoorn/ | WordPress kritieke fout op elke pagina; 4,5/179; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Mini-camping Bedafs-Hofke, Uden | https://voorstel.sitefront.nl/bedafs-hofke/ | oude desktopsite, niet mobiel; 4,6/173; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Hoda Wonen, Nijkerk | https://voorstel.sitefront.nl/hoda-wonen/ | site toont alleen 'Uncaught Exception'; 4,9/35; Facebook. | 2026-10-25 | demo premium |
+| Camping 't Mussenist, Ossenisse | https://voorstel.sitefront.nl/camping-t-mussenist/ | site lege witte pagina (500); 4,5/216; 06/WhatsApp. | 2026-10-25 | demo premium |
