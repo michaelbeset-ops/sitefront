@@ -493,3 +493,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Minicamping 't Vressels Bos, Sint-Oedenrode | https://voorstel.sitefront.nl/minicamping-vressels-bos/ | Wix-menu valt af op laptop; 4,5/150; 06/WhatsApp. | 2026-10-24 | demo premium |
 | Delano Wonen & Tuin, Culemborg | https://voorstel.sitefront.nl/delano-wonen-tuin/ | geen site, Google-knop naar Facebook; 4,4/291; Facebook. | 2026-10-24 | demo premium |
 | Van Beek Badkamers, Nijkerkerveen | https://voorstel.sitefront.nl/van-beek-badkamers/ | site geeft WordPress-foutmelding; 4,6/30; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Camping De Herberg, Veen | https://voorstel.sitefront.nl/camping-de-herberg/ | site niet mobiel (1140px); 4,4/62; 06/WhatsApp. | 2026-10-25 | demo premium |
