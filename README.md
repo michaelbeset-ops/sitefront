@@ -511,3 +511,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Veluwse Tafelbladen, Harderwijk | https://voorstel.sitefront.nl/veluwse-tafelbladen/ | domein bestaat niet meer; 5,0/99; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Bootbemiddeling.nl, Kerkdriel | https://voorstel.sitefront.nl/bootbemiddeling/ | site laadt niet (time-out); 37 reviews; Facebook. | 2026-10-25 | demo premium |
 | Pater Zonweringen, Barneveld | https://voorstel.sitefront.nl/pater-zonweringen/ | homepage leeg (alleen tijden/adres); 4,5/20; Facebook. | 2026-10-25 | demo premium |
+| Deelen Metaaltechniek en Zonweringen, Wageningen | https://voorstel.sitefront.nl/deelen-wageningen/ | site geeft 403 Forbidden; 5,0/12; Facebook. | 2026-10-25 | demo premium |
