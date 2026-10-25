@@ -518,3 +518,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Minicamping Terra Promessa, Scharendijke | https://voorstel.sitefront.nl/terra-promessa/ | site niet mobiel, tarieven 2023; 4,3/47; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Camping De Ossewei, Achtmaal | https://voorstel.sitefront.nl/camping-de-ossewei/ | frameset-site niet mobiel; 4,6/105; 06/WhatsApp. | 2026-10-25 | demo premium |
 | Camping Robertsoord, Eerbeek | https://voorstel.sitefront.nl/camping-robertsoord/ | site 503 Service Unavailable; 4,4/137; 06/WhatsApp. | 2026-10-25 | demo premium |
+| Eco-touristfarm De Biezen, Aarle-Rixtel | https://voorstel.sitefront.nl/de-biezen/ | site niet mobiel (1010px); 94 reviews; 06/WhatsApp. | 2026-10-25 | demo premium |
