@@ -542,3 +542,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Luxe Fornuizen, Werkendam | https://voorstel.sitefront.nl/luxe-fornuizen/ | geen site, Google-knop naar Marktplaats; 5,0/98; 06/WhatsApp. | 2026-10-26 | demo premium |
 | 't Brillenhuys, Drunen | https://voorstel.sitefront.nl/t-brillenhuys/ | clipart-site, geen foto's op mobiel; 4,4/27; Facebook. | 2026-10-26 | demo premium |
 | De Huyzen Interior, Zeist | https://voorstel.sitefront.nl/de-huyzen/ | domeinen sturen door naar vreemde site/phishing-melding; Facebook. | 2026-10-26 | demo premium |
+| BRINK Interieurs, Wekerom | https://voorstel.sitefront.nl/brink-interieurs/ | site niet mobiel, raamdecoratie-pagina's 404; 4,9/20; contactformulier. | 2026-10-26 | demo premium |
