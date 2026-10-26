@@ -539,3 +539,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Huiskamer, Wormer | https://voorstel.sitefront.nl/de-huiskamer-wormer/ | geen menu/tijden op site, oud; 4,6/256; Facebook. | 2026-10-26 | demo premium |
 | Bielars Optiek & Optometrie, Breda | https://voorstel.sitefront.nl/bielars-optiek/ | site 500, lege pagina; 4,8/18; Facebook. | 2026-10-26 | demo premium |
 | Bouman Optiek & Optometrie, Amersfoort | https://voorstel.sitefront.nl/bouman-optiek/ | gedateerde Wix, rood scherm op mobiel; 4,9/215; Facebook. | 2026-10-26 | demo premium |
+| Luxe Fornuizen, Werkendam | https://voorstel.sitefront.nl/luxe-fornuizen/ | geen site, Google-knop naar Marktplaats; 5,0/98; 06/WhatsApp. | 2026-10-26 | demo premium |
