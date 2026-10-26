@@ -538,3 +538,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Lunchroom Op de Hoek, Den Haag | https://voorstel.sitefront.nl/lunchroom-op-de-hoek/ | geen foto's, menukaart als losse plaatjes; 310 reviews; Facebook. | 2026-10-26 | demo premium |
 | De Huiskamer, Wormer | https://voorstel.sitefront.nl/de-huiskamer-wormer/ | geen menu/tijden op site, oud; 4,6/256; Facebook. | 2026-10-26 | demo premium |
 | Bielars Optiek & Optometrie, Breda | https://voorstel.sitefront.nl/bielars-optiek/ | site 500, lege pagina; 4,8/18; Facebook. | 2026-10-26 | demo premium |
+| Bouman Optiek & Optometrie, Amersfoort | https://voorstel.sitefront.nl/bouman-optiek/ | gedateerde Wix, rood scherm op mobiel; 4,9/215; Facebook. | 2026-10-26 | demo premium |
