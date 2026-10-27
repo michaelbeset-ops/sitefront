@@ -557,3 +557,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Guitar Shop Delft | https://voorstel.sitefront.nl/guitar-shop-delft/ | storingsmelding bovenaan, verouderde opzet; contactformulier. | 2026-10-27 | demo premium |
 | Het Rotterdamse Drumdepartment | https://voorstel.sitefront.nl/rotterdam-drumdepartment/ | niet mobiel (980px), blog als homepage; 4,8/193; contactformulier. | 2026-10-27 | demo premium |
 | Gitaarstudio Jos Rentmeester, Heinkenszand | https://voorstel.sitefront.nl/gitaarstudio-jos-rentmeester/ | niet mobiel, zwarte pagina vol logo's; 06/WhatsApp. | 2026-10-27 | demo premium |
+| Radio-TV Christiaanse, Burgh-Haamstede | https://voorstel.sitefront.nl/radio-tv-christiaanse/ | nummers als plaatje, stockfoto, geen openingstijden; 4,6/77; 06/WhatsApp. | 2026-10-27 | demo premium |
