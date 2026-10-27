@@ -562,3 +562,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Binnenmaas Natuursteen, Mijnsheerenland | https://voorstel.sitefront.nl/binnenmaas-natuursteen/ | site ~2010, kleine tekst, nummers niet klikbaar; 4,6/18; contactformulier. | 2026-10-27 | demo premium |
 | Het Steenen Huys, Woerden | https://voorstel.sitefront.nl/het-steenen-huys/ | twee menuknoppen + afgebroken slidertekst op mobiel; 5,0/6; 06/WhatsApp. | 2026-10-27 | demo premium |
 | Unisono Muziekinstrumenten, Kerkdriel | https://voorstel.sitefront.nl/unisono-muziekinstrumenten/ | Wix-site breder dan scherm op mobiel; 4,5/46; contactformulier. | 2026-10-27 | demo premium |
+| Lagerweij Witgoed, Barneveld | https://voorstel.sitefront.nl/lagerweij-witgoed/ | geen eigen website; 5,0/5; 06/WhatsApp; TWIJFEL showroom. | 2026-10-27 | demo premium |
