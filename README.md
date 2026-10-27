@@ -555,3 +555,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Sporken Natuursteen, Lisse | https://voorstel.sitefront.nl/sporken-natuursteen/ | niet mobiel (zijwaarts schuiven), nummers niet klikbaar; 4,4/14; 06/WhatsApp. | 2026-10-27 | demo premium |
 | Steenstore Van den Dool, Rotterdam | https://voorstel.sitefront.nl/steenstore-van-den-dool/ | niet mobiel (916px breed, zijwaarts schuiven); 87 reviews; contactformulier. | 2026-10-27 | demo premium |
 | Guitar Shop Delft | https://voorstel.sitefront.nl/guitar-shop-delft/ | storingsmelding bovenaan, verouderde opzet; contactformulier. | 2026-10-27 | demo premium |
+| Het Rotterdamse Drumdepartment | https://voorstel.sitefront.nl/rotterdam-drumdepartment/ | niet mobiel (980px), blog als homepage; 4,8/193; contactformulier. | 2026-10-27 | demo premium |
