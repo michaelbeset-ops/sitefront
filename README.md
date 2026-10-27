@@ -551,3 +551,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Van der Hoef Kozijnen, Ouderkerk a/d IJssel | https://voorstel.sitefront.nl/van-der-hoef-kozijnen/ | pop-up "Wij zoeken vakmannen" over de hele site; 4,6/75; contactformulier. | 2026-10-27 | demo premium |
 | Groencentrum de Mortelen, Best | https://voorstel.sitefront.nl/groencentrum-de-mortelen/ | site plat (Cloudflare 521); 4,4/84; Facebook. | 2026-10-27 | demo premium |
 | Zomoti In & Outdoor, Dongen | https://voorstel.sitefront.nl/zomoti/ | tekst loopt buiten beeld op mobiel, WhatsApp-knop eroverheen; 4,8/19; 06/WhatsApp. | 2026-10-27 | demo premium |
+| Raamlux, Honselersdijk | https://voorstel.sitefront.nl/raamlux/ | verouderde site, bannertekst afgesneden op mobiel; 4,8/34; 06/WhatsApp. | 2026-10-27 | demo premium |
