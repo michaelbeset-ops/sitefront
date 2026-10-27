@@ -544,3 +544,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Huyzen Interior, Zeist | https://voorstel.sitefront.nl/de-huyzen/ | domeinen sturen door naar vreemde site/phishing-melding; Facebook. | 2026-10-26 | demo premium |
 | BRINK Interieurs, Wekerom | https://voorstel.sitefront.nl/brink-interieurs/ | site niet mobiel, raamdecoratie-pagina's 404; 4,9/20; contactformulier. | 2026-10-26 | demo premium |
 | BrilZ, Buren | https://voorstel.sitefront.nl/brilz-buren/ | geen site, domein geparkeerd; 06/WhatsApp. | 2026-10-26 | demo premium |
+| Kwekerij In 't Groen, Kaatsheuvel | https://voorstel.sitefront.nl/kwekerij-in-t-groen/ | site laadt niet (time-out); 4,7/123; 06/WhatsApp. | 2026-10-27 | demo premium |
+| Tuincentrum Schiebroek, Rotterdam | https://voorstel.sitefront.nl/tuincentrum-schiebroek/ | geen eigen site, Google-link naar Facebook; 4,5/264; Facebook. | 2026-10-27 | demo premium |
