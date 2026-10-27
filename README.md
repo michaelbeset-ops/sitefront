@@ -548,3 +548,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tuincentrum Schiebroek, Rotterdam | https://voorstel.sitefront.nl/tuincentrum-schiebroek/ | geen eigen site, Google-link naar Facebook; 4,5/264; Facebook. | 2026-10-27 | demo premium |
 | Glashandel Piket, Den Haag | https://voorstel.sitefront.nl/glashandel-piket/ | oudere site met blauwe 3D-knoppen; 4,7/64; contactformulier. | 2026-10-27 | demo premium |
 | Kozijn Techniek Barendrecht | https://voorstel.sitefront.nl/kozijn-techniek-barendrecht/ | pop-up met tweede logo over de pagina; 4,9/60; 06/WhatsApp. | 2026-10-27 | demo premium |
+| Van der Hoef Kozijnen, Ouderkerk a/d IJssel | https://voorstel.sitefront.nl/van-der-hoef-kozijnen/ | pop-up "Wij zoeken vakmannen" over de hele site; 4,6/75; contactformulier. | 2026-10-27 | demo premium |
