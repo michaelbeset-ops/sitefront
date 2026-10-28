@@ -566,3 +566,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Steenhouwerij Joh. Jansen & Zn., Utrecht | https://voorstel.sitefront.nl/steenhouwerij-jansen/ | gedateerde site, keuzelijst-menu, iets te breed op mobiel; 4,8/26; Facebook. | 2026-10-27 | demo premium |
 | Wibro Isolatie en Renovatie, Heerle | https://voorstel.sitefront.nl/wibro-heerle/ | nieuwspagina's tonen 'kritieke fout' (500), slidertekst afgekapt op mobiel; 4,6/120; Facebook. | 2026-10-28 | demo premium |
 | Houthandel Reimerswaal, Rilland | https://voorstel.sitefront.nl/houthandel-reimerswaal/ | site is lege witte pagina; 4,4/22; 06 (alleen app) uit eigen webarchief. | 2026-10-28 | demo premium |
+| Slijterij Lenten, Lekkerkerk | https://voorstel.sitefront.nl/slijterij-lenten/ | webwinkel zonder mobiele weergave, leeftijdscheck + cookiebalk over elkaar; 4,5/39; 06/WhatsApp (twijfel). | 2026-10-28 | demo premium |
+| 't Reeuwijks Wijnhuis, Reeuwijk | https://voorstel.sitefront.nl/reeuwijks-wijnhuis/ | vaste 1100px-site, piepklein op mobiel, tijden als plaatje; 4,6/46; contactformulier. | 2026-10-28 | demo premium |
