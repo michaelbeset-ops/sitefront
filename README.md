@@ -573,3 +573,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Sjaka's Fish Heaven, Spijkenisse | https://voorstel.sitefront.nl/sjakas-fish-heaven/ | geen site op Google; eigen site (2020) schuift zijwaarts op mobiel; 4,8/236; 06/WhatsApp. | 2026-10-28 | demo premium |
 | Slijterij Den Gouwen Aar, Gouda | https://voorstel.sitefront.nl/den-gouwen-aar/ | site laadt niet (time-out); 4,7/318; Facebook. | 2026-10-28 | demo premium |
 | Lijstenmakerij Akkolades, Den Haag | https://voorstel.sitefront.nl/lijstenmakerij-akkolades/ | site toont 'Error establishing a database connection'; 18 reviews; 06/WhatsApp (Viola). | 2026-10-28 | demo premium |
+| Jachthuis Rivierenland, Herwijnen | https://voorstel.sitefront.nl/jachthuis-rivierenland/ | vaste 1000px-site, piepklein op telefoon, Google Maps-foutmelding bovenaan; 4,8; contactformulier. | 2026-10-28 | demo premium |
