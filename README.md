@@ -568,3 +568,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Houthandel Reimerswaal, Rilland | https://voorstel.sitefront.nl/houthandel-reimerswaal/ | site is lege witte pagina; 4,4/22; 06 (alleen app) uit eigen webarchief. | 2026-10-28 | demo premium |
 | Slijterij Lenten, Lekkerkerk | https://voorstel.sitefront.nl/slijterij-lenten/ | webwinkel zonder mobiele weergave, leeftijdscheck + cookiebalk over elkaar; 4,5/39; 06/WhatsApp (twijfel). | 2026-10-28 | demo premium |
 | 't Reeuwijks Wijnhuis, Reeuwijk | https://voorstel.sitefront.nl/reeuwijks-wijnhuis/ | vaste 1100px-site, piepklein op mobiel, tijden als plaatje; 4,6/46; contactformulier. | 2026-10-28 | demo premium |
+| Taste aan den Rijn, Alphen aan den Rijn | https://voorstel.sitefront.nl/taste-aan-den-rijn/ | voorbeeldtekst sitebouwer bovenaan ('This is paragraph text...'); 5,0/25; 06/WhatsApp. | 2026-10-28 | demo premium |
+| Ten Kate-Winters Biljarttraditie, Boskoop | https://voorstel.sitefront.nl/biljarttraditie-boskoop/ | site sinds 2020 alleen onderhoudspagina; 4,3/18; 06 (2016, twijfel)/WhatsApp. | 2026-10-28 | demo premium |
