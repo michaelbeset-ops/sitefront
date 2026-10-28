@@ -570,3 +570,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | 't Reeuwijks Wijnhuis, Reeuwijk | https://voorstel.sitefront.nl/reeuwijks-wijnhuis/ | vaste 1100px-site, piepklein op mobiel, tijden als plaatje; 4,6/46; contactformulier. | 2026-10-28 | demo premium |
 | Taste aan den Rijn, Alphen aan den Rijn | https://voorstel.sitefront.nl/taste-aan-den-rijn/ | voorbeeldtekst sitebouwer bovenaan ('This is paragraph text...'); 5,0/25; 06/WhatsApp. | 2026-10-28 | demo premium |
 | Ten Kate-Winters Biljarttraditie, Boskoop | https://voorstel.sitefront.nl/biljarttraditie-boskoop/ | site sinds 2020 alleen onderhoudspagina; 4,3/18; 06 (2016, twijfel)/WhatsApp. | 2026-10-28 | demo premium |
+| Sjaka's Fish Heaven, Spijkenisse | https://voorstel.sitefront.nl/sjakas-fish-heaven/ | geen site op Google; eigen site (2020) schuift zijwaarts op mobiel; 4,8/236; 06/WhatsApp. | 2026-10-28 | demo premium |
+| Slijterij Den Gouwen Aar, Gouda | https://voorstel.sitefront.nl/den-gouwen-aar/ | site laadt niet (time-out); 4,7/318; Facebook. | 2026-10-28 | demo premium |
