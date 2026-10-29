@@ -598,3 +598,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | AvD-Glas, Amersfoort | https://voorstel.sitefront.nl/avd-glas-amersfoort/ | glas in lood, WhatsApp | 2026-10-29 | demo premium |
 | Schoot Natuursteen, Doetinchem | https://voorstel.sitefront.nl/schoot-natuursteen/ | geen mobiele weergave, 360-showroom (Flash) werkt niet; contactformulier. | 2026-10-29 | demo premium |
 | Aqua Fish Gorkum, Gorinchem | https://voorstel.sitefront.nl/aqua-fish-gorkum/ | aquariumwinkel, WhatsApp | 2026-10-29 | demo premium |
+| Magies Glas, Raalte | https://voorstel.sitefront.nl/magies-glas-raalte/ | glasatelier, WhatsApp | 2026-10-29 | demo premium |
