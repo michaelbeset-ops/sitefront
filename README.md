@@ -587,3 +587,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Keuken Drachten B.V. | https://voorstel.sitefront.nl/keuken-drachten/ | verkleinde desktopsite op mobiel; 4,6/270; contactformulier. | 2026-10-29 | demo premium |
 | Boomkwekerij Harry Land, Een-West | https://voorstel.sitefront.nl/boomkwekerij-harry-land-een/ | site sinds 2011 onveranderd, geen mobiele weergave, pagina 'Het Bedrijf' geeft File not found; 4,8/40; 06/WhatsApp (Google + site). | 2026-10-29 | demo premium |
 | Reinhart Orchideeën, Haren | https://voorstel.sitefront.nl/reinhart-orchideeen-haren/ | orchideeënkwekerij, WhatsApp | 2026-10-29 | demo premium |
+| Oké Zonwering/Rolluiken, Roodeschool | https://voorstel.sitefront.nl/oke-zonwering-delfzijl/ | site uit 2005, geen mobiele weergave, 'File not found'; 1 review; 06/WhatsApp. | 2026-10-29 | demo premium |
