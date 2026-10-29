@@ -586,3 +586,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tuincentrum Poot, Hattem | https://voorstel.sitefront.nl/tuincentrum-poot-hattem/ | site zonder mobiele weergave (verkleinde 990px), gedateerd; 4,7/51; FORM (geen captcha), eigenaar Addy Poot. | 2026-10-29 | demo premium |
 | Keuken Drachten B.V. | https://voorstel.sitefront.nl/keuken-drachten/ | verkleinde desktopsite op mobiel; 4,6/270; contactformulier. | 2026-10-29 | demo premium |
 | Boomkwekerij Harry Land, Een-West | https://voorstel.sitefront.nl/boomkwekerij-harry-land-een/ | site sinds 2011 onveranderd, geen mobiele weergave, pagina 'Het Bedrijf' geeft File not found; 4,8/40; 06/WhatsApp (Google + site). | 2026-10-29 | demo premium |
+| Reinhart Orchideeën, Haren | https://voorstel.sitefront.nl/reinhart-orchideeen-haren/ | orchideeënkwekerij, WhatsApp | 2026-10-29 | demo premium |
