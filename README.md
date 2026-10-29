@@ -590,3 +590,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Oké Zonwering/Rolluiken, Roodeschool | https://voorstel.sitefront.nl/oke-zonwering-delfzijl/ | site uit 2005, geen mobiele weergave, 'File not found'; 1 review; 06/WhatsApp. | 2026-10-29 | demo premium |
 | Tuingoed Foltz, Meeden | https://voorstel.sitefront.nl/tuingoed-foltz-meeden/ | specialiteitenkwekerij, WhatsApp | 2026-10-29 | demo premium |
 | Kuepers Parket, Weert | https://voorstel.sitefront.nl/kuepers-parket/ | site uit 2017 met slider en lange tekstblokken; 4,9/67; 06/WhatsApp. | 2026-10-29 | demo premium |
+| William Kuster, Heythuysen | https://voorstel.sitefront.nl/william-kuster-heythuysen/ | tuin- en parkmachines, formulier | 2026-10-29 | demo premium |
