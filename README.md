@@ -574,3 +574,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Slijterij Den Gouwen Aar, Gouda | https://voorstel.sitefront.nl/den-gouwen-aar/ | site laadt niet (time-out); 4,7/318; Facebook. | 2026-10-28 | demo premium |
 | Lijstenmakerij Akkolades, Den Haag | https://voorstel.sitefront.nl/lijstenmakerij-akkolades/ | site toont 'Error establishing a database connection'; 18 reviews; 06/WhatsApp (Viola). | 2026-10-28 | demo premium |
 | Jachthuis Rivierenland, Herwijnen | https://voorstel.sitefront.nl/jachthuis-rivierenland/ | vaste 1000px-site, piepklein op telefoon, Google Maps-foutmelding bovenaan; 4,8; contactformulier. | 2026-10-28 | demo premium |
+| Sanders Parket, Gerwen | https://voorstel.sitefront.nl/sanders-parket/ | geen mobiele weergave (verkleinde desktop, 12px); WhatsApp 06 Walter op site. | 2026-10-29 | demo premium |
+| Parketcentrum Zwolle (van Ekeren) | https://voorstel.sitefront.nl/parketcentrum-zwolle/ | site uit 2012 met stockfoto; 4,9/31; 06 + WhatsApp-knop op site. | 2026-10-29 | demo premium |
