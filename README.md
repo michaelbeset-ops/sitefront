@@ -583,3 +583,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | H. Ottevanger Herenkleding, Ridderkerk | https://voorstel.sitefront.nl/ottevanger-herenkleding/ | geen mobiele weergave, webshop met artikelen van € 0,00; 4,8/123; 06/WhatsApp. | 2026-10-29 | demo premium |
 | Tuincentrum Radelaar, Rolde | https://voorstel.sitefront.nl/tuincentrum-radelaar-rolde/ | site zonder mobiele weergave (verkleinde 980px); 4,9/50; FORM (geen captcha), geen 06. | 2026-10-29 | demo premium |
 | Kwekerij Bussink, Lieren | https://voorstel.sitefront.nl/kwekerij-bussink-lieren/ | site zonder mobiele weergave (verkleinde 980px), oud ontwerp; 4,4/317; FORM (geen captcha), geen 06. | 2026-10-29 | demo premium |
+| Tuincentrum Poot, Hattem | https://voorstel.sitefront.nl/tuincentrum-poot-hattem/ | site zonder mobiele weergave (verkleinde 990px), gedateerd; 4,7/51; FORM (geen captcha), eigenaar Addy Poot. | 2026-10-29 | demo premium |
