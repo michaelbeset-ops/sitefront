@@ -579,3 +579,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Woonpassie, Den Haag (Megastores) | https://voorstel.sitefront.nl/woonpassie/ | geen eigen site (links geven 404); 4,0/74, recente reviews slecht; 06/WhatsApp. | 2026-10-29 | demo premium |
 | Tuincentrum Ofman, Wormer | https://voorstel.sitefront.nl/tuincentrum-ofman-wormer/ | geen eigen site (Google linkt Facebook, domein geparkeerd); 4,5/660; 06/WhatsApp (Google). Seizoenssluiting tot ~1 maart 2027. | 2026-10-29 | demo premium |
 | Shaba Roos Meubels, Waalwijk | https://voorstel.sitefront.nl/shaba-roos-meubels/ | websiteknop Google -> Engelse gidssite met oud adres Breda; 4,8/57; 06/WhatsApp. | 2026-10-29 | demo premium |
+| Tegels Almere | https://voorstel.sitefront.nl/almere-tegels/ | kapotte tekens in menu/cookiemelding, cookiebalk dekt halve pagina op mobiel; 4,7/26; 06/WhatsApp. | 2026-10-29 | demo premium |
+| H. Ottevanger Herenkleding, Ridderkerk | https://voorstel.sitefront.nl/ottevanger-herenkleding/ | geen mobiele weergave, webshop met artikelen van € 0,00; 4,8/123; 06/WhatsApp. | 2026-10-29 | demo premium |
