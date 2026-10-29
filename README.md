@@ -605,3 +605,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Verbeek Fruit & Tuinplanten, Steenbergen | https://voorstel.sitefront.nl/verbeek-fruit-tuinplanten-steenbergen/ | fruitteler/tuinplanten, WhatsApp | 2026-10-29 | demo premium |
 | Tuincentrum Kees en Marja Braas, Scharwoude | https://voorstel.sitefront.nl/tuincentrum-braas-scharwoude/ | tuincentrum, WhatsApp | 2026-10-29 | demo premium |
 | Franken Kerstbomen, Oldebroek | https://voorstel.sitefront.nl/franken-kerstbomen-oldebroek/ | kerstbomenkwekerij, WhatsApp | 2026-10-29 | demo premium |
+| De Parketschuur, Leopoldsburg (BE) | https://voorstel.sitefront.nl/de-parketschuur/ | parket, WhatsApp | 2026-10-29 | demo premium |
