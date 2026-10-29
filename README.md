@@ -591,3 +591,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tuingoed Foltz, Meeden | https://voorstel.sitefront.nl/tuingoed-foltz-meeden/ | specialiteitenkwekerij, WhatsApp | 2026-10-29 | demo premium |
 | Kuepers Parket, Weert | https://voorstel.sitefront.nl/kuepers-parket/ | site uit 2017 met slider en lange tekstblokken; 4,9/67; 06/WhatsApp. | 2026-10-29 | demo premium |
 | William Kuster, Heythuysen | https://voorstel.sitefront.nl/william-kuster-heythuysen/ | tuin- en parkmachines, formulier | 2026-10-29 | demo premium |
+| NL Floors, Dronten | https://voorstel.sitefront.nl/nl-floors-dronten/ | site toont alleen 'Not Found'; 4,9/16; 06/WhatsApp. | 2026-10-29 | demo premium |
