@@ -595,3 +595,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Outboardservice Groningen | https://voorstel.sitefront.nl/outboardservice-groningen/ | buitenboordmotoren, WhatsApp | 2026-10-29 | demo premium |
 | Rotterdam Parket (gebr. Sonnemans) | https://voorstel.sitefront.nl/rotterdam-parket/ | verkleinde desktopsite op mobiel; 4,9/16; 06/WhatsApp Sander. | 2026-10-29 | demo premium |
 | De Jong Sanitair en Tegels, Genderen | https://voorstel.sitefront.nl/alex-de-jong-sanitair/ | certificaat verlopen (beveiligingswaarschuwing); 4,7/9; 06/WhatsApp. | 2026-10-29 | demo premium |
+| AvD-Glas, Amersfoort | https://voorstel.sitefront.nl/avd-glas-amersfoort/ | glas in lood, WhatsApp | 2026-10-29 | demo premium |
