@@ -608,3 +608,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Parketschuur, Leopoldsburg (BE) | https://voorstel.sitefront.nl/de-parketschuur/ | parket, WhatsApp | 2026-10-29 | demo premium |
 | Maes Haarden, Meerhout (BE) | https://voorstel.sitefront.nl/maes-haarden/ | kachels/haarden, WhatsApp | 2026-10-29 | demo premium |
 | Oosterbaan Wonen, Heerenveen | https://voorstel.sitefront.nl/oosterbaan-wonen/ | woonwinkel, WhatsApp | 2026-10-30 | demo premium |
+| De Kachelderij, Hardinxveld-Giessendam | https://voorstel.sitefront.nl/de-kachelderij/ | houtkachels, WhatsApp | 2026-10-30 | demo premium |
