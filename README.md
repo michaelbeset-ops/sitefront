@@ -577,3 +577,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Sanders Parket, Gerwen | https://voorstel.sitefront.nl/sanders-parket/ | geen mobiele weergave (verkleinde desktop, 12px); WhatsApp 06 Walter op site. | 2026-10-29 | demo premium |
 | Parketcentrum Zwolle (van Ekeren) | https://voorstel.sitefront.nl/parketcentrum-zwolle/ | site uit 2012 met stockfoto; 4,9/31; 06 + WhatsApp-knop op site. | 2026-10-29 | demo premium |
 | Woonpassie, Den Haag (Megastores) | https://voorstel.sitefront.nl/woonpassie/ | geen eigen site (links geven 404); 4,0/74, recente reviews slecht; 06/WhatsApp. | 2026-10-29 | demo premium |
+| Tuincentrum Ofman, Wormer | https://voorstel.sitefront.nl/tuincentrum-ofman-wormer/ | geen eigen site (Google linkt Facebook, domein geparkeerd); 4,5/660; 06/WhatsApp (Google). Seizoenssluiting tot ~1 maart 2027. | 2026-10-29 | demo premium |
