@@ -601,3 +601,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Magies Glas, Raalte | https://voorstel.sitefront.nl/magies-glas-raalte/ | glasatelier, WhatsApp | 2026-10-29 | demo premium |
 | De Oude Zagerij, Assen | https://voorstel.sitefront.nl/de-oude-zagerij-assen/ | oud eiken houthandel, WhatsApp | 2026-10-29 | demo premium |
 | Bootkringloop, Bergen op Zoom | https://voorstel.sitefront.nl/bootkringloop-bergen-op-zoom/ | bootonderdelen/afvoer, WhatsApp | 2026-10-29 | demo premium |
+| Boomkwekerij Roland Geilen, Koningsbosch | https://voorstel.sitefront.nl/boomkwekerij-roland-geilen-koningsbosch/ | boomkwekerij, WhatsApp | 2026-10-29 | demo premium |
