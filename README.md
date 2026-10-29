@@ -611,3 +611,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Kachelderij, Hardinxveld-Giessendam | https://voorstel.sitefront.nl/de-kachelderij/ | houtkachels, WhatsApp | 2026-10-30 | demo premium |
 | Verhaegh Aanhangwagens, Sevenum | https://voorstel.sitefront.nl/verhaegh-aanhangwagens-sevenum/ | site geeft 500-fout; 4,7/50; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Jachtwerf Kokernoot, Zaandam | https://voorstel.sitefront.nl/jachtwerf-kokernoot-zaandam/ | geen site, oude Google-site 404; 4,3/82; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Weishaupt Verfspeciaalzaak, Winschoten | https://voorstel.sitefront.nl/weishaupt-verf/ | verfspeciaalzaak, WhatsApp | 2026-10-30 | demo premium |
+| Schrijnwerk Hendrik Maertens, Brugge (BE) | https://voorstel.sitefront.nl/maertens-schrijnwerk-brugge/ | schrijnwerkerij, WhatsApp | 2026-10-30 | demo premium |
