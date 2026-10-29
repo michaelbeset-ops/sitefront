@@ -584,3 +584,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Tuincentrum Radelaar, Rolde | https://voorstel.sitefront.nl/tuincentrum-radelaar-rolde/ | site zonder mobiele weergave (verkleinde 980px); 4,9/50; FORM (geen captcha), geen 06. | 2026-10-29 | demo premium |
 | Kwekerij Bussink, Lieren | https://voorstel.sitefront.nl/kwekerij-bussink-lieren/ | site zonder mobiele weergave (verkleinde 980px), oud ontwerp; 4,4/317; FORM (geen captcha), geen 06. | 2026-10-29 | demo premium |
 | Tuincentrum Poot, Hattem | https://voorstel.sitefront.nl/tuincentrum-poot-hattem/ | site zonder mobiele weergave (verkleinde 990px), gedateerd; 4,7/51; FORM (geen captcha), eigenaar Addy Poot. | 2026-10-29 | demo premium |
+| Keuken Drachten B.V. | https://voorstel.sitefront.nl/keuken-drachten/ | verkleinde desktopsite op mobiel; 4,6/270; contactformulier. | 2026-10-29 | demo premium |
