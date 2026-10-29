@@ -597,3 +597,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Jong Sanitair en Tegels, Genderen | https://voorstel.sitefront.nl/alex-de-jong-sanitair/ | certificaat verlopen (beveiligingswaarschuwing); 4,7/9; 06/WhatsApp. | 2026-10-29 | demo premium |
 | AvD-Glas, Amersfoort | https://voorstel.sitefront.nl/avd-glas-amersfoort/ | glas in lood, WhatsApp | 2026-10-29 | demo premium |
 | Schoot Natuursteen, Doetinchem | https://voorstel.sitefront.nl/schoot-natuursteen/ | geen mobiele weergave, 360-showroom (Flash) werkt niet; contactformulier. | 2026-10-29 | demo premium |
+| Aqua Fish Gorkum, Gorinchem | https://voorstel.sitefront.nl/aqua-fish-gorkum/ | aquariumwinkel, WhatsApp | 2026-10-29 | demo premium |
