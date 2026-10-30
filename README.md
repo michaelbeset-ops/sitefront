@@ -614,3 +614,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Weishaupt Verfspeciaalzaak, Winschoten | https://voorstel.sitefront.nl/weishaupt-verf/ | verfspeciaalzaak, WhatsApp | 2026-10-30 | demo premium |
 | Schrijnwerk Hendrik Maertens, Brugge (BE) | https://voorstel.sitefront.nl/maertens-schrijnwerk-brugge/ | schrijnwerkerij, WhatsApp | 2026-10-30 | demo premium |
 | Klaas Mendel Hout, Wolvega | https://voorstel.sitefront.nl/klaas-mendel-hout-wolvega/ | grijze Jimdo, homepage alleen 'klik hier', lange lijsten; 4,7/70; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Timray Marine Diesel, Valkenburg ZH | https://voorstel.sitefront.nl/timray-marine-diesel-valkenburg/ | framesite niet mobiel (980px); 4,9/32; formulier. | 2026-10-30 | demo premium |
