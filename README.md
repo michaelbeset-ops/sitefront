@@ -628,3 +628,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | CC Saddle and care, Beek en Donk | https://voorstel.sitefront.nl/cc-saddle-and-care-beek-en-donk/ | geen website; 5,0/46; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Ooteman Paardensport, Hoogkarspel | https://voorstel.sitefront.nl/ooteman-paardensport-hoogkarspel/ | geen viewport, verkleinde desktop-webshop; 4,3/126; WhatsApp op contactpagina. | 2026-10-30 | demo premium |
 | Bemelmans Ruitersport, Nuth | https://voorstel.sitefront.nl/bemelmans-ruitersport-nuth/ | geen viewport, lange vetgedrukte tekstlappen; 4,9/17; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Van Vreede Hengelsport, Sint-Michielsgestel | https://voorstel.sitefront.nl/van-vreede-hengelsport-sint-michielsgestel/ | geen viewport, tabellen-site, openingstijden verwijzen naar FB; 131 reviews; mail. | 2026-10-30 | demo premium |
