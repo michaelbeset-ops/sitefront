@@ -620,3 +620,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Kanohandel Jan van Daalen, Oudega | https://voorstel.sitefront.nl/kanohandel-van-daalen-oudega/ | shop4web niet mobiel (980px); 4,8/41; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Natuursteen Stefano, Groningen | https://voorstel.sitefront.nl/natuursteen-stefano/ | natuursteen, WhatsApp | 2026-10-30 | demo premium |
 | FOKA Glas-in-lood, Sint-Oedenrode | https://voorstel.sitefront.nl/foka-glasinlood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
+| Kitty Glas-in-Lood, Huizen | https://voorstel.sitefront.nl/kitty-glas-in-lood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
