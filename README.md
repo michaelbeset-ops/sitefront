@@ -617,3 +617,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Timray Marine Diesel, Valkenburg ZH | https://voorstel.sitefront.nl/timray-marine-diesel-valkenburg/ | framesite niet mobiel (980px); 4,9/32; formulier. | 2026-10-30 | demo premium |
 | Woonwinkel Frits Vos, Westerhaar | https://voorstel.sitefront.nl/frits-vos-wonen/ | woonwinkel, formulier | 2026-10-30 | demo premium |
 | JaRa Meubeloutlet, Almelo | https://voorstel.sitefront.nl/jara-meubeloutlet/ | meubeloutlet, WhatsApp | 2026-10-30 | demo premium |
+| Kanohandel Jan van Daalen, Oudega | https://voorstel.sitefront.nl/kanohandel-van-daalen-oudega/ | shop4web niet mobiel (980px); 4,8/41; 06/WhatsApp. | 2026-10-30 | demo premium |
