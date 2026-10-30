@@ -305,7 +305,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Peet's V2 Service (Harley/V-twin), Kwintsheul | https://voorstel.sitefront.nl/peets-v2-service/ | geen website, alleen privé-Facebook; 4,9/44; 06/WhatsApp. | 2026-10-10 | demo premium |
 | TempoFloors (vloeren), Barendrecht | https://voorstel.sitefront.nl/tempofloors/ | eigen domein geeft 404/parkeerpagina; 5,0/58; 06/WhatsApp. | 2026-10-10 | demo premium |
 | Jan Slooter Mechanisatiecentrum, 's-Gravendeel | https://voorstel.sitefront.nl/jan-slooter/ | verouderde site zonder mobiele weergave; 4,7/26; 06/WhatsApp. | 2026-10-10 | demo premium |
-| Hajdari Boot en Polyester Service, Kerkdriel | https://voorstel.sitefront.nl/hajdari-boot-polyester/ | geen website, alleen Facebook/Instagram; 4,8/12; 06/WhatsApp. | 2026-10-10 | demo premium |
+| Hajdari Boot en Polyester Service, Kerkdriel | (offline gehaald 30-10) | geen website, alleen Facebook/Instagram; 4,8/12; 06/WhatsApp. | 2026-10-10 | offline |
 | S.P.S. Slagmolen Parket Service, Barendrecht | https://voorstel.sitefront.nl/sps-parket/ | geen website (eigen domein 404); 5,0/16; 06/WhatsApp. | 2026-10-10 | demo premium |
 | Rops Hoogwerker Verhuur, Rucphen | https://voorstel.sitefront.nl/rops-hoogwerker-verhuur/ | verouderd sjabloon (© 2019 Company), voorbeeldpagina online; 4,6/22; 06/WhatsApp. | 2026-10-10 | demo premium |
 | Unlock Slotenmaker, Tilburg | https://voorstel.sitefront.nl/unlock-slotenmaker/ | site toont "Account Suspended"; 5,0/246; 06/WhatsApp. | 2026-10-11 | demo premium |
@@ -319,7 +319,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Roos Juwelier | https://voorstel.sitefront.nl/roos-juwelier/ | geen eigen website, alleen Instagram; 351 reviews; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Tapijt-tegels.eu, Tilburg | https://voorstel.sitefront.nl/tapijt-tegels-tilburg/ | verouderde site zonder viewport; 4,8/195; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Lokaal de Klik, Dordrecht | https://voorstel.sitefront.nl/lokaal-de-klik/ | site toont ruwe PHP-code; 4,9/118; 06/WhatsApp. | 2026-10-12 | demo premium |
-| Het Handelshuis, Kaatsheuvel | https://voorstel.sitefront.nl/het-handelshuis-kaatsheuvel/ | geen eigen website (oud domein 404); 4,6/154; 06/WhatsApp. | 2026-10-12 | demo premium |
+| Het Handelshuis, Kaatsheuvel | (offline gehaald 30-10) | geen eigen website (oud domein 404); 4,6/154; 06/WhatsApp. | 2026-10-12 | offline |
 | Teppratanporn, Schiedam | https://voorstel.sitefront.nl/teppratanporn-schiedam/ | geen eigen website; 4,8/259; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Flinn Winkelcafé, Vianen | https://voorstel.sitefront.nl/flinn-winkelcafe/ | geen eigen website (Canva-linkpagina); 4,4/137; 06/WhatsApp. | 2026-10-12 | demo premium |
 | Zien & Zo van der Heijden, Oosterhout | https://voorstel.sitefront.nl/zien-en-zo-oosterhout/ | site uit 2016, schuift zijwaarts op mobiel; 4,9/86; 06/WhatsApp. | 2026-10-12 | demo premium |
@@ -634,3 +634,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | K.A.Z. Campingshop, Dronten | https://voorstel.sitefront.nl/kaz-campingshop-dronten/ | nummer wit op grijs, verouderde home; 4,5/252; formulier. | 2026-10-30 | demo premium |
 | Creating Nature, Waarschoot (BE) | https://voorstel.sitefront.nl/creating-nature-waarschoot/ | site "under construction", geen site op Google; 4,7/169; mobiel/WhatsApp. | 2026-10-30 | demo premium |
 | M.H. Tractoren, Linde | https://voorstel.sitefront.nl/mh-tractoren-linde/ | geen viewport, verkleinde desktop; 4,5/28; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Andrico Steenhandel, Leeuwarden | https://voorstel.sitefront.nl/andrico-steenhandel-leeuwarden/ | eigen site toont WordPress-foutmelding; 4,9/15; WhatsApp. | 2026-10-30 | demo premium |
+| Philips Natuursteen, Hasselt BE | https://voorstel.sitefront.nl/philips-natuursteen-hasselt/ | gedateerde site, menu als grijze keuzelijst op telefoon; 4,6/88; contactformulier. | 2026-10-30 | demo premium |
