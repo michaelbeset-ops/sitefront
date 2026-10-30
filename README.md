@@ -625,3 +625,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Balder Zeilmakerij, Leimuiden | https://voorstel.sitefront.nl/balder-zeilmakerij-leimuiden/ | geen viewport, verkleinde desktop + clipart; 4,7/79; formulier. | 2026-10-30 | demo premium |
 | Bass Hengelsport, Colijnsplaat | https://voorstel.sitefront.nl/bass-hengelsport-colijnsplaat/ | geen viewport, mini-weergave, lege logovlakken; 4,7/80; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Hengelsport Kees Hamelink, Biervliet | https://voorstel.sitefront.nl/hengelsport-kees-hamelink-biervliet/ | site 809px breed op mobiel; 4,7/97; 06 op site/WhatsApp. | 2026-10-30 | demo premium |
+| CC Saddle and care, Beek en Donk | https://voorstel.sitefront.nl/cc-saddle-and-care-beek-en-donk/ | geen website; 5,0/46; 06/WhatsApp. | 2026-10-30 | demo premium |
