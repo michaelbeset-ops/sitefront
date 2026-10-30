@@ -621,3 +621,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Natuursteen Stefano, Groningen | https://voorstel.sitefront.nl/natuursteen-stefano/ | natuursteen, WhatsApp | 2026-10-30 | demo premium |
 | FOKA Glas-in-lood, Sint-Oedenrode | https://voorstel.sitefront.nl/foka-glasinlood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
 | Kitty Glas-in-Lood, Huizen | https://voorstel.sitefront.nl/kitty-glas-in-lood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
+| Zeilmakerij De Zandrug, Dokkum | https://voorstel.sitefront.nl/zeilmakerij-de-zandrug-dokkum/ | site 1200px breed op mobiel, mini-foto's; 5,0/28; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Balder Zeilmakerij, Leimuiden | https://voorstel.sitefront.nl/balder-zeilmakerij-leimuiden/ | geen viewport, verkleinde desktop + clipart; 4,7/79; formulier. | 2026-10-30 | demo premium |
