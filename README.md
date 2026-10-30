@@ -632,3 +632,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Betuwse Hengelsportzaak, Tiel | https://voorstel.sitefront.nl/betuwse-hengelsportzaak-tiel/ | geen website; 4,9/35; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Grondsels Marke, Wijster | https://voorstel.sitefront.nl/grondsels-marke-wijster/ | geen viewport, verkleinde blog-site; 4,6/46; 06/WhatsApp. | 2026-10-30 | demo premium |
 | K.A.Z. Campingshop, Dronten | https://voorstel.sitefront.nl/kaz-campingshop-dronten/ | nummer wit op grijs, verouderde home; 4,5/252; formulier. | 2026-10-30 | demo premium |
+| Creating Nature, Waarschoot (BE) | https://voorstel.sitefront.nl/creating-nature-waarschoot/ | site "under construction", geen site op Google; 4,7/169; mobiel/WhatsApp. | 2026-10-30 | demo premium |
