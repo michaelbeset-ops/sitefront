@@ -630,3 +630,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Bemelmans Ruitersport, Nuth | https://voorstel.sitefront.nl/bemelmans-ruitersport-nuth/ | geen viewport, lange vetgedrukte tekstlappen; 4,9/17; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Van Vreede Hengelsport, Sint-Michielsgestel | https://voorstel.sitefront.nl/van-vreede-hengelsport-sint-michielsgestel/ | geen viewport, tabellen-site, openingstijden verwijzen naar FB; 131 reviews; mail. | 2026-10-30 | demo premium |
 | De Betuwse Hengelsportzaak, Tiel | https://voorstel.sitefront.nl/betuwse-hengelsportzaak-tiel/ | geen website; 4,9/35; 06/WhatsApp. | 2026-10-30 | demo premium |
+| Grondsels Marke, Wijster | https://voorstel.sitefront.nl/grondsels-marke-wijster/ | geen viewport, verkleinde blog-site; 4,6/46; 06/WhatsApp. | 2026-10-30 | demo premium |
+| K.A.Z. Campingshop, Dronten | https://voorstel.sitefront.nl/kaz-campingshop-dronten/ | nummer wit op grijs, verouderde home; 4,5/252; formulier. | 2026-10-30 | demo premium |
