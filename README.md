@@ -622,6 +622,7 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | FOKA Glas-in-lood, Sint-Oedenrode | https://voorstel.sitefront.nl/foka-glasinlood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
 | Kitty Glas-in-Lood, Huizen | https://voorstel.sitefront.nl/kitty-glas-in-lood/ | glas-in-lood, WhatsApp | 2026-10-30 | demo premium |
 | Stoffeerderij Frélan, Ridderkerk | https://voorstel.sitefront.nl/frelan-ridderkerk/ | stoffeerderij, WhatsApp | 2026-10-31 | demo premium |
+| Preko Traprenovatie, Hendrik-Ido-Ambacht | https://voorstel.sitefront.nl/preko-traprenovatie/ | traprenovatie, WhatsApp | 2026-10-31 | demo premium |
 | Zeilmakerij De Zandrug, Dokkum | https://voorstel.sitefront.nl/zeilmakerij-de-zandrug-dokkum/ | site 1200px breed op mobiel, mini-foto's; 5,0/28; 06/WhatsApp. | 2026-10-30 | demo premium |
 | Balder Zeilmakerij, Leimuiden | https://voorstel.sitefront.nl/balder-zeilmakerij-leimuiden/ | geen viewport, verkleinde desktop + clipart; 4,7/79; formulier. | 2026-10-30 | demo premium |
 | Bass Hengelsport, Colijnsplaat | https://voorstel.sitefront.nl/bass-hengelsport-colijnsplaat/ | geen viewport, mini-weergave, lege logovlakken; 4,7/80; 06/WhatsApp. | 2026-10-30 | demo premium |
