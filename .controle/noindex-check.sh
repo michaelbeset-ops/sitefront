@@ -11,12 +11,13 @@
 #
 #     bash .controle/noindex-check.sh
 #
-# UITZONDERING: een map met een eigen CNAME-bestand is geen voorstel meer maar
-# een klantsite die naar een eigen domein gaat. Die hoort juist wel
-# geindexeerd te worden, dus die slaat dit script over. Op 02-11-2026 is dat
-# bei-couture (www.beicouture.nl). Zo'n map hoort op termijn in een eigen
-# repo, want zolang hij hier staat serveert GitHub Pages hem onder
-# voorstel.sitefront.nl: alleen de CNAME in de root van de repo telt.
+# GEEN UITZONDERING meer voor mappen met een eigen CNAME-bestand (sinds
+# 02-11-2026, weekronde). GitHub Pages leest alleen de CNAME in de root van de
+# repo, dus zo'n map wordt hier gewoon onder voorstel.sitefront.nl/<map>/
+# geserveerd. Staat die op index, dan komt er een tweede kopie van de
+# klantsite in Google die straks concurreert met het eigen domein. De echte
+# klantsite draait vanuit een eigen repo (bei-couture -> www.beicouture.nl).
+# Een map met CNAME wordt nog wel gemeld, als herinnering om hem te verhuizen.
 #
 # Afsluitcode 0 = alles goed, 1 = er staat een demo open.
 
@@ -41,7 +42,6 @@ hoort_erbij() {
 geteld=0
 while IFS= read -r f; do
   pad="${f#./}"
-  hoort_erbij "$pad" || continue
   geteld=$((geteld + 1))
   meta=$(grep -o '<meta name="robots"[^>]*>' "$f" | head -1)
   case "$meta" in
@@ -51,7 +51,7 @@ while IFS= read -r f; do
 done < <(find . -name '*.html' -not -path './.git/*')
 
 if [ ${#overgeslagen[@]} -gt 0 ]; then
-  echo "Overgeslagen, eigen domein:"
+  echo "Let op, map met eigen CNAME (hoort in een eigen repo, wordt wel gecontroleerd):"
   for o in "${overgeslagen[@]}"; do echo "  $o"; done
   echo
 fi
