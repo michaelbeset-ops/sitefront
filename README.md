@@ -646,3 +646,5 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Philips Natuursteen, Hasselt BE | https://voorstel.sitefront.nl/philips-natuursteen-hasselt/ | gedateerde site, menu als grijze keuzelijst op telefoon; 4,6/88; contactformulier. | 2026-10-30 | demo premium |
 | TK hergebruik, Amstelveen | https://voorstel.sitefront.nl/tk-hergebruik-amstelveen/ | eigen domein toont 403 Forbidden, geen site op Google, 44 reviews, 06/WhatsApp. | 2026-11-02 | demo premium |
 | Stage Music Service, Aalsmeer | https://voorstel.sitefront.nl/stage-music-service-aalsmeer/ | site zonder mobiele weergave, 4,6/111, 06/WhatsApp. | 2026-11-02 | demo premium |
+| De Naaispecialist, Heinkenszand | https://voorstel.sitefront.nl/de-naaispecialist-heinkenszand/ | site zonder mobiele weergave, schuift opzij, 23 reviews, 06/WhatsApp. | 2026-11-02 | demo premium |
+| Ap Snaar, Honselersdijk | https://voorstel.sitefront.nl/ap-snaar-honselersdijk/ | geen eigen site (Google-knop naar Facebook), 41 reviews, 06/WhatsApp. | 2026-11-02 | demo premium |
