@@ -34,6 +34,8 @@
   const medewerker = schoon(q.get("n"), 30);
   const plaats = schoon(q.get("s"), 40);
 
+  /* Eenvoudig = alleen bovenkant, het aha-moment, zelf proberen en de ja-knop. Zet op false om alle extra blokken terug te krijgen. */
+  const EENVOUDIG = true;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const initialen = (heeftNaam ? bedrijf : "Sitefront").split(/\s+/).filter(w => /^[A-Za-zÀ-ÿ]/.test(w)).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "SF";
 
@@ -265,8 +267,10 @@
     const gains = document.querySelector(".gains");
     const gainsSec = gains && gains.closest("section");
 
+    if (EENVOUDIG && gainsSec) gainsSec.remove();
+
     // maandoverzicht
-    if (cfg.cijfers && gainsSec) {
+    if (!EENVOUDIG && cfg.cijfers && gainsSec) {
       const s = sectie("sec", '<div class="wrap"><div class="intro"><h2></h2><p></p></div><div class="dash"><div class="app-top"><i></i><i></i><i></i><span></span></div><div class="dash-in"><div class="tiles4"></div><div><h3>Laatste activiteit</h3><ul class="recent"></ul></div><p class="dash-noot">Voorbeeld met verzonnen cijfers. Zo ziet het maandoverzicht eruit.</p></div></div></div>');
       tekst(s.querySelector("h2"), "Wat jullie elke maand terugzien");
       tekst(s.querySelector(".intro p"), "Een kort overzicht laat precies zien wat het systeem voor {bedrijf} heeft gedaan. Zo weten jullie wat het oplevert.");
@@ -280,7 +284,7 @@
 
     // wat we nodig hebben en werkwijze
     const naCta = document.querySelector("[data-cta]");
-    if (huidig && naCta) {
+    if (!EENVOUDIG && huidig && naCta) {
       const s = sectie("sec", '<div class="wrap duo"><div><h2>Wat jullie moeten doen? Bijna niets.</h2><p class="reken-sub">Sitefront regelt de rest. Dit vragen we één keer:</p><ul class="vink"></ul></div><div><h2>Zo gaat het in zijn werk</h2><ol class="werk"></ol></div></div>');
       (cfg.nodig || []).forEach(n => { s.querySelector(".vink").appendChild(tekst(document.createElement("li"), n)); });
       WERKWIJZE.forEach(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<div><b></b><span></span></div>"; li.querySelector("b").textContent = k; li.querySelector("span").textContent = v; s.querySelector(".werk").appendChild(li); });
@@ -296,6 +300,7 @@
   /* ---------- rekenhulp ---------- */
   const euro = n => "€" + Math.round(n).toLocaleString("nl-NL");
   function rekenhulp(el, opts) {
+    if (EENVOUDIG) return null;
     opts = opts || {};
     const s = document.createElement("section");
     s.className = "sec reken";
@@ -338,6 +343,7 @@
     terug.href = (huidig ? bovenaan : "./") + params();
     terug.textContent = huidig ? "Alle oplossingen" : "Sitefront";
     if (!huidig) { terug.href = "https://sitefront.nl"; }
+    if (EENVOUDIG && huidig) terug.remove();
     document.body.prepend(bar);
 
     const cta = document.querySelector("[data-cta]");
@@ -356,7 +362,7 @@
     foot.className = "foot";
     foot.innerHTML = '<div class="wrap"><nav aria-label="Andere voorbeelden"></nav><p></p></div>';
     const nav = foot.querySelector("nav");
-    PAGINAS.forEach(([slug, titel]) => {
+    if (!EENVOUDIG) PAGINAS.forEach(([slug, titel]) => {
       const a = document.createElement("a");
       a.href = bovenaan + slug + "/" + params();
       a.textContent = titel;
