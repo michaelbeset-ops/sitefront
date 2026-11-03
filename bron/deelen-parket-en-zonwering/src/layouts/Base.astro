@@ -1,0 +1,36 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
+const b = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const og = new URL(`${b}og.png`, Astro.site).href;
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={og} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta name="theme-color" content="#3b2718" />
+    <link rel="icon" href={`${b}favicon.svg`} type="image/svg+xml" />
+    <link rel="sitemap" href={`${b}sitemap-index.xml`} />
+  </head>
+  <body>
+    {voorstel && (
+      <div class="bg-ink text-paper text-xs px-4 py-2 text-center">
+        Ontwerpvoorstel van Sitefront voor Deelen Parket- en Zonwering. Dit is niet de officiële website.
+        <a class="underline underline-offset-2 font-semibold ml-1" href="https://www.sitefront.nl">sitefront.nl</a>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-paper focus:px-4 focus:py-2">Naar de inhoud</a>
+    <slot />
+  </body>
+</html>

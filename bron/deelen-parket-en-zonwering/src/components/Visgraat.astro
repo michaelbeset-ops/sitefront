@@ -1,0 +1,30 @@
+---
+// Zelf getekend visgraatpatroon als signatuur van de site, in plaats van een
+// stockfoto. Planken van L x 1 eenheden; een tegel van 2L x 2L herhaalt
+// naadloos. Zie PLAN.md.
+interface Props { id: string; class?: string; unit?: number }
+const { id, class: cls = '', unit = 16 } = Astro.props;
+const L = 5;
+const T = 2 * L;
+const tones = ['#c99f6b', '#d6b17f', '#b88b57', '#dcbc8f', '#c4965f', '#d0a874'];
+const planks: { x: number; y: number; w: number; h: number; f: string }[] = [];
+for (let k = 0; k < T; k++) {
+  const h = { x: k, y: k, w: L, h: 1 };
+  const v = { x: k, y: k + 1, w: 1, h: L };
+  [h, v].forEach((p, i) => {
+    const f = tones[(k * 7 + i * 3) % tones.length];
+    // kopieen een tegel terug, zodat planken die over de rand lopen heel blijven
+    for (const dx of [0, -T]) for (const dy of [0, -T]) planks.push({ ...p, x: p.x + dx, y: p.y + dy, f });
+  });
+}
+---
+<svg class={cls} aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice" viewBox="0 0 400 500">
+  <defs>
+    <pattern id={id} width={T} height={T} patternUnits="userSpaceOnUse" patternTransform={`rotate(45) scale(${unit / 1})`}>
+      {planks.map((p) => (
+        <rect x={p.x} y={p.y} width={p.w} height={p.h} fill={p.f} stroke="#6b4a2c" stroke-width="0.06" />
+      ))}
+    </pattern>
+  </defs>
+  <rect width="400" height="500" fill={`url(#${id})`} />
+</svg>

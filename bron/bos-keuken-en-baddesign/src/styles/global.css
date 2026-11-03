@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset; de rest van de tekens komt op deze site niet voor. */
+@font-face {
+  font-family: "Bodoni Moda";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("../../node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Bodoni Moda";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400 900;
+  src: url("../../node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-italic.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Albert Sans";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 300 800;
+  src: url("../../node_modules/@fontsource-variable/albert-sans/files/albert-sans-latin-wght-normal.woff2") format("woff2-variations");
+}
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* travertin, steen en donker notenhout; een gedempt rood als enige accent */
+  --color-paper: #f2ede5;
+  --color-paper-2: #e8e0d4;
+  --color-stone: #d6ccbd;
+  --color-line: #c9bdac;
+  --color-ink: #1d1915;
+  --color-ink-soft: #564d44;
+  --color-night: #24201c;
+  --color-night-soft: #b9ae9f;
+  --color-accent: #8a3324;
+  --color-accent-deep: #6e281c;
+  --color-accent-light: #e9b8a6;
+
+  --font-display: "Bodoni Moda", "Didot", Georgia, serif;
+  --font-body: "Albert Sans", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: clamp(2.25rem, 5vw, 3.5rem);
+  --text-4xl: clamp(2.6rem, 6.4vw, 5.25rem);
+  --text-5xl: clamp(3.2rem, 11vw, 9.5rem);
+
+  --radius-sm: 2px;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-paper);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+  /* Bodoni draagt rust door contrast en optische maat, niet door gewicht;
+     daarom hier bewust 500 in plaats van de standaard 800/900 (zie PLAN.md). */
+  h1, h2, h3, .display {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  ::selection { background: var(--color-stone); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+.link-u {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease;
+  padding-bottom: 2px;
+}
+.link-u:hover { background-size: 0% 1px; background-position: 100% 100%; }
+
+/* <picture class="contents"> laat de <img> zelf grid/flex-item zijn; <source> mag dan geen cel innemen. */
+picture.contents > source { display: none; }
