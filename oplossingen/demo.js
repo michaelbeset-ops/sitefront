@@ -210,8 +210,30 @@
     ["We hebben al een offertepakket of CRM.", "Dan koppelen we daaraan als dat kan, zodat jullie niets dubbel hoeven te doen."]
   ];
 
+  function jaLink() {
+    const naamDemo = document.body.getAttribute("data-naam") || "de voorbeelden";
+    const tekst = "Hoi Michael, ja, dit wil ik ook" + (heeftNaam ? " voor " + bedrijf : "") + " (" + naamDemo.replace(/^de demo /, "") + "). Kun je me even bellen?";
+    return "https://wa.me/31643430003?text=" + encodeURIComponent(tekst);
+  }
+
   function sectie(cls, html) { const s = document.createElement("section"); s.className = cls; s.innerHTML = html; return s; }
   function tekst(el, t) { el.textContent = vul(t); return el; }
+
+  function plakBalk() {
+    const cta = document.querySelector(".cta");
+    const hero = document.querySelector(".hero");
+    if (!cta || !hero) return;
+    const bal = document.createElement("div");
+    bal.className = "plak";
+    bal.innerHTML = '<span></span><a class="btn amber" target="_blank" rel="noopener">Ja, bel me even</a>';
+    bal.querySelector("span").textContent = "Dit ook voor jullie?";
+    bal.querySelector("a").href = jaLink();
+    document.body.appendChild(bal);
+    let voorbijHero = false, ctaZicht = false;
+    const zet = () => bal.classList.toggle("in", voorbijHero && !ctaZicht);
+    new IntersectionObserver(es => { voorbijHero = !es[0].isIntersecting; zet(); }).observe(hero);
+    new IntersectionObserver(es => { ctaZicht = es[0].isIntersecting; zet(); }).observe(cta);
+  }
 
   function extraOpbouw() {
     const cfg = window.Demo.pagina || {};
@@ -222,11 +244,9 @@
     const probeer = document.querySelector("main > .sec");
     if (probeer && !probeer.id) probeer.id = "probeer";
     if (ht && huidig) {
-      const naamDemo = document.body.getAttribute("data-naam") || "de demo";
-      const wa = "https://wa.me/31643430003?text=" + encodeURIComponent("Hoi Michael, ik heb " + naamDemo + " bekeken" + (heeftNaam ? " voor " + bedrijf : "") + ". ");
       const b = document.createElement("div"); b.className = "btns";
-      b.innerHTML = '<a class="btn amber" href="#probeer">Probeer het zelf</a><a class="btn ghost" target="_blank" rel="noopener">Stuur Michael een berichtje</a>';
-      b.querySelectorAll("a")[1].href = wa;
+      b.innerHTML = '<a class="btn amber" target="_blank" rel="noopener">Ja, dit wil ik ook</a><a class="btn ghost" href="#probeer">Eerst zelf proberen</a>';
+      b.querySelector("a").href = jaLink();
       ht.appendChild(b);
     }
 
@@ -261,7 +281,7 @@
     // wat we nodig hebben en werkwijze
     const naCta = document.querySelector("[data-cta]");
     if (huidig && naCta) {
-      const s = sectie("sec", '<div class="wrap duo"><div><h2>Wat we van jullie nodig hebben</h2><ul class="vink"></ul></div><div><h2>Zo gaat het in zijn werk</h2><ol class="werk"></ol></div></div>');
+      const s = sectie("sec", '<div class="wrap duo"><div><h2>Wat jullie moeten doen? Bijna niets.</h2><p class="reken-sub">Sitefront regelt de rest. Dit vragen we één keer:</p><ul class="vink"></ul></div><div><h2>Zo gaat het in zijn werk</h2><ol class="werk"></ol></div></div>');
       (cfg.nodig || []).forEach(n => { s.querySelector(".vink").appendChild(tekst(document.createElement("li"), n)); });
       WERKWIJZE.forEach(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<div><b></b><span></span></div>"; li.querySelector("b").textContent = k; li.querySelector("span").textContent = v; s.querySelector(".werk").appendChild(li); });
       naCta.parentNode.insertBefore(s, naCta);
@@ -322,19 +342,14 @@
 
     const cta = document.querySelector("[data-cta]");
     if (cta) {
-      const tekst = "Hoi Michael, ik heb " + naamDemo + " bekeken" + (heeftNaam ? " voor " + bedrijf : "") + ". ";
-      const wa = "https://wa.me/31643430003?text=" + encodeURIComponent(tekst);
-      const mail = "mailto:info@sitefront.nl?subject=" + encodeURIComponent("Demo " + naamDemo + (heeftNaam ? ", " + bedrijf : "")) + "&body=" + encodeURIComponent(tekst);
       cta.className = "cta";
       cta.innerHTML =
         '<div class="wrap"><h2></h2><p></p><div class="btns">' +
-        '<a class="btn amber" target="_blank" rel="noopener">Stuur Michael een WhatsApp</a>' +
-        '<a class="btn ghost" href="tel:+31643430003">Bel 06 43430003</a>' +
-        '<a class="btn ghost">Mail</a></div></div>';
-      cta.querySelector("h2").textContent = heeftNaam ? "Zo inrichten voor " + bedrijf + "?" : "Zo inrichten voor jouw bedrijf?";
-      cta.querySelector("p").textContent = "Ik ben Michael van Sitefront uit Dordrecht. Ik richt het in met jullie eigen teksten, naam en werkwijze, en onderhoud het daarna. Stuur een berichtje, dan bespreken we wat het voor jullie kan opleveren.";
-      const as = cta.querySelectorAll("a");
-      as[0].href = wa; as[2].href = mail;
+        '<a class="btn amber groot" target="_blank" rel="noopener">Ja, bel me even</a></div>' +
+        '<p class="cta-klein">Liever zelf bellen? <a href="tel:+31643430003">06 43430003</a>. Of mail naar <a href="mailto:info@sitefront.nl">info@sitefront.nl</a>.</p></div>';
+      cta.querySelector("h2").textContent = heeftNaam ? "Dit ook voor " + bedrijf + "?" : "Dit ook voor jullie bedrijf?";
+      cta.querySelector("p").textContent = "Eén tik is genoeg. Het bericht staat al klaar, je hoeft alleen op versturen te drukken. Ik bel je terug en we kijken samen of het bij jullie past. Geen verplichtingen.";
+      cta.querySelector("a").href = jaLink();
     }
 
     const foot = document.createElement("footer");
@@ -351,6 +366,7 @@
     foot.querySelector("p").textContent = "Dit is een voorbeeld gemaakt door Sitefront" + (heeftNaam ? " voor " + bedrijf + ". " + bedrijf + " is hier niet bij betrokken." : ".") + " Namen, tijden en berichten in deze demo zijn verzonnen. Sitefront, Dordrecht, KvK 42057398.";
     document.body.appendChild(foot);
     extraOpbouw();
+    plakBalk();
   }
 
   window.Demo = { bedrijf, heeftNaam, br, pk, medewerker, plaats, euro, rekenhulp, BRANCHES, vul, zin, tijd, phone, wacht, speler, nieuwToken, stopToken, params, reduce };
