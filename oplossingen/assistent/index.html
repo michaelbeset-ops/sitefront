@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>WhatsApp-assistent, {bedrijf}</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../demo.js"></script>
+</head>
+<body data-pagina="assistent" data-naam="de demo WhatsApp-assistent">
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Klantvragen beantwoord, ook als jullie dicht zijn</h1>
+        <p class="lead" data-vul="Een assistent op het WhatsApp-nummer van {bedrijf} beantwoordt de vragen die elke dag terugkomen. Alles wat lastig is, gaat naar jullie."></p>
+        <ol class="steps" id="stappen">
+          <li data-vul="Een klant stuurt {bedrijf} een vraag via WhatsApp, ook 's avonds."></li>
+          <li>De assistent zegt eerlijk wie hij is en beantwoordt standaardvragen direct.</li>
+          <li>Wil de klant langskomen, dan plant de assistent meteen een afspraak.</li>
+          <li>Prijsvragen en lastige vragen gaan naar een medewerker, met een samenvatting.</li>
+        </ol>
+        <button class="replay" id="opnieuw" type="button">Opnieuw afspelen</button>
+      </div>
+      <div id="demo"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Probeer het zelf</h2>
+        <p>Stel de assistent een vraag. Kies een van de knoppen of typ zelf iets. Er wordt niets echt verstuurd.</p>
+      </div>
+      <div class="try">
+        <div class="panel">
+          <h3 data-vul="Wat {bedrijf} ziet"></h3>
+          <p>Jullie zien welke vragen de assistent zelf afhandelde en welke naar jullie zijn doorgezet.</p>
+          <ul class="log" id="log"><li>Nog geen gesprekken.</li></ul>
+        </div>
+        <div id="zelf"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro"><h2>Wat het oplevert</h2></div>
+      <div class="gains">
+        <div><h3>Minder appjes zelf beantwoorden</h3><p>Openingstijden, levertijden, waar blijft mijn bestelling. Die vragen kosten jullie straks geen tijd meer.</p></div>
+        <div><h3>Direct antwoord, ook 's avonds</h3><p>Een klant die om tien uur 's avonds iets vraagt, hoeft niet tot de volgende dag te wachten en haakt niet af.</p></div>
+        <div><h3>Altijd een mens erachter</h3><p>Bij prijzen, klachten of twijfel neemt een medewerker het over. De assistent zegt nooit iets toe wat niet is afgesproken.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-cta></section>
+</main>
+
+<script>
+(function () {
+  const D = Demo;
+  const naamBedrijf = D.heeftNaam ? D.bedrijf : "Jullie bedrijf";
+  const plek = /showroom/.test(D.br.afspraak) ? "in de showroom" : "bij je thuis";
+
+  const p = D.phone(document.getElementById("demo"), { lock: true, label: "Animatie van een WhatsApp-assistent die vragen beantwoordt" });
+  p.head(naamBedrijf, "Digitale assistent");
+  D.speler({
+    phone: p,
+    lijst: document.getElementById("stappen"),
+    opnieuw: document.getElementById("opnieuw"),
+    stappen: [
+      { stap: 0, pauze: 700, doe: async (ph) => {
+          ph.add({ sys: true, tekst: "Zaterdag, 21.14 uur" });
+          ph.add({ uit: true, tekst: "Hoi, zijn jullie maandag open?", tijd: "21:14" });
+      } },
+      { stap: 1, doe: async (ph, tk) => {
+          await ph.typing(1100, tk);
+          ph.add({ tekst: "Hoi! Ik ben de digitale assistent van {bedrijf}. Maandag zijn we open van 9.00 tot 17.30 uur.", tijd: "21:14" });
+          await D.wacht(1300, tk);
+          ph.add({ uit: true, tekst: "Wat is ongeveer de levertijd van een {kort}?", tijd: "21:15" });
+          await ph.typing(1000, tk);
+          ph.add({ tekst: "Meestal zo'n 4 tot 6 weken. Het precieze moment hoor je bij de opdracht. Wil je een keer langskomen?", tijd: "21:15" });
+      } },
+      { stap: 2, doe: async (ph, tk) => {
+          await D.wacht(900, tk);
+          ph.add({ uit: true, tekst: "Ja, kan dinsdagochtend?", tijd: "21:16" });
+          await ph.typing(900, tk);
+          ph.add({ tekst: "Dinsdag om 10.00 uur kan. Ik heb het genoteerd!", tijd: "21:16" });
+      } },
+      { stap: 3, pauze: 3000, doe: async (ph, tk) => {
+          await D.wacht(800, tk);
+          ph.add({ uit: true, tekst: "En wat kost dat ongeveer?", tijd: "21:17" });
+          await ph.typing(900, tk);
+          ph.add({ tekst: "Voor een prijs kijkt een collega graag even met je mee. Ik geef je vraag door, je hoort maandag van ons.", tijd: "21:17" });
+          await D.wacht(900, tk);
+          ph.note("Gesprek doorgezet naar jullie", "Klant vraagt naar de prijs van een {kort}. Afspraak staat dinsdag 10.00 uur.", "maandag oppakken");
+      } }
+    ]
+  });
+
+  /* ---- probeer het zelf ---- */
+  const z = D.phone(document.getElementById("zelf"), { label: "Chat met de assistent in de demo" });
+  z.head(naamBedrijf, "Digitale assistent");
+  const log = document.getElementById("log");
+  let eerste = true;
+  function logRegel(t, hot) { if (eerste) { log.innerHTML = ""; eerste = false; } const li = document.createElement("li"); li.textContent = t; if (hot) li.className = "hot"; log.appendChild(li); }
+
+  const vragen = ["Zijn jullie zaterdag open?", "Wat is de levertijd?", "Kan ik langskomen?", "Wat kost een " + D.br.kort + "?"];
+  function dagen() {
+    const uit = [], d = new Date();
+    while (uit.length < 3) { d.setDate(d.getDate() + 1); if (d.getDay() === 0) continue; uit.push(d.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "short" }) + ", " + ["10.00", "14.00", "11.30"][uit.length]); }
+    return uit;
+  }
+  const regels = [
+    { test: /open|tijden|zaterdag|zondag|avond|dicht/i, door: false, ant: "We zijn open van maandag tot en met vrijdag van 9.00 tot 17.30 uur, en op zaterdag van 10.00 tot 16.00 uur. Zondag zijn we dicht.", log: "Openingstijden" },
+    { test: /lever|duur(t)? het|wanneer|klaar|plaats/i, door: false, ant: "Meestal zo'n 4 tot 6 weken. Het precieze moment hoor je zodra de opdracht rond is.", log: "Levertijd" },
+    { test: /langs|afspraak|showroom|inmeten|kom|bezoek/i, door: false, afspraak: true, ant: "Leuk! Kies hieronder een moment voor {afspraak}.", log: "Afspraak" },
+    { test: /bestelling|waar blijft|status/i, door: true, ant: "Ik kijk het voor je na bij een collega. Je hoort vandaag nog waar je bestelling is.", log: "Vraag over bestelling" },
+    { test: /prijs|kost|euro|duur|offerte|korting|budget/i, door: true, ant: "Voor een prijs kijkt een collega graag even met je mee, dan klopt het ook echt. Ik geef je vraag door.", log: "Prijsvraag" },
+    { test: /klacht|kapot|probleem|defect|stuk|niet goed|boos/i, door: true, ant: "Wat vervelend. Ik zet je direct door naar een collega, die neemt zo snel mogelijk contact met je op.", log: "Klacht" },
+    { test: /adres|waar zitten|parkeren|route/i, door: false, ant: "Het adres en de route vind je onderaan onze website. Parkeren kan gratis voor de deur.", log: "Adres en parkeren" },
+    { test: /^(hoi|hallo|hey|goedemorgen|goedemiddag|goedenavond)\b/i, door: false, ant: "Hoi! Waar kan ik je mee helpen?", log: "Begroeting" },
+    { test: /bot|robot|mens|ai\b|computer/i, door: false, ant: "Ik ben een digitale assistent van {bedrijf}. Wil je liever iemand spreken? Dan zet ik je meteen door.", log: "Vraag of het een mens is" }
+  ];
+
+  async function vraag(t) {
+    z.chips([], null);
+    z.add({ uit: true, tekst: t });
+    await z.typing(900, D.nieuwToken());
+    const r = regels.find(x => x.test.test(t)) || { door: true, ant: "Goeie vraag! Daar weet een collega meer van. Ik geef je vraag door, je hoort snel van ons.", log: "Overige vraag" };
+    z.add({ tekst: r.ant });
+    if (r.door) {
+      z.note("Gesprek doorgezet naar jullie", "\"" + t.slice(0, 80) + "\"", "met samenvatting");
+      setTimeout(() => z.hideNote(), 4500);
+      logRegel(r.log + " doorgezet naar medewerker: \"" + t.slice(0, 80) + "\"", true);
+      z.chips(vragen, vraag);
+    } else if (r.afspraak) {
+      logRegel("Afspraakverzoek, assistent biedt momenten aan.");
+      z.chips(dagen(), async (m) => {
+        z.chips([], null);
+        z.add({ uit: true, tekst: m });
+        await z.typing(800, D.nieuwToken());
+        z.add({ tekst: "Staat genoteerd, " + m.replace(",", " om") + " uur. Tot dan!" });
+        z.note("Nieuwe afspraak", D.zin(m) + " uur, via de assistent.");
+        setTimeout(() => z.hideNote(), 4500);
+        logRegel("Afspraak ingepland, " + m + " uur.", true);
+        z.chips(vragen, vraag);
+      });
+    } else {
+      logRegel(r.log + " beantwoord door de assistent.");
+      z.chips(vragen, vraag);
+    }
+  }
+  z.add({ tekst: "Hoi! Ik ben de digitale assistent van {bedrijf}. Stel gerust een vraag, of kies hieronder." });
+  z.chips(vragen, vraag);
+  z.input(vraag);
+})();
+</script>
+</body>
+</html>

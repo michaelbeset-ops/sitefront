@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Offertes automatisch opvolgen, {bedrijf}</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../demo.js"></script>
+</head>
+<body data-pagina="offertes" data-naam="de demo Offertes automatisch opvolgen">
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Geen offerte meer die blijft liggen</h1>
+        <p class="lead" data-vul="Elke offerte van {bedrijf} wordt automatisch en persoonlijk opgevolgd. Jullie bellen alleen nog klanten die al gereageerd hebben."></p>
+        <ol class="steps" id="stappen">
+          <li data-vul="{bedrijf} verstuurt de offerte zoals altijd."></li>
+          <li>Na een paar dagen krijgt de klant vanzelf een vriendelijk, persoonlijk berichtje.</li>
+          <li>Reageert de klant, dan stopt de reeks meteen.</li>
+          <li>Jullie krijgen direct een melding met wat de klant zei.</li>
+        </ol>
+        <button class="replay" id="opnieuw" type="button">Opnieuw afspelen</button>
+      </div>
+      <div id="demo"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Probeer het zelf</h2>
+        <p>Verstuur een offerte en spoel de tijd door. Op de telefoon kun je reageren alsof je de klant bent. Er wordt niets echt verstuurd.</p>
+      </div>
+      <div class="try">
+        <div>
+          <div class="panel">
+            <h3>Offerte versturen</h3>
+            <form class="form" id="form">
+              <label>Naam van de klant<input id="f-naam" required maxlength="30" autocomplete="off" placeholder="Bijvoorbeeld Peter"></label>
+              <label>Offerte voor<select id="f-wat"></select></label>
+              <button class="btn" type="submit">Offerte versturen</button>
+            </form>
+            <div class="btns" id="tijd" hidden>
+              <button class="btn amber" type="button" id="door">Spoel door naar dag 3</button>
+            </div>
+            <p class="status" id="status" aria-live="polite"></p>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <h3 data-vul="Wat {bedrijf} ziet"></h3>
+            <ul class="log" id="log"><li>Nog geen offertes.</li></ul>
+          </div>
+        </div>
+        <div id="zelf"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro"><h2>Wat het oplevert</h2></div>
+      <div class="gains">
+        <div><h3>Meer getekende offertes</h3><p>Klanten die twijfelen of het vergeten, krijgen op het juiste moment een duwtje. Zo komt omzet binnen die er eigenlijk al bijna was.</p></div>
+        <div><h3>Niet meer nabellen</h3><p>Niemand hoeft lijstjes bij te houden of iedereen na te bellen. Jullie bellen alleen nog als de klant heeft gereageerd.</p></div>
+        <div><h3>Elke maand een overzicht</h3><p>Jullie zien hoeveel offertes zijn opgevolgd en hoeveel klanten alsnog reageerden.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-cta></section>
+</main>
+
+<script>
+(function () {
+  const D = Demo;
+  const naamBedrijf = D.heeftNaam ? D.bedrijf : "Jullie bedrijf";
+
+  const p = D.phone(document.getElementById("demo"), { lock: true, label: "Animatie van een offerte die automatisch wordt opgevolgd" });
+  p.head(naamBedrijf, "WhatsApp Business");
+  D.speler({
+    phone: p,
+    lijst: document.getElementById("stappen"),
+    opnieuw: document.getElementById("opnieuw"),
+    stappen: [
+      { stap: 0, doe: async (ph) => { ph.add({ sys: true, tekst: "Maandag, offerte voor {kort} verstuurd" }); } },
+      { stap: 1, doe: async (ph, tk) => {
+          await D.wacht(700, tk);
+          ph.add({ sys: true, tekst: "Donderdag, 3 dagen later" });
+          await ph.typing(1100, tk);
+          ph.add({ tekst: "Hoi Peter, met {ik}. Maandag hebben we je de offerte voor {aanvraag} gestuurd. Is alles een beetje duidelijk?" });
+          await D.wacht(1800, tk);
+          ph.add({ sys: true, tekst: "Maandag, een week na de offerte" });
+          await ph.typing(1000, tk);
+          ph.add({ tekst: "Hoi Peter, kan ik nog iets toelichten aan de offerte? Je mag ook gewoon even langskomen." });
+      } },
+      { stap: 2, doe: async (ph, tk) => {
+          await D.wacht(900, tk);
+          ph.add({ uit: true, tekst: "Ja graag. Kan het iets kleiner? En wanneer kunnen jullie plaatsen?" });
+          await ph.typing(900, tk);
+          ph.add({ tekst: "Dank je Peter! Ik geef het door, je hoort vandaag nog van ons." });
+          ph.add({ sys: true, tekst: "Opvolging gestopt, de klant heeft gereageerd" });
+      } },
+      { stap: 3, pauze: 3000, doe: async (ph) => {
+          ph.note("Peter reageerde op de offerte", "\"Kan het iets kleiner? En wanneer kunnen jullie plaatsen?\"", "Bel hem even terug");
+      } }
+    ]
+  });
+
+  /* ---- probeer het zelf ---- */
+  const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });
+  z.head(naamBedrijf, "WhatsApp Business");
+  z.add({ sys: true, tekst: "Verstuur links een offerte" });
+  const sel = document.getElementById("f-wat");
+  D.br.opties.forEach(o => { const op = document.createElement("option"); op.textContent = o; sel.appendChild(op); });
+  const log = document.getElementById("log"), status = document.getElementById("status");
+  const tijdBox = document.getElementById("tijd"), door = document.getElementById("door");
+  let naam = "", wat = "", dag = 0, gestopt = true, eerste = true;
+  const reeks = [
+    { dag: 3, sys: "Dag 3", tekst: n => "Hoi " + n + ", met {ik}. Een paar dagen geleden hebben we je de offerte voor " + wat.toLowerCase() + " gestuurd. Is alles een beetje duidelijk?" },
+    { dag: 7, sys: "Dag 7", tekst: n => "Hoi " + n + ", kan ik nog iets toelichten aan de offerte? Je mag ook gewoon even langskomen." },
+    { dag: 14, sys: "Dag 14", tekst: n => "Hoi " + n + ", zullen we de offerte nog even voor je openhouden? Laat het gerust weten, ook als het nu niet uitkomt." }
+  ];
+  function logRegel(t, hot) { if (eerste) { log.innerHTML = ""; eerste = false; } const li = document.createElement("li"); li.textContent = t; if (hot) li.className = "hot"; log.appendChild(li); }
+
+  document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    naam = document.getElementById("f-naam").value.replace(/[<>]/g, "").trim() || "Peter";
+    wat = sel.value; dag = 0; gestopt = false;
+    z.clear();
+    z.add({ sys: true, tekst: "Dag 0, offerte voor " + wat.toLowerCase() + " verstuurd" });
+    logRegel("Offerte voor " + wat.toLowerCase() + " naar " + naam + ". Opvolging staat aan.");
+    tijdBox.hidden = false; door.disabled = false; door.textContent = "Spoel door naar dag 3";
+    status.className = "status"; status.textContent = "Spoel de tijd door, of reageer op de telefoon als klant.";
+  });
+
+  door.addEventListener("click", async () => {
+    if (gestopt) return;
+    const st = reeks[dag];
+    door.disabled = true;
+    z.add({ sys: true, tekst: st.sys });
+    await z.typing(900, D.nieuwToken());
+    if (gestopt) return;
+    z.add({ tekst: st.tekst(naam) });
+    logRegel("Dag " + st.dag + ", " + naam + " automatisch opgevolgd.");
+    dag++;
+    if (dag < reeks.length) { door.textContent = "Spoel door naar dag " + reeks[dag].dag; door.disabled = false; }
+    else {
+      door.textContent = "Reeks afgerond"; gestopt = true;
+      logRegel("Geen reactie van " + naam + ". Staat in het maandoverzicht.");
+      status.textContent = "Geen reactie gekomen. Dan staat de klant in het maandoverzicht, zodat jullie kunnen beslissen of je nog belt.";
+    }
+  });
+
+  z.input(async (v) => {
+    if (!naam) { z.add({ sys: true, tekst: "Verstuur eerst links een offerte" }); return; }
+    z.add({ uit: true, tekst: v });
+    if (gestopt && dag >= reeks.length) { await z.typing(900, D.nieuwToken()); z.add({ tekst: "Dank je " + naam + "! Ik geef het door, je hoort snel van ons." }); logRegel(naam + " reageerde alsnog: \"" + v.slice(0, 80) + "\"", true); return; }
+    gestopt = true; door.disabled = true; door.textContent = "Opvolging gestopt";
+    await z.typing(900, D.nieuwToken());
+    z.add({ tekst: "Dank je " + naam + "! Ik geef het door, je hoort vandaag nog van ons." });
+    z.add({ sys: true, tekst: "Opvolging gestopt, de klant heeft gereageerd" });
+    z.note(naam + " reageerde op de offerte", "\"" + v.slice(0, 90) + "\"", "Bel even terug");
+    logRegel(naam + " reageerde: \"" + v.slice(0, 80) + "\". Opvolging gestopt, melding verstuurd.", true);
+    status.className = "status ok"; status.textContent = "Zo werkt het. De reeks stopt en jullie weten precies wie je moet bellen.";
+    setTimeout(() => z.hideNote(), 5000);
+  });
+})();
+</script>
+</body>
+</html>

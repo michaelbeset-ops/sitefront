@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Meer reviews, {bedrijf}</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../demo.js"></script>
+<style>
+  .stars{font-size:1.6rem;letter-spacing:4px;color:#f0a500}
+  .rv{border:1px solid var(--line);border-radius:8px;padding:10px;min-height:70px}
+</style>
+</head>
+<body data-pagina="reviews" data-naam="de demo Meer reviews">
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Na elke klus vanzelf een review</h1>
+        <p class="lead" data-vul="Tevreden klanten van {bedrijf} krijgen automatisch een berichtje met een directe link om een review te schrijven. Minder tevreden klanten komen eerst bij jullie uit."></p>
+        <ol class="steps" id="stappen">
+          <li data-vul="{bedrijf} rondt een levering of klus af."></li>
+          <li>De klant krijgt automatisch een persoonlijk bericht met de vraag hoe het ging.</li>
+          <li>Tevreden klanten krijgen een directe link naar jullie Google-reviews.</li>
+          <li>Minder tevreden? Dan gaat het bericht eerst naar jullie, zodat je het kunt oplossen.</li>
+        </ol>
+        <button class="replay" id="opnieuw" type="button">Opnieuw afspelen</button>
+      </div>
+      <div id="demo"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Probeer het zelf</h2>
+        <p>Rond een klus af en geef daarna als klant een beoordeling. Probeer ook eens een lage. Er wordt niets echt verstuurd.</p>
+      </div>
+      <div class="try">
+        <div>
+          <div class="panel">
+            <h3>Klus afronden</h3>
+            <form class="form" id="form">
+              <label>Naam van de klant<input id="f-naam" required maxlength="30" autocomplete="off" placeholder="Bijvoorbeeld Marieke"></label>
+              <button class="btn" type="submit">Markeer klus als klaar</button>
+            </form>
+            <p class="status" id="status" aria-live="polite"></p>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <h3 data-vul="Wat {bedrijf} ziet"></h3>
+            <ul class="log" id="log"><li>Nog geen afgeronde klussen.</li></ul>
+          </div>
+        </div>
+        <div id="zelf"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro"><h2>Wat het oplevert</h2></div>
+      <div class="gains">
+        <div><h3>Meer reviews zonder erom te vragen</h3><p>Niemand hoeft eraan te denken. Elke afgeronde klus levert een kans op een nieuwe review op.</p></div>
+        <div><h3>Beter gevonden worden</h3><p>Reviews bepalen voor een groot deel wie er gekozen wordt in Google en Google Maps.</p></div>
+        <div><h3>Eerst zelf oplossen</h3><p>Een ontevreden klant komt eerst bij jullie uit. Dan kun je het rechtzetten voordat het online staat.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-cta></section>
+</main>
+
+<script>
+(function () {
+  const D = Demo;
+  const naamBedrijf = D.heeftNaam ? D.bedrijf : "Jullie bedrijf";
+  const ster = n => "★".repeat(n) + "☆".repeat(5 - n);
+
+  const p = D.phone(document.getElementById("demo"), { lock: true, label: "Animatie van een automatisch reviewverzoek" });
+  p.head(naamBedrijf, "WhatsApp Business");
+  D.speler({
+    phone: p,
+    lijst: document.getElementById("stappen"),
+    opnieuw: document.getElementById("opnieuw"),
+    stappen: [
+      { stap: 0, pauze: 800, doe: async (ph) => { ph.add({ sys: true, tekst: "Klus afgerond, vandaag 16.40 uur" }); } },
+      { stap: 1, doe: async (ph, tk) => {
+          await ph.typing(1100, tk);
+          ph.add({ tekst: "Hoi Marieke, met {ik}. Hoe tevreden ben je over je nieuwe {kort}? Geef gerust een cijfer van 1 tot 5 sterren." });
+          await D.wacht(1500, tk);
+          ph.add({ uit: true, tekst: ster(5) });
+      } },
+      { stap: 2, doe: async (ph, tk) => {
+          await ph.typing(900, tk);
+          ph.add({ tekst: "Wat fijn om te horen! Wil je dat op Google zetten? Het kost een minuutje en helpt ons echt.", knop: "Review schrijven" });
+          await D.wacht(1500, tk);
+          const b = ph.site('<h4>Review schrijven</h4><div class="stars">★★★★★</div><div class="rv"></div><div class="site-btn">Plaatsen</div>');
+          const rv = b.querySelector(".rv");
+          for (const c of "Netjes en snel geholpen, echt een aanrader!") { rv.textContent += c; await D.wacht(35, tk); }
+          await D.wacht(500, tk);
+          b.querySelector(".site-btn").classList.add("press");
+          await D.wacht(700, tk);
+          ph.hideSite();
+          ph.note("Nieuwe review van Marieke", ster(5) + "  Netjes en snel geholpen, echt een aanrader!");
+      } },
+      { stap: 3, pauze: 3000, doe: async (ph, tk) => {
+          await D.wacht(1500, tk);
+          ph.hideNote();
+          ph.add({ sys: true, tekst: "Een andere klant" });
+          ph.add({ uit: true, tekst: ster(2) });
+          await ph.typing(900, tk);
+          ph.add({ tekst: "Wat jammer om te horen. Wat kunnen we beter doen? Je bericht gaat direct naar de eigenaar." });
+          await D.wacht(900, tk);
+          ph.note("Let op, Jan gaf 2 sterren", "Hij is nog niet naar Google gestuurd. Bel hem even.");
+      } }
+    ]
+  });
+
+  /* ---- probeer het zelf ---- */
+  const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });
+  z.head(naamBedrijf, "WhatsApp Business");
+  z.add({ sys: true, tekst: "Rond links een klus af" });
+  const log = document.getElementById("log"), status = document.getElementById("status");
+  let eerste = true, naam = "", wachtOpUitleg = false;
+  function logRegel(t, hot) { if (eerste) { log.innerHTML = ""; eerste = false; } const li = document.createElement("li"); li.textContent = t; if (hot) li.className = "hot"; log.appendChild(li); }
+
+  document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    naam = document.getElementById("f-naam").value.replace(/[<>]/g, "").trim() || "Marieke";
+    wachtOpUitleg = false;
+    z.clear();
+    z.add({ sys: true, tekst: "Klus afgerond" });
+    logRegel("Klus bij " + naam + " afgerond. Reviewverzoek verstuurd.");
+    await z.typing(1100, D.nieuwToken());
+    z.add({ tekst: "Hoi " + naam + ", met {ik}. Hoe tevreden ben je over je nieuwe {kort}? Kies hieronder 1 tot 5 sterren." });
+    z.chips([5, 4, 3, 2, 1].map(ster), kies);
+    status.className = "status"; status.textContent = "Kies op de telefoon een aantal sterren.";
+  });
+
+  async function kies(s) {
+    const n = (s.match(/★/g) || []).length;
+    z.chips([], null);
+    z.add({ uit: true, tekst: s });
+    await z.typing(900, D.nieuwToken());
+    if (n >= 4) {
+      z.add({ tekst: "Wat fijn om te horen! Wil je dat op Google zetten? Het kost een minuutje en helpt ons echt.", knop: "Review schrijven", klik: (b) => {
+        b.disabled = true;
+        const body = z.site('<h4>Review schrijven</h4><div class="stars"></div><textarea class="rv" aria-label="Je review" style="font:inherit;width:100%" maxlength="200">Heel tevreden, netjes geholpen!</textarea><button type="button" class="site-btn" style="border:0;font:inherit;cursor:pointer">Plaatsen</button>');
+        body.querySelector(".stars").textContent = ster(n);
+        body.querySelector("button").addEventListener("click", () => {
+          const t = body.querySelector("textarea").value.replace(/[<>]/g, "").slice(0, 120);
+          z.hideSite();
+          z.note("Nieuwe review van " + naam, ster(n) + "  " + t);
+          setTimeout(() => z.hideNote(), 5000);
+          logRegel("Nieuwe Google-review van " + naam + ", " + n + " sterren.", true);
+          status.className = "status ok"; status.textContent = "Zo komt er na elke klus vanzelf een review bij.";
+        });
+      } });
+      logRegel(naam + " gaf " + n + " sterren en kreeg de reviewlink.");
+    } else {
+      z.add({ tekst: "Wat jammer om te horen. Wat kunnen we beter doen? Je bericht gaat direct naar de eigenaar." });
+      wachtOpUitleg = true;
+      z.note("Let op, " + naam + " gaf " + n + " sterren", "Niet naar Google gestuurd. Neem even contact op.");
+      setTimeout(() => z.hideNote(), 5000);
+      logRegel(naam + " gaf " + n + " sterren. Niet naar Google gestuurd, melding naar de eigenaar.", true);
+      status.className = "status"; status.textContent = "Typ op de telefoon wat er beter kan.";
+    }
+  }
+
+  z.input(async (v) => {
+    if (!naam) { z.add({ sys: true, tekst: "Rond eerst links een klus af" }); return; }
+    z.add({ uit: true, tekst: v });
+    await z.typing(800, D.nieuwToken());
+    if (wachtOpUitleg) {
+      z.add({ tekst: "Dank je voor je eerlijke reactie, " + naam + ". De eigenaar neemt vandaag nog contact met je op." });
+      logRegel("Uitleg van " + naam + ": \"" + v.slice(0, 80) + "\"", true);
+      wachtOpUitleg = false;
+      status.className = "status ok"; status.textContent = "Zo kunnen jullie het eerst zelf oplossen.";
+    } else {
+      z.add({ tekst: "Dank je! Ik geef het door aan {bedrijf}." });
+    }
+  });
+})();
+</script>
+</body>
+</html>

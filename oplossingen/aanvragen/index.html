@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Direct reageren op aanvragen, {bedrijf}</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../demo.js"></script>
+</head>
+<body data-pagina="aanvragen" data-naam="de demo Direct reageren op aanvragen">
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Elke aanvraag binnen een minuut beantwoord</h1>
+        <p class="lead" data-vul="Zo reageert {bedrijf} automatisch en persoonlijk op elke nieuwe aanvraag. Ook als jullie in de showroom of op een klus staan."></p>
+        <ol class="steps" id="stappen">
+          <li data-vul="Een klant vraagt via jullie website {aanvraag} aan."></li>
+          <li data-vul="Binnen een minuut krijgt de klant een persoonlijk WhatsApp-bericht van {bedrijf}."></li>
+          <li data-vul="De klant kiest zelf een moment voor {afspraak}."></li>
+          <li>Jullie krijgen direct een melding met een korte samenvatting.</li>
+        </ol>
+        <button class="replay" id="opnieuw" type="button">Opnieuw afspelen</button>
+      </div>
+      <div id="demo"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="probeer">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Probeer het zelf</h2>
+        <p>Doe alsof je een klant bent en vraag iets aan. Er wordt niets echt verstuurd.</p>
+      </div>
+      <div class="try">
+        <div>
+          <div class="panel">
+            <h3 data-vul="Aanvraagformulier van {bedrijf}"></h3>
+            <form class="form" id="form">
+              <label>Je voornaam<input id="f-naam" required maxlength="30" autocomplete="off" placeholder="Bijvoorbeeld Sanne"></label>
+              <label>Waar gaat het om?<select id="f-wat"></select></label>
+              <button class="btn" type="submit">Verstuur aanvraag</button>
+            </form>
+            <p class="status" id="status" aria-live="polite"></p>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <h3 data-vul="Wat {bedrijf} ziet"></h3>
+            <p>Alles komt overzichtelijk binnen, zonder dat iemand iets hoeft te doen.</p>
+            <ul class="log" id="log"><li>Nog geen aanvragen.</li></ul>
+          </div>
+        </div>
+        <div id="zelf"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro"><h2>Wat het oplevert</h2></div>
+      <div class="gains">
+        <div><h3>Meer afspraken uit dezelfde aanvragen</h3><p>De klant hoort direct iets en plant meteen een afspraak, voordat hij bij een ander verder kijkt.</p></div>
+        <div><h3>Geen gehaast meer</h3><p>Niemand hoeft tussen twee klanten door snel terug te bellen. Jullie bellen alleen nog als het nodig is.</p></div>
+        <div><h3>Ook 's avonds en in het weekend</h3><p>Aanvragen die zaterdagavond binnenkomen, liggen maandag niet meer koud.</p></div>
+      </div>
+      <p class="fact">Wie binnen 5 minuten reageert, heeft ongeveer 21 keer meer kans op de klant dan wie na een half uur reageert.<small>Veelgeciteerd onderzoek naar reactiesnelheid op aanvragen.</small></p>
+    </div>
+  </section>
+
+  <section data-cta></section>
+</main>
+
+<script>
+(function () {
+  const D = Demo;
+
+  function werkdagen(n) {
+    const uit = [], d = new Date();
+    const uren = ["10.00", "13.30", "15.00"];
+    let i = 0;
+    while (uit.length < n) {
+      d.setDate(d.getDate() + 1);
+      if (d.getDay() === 0) continue;
+      uit.push(d.toLocaleDateString("nl-NL", { weekday: "long", day: "numeric", month: "short" }) + ", " + uren[i++ % uren.length]);
+    }
+    return uit;
+  }
+
+  /* ---- zo werkt het ---- */
+  const p = D.phone(document.getElementById("demo"), { lock: true, label: "Animatie van een aanvraag die automatisch beantwoord wordt" });
+  p.head(D.heeftNaam ? D.bedrijf : "Jullie bedrijf", "WhatsApp Business");
+  const moment = werkdagen(2)[1];
+
+  D.speler({
+    phone: p,
+    lijst: document.getElementById("stappen"),
+    opnieuw: document.getElementById("opnieuw"),
+    stappen: [
+      { stap: 0, pauze: 600, doe: async (ph, tk) => {
+          const body = ph.site('<h4>Vraag een offerte aan</h4>' +
+            '<div class="fld"><label>Naam</label><span></span></div>' +
+            '<div class="fld"><label>Telefoon</label><span></span></div>' +
+            '<div class="fld"><label>Waar gaat het om?</label><span></span></div>' +
+            '<div class="site-btn">Verstuur</div>');
+          const v = body.querySelectorAll(".fld");
+          const typ = async (i, t) => { v[i].classList.add("focus"); const s = v[i].querySelector("span"); for (const c of t) { s.textContent += c; await D.wacht(45, tk); } v[i].classList.remove("focus"); };
+          await D.wacht(700, tk);
+          await typ(0, "Sanne de Wit");
+          await typ(1, "06 12 34 56 78");
+          await typ(2, D.zin(D.br.aanvraag));
+          await D.wacht(400, tk);
+          body.querySelector(".site-btn").classList.add("press");
+      } },
+      { stap: 1, doe: async (ph, tk) => {
+          await D.wacht(500, tk);
+          ph.hideSite();
+          await D.wacht(500, tk);
+          ph.add({ sys: true, tekst: "Aanvraag binnen, antwoord na 41 seconden" });
+          await ph.typing(1300, tk);
+          ph.add({ tekst: "Hoi Sanne, bedankt voor je aanvraag voor {aanvraag}! Leuk dat je aan {bedrijf} denkt. Wil je een moment kiezen voor {afspraak}?", knop: "Kies een moment" });
+      } },
+      { stap: 2, doe: async (ph, tk) => {
+          await D.wacht(900, tk);
+          ph.add({ uit: true, tekst: "Gekozen: " + moment });
+          await ph.typing(1000, tk);
+          ph.add({ tekst: "Top, dat staat genoteerd! We zien je " + moment.replace(",", " om") + " uur. Heb je nog vragen, stuur ze gerust hier." });
+      } },
+      { stap: 3, pauze: 3000, doe: async (ph) => {
+          ph.note("Nieuwe afspraak via de website", "Sanne de Wit, " + D.br.aanvraag + ". " + D.zin(moment) + " uur.", "nu, binnen 41 seconden beantwoord");
+      } }
+    ]
+  });
+
+  /* ---- probeer het zelf ---- */
+  const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });
+  z.head(D.heeftNaam ? D.bedrijf : "Jullie bedrijf", "WhatsApp Business");
+  z.add({ sys: true, tekst: "Vul links het formulier in" });
+  const sel = document.getElementById("f-wat");
+  D.br.opties.forEach(o => { const op = document.createElement("option"); op.textContent = o; sel.appendChild(op); });
+  const log = document.getElementById("log"), status = document.getElementById("status");
+  let eerste = true, tk = null, naam = "", wat = "";
+  function logRegel(t, hot) { if (eerste) { log.innerHTML = ""; eerste = false; } const li = document.createElement("li"); li.textContent = t; if (hot) li.className = "hot"; log.appendChild(li); }
+
+  z.input(async (v) => {
+    z.add({ uit: true, tekst: v });
+    await z.typing(1100, D.nieuwToken());
+    z.add({ tekst: "Goeie vraag! Ik zet hem door naar een collega van {bedrijf}, die reageert vandaag nog." });
+    logRegel("Vraag van " + (naam || "de klant") + " doorgezet: \"" + v.slice(0, 80) + "\"", true);
+  });
+
+  document.getElementById("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    naam = document.getElementById("f-naam").value.replace(/[<>]/g, "").trim() || "Sanne";
+    wat = sel.value;
+    D.stopToken(tk); tk = D.nieuwToken();
+    const t0 = Date.now();
+    z.clear();
+    status.className = "status"; status.textContent = "Aanvraag verstuurd. Kijk naar de telefoon.";
+    logRegel("Nieuwe aanvraag van " + naam + ", " + wat.toLowerCase() + ".");
+    try {
+      z.add({ sys: true, tekst: "In het echt binnen een minuut, hier na een paar seconden" });
+      await D.wacht(1800, tk);
+      await z.typing(1500, tk);
+      const sec = Math.round((Date.now() - t0) / 1000);
+      z.add({ tekst: "Hoi " + naam + ", bedankt voor je aanvraag voor " + wat.toLowerCase() + "! Leuk dat je aan {bedrijf} denkt. Wil je een moment kiezen voor {afspraak}?", knop: "Kies een moment", klik: (b) => {
+        b.disabled = true;
+        z.chips(werkdagen(3), async (m) => {
+          z.chips([], null);
+          z.add({ uit: true, tekst: "Gekozen: " + m });
+          await z.typing(900, D.nieuwToken());
+          z.add({ tekst: "Top, dat staat genoteerd! We zien je " + m.replace(",", " om") + " uur." });
+          z.note("Nieuwe afspraak", naam + ", " + wat.toLowerCase() + ". " + D.zin(m) + " uur.");
+          logRegel("Afspraak gepland met " + naam + ", " + m + " uur.", true);
+          status.className = "status ok"; status.textContent = "Klaar. Dit is wat jullie klant en jullie zelf zien.";
+          setTimeout(() => z.hideNote(), 5000);
+        });
+      } });
+      logRegel("Automatisch beantwoord na " + sec + " seconden.");
+      status.textContent = "Tik in de telefoon op Kies een moment. Je kunt ook een vraag typen.";
+    } catch (err) {}
+  });
+})();
+</script>
+</body>
+</html>

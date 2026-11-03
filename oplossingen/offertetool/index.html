@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Offertetool op de website, {bedrijf}</title>
+<link rel="stylesheet" href="../demo.css">
+<script src="../demo.js"></script>
+<style>
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tile{border:1.5px solid var(--line);border-radius:10px;padding:12px 10px;font-weight:600;font-size:.84rem;text-align:left}
+  .tile.on{border-color:var(--ink);background:var(--amber-soft)}
+  .stap-kop{font-size:.72rem;color:var(--muted)}
+  .cfg fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+  .cfg legend{font-family:var(--font-head);font-weight:650;font-size:1.1rem;margin-bottom:8px;padding:0}
+  .cfg .tiles label{display:block;cursor:pointer}
+  .cfg .tiles input{position:absolute;opacity:0;pointer-events:none}
+  .cfg .tiles span{display:block;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-weight:600}
+  .cfg .tiles input:checked + span{border-color:var(--ink);background:var(--amber-soft)}
+  .cfg .tiles input:focus-visible + span{outline:3px solid var(--amber);outline-offset:2px}
+  .vg{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px}
+  .bon{font-size:.95rem}
+  .bon dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0 0}
+  .bon dt{color:var(--muted)}
+  .bon dd{margin:0;font-weight:600}
+  .bon.klaar{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+  .bar-voortgang{height:4px;border-radius:4px;background:var(--line);margin-bottom:16px;overflow:hidden}
+  .bar-voortgang i{display:block;height:100%;background:var(--ink);width:25%;transition:width .3s}
+</style>
+</head>
+<body data-pagina="offertetool" data-naam="de demo Offertetool">
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>Complete aanvragen, zonder heen en weer bellen</h1>
+        <p class="lead" data-vul="Bezoekers van de website van {bedrijf} geven stap voor stap door wat ze willen. Jullie krijgen een aanvraag binnen waar je direct een offerte mee kunt maken."></p>
+        <ol class="steps" id="stappen">
+          <li>Een bezoeker kiest op jullie website wat hij zoekt.</li>
+          <li>Hij vult de maten en wensen in, stap voor stap.</li>
+          <li>Hij laat zijn gegevens achter.</li>
+          <li data-vul="{bedrijf} krijgt een complete aanvraag binnen, met alles voor een offerte."></li>
+        </ol>
+        <button class="replay" id="opnieuw" type="button">Opnieuw afspelen</button>
+      </div>
+      <div id="demo"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Probeer het zelf</h2>
+        <p>Zo zou het op jullie website staan. Rechts zie je wat er bij jullie binnenkomt. Er wordt niets echt verstuurd.</p>
+      </div>
+      <div class="try">
+        <div class="panel cfg">
+          <div class="bar-voortgang" aria-hidden="true"><i id="voortgang"></i></div>
+          <form id="cfg" novalidate></form>
+          <p class="status" id="status" aria-live="polite"></p>
+        </div>
+        <div class="panel bon" id="bon" aria-live="polite">
+          <h3 data-vul="Wat {bedrijf} binnenkrijgt"></h3>
+          <p id="bon-kop">Vul links de stappen in.</p>
+          <dl id="bon-dl"></dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="intro"><h2>Wat het oplevert</h2></div>
+      <div class="gains">
+        <div><h3>Meer aanvragen</h3><p>Een paar keer klikken is voor een bezoeker makkelijker dan een mail schrijven of bellen. Juist 's avonds op de bank.</p></div>
+        <div><h3>Alles in één keer compleet</h3><p>Geen losse mailtjes met halve informatie. De maten en wensen staan er meteen bij.</p></div>
+        <div><h3>Sneller een offerte</h3><p>Met een complete aanvraag maken jullie sneller een offerte, en wie snel is krijgt vaker de opdracht.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section data-cta></section>
+</main>
+
+<script>
+(function () {
+  const D = Demo;
+  const br = D.br;
+  const kleuren = ["Wit", "Antraciet", "Zwart", "Houtkleur"];
+  const wanneer = ["Zo snel mogelijk", "Binnen 3 maanden", "Ik oriënteer me nog"];
+  const maatTekst = { bh: ["Breedte (cm)", "Hoogte (cm)"], m2: ["Aantal m²"], lengte: ["Lengte (cm)"] };
+  const voorbeeldMaat = { bh: ["400", "300"], m2: ["24"], lengte: ["360"] };
+
+  /* ---- zo werkt het ---- */
+  const p = D.phone(document.getElementById("demo"), { lock: true, label: "Animatie van de offertetool op een telefoon" });
+  p.head(D.heeftNaam ? D.bedrijf : "Jullie bedrijf", "Aanvraag");
+  const keuze = br.opties[0];
+  const maten = br.maat ? maatTekst[br.maat].map((l, i) => l.replace(/ \(.+\)/, "") + " " + voorbeeldMaat[br.maat][i] + (br.maat === "m2" ? " m²" : " cm")).join(", ") : "";
+
+  D.speler({
+    phone: p,
+    lijst: document.getElementById("stappen"),
+    opnieuw: document.getElementById("opnieuw"),
+    stappen: [
+      { stap: 0, pauze: 900, doe: async (ph, tk) => {
+          const b = ph.site('<span class="stap-kop">Stap 1 van 3</span><h4>Wat zoek je?</h4><div class="tiles"></div>');
+          const t = b.querySelector(".tiles");
+          br.opties.forEach(o => { const d = document.createElement("div"); d.className = "tile"; d.textContent = o; t.appendChild(d); });
+          await D.wacht(1100, tk);
+          t.firstChild.classList.add("on");
+      } },
+      { stap: 1, pauze: 900, doe: async (ph, tk) => {
+          const velden = br.maat ? maatTekst[br.maat] : ["Korte omschrijving"];
+          const waarden = br.maat ? voorbeeldMaat[br.maat] : ["Graag advies in de showroom"];
+          const b = ph.site('<span class="stap-kop">Stap 2 van 3</span><h4>Maten en wensen</h4>' + velden.map(() => '<div class="fld"><label></label><span></span></div>').join("") + '<div class="fld"><label>Kleur</label><span></span></div>');
+          const f = b.querySelectorAll(".fld");
+          velden.forEach((v, i) => f[i].querySelector("label").textContent = v);
+          for (let i = 0; i < velden.length; i++) { f[i].classList.add("focus"); for (const c of waarden[i]) { f[i].querySelector("span").textContent += c; await D.wacht(90, tk); } f[i].classList.remove("focus"); }
+          await D.wacht(300, tk);
+          f[f.length - 1].querySelector("span").textContent = "Antraciet";
+      } },
+      { stap: 2, pauze: 900, doe: async (ph, tk) => {
+          const b = ph.site('<span class="stap-kop">Stap 3 van 3</span><h4>Je gegevens</h4><div class="fld"><label>Naam</label><span></span></div><div class="fld"><label>Woonplaats</label><span></span></div><div class="site-btn">Aanvraag versturen</div>');
+          const f = b.querySelectorAll(".fld span");
+          for (const c of "Ahmed Yilmaz") { f[0].textContent += c; await D.wacht(45, tk); }
+          for (const c of "Zwijndrecht") { f[1].textContent += c; await D.wacht(45, tk); }
+          await D.wacht(400, tk);
+          b.querySelector(".site-btn").classList.add("press");
+      } },
+      { stap: 3, pauze: 3200, doe: async (ph, tk) => {
+          ph.site('<h4>Bedankt, Ahmed!</h4><p>We hebben alles binnen en sturen je snel een offerte.</p>');
+          await D.wacht(700, tk);
+          ph.note("Complete aanvraag van Ahmed Yilmaz", keuze + (maten ? ", " + maten : "") + ", antraciet. Zwijndrecht.", "klaar om een offerte te maken");
+      } }
+    ]
+  });
+
+  /* ---- probeer het zelf ---- */
+  const form = document.getElementById("cfg"), status = document.getElementById("status");
+  const dl = document.getElementById("bon-dl"), bonKop = document.getElementById("bon-kop"), bon = document.getElementById("bon");
+  const balk = document.getElementById("voortgang");
+  const data = { wat: "", maat: [], kleur: kleuren[1], wanneer: wanneer[0], opm: "", naam: "", plaats: "" };
+  let stap = 0;
+
+  function bonBijwerken() {
+    const rijen = [["Product", data.wat], ...(br.maat ? maatTekst[br.maat].map((l, i) => [l, data.maat[i] || ""]) : []), ["Kleur", data.wat ? data.kleur : ""], ["Wanneer", data.wat ? data.wanneer : ""], ["Opmerking", data.opm], ["Naam", data.naam], ["Woonplaats", data.plaats]];
+    dl.innerHTML = "";
+    rijen.filter(r => r[1]).forEach(([k, v]) => { const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); });
+    if (dl.children.length) bonKop.textContent = "Dit staat er tot nu toe in de aanvraag.";
+  }
+
+  function knoppen(terug, verder) {
+    return '<div class="vg">' + (terug ? '<button type="button" class="btn ghost" data-terug>Terug</button>' : '<span></span>') + '<button type="submit" class="btn">' + verder + '</button></div>';
+  }
+
+  function toon() {
+    balk.style.width = ((stap + 1) * 25) + "%";
+    status.textContent = ""; status.className = "status";
+    if (stap === 0) {
+      form.innerHTML = '<fieldset><legend>Wat zoek je?</legend><div class="tiles"></div></fieldset>' + knoppen(false, "Verder");
+      const t = form.querySelector(".tiles");
+      br.opties.forEach(o => { const l = document.createElement("label"); l.innerHTML = '<input type="radio" name="wat"><span></span>'; l.querySelector("input").value = o; l.querySelector("span").textContent = o; if (data.wat === o) l.querySelector("input").checked = true; t.appendChild(l); });
+    } else if (stap === 1) {
+      const velden = br.maat ? maatTekst[br.maat] : [];
+      form.innerHTML = '<fieldset><legend>Maten en wensen</legend><div class="form" style="margin:0"></div></fieldset>' + knoppen(true, "Verder");
+      const f = form.querySelector(".form");
+      if (velden.length) {
+        const rij = document.createElement("div"); rij.className = velden.length > 1 ? "row2" : "";
+        velden.forEach((v, i) => { const l = document.createElement("label"); l.textContent = v; const inp = document.createElement("input"); inp.inputMode = "numeric"; inp.dataset.i = i; inp.value = data.maat[i] || ""; inp.placeholder = voorbeeldMaat[br.maat][i]; l.appendChild(inp); rij.appendChild(l); });
+        f.appendChild(rij);
+      }
+      const mk = (lbl, opts, key) => { const l = document.createElement("label"); l.textContent = lbl; const s = document.createElement("select"); s.dataset.key = key; opts.forEach(o => { const op = document.createElement("option"); op.textContent = o; if (data[key] === o) op.selected = true; s.appendChild(op); }); l.appendChild(s); f.appendChild(l); };
+      mk("Kleur", kleuren, "kleur");
+      mk("Wanneer wil je het?", wanneer, "wanneer");
+      const l = document.createElement("label"); l.textContent = "Nog iets wat we moeten weten? (optioneel)"; const ta = document.createElement("input"); ta.dataset.key = "opm"; ta.maxLength = 120; ta.value = data.opm; l.appendChild(ta); f.appendChild(l);
+    } else if (stap === 2) {
+      form.innerHTML = '<fieldset><legend>Je gegevens</legend><div class="form" style="margin:0"><label>Naam<input data-key="naam" maxlength="40" autocomplete="off"></label><label>Woonplaats<input data-key="plaats" maxlength="40" autocomplete="off"></label></div></fieldset>' + knoppen(true, "Aanvraag versturen");
+      form.querySelector('[data-key="naam"]').value = data.naam;
+      form.querySelector('[data-key="plaats"]').value = data.plaats;
+    } else {
+      form.innerHTML = '<h3>Bedankt' + '</h3><p style="margin-top:8px">Zo ziet de bezoeker het. Jullie hebben de aanvraag rechts compleet binnen.</p><div class="vg"><span></span><button type="button" class="btn ghost" data-opnieuw>Nog een keer proberen</button></div>';
+      form.querySelector("h3").textContent = "Bedankt, " + (data.naam || "voor je aanvraag") + "!";
+    }
+    const terug = form.querySelector("[data-terug]");
+    if (terug) terug.addEventListener("click", () => { stap--; toon(); });
+    const opn = form.querySelector("[data-opnieuw]");
+    if (opn) opn.addEventListener("click", () => { Object.assign(data, { wat: "", maat: [], opm: "", naam: "", plaats: "" }); stap = 0; bon.classList.remove("klaar"); bonKop.textContent = "Vul links de stappen in."; bonBijwerken(); toon(); });
+    const eerste = form.querySelector("input, select");
+    if (eerste && stap > 0) eerste.focus({ preventScroll: true });
+  }
+
+  form.addEventListener("input", (e) => {
+    const el = e.target;
+    if (el.name === "wat") data.wat = el.value;
+    else if (el.dataset.i != null) data.maat[+el.dataset.i] = el.value.replace(/[^\d.,]/g, "").slice(0, 6);
+    else if (el.dataset.key) data[el.dataset.key] = el.value.replace(/[<>]/g, "");
+    bonBijwerken();
+  });
+  form.addEventListener("change", (e) => { if (e.target.name === "wat") { data.wat = e.target.value; bonBijwerken(); } });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (stap === 0 && !data.wat) { status.textContent = "Kies eerst wat je zoekt."; return; }
+    if (stap === 2 && !data.naam.trim()) { status.textContent = "Vul je naam in."; return; }
+    stap++;
+    if (stap === 3) {
+      bon.classList.add("klaar");
+      bonKop.textContent = "Nieuwe complete aanvraag. Hiermee kunnen jullie direct een offerte maken.";
+    }
+    toon();
+  });
+
+  bonBijwerken();
+  toon();
+})();
+</script>
+</body>
+</html>
