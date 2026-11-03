@@ -653,3 +653,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Galerie Van Slagmaat, Woerden | https://voorstel.sitefront.nl/galerie-van-slagmaat-woerden/ | site zonder mobiele weergave (verkleinde desktoppagina, schuift opzij), 40 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
 | Record Palace, Amsterdam | https://voorstel.sitefront.nl/record-palace-amsterdam/ | geen eigen site (Google 'Website toevoegen', mail-domein verlopen), 280 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
 | Bach Luidsprekers, Haarlem | https://voorstel.sitefront.nl/bach-luidsprekers-haarlem/ | framesite zonder mobiele weergave (verkleinde desktoppagina, nieuws 2017/2022), 06/WhatsApp. | 2026-11-03 | demo premium |
+| Easy-Darts, Oss | https://voorstel.sitefront.nl/easy-darts-oss/ | geen site op Google, FB-link dood, webshop rima7.nl met storingsbalk, 139 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
