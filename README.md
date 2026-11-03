@@ -649,3 +649,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | De Naaispecialist, Heinkenszand | https://voorstel.sitefront.nl/de-naaispecialist-heinkenszand/ | site zonder mobiele weergave, schuift opzij, 23 reviews, 06/WhatsApp. | 2026-11-02 | demo premium |
 | Ap Snaar, Honselersdijk | https://voorstel.sitefront.nl/ap-snaar-honselersdijk/ | geen eigen site (Google-knop naar Facebook), 41 reviews, 06/WhatsApp. | 2026-11-02 | demo premium |
 | Jansen Sport, Bergen op Zoom | https://voorstel.sitefront.nl/jansen-sport-bergen-op-zoom/ | geen eigen site (Google-knop naar Facebook, domein geparkeerd), 40 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
+| Foto V&V Keizerswaard / Foto Rotterdam, Rotterdam-IJsselmonde | https://voorstel.sitefront.nl/foto-rotterdam-keizerswaard/ | homepage alleen 'Klik hier voor informatie', opvultekst op contactpagina, 195 reviews, FORM. | 2026-11-03 | demo premium |
