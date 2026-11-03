@@ -5,22 +5,22 @@
   "use strict";
 
   const BRANCHES = {
-    zonwering:    { aanvraag: "een zonnescherm voor het terras", kort: "zonnescherm", afspraak: "inmeten bij je thuis", opties: ["Knikarmscherm", "Screens", "Rolluiken", "Uitvalscherm"], maat: "bh" },
-    keukens:      { aanvraag: "een nieuwe keuken", kort: "keuken", afspraak: "een ontwerpafspraak in de showroom", opties: ["Rechte keuken", "Hoekkeuken", "Keuken met eiland", "Apparatuur vervangen"], maat: "lengte" },
-    meubels:      { aanvraag: "een nieuwe hoekbank", kort: "hoekbank", afspraak: "een bezoek aan de showroom", opties: ["Hoekbank", "Eettafel en stoelen", "Kast op maat", "Fauteuil"], maat: "bh" },
-    badkamers:    { aanvraag: "een nieuwe badkamer", kort: "badkamer", afspraak: "een ontwerpafspraak in de showroom", opties: ["Complete badkamer", "Inloopdouche", "Toilet", "Badmeubel"], maat: "m2" },
-    vloeren:      { aanvraag: "een pvc-vloer voor de woonkamer", kort: "vloer", afspraak: "inmeten bij je thuis", opties: ["PVC", "Parket", "Laminaat", "Tapijt"], maat: "m2" },
-    tegels:       { aanvraag: "nieuwe tegels voor de badkamer", kort: "tegels", afspraak: "een bezoek aan de showroom", opties: ["Vloertegels", "Wandtegels", "Buitentegels", "Natuursteen"], maat: "m2" },
-    kozijnen:     { aanvraag: "nieuwe kunststof kozijnen", kort: "kozijnen", afspraak: "inmeten bij je thuis", opties: ["Kunststof kozijnen", "Houten kozijnen", "Voordeur", "Schuifpui"], maat: "bh" },
-    veranda:      { aanvraag: "een veranda met glazen schuifwanden", kort: "veranda", afspraak: "een bezoek aan de showroom", opties: ["Veranda", "Tuinkamer", "Carport", "Glazen schuifwanden"], maat: "bh" },
-    haarden:      { aanvraag: "een gashaard", kort: "haard", afspraak: "een bezoek aan de showroom", opties: ["Gashaard", "Houtkachel", "Pelletkachel", "Elektrische haard"], maat: null },
-    raamdecoratie:{ aanvraag: "nieuwe raamdecoratie", kort: "raamdecoratie", afspraak: "inmeten bij je thuis", opties: ["Plissés", "Jaloezieën", "Gordijnen", "Duettes"], maat: "bh" },
-    trappen:      { aanvraag: "een traprenovatie", kort: "trap", afspraak: "inmeten bij je thuis", opties: ["Traprenovatie", "Nieuwe trap", "Traphekken", "Traploper"], maat: null },
-    hovenier:     { aanvraag: "een nieuwe tuin", kort: "tuin", afspraak: "een kennismaking bij je thuis", opties: ["Tuinontwerp", "Bestrating", "Schutting", "Onderhoud"], maat: "m2" },
-    installateur: { aanvraag: "een warmtepomp", kort: "warmtepomp", afspraak: "een adviesgesprek bij je thuis", opties: ["Warmtepomp", "Cv-ketel", "Airco", "Zonnepanelen"], maat: null },
-    aannemer:     { aanvraag: "een uitbouw", kort: "uitbouw", afspraak: "een kennismaking bij je thuis", opties: ["Uitbouw", "Dakkapel", "Verbouwing", "Renovatie"], maat: "m2" },
-    schilder:     { aanvraag: "buitenschilderwerk", kort: "schilderwerk", afspraak: "een opname bij je thuis", opties: ["Buitenschilderwerk", "Binnenschilderwerk", "Houtrot herstellen", "Behangen"], maat: null },
-    standaard:    { aanvraag: "een offerte", kort: "aanvraag", afspraak: "een afspraak", opties: ["Advies", "Offerte", "Inmeten", "Showroombezoek"], maat: null }
+    zonwering:    { waarde: 3500, aanvraag: "een zonnescherm voor het terras", kort: "zonnescherm", afspraak: "inmeten bij je thuis", opties: ["Knikarmscherm", "Screens", "Rolluiken", "Uitvalscherm"], maat: "bh" },
+    keukens:      { waarde: 12000, aanvraag: "een nieuwe keuken", kort: "keuken", afspraak: "een ontwerpafspraak in de showroom", opties: ["Rechte keuken", "Hoekkeuken", "Keuken met eiland", "Apparatuur vervangen"], maat: "lengte" },
+    meubels:      { waarde: 2500, aanvraag: "een nieuwe hoekbank", kort: "hoekbank", afspraak: "een bezoek aan de showroom", opties: ["Hoekbank", "Eettafel en stoelen", "Kast op maat", "Fauteuil"], maat: "bh" },
+    badkamers:    { waarde: 9000, aanvraag: "een nieuwe badkamer", kort: "badkamer", afspraak: "een ontwerpafspraak in de showroom", opties: ["Complete badkamer", "Inloopdouche", "Toilet", "Badmeubel"], maat: "m2" },
+    vloeren:      { waarde: 3000, aanvraag: "een pvc-vloer voor de woonkamer", kort: "vloer", afspraak: "inmeten bij je thuis", opties: ["PVC", "Parket", "Laminaat", "Tapijt"], maat: "m2" },
+    tegels:       { waarde: 2500, aanvraag: "nieuwe tegels voor de badkamer", kort: "tegels", afspraak: "een bezoek aan de showroom", opties: ["Vloertegels", "Wandtegels", "Buitentegels", "Natuursteen"], maat: "m2" },
+    kozijnen:     { waarde: 8000, aanvraag: "nieuwe kunststof kozijnen", kort: "kozijnen", afspraak: "inmeten bij je thuis", opties: ["Kunststof kozijnen", "Houten kozijnen", "Voordeur", "Schuifpui"], maat: "bh" },
+    veranda:      { waarde: 7500, aanvraag: "een veranda met glazen schuifwanden", kort: "veranda", afspraak: "een bezoek aan de showroom", opties: ["Veranda", "Tuinkamer", "Carport", "Glazen schuifwanden"], maat: "bh" },
+    haarden:      { waarde: 3500, aanvraag: "een gashaard", kort: "haard", afspraak: "een bezoek aan de showroom", opties: ["Gashaard", "Houtkachel", "Pelletkachel", "Elektrische haard"], maat: null },
+    raamdecoratie:{ waarde: 1200, aanvraag: "nieuwe raamdecoratie", kort: "raamdecoratie", afspraak: "inmeten bij je thuis", opties: ["Plissés", "Jaloezieën", "Gordijnen", "Duettes"], maat: "bh" },
+    trappen:      { waarde: 3000, aanvraag: "een traprenovatie", kort: "trap", afspraak: "inmeten bij je thuis", opties: ["Traprenovatie", "Nieuwe trap", "Traphekken", "Traploper"], maat: null },
+    hovenier:     { waarde: 6000, aanvraag: "een nieuwe tuin", kort: "tuin", afspraak: "een kennismaking bij je thuis", opties: ["Tuinontwerp", "Bestrating", "Schutting", "Onderhoud"], maat: "m2" },
+    installateur: { waarde: 8000, aanvraag: "een warmtepomp", kort: "warmtepomp", afspraak: "een adviesgesprek bij je thuis", opties: ["Warmtepomp", "Cv-ketel", "Airco", "Zonnepanelen"], maat: null },
+    aannemer:     { waarde: 25000, aanvraag: "een uitbouw", kort: "uitbouw", afspraak: "een kennismaking bij je thuis", opties: ["Uitbouw", "Dakkapel", "Verbouwing", "Renovatie"], maat: "m2" },
+    schilder:     { waarde: 4000, aanvraag: "buitenschilderwerk", kort: "schilderwerk", afspraak: "een opname bij je thuis", opties: ["Buitenschilderwerk", "Binnenschilderwerk", "Houtrot herstellen", "Behangen"], maat: null },
+    standaard:    { waarde: 3000, aanvraag: "een offerte", kort: "aanvraag", afspraak: "een afspraak", opties: ["Advies", "Offerte", "Inmeten", "Showroombezoek"], maat: null }
   };
   const ALIAS = { zonweringen: "zonwering", rolluiken: "zonwering", screens: "zonwering", keuken: "keukens", meubel: "meubels", meubelen: "meubels", interieur: "meubels", wonen: "meubels", bedden: "meubels", badkamer: "badkamers", sanitair: "badkamers", vloer: "vloeren", parket: "vloeren", pvc: "vloeren", tegel: "tegels", natuursteen: "tegels", kozijn: "kozijnen", deuren: "kozijnen", veranda: "veranda", verandas: "veranda", overkapping: "veranda", tuinkamer: "veranda", haard: "haarden", kachels: "haarden", kachel: "haarden", gordijnen: "raamdecoratie", trap: "trappen", tuin: "hovenier", hoveniers: "hovenier", installatie: "installateur", bouw: "aannemer", schilders: "schilder" };
 
@@ -32,6 +32,7 @@
   pk = BRANCHES[pk] ? pk : (ALIAS[pk] || "standaard");
   const br = BRANCHES[pk];
   const medewerker = schoon(q.get("n"), 30);
+  const plaats = schoon(q.get("s"), 40);
 
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const initialen = (heeftNaam ? bedrijf : "Sitefront").split(/\s+/).filter(w => /^[A-Za-zÀ-ÿ]/.test(w)).slice(0, 2).map(w => w[0].toUpperCase()).join("") || "SF";
@@ -53,6 +54,7 @@
     if (heeftNaam) p.set("b", bedrijf);
     if (pk !== "standaard") p.set("p", pk);
     if (medewerker) p.set("n", medewerker);
+    if (plaats) p.set("s", plaats);
     for (const k in (extra || {})) p.set(k, extra[k]);
     const s = p.toString();
     return s ? "?" + s : "";
@@ -270,6 +272,34 @@
     }
   }
 
+
+  /* ---------- rekenhulp ---------- */
+  const euro = n => "€" + Math.round(n).toLocaleString("nl-NL");
+  function rekenhulp(el, opts) {
+    opts = opts || {};
+    const s = document.createElement("section");
+    s.className = "sec reken";
+    s.innerHTML = '<div class="wrap reken-in"><div><h2></h2><p class="reken-sub"></p>' +
+      '<label class="slider"><span>Gemiddelde opdracht <b data-o="w"></b></span><input type="range" data-i="w" min="500" max="40000" step="250"></label>' +
+      '<label class="slider"><span>Extra opdrachten per maand <b data-o="x"></b></span><input type="range" data-i="x" min="1" max="8" step="1"></label>' +
+      '<p class="reken-noot">Pas de bedragen aan naar wat bij jullie past. Het is een rekensom, geen belofte.</p></div>' +
+      '<div class="reken-uit" aria-live="polite"><span class="reken-lbl">Extra omzet per jaar</span><b data-o="j"></b><span data-o="zin"></span></div></div>';
+    s.querySelector("h2").textContent = vul(opts.titel || "Wat levert het {bedrijf} op?");
+    s.querySelector(".reken-sub").textContent = vul(opts.sub || "Jullie hebben er geen extra aanvragen voor nodig. Het gaat om de klanten die nu nog afhaken omdat het antwoord te laat komt of de offerte blijft liggen.");
+    const w = s.querySelector('[data-i="w"]'), x = s.querySelector('[data-i="x"]');
+    w.value = br.waarde; x.value = opts.x || 1;
+    const upd = () => {
+      const jw = +w.value, jx = +x.value;
+      s.querySelector('[data-o="w"]').textContent = euro(jw);
+      s.querySelector('[data-o="x"]').textContent = jx;
+      s.querySelector('[data-o="j"]').textContent = euro(jw * jx * 12);
+      s.querySelector('[data-o="zin"]').textContent = jx === 1 ? "Bij één extra " + br.kort + " per maand." : "Bij " + jx + " extra opdrachten per maand.";
+    };
+    w.addEventListener("input", upd); x.addEventListener("input", upd); upd();
+    el.parentNode.insertBefore(s, el);
+    return s;
+  }
+
   /* ---------- vaste delen van de pagina ---------- */
   function opbouw() {
     document.querySelectorAll("[data-vul]").forEach(el => { el.textContent = vul(el.getAttribute("data-vul")); });
@@ -323,6 +353,6 @@
     extraOpbouw();
   }
 
-  window.Demo = { bedrijf, heeftNaam, br, pk, medewerker, BRANCHES, vul, zin, tijd, phone, wacht, speler, nieuwToken, stopToken, params, reduce };
+  window.Demo = { bedrijf, heeftNaam, br, pk, medewerker, plaats, euro, rekenhulp, BRANCHES, vul, zin, tijd, phone, wacht, speler, nieuwToken, stopToken, params, reduce };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", opbouw); else opbouw();
 })();

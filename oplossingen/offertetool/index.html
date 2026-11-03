@@ -50,6 +50,28 @@
     </div>
   </section>
 
+  <section class="sec aha" id="voorna">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Van een vaag mailtje naar een complete aanvraag</h2>
+        <p>Links zoals aanvragen nu vaak binnenkomen. Rechts dezelfde klant via de offertetool.</p>
+      </div>
+      <div class="vn">
+        <div class="vn-kaart">
+          <h3>Een mailtje</h3>
+          <div class="mail" id="vn-mail"></div>
+          <ul class="vragen" id="vn-vragen"></ul>
+          <p class="voorbeeld">Eerst twee of drie keer mailen of bellen voordat er een offerte kan komen.</p>
+        </div>
+        <div class="vn-kaart na">
+          <h3>Via de offertetool</h3>
+          <ul class="vragen ok" id="vn-ok"></ul>
+          <p class="voorbeeld" style="color:var(--ok);font-weight:700">Direct een offerte maken.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="sec">
     <div class="wrap">
       <div class="intro">
@@ -138,6 +160,26 @@ Demo.pagina = {"nodig": ["Welke producten en keuzes er in de tool moeten", "Welk
       } }
     ]
   });
+
+
+  /* ---- voor en na ---- */
+  (function () {
+    document.getElementById("vn-mail").textContent = "Hoi, wat kost een " + br.kort + " ongeveer? Groetjes, Jan";
+    const vragen = ["Welk type precies?", br.maat ? "Welke maten?" : "Wat zijn de wensen?", "Welke kleur of uitvoering?", "Wanneer moet het klaar zijn?", "Waar woont hij, en hoe is hij bereikbaar?"];
+    const ul = document.getElementById("vn-vragen");
+    vragen.forEach(v => { const li = document.createElement("li"); li.textContent = v; ul.appendChild(li); });
+    const ok = [["Type", br.opties[0]], br.maat ? ["Maten", maten || "Opgegeven"] : ["Wensen", "Graag advies in de showroom"], ["Kleur", "Antraciet"], ["Wanneer", "Binnen 3 maanden"], ["Contact", "Jan de Graaf, Zwijndrecht, 06-nummer"]];
+    const ul2 = document.getElementById("vn-ok");
+    let gedaan = false;
+    new IntersectionObserver(async (es) => {
+      if (!es[0].isIntersecting || gedaan) return; gedaan = true;
+      for (const [k, v] of ok) { const li = document.createElement("li"); li.innerHTML = "<span><b></b> </span>"; li.querySelector("b").textContent = k; li.querySelector("span").append(v); ul2.appendChild(li); li.style.animation = "pop .3s ease-out"; await D.wacht(380); }
+    }, { threshold: .4 }).observe(document.getElementById("voorna"));
+  })();
+
+  /* ---- rekenhulp ---- */
+  const gs = document.querySelector(".gains").closest("section");
+  D.rekenhulp(gs.nextElementSibling, { titel: "Wat levert één extra aanvraag die klant wordt {bedrijf} op?", sub: "Een paar keer klikken is voor een bezoeker makkelijker dan mailen of bellen. Juist 's avonds komen zo aanvragen binnen die anders nooit verstuurd waren." });
 
   /* ---- probeer het zelf ---- */
   const form = document.getElementById("cfg"), status = document.getElementById("status");

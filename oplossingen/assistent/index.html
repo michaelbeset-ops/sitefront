@@ -29,6 +29,20 @@
     </div>
   </section>
 
+  <section class="sec aha" id="dagklok">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Klanten appen als jullie dicht zijn</h2>
+        <p data-vul="Zo kan een gewone dinsdag eruitzien voor {bedrijf}. Zet de assistent aan en kijk wie er direct antwoord krijgt."></p>
+      </div>
+      <label class="wissel"><input type="checkbox" id="klok-aan"><i></i><span id="klok-lbl">Assistent staat uit</span></label>
+      <div class="dag" id="dag" aria-hidden="true"><div class="dag-balk"></div><div class="dag-open"></div></div>
+      <ul class="berichten" id="berichten"></ul>
+      <div class="score"><div><b id="kl-direct">0</b>direct antwoord</div><div><b id="kl-wacht">0</b>moeten wachten tot de volgende dag</div></div>
+      <p class="voorbeeld">Voorbeeld met verzonnen berichten en tijden.</p>
+    </div>
+  </section>
+
   <section class="sec">
     <div class="wrap">
       <div class="intro">
@@ -102,6 +116,56 @@ Demo.pagina = {"nodig": ["De vragen die klanten vaak stellen, met jullie antwoor
       } }
     ]
   });
+
+
+  /* ---- dagklok ---- */
+  (function () {
+    const opties = D.br.opties;
+    const msgs = [
+      ["07:48", "Hoe laat gaan jullie open?"],
+      ["12:10", "Is mijn bestelling al binnen?", "door"],
+      ["13:37", "Wat kost een " + D.br.kort + " ongeveer?", "door"],
+      ["18:05", "Kan ik zaterdag langskomen?"],
+      ["19:42", "Wat is ongeveer de levertijd?"],
+      ["21:14", "Hebben jullie ook " + opties[1].toLowerCase() + "?"],
+      ["22:47", "Kunnen jullie bij mij " + (D.br.maat ? "komen inmeten" : "langskomen") + "?"],
+      ["23:20", "Zijn jullie zondag open?"]
+    ];
+    const open = [9, 17.5], van = 6, tot = 24;
+    const pos = h => ((h - van) / (tot - van) * 100) + "%";
+    const uur = s => { const [a, b] = s.split(":").map(Number); return a + b / 60; };
+    const dag = document.getElementById("dag");
+    const o = dag.querySelector(".dag-open"); o.style.left = pos(open[0]); o.style.width = ((open[1] - open[0]) / (tot - van) * 100) + "%";
+    [6, 9, 12, 15, 18, 21, 24].forEach(h => { const u = document.createElement("span"); u.className = "dag-uur"; u.style.left = pos(h); u.textContent = (h === 24 ? "00" : String(h).padStart(2, "0")) + ":00"; dag.appendChild(u); });
+    const stippen = msgs.map(([tijd]) => { const s = document.createElement("span"); s.className = "stip"; s.style.left = pos(uur(tijd)); s.textContent = "✉"; const l = document.createElement("span"); l.className = "stip-lbl"; l.style.left = pos(uur(tijd)); l.textContent = tijd; dag.append(s, l); return s; });
+    const ul = document.getElementById("berichten");
+    const aan = document.getElementById("klok-aan");
+    function teken() {
+      const met = aan.checked; let direct = 0, wacht = 0;
+      document.getElementById("klok-lbl").textContent = met ? "Assistent staat aan" : "Assistent staat uit";
+      ul.innerHTML = "";
+      msgs.forEach(([tijd, tekst, door], i) => {
+        const h = uur(tijd), binnen = h >= open[0] && h < open[1];
+        let label, ok;
+        if (met) { ok = true; label = door ? "Direct, en doorgezet" : "Direct beantwoord"; }
+        else if (binnen) { ok = true; label = "Als er tijd is"; }
+        else { ok = false; label = h < open[0] ? "Wacht tot 9.00" : "Wacht tot morgen"; }
+        if (met || !binnen) { if (ok) direct++; else wacht++; }
+        stippen[i].classList.toggle("ok", ok && (met || binnen));
+        const li = document.createElement("li");
+        li.innerHTML = "<time></time><span></span><em></em>";
+        li.querySelector("time").textContent = tijd; li.querySelector("span").textContent = tekst;
+        const em = li.querySelector("em"); em.textContent = label; if (ok) em.className = "ok";
+        ul.appendChild(li);
+      });
+      document.getElementById("kl-direct").textContent = met ? msgs.length : direct;
+      document.getElementById("kl-wacht").textContent = met ? 0 : wacht;
+    }
+    aan.addEventListener("change", teken);
+    teken();
+    let gedaan = false;
+    new IntersectionObserver((es) => { if (es[0].isIntersecting && !gedaan) { gedaan = true; setTimeout(() => { aan.checked = true; teken(); }, 2600); } }, { threshold: .5 }).observe(dag);
+  })();
 
   /* ---- probeer het zelf ---- */
   const z = D.phone(document.getElementById("zelf"), { label: "Chat met de assistent in de demo" });

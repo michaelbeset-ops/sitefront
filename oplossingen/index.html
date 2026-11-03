@@ -7,43 +7,70 @@
 <title>Voorbeelden voor {bedrijf}, Sitefront</title>
 <link rel="stylesheet" href="demo.css">
 <script src="demo.js"></script>
+<style>
+  .ov .wrap{grid-template-areas:"tekst" "dag"}
+  .ov .dagplek{grid-area:dag}
+  @media (min-width:880px){.ov .wrap{grid-template-columns:1fr 1fr;grid-template-areas:"tekst dag";align-items:center}}
+  .ov h1{font-size:clamp(2.1rem,5.6vw,3.3rem)}
+</style>
 </head>
 <body data-naam="de voorbeelden">
 <main>
-  <section class="hero">
-    <div class="wrap" style="grid-template-columns:1fr;grid-template-areas:'tekst'">
-      <div class="hero-text" style="max-width:44rem">
-        <h1 data-vul="Geen aanvraag of klant meer kwijt voor {bedrijf}"></h1>
-        <p class="lead">Dit zijn de systemen die Sitefront voor jullie kan inrichten en onderhouden. Elk voorbeeld kun je zelf uitproberen.</p>
+  <section class="hero ov">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1 data-vul="Geen aanvraag, offerte of klant meer kwijt voor {bedrijf}"></h1>
+        <p class="lead">Sitefront richt een paar slimme systemen in die op de achtergrond meewerken. Ze reageren, volgen op en houden klanten warm, ook als jullie in de showroom staan of allang thuis zijn.</p>
+        <div class="btns"><a class="btn amber" href="#oplossingen">Bekijk de voorbeelden</a></div>
+      </div>
+      <div class="dagplek">
+        <ol class="dagboek" id="dagboek" aria-label="Een dag met Sitefront"></ol>
       </div>
     </div>
   </section>
-  <section class="sec" style="border-top:0;padding-top:0">
+
+  <section class="sec" id="oplossingen" style="border-top:0">
     <div class="wrap">
-      <ul class="list" id="lijst"></ul>
+      <div class="intro">
+        <h2>Probeer elk systeem zelf uit</h2>
+        <p data-vul="Elk voorbeeld is ingericht voor {bedrijf}. Klik er een aan en doe alsof je een klant bent."></p>
+      </div>
+      <div class="kaarten5" id="kaarten"></div>
     </div>
   </section>
+
   <section data-cta></section>
 </main>
 <script>
 (function () {
   const D = Demo;
-  const items = [
-    ["aanvragen", "Direct reageren op elke aanvraag", "Elke nieuwe aanvraag krijgt binnen een minuut een persoonlijk WhatsApp-bericht, met een link om meteen een afspraak te plannen."],
-    ["offertes", "Offertes automatisch opvolgen", "Verstuurde offertes worden vriendelijk opgevolgd. Jullie bellen alleen nog klanten die gereageerd hebben."],
-    ["assistent", "WhatsApp-assistent", "Standaardvragen worden direct beantwoord, ook 's avonds. Prijzen en lastige vragen gaan naar jullie."],
-    ["reviews", "Meer reviews", "Na elke klus vanzelf een reviewverzoek. Ontevreden klanten komen eerst bij jullie uit."],
-    ["offertetool", "Offertetool op de website", "Bezoekers geven stap voor stap hun wensen en maten door. Jullie krijgen een complete aanvraag binnen."]
+  const dag = [
+    ["08:12", "Aanvraag binnen via de website", "Sanne krijgt 41 seconden later een persoonlijk berichtje en plant zelf een afspraak."],
+    ["11:30", "Offerte van vorige week opgevolgd", "Peter krijgt een vriendelijk berichtje. Hij reageert, en jullie bellen alleen hem terug."],
+    ["16:40", "Klus afgerond", "Marieke krijgt de vraag hoe het ging, en zet 5 sterren op Google."],
+    ["21:47", "Vraag over de levertijd", "De assistent beantwoordt hem meteen, terwijl jullie thuis op de bank zitten."],
+    ["22:15", "Complete aanvraag via de offertetool", "Met type, maten en wensen. Morgen meteen een offerte maken."]
   ];
-  const ul = document.getElementById("lijst");
-  items.forEach(([slug, titel, tekst]) => {
-    const li = document.createElement("li");
-    li.innerHTML = '<a><h3></h3><p></p><span class="go">Bekijk</span></a>';
-    li.querySelector("a").href = slug + "/" + D.params();
-    li.querySelector("h3").textContent = titel;
-    li.querySelector("p").textContent = tekst;
-    ul.appendChild(li);
+  const ol = document.getElementById("dagboek");
+  dag.forEach(([t, b, s]) => { const li = document.createElement("li"); li.innerHTML = "<time></time><div><b></b><span></span></div>"; li.querySelector("time").textContent = t; li.querySelector("b").textContent = b; li.querySelector("span").textContent = s; ol.appendChild(li); });
+  const lis = [...ol.children];
+  (async () => { for (const li of lis) { await D.wacht(D.reduce ? 0 : 650); li.classList.add("on"); } })();
+
+  const items = [
+    ["aanvragen", "41 sec", "Direct reageren op elke aanvraag", "Elke nieuwe aanvraag krijgt binnen een minuut een persoonlijk WhatsApp-bericht, met een link om meteen een afspraak te plannen."],
+    ["offertes", "dag 3, 7, 14", "Offertes automatisch opvolgen", "Verstuurde offertes worden vriendelijk opgevolgd. Jullie bellen alleen nog klanten die gereageerd hebben."],
+    ["assistent", "22:47", "WhatsApp-assistent", "Standaardvragen direct beantwoord, ook 's avonds en in het weekend. Prijzen en lastige vragen gaan naar jullie."],
+    ["reviews", "★ 4,8", "Meer Google-reviews", "Na elke klus vanzelf een reviewverzoek. Ontevreden klanten komen eerst bij jullie uit."],
+    ["offertetool", "compleet", "Offertetool op de website", "Bezoekers geven stap voor stap type, maten en wensen door. Jullie krijgen een complete aanvraag binnen."]
+  ];
+  const k = document.getElementById("kaarten");
+  items.forEach(([slug, big, titel, tekst]) => {
+    const a = document.createElement("a"); a.className = "k5"; a.href = slug + "/" + D.params();
+    a.innerHTML = '<span class="big"></span><h3></h3><p></p><span class="go">Probeer het</span>';
+    a.querySelector(".big").textContent = big; a.querySelector("h3").textContent = titel; a.querySelector("p").textContent = tekst;
+    k.appendChild(a);
   });
+  D.rekenhulp(document.querySelector("[data-cta]"), { titel: "Wat levert één extra klant per maand {bedrijf} op?" });
 })();
 </script>
 </body>

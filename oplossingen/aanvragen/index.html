@@ -29,6 +29,20 @@
     </div>
   </section>
 
+  <section class="sec aha" id="race">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Wie het eerst reageert, krijgt de klant</h2>
+        <p data-vul="Sanne vraagt 's avonds om 21.14 uur bij twee bedrijven {aanvraag} aan. Kijk wat er gebeurt."></p>
+      </div>
+      <div class="race">
+        <div class="lane" id="lane-ander"><div class="lane-top"><b>Een ander bedrijf</b><span class="lane-clock">21:14</span></div><div class="lane-chat"></div><div class="lane-uit"></div></div>
+        <div class="lane win" id="lane-wij"><div class="lane-top"><b data-vul="{bedrijf} met Sitefront"></b><span class="lane-clock">21:14</span></div><div class="lane-chat"></div><div class="lane-uit"></div></div>
+      </div>
+      <button class="replay" id="race-opnieuw" type="button" style="color:var(--muted);padding-left:0">Opnieuw afspelen</button>
+    </div>
+  </section>
+
   <section class="sec" id="probeer">
     <div class="wrap">
       <div class="intro">
@@ -133,6 +147,46 @@ Demo.pagina = {"nodig": ["Toegang tot het formulier op jullie site, of het maila
       } }
     ]
   });
+
+
+  /* ---- race ---- */
+  (function () {
+    const L = id => { const el = document.getElementById(id); return { chat: el.querySelector(".lane-chat"), klok: el.querySelector(".lane-clock"), uit: el.querySelector(".lane-uit") }; };
+    const A = L("lane-ander"), W = L("lane-wij");
+    const bel = (lane, tekst, uit, extra) => { const d = document.createElement("div"); d.className = "msg" + (uit ? " out" : "") + (extra || ""); d.textContent = D.vul(tekst); lane.chat.appendChild(d); return d; };
+    let tk = null, klaar = false;
+    async function speel() {
+      D.stopToken(tk); tk = D.nieuwToken(true); const k = tk;
+      [A, W].forEach(l => { l.chat.innerHTML = ""; l.uit.textContent = ""; l.uit.className = "lane-uit"; l.klok.textContent = "21:14"; });
+      try {
+        [A, W].forEach(l => bel(l, "Aanvraag via de website, 21.14 uur", false, " sys"));
+        await D.wacht(900, k);
+        for (let s = 0; s <= 41; s += 3) { W.klok.textContent = "21:14:" + String(s).padStart(2, "0"); await D.wacht(45, k); }
+        W.klok.textContent = "21:14:41";
+        bel(W, "Hoi Sanne, bedankt voor je aanvraag voor {aanvraag}! Wil je een moment kiezen voor {afspraak}?");
+        await D.wacht(1300, k);
+        W.klok.textContent = "21:16";
+        bel(W, "Donderdag 10.00 graag", true);
+        await D.wacht(700, k);
+        bel(W, "Top, staat genoteerd. Tot donderdag!");
+        W.uit.textContent = "✓ Afspraak gemaakt, binnen 2 minuten"; W.uit.classList.add("goed");
+        await D.wacht(1000, k);
+        for (const t of ["21:30", "22:15", "23:40", "00:00", "07:00", "08:30", "09:40"]) { A.klok.textContent = t; await D.wacht(260, k); }
+        const sp = document.createElement("div"); sp.className = "tijdsprong"; sp.textContent = "De volgende ochtend"; A.chat.appendChild(sp);
+        await D.wacht(500, k);
+        bel(A, "Goedemorgen Sanne, bedankt voor je aanvraag! Wanneer kunnen we langskomen?");
+        await D.wacht(1200, k);
+        bel(A, "Dank je, maar ik heb gisteravond al een afspraak gemaakt bij een ander.", true);
+        A.uit.textContent = "✗ Klant al weg"; A.uit.classList.add("fout");
+      } catch (e) {}
+    }
+    document.getElementById("race-opnieuw").addEventListener("click", speel);
+    new IntersectionObserver((es) => { if (es[0].isIntersecting && !klaar) { klaar = true; speel(); } }, { threshold: .4 }).observe(document.getElementById("race"));
+  })();
+
+  /* ---- rekenhulp ---- */
+  const gs = document.querySelector(".gains").closest("section");
+  D.rekenhulp(gs.nextSibling ? gs.nextElementSibling : gs, { titel: "Wat levert één extra klant per maand {bedrijf} op?" });
 
   /* ---- probeer het zelf ---- */
   const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });

@@ -33,6 +33,25 @@
     </div>
   </section>
 
+  <section class="sec aha" id="ranking">
+    <div class="wrap zoek-grid">
+      <div>
+        <div class="intro" style="margin-bottom:8px">
+          <h2>Van onderaan naar bovenaan</h2>
+          <p data-vul="Wie de meeste goede reviews heeft, wordt het eerst gekozen. Schuif de maanden door en kijk waar {bedrijf} uitkomt."></p>
+        </div>
+        <label class="slider"><span>Maanden met automatische reviewverzoeken <b id="rv-m-o"></b></span><input type="range" id="rv-m" min="0" max="12" step="1" value="0"></label>
+        <label class="slider"><span>Afgeronde klussen per maand <b id="rv-k-o"></b></span><input type="range" id="rv-k" min="2" max="40" step="1" value="10"></label>
+        <label class="slider"><span>Klanten die dan een review schrijven <b id="rv-p-o"></b></span><input type="range" id="rv-p" min="10" max="50" step="5" value="30"></label>
+        <p class="voorbeeld">Rekenvoorbeeld met verzonnen concurrenten. Pas de aantallen aan naar jullie eigen situatie.</p>
+      </div>
+      <div class="zoek" aria-live="polite">
+        <div class="zoekbalk" id="rv-q"></div>
+        <div id="rv-lijst"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="sec">
     <div class="wrap">
       <div class="intro">
@@ -119,6 +138,45 @@ Demo.pagina = {"nodig": ["Het moment waarop een klus of levering klaar is, bijvo
       } }
     ]
   });
+
+
+  /* ---- ranking ---- */
+  (function () {
+    const $ = id => document.getElementById(id);
+    $("rv-q").textContent = D.br.kort + " " + (D.plaats || "in de buurt");
+    const basis = [
+      { naam: "Concurrent A", r: 4.6, n: 48 },
+      { naam: "Concurrent B", r: 4.4, n: 31 },
+      { naam: D.heeftNaam ? D.bedrijf : "Jullie bedrijf", r: 4.5, n: 12, wij: true },
+      { naam: "Concurrent C", r: 4.2, n: 9 }
+    ];
+    const ster = r => "★".repeat(Math.round(r)) + "☆".repeat(5 - Math.round(r));
+    function teken() {
+      const m = +$("rv-m").value, k = +$("rv-k").value, p = +$("rv-p").value / 100;
+      $("rv-m-o").textContent = m; $("rv-k-o").textContent = k; $("rv-p-o").textContent = Math.round(p * 100) + "%";
+      const nieuw = Math.round(m * k * p);
+      const rij = basis.map(b => b.wij ? { ...b, n: b.n + nieuw, r: (b.r * b.n + 4.8 * nieuw) / (b.n + nieuw) } : b);
+      rij.sort((a, b) => b.r * Math.log(b.n + 1) - a.r * Math.log(a.n + 1));
+      const l = $("rv-lijst"); l.innerHTML = "";
+      rij.forEach((b, i) => {
+        const d = document.createElement("div"); d.className = "res" + (b.wij ? " zij" : "");
+        d.innerHTML = "<b></b><span><span class='st'></span> <span class='sc'></span></span><small></small>";
+        d.querySelector("b").textContent = (i + 1) + ". " + b.naam;
+        d.querySelector(".st").textContent = ster(b.r);
+        d.querySelector(".sc").textContent = b.r.toFixed(1).replace(".", ",") + " (" + b.n + " reviews)";
+        d.querySelector("small").textContent = b.wij && nieuw ? "+" + nieuw + " nieuwe reviews" : (b.wij ? "nu" : "");
+        l.appendChild(d);
+      });
+    }
+    ["rv-m", "rv-k", "rv-p"].forEach(id => $(id).addEventListener("input", teken));
+    teken();
+    let gedaan = false;
+    new IntersectionObserver(async (es) => {
+      if (!es[0].isIntersecting || gedaan) return; gedaan = true;
+      await D.wacht(1000);
+      for (let m = 1; m <= 12; m++) { $("rv-m").value = m; teken(); await D.wacht(320); }
+    }, { threshold: .4 }).observe($("ranking"));
+  })();
 
   /* ---- probeer het zelf ---- */
   const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });

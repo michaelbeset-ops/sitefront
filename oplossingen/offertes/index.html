@@ -29,6 +29,24 @@
     </div>
   </section>
 
+  <section class="sec aha" id="pijplijn">
+    <div class="wrap">
+      <div class="intro">
+        <h2>Wat er met acht offertes gebeurt</h2>
+        <p>Zet de opvolging aan en uit, en kijk hoeveel offertes er stilletjes verdwijnen.</p>
+      </div>
+      <label class="wissel"><input type="checkbox" id="pijp-aan"><i></i><span id="pijp-lbl">Automatische opvolging staat uit</span></label>
+      <div class="pijp">
+        <div class="kol" data-k="0"><h3>Verstuurd</h3></div>
+        <div class="kol" data-k="1"><h3>Opgevolgd</h3></div>
+        <div class="kol" data-k="2"><h3>Klant reageert</h3></div>
+        <div class="kol" data-k="3"><h3>Opdracht</h3></div>
+      </div>
+      <div class="score"><div><b id="sc-opd">0</b>opdrachten</div><div><b id="sc-weg">0</b>niets meer van gehoord</div><div><b>0</b>keer zelf nagebeld</div></div>
+      <p class="voorbeeld">Voorbeeld met verzonnen namen en aantallen.</p>
+    </div>
+  </section>
+
   <section class="sec">
     <div class="wrap">
       <div class="intro">
@@ -109,6 +127,47 @@ Demo.pagina = {"nodig": ["Hoe jullie offertes nu versturen, via een pakket, de m
       } }
     ]
   });
+
+
+  /* ---- pijplijn ---- */
+  (function () {
+    const namen = ["Peter Smit", "Linda Vos", "Ahmed Yilmaz", "Mark de Boer", "Ingrid Mol", "Tom Verhoef", "Fatima El Amrani", "Henk Bakker"];
+    const kol = [...document.querySelectorAll("#pijplijn .kol")];
+    const aan = document.getElementById("pijp-aan"), lbl = document.getElementById("pijp-lbl");
+    const opd = document.getElementById("sc-opd"), weg = document.getElementById("sc-weg");
+    let tk = null, gestart = false;
+    function kaart(i) { const k = document.createElement("div"); k.className = "kaart"; k.innerHTML = "<b></b><span></span>"; k.querySelector("b").textContent = namen[i]; k.querySelector("span").textContent = D.br.opties[i % D.br.opties.length]; return k; }
+    async function speel() {
+      D.stopToken(tk); tk = D.nieuwToken(true); const k = tk;
+      const met = aan.checked;
+      lbl.textContent = met ? "Automatische opvolging staat aan" : "Automatische opvolging staat uit";
+      kol.forEach(c => c.querySelectorAll(".kaart").forEach(x => x.remove()));
+      opd.textContent = "0"; weg.textContent = "0";
+      const kaarten = namen.map((_, i) => kaart(i));
+      try {
+        for (const c of kaarten) { kol[0].appendChild(c); await D.wacht(120, k); }
+        await D.wacht(900, k);
+        const reageert = met ? [0, 2, 4, 6] : [2];
+        const wint = met ? [0, 2, 6] : [2];
+        if (met) {
+          for (const c of kaarten) { kol[1].appendChild(c); c.querySelector("span").textContent = "Dag 3, 7 en 14 opgevolgd"; await D.wacht(140, k); }
+          await D.wacht(700, k);
+        }
+        for (const i of reageert) { kol[2].appendChild(kaarten[i]); kaarten[i].querySelector("span").textContent = met ? "Reageerde op de opvolging" : "Belde zelf terug"; await D.wacht(350, k); }
+        await D.wacht(700, k);
+        for (const i of wint) { kol[3].appendChild(kaarten[i]); kaarten[i].classList.add("goud"); kaarten[i].querySelector("span").textContent = "Getekend"; await D.wacht(350, k); }
+        let w = 0;
+        kaarten.forEach((c, i) => { if (!reageert.includes(i)) { c.classList.add("dood"); c.querySelector("span").textContent = "Niets meer gehoord"; w++; } });
+        opd.textContent = wint.length; weg.textContent = w;
+      } catch (e) {}
+    }
+    aan.addEventListener("change", speel);
+    new IntersectionObserver((es) => { if (es[0].isIntersecting && !gestart) { gestart = true; speel(); setTimeout(() => { if (!aan.checked) { aan.checked = true; speel(); } }, 7000); } }, { threshold: .35 }).observe(document.getElementById("pijplijn"));
+  })();
+
+  /* ---- rekenhulp ---- */
+  const gs = document.querySelector(".gains").closest("section");
+  D.rekenhulp(gs.nextElementSibling, { titel: "Wat levert één extra getekende offerte per maand {bedrijf} op?", sub: "Het gaat om offertes die nu al de deur uitgaan, maar waar daarna niemand meer achteraan gaat." });
 
   /* ---- probeer het zelf ---- */
   const z = D.phone(document.getElementById("zelf"), { label: "Telefoon van de klant in de demo" });
