@@ -651,3 +651,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Jansen Sport, Bergen op Zoom | https://voorstel.sitefront.nl/jansen-sport-bergen-op-zoom/ | geen eigen site (Google-knop naar Facebook, domein geparkeerd), 40 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
 | Foto V&V Keizerswaard / Foto Rotterdam, Rotterdam-IJsselmonde | https://voorstel.sitefront.nl/foto-rotterdam-keizerswaard/ | homepage alleen 'Klik hier voor informatie', opvultekst op contactpagina, 195 reviews, FORM. | 2026-11-03 | demo premium |
 | Galerie Van Slagmaat, Woerden | https://voorstel.sitefront.nl/galerie-van-slagmaat-woerden/ | site zonder mobiele weergave (verkleinde desktoppagina, schuift opzij), 40 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
+| Record Palace, Amsterdam | https://voorstel.sitefront.nl/record-palace-amsterdam/ | geen eigen site (Google 'Website toevoegen', mail-domein verlopen), 280 reviews, 06/WhatsApp. | 2026-11-03 | demo premium |
