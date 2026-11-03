@@ -103,11 +103,12 @@
         return d;
       },
       async typing(ms, token) {
+        const sub = $(".ph-sub"), oud = sub.textContent;
+        sub.textContent = "typt...";
         const t = document.createElement("div");
         t.className = "typing"; t.innerHTML = "<i></i><i></i><i></i>";
         body.appendChild(t); body.scrollTop = body.scrollHeight;
-        await wacht(ms, token);
-        t.remove();
+        try { await wacht(ms, token); } finally { t.remove(); sub.textContent = oud; }
       },
       note(titel, tekst, sub) {
         note.innerHTML = "";
@@ -160,6 +161,11 @@
   function speler(cfg) {
     const lis = cfg.lijst ? [...cfg.lijst.querySelectorAll("li")] : [];
     let token = null, gestart = false;
+    let cap = null;
+    if (cfg.phone.el.parentNode && cfg.phone.el.parentNode.classList.contains("phone-plek")) {
+      cap = document.createElement("p"); cap.className = "caption"; cap.setAttribute("aria-hidden", "true");
+      cfg.phone.el.parentNode.insertBefore(cap, cfg.phone.el);
+    }
     async function run() {
       stopToken(token);
       token = nieuwToken(true);
@@ -171,6 +177,7 @@
           const st = cfg.stappen[i];
           if (st.stap != null && lis[st.stap]) {
             lis.forEach((li, j) => { li.classList.toggle("on", j === st.stap); li.classList.toggle("done", j < st.stap); });
+            if (cap) { cap.innerHTML = "<b></b> "; cap.querySelector("b").textContent = (st.stap + 1) + "."; cap.append(lis[st.stap].textContent); }
           }
           await st.doe(cfg.phone, tk);
           await wacht(st.pauze || 1400, tk);
@@ -183,6 +190,84 @@
     const io = new IntersectionObserver(es => { if (es[0].isIntersecting && !gestart) { gestart = true; run(); } }, { threshold: .35 });
     io.observe(cfg.phone.el);
     return { run, stop: () => stopToken(token) };
+  }
+
+
+  const WERKWIJZE = [
+    ["Kennismaken", "Een kort gesprek over hoe jullie nu werken en wat jullie willen bereiken."],
+    ["Inrichten", "Sitefront zet alles op met jullie eigen naam, teksten en toon."],
+    ["Goedkeuren", "Jullie lezen de berichten en keuren ze goed voordat er iets live gaat."],
+    ["Live en onderhouden", "Het draait vanaf dan vanzelf. Sitefront houdt het bij en past het aan als dat nodig is. Maandelijks opzegbaar."]
+  ];
+  const FAQ = [
+    ["Klanten willen toch een mens spreken?", "Klopt, en dat blijft ook zo. Het systeem zorgt alleen dat ze direct een reactie krijgen. Zodra het lastig wordt, neemt een medewerker het over."],
+    ["We reageren zelf al best snel.", "Fijn, dan scheelt het vooral in de avonden, de weekenden en op drukke dagen. Juist dan gaan de meeste aanvragen verloren."],
+    ["Is dat niet onpersoonlijk?", "De berichten zijn geschreven in jullie eigen naam en toon, en we stellen ze samen af voordat het live gaat. Klanten krijgen juist sneller persoonlijke aandacht."],
+    ["Zit er AI in?", "Ja, voor het schrijven en beantwoorden van berichten. Het zegt altijd eerlijk dat het een digitale assistent is, en er zit altijd een mens achter voor lastige vragen, prijzen en klachten."],
+    ["Wat gebeurt er met onze gegevens en die van klanten?", "Alles valt onder de algemene voorwaarden van Sitefront, inclusief een verwerkersartikel voor de AVG. Klanten geven toestemming voor berichten via WhatsApp."],
+    ["We hebben al een offertepakket of CRM.", "Dan koppelen we daaraan als dat kan, zodat jullie niets dubbel hoeven te doen."]
+  ];
+
+  function sectie(cls, html) { const s = document.createElement("section"); s.className = cls; s.innerHTML = html; return s; }
+  function tekst(el, t) { el.textContent = vul(t); return el; }
+
+  function extraOpbouw() {
+    const cfg = window.Demo.pagina || {};
+    const huidig = document.body.getAttribute("data-pagina") || "";
+
+    // knoppen in de hero
+    const ht = document.querySelector(".hero-text");
+    const probeer = document.querySelector("main > .sec");
+    if (probeer && !probeer.id) probeer.id = "probeer";
+    if (ht && huidig) {
+      const naamDemo = document.body.getAttribute("data-naam") || "de demo";
+      const wa = "https://wa.me/31643430003?text=" + encodeURIComponent("Hoi Michael, ik heb " + naamDemo + " bekeken" + (heeftNaam ? " voor " + bedrijf : "") + ". ");
+      const b = document.createElement("div"); b.className = "btns";
+      b.innerHTML = '<a class="btn amber" href="#probeer">Probeer het zelf</a><a class="btn ghost" target="_blank" rel="noopener">Stuur Michael een berichtje</a>';
+      b.querySelectorAll("a")[1].href = wa;
+      ht.appendChild(b);
+    }
+
+    // log-paneel als app-venster
+    const log = document.getElementById("log");
+    const pan = log && log.closest(".panel");
+    if (pan && !pan.classList.contains("app")) {
+      const binnen = document.createElement("div"); binnen.className = "app-in";
+      while (pan.firstChild) binnen.appendChild(pan.firstChild);
+      pan.classList.add("app");
+      const top = document.createElement("div"); top.className = "app-top"; top.innerHTML = "<i></i><i></i><i></i><span></span>";
+      top.querySelector("span").textContent = "Overzicht " + (heeftNaam ? bedrijf : "jullie bedrijf");
+      pan.append(top, binnen);
+    }
+
+    const gains = document.querySelector(".gains");
+    const gainsSec = gains && gains.closest("section");
+
+    // maandoverzicht
+    if (cfg.cijfers && gainsSec) {
+      const s = sectie("sec", '<div class="wrap"><div class="intro"><h2></h2><p></p></div><div class="dash"><div class="app-top"><i></i><i></i><i></i><span></span></div><div class="dash-in"><div class="tiles4"></div><div><h3>Laatste activiteit</h3><ul class="recent"></ul></div><p class="dash-noot">Voorbeeld met verzonnen cijfers. Zo ziet het maandoverzicht eruit.</p></div></div></div>');
+      tekst(s.querySelector("h2"), "Wat jullie elke maand terugzien");
+      tekst(s.querySelector(".intro p"), "Een kort overzicht laat precies zien wat het systeem voor {bedrijf} heeft gedaan. Zo weten jullie wat het oplevert.");
+      s.querySelector(".app-top span").textContent = "Maandoverzicht " + (heeftNaam ? bedrijf : "jullie bedrijf");
+      const tl = s.querySelector(".tiles4");
+      cfg.cijfers.forEach(([lbl, val]) => { const d = document.createElement("div"); d.className = "tile4"; d.innerHTML = "<b></b><span></span>"; d.querySelector("b").textContent = val; tekst(d.querySelector("span"), lbl); tl.appendChild(d); });
+      const rc = s.querySelector(".recent");
+      (cfg.recent || []).forEach(([wat, wanneer]) => { const li = document.createElement("li"); li.innerHTML = "<span></span><small></small>"; tekst(li.querySelector("span"), wat); li.querySelector("small").textContent = wanneer; rc.appendChild(li); });
+      gainsSec.parentNode.insertBefore(s, gainsSec);
+    }
+
+    // wat we nodig hebben en werkwijze
+    const naCta = document.querySelector("[data-cta]");
+    if (huidig && naCta) {
+      const s = sectie("sec", '<div class="wrap duo"><div><h2>Wat we van jullie nodig hebben</h2><ul class="vink"></ul></div><div><h2>Zo gaat het in zijn werk</h2><ol class="werk"></ol></div></div>');
+      (cfg.nodig || []).forEach(n => { s.querySelector(".vink").appendChild(tekst(document.createElement("li"), n)); });
+      WERKWIJZE.forEach(([k, v]) => { const li = document.createElement("li"); li.innerHTML = "<div><b></b><span></span></div>"; li.querySelector("b").textContent = k; li.querySelector("span").textContent = v; s.querySelector(".werk").appendChild(li); });
+      naCta.parentNode.insertBefore(s, naCta);
+
+      const f = sectie("sec", '<div class="wrap"><div class="intro"><h2>Vragen die we vaak horen</h2></div><div class="faq"></div></div>');
+      FAQ.forEach(([v, a]) => { const d = document.createElement("details"); d.innerHTML = "<summary></summary><p></p>"; d.querySelector("summary").textContent = v; d.querySelector("p").textContent = a; f.querySelector(".faq").appendChild(d); });
+      naCta.parentNode.insertBefore(f, naCta);
+    }
   }
 
   /* ---------- vaste delen van de pagina ---------- */
@@ -235,6 +320,7 @@
     });
     foot.querySelector("p").textContent = "Dit is een voorbeeld gemaakt door Sitefront" + (heeftNaam ? " voor " + bedrijf + ". " + bedrijf + " is hier niet bij betrokken." : ".") + " Namen, tijden en berichten in deze demo zijn verzonnen. Sitefront, Dordrecht, KvK 42057398.";
     document.body.appendChild(foot);
+    extraOpbouw();
   }
 
   window.Demo = { bedrijf, heeftNaam, br, pk, medewerker, BRANCHES, vul, zin, tijd, phone, wacht, speler, nieuwToken, stopToken, params, reduce };
