@@ -1,108 +1,458 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Foto from '../components/Foto.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, reviews, waHoi, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import lampen from '../assets/lampen.jpg';
+import tafels from '../assets/tafels.jpg';
+import aardewerk from '../assets/aardewerk.jpg';
+import dienblad from '../assets/dienblad.jpg';
+import henna from '../assets/henna.jpg';
+import poefs from '../assets/poefs.jpg';
+import laden1 from '../assets/laden-1.jpg';
+import laden2 from '../assets/laden-2.jpg';
+import laden3 from '../assets/laden-3.jpg';
+import lossen from '../assets/lossen.jpg';
+import showroom1 from '../assets/showroom-1.jpg';
+import showroom2 from '../assets/showroom-2.jpg';
+import showroomDeur from '../assets/showroom-deur.jpg';
+import tuinWit from '../assets/tuin-wit.jpg';
+import t1 from '../assets/ig-CiiKvalDH-l.jpg';
+import t2 from '../assets/ig-C7hVQO_osN6.jpg';
+import t3 from '../assets/ig-ChR4r8vDxVg.jpg';
+import t4 from '../assets/ig-CiiKNYpDMNX.jpg';
+import t5 from '../assets/ig-Crdgt3fIIz4.jpg';
+import t6 from '../assets/ig-CrvsPECon1n.jpg';
+import t7 from '../assets/ig-DCAVb9foZfj.jpg';
+import t8 from '../assets/ig-CiiJepsDV2P.jpg';
 
-const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p = '') => `${base}/${p}`;
-const route = 'https://www.google.com/maps/dir/?api=1&destination=Aventurijn+1420+3316+LB+Dordrecht';
-const app = 'https://wa.me/31621278454';
+const vraag = (wat: string) => waMet(`Hallo Edwin, ik ben op zoek naar ${wat}. Wat hebben jullie op dit moment in de showroom?`);
 
-// Assortiment uit hun eigen site, in eigen woorden samengevat.
 const assortiment = [
-  ['Mozaïektafels en fonteinen', 'In Marrakech met de hand gelegd, van een tafeltje van 40 cm tot een tafel van 2 meter.'],
-  ['Lampen en lantaarns', 'Marokkaanse en oosterse lampen van 30 tot 150 cm. Elke lamp is uniek.'],
-  ['Aardewerk', 'Schalen, borden, kommen en vazen uit Safi, loodvrij.'],
-  ['Dienbladen en theepotten', 'Oude zilveren dienbladen, ook als salontafel uit te voeren.'],
-  ['Hennalampen', 'Leren lampen, met de hand beschilderd met henna.'],
-  ['Spiegels', 'Van vertind koper of smeedijzer, van 40 bij 40 tot 180 bij 80 cm.'],
-  ['Kasten en dressoirs', 'Marokkaanse kasten, dressoirs en bijzettafels.'],
-  ['Stoelen en banken', 'Smeedijzer, mooi bij een mozaïektafel in de tuin.'],
-  ['Poefs en kussens', 'Handgemaakte leren poefs uit de medina van Marrakech.'],
+  { t: 'Mozaïektafels', d: 'In Marrakech met de hand gelegd. Van een tafeltje van 40 cm tot een tafel van 2 meter.', src: tafels, alt: 'Ronde mozaïektafels in veel kleuren naast elkaar', w: 'een mozaïektafel' },
+  { t: 'Oosterse lampen', d: 'Lampen en lantaarns van 30 tot 150 cm. Omdat ze handgemaakt zijn, is elke lamp uniek.', src: lampen, alt: 'Oosterse lampen en lantaarns aan het plafond van de showroom, met mozaïektafels eronder', w: 'een oosterse lamp' },
+  { t: 'Aardewerk', d: 'Schalen, borden, kommen en vazen, kleinschalig gemaakt in Safi. Loodvrij.', src: aardewerk, alt: 'Stapels beschilderde Marokkaanse kommen in blauw, wit en geel', w: 'Marokkaans aardewerk' },
+  { t: 'Dienbladen', d: 'Oude zilveren dienbladen, met de hand bewerkt. Ook uit te voeren als salontafel.', src: dienblad, alt: 'Rond oud zilveren dienblad met een fijn gegraveerd patroon', w: 'een oud zilveren dienblad' },
+  { t: 'Hennalampen', d: 'Lampen van leer over een smeedijzeren frame, met de hand beschilderd met henna.', src: henna, alt: 'Vier staande hennalampen in geel, oranje en rood, aan', w: 'een hennalamp' },
+  { t: 'Poefs', d: 'Leren poefs in veel kleuren, bij een mozaïektafel of gewoon in de kamer.', src: poefs, alt: 'Stapel leren poefs in rood, blauw, geel en roze tegen een oranje muur', w: 'een leren poef' },
+];
+
+const stappen = [
+  ['Stuur Edwin een appje', 'Zeg wat u zoekt, of stuur een foto van uw tuin of kamer.'],
+  ['Maak een afspraak', 'Maandag t/m zaterdag tussen 12.00 en 19.00 uur. Er is niet altijd iemand in het magazijn.'],
+  ['Kies in het echt', 'Meer dan 500 mozaïektafels op voorraad, en geen twee zijn hetzelfde.'],
+  ['Mee naar huis', 'Veel unieke stukken haalt u op in Dordrecht. Vraag gerust naar bezorgen.'],
+];
+
+const tuin = [
+  { src: tuinWit, alt: 'Ovale witte mozaïektafel met smeedijzeren stoelen op een terras' },
+  { src: t1, alt: 'Ronde turquoise mozaïektafel op een terras met een oranje loungebank' },
+  { src: t2, alt: 'Ovale groene mozaïektafel met witte stoelen in een groene tuin' },
+  { src: t3, alt: 'Ovale blauwe mozaïektafel onder een overkapping' },
+  { src: t4, alt: 'Ronde blauwe mozaïektafel op een terras aan het water' },
+  { src: t5, alt: 'Ovale turquoise mozaïektafel in een tuin met palmen' },
+  { src: t6, alt: 'Ronde blauwe mozaïektafel met stoelen tussen de hortensia’s' },
+  { src: t7, alt: 'Lange groene mozaïektafel onder een veranda' },
+  { src: t8, alt: 'Ronde turquoise mozaïektafel bij een loungeset en een vijver' },
+];
+
+const vormen = ['Rond', 'Ovaal', 'Rechthoekig', 'Vierkant'];
+const kleuren = [
+  ['Blauw', '#1f4aa8'], ['Turquoise', '#1aa3b4'], ['Groen', '#1e8a5b'], ['Rood', '#b8362c'],
+  ['Geel', '#e2b23a'], ['Terra', '#b8623c'], ['Zwart', '#25211d'], ['Wit', '#efe9df'],
 ];
 ---
-<Base
-  title="Zoutewelle Import | Mozaïektafels en Marokkaanse lampen, Dordrecht"
-  description="Handgemaakte mozaïektafels, lampen, aardewerk en meubels uit Marokko. Bekijk ze in de showroom aan de Aventurijn 1420 in Dordrecht."
->
-  <section class="relative isolate bg-night text-paper">
-    <div class="absolute inset-0 -z-10 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
-      <Foto naam="hero" alt="Wand vol oosterse lantaarns met gekleurd glas" sizes="100vw" eager />
-    </div>
-    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(42_29_22/0.92)_12%,rgb(42_29_22/0.55)_55%,rgb(42_29_22/0.2))]"></div>
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 min-h-[36rem] sm:min-h-[42rem] lg:min-h-[46rem] flex flex-col justify-end pt-20 pb-12 sm:pb-16">
-      <p class="text-sm tracking-[0.14em] uppercase font-semibold text-paper/85">Showroom in Dordrecht</p>
-      <h1 class="mt-4 text-4xl max-w-[16ch]">Mozaïektafels en lampen, rechtstreeks uit Marokko</h1>
-      <p class="mt-6 max-w-xl text-lg text-paper/90">Al meer dan 20 jaar importeren wij handgemaakte woonaccessoires uit Marokko. Bekijk ze rustig in het echt, in onze showroom aan de Aventurijn.</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href={app} class="inline-flex bg-accent text-paper font-semibold px-5 py-3 hover:bg-accent-deep transition-colors">App voor een afspraak</a>
-        <a href={u('#assortiment')} class="inline-flex border border-paper/70 px-5 py-3 hover:bg-paper hover:text-ink transition-colors">Bekijk het assortiment</a>
-      </div>
-    </div>
-  </section>
+<Base title={`${site.naam} | Mozaïektafels, lampen en aardewerk uit Marokko, Dordrecht`} description="Ruim twintig jaar handgemaakte mozaïektafels, oosterse lampen en aardewerk uit Marokko. Showroom aan de Aventurijn 1420 in Dordrecht, op afspraak. 4,6 op Google.">
+  <Kop />
+  <main id="inhoud">
 
-  <!-- Assortiment als rustige catalogus in twee kolommen, geen kaartjes. -->
-  <section id="assortiment" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28">
-    <div class="grid gap-8 lg:grid-cols-12 items-end">
-      <h2 class="lg:col-span-6 text-3xl">Alles met de hand gemaakt</h2>
-      <p class="lg:col-span-5 lg:col-start-8 text-ink-soft">Omdat alles handwerk is, is geen tafel, lamp of schaal hetzelfde. Staat er niet wat u zoekt, dan laten we het maken in de kleur en maat die u wilt.</p>
-    </div>
-    <dl class="mt-12 grid md:grid-cols-2 gap-x-14 border-t-2 border-ink">
-      {assortiment.map(([naam, uitleg]) => (
-        <div class="py-6 border-b border-line">
-          <dt class="display text-xl">{naam}</dt>
-          <dd class="mt-1 text-ink-soft">{uitleg}</dd>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_55%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1e181340_0%,#1e1813c0_48%,#1e1813f5_100%)] md:bg-[linear-gradient(90deg,#1e1813f2_0%,#1e1813c8_45%,#1e181333_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-24 pt-28 md:py-16 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Showroom in Dordrecht</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Mozaïektafels en lampen, <span class="text-groen-licht italic">rechtstreeks</span> uit Marokko.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Al ruim twintig jaar importeren wij mozaïektafels, lampen en aardewerk uit Marokko, met de hand gemaakt bij kleine familiebedrijven. Bekijk ze rustig in het echt.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-groen"><Icoon naam="wa" />App voor een afspraak</a>
+            <a href="#assortiment" class="knop knop-rand op-foto">Bekijk het assortiment</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2"><Icoon naam="klok" class="h-4 w-4 text-groen-licht" />Ma t/m za op afspraak</li>
+            <li class="flex items-center gap-2"><Icoon naam="pin" class="h-4 w-4 text-groen-licht" />{site.straat}, {site.plaats}</li>
+          </ul>
         </div>
-      ))}
-    </dl>
-    <p class="mt-6 text-sm text-ink-soft">[[AANLEVEREN: foto's van de showroom en een paar topstukken]]</p>
-  </section>
-
-  <!-- Showroom: brede foto met het verhaal van de inkoop ernaast. -->
-  <section id="showroom" class="bg-paper-2">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-10 lg:grid-cols-12 items-center">
-      <div class="lg:col-span-7 [&_img]:w-full [&_img]:h-auto">
-        <Foto naam="markt" alt="Kleden, tassen en lantaarns in een Marokkaans winkeltje" sizes="(min-width: 1024px) 55vw, 100vw" />
+        <div class="hidden lg:col-span-4 lg:block">
+          <figure class="ml-auto w-full max-w-[16rem] rounded-lg bg-licht/10 p-2.5 shadow-md ring-1 ring-licht/20 backdrop-blur-md">
+            <Image src={showroomDeur} alt="Oosterse lampen, spiegels en kasten in de oranje showroom, gezien door een Marokkaanse deur" widths={[320, 600]} sizes="290px" loading="eager" class="boog aspect-[4/5] w-full object-cover" />
+            <figcaption class="px-2 pb-1 pt-3 text-sm">Onze showroom aan de Aventurijn</figcaption>
+          </figure>
+        </div>
       </div>
-      <div class="lg:col-span-5">
-        <h2 class="text-3xl">Zelf uitgezocht, in Marokko</h2>
-        <p class="mt-6 text-ink-soft">We laten alles speciaal maken bij kleine familiebedrijven, elk met hun eigen ambacht. We gaan er regelmatig zelf heen om de bestellingen te controleren, en laden daarna een container voor Nederland.</p>
-        <p class="mt-4 text-ink-soft">Bent u winkelier en wilt u onze artikelen verkopen? Mail ons met uw bedrijfsnaam, adres, website en KvK-nummer.</p>
-        <a href="mailto:info@zoutewelle-import.nl" class="mt-6 inline-block font-semibold underline">info@zoutewelle-import.nl</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="bezoek" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-5">
-      <h2 class="text-3xl">Langskomen</h2>
-      <dl class="mt-8 border-t-2 border-ink">
-        <div class="flex justify-between gap-4 py-3 border-b border-line"><dt>Zaterdag</dt><dd class="font-semibold tabular-nums">12:30 – 17:00</dd></div>
-        <div class="flex justify-between gap-4 py-3 border-b border-line"><dt>Maandag t/m vrijdag</dt><dd class="font-semibold tabular-nums">op afspraak, 12:00 – 19:00</dd></div>
+    <!-- 2. Cijfers -->
+    <section class="border-b border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="text-sm text-grijs">Jaar import uit Marokko</dt><dd class="num order-first font-kop text-[clamp(2.6rem,3vw+1.4rem,3.6rem)] font-extrabold leading-none text-groen">20+</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Mozaïektafels op voorraad</dt><dd class="num order-first font-kop text-[clamp(2.6rem,3vw+1.4rem,3.6rem)] font-extrabold leading-none">500+</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Tafels van 40 cm tot 2 meter</dt><dd class="num order-first font-kop text-[clamp(2.6rem,3vw+1.4rem,3.6rem)] font-extrabold leading-none">2<span class="text-[.55em]"> m</span></dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Op Google, {site.google.aantal} reviews</dt><dd class="num order-first font-kop text-[clamp(2.6rem,3vw+1.4rem,3.6rem)] font-extrabold leading-none">{site.google.score}</dd></div>
       </dl>
-      <p class="mt-4 text-sm text-ink-soft">Komt u doordeweeks? Bel of app even vooraf, er is niet altijd iemand in het magazijn.</p>
-      <p class="mt-8">Aventurijn 1420<br />3316 LB Dordrecht</p>
-      <a href={route} class="mt-3 inline-block font-semibold underline">Plan uw route</a>
-      <p class="mt-8 leading-8">
-        <a class="font-semibold hover:text-accent" href="tel:+31786186949">078 618 69 49</a><br />
-        <a class="hover:text-accent" href={app}>06 21 27 84 54 (WhatsApp)</a>
-      </p>
-    </div>
-    <form class="lg:col-span-6 lg:col-start-7 grid gap-5 self-start bg-paper-2 p-6 sm:p-8" action="https://api.web3forms.com/submit" method="POST">
-      <h3 class="text-2xl">Vraag over een stuk?</h3>
-      <input type="hidden" name="access_key" value="[[AANLEVEREN: Web3Forms-key]]" />
-      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="grid gap-2 text-sm">Naam<input name="naam" required autocomplete="name" class="bg-paper border border-line px-3 py-3 text-base" /></label>
-        <label class="grid gap-2 text-sm">Telefoon of e-mail<input name="contact" required class="bg-paper border border-line px-3 py-3 text-base" /></label>
+    </section>
+
+    <!-- 3. Assortiment -->
+    <section id="assortiment" class="py-20 lg:py-24" aria-labelledby="t-ass">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Assortiment</p>
+            <h2 id="t-ass" class="mt-4 text-3xl">Alles met de hand gemaakt, dus nooit twee keer hetzelfde.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Ook spiegels, kasten, smeedijzeren stoelen, fonteinen en kalims. Klik op een stuk om Edwin te vragen wat er nu staat.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {assortiment.map((a, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(a.w)} class="kaart group flex h-full flex-col overflow-hidden p-2.5 no-underline transition-shadow duration-300 hover:shadow-md sm:p-3">
+                <div class="boog overflow-hidden">
+                  <Image src={a.src} alt={a.alt} widths={[300, 450, 600]} sizes="(min-width: 1024px) 380px, 46vw" class="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[5/4]" />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 px-2 pb-2 pt-4 sm:px-4 sm:pb-4 sm:pt-5">
+                  <div>
+                    <h3 class="text-[1.125rem] sm:text-2xl">{a.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{a.d}</p>
+                  </div>
+                  <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-full bg-zand-2 text-groen transition-colors group-hover:bg-groen group-hover:text-white sm:grid" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 flex flex-col items-start justify-between gap-5 rounded-lg bg-zand-2 px-6 py-6 sm:flex-row sm:items-center md:px-8">
+          <p class="text-lg"><b class="font-semibold">Niet op voorraad wat u zoekt?</b> <span class="text-grijs">Dan laten we het maken in de kleur en maat die u wilt.</span></p>
+          <a href={waMet('Hallo Edwin, ik zoek iets dat ik graag op maat wil laten maken.')} class="knop knop-inkt knop-klein shrink-0"><Icoon naam="wa" />Vraag het Edwin</a>
+        </div>
       </div>
-      <label class="grid gap-2 text-sm">Wat zoekt u? Kleur, maat, soort<textarea name="bericht" rows="4" class="bg-paper border border-line px-3 py-3 text-base"></textarea></label>
-      {voorstel ? (
-        <p class="border border-accent px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="underline" href="tel:+31786186949">078 618 69 49</a> of app <a class="underline" href={app}>06 21 27 84 54</a>.</p>
-      ) : (
-        <button type="submit" class="justify-self-start bg-accent text-paper font-semibold px-6 py-3 hover:bg-accent-deep">Verstuur</button>
-      )}
-      <p class="text-xs text-ink-soft">We gebruiken uw gegevens alleen voor uw vraag. Zie de <a class="underline" href={u('privacy/')}>privacyverklaring</a>.</p>
-    </form>
-  </section>
+    </section>
+
+    <!-- 4. Uit Marokko -->
+    <section id="marokko" class="donker bg-nacht py-24 text-licht lg:py-28" aria-labelledby="t-mar">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div class="lg:col-span-6">
+          <div class="grid grid-cols-2 gap-3">
+            <Image src={laden1} alt="Een container wordt in Marokko geladen met Marokkaanse meubels en decoraties" widths={[480, 700]} sizes="(min-width: 1024px) 560px, 92vw" class="col-span-2 aspect-[21/9] w-full rounded-md object-cover" />
+            <Image src={laden2} alt="Kratten worden in Marokko in een container geladen" widths={[350]} sizes="(min-width: 1024px) 280px, 46vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+            <Image src={lossen} alt="De container wordt gelost bij het magazijn in Dordrecht" widths={[350]} sizes="(min-width: 1024px) 280px, 46vw" class="aspect-[4/3] w-full rounded-md object-cover" />
+          </div>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Uit Marokko</p>
+          <h2 id="t-mar" class="mt-4 text-3xl">Zelf laten maken, zelf gecontroleerd.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Handgemaakte stukken liggen niet bij een groothandel. Wij bestellen bij kleine familiebedrijfjes, elk met hun eigen ambacht, en laten alles speciaal maken. Dat duurt vaak een paar maanden. We gaan regelmatig zelf naar Marokko om de bestellingen te controleren.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="ster8" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Tegels uit de vuuroven</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Op maat gehakt en met de hand in een motief gelegd. Daarom verschilt elke tafel een beetje.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="hand" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Van vader op zoon</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Gemaakt door vaklieden uit Marrakech, Fez en Safi, die het vak vaak thuis leerden.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="container" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Per container naar Dordrecht</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Zo komt alles rechtstreeks bij ons binnen, tegen scherpe prijzen.</p></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section class="py-20 lg:py-24" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo komt u langs</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Van appje tot tafel in de tuin.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">De showroom is open op afspraak. Even bellen of appen voordat u komt, dan is er iemand in het magazijn.</p>
+        </div>
+        <ol class="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart p-6 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-xl font-extrabold text-groen">0{i + 1}</p>
+              <h3 class="mt-4 text-xl sm:mt-8">{t}</h3>
+              <p class="mt-2 text-grijs sm:mt-3">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. In de tuin (eigen foto's van Instagram en Google) -->
+    <section class="border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-tuin">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">In de tuin</p>
+            <h2 id="t-tuin" class="mt-4 text-3xl">Zo staat een mozaïektafel buiten.</h2>
+          </div>
+          <a href={site.instagram} class="rijs knop knop-rand knop-klein self-start md:self-auto" style="--d:.05s"><Icoon naam="insta" />Meer op Instagram</a>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 lg:mt-14">
+          {tuin.map((t, i) => (
+            <li class={`rijs relative overflow-hidden rounded-md bg-zand-2 ${i === 0 ? 'col-span-2 row-span-2 aspect-square md:aspect-auto' : 'aspect-square'} ${i > 4 ? 'hidden md:block' : ''}`} style={`--d:${(i % 4) * 0.05}s`}>
+              <Image src={t.src} alt={t.alt} widths={i === 0 ? [640, 960, 1400] : [320, 512]} sizes={i === 0 ? '(min-width: 768px) 48vw, 92vw' : '(min-width: 768px) 23vw, 46vw'} class="tegel absolute inset-0 h-full w-full object-cover" />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Showroom -->
+    <section id="showroom" class="donker bg-nacht text-licht" aria-labelledby="t-showroom">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] sm:min-h-[26rem] lg:col-span-5">
+          <Image src={showroom1} alt="Showroom met mozaïektafels, smeedijzeren stoelen, spiegels en lampen" widths={[600]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          <p class="absolute bottom-4 left-4 rounded-full bg-groen px-4 py-1.5 text-sm font-semibold text-white">{site.straat}, {site.plaats}</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">De showroom</p>
+          <h2 id="t-showroom" class="mt-4 text-3xl">Ouderwets: gewoon in het echt bekijken.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Tafels, lampen, aardewerk en meubels staan in onze showroom en het magazijn aan de Aventurijn bij elkaar. Een bezoeker schreef: “alsof je echt in het buitenland bent.”</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Edwin denkt mee</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Geduldig en geen opdringerige verkoper, schrijven klanten.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="pin" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Gratis parkeren</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">En vlak langs de snelweg.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-md bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-groen text-white"><Icoon naam="ster8" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Voor thuis en voor de zaak</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Wij leveren aan particulieren, winkels, horeca en projecten.</p></div>
+            </li>
+          </ul>
+          <a href={waHoi} class="knop knop-groen mt-8"><Icoon naam="wa" />Plan uw bezoek</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="bg-zand-2 py-20 lg:py-24" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">“Hier MOET je zijn!”</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-2xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${i * 0.06}s`}>
+              <span class="flex text-ster" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-full bg-zand-2 font-kop font-bold text-groen" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Wow: tafelkiezer, eindigt in een WhatsApp-bericht aan Edwin -->
+    <section id="kiezer" class="py-20 lg:py-24" aria-labelledby="t-kiezer">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="eyebrow">Uw tafel</p>
+          <h2 id="t-kiezer" class="mt-4 text-3xl">Stel uw mozaïektafel samen.</h2>
+          <p class="mt-6 text-lg text-grijs">Kies vorm, maat en kleur. Edwin krijgt uw wens via WhatsApp en laat weten wat er op voorraad staat, of wat hij voor u kan laten maken.</p>
+          <div class="kaart mt-10 grid place-items-center p-6 sm:p-8" aria-hidden="true">
+            <svg viewBox="0 0 320 220" class="w-full max-w-[22rem]" data-tafel>
+              <defs>
+                <pattern id="zellige" width="16" height="16" patternUnits="userSpaceOnUse">
+                  <rect width="16" height="16" data-kleur fill="#1f4aa8" />
+                  <path d="M8 1.5 14.5 8 8 14.5 1.5 8Z" fill="#fffdf9" opacity=".9" />
+                  <circle cx="8" cy="8" r="2.2" data-kleur fill="#1f4aa8" />
+                </pattern>
+              </defs>
+              <ellipse cx="160" cy="200" rx="120" ry="10" fill="#1e18131a" data-schaduw />
+              <g data-vorm><ellipse cx="160" cy="105" rx="90" ry="90" fill="url(#zellige)" stroke="#1e1813" stroke-width="5" /></g>
+            </svg>
+            <p class="mt-4 font-kop text-xl font-bold" data-label>Ronde tafel, ongeveer 100 cm</p>
+          </div>
+        </div>
+        <form class="kaart min-w-0 p-6 sm:p-8 lg:col-span-7 lg:p-10" data-wa aria-describedby="wa-uitleg">
+          <h3 class="text-2xl">Uw wens voor Edwin</h3>
+          <p id="wa-uitleg" class="mt-2 text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Vorm</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {vormen.map((v, i) => <label class="keuze"><input type="radio" name="vorm" value={v} class="sr-only" checked={i === 0} /><span>{v}</span></label>)}
+            </div>
+          </fieldset>
+          <label class="mt-7 block"><span class="flex items-baseline justify-between text-sm font-semibold">Maat <span class="num font-kop text-lg font-bold text-groen" data-maat-tekst>ongeveer 100 cm</span></span>
+            <input type="range" name="maat" min="40" max="200" step="20" value="100" class="schuif mt-3 w-full" />
+            <span class="mt-1 flex justify-between text-xs text-grijs"><span>40 cm</span><span>2 meter</span></span>
+          </label>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Kleur</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {kleuren.map(([k, hex], i) => <label class="keuze"><input type="radio" name="kleur" value={k} data-hex={hex} class="sr-only" checked={i === 0} /><span><i class="stip" style={`background:${hex}`}></i>{k}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2 [&>*]:min-w-0">
+            <fieldset>
+              <legend class="text-sm font-semibold">Voor</legend>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {['Binnen', 'Buiten'].map((p, i) => <label class="keuze"><input type="radio" name="plek" value={p} class="sr-only" checked={i === 1} /><span>{p}</span></label>)}
+              </div>
+            </fieldset>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-7 rounded-md bg-zand p-5">
+            <p class="text-xs font-semibold uppercase tracking-[.14em] text-grijs">Voorbeeld van uw bericht</p>
+            <p class="mt-2 text-[.9375rem]" data-voorbeeld aria-live="polite"></p>
+          </div>
+          <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-groen"><Icoon naam="wa" />Stuur naar Edwin</button>
+            <p class="text-sm text-grijs">Een foto van uw tuin mag er gerust achteraan.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 10. Bezoek -->
+    <section id="bezoek" class="border-t border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-bezoek">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Bezoek en route</p>
+          <h2 id="t-bezoek" class="mt-4 text-3xl">Kom kijken in Dordrecht.</h2>
+          <p class="mt-6 text-lg text-grijs">Aan de Aventurijn, met gratis parkeren en vlak langs de snelweg.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <h3 class="text-xl">Openingstijden</h3>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van de showroom</caption>
+              <tbody>
+                <tr class="border-b border-lijn"><th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">Maandag t/m zaterdag</th><td class="num py-2.5 text-right font-semibold">12.00 - 19.00 uur</td></tr>
+                <tr><th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">Altijd</th><td class="py-2.5 text-right font-semibold">op afspraak</td></tr>
+              </tbody>
+            </table>
+            <p class="mt-4 text-sm text-grijs">Even bellen of appen voordat u komt: er is niet altijd iemand in het magazijn.</p>
+          </div>
+          <ul class="mt-6 grid gap-3">
+            <li><a href={waHoi} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-groen text-white"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp of bellen</b><span class="num text-grijs">{site.mobiel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-groen" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-zand-2 text-groen"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Vaste lijn</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-groen" /></a></li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <figure class="relative flex-1 overflow-hidden rounded-lg">
+            <Image src={showroom2} alt="Showroom met een mozaïektafel, grote spiegels en kasten" widths={[600]} sizes="(min-width: 1280px) 700px, (min-width: 1024px) 56vw, 92vw" class="h-full max-h-[32rem] min-h-[18rem] w-full object-cover" />
+          </figure>
+          <div class="kaart flex flex-col gap-5 p-6 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-groen" /><span><b class="font-semibold">{site.straat}</b><br /><span class="text-grijs">{site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-inkt knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+          <p class="text-sm text-grijs">Bent u winkelier en wilt u onze artikelen verkopen? Mail <a class="link text-inkt" href={`mailto:${site.mail}`}>{site.mail}</a> met uw bedrijfsnaam, adres, website en KvK-nummer.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-groen text-white" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Een stukje Marokko in huis?</h2>
+          <p class="mt-2 text-lg text-white/90">App Edwin voor een afspraak in de showroom.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waHoi} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.mobielHref} class="knop knop-rand op-foto num">{site.mobiel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
 </Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const vorm = document.querySelector<SVGGElement>('[data-vorm]');
+  const label = document.querySelector<HTMLElement>('[data-label]');
+  const maatTekst = document.querySelector<HTMLElement>('[data-maat-tekst]');
+  const bijv: Record<string, string> = { Rond: 'ronde', Ovaal: 'ovale', Rechthoekig: 'rechthoekige', Vierkant: 'vierkante' };
+  const lees = () => {
+    const d = new FormData(f!);
+    const v = (n: string) => String(d.get(n) || '').trim();
+    return { vorm: v('vorm'), maat: Number(v('maat')), kleur: v('kleur'), plek: v('plek'), naam: v('naam') };
+  };
+  const maatTxt = (m: number) => (m >= 200 ? '2 meter' : `${m} cm`);
+  const bericht = () => {
+    const k = lees();
+    const r = [`Hallo Edwin, ik zoek een ${bijv[k.vorm]} mozaïektafel van ongeveer ${maatTxt(k.maat)}, in ${k.kleur.toLowerCase()}, voor ${k.plek.toLowerCase()}. Hebben jullie zoiets op voorraad?`];
+    if (k.naam) r.push(`Groet, ${k.naam}`);
+    return r.join('\n');
+  };
+  const teken = () => {
+    if (!f || !vorm) return;
+    const k = lees();
+    const s = 0.45 + (k.maat - 40) / 160 * 0.55; // 40 cm klein, 2 m vol
+    const ns = 'http://www.w3.org/2000/svg';
+    let el: SVGElement;
+    if (k.vorm === 'Rond') { el = document.createElementNS(ns, 'ellipse'); el.setAttribute('cx', '160'); el.setAttribute('cy', '105'); el.setAttribute('rx', String(90 * s)); el.setAttribute('ry', String(90 * s)); }
+    else if (k.vorm === 'Ovaal') { el = document.createElementNS(ns, 'ellipse'); el.setAttribute('cx', '160'); el.setAttribute('cy', '105'); el.setAttribute('rx', String(150 * s)); el.setAttribute('ry', String(78 * s)); }
+    else { const w = (k.vorm === 'Vierkant' ? 180 : 290) * s, h = (k.vorm === 'Vierkant' ? 180 : 150) * s; el = document.createElementNS(ns, 'rect'); el.setAttribute('x', String(160 - w / 2)); el.setAttribute('y', String(105 - h / 2)); el.setAttribute('width', String(w)); el.setAttribute('height', String(h)); el.setAttribute('rx', '6'); }
+    el.setAttribute('fill', 'url(#zellige)'); el.setAttribute('stroke', '#1e1813'); el.setAttribute('stroke-width', '5');
+    vorm.replaceChildren(el);
+    const hex = f.querySelector<HTMLInputElement>('input[name=kleur]:checked')?.dataset.hex || '#1f4aa8';
+    document.querySelectorAll('[data-kleur]').forEach((n) => n.setAttribute('fill', hex));
+    const tekst = `${k.vorm === 'Rechthoekig' ? 'Rechthoekige' : bijv[k.vorm][0].toUpperCase() + bijv[k.vorm].slice(1)} tafel, ongeveer ${maatTxt(k.maat)}`;
+    if (label) label.textContent = tekst;
+    if (maatTekst) maatTekst.textContent = `ongeveer ${maatTxt(k.maat)}`;
+    if (vb) vb.textContent = bericht();
+  };
+  if (f) {
+    f.addEventListener('input', teken);
+    f.addEventListener('change', teken);
+    teken();
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/31621278454?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: 1; letter-spacing: -0.025em; }
+  .tegel { transition: transform .9s var(--ease-zacht); }
+  li:hover > .tegel { transform: scale(1.04); }
+  .keuze span { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.5rem; padding: 0 1rem; border-radius: 999px; background: var(--color-zand-2); font-size: .9375rem; font-weight: 500; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #e6d8c4; }
+  .keuze input:checked + span { background: var(--color-groen); color: #fff; }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-groen); outline-offset: 2px; }
+  .stip { width: .85rem; height: .85rem; border-radius: 999px; box-shadow: inset 0 0 0 1.5px #1e181333; flex: none; }
+  .veld { display: block; width: 100%; border-radius: .75rem; border: 1.5px solid #1e181333; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #1e181366; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-groen); }
+  .schuif { accent-color: var(--color-groen); height: 1.5rem; }
+</style>

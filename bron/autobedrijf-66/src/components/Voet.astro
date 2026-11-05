@@ -1,0 +1,58 @@
+---
+import { site, url, tijden, waHoi } from '../data/site';
+import Icoon from './Icoon.astro';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+const jaar = new Date().getFullYear();
+const diensten = [['aanbod', 'Occasions'], ['aanbod', 'Auto inkoop'], ['wraps', 'Wraps'], ['wraps', 'PPF'], ['wraps', 'Tint'], ['wraps', 'Custom']];
+---
+<footer class="donker bg-nacht text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-licht"><span class="merk-tekst">Autobedrijf</span><span class="merk-66">66</span></a>
+      <p class="mt-6 max-w-xs">Auto inkoop en verkoop aan de Daltonstraat in Dordrecht. Ook voor wraps, PPF, tint en custom werk.</p>
+      <p class="mt-6 flex gap-3">
+        <a href={site.instagram} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="Instagram"><Icoon naam="insta" class="h-5 w-5" /></a>
+        <a href={waHoi} class="grid h-10 w-10 place-items-center rounded-sm bg-nacht-2 text-licht transition-colors hover:bg-rood" aria-label="WhatsApp"><Icoon naam="wa" class="h-5 w-5" /></a>
+      </p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-bold text-licht">Wat we doen</p>
+      <ul class="mt-4 space-y-2">
+        {diensten.map(([id, t]) => <li><a href={h(id)} class="no-underline transition-colors hover:text-rood-licht">{t}</a></li>)}
+      </ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-bold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel}</a></li>
+        <li><a href={site.tel2Href} class="num whitespace-nowrap no-underline transition-colors hover:text-rood-licht">{site.tel2}</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline transition-colors hover:text-rood-licht">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline transition-colors hover:text-rood-licht">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-bold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-bold data-[vandaag]:text-rood-licht">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {jaar} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-rood-licht">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Showroom- en autofoto's van het Google-profiel en Instagram van Autobedrijf 66. Wrap- en PPF-foto's via Unsplash, ter illustratie. Reviews letterlijk van Google (stand 5 november 2026).</p>}
+  </div>
+</footer>

@@ -1,89 +1,317 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Foto from '../components/Foto.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, plaatsen, waHoi, waMet } from '../data/site';
+import hero from '../assets/hero.jpg';
+import verbouw from '../assets/verbouw.jpg';
+import keuken from '../assets/keuken.jpg';
+import badkamer from '../assets/badkamer.jpg';
+import schilderwerk from '../assets/schilderwerk.jpg';
+import wand from '../assets/wand.jpg';
+import renovatie from '../assets/renovatie.jpg';
+import schoorsteen from '../assets/schoorsteen.jpg';
+import vakman from '../assets/vakman.jpg';
 
-const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p = '') => `${base}/${p}`;
+const chips = ['Verbouw', 'Nieuwbouw', 'Renovatie', 'Schilderwerk', 'Wandafwerking', 'Keukens', 'Badkamers', 'Tegelvloeren', 'Stukadoorswerk'];
 
-// Werkzaamheden zoals W&M ze zelf op Facebook noemt.
-const werk = ['Schilderwerk', 'Timmerwerk', 'Badkamer verbouwen', 'Keuken verbouwen', 'Onderhoud'];
+const vraag = (wat: string) => waMet(`Hallo W&M, ik wil graag een vrijblijvende offerte voor ${wat}.`);
+
+const werk = [
+  { t: 'Verbouw en uitbouw', d: 'Een dakkapel, of uw woning, bedrijfspand of winkelpand laten uitbouwen. We berekenen vooraf de kosten.', src: verbouw, alt: 'Vakman aan het werk op een dak met rode pannen (sfeerfoto)', w: 'een verbouwing' },
+  { t: 'Keukens', d: 'Een nieuwe keuken plaatsen, de keuken verbouwen of betegelen, ook het installatiewerk.', src: keuken, alt: 'Keuken in verbouwing, met afgedekte kasten (sfeerfoto)', w: 'mijn keuken' },
+  { t: 'Badkamers', d: 'Badkamer en toilet verbouwen: een nieuwe badkamer, douchecabine, tegels of stucwerk.', src: badkamer, alt: 'Lichte badkamer met inloopdouche en hangtoilet (sfeerfoto)', w: 'mijn badkamer' },
+  { t: 'Schilderwerk', d: 'Allerlei schilderwerk binnen en buiten het huis. We komen langs om uw wensen door te nemen.', src: schilderwerk, alt: 'Schilder rolt een muur met verf (sfeerfoto)', w: 'schilderwerk' },
+  { t: 'Wandafwerking', d: 'Behangen, sauzen, spuiten en muren glad maken.', src: wand, alt: 'Handen zetten een muur glad met een spaan (sfeerfoto)', w: 'wandafwerking' },
+  { t: 'Renovatie en onderhoud', d: 'Een deel of het totale onderhoud van uw woning of bedrijfspand.', src: renovatie, alt: 'Kamer in renovatie met stempels onder het plafond (sfeerfoto)', w: 'renovatie of onderhoud' },
+];
+
+const stappen = [
+  ['Bel of app', 'Vertel kort wat u wilt laten doen. Een paar foto’s van de ruimte helpen.'],
+  ['We komen langs', 'Om uw project te bekijken en met u te bespreken wat er kan.'],
+  ['Vooraf een prijs', 'U krijgt een vrijblijvende offerte. Zo weet u vooraf waar u aan toe bent.'],
+  ['Aan de slag', 'Vakmanschap en kwaliteit voor een betaalbare prijs.'],
+];
+
+const klanten = [
+  ['Particulieren', 'Van een nieuwe badkamer tot de grote schilderbeurt.'],
+  ['Bedrijven en winkels', 'Verbouw en onderhoud van bedrijfs- en winkelpanden.'],
+  ['VvE’s en woningbouw', 'Voor verenigingen van huiseigenaren en woningbouwverenigingen.'],
+  ['Zorg en projecten', 'Voor zorginstellingen en projectontwikkelaars.'],
+];
+
+const klussen = ['Verbouw of uitbouw', 'Dakkapel', 'Keuken', 'Badkamer of toilet', 'Schilderwerk binnen', 'Schilderwerk buiten', 'Wandafwerking', 'Tegelvloer', 'Onderhoud'];
 ---
-<Base
-  title="W&M bouw en onderhoud | Verbouwen en onderhoud in Dordrecht"
-  description="W&M bouw en onderhoud uit Dordrecht: schilderwerk, timmerwerk en het verbouwen van uw badkamer of keuken. Bel 06 51 40 31 26."
->
-  <!-- Hero: foto over de volle breedte, kop onderin. -->
-  <section class="relative isolate bg-night text-paper">
-    <div class="absolute inset-0 -z-10 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
-      <Foto naam="hero" alt="Vakmannen zagen een plank op maat in een woning in verbouwing" sizes="100vw" eager />
-    </div>
-    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(22_25_42/0.92)_10%,rgb(22_25_42/0.5)_55%,rgb(22_25_42/0.1))]"></div>
-    <div class="absolute inset-0 -z-10 bg-[rgb(22_25_42/0.4)] lg:bg-[rgb(22_25_42/0.15)]"></div>
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 min-h-[34rem] sm:min-h-[40rem] lg:min-h-[44rem] flex flex-col justify-end pt-20 pb-12 sm:pb-16">
-      <h1 class="text-4xl max-w-[15ch]">Verbouwen en onderhoud in Dordrecht</h1>
-      <p class="mt-6 max-w-xl text-lg text-paper/90">W&amp;M bouw en onderhoud is een klein bouwbedrijf voor schilderwerk, timmerwerk en het verbouwen van uw badkamer of keuken.</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="tel:+31651403126" class="inline-flex bg-accent text-paper font-semibold px-5 py-3 hover:bg-accent-deep transition-colors">Bel 06 51 40 31 26</a>
-        <a href={u('#contact')} class="inline-flex border border-paper/70 px-5 py-3 hover:bg-paper hover:text-ink transition-colors">Vraag een prijsopgave</a>
-      </div>
-    </div>
-  </section>
+<Base title={`${site.naam} | Verbouw, renovatie en onderhoud in Dordrecht`} description="W&M bouw en onderhoud uit Dordrecht: verbouw, renovatie, badkamers, keukens, schilderwerk en wandafwerking in de Drechtsteden. Vrijblijvende offerte: 06 51 40 31 26.">
+  <Kop />
+  <main id="inhoud">
 
-  <!-- Werk als grote typografische lijst met een korte regel erachter. -->
-  <section id="werk" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-4">
-      <h2 class="text-3xl">Waar u ons voor belt</h2>
-      <p class="mt-5 text-ink-soft">De meest voorkomende bouw- en onderhoudsklussen, in en om het huis.</p>
-    </div>
-    <ul class="lg:col-span-8 border-t-2 border-ink">
-      {werk.map((titel, i) => (
-        <li class="py-5 border-b border-line flex items-baseline gap-6">
-          <span class="text-sm text-accent tabular-nums w-6">{String(i + 1).padStart(2, '0')}</span>
-          <span class="display text-2xl sm:text-3xl">{titel}</span>
-        </li>
-      ))}
-    </ul>
-    <p class="lg:col-start-5 lg:col-span-8 -mt-6 text-sm text-ink-soft">[[AANLEVEREN: per klus een zin over hoe jullie werken]]</p>
-  </section>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1600, 2000]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#141a2b55_0%,#141a2bc4_48%,#141a2bf5_100%)] md:bg-[linear-gradient(90deg,#141a2bf2_0%,#141a2bcc_48%,#141a2b40_100%)]" aria-hidden="true"></div>
+      <div class="wrap grid w-full items-end gap-12 pb-24 pt-28 md:py-16 lg:grid-cols-12">
+        <div class="lg:col-span-8">
+          <p class="eyebrow">Bouwbedrijf in Dordrecht</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Vakmanschap voor een <span class="text-blauw-licht">betaalbare</span> prijs.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Verbouw, renovatie, badkamers, keukens en schilderwerk. Voor particulieren en bedrijven in en rond de Drechtsteden.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waHoi} class="knop knop-blauw"><Icoon naam="wa" />Vraag een offerte</a>
+            <a href="#werk" class="knop knop-rand op-foto">Bekijk de werkzaamheden</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Vrijblijvende offerte</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-blauw-licht" />Wij komen bij u langs</li>
+            <li class="flex items-center gap-2"><Icoon naam="tel" class="h-4 w-4 text-blauw-licht" /><a href={site.telHref} class="num font-semibold text-licht no-underline hover:text-blauw-licht">{site.tel}</a></li>
+          </ul>
+        </div>
+        <div class="hidden lg:col-span-4 lg:block">
+          <div class="ml-auto w-full max-w-[19rem] rounded-lg bg-licht/10 p-6 shadow-md ring-1 ring-licht/20 backdrop-blur-md">
+            <p class="font-kop text-lg font-extrabold">Wat we doen</p>
+            <ul class="mt-4 grid gap-2.5 text-[.9375rem]">
+              {['Verbouw en uitbouw', 'Keukens en badkamers', 'Schilderwerk binnen en buiten', 'Wandafwerking en stukadoorswerk', 'Renovatie en onderhoud'].map((t) => <li class="flex items-center gap-2.5"><span class="grid h-6 w-6 place-items-center rounded-sm bg-blauw text-white"><Icoon naam="vink" class="h-3.5 w-3.5" /></span>{t}</li>)}
+            </ul>
+            <a href={site.telHref} class="mt-6 flex items-center justify-between rounded-md bg-licht px-4 py-3 font-kop font-bold text-inkt no-underline transition-colors hover:bg-white"><span class="num">{site.tel}</span><Icoon naam="tel" class="h-5 w-5 text-blauw" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <section id="aanpak" class="bg-paper-2">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-10 lg:grid-cols-12 items-center">
-      <div class="lg:col-span-7 [&_img]:w-full [&_img]:h-auto">
-        <Foto naam="werk" alt="Ruimte in verbouwing met gereedschap en platen" sizes="(min-width: 1024px) 55vw, 100vw" />
+    <!-- 2. Chips -->
+    <section class="border-b border-lijn bg-wit" aria-label="Specialisaties">
+      <div class="wrap flex items-center gap-x-3 gap-y-3 overflow-x-auto py-5 [scrollbar-width:none] md:flex-wrap md:justify-center md:overflow-visible">
+        {chips.map((c) => <a href="#werk" class="shrink-0 rounded-md bg-kalk-2 px-4 py-2 text-sm font-semibold no-underline transition-colors hover:bg-blauw hover:text-white">{c}</a>)}
       </div>
-      <div class="lg:col-span-5">
-        <h2 class="text-3xl">Klein bedrijf, korte lijnen</h2>
-        <p class="mt-6 text-ink-soft">U heeft contact met de mensen die het werk ook doen. Vertel wat u wilt laten doen, dan krijgt u een duidelijke prijsopgave.</p>
-        <p class="mt-3 text-sm text-ink-soft">[[AANLEVEREN: foto's van eigen projecten en wie W&amp;M zijn]]</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-5">
-      <h2 class="text-3xl">Prijsopgave aanvragen</h2>
-      <p class="mt-5 text-ink-soft">Bel, mail of vul het formulier in. Een paar foto's van de ruimte maken het makkelijker.</p>
-      <p class="mt-8 leading-8">
-        <a class="font-semibold hover:text-accent" href="tel:+31651403126">06 51 40 31 26</a><br />
-        <a class="hover:text-accent break-all" href="mailto:info@bouwbedrijfwm.nl">info@bouwbedrijfwm.nl</a>
-      </p>
-      <p class="mt-6">Einsteinstraat 67-12<br />3316 GG Dordrecht</p>
-    </div>
-    <form class="lg:col-span-6 lg:col-start-7 grid gap-5" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="[[AANLEVEREN: Web3Forms-key]]" />
-      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="grid gap-2 text-sm">Naam<input name="naam" required autocomplete="name" class="bg-paper border border-line px-3 py-3 text-base" /></label>
-        <label class="grid gap-2 text-sm">Telefoon<input name="telefoon" type="tel" required autocomplete="tel" class="bg-paper border border-line px-3 py-3 text-base" /></label>
+    <!-- 3. Werkzaamheden -->
+    <section id="werk" class="py-20 lg:py-24" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkzaamheden</p>
+            <h2 id="t-werk" class="mt-4 text-3xl">Van een nieuwe badkamer tot een complete verbouwing.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Nieuwbouw, verbouw, renovatie en totaal onderhoud. Klik op een klus voor een vrijblijvende offerte.</p>
+        </div>
+        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {werk.map((w, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(w.w)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={w.src} alt={w.alt} widths={[400, 600, 800]} sizes="(min-width: 1280px) 390px, (min-width: 640px) 46vw, 92vw" class="aspect-[3/2] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-6">
+                  <div>
+                    <h3 class="text-xl sm:text-2xl">{w.t}</h3>
+                    <p class="mt-2 text-grijs">{w.d}</p>
+                  </div>
+                  <span class="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-kalk-2 text-blauw transition-colors group-hover:bg-blauw group-hover:text-white" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="rijs mt-8 grid overflow-hidden rounded-lg bg-inkt text-licht md:grid-cols-[1.2fr_1fr]">
+          <Image src={schoorsteen} alt="Een schoorsteen wordt afgebroken op een dak met rode pannen, met een sloophamer ernaast" widths={[930]} sizes="(min-width: 768px) 50vw, 100vw" class="h-full min-h-[12rem] w-full object-cover" />
+          <div class="flex flex-col justify-center gap-4 p-6 md:p-8">
+            <p class="font-kop text-xl font-extrabold">Ook sloopwerk.</p>
+            <p class="text-licht-zacht">Een schoorsteen verwijderen of een muur slopen? Vraag vrijblijvend een offerte aan.</p>
+            <a href={vraag('sloopwerk (schoorsteen of muur)')} class="knop knop-blauw knop-klein self-start"><Icoon naam="wa" />Vraag het na</a>
+          </div>
+        </div>
       </div>
-      <label class="grid gap-2 text-sm">Wat wilt u laten doen?<textarea name="bericht" rows="5" class="bg-paper border border-line px-3 py-3 text-base"></textarea></label>
-      {voorstel ? (
-        <p class="border border-accent px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="underline" href="tel:+31651403126">06 51 40 31 26</a> of mail <a class="underline" href="mailto:info@bouwbedrijfwm.nl">info@bouwbedrijfwm.nl</a>.</p>
-      ) : (
-        <button type="submit" class="justify-self-start bg-accent text-paper font-semibold px-6 py-3 hover:bg-accent-deep">Verstuur aanvraag</button>
-      )}
-      <p class="text-xs text-ink-soft">We gebruiken uw gegevens alleen voor uw aanvraag. Zie de <a class="underline" href={u('privacy/')}>privacyverklaring</a>.</p>
-    </form>
-  </section>
+    </section>
+
+    <!-- 4. Werkwijze -->
+    <section id="werkwijze" class="donker bg-nacht py-24 text-licht lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Eerst kijken, dan een eerlijke prijs.</h2>
+          </div>
+          <p class="rijs text-lg text-licht-zacht lg:col-span-4 lg:col-start-9" style="--d:.05s">Voor advies komen wij graag bij u langs. Zo krijgt u een offerte die past bij uw huis.</p>
+        </div>
+        <ol class="mt-12 grid gap-3 sm:grid-cols-2 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs rounded-md bg-nacht-2 p-6 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-xl font-black text-blauw-licht">0{i + 1}</p>
+              <h3 class="mt-4 text-xl sm:mt-8">{t}</h3>
+              <p class="mt-2 text-licht-zacht sm:mt-3">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. Over ons -->
+    <section id="over" class="py-20 lg:py-24" aria-labelledby="t-over">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div class="relative lg:col-span-6">
+          <Image src={vakman} alt="Vakman met helm aan het werk aan een houten constructie (sfeerfoto)" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 560px, 92vw" class="aspect-[4/3] w-full rounded-lg object-cover" />
+          <p class="absolute bottom-4 left-4 rounded-md bg-blauw px-4 py-1.5 text-sm font-semibold text-white">{site.straat}, {site.plaats}</p>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">Over ons</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Bij ons bent u aan het juiste adres.</h2>
+          <p class="mt-6 text-lg text-grijs">W&amp;M bouw en onderhoud is een bouwbedrijf uit Dordrecht met ruime ervaring in schilderwerk, onderhoud en renovatie. We verzorgen een deel of het totale onderhoud van een woning of bedrijfspand.</p>
+          <ul class="mt-8 grid gap-3 sm:grid-cols-2">
+            {klanten.map(([t, d]) => (
+              <li class="kaart p-5">
+                <h3 class="text-lg">{t}</h3>
+                <p class="mt-1 text-[.9375rem] text-grijs">{d}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Werkgebied -->
+    <section id="werkgebied" class="border-y border-lijn bg-wit py-20 lg:py-24" aria-labelledby="t-gebied">
+      <div class="wrap grid gap-10 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Werkgebied</p>
+          <h2 id="t-gebied" class="mt-4 text-3xl">In en rond de Drechtsteden.</h2>
+          <p class="mt-6 text-lg text-grijs">Vanuit de Einsteinstraat in Dordrecht werken we vooral in deze plaatsen. Woont u net buiten het gebied? Vraag het gerust.</p>
+        </div>
+        <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:col-span-7 lg:col-start-6">
+          {plaatsen.map((p, i) => (
+            <li class={`flex items-center gap-3 rounded-md px-4 py-4 font-kop text-[.95rem] font-bold sm:px-5 sm:text-lg ${i === 0 ? 'bg-blauw text-white' : 'bg-kalk-2'}`}><Icoon naam="pin" class={`h-5 w-5 shrink-0 ${i === 0 ? 'text-white' : 'text-blauw'}`} />{p}</li>
+          ))}
+          <li class="sm:col-span-2"><a href={waMet('Hallo W&M, werken jullie ook in mijn plaats? Ik woon in ')} class="flex h-full items-center justify-between gap-3 rounded-md border-2 border-dashed border-lijn px-4 py-4 font-kop text-[.95rem] font-bold no-underline transition-colors hover:border-blauw hover:text-blauw sm:px-5 sm:text-lg">Andere plaats? Vraag het<Icoon naam="pijl" class="h-5 w-5 shrink-0 text-blauw" /></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Wow: werkbon, eindigt in een WhatsApp-bericht -->
+    <section id="offerte" class="py-20 lg:py-24" aria-labelledby="t-offerte">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="eyebrow">Offerte aanvragen</p>
+          <h2 id="t-offerte" class="mt-4 text-3xl">Vul uw werkbon in.</h2>
+          <p class="mt-6 text-lg text-grijs">Vink aan wat er moet gebeuren en waar. Wij maken er een WhatsApp-bericht van, zodat W&amp;M precies weet waarvoor u een offerte wilt.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waHoi} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-blauw text-white"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-bold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-kalk-2 text-blauw"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-bold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-md bg-kalk-2 text-blauw"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-bold">Mailen</b><span class="block truncate text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-blauw" /></a></li>
+          </ul>
+        </div>
+        <form class="werkbon min-w-0 lg:col-span-7" data-wa aria-describedby="wa-uitleg">
+          <div class="flex items-start justify-between gap-4 border-b-2 border-dashed border-lijn pb-5">
+            <div>
+              <p class="font-kop text-2xl font-black text-blauw">Werkbon</p>
+              <p id="wa-uitleg" class="mt-1 text-sm text-grijs">Er wordt niets verstuurd tot u in WhatsApp zelf op verzenden drukt.</p>
+            </div>
+            <p class="merk shrink-0" aria-hidden="true"><b class="!text-[1.5rem]">W&amp;M</b></p>
+          </div>
+          <fieldset class="mt-6">
+            <legend class="text-sm font-bold">Wat moet er gebeuren?</legend>
+            <div class="mt-3 grid gap-2 sm:grid-cols-2">
+              {klussen.map((k) => <label class="vak"><input type="checkbox" name="klus" value={k} /><span>{k}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="mt-6 grid gap-5 sm:grid-cols-2 [&>*]:min-w-0">
+            <label class="block"><span class="text-sm font-bold">Soort pand</span>
+              <select name="pand" class="veld mt-2"><option>Woning</option><option>Bedrijfspand</option><option>Winkelpand</option><option>VvE of appartementencomplex</option></select>
+            </label>
+            <label class="block"><span class="text-sm font-bold">Plaats</span>
+              <select name="plaats" class="veld mt-2">{plaatsen.map((p) => <option>{p}</option>)}<option>Andere plaats</option></select>
+            </label>
+            <label class="block"><span class="text-sm font-bold">Wanneer</span>
+              <select name="wanneer" class="veld mt-2"><option>Zo snel mogelijk</option><option>Binnen drie maanden</option><option>Later dit jaar</option><option>Ik oriënteer me nog</option></select>
+            </label>
+            <label class="block"><span class="text-sm font-bold">Uw naam</span><input name="naam" autocomplete="given-name" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-bold">Korte toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="toelichting" rows="2" class="veld mt-2" placeholder="Bijvoorbeeld: badkamer van 2 bij 3 meter, ligbad eruit"></textarea></label>
+          </div>
+          <div class="mt-6 rounded-md bg-kalk p-5">
+            <p class="text-xs font-bold uppercase tracking-[.14em] text-grijs">Voorbeeld van uw bericht</p>
+            <p class="mt-2 whitespace-pre-line text-[.9375rem]" data-voorbeeld aria-live="polite"></p>
+          </div>
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button type="submit" class="knop knop-blauw"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+            <p class="text-sm text-grijs">Foto’s van de ruimte kunt u er daarna achteraan sturen.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 8. Contact -->
+    <section id="contact" class="donker bg-nacht text-licht" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 py-20 lg:grid-cols-12 lg:gap-10 lg:py-24">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Even overleggen over uw klus?</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Heeft u vragen of wilt u een vrijblijvende offerte? Bel, app of mail ons. Voor advies komen we graag bij u langs.</p>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          <a href={site.telHref} class="flex flex-col gap-2 rounded-md bg-nacht-2 p-6 no-underline transition-colors hover:bg-blauw"><Icoon naam="tel" class="h-6 w-6 text-blauw-licht" /><span class="text-sm text-licht-zacht">Bellen of WhatsApp</span><b class="num font-kop text-2xl font-extrabold">{site.tel}</b></a>
+          <a href={`mailto:${site.mail}`} class="flex min-w-0 flex-col gap-2 rounded-md bg-nacht-2 p-6 no-underline transition-colors hover:bg-blauw"><Icoon naam="mail" class="h-6 w-6 text-blauw-licht" /><span class="text-sm text-licht-zacht">E-mail</span><b class="break-all font-kop text-xl font-extrabold">{site.mail}</b></a>
+          <div class="flex flex-col gap-4 rounded-md bg-nacht-2 p-6 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+            <p class="flex items-start gap-3"><Icoon naam="pin" class="mt-0.5 h-6 w-6 shrink-0 text-blauw-licht" /><span><b class="font-bold">{site.naamBv}</b><br /><span class="text-licht-zacht">{site.straat}, {site.postcode} {site.plaats}</span></span></p>
+            <a href={site.maps} class="knop knop-wit knop-klein shrink-0">Route plannen<Icoon naam="pijl" /></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-blauw text-white" aria-label="Offerte aanvragen">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Plannen voor uw huis of pand?</h2>
+          <p class="mt-2 text-lg text-white/90">Vraag vrijblijvend een offerte aan.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waHoi} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
 </Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  const vb = document.querySelector<HTMLElement>('[data-voorbeeld]');
+  const bericht = () => {
+    const d = new FormData(f!);
+    const v = (n: string) => String(d.get(n) || '').trim();
+    const klus = d.getAll('klus').map(String);
+    const r: string[] = [];
+    r.push(klus.length ? `Hallo W&M, ik wil graag een vrijblijvende offerte voor: ${klus.join(', ').toLowerCase()}.` : 'Hallo W&M, ik wil graag een vrijblijvende offerte.');
+    r.push(`Het gaat om een ${v('pand').toLowerCase()} in ${v('plaats') === 'Andere plaats' ? 'een andere plaats' : v('plaats')}. Planning: ${v('wanneer').toLowerCase()}.`);
+    if (v('toelichting')) r.push(v('toelichting'));
+    r.push('Kunnen jullie een keer langskomen om te kijken?');
+    if (v('naam')) r.push('Groet, ' + v('naam'));
+    return r.join('\n');
+  };
+  const toon = () => { if (f && vb) vb.textContent = bericht(); };
+  if (f) {
+    f.addEventListener('input', toon);
+    f.addEventListener('change', toon);
+    toon();
+    f.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.open('https://wa.me/31651403126?text=' + encodeURIComponent(bericht()), '_blank', 'noopener');
+    });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .95; letter-spacing: -0.045em; }
+  .werkbon { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); outline: 1px solid var(--color-lijn); outline-offset: -1px; padding: 1.5rem; border-top: 6px solid var(--color-blauw); }
+  @media (min-width: 640px) { .werkbon { padding: 2.25rem; } }
+  .vak { display: flex; align-items: center; gap: .7rem; min-height: 3rem; padding: 0 .9rem; border-radius: var(--radius-sm); border: 1.5px solid var(--color-lijn); cursor: pointer; font-weight: 500; transition: border-color .2s, background-color .2s; }
+  .vak:hover { border-color: #141a2b55; }
+  .vak input { width: 1.15rem; height: 1.15rem; accent-color: var(--color-blauw); flex: none; }
+  .vak:has(input:checked) { border-color: var(--color-blauw); background: #2448a810; }
+  .veld { display: block; width: 100%; border-radius: var(--radius-sm); border: 1.5px solid #141a2b33; background: #fff; padding: .7rem .9rem; font: inherit; color: var(--color-inkt); transition: border-color .2s; }
+  .veld:hover { border-color: #141a2b66; }
+  .veld:focus-visible { outline-offset: 1px; border-color: var(--color-blauw); }
+  .veld::placeholder { color: #7a8091; }
+</style>
