@@ -1,170 +1,369 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Foto from '../components/Foto.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, tijden, diensten, reviews, waAlgemeen, waMet, url } from '../data/site';
+import hero from '../assets/hero.jpg';
+import apk from '../assets/apk.jpg';
+import onderhoud from '../assets/onderhoud.jpg';
+import reparatie from '../assets/reparatie.jpg';
+import banden from '../assets/banden.jpg';
+import occasion from '../assets/occasion.jpg';
+import werkplaats from '../assets/werkplaats-eigen.jpg';
 
-const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p = '') => `${base}/${p}`;
+const vraag = (d: string) => waMet(`Goedendag, ik wil graag een afspraak maken voor ${d}.`);
 
-const marktplaats = 'https://www.marktplaats.nl/u/autobedrijf-dordt/3632887/';
-const route = 'https://www.google.com/maps/dir/?api=1&destination=Planckstraat+88+3316+GS+Dordrecht';
-
-const tijden = [
-  ['Maandag', '08:00 – 17:00'],
-  ['Dinsdag', '08:00 – 17:00'],
-  ['Woensdag', '08:00 – 17:00'],
-  ['Donderdag', '08:00 – 17:00'],
-  ['Vrijdag', '08:00 – 17:00'],
-  ['Zaterdag', 'Gesloten'],
-  ['Zondag', 'Gesloten'],
+const kaarten = [
+  { t: 'APK-keuring', d: 'Laat uw auto keuren aan de Planckstraat. Spreek vooraf even een moment af.', src: apk, alt: 'Remschijf en remklauw van een auto, wiel eraf', pos: '50% 50%', w: 'de APK' },
+  { t: 'Onderhoud', d: 'Een kleine of grote beurt, in de eigen werkplaats.', src: onderhoud, alt: 'Monteur in werkkleding kijkt in de motorruimte van een auto', pos: '50% 40%', w: 'een onderhoudsbeurt' },
+  { t: 'Reparatie en storingen', d: 'Eerst kijken of het te repareren is, dan pas vervangen.', src: reparatie, alt: 'Hand met een steeksleutel aan het werk in een motorruimte', pos: '50% 45%', w: 'een reparatie' },
+  { t: 'Banden wisselen', d: 'Zomer- of winterbanden wisselen, of nieuwe banden laten leggen.', src: banden, alt: 'Monteur met handschoenen zet een wiel op een auto', pos: '40% 50%', w: 'het wisselen van mijn banden' },
 ];
+
+const stappen = [
+  ['Bel of app', 'Geef uw kenteken door en wat er moet gebeuren. Dan spreken we een moment af.'],
+  ['Breng de auto', 'Maandag tot en met vrijdag, van 8.00 tot 17.00 uur, aan de Planckstraat 88.'],
+  ['Wij gaan aan de slag', 'APK, onderhoudsbeurt of reparatie in de eigen werkplaats.'],
+  ['Weer op weg', 'U haalt de auto op. Tot de volgende keuring.'],
+];
+
+const soorten = ['APK-keuring', 'Onderhoudsbeurt', 'Reparatie of storing', 'Banden wisselen', 'Vraag over een occasion'];
+const dagen = ['Maakt niet uit', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag'];
 ---
-<Base
-  title="Auto APK Service Dordt | APK en onderhoud, Planckstraat Dordrecht"
-  description="APK-keuring, onderhoud, reparatie en occasions aan de Planckstraat 88 in Dordrecht. Ma t/m vr 08:00 tot 17:00. Bel 078 617 20 11."
->
-  <!-- Hero: schermvullende foto, tekst linksonder. De kop staat op een donkere verloop-laag zodat hij op elke foto leesbaar blijft. -->
-  <section class="relative isolate bg-night text-paper">
-    <div class="absolute inset-0 -z-10 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
-      <Foto naam="hero" alt="Werkplaats met auto's op de brug" sizes="100vw" eager />
-    </div>
-    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(23_25_27/0.92)_10%,rgb(23_25_27/0.55)_55%,rgb(23_25_27/0.15))]"></div>
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 min-h-[34rem] sm:min-h-[40rem] lg:min-h-[44rem] flex flex-col justify-end pt-20 pb-12 sm:pb-16">
-      <p class="text-sm font-semibold tracking-[0.12em] uppercase text-accent">Planckstraat 88 · Dordtse Kil</p>
-      <h1 class="mt-4 text-4xl max-w-[15ch]">APK en onderhoud aan de Planckstraat</h1>
-      <p class="mt-6 max-w-xl text-lg text-paper/90">Garage op bedrijventerrein Dordtse Kil in Dordrecht. Voor uw APK, een onderhoudsbeurt of een reparatie. En wie een occasion zoekt, kan hier ook terecht.</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="tel:+31786172011" class="inline-flex items-center gap-2 bg-accent text-ink font-semibold px-5 py-3 hover:bg-accent-deep transition-colors">Bel voor een afspraak</a>
-        <a href={u('#afspraak')} class="inline-flex items-center gap-2 border border-paper/70 px-5 py-3 hover:bg-paper hover:text-ink transition-colors">Afspraak aanvragen</a>
-      </div>
-      <p class="mt-8 text-sm text-paper/80">
-        <span class="font-semibold text-paper">4,5 op Google</span> uit 66 reviews <span aria-hidden="true">·</span> 4,9 uit 25 ervaringen op Marktplaats
-      </p>
-    </div>
-  </section>
+<Base title="Auto APK Service Dordt | APK en onderhoud, Planckstraat Dordrecht" description="APK-keuring, onderhoud, reparatie en occasions aan de Planckstraat 88 in Dordrecht. 4,5 op Google uit 66 reviews. Ma t/m vr 08:00 tot 17:00. Bel 078 617 20 11.">
+  <Kop />
+  <main id="inhoud">
 
-  <!-- Wat we doen: genummerde lijst in plaats van drie kaartjes. -->
-  <section id="werk" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-4">
-      <h2 class="text-3xl">Wat we<br />voor u doen</h2>
-      <p class="mt-5 text-ink-soft max-w-sm">Bel, mail of vraag hieronder een afspraak aan.</p>
-    </div>
-    <ol class="lg:col-span-8 border-t-2 border-ink">
-      <li class="grid grid-cols-[3.5rem_1fr] sm:grid-cols-[5rem_1fr] gap-4 py-8 border-b border-line">
-        <span class="display text-2xl text-ink-soft">01</span>
-        <div>
-          <h3 class="text-2xl">APK-keuring</h3>
-          <p class="mt-3 text-ink-soft max-w-2xl">Laat uw auto keuren aan de Planckstraat. Maak vooraf even een afspraak.</p>
-          <p class="mt-2 text-sm text-ink-soft">[[AANLEVEREN: prijs APK en welke voertuigen (benzine, diesel, bedrijfswagens)]]</p>
-        </div>
-      </li>
-      <li class="grid grid-cols-[3.5rem_1fr] sm:grid-cols-[5rem_1fr] gap-4 py-8 border-b border-line">
-        <span class="display text-2xl text-ink-soft">02</span>
-        <div>
-          <h3 class="text-2xl">Onderhoud en reparatie</h3>
-          <p class="mt-3 text-ink-soft max-w-2xl">Een onderhoudsbeurt, een reparatie of een storing die u niet vertrouwt. Breng hem langs, dan kijken we ernaar.</p>
-          <p class="mt-2 text-sm text-ink-soft">[[AANLEVEREN: vaste werkzaamheden en eventuele specialisaties of merken]]</p>
-        </div>
-      </li>
-      <li class="grid grid-cols-[3.5rem_1fr] sm:grid-cols-[5rem_1fr] gap-4 py-8 border-b border-line">
-        <span class="display text-2xl text-ink-soft">03</span>
-        <div>
-          <h3 class="text-2xl">Occasions</h3>
-          <p class="mt-3 text-ink-soft max-w-2xl">Gebruikte auto's te koop. We verkopen al 21 jaar via Marktplaats.</p>
-          <a href={marktplaats} class="mt-3 inline-block font-semibold underline">Bekijk het actuele aanbod</a>
-        </div>
-      </li>
-    </ol>
-  </section>
-
-  <!-- Occasions: brede foto met een korte belofte ernaast. -->
-  <section id="occasions" class="bg-paper-2">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-10 lg:grid-cols-12 items-center">
-      <div class="lg:col-span-7 [&_img]:w-full [&_img]:h-auto">
-        <Foto naam="occasion" alt="Rij gebruikte auto's" sizes="(min-width: 1024px) 55vw, 100vw" />
-      </div>
-      <div class="lg:col-span-5">
-        <h2 class="text-3xl">Op zoek naar een occasion?</h2>
-        <p class="mt-5 text-ink-soft">Kom kijken aan de Planckstraat of bekijk eerst wat er nu staat. Bel gerust om te vragen of een auto er nog is.</p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href={marktplaats} class="inline-flex bg-ink text-paper font-semibold px-5 py-3 hover:bg-ink-soft transition-colors">Aanbod op Marktplaats</a>
-          <a href="tel:+31682128337" class="inline-flex border border-ink px-5 py-3 hover:bg-ink hover:text-paper transition-colors">06 82 12 83 37</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Openingstijden en route: het praktische blok dat mensen het vaakst zoeken. -->
-  <section id="tijden" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-5 [&_img]:w-full [&_img]:h-auto order-2 lg:order-1">
-      <Foto naam="werkplaats" alt="Monteur aan het werk onder de motorkap" sizes="(min-width: 1024px) 38vw, 100vw" />
-    </div>
-    <div class="lg:col-span-6 lg:col-start-7 order-1 lg:order-2">
-      <h2 class="text-3xl">Openingstijden</h2>
-      <dl class="mt-8 border-t-2 border-ink">
-        {tijden.map(([dag, tijd]) => (
-          <div class="flex justify-between gap-4 py-3 border-b border-line">
-            <dt>{dag}</dt>
-            <dd class={tijd === 'Gesloten' ? 'text-ink-soft' : 'font-semibold tabular-nums'}>{tijd}</dd>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[70%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#17191b40_0%,#17191bbf_45%,#17191bf5_100%)] md:bg-[linear-gradient(90deg,#17191bf2_0%,#17191bcc_45%,#17191b33_100%)]" aria-hidden="true"></div>
+      <div class="wrap w-full pb-24 pt-28 md:py-24">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Garage aan de Planckstraat, Dordrecht</p>
+          <h1 id="t-hero" class="mt-5 text-hero">APK, onderhoud en <span class="text-merk">occasions</span>.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Garage op bedrijventerrein Dordtse Kil. Voor uw APK-keuring, een onderhoudsbeurt, een reparatie of een nette occasion.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waAlgemeen} class="knop knop-merk"><Icoon naam="wa" />Afspraak via WhatsApp</a>
+            <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />Bel {site.tel}</a>
           </div>
-        ))}
-      </dl>
-      <div class="mt-10">
-        <h3 class="text-xl">Adres</h3>
-        <p class="mt-2">Planckstraat 88<br />3316 GS Dordrecht</p>
-        <p class="mt-1 text-ink-soft text-sm">Op bedrijventerrein Dordtse Kil I, vlak bij de A16.</p>
-        <a href={route} class="mt-4 inline-block font-semibold underline">Plan uw route</a>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span><b class="num text-licht">{site.google.score}</b> op Google, {site.google.aantal} reviews</li>
+            <li class="flex items-center gap-2" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr 8.00 tot 17.00 uur</span></li>
+          </ul>
+        </div>
       </div>
-      <p class="mt-10 text-sm text-ink-soft">Auto APK Service Dordt is ook erkend leerbedrijf en staat op Stagemarkt.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- Afspraak: in de demo verstuurt het formulier niets. -->
-  <section id="afspraak" class="bg-night text-paper">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-      <div class="lg:col-span-5">
-        <h2 class="text-3xl">Afspraak maken</h2>
-        <p class="mt-5 text-night-soft max-w-md">Vul uw kenteken en wat er moet gebeuren in, dan bellen we u terug met een tijd. Liever direct bellen kan natuurlijk ook.</p>
-        <p class="mt-8 leading-8">
-          <a class="font-semibold hover:text-accent" href="tel:+31786172011">078 617 20 11</a><br />
-          <a class="hover:text-accent" href="tel:+31682128337">06 82 12 83 37</a><br />
-          <a class="hover:text-accent break-all" href="mailto:apkdordt@hotmail.com">apkdordt@hotmail.com</a>
-        </p>
+    <!-- 2. Cijfers -->
+    <section class="border-b border-lijn bg-wit" aria-label="In cijfers">
+      <dl class="wrap grid grid-cols-2 gap-y-10 py-12 lg:grid-cols-4 lg:py-14">
+        <div class="flex flex-col"><dt class="text-sm text-grijs">Score op Google</dt><dd class="cijfer order-first">{site.google.score}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Google-reviews</dt><dd class="cijfer order-first">{site.google.aantal}</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Jaar actief op Marktplaats</dt><dd class="cijfer order-first">21</dd></div>
+        <div class="flex flex-col lg:border-l lg:border-lijn lg:pl-10"><dt class="text-sm text-grijs">Op Marktplaats, 25 ervaringen</dt><dd class="cijfer order-first">4,9</dd></div>
+      </dl>
+    </section>
+
+    <!-- 3. Diensten -->
+    <section id="diensten" class="py-20 lg:py-28" aria-labelledby="t-diensten">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Wat we doen</p>
+            <h2 id="t-diensten" class="mt-4 text-3xl">Voor APK, storingen, reparaties en onderhoud.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Kies wat u nodig heeft. Uw WhatsApp-bericht staat dan al klaar.</p>
+        </div>
+        <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:gap-6">
+          {kaarten.map((k, i) => (
+            <li class="rijs" style={`--d:${(i % 2) * 0.06}s`}>
+              <a href={vraag(k.w)} class="kaart group relative flex h-full min-h-[19rem] flex-col justify-end overflow-hidden bg-nacht text-licht no-underline sm:min-h-[24rem]">
+                <Image src={k.src} alt={k.alt} widths={[480, 720, 960]} sizes="(min-width: 1248px) 580px, (min-width: 640px) 46vw, 92vw" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${k.pos}`} />
+                <span class="absolute inset-0 bg-[linear-gradient(180deg,#17191b00_30%,#17191be6_100%)]" aria-hidden="true"></span>
+                <div class="relative flex items-end justify-between gap-4 p-6 sm:p-8">
+                  <div>
+                    <h3 class="text-[2rem] sm:text-[2.4rem]">{k.t}</h3>
+                    <p class="mt-2 max-w-sm text-licht/90">{k.d}</p>
+                  </div>
+                  <span class="grid h-12 w-12 shrink-0 place-items-center rounded-[6px] bg-merk text-inkt transition-transform group-hover:translate-x-1" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <form class="lg:col-span-6 lg:col-start-7 grid gap-5" action="https://api.web3forms.com/submit" method="POST">
-        <input type="hidden" name="access_key" value="[[AANLEVEREN: Web3Forms-key]]" />
-        <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-        <div class="grid gap-5 sm:grid-cols-2">
-          <label class="grid gap-2 text-sm">Naam
-            <input name="naam" required autocomplete="name" class="bg-transparent border border-night-soft px-3 py-3 text-base text-paper" />
-          </label>
-          <label class="grid gap-2 text-sm">Telefoon
-            <input name="telefoon" type="tel" required autocomplete="tel" class="bg-transparent border border-night-soft px-3 py-3 text-base text-paper" />
-          </label>
+    </section>
+
+    <!-- 4. Wow: kentekenplaat invullen, appje staat klaar -->
+    <section id="afspraak" class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-afspraak">
+      <div class="wrap grid items-start gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Afspraak maken</p>
+          <h2 id="t-afspraak" class="mt-4 text-3xl">Vul uw kenteken in.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Kies wat er moet gebeuren en welke dag u uitkomt. Wij maken er een WhatsApp-bericht van, u drukt zelf op verzenden.</p>
+          <p class="mt-8 text-licht-zacht">Of bel de garage: <a href={site.telHref} class="link num font-semibold text-licht">{site.tel}</a></p>
         </div>
-        <div class="grid gap-5 sm:grid-cols-2">
-          <label class="grid gap-2 text-sm">Kenteken
-            <input name="kenteken" autocapitalize="characters" class="bg-transparent border border-night-soft px-3 py-3 text-base text-paper uppercase" />
+        <form class="min-w-0 rounded-[10px] bg-nacht-2 p-6 ring-1 ring-lijn-licht sm:p-8 lg:col-span-7 lg:p-10" data-wa>
+          <label class="block"><span class="text-sm font-semibold">Kenteken</span>
+            <span class="plaat mt-3"><span class="plaat-eu" aria-hidden="true">NL</span><input name="k" size="1" maxlength="10" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="12-ABC-3" aria-label="Kenteken" /></span>
           </label>
-          <label class="grid gap-2 text-sm">Waarvoor
-            <select name="waarvoor" class="bg-night border border-night-soft px-3 py-3 text-base text-paper">
-              <option>APK-keuring</option>
-              <option>Onderhoudsbeurt</option>
-              <option>Reparatie of storing</option>
-              <option>Vraag over een occasion</option>
-            </select>
-          </label>
+          <fieldset class="mt-8">
+            <legend class="text-sm font-semibold">Waarvoor</legend>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {soorten.map((s, i) => <label class="keuze"><input type="radio" name="s" value={s} checked={i === 0} class="sr-only" /><span>{s}</span></label>)}
+            </div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Voorkeursdag</span>
+              <select name="d" class="veld mt-2">{dagen.map((d) => <option>{d}</option>)}</select></label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam <span class="font-normal text-licht-zacht">(optioneel)</span></span><input name="n" autocomplete="name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 border-t border-lijn-licht pt-6">
+            <p class="text-sm text-licht-zacht">Uw bericht:</p>
+            <p class="mt-2 whitespace-pre-line font-semibold" data-voorbeeld aria-live="polite">Goedendag, ik wil graag een afspraak maken voor de APK-keuring van mijn auto.</p>
+            <button type="submit" class="knop knop-merk mt-6"><Icoon naam="wa" />Open in WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. De werkplaats -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-werkplaats">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+        <figure class="relative lg:col-span-6">
+          <Image src={werkplaats} alt="De werkplaats aan de Planckstraat: een auto op de brug, gereedschap langs de wand en een olie-opvangbak" widths={[480, 720, 1000]} sizes="(min-width: 1024px) 560px, 92vw" class="aspect-[4/5] w-full rounded-[10px] object-cover sm:aspect-square" />
+          <figcaption class="absolute bottom-4 left-4 rounded-[6px] bg-merk px-3 py-1.5 text-sm font-semibold text-inkt">De werkplaats, Planckstraat 88</figcaption>
+        </figure>
+        <div class="lg:col-span-6">
+          <p class="eyebrow">De werkplaats</p>
+          <h2 id="t-werkplaats" class="mt-4 text-3xl">Vaste klanten, al jaren.</h2>
+          <p class="mt-6 text-lg text-grijs">Veel klanten komen hier al jaren met hun auto. Wat ze in de reviews steeds noemen: vakkennis, eerlijke prijzen en dat er eerst wordt gekeken of iets te repareren is.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[6px] bg-merk text-inkt"><Icoon naam="sleutel" class="h-5 w-5" /></span>
+              <div><h3 class="text-xl">Eerst repareren</h3><p class="mt-1 text-[.9375rem] text-grijs">Niet meteen vervangen, en anders een betaalbaar alternatief.</p></div>
+            </li>
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[6px] bg-merk text-inkt"><Icoon naam="schild" class="h-5 w-5" /></span>
+              <div><h3 class="text-xl">Eerlijke prijzen</h3><p class="mt-1 text-[.9375rem] text-grijs">Ruime vakkennis en eerlijke prijzen, aldus een klant op Google.</p></div>
+            </li>
+            <li class="kaart flex items-center gap-4 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-[6px] bg-merk text-inkt"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-xl">Leerbedrijf</h3><p class="mt-1 text-[.9375rem] text-grijs">Auto APK Service Dordt staat als leerbedrijf op Stagemarkt.</p></div>
+            </li>
+          </ul>
         </div>
-        <label class="grid gap-2 text-sm">Toelichting (optioneel)
-          <textarea name="bericht" rows="4" class="bg-transparent border border-night-soft px-3 py-3 text-base text-paper"></textarea>
-        </label>
-        {voorstel ? (
-          <p class="border border-accent px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="underline" href="tel:+31786172011">078 617 20 11</a> of mail <a class="underline break-all" href="mailto:apkdordt@hotmail.com">apkdordt@hotmail.com</a>.</p>
-        ) : (
-          <button type="submit" class="justify-self-start bg-accent text-ink font-semibold px-6 py-3 hover:bg-accent-deep transition-colors">Verstuur aanvraag</button>
-        )}
-        <p class="text-xs text-night-soft">We gebruiken uw gegevens alleen om de afspraak te regelen. Zie de <a class="underline" href={u('privacy/')}>privacyverklaring</a>.</p>
-      </form>
-    </div>
-  </section>
+      </div>
+    </section>
+
+    <!-- 6. Werkwijze -->
+    <section class="bg-vlak py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Zo gaat het</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">In vier stappen weer op weg.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Gewoon even contact. Een afspraak is zo gemaakt.</p>
+        </div>
+        <ol class="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4 lg:gap-5">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart p-6 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num inline-grid h-12 min-w-12 place-items-center rounded-[6px] bg-merk px-2 font-kop text-2xl font-extrabold">0{i + 1}</p>
+              <h3 class="mt-6 text-2xl">{t}</h3>
+              <p class="mt-3 text-grijs">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 7. Occasions -->
+    <section id="occasions" class="donker bg-nacht text-licht" aria-labelledby="t-occasions">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[20rem] sm:min-h-[28rem] lg:order-2 lg:col-span-6">
+          <Image src={occasion} alt="Een rij gebruikte auto's, van voren gezien" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-6 lg:px-16 lg:py-24 xl:pl-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Occasions</p>
+          <h2 id="t-occasions" class="mt-4 text-3xl">Op zoek naar een occasion?</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Als Autobedrijf Dordt staan we al 21 jaar op Marktplaats, met 4,9 uit 25 ervaringen. Bekijk daar het actuele aanbod en bel of app gerust of een auto er nog staat.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={site.marktplaats} class="knop knop-merk">Aanbod op Marktplaats<Icoon naam="pijl" /></a>
+            <a href={waMet('Goedendag, ik heb een vraag over een occasion op Marktplaats.')} class="knop knop-rand"><Icoon naam="wa" />Vraag over een auto</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Reviews -->
+    <section id="reviews" class="py-20 lg:py-28" aria-labelledby="t-reviews">
+      <div class="wrap">
+        <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div class="rijs">
+            <p class="eyebrow">Reviews</p>
+            <h2 id="t-reviews" class="mt-4 text-3xl">Wat klanten zeggen.</h2>
+          </div>
+          <a href={site.reviews} class="rijs kaart flex items-center gap-4 self-start px-5 py-4 no-underline transition-shadow hover:shadow-md md:self-auto" style="--d:.05s">
+            <Icoon naam="g" class="h-9 w-9" />
+            <span>
+              <span class="flex items-center gap-2"><b class="num font-kop text-3xl font-extrabold">{site.google.score}</b><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span></span>
+              <span class="block text-sm text-grijs">{site.google.aantal} reviews op Google</span>
+            </span>
+          </a>
+        </div>
+        <ul class="-mx-5 mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:mt-14 lg:grid-cols-3" aria-label="Reviews, veeg voor meer">
+          {reviews.map((r, i) => (
+            <li class="rijs kaart flex w-[84%] shrink-0 snap-center flex-col p-6 md:w-auto md:p-7" style={`--d:${(i % 3) * 0.06}s`}>
+              <span class="flex text-ster" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-[1.125rem] w-[1.125rem]" />)}</span>
+              <blockquote class="mt-5 flex-1 text-[1.0625rem] leading-relaxed">“{r.tekst}”</blockquote>
+              <div class="mt-7 flex items-center gap-3 border-t border-lijn pt-5">
+                <span class="grid h-10 w-10 place-items-center rounded-[6px] bg-merk font-kop text-xl font-extrabold" aria-hidden="true">{r.naam[0]}</span>
+                <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{r.naam}</b><span class="text-grijs">Google review, {r.wanneer}</span></span>
+                <Icoon naam="g" class="h-5 w-5" />
+              </div>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-center"><a href={site.reviews} class="link font-semibold">Alle {site.google.aantal} reviews op Google</a></p>
+      </div>
+    </section>
+
+    <!-- 9. Openingstijden en route -->
+    <section id="tijden" class="bg-vlak py-20 lg:py-28" aria-labelledby="t-tijden">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Openingstijden en route</p>
+          <h2 id="t-tijden" class="mt-4 text-3xl">Planckstraat 88, Dordtse Kil.</h2>
+          <p class="mt-6 text-lg text-grijs">Op het bedrijventerrein Dordtse Kil in Dordrecht. Op zaterdag en zondag is de garage dicht.</p>
+          <div class="kaart mt-10 p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <h3 class="text-2xl">Openingstijden</h3>
+              <p class="inline-flex items-center gap-2 rounded-[6px] bg-vlak px-3 py-1.5 text-sm font-semibold" data-status-wrap><span class="status-stip" aria-hidden="true"></span><span data-status>Ma t/m vr open</span></p>
+            </div>
+            <table class="mt-4 w-full">
+              <caption class="sr-only">Openingstijden van de garage</caption>
+              <tbody>
+                {tijden.map((t) => (
+                  <tr data-dag={t.dag} class="border-b border-lijn last:border-0 data-[vandaag]:font-bold">
+                    <th scope="row" class="py-2.5 pr-4 text-left font-[inherit]">{t.naam}</th>
+                    <td class="num py-2.5 text-right">{t.open ? `${t.open} - ${t.dicht} uur` : 'Gesloten'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="flex flex-col gap-5 lg:col-span-7">
+          <div class="kaart flex flex-1 flex-col justify-between gap-8 bg-nacht p-8 text-licht md:p-10">
+            <Icoon naam="pin" class="h-10 w-10 text-merk" />
+            <div>
+              <p class="font-kop text-[clamp(2.4rem,3vw+1.4rem,4rem)] font-extrabold uppercase leading-[.9]">{site.straat}</p>
+              <p class="mt-3 text-lg text-licht-zacht">{site.postcode} {site.plaats}</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href={site.maps} class="knop knop-merk">Route plannen<Icoon naam="pijl" /></a>
+              <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Contact -->
+    <section id="contact" class="py-20 lg:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Bellen, appen of mailen.</h2>
+          <p class="mt-6 text-lg text-grijs">Voor een afspraak, een vraag over uw auto of over een occasion.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[6px] bg-merk"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Garage</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+            <li><a href={waAlgemeen} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[6px] bg-vlak"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp of mobiel</b><span class="num text-grijs">{site.mobiel}</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[6px] bg-vlak"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" action={`mailto:${site.mail}`} method="post" enctype="text/plain">
+          <h3 class="text-3xl">Bel mij terug</h3>
+          <p class="mt-2 text-grijs">Laat uw gegevens achter, dan bellen we u terug met een tijd.</p>
+          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" required autocomplete="name" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Telefoon</span><input name="telefoon" type="tel" required autocomplete="tel" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Kenteken</span><input name="kenteken" autocapitalize="characters" class="veld mt-2 uppercase" /></label>
+            <label class="block"><span class="text-sm font-semibold">Waarvoor</span>
+              <select name="waarvoor" class="veld mt-2">{soorten.map((s) => <option>{s}</option>)}</select></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting <span class="font-normal text-grijs">(optioneel)</span></span><textarea name="bericht" rows="3" class="veld mt-2"></textarea></label>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-8 rounded-[6px] border-2 border-merk px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="link num" href={site.telHref}>{site.tel}</a> of mail <a class="link break-all" href={`mailto:${site.mail}`}>{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="knop knop-merk mt-8">Verstuur</button>
+          )}
+          <p class="mt-4 text-xs text-grijs">We gebruiken uw gegevens alleen om de afspraak te regelen. Zie de <a class="link" href={url('privacy/')}>privacyverklaring</a>.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 11. Slotbalk -->
+    <section class="bg-merk text-inkt" aria-label="Afspraak maken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(2.2rem,2.4vw+1.4rem,3.4rem)]">APK bijna verlopen?</h2>
+          <p class="mt-2 text-lg">Stuur uw kenteken, dan plannen we de keuring.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={vraag('de APK')} class="knop knop-inkt"><Icoon naam="wa" />Plan de APK</a>
+          <a href={site.telHref} class="knop knop-rand num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
 </Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    const uit = f.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const plaat = f.querySelector<HTMLInputElement>('input[name="k"]')!;
+    const zin: Record<string, string> = {
+      'APK-keuring': 'de APK-keuring van mijn auto',
+      'Onderhoudsbeurt': 'een onderhoudsbeurt',
+      'Reparatie of storing': 'een reparatie of storing',
+      'Banden wisselen': 'het wisselen van mijn banden',
+    };
+    const bericht = () => {
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      const s = v('s');
+      const r = [s === 'Vraag over een occasion' ? 'Goedendag, ik heb een vraag over een occasion.' : `Goedendag, ik wil graag een afspraak maken voor ${zin[s] || 'mijn auto'}.`];
+      if (v('k')) r.push(`Kenteken: ${v('k').toUpperCase()}`);
+      if (v('d') && v('d') !== 'Maakt niet uit') r.push(`Het liefst op ${v('d').toLowerCase()}.`);
+      if (v('n')) r.push(`Groet, ${v('n')}`);
+      return r.join('\n');
+    };
+    const toon = () => { uit.textContent = bericht(); };
+    plaat.addEventListener('input', () => { plaat.value = plaat.value.toUpperCase().replace(/[^A-Z0-9-]/g, ''); });
+    f.addEventListener('input', toon);
+    f.addEventListener('change', toon);
+    f.addEventListener('submit', (e) => { e.preventDefault(); window.open('https://wa.me/31682128337?text=' + encodeURIComponent(bericht()), '_blank', 'noopener'); });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .88; letter-spacing: -0.005em; }
+  .cijfer { font-family: var(--font-kop); font-weight: 800; font-size: clamp(3.25rem, 3vw + 2rem, 4.75rem); line-height: .9; font-variant-numeric: tabular-nums; }
+  .plaat { display: flex; align-items: stretch; max-width: 24rem; height: 5rem; border-radius: 8px; background: var(--color-merk); box-shadow: inset 0 0 0 3px var(--color-inkt), 0 0 0 3px var(--color-merk); overflow: hidden; }
+  .plaat-eu { display: grid; place-items: end center; width: 2.6rem; padding-bottom: .6rem; background: var(--color-eu); color: #fff; font-weight: 700; font-size: .85rem; margin: 3px 0 3px 3px; border-radius: 5px 0 0 5px; }
+  .plaat input { flex: 1; min-width: 0; width: 100%; border: 0; background: transparent; color: var(--color-inkt); font-family: var(--font-kop); font-weight: 900; font-size: 2.9rem; letter-spacing: .08em; text-align: center; text-transform: uppercase; padding: 0 .75rem; }
+  .plaat input::placeholder { color: #17191b55; }
+  .plaat input:focus-visible { outline: none; }
+  .plaat:focus-within { box-shadow: inset 0 0 0 3px var(--color-inkt), 0 0 0 3px var(--color-merk), 0 0 0 6px #fff; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0 1rem; border-radius: 6px; background: var(--color-nacht); box-shadow: inset 0 0 0 1px var(--color-lijn-licht); font-size: .9375rem; font-weight: 600; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #2d3136; }
+  .keuze input:checked + span { background: var(--color-merk); color: var(--color-inkt); }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-merk); outline-offset: 2px; }
+</style>

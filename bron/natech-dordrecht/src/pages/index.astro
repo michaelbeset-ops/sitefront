@@ -1,91 +1,296 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Foto from '../components/Foto.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, machines, waAlgemeen, waMet, url } from '../data/site';
+import hero from '../assets/hero.jpg';
+import grond from '../assets/grond.jpg';
+import pOverzet from '../assets/p-overzet.jpg';
+import pOverzet2 from '../assets/p-overzet2.jpg';
+import pTransport from '../assets/p-transport.jpg';
+import pBunker from '../assets/p-bunker.jpg';
+import pBunker2 from '../assets/p-bunker2.jpg';
+import pCompost from '../assets/p-compost.jpg';
+import pMachine from '../assets/p-machine.jpg';
 
-const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p = '') => `${base}/${p}`;
+const vraag = (m: string) => waMet(`Goedendag Herman, ik heb een vraag over ${m.toLowerCase()}.`);
 
-// Productgroepen zoals ze op hun eigen site staan.
-const machines = ['Overzetten en bufferen', 'Grond- en producttransport', 'Grondvoorraadbunkers', 'Compostzeefinstallaties'];
+// Eigen foto's van natechhandel.nl (klein formaat, daarom niet groter getoond dan ze zijn).
+const kaarten = [
+  { t: machines[0], d: 'Planten overzetten en bufferen in de lijn.', src: pOverzet, alt: 'Potplanten op een transportband van een overzetmachine', pos: '50% 50%' },
+  { t: machines[1], d: 'Grond en product verplaatsen met banden en elevatoren.', src: pTransport, alt: 'Blauwe transportband die grond omhoog voert in een kas', pos: '50% 50%' },
+  { t: machines[2], d: 'Een voorraad potgrond, klaar voor gebruik.', src: pBunker, alt: 'Blauwe grondvoorraadbunker met wit-grijze wanden en het Natech-bord', pos: '50% 50%' },
+  { t: machines[3], d: 'Compost zeven tot een bruikbaar product.', src: pCompost, alt: 'Groene compostzeefinstallatie buiten op een terrein', pos: '50% 50%' },
+];
+
+const stappen = [
+  ['Advies', 'Wat past bij uw bedrijf? We kijken mee naar uw bedrijfsontwikkeling.'],
+  ['Engineering', 'De machine of lijn wordt afgestemd op uw situatie.'],
+  ['Levering', 'Als dealer en importeur levert Natech de DEMTEC-machine.'],
+  ['Service', 'Onderhoud, reparatie en hulp bij storingen.'],
+];
+
+const soorten = ['Prijsopgave', 'Advies', 'Service of onderhoud', 'Storing'];
 ---
-<Base
-  title="Natech | DEMTEC-machines voor de tuinbouw, Dordrecht"
-  description="Natech uit Dordrecht: advies, engineering en handel in tuinbouwmachines. Dealer en importeur van DEMTEC sinds 1998. Ook service, onderhoud en storingen."
->
-  <!-- Hero: kasfoto met donker verloop links voor de tekst. Zakelijk en rustig voor een B2B-bezoeker. -->
-  <section class="relative isolate bg-night text-paper">
-    <div class="absolute inset-0 -z-10 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
-      <Foto naam="hero" alt="Lange kas met rijen jonge plantjes" sizes="100vw" eager />
-    </div>
-    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,rgb(20_32_26/0.92)_0%,rgb(20_32_26/0.75)_45%,rgb(20_32_26/0.15)_80%)]"></div>
-    <div class="absolute inset-0 -z-10 bg-[rgb(20_32_26/0.55)] lg:hidden"></div>
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 min-h-[34rem] sm:min-h-[40rem] lg:min-h-[44rem] flex flex-col justify-center py-20">
-      <p class="text-sm font-semibold tracking-[0.12em] uppercase text-accent-light">Sinds 1998 · Dordrecht</p>
-      <h1 class="mt-4 text-4xl max-w-[14ch]">Machines voor de tuinbouw</h1>
-      <p class="mt-6 max-w-lg text-lg text-paper/90">Natech is dealer en importeur van DEMTEC-machines. We adviseren over uw bedrijfsontwikkeling, leveren de machines en verzorgen service en onderhoud.</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href={u('#contact')} class="inline-flex bg-accent-light text-ink font-semibold px-5 py-3 hover:bg-paper transition-colors">Vraag een prijsopgave</a>
-        <a href="tel:+31653696509" class="inline-flex border border-paper/70 px-5 py-3 hover:bg-paper hover:text-ink transition-colors">Bel Herman, 06 53 69 65 09</a>
-      </div>
-    </div>
-  </section>
+<Base title="Natech | DEMTEC-machines voor de tuinbouw, Dordrecht" description="Natech uit Dordrecht: advies, engineering en handel in tuinbouwmachines. Sinds 1998 dealer en importeur van DEMTEC. Ook service, onderhoud, reparatie en storingen.">
+  <Kop />
+  <main id="inhoud">
 
-  <section id="machines" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-4">
-      <h2 class="text-3xl">DEMTEC-machines</h2>
-      <p class="mt-5 text-ink-soft">Door jarenlange ervaring in de mechanisatie van de tuinbouw weten we welke oplossing past bij uw bedrijf.</p>
-    </div>
-    <ul class="lg:col-span-8 min-w-0 grid sm:grid-cols-2 border-t-2 border-ink">
-      {machines.map((m, i) => (
-        <li class="py-7 pr-6 border-b border-line flex gap-5">
-          <span class="display text-xl text-accent tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-          <span class="min-w-0"><span class="display text-xl block hyphens-auto [overflow-wrap:anywhere]">{m}</span><span class="mt-1 block text-sm text-ink-soft">[[AANLEVEREN: korte uitleg en foto]]</span></span>
-        </li>
-      ))}
-    </ul>
-  </section>
-
-  <section id="service" class="bg-paper-2">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-10 lg:grid-cols-12 items-center">
-      <div class="lg:col-span-5 order-2 lg:order-1">
-        <h2 class="text-3xl">Service, onderhoud en storingen</h2>
-        <p class="mt-6 text-ink-soft">Ook voor service, onderhoud, reparatie en storingen aan uw machines bent u bij Natech aan het goede adres.</p>
-        <p class="mt-3 text-sm text-ink-soft">[[AANLEVEREN: servicegebied en hoe snel jullie bij een storing komen]]</p>
-        <a href="tel:+31786737201" class="mt-8 inline-block font-semibold underline">Bel 078 673 72 01</a>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#16181a40_0%,#16181ac4_45%,#16181af5_100%)] md:bg-[linear-gradient(90deg,#16181af2_0%,#16181ac7_45%,#16181a26_100%)]" aria-hidden="true"></div>
+      <div class="wrap w-full pb-24 pt-28 md:py-24">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Advies, engineering en handel</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Machines voor de <span class="text-limoen">tuinbouw</span>.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Natech is sinds 1998 dealer en importeur van DEMTEC-machines. Voor advies bij uw bedrijfsontwikkeling, de machine zelf, en service als er iets stilstaat.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waAlgemeen} class="knop knop-merk"><Icoon naam="wa" />App Herman</a>
+            <a href="#vraag" class="knop knop-rand op-foto">Vrijblijvende prijsopgave</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-limoen" />Sinds 1998 in Dordrecht</li>
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-limoen" />Verkoop: {site.verkoper}</li>
+            <li class="flex items-center gap-2"><Icoon naam="tel" class="h-4 w-4 text-limoen" /><a href={site.mobielHref} class="num no-underline hover:text-limoen">{site.mobiel}</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="lg:col-span-7 order-1 lg:order-2 [&_img]:w-full [&_img]:h-auto">
-        <Foto naam="grond" alt="Hand met potgrond" sizes="(min-width: 1024px) 55vw, 100vw" />
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="contact" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-5">
-      <h2 class="text-3xl">Contact</h2>
-      <p class="mt-5 text-ink-soft">Voor meer informatie of een vrijblijvende prijsopgave.</p>
-      <dl class="mt-8 grid gap-4">
-        <div><dt class="text-sm text-ink-soft">Verkoop</dt><dd>Herman Naaktgeboren, <a class="font-semibold hover:text-accent" href="tel:+31653696509">06 53 69 65 09</a></dd></div>
-        <div><dt class="text-sm text-ink-soft">Kantoor</dt><dd><a class="hover:text-accent" href="tel:+31786737201">078 673 72 01</a></dd></div>
-        <div><dt class="text-sm text-ink-soft">E-mail</dt><dd><a class="hover:text-accent break-all" href="mailto:natech@zonnet.nl">natech@zonnet.nl</a></dd></div>
-        <div><dt class="text-sm text-ink-soft">Adres</dt><dd>Jade 224, 3316 LJ Dordrecht<br /><span class="text-sm text-ink-soft">Bedrijventerrein Dordtse Kil III</span></dd></div>
+    <!-- 2. Cijfers -->
+    <section class="border-b border-lijn bg-wit" aria-label="In het kort">
+      <dl class="wrap grid gap-y-10 py-12 sm:grid-cols-3 lg:py-14">
+        <div class="flex flex-col"><dt class="text-grijs">Dealer van DEMTEC sinds</dt><dd class="cijfer order-first text-merk">1998</dd></div>
+        <div class="flex flex-col sm:border-l sm:border-lijn sm:pl-10"><dt class="text-grijs">Productgroepen</dt><dd class="cijfer order-first">4</dd></div>
+        <div class="flex flex-col sm:border-l sm:border-lijn sm:pl-10"><dt class="text-grijs">Vast aanspreekpunt voor verkoop</dt><dd class="cijfer order-first">1</dd></div>
       </dl>
-    </div>
-    <form class="lg:col-span-6 lg:col-start-7 grid gap-5" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="[[AANLEVEREN: Web3Forms-key]]" />
-      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="grid gap-2 text-sm">Naam<input name="naam" required autocomplete="name" class="bg-paper border border-line px-3 py-3 text-base" /></label>
-        <label class="grid gap-2 text-sm">Bedrijf<input name="bedrijf" autocomplete="organization" class="bg-paper border border-line px-3 py-3 text-base" /></label>
+    </section>
+
+    <!-- 3. Machines -->
+    <section id="machines" class="py-20 lg:py-28" aria-labelledby="t-machines">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">DEMTEC-machines</p>
+            <h2 id="t-machines" class="mt-4 text-3xl">Van overzetten tot compost zeven.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Door jarenlange ervaring in de mechanisatie van de tuinbouw weet Natech welke oplossing bij uw bedrijf past.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {kaarten.map((k, i) => (
+            <li class="rijs" style={`--d:${i * 0.06}s`}>
+              <a href={vraag(k.t)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden bg-vlak">
+                  <Image src={k.src} alt={k.alt} sizes="(min-width: 1024px) 280px, 46vw" class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]" style={`object-position:${k.pos}`} />
+                </div>
+                <div class="flex flex-1 flex-col justify-between gap-4 p-4 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.0625rem] hyphens-auto sm:text-xl">{k.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{k.d}</p>
+                  </div>
+                  <span class="inline-flex items-center gap-2 text-sm font-semibold text-merk">Vraag ernaar<Icoon naam="pijl" class="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm text-grijs">Foto’s van machines uit eigen projecten, van natechhandel.nl.</p>
       </div>
-      <label class="grid gap-2 text-sm">Telefoon of e-mail<input name="contact" required class="bg-paper border border-line px-3 py-3 text-base" /></label>
-      <label class="grid gap-2 text-sm">Uw vraag<textarea name="bericht" rows="4" class="bg-paper border border-line px-3 py-3 text-base"></textarea></label>
-      {voorstel ? (
-        <p class="border border-accent px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="underline" href="tel:+31653696509">06 53 69 65 09</a> of mail <a class="underline" href="mailto:natech@zonnet.nl">natech@zonnet.nl</a>.</p>
-      ) : (
-        <button type="submit" class="justify-self-start bg-accent text-paper font-semibold px-6 py-3 hover:bg-accent-deep">Vraag prijsopgave aan</button>
-      )}
-      <p class="text-xs text-ink-soft">We gebruiken uw gegevens alleen voor uw aanvraag. Zie de <a class="underline" href={u('privacy/')}>privacyverklaring</a>.</p>
-    </form>
-  </section>
+    </section>
+
+    <!-- 4. Wow: vraag samenstellen voor Herman -->
+    <section id="vraag" class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-vraag">
+      <div class="wrap grid items-start gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Uw vraag</p>
+          <h2 id="t-vraag" class="mt-4 text-3xl">Prijsopgave, advies of een storing?</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Kies waar het om gaat en welke machine. Wij zetten het in een WhatsApp-bericht aan Herman; u drukt zelf op verzenden.</p>
+          <div class="mt-10 hidden rounded-[12px] bg-nacht-2 p-6 ring-1 ring-limoen/40" data-storing>
+            <p class="flex items-center gap-2 font-semibold text-limoen"><Icoon naam="klok" class="h-5 w-5" />Staat er een machine stil?</p>
+            <p class="mt-2 text-licht-zacht">Bel dan liever meteen, dat gaat sneller dan een bericht.</p>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <a href={site.mobielHref} class="knop knop-merk knop-klein num"><Icoon naam="tel" />{site.mobiel}</a>
+              <a href={site.telHref} class="knop knop-rand knop-klein num">{site.tel}</a>
+            </div>
+          </div>
+        </div>
+        <form class="min-w-0 rounded-[12px] bg-nacht-2 p-6 ring-1 ring-lijn-licht sm:p-8 lg:col-span-7 lg:p-10" data-wa>
+          <fieldset>
+            <legend class="text-sm font-semibold">Waar gaat het om?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">{soorten.map((s, i) => <label class="keuze"><input type="radio" name="s" value={s} checked={i === 0} class="sr-only" /><span>{s}</span></label>)}</div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Welke machine?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">{[...machines, 'Weet ik nog niet'].map((m, i) => <label class="keuze"><input type="radio" name="m" value={m} checked={i === 4} class="sr-only" /><span>{m}</span></label>)}</div>
+          </fieldset>
+          <div class="mt-7 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Bedrijf</span><input name="b" autocomplete="organization" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Uw naam</span><input name="n" autocomplete="name" class="veld mt-2" /></label>
+          </div>
+          <div class="mt-8 border-t border-lijn-licht pt-6">
+            <p class="text-sm text-licht-zacht">Uw bericht:</p>
+            <p class="mt-2 whitespace-pre-line font-semibold" data-voorbeeld aria-live="polite">Goedendag Herman, ik wil graag een vrijblijvende prijsopgave.</p>
+            <button type="submit" class="knop knop-merk mt-6"><Icoon naam="wa" />Open in WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Advies, engineering, levering en service.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Natech is de partner voor uw bedrijfsontwikkeling, van het eerste idee tot de machine die draait.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart relative overflow-hidden p-5 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <span class={`absolute inset-x-0 top-0 h-1.5 ${i % 2 ? 'bg-limoen' : 'bg-merk'}`} aria-hidden="true"></span>
+              <p class="num font-kop text-lg font-extrabold text-merk">0{i + 1}</p>
+              <h3 class="mt-5 text-[1.0625rem] sm:mt-8 sm:text-xl">{t}</h3>
+              <p class="mt-2 text-sm text-grijs sm:mt-3 sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. Service -->
+    <section id="service" class="donker bg-nacht text-licht" aria-labelledby="t-service">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[28rem] lg:col-span-6">
+          <Image src={pMachine} alt="Een lichtgrijze DEMTEC-machine met transportband buiten op een terrein" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="absolute inset-0 h-full w-full object-cover" />
+          <p class="absolute bottom-4 left-4 rounded-[8px] bg-merk px-4 py-1.5 text-sm font-semibold text-white">Foto van natechhandel.nl</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-6 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Service</p>
+          <h2 id="t-service" class="mt-4 text-3xl">Service, onderhoud, reparatie en storingen.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Ook als de machine eenmaal draait, bent u bij Natech aan het goede adres.</p>
+          <ul class="mt-8 grid grid-cols-2 gap-3">
+            {[['sleutel', 'Onderhoud'], ['schild', 'Service'], ['band', 'Reparatie'], ['klok', 'Storingen']].map(([ic, t]) => (
+              <li class="flex items-center gap-3 rounded-[12px] bg-nacht-2 px-4 py-4"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-[8px] bg-merk text-white"><Icoon naam={ic} class="h-5 w-5" /></span><span class="font-kop text-lg font-bold">{t}</span></li>
+            ))}
+          </ul>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waMet('Goedendag Herman, ik heb een vraag over service of onderhoud.')} class="knop knop-merk"><Icoon naam="wa" />Service aanvragen</a>
+            <a href={site.telHref} class="knop knop-rand num"><Icoon naam="tel" />{site.tel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Over Natech -->
+    <section id="over" class="py-20 lg:py-28" aria-labelledby="t-over">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+        <div class="min-w-0 lg:col-span-6">
+          <p class="eyebrow">Over Natech</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Jarenlange ervaring in de tuinbouw.</h2>
+          <p class="mt-6 text-lg text-grijs">Natech advies, handel en engineering bestaat sinds 1998 en zit op industrieterrein Dordtse Kil 3 in Dordrecht. Als dealer is Natech verantwoordelijk voor de import van DEMTEC-machines.</p>
+          <div class="kaart mt-8 flex flex-wrap items-center gap-4 p-5">
+            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-merk font-kop text-lg font-extrabold text-white" aria-hidden="true">HN</span>
+            <span class="flex-1"><b class="block font-semibold">{site.verkoper}</b><span class="text-grijs">Verkoop</span></span>
+            <a href={site.mobielHref} class="knop knop-inkt knop-klein num">{site.mobiel}</a>
+          </div>
+        </div>
+        <div class="grid min-w-0 grid-cols-2 gap-3 lg:col-span-6">
+          <Image src={grond} alt="Hand met een plukje potgrond" widths={[600, 900]} sizes="(min-width: 1024px) 560px, 92vw" class="col-span-2 aspect-[2/1] w-full rounded-[12px] object-cover" />
+          <Image src={pOverzet2} alt="Potplanten op de band van een overzetmachine" sizes="(min-width: 1024px) 270px, 45vw" class="aspect-[4/3] w-full rounded-[12px] object-cover" />
+          <Image src={pBunker2} alt="Grondvoorraadbunker met elevator in een kas" sizes="(min-width: 1024px) 270px, 45vw" class="aspect-[4/3] w-full rounded-[12px] object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Contact -->
+    <section id="contact" class="bg-vlak py-20 lg:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Voor meer informatie of een prijsopgave.</h2>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={site.mobielHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[8px] bg-merk text-white"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Verkoop, {site.verkoper}</b><span class="num text-grijs">{site.mobiel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[8px] bg-papier text-merk"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Kantoor</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+            <li><a href={`mailto:${site.mail}`} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[8px] bg-papier text-merk"><Icoon naam="mail" class="h-6 w-6" /></span><span class="min-w-0 flex-1"><b class="block font-semibold">E-mail</b><span class="block break-all text-grijs">{site.mail}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+            <li><a href={site.maps} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-[8px] bg-papier text-merk"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">{site.straat}, {site.postcode} {site.plaats}</b><span class="text-grijs">{site.terrein}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" action={`mailto:${site.mail}`} method="post" enctype="text/plain">
+          <h3 class="text-2xl">Prijsopgave aanvragen</h3>
+          <p class="mt-2 text-grijs">Vertel kort wat u zoekt, dan neemt Natech contact met u op.</p>
+          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" required autocomplete="name" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Bedrijf</span><input name="bedrijf" autocomplete="organization" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Telefoon of e-mail</span><input name="contact" required class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Machine</span>
+              <select name="machine" class="veld mt-2">{machines.map((m) => <option>{m}</option>)}<option>Service of storing</option><option>Anders</option></select></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Uw vraag</span><textarea name="bericht" rows="4" class="veld mt-2"></textarea></label>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-8 rounded-[8px] border border-merk px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="link num" href={site.mobielHref}>{site.mobiel}</a> of mail <a class="link break-all" href={`mailto:${site.mail}`}>{site.mail}</a>.</p>
+          ) : (
+            <button type="submit" class="knop knop-merk mt-8">Verstuur aanvraag</button>
+          )}
+          <p class="mt-4 text-xs text-grijs">We gebruiken uw gegevens alleen voor uw aanvraag. Zie de <a class="link" href={url('privacy/')}>privacyverklaring</a>.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-merk text-white" aria-label="Contact">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Plannen voor uw bedrijf?</h2>
+          <p class="mt-2 text-lg text-white/90">Bespreek ze met Herman, dan kijkt Natech welke machine past.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waAlgemeen} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.mobielHref} class="knop knop-rand op-foto num">{site.mobiel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
 </Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-wa]');
+  if (f) {
+    const uit = f.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const storing = document.querySelector<HTMLElement>('[data-storing]')!;
+    const zin: Record<string, string> = {
+      'Prijsopgave': 'ik wil graag een vrijblijvende prijsopgave',
+      'Advies': 'ik wil graag advies',
+      'Service of onderhoud': 'ik wil graag service of onderhoud laten doen',
+      'Storing': 'we hebben een storing',
+    };
+    const bericht = () => {
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '').trim();
+      storing.classList.toggle('hidden', v('s') !== 'Storing');
+      const m = v('m') && v('m') !== 'Weet ik nog niet' ? ` (${v('m').toLowerCase()})` : '';
+      const r = [`Goedendag Herman, ${zin[v('s')]}${m}.`];
+      if (v('b')) r.push(`Bedrijf: ${v('b')}`);
+      if (v('n')) r.push(`Groet, ${v('n')}`);
+      return r.join('\n');
+    };
+    const toon = () => { uit.textContent = bericht(); };
+    f.addEventListener('input', toon);
+    f.addEventListener('change', toon);
+    f.addEventListener('submit', (e) => { e.preventDefault(); window.open('https://wa.me/31653696509?text=' + encodeURIComponent(bericht()), '_blank', 'noopener'); });
+  }
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.04em; }
+  .cijfer { font-family: var(--font-kop); font-weight: 800; font-size: clamp(3rem, 3vw + 1.8rem, 4.25rem); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0 1rem; border-radius: 8px; background: var(--color-nacht); box-shadow: inset 0 0 0 1px var(--color-lijn-licht); font-size: .9375rem; font-weight: 600; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #2c3034; }
+  .keuze input:checked + span { background: var(--color-limoen); color: var(--color-nacht); }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-limoen); outline-offset: 2px; }
+</style>

@@ -1,0 +1,49 @@
+---
+import { site, url, tijden, diensten, waAlgemeen } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+const h = (id: string) => (thuis ? `#${id}` : url(`#${id}`));
+---
+<footer class="donker bg-asfalt text-licht-zacht">
+  <div class="wrap grid grid-cols-2 gap-x-6 gap-y-12 py-16 text-[.9375rem] lg:grid-cols-12 lg:gap-8 lg:py-20">
+    <div class="col-span-2 lg:col-span-4">
+      <a href={url('')} class="merk text-[1.75rem]"><span class="l">LUXE</span> <span class="b">BANDEN</span></a>
+      <p class="mt-6 max-w-xs">Garage aan de Daltonstraat in Dordrecht. Banden, APK, onderhoud, reparatie, aircoservice en schadeherstel.</p>
+    </div>
+    <div class="lg:col-span-2">
+      <p class="font-semibold text-licht">Diensten</p>
+      <ul class="mt-4 space-y-2">{diensten.map((d) => <li><a href={h('diensten')} class="no-underline hover:text-fel">{d}</a></li>)}</ul>
+    </div>
+    <div class="lg:col-span-3">
+      <p class="font-semibold text-licht">Contact</p>
+      <ul class="mt-4 space-y-2">
+        <li><a href={site.telHref} class="num whitespace-nowrap no-underline hover:text-fel">{site.tel}</a></li>
+        <li><a href={waAlgemeen} class="no-underline hover:text-fel">WhatsApp</a></li>
+        <li><a href={`mailto:${site.mail}`} class="break-all no-underline hover:text-fel">{site.mail}</a></li>
+        <li>{site.straat}<br />{site.postcode} {site.plaats}</li>
+        <li><a href={site.maps} class="no-underline hover:text-fel">Route plannen</a></li>
+      </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1 lg:col-span-3">
+      <p class="font-semibold text-licht">Openingstijden</p>
+      <table class="mt-4 w-full max-w-[16rem]">
+        <caption class="sr-only">Openingstijden</caption>
+        <tbody>
+          {tijden.map((t) => (
+            <tr data-dag={t.dag} class="data-[vandaag]:font-semibold data-[vandaag]:text-fel">
+              <th scope="row" class="py-0.5 pr-4 text-left font-normal">{t.naam}</th>
+              <td class="num py-0.5 text-right">{t.open ? `${t.open} - ${t.dicht}` : 'Gesloten'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="border-t border-lijn-licht">
+    <div class="wrap flex flex-wrap items-center justify-between gap-x-8 gap-y-2 py-6 text-xs">
+      <p>© {new Date().getFullYear()} {site.naam}, {site.plaats}</p>
+      <p class="flex gap-6"><a href={url('privacy/')} class="no-underline hover:text-fel">Privacyverklaring</a><span>Website door Sitefront</span></p>
+    </div>
+    {site.voorstel && <p class="wrap pb-8 text-xs">Sfeerfoto's via Unsplash, ter illustratie. Foto van de gevel en reviews van het Google-profiel (5 november 2026).</p>}
+  </div>
+</footer>

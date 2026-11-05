@@ -1,89 +1,317 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Foto from '../components/Foto.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, diensten, review, waAlgemeen, waMet, url } from '../data/site';
+import hero from '../assets/hero.jpg';
+import badkamer from '../assets/badkamer.jpg';
+import keuken from '../assets/keuken.jpg';
+import verbouwing from '../assets/verbouwing.jpg';
+import interieur from '../assets/interieur.jpg';
+import timmerwerk from '../assets/timmerwerk.jpg';
+import schip from '../assets/schip.jpg';
+import dordrecht from '../assets/dordrecht.jpg';
 
-const voorstel = import.meta.env.PUBLIC_VOORSTEL === '1';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const u = (p = '') => `${base}/${p}`;
+const vraag = (d: string) => waMet(`Hallo Riemar, ik heb een vraag over ${d}.`);
 
-// Werkzaamheden zoals vermeld in de bedrijfsomschrijving (KvK-gidsen).
-const werk = [
-  ['Badkamers', 'Renovatie van uw badkamer: sanitair plaatsen en vloer- en wandtegels zetten.'],
-  ['Keukens', 'Montage en onderhoud van keukens.'],
-  ['Interieurbouw en timmerwerk', 'Maatwerk binnenshuis en timmerwerk.'],
-  ['Schepen', 'Reparatie en onderhoud aan boord.'],
+// Werkzaamheden zoals vermeld in de KvK-gidsen (bron/kvk-gidsen.txt). Sfeerfoto's, geen eigen projecten.
+const kaarten = [
+  { t: 'Badkamers', d: 'Een nieuwe badkamer monteren of de oude renoveren.', src: badkamer, alt: 'Badkamer met grijze wandtegels, inloopdouche, zwevend toilet en wastafelmeubel', pos: '50% 50%', w: 'een badkamer' },
+  { t: 'Keukens', d: 'Montage van een nieuwe keuken, en onderhoud aan een bestaande.', src: keuken, alt: 'Donkere keuken met mozaïek achterwand en een licht werkblad', pos: '50% 50%', w: 'een keuken' },
+  { t: 'Renovatie', d: 'Sanitair plaatsen en vloer- en wandtegels zetten.', src: verbouwing, alt: 'Keuken die tijdens een verbouwing met folie is afgeplakt', pos: '50% 50%', w: 'een renovatie' },
+  { t: 'Interieurbouw', d: 'Kasten en ander maatwerk binnenshuis.', src: interieur, alt: 'Witte inbouwkast met glazen deurtjes en open planken', pos: '50% 40%', w: 'interieurbouw' },
+  { t: 'Timmerwerk', d: 'Het timmerwerk dat bij een verbouwing hoort.', src: timmerwerk, alt: 'Handen tekenen met potlood een lijn af op een plank, met krullen hout eromheen', pos: '50% 50%', w: 'timmerwerk' },
+  { t: 'Schepen', d: 'Reparatie en onderhoud aan boord.', src: schip, alt: 'Iemand werkt aan het dek van een motorboot in de haven', pos: '50% 40%', w: 'onderhoud aan een schip' },
 ];
+
+const stappen = [
+  ['Bel of app', 'Vertel wat u wilt laten doen. Een paar foto’s van de ruimte helpen.'],
+  ['Meedenken', 'Op basis van uw verhaal en foto’s denkt Riemar mee over de aanpak.'],
+  ['Montage', 'Netjes en precies, door de vakman die u aan de telefoon had.'],
+  ['Klaar', 'Uw badkamer, keuken of maatwerk is af.'],
+];
+
+const ruimtes = ['Badkamer', 'Keuken', 'Interieur of timmerwerk', 'Schip'];
+const soorten = ['Nieuw plaatsen', 'Renoveren', 'Onderhoud of reparatie'];
 ---
-<Base
-  title="Riemar Montage | Badkamer en keuken laten monteren in Dordrecht"
-  description="Riemar Montage uit Dordrecht: montage en onderhoud van badkamers en keukens, interieurbouw, timmerwerk en onderhoud aan schepen. Sinds 2004."
->
-  <!-- Hero: foto vult het scherm, tekst in een effen blok linksonder zodat hij op de lichte badkamerfoto leesbaar blijft. -->
-  <section class="relative isolate">
-    <div class="absolute inset-0 -z-10 [&_img]:h-full [&_img]:w-full [&_img]:object-cover">
-      <Foto naam="hero" alt="Gerenoveerde badkamer met witte wandtegels en een dubbel badmeubel" sizes="100vw" eager />
-    </div>
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 min-h-[36rem] sm:min-h-[42rem] lg:min-h-[46rem] flex items-end pt-24 pb-8 sm:pb-12">
-      <div class="bg-night text-paper p-6 sm:p-10 max-w-2xl">
-        <p class="text-sm tracking-[0.12em] uppercase text-accent-light">Dordrecht · sinds 2004</p>
-        <h1 class="mt-4 text-4xl">Badkamer en keuken, netjes gemonteerd</h1>
-        <p class="mt-6 text-lg text-paper/90">Riemar Montage plaatst en onderhoudt badkamers en keukens, en doet interieurbouw en timmerwerk.</p>
-        <a href="tel:+31654948189" class="mt-8 inline-flex bg-accent text-paper font-semibold px-5 py-3 hover:bg-accent-deep transition-colors">Bel 06 54 94 81 89</a>
-      </div>
-    </div>
-  </section>
+<Base title="Riemar Montage | Badkamer en keuken laten monteren in Dordrecht" description="Riemar Montage uit Dordrecht: sinds 2004 montage en onderhoud van badkamers en keukens, interieurbouw, timmerwerk en onderhoud aan schepen. Bel of app 06 54 94 81 89.">
+  <Kop />
+  <main id="inhoud">
 
-  <section id="werk" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28">
-    <h2 class="text-3xl max-w-xl">Wat Riemar voor u doet</h2>
-    <div class="mt-12 grid gap-x-12 md:grid-cols-2">
-      {werk.map(([titel, tekst]) => (
-        <div class="py-7 border-t border-ink grid grid-cols-[1.5rem_1fr] gap-4">
-          <svg aria-hidden="true" class="mt-1.5 text-accent" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 12.5 9.5 18 20 6"/></svg>
-          <div><h3 class="text-xl">{titel}</h3><p class="mt-2 text-ink-soft">{tekst}</p></div>
+    <!-- 1. Hero -->
+    <section class="donker relative isolate flex min-h-[calc(100svh-7rem)] items-end overflow-hidden bg-nacht text-licht md:items-center" aria-labelledby="t-hero">
+      <Image src={hero} alt="" widths={[640, 960, 1280, 1920]} sizes="100vw" loading="eager" fetchpriority="high" class="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_50%]" />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#1c232640_0%,#1c2326c4_48%,#1c2326f5_100%)] md:bg-[linear-gradient(90deg,#1c2326f2_0%,#1c2326cc_42%,#1c232626_100%)]" aria-hidden="true"></div>
+      <div class="wrap w-full pb-24 pt-28 md:py-24">
+        <div class="max-w-3xl">
+          <p class="eyebrow">Montage in Dordrecht, sinds 2004</p>
+          <h1 id="t-hero" class="mt-5 text-hero">Badkamer en keuken, <span class="text-merk-licht">netjes</span> gemonteerd.</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90 md:text-[1.3125rem] md:leading-relaxed">Sinds 2004 monteert Riemar Montage badkamers en keukens. Ook voor interieurbouw, timmerwerk en onderhoud aan schepen.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={waAlgemeen} class="knop knop-merk"><Icoon naam="wa" />Klus bespreken</a>
+            <a href={site.telHref} class="knop knop-rand op-foto num"><Icoon naam="tel" />Bel {site.tel}</a>
+          </div>
+          <ul class="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[.9375rem] text-licht/90">
+            <li class="flex items-center gap-2"><Icoon naam="vink" class="h-4 w-4 text-merk-licht" />Eenmanszaak: u spreekt de vakman zelf</li>
+            <li class="flex items-center gap-2"><span class="flex text-ster">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-4 w-4" />)}</span>“Netjes, precies en denken mee”</li>
+          </ul>
         </div>
-      ))}
-    </div>
-    <p class="mt-6 text-sm text-ink-soft">[[AANLEVEREN: foto's van eigen projecten, voor en na]]</p>
-  </section>
+      </div>
+    </section>
 
-  <section id="over" class="bg-paper-2">
-    <div class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-10 lg:grid-cols-12 items-center">
-      <div class="lg:col-span-7 [&_img]:w-full [&_img]:h-auto">
-        <Foto naam="keuken" alt="Keuken die afgeplakt is tijdens een verbouwing" sizes="(min-width: 1024px) 55vw, 100vw" />
-      </div>
-      <div class="lg:col-span-5">
-        <h2 class="text-3xl">Eén vakman, van begin tot eind</h2>
-        <p class="mt-6 text-ink-soft">Riemar Montage is sinds 2004 een eenmanszaak in Dordrecht. Wie belt, spreekt dus meteen degene die het werk ook uitvoert.</p>
-        <p class="mt-3 text-sm text-ink-soft">[[AANLEVEREN: naam, korte introductie en werkgebied]]</p>
-      </div>
-    </div>
-  </section>
+    <!-- 2. Cijfers -->
+    <section class="border-b border-lijn bg-wit" aria-label="In het kort">
+      <dl class="wrap grid gap-y-10 py-12 sm:grid-cols-3 lg:py-14">
+        <div class="flex flex-col"><dt class="text-grijs">Opgericht in Dordrecht</dt><dd class="cijfer order-first text-merk">2004</dd></div>
+        <div class="flex flex-col sm:border-l sm:border-lijn sm:pl-10"><dt class="text-grijs">Vakman, van begin tot eind</dt><dd class="cijfer order-first">1</dd></div>
+        <div class="flex flex-col sm:border-l sm:border-lijn sm:pl-10"><dt class="text-grijs">Badkamer, keuken, interieur en schepen</dt><dd class="cijfer order-first">4</dd></div>
+      </dl>
+    </section>
 
-  <section id="contact" class="mx-auto max-w-[84rem] px-4 sm:px-8 py-20 lg:py-28 grid gap-12 lg:grid-cols-12">
-    <div class="lg:col-span-5">
-      <h2 class="text-3xl">Klus bespreken?</h2>
-      <p class="mt-5 text-ink-soft">Bel, of laat hieronder uw gegevens achter. Een paar foto's van de ruimte helpen om een goed beeld te krijgen.</p>
-      <a href="tel:+31654948189" class="mt-8 inline-block display text-[2.2rem] leading-none hover:text-accent">06 54 94 81 89</a>
-    </div>
-    <form class="lg:col-span-6 lg:col-start-7 grid gap-5" action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="[[AANLEVEREN: Web3Forms-key]]" />
-      <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-      <div class="grid gap-5 sm:grid-cols-2">
-        <label class="grid gap-2 text-sm">Naam<input name="naam" required autocomplete="name" class="bg-paper border border-line px-3 py-3 text-base" /></label>
-        <label class="grid gap-2 text-sm">Telefoon<input name="telefoon" type="tel" required autocomplete="tel" class="bg-paper border border-line px-3 py-3 text-base" /></label>
+    <!-- 3. Werk -->
+    <section id="werk" class="py-20 lg:py-28" aria-labelledby="t-werk">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Wat Riemar doet</p>
+            <h2 id="t-werk" class="mt-4 text-3xl">Van tegelwerk tot het onderhoud van een schip.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Montage en onderhoud, binnenshuis en aan boord. Kies een onderwerp en uw appje staat klaar.</p>
+        </div>
+        <ul class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-3 lg:gap-6">
+          {kaarten.map((k, i) => (
+            <li class="rijs" style={`--d:${(i % 3) * 0.06}s`}>
+              <a href={vraag(k.w)} class="kaart group flex h-full flex-col overflow-hidden no-underline transition-shadow duration-300 hover:shadow-md">
+                <div class="overflow-hidden">
+                  <Image src={k.src} alt={k.alt} widths={[400, 640, 900]} sizes="(min-width: 1024px) 380px, 46vw" class="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.04] sm:aspect-[3/2]" style={`object-position:${k.pos}`} />
+                </div>
+                <div class="flex flex-1 items-end justify-between gap-4 p-4 sm:p-6">
+                  <div>
+                    <h3 class="text-[1.0625rem] sm:text-xl">{k.t}</h3>
+                    <p class="mt-1.5 text-sm text-grijs sm:mt-2 sm:text-base">{k.d}</p>
+                  </div>
+                  <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-full bg-vlak text-merk transition-colors group-hover:bg-merk group-hover:text-white sm:grid" aria-hidden="true"><Icoon naam="pijl" class="h-5 w-5" /></span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
-      <label class="grid gap-2 text-sm">Soort klus
-        <select name="klus" class="bg-paper border border-line px-3 py-3 text-base">
-          <option>Badkamer</option><option>Keuken</option><option>Interieurbouw of timmerwerk</option><option>Schip</option><option>Anders</option>
-        </select>
-      </label>
-      <label class="grid gap-2 text-sm">Toelichting<textarea name="bericht" rows="4" class="bg-paper border border-line px-3 py-3 text-base"></textarea></label>
-      {voorstel ? (
-        <p class="border border-accent px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel <a class="underline" href="tel:+31654948189">06 54 94 81 89</a>.</p>
-      ) : (
-        <button type="submit" class="justify-self-start bg-accent text-paper font-semibold px-6 py-3 hover:bg-accent-deep">Verstuur</button>
-      )}
-      <p class="text-xs text-ink-soft">We gebruiken uw gegevens alleen voor uw klus. Zie de <a class="underline" href={u('privacy/')}>privacyverklaring</a>.</p>
-    </form>
-  </section>
+    </section>
+
+    <!-- 4. Wow: klus beschrijven, appje staat klaar -->
+    <section id="klus" class="donker bg-nacht py-20 text-licht lg:py-28" aria-labelledby="t-klus">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Uw klus</p>
+          <h2 id="t-klus" class="mt-4 text-3xl">Schets uw klus in een paar tikken.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Kies de ruimte en wat er moet gebeuren. Wij maken er een WhatsApp-bericht van; foto’s stuurt u daarna gewoon mee.</p>
+          <div class="vloer mt-10" aria-hidden="true" data-vloer>
+            <div class="vloer-raster" data-raster></div>
+            <p class="vloer-label"><span data-m2>6</span> m²</p>
+          </div>
+        </div>
+        <form class="min-w-0 rounded-[16px] bg-nacht-2 p-6 ring-1 ring-lijn-licht sm:p-8 lg:col-span-7 lg:p-10" data-klus>
+          <fieldset>
+            <legend class="text-sm font-semibold">Welke ruimte?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">{ruimtes.map((r, i) => <label class="keuze"><input type="radio" name="r" value={r} checked={i === 0} class="sr-only" /><span>{r}</span></label>)}</div>
+          </fieldset>
+          <fieldset class="mt-7">
+            <legend class="text-sm font-semibold">Wat moet er gebeuren?</legend>
+            <div class="mt-3 flex flex-wrap gap-2">{soorten.map((s, i) => <label class="keuze"><input type="radio" name="s" value={s} checked={i === 1} class="sr-only" /><span>{s}</span></label>)}</div>
+          </fieldset>
+          <label class="mt-7 block" data-m2-veld><span class="flex items-baseline justify-between text-sm font-semibold">Ongeveer hoe groot? <span class="num font-normal text-licht-zacht"><span data-m2-tekst>6</span> m²</span></span>
+            <input type="range" name="m" min="2" max="24" value="6" class="schuif mt-3 w-full" /></label>
+          <label class="mt-6 flex items-center gap-3 text-[.9375rem]"><input type="checkbox" name="f" checked class="h-5 w-5 accent-[#9fd1cc]" />Ik stuur een paar foto’s mee</label>
+          <div class="mt-8 border-t border-lijn-licht pt-6">
+            <p class="text-sm text-licht-zacht">Uw bericht:</p>
+            <p class="mt-2 whitespace-pre-line font-semibold" data-voorbeeld aria-live="polite">Hallo Riemar, ik wil mijn badkamer laten renoveren.</p>
+            <button type="submit" class="knop knop-merk mt-6"><Icoon naam="wa" />Open in WhatsApp</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- 5. Werkwijze -->
+    <section id="werkwijze" class="py-20 lg:py-28" aria-labelledby="t-stappen">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="rijs lg:col-span-7">
+            <p class="eyebrow">Werkwijze</p>
+            <h2 id="t-stappen" class="mt-4 text-3xl">Eén aanspreekpunt, van eerste belletje tot oplevering.</h2>
+          </div>
+          <p class="rijs text-lg text-grijs lg:col-span-4 lg:col-start-9" style="--d:.05s">Riemar Montage is een eenmanszaak. Wie belt, spreekt meteen degene die het werk ook uitvoert.</p>
+        </div>
+        <ol class="mt-12 grid grid-cols-2 gap-3 sm:gap-5 lg:mt-14 lg:grid-cols-4">
+          {stappen.map(([t, d], i) => (
+            <li class="rijs kaart p-5 sm:p-7" style={`--d:${i * 0.06}s`}>
+              <p class="num font-kop text-lg font-bold text-merk">0{i + 1}</p>
+              <h3 class="mt-5 text-[1.0625rem] sm:mt-8 sm:text-xl">{t}</h3>
+              <p class="mt-2 text-sm text-grijs sm:mt-3 sm:text-base">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- 6. Over Riemar -->
+    <section id="over" class="donker bg-nacht text-licht" aria-labelledby="t-over">
+      <div class="grid lg:grid-cols-12">
+        <div class="relative min-h-[22rem] sm:min-h-[28rem] lg:col-span-5">
+          <Image src={dordrecht} alt="De toren van de Grote Kerk in Dordrecht bij avond, met scheepsmasten op de voorgrond" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 42vw, 100vw" class="absolute inset-0 h-full w-full object-cover object-[50%_40%]" />
+          <p class="absolute bottom-4 left-4 rounded-full bg-merk px-4 py-1.5 text-sm font-semibold text-white">Dordrecht, sinds 2004</p>
+        </div>
+        <div class="px-5 py-20 md:px-10 lg:col-span-7 lg:px-16 lg:py-24 xl:pr-[max(4rem,calc((100vw-78rem)/2+2.5rem))]">
+          <p class="eyebrow">Over Riemar</p>
+          <h2 id="t-over" class="mt-4 text-3xl">Eén vakman, van begin tot eind.</h2>
+          <p class="mt-6 text-lg text-licht-zacht">Riemar Montage werkt sinds 2004 vanuit Dordrecht. In huis aan badkamers, keukens en maatwerk, en aan boord aan schepen: een stad aan het water heeft beide nodig.</p>
+          <ul class="mt-8 grid gap-3">
+            <li class="flex items-center gap-4 rounded-[16px] bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-merk text-white"><Icoon naam="vink" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Netjes en precies</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Zo omschrijft een klant het werk op Google.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-[16px] bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-merk text-white"><Icoon naam="praat" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Denkt mee</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Over de aanpak, voordat er iets gemonteerd wordt.</p></div>
+            </li>
+            <li class="flex items-center gap-4 rounded-[16px] bg-nacht-2 px-5 py-4">
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-merk text-white"><Icoon naam="sleutel" class="h-5 w-5" /></span>
+              <div><h3 class="text-lg">Binnen en aan boord</h3><p class="mt-1 text-[.9375rem] text-licht-zacht">Badkamers, keukens, interieurbouw en schepen.</p></div>
+            </li>
+          </ul>
+          <a href={waAlgemeen} class="knop knop-merk mt-9"><Icoon naam="wa" />Stuur een appje</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Review -->
+    <section id="reviews" class="bg-vlak py-20 lg:py-28" aria-labelledby="t-review">
+      <div class="wrap grid items-center gap-10 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="eyebrow">Review</p>
+          <h2 id="t-review" class="mt-4 text-3xl">Wat een klant zegt.</h2>
+          <a href={site.reviews} class="link mt-6 inline-flex items-center gap-2 font-semibold"><Icoon naam="g" class="h-5 w-5" />Bekijk op Google</a>
+        </div>
+        <figure class="kaart p-8 sm:p-12 lg:col-span-8">
+          <span class="flex text-ster" aria-label="5 van 5 sterren">{[1, 2, 3, 4, 5].map(() => <Icoon naam="ster" class="h-6 w-6" />)}</span>
+          <blockquote class="mt-6 font-kop text-[clamp(1.6rem,1.6vw+1.1rem,2.4rem)] font-semibold leading-tight tracking-[-0.02em]">“{review.tekst}”</blockquote>
+          <ul class="mt-8 flex flex-wrap gap-2">{review.punten.map((p) => <li class="rounded-full bg-vlak px-3.5 py-1.5 text-sm font-medium">{p}</li>)}</ul>
+          <figcaption class="mt-8 flex items-center gap-3 border-t border-lijn pt-6">
+            <span class="grid h-11 w-11 place-items-center rounded-full bg-merk font-kop font-bold text-white" aria-hidden="true">H</span>
+            <span class="flex-1 text-sm leading-snug"><b class="block font-semibold">{review.naam}</b><span class="text-grijs">Google review, {review.wanneer}</span></span>
+            <Icoon naam="g" class="h-6 w-6" />
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 8. Contact -->
+    <section id="contact" class="py-20 lg:py-28" aria-labelledby="t-contact">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="eyebrow">Contact</p>
+          <h2 id="t-contact" class="mt-4 text-3xl">Klus bespreken?</h2>
+          <p class="mt-6 text-lg text-grijs">Bel of app, of laat hiernaast uw gegevens achter. Een paar foto’s van de ruimte helpen om een goed beeld te krijgen.</p>
+          <ul class="mt-10 grid gap-3">
+            <li><a href={waAlgemeen} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-merk text-white"><Icoon naam="wa" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">WhatsApp</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+            <li><a href={site.telHref} class="kaart flex items-center gap-4 p-5 no-underline transition-shadow hover:shadow-md"><span class="grid h-12 w-12 place-items-center rounded-full bg-vlak text-merk"><Icoon naam="tel" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Bellen</b><span class="num text-grijs">{site.tel}</span></span><Icoon naam="pijl" class="h-5 w-5 text-merk" /></a></li>
+            <li class="kaart flex items-center gap-4 p-5"><span class="grid h-12 w-12 place-items-center rounded-full bg-vlak text-merk"><Icoon naam="pin" class="h-6 w-6" /></span><span class="flex-1"><b class="block font-semibold">Gevestigd in</b><span class="text-grijs">{site.plaats}</span></span></li>
+          </ul>
+        </div>
+        <form class="kaart p-6 sm:p-8 lg:col-span-7 lg:p-10" data-contact>
+          <h3 class="text-2xl">Uw gegevens</h3>
+          <p class="mt-2 text-grijs">Dan neemt Riemar contact met u op over uw klus.</p>
+          <div class="mt-8 grid gap-5 sm:grid-cols-2">
+            <label class="block"><span class="text-sm font-semibold">Naam</span><input name="naam" required autocomplete="name" class="veld mt-2" /></label>
+            <label class="block"><span class="text-sm font-semibold">Telefoon</span><input name="telefoon" type="tel" required autocomplete="tel" class="veld mt-2" /></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Soort klus</span>
+              <select name="klus" class="veld mt-2">{diensten.map((d) => <option>{d}</option>)}<option>Anders</option></select></label>
+            <label class="block sm:col-span-2"><span class="text-sm font-semibold">Toelichting</span><textarea name="bericht" rows="4" class="veld mt-2"></textarea></label>
+          </div>
+          {site.voorstel ? (
+            <p class="mt-8 rounded-[12px] border border-merk px-4 py-3 text-sm">Dit is een ontwerpvoorstel, dus het formulier verstuurt nog niets. Bel of app <a class="link num" href={site.telHref}>{site.tel}</a>.</p>
+          ) : (
+            <button type="submit" class="knop knop-merk mt-8"><Icoon naam="wa" />Verstuur via WhatsApp</button>
+          )}
+          <p class="mt-4 text-xs text-grijs">We gebruiken uw gegevens alleen voor uw klus. Zie de <a class="link" href={url('privacy/')}>privacyverklaring</a>.</p>
+        </form>
+      </div>
+    </section>
+
+    <!-- 9. Slotbalk -->
+    <section class="bg-merk text-white" aria-label="Klus bespreken">
+      <div class="wrap flex flex-col items-start justify-between gap-6 py-14 md:flex-row md:items-center lg:py-16">
+        <div>
+          <h2 class="text-[clamp(1.75rem,2vw+1.2rem,2.5rem)]">Nieuwe badkamer of keuken?</h2>
+          <p class="mt-2 text-lg text-white/90">Stuur een appje met een paar foto’s, dan kijkt Riemar mee.</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href={waAlgemeen} class="knop knop-wit"><Icoon naam="wa" />WhatsApp</a>
+          <a href={site.telHref} class="knop knop-rand op-foto num">{site.tel}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
 </Base>
+
+<script>
+  const f = document.querySelector<HTMLFormElement>('[data-klus]');
+  if (f) {
+    const uit = f.querySelector<HTMLElement>('[data-voorbeeld]')!;
+    const raster = document.querySelector<HTMLElement>('[data-raster]')!;
+    const m2 = document.querySelector<HTMLElement>('[data-m2]')!;
+    const m2t = f.querySelector<HTMLElement>('[data-m2-tekst]')!;
+    const m2veld = f.querySelector<HTMLElement>('[data-m2-veld]')!;
+    const vloer = document.querySelector<HTMLElement>('[data-vloer]')!;
+    for (let i = 0; i < 24; i++) raster.appendChild(document.createElement('i'));
+    const ww: Record<string, string> = { 'Nieuw plaatsen': 'laten plaatsen', 'Renoveren': 'laten renoveren', 'Onderhoud of reparatie': 'laten onderhouden of repareren' };
+    const bericht = () => {
+      const d = new FormData(f);
+      const v = (n: string) => String(d.get(n) || '');
+      const r = v('r'), s = v('s'), m = Number(v('m'));
+      const schip = r === 'Schip';
+      m2veld.hidden = schip; vloer.hidden = schip;
+      m2.textContent = m2t.textContent = String(m);
+      raster.querySelectorAll('i').forEach((t, i) => t.classList.toggle('aan', i < m));
+      const wat = r === 'Interieur of timmerwerk' ? 'interieurbouw of timmerwerk' : r === 'Schip' ? 'mijn schip' : `mijn ${r.toLowerCase()}`;
+      const regels = [r === 'Interieur of timmerwerk' ? `Hallo Riemar, ik zoek iemand voor ${wat} (${s.toLowerCase()}).` : `Hallo Riemar, ik wil ${wat} ${ww[s]}.`];
+      if (!schip && r !== 'Interieur of timmerwerk') regels.push(`De ruimte is ongeveer ${m} m².`);
+      if (d.get('f')) regels.push('Ik stuur zo een paar foto’s mee.');
+      return regels.join('\n');
+    };
+    const toon = () => { uit.textContent = bericht(); };
+    toon();
+    f.addEventListener('input', toon);
+    f.addEventListener('change', toon);
+    f.addEventListener('submit', (e) => { e.preventDefault(); window.open('https://wa.me/31654948189?text=' + encodeURIComponent(bericht()), '_blank', 'noopener'); });
+  }
+  const c = document.querySelector<HTMLFormElement>('[data-contact]');
+  c?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const d = new FormData(c);
+    const t = `Hallo Riemar, ik heb een klus: ${d.get('klus')}.
+${String(d.get('bericht') || '').trim()}
+Groet, ${d.get('naam')} (${d.get('telefoon')})`;
+    window.open('https://wa.me/31654948189?text=' + encodeURIComponent(t), '_blank', 'noopener');
+  });
+</script>
+
+<style>
+  .text-hero { font-size: var(--text-hero); line-height: .98; letter-spacing: -0.045em; }
+  .cijfer { font-family: var(--font-kop); font-weight: 700; font-size: clamp(3rem, 3vw + 1.8rem, 4.25rem); line-height: 1; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
+  .keuze span { display: inline-flex; align-items: center; min-height: 2.6rem; padding: 0 1.05rem; border-radius: 999px; background: var(--color-nacht); box-shadow: inset 0 0 0 1px var(--color-lijn-licht); font-size: .9375rem; font-weight: 600; cursor: pointer; transition: background-color .2s, color .2s; }
+  .keuze span:hover { background: #2f3a40; }
+  .keuze input:checked + span { background: var(--color-merk-licht); color: var(--color-nacht); }
+  .keuze input:focus-visible + span { outline: 3px solid var(--color-merk-licht); outline-offset: 2px; }
+  .schuif { accent-color: var(--color-merk-licht); }
+  .vloer { position: relative; max-width: 15rem; padding: 14px; border-radius: 16px; background: var(--color-nacht-2); box-shadow: inset 0 0 0 1px var(--color-lijn-licht); }
+  .vloer-raster { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+  .vloer-raster :global(i) { aspect-ratio: 1; border-radius: 3px; background: #ffffff0d; transition: background-color .35s var(--ease-zacht), transform .35s var(--ease-zacht); }
+  .vloer-raster :global(i.aan) { background: var(--color-merk-licht); }
+  .vloer-label { position: absolute; right: 14px; bottom: -14px; transform: translateY(100%); font-family: var(--font-kop); font-weight: 700; font-size: 1.5rem; letter-spacing: -0.03em; color: var(--color-merk-licht); }
+  [hidden] { display: none !important; }
+  @media (min-width: 640px) { .vloer { max-width: 22rem; } }
+</style>
