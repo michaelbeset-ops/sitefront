@@ -1,0 +1,228 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Icoon from '../components/Icoon.astro';
+import { site, week, diensten, genoemd, foto } from '../data/site';
+
+const heroSrcset = [800, 1200, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+---
+<Base
+  title="Hij & Zij Kledingreparatie in Breda | Naaiatelier en stomerij"
+  description="Kleding inkorten, innemen, ritsen en gaatjes repareren, stomerij en ophalen en bezorgen. Torenstraat 8 in Breda, elke dag open."
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: volledig een foto, tekst links eroverheen. De donkere stof op de foto geeft vanzelf rust achter de kop. -->
+    <section class="donker relative isolate flex min-h-[min(46rem,calc(100svh-6.5rem))] items-end overflow-hidden bg-nacht text-licht">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt="Naaivoet van een naaimachine met draad op donkere stof"
+        class="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_50%] text-transparent"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,#1d1714f2_0%,#1d1714c4_45%,#1d171433_100%)]"></div>
+      <div class="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-[linear-gradient(0deg,#1d1714e6,transparent)] md:hidden"></div>
+
+      <div class="wrap pb-14 pt-24 md:pb-20">
+        <p class="label">Naaiatelier en stomerij in Breda</p>
+        <h1 class="mt-5 max-w-[13ch] text-hero">Kleding die weer past en weer heel is.</h1>
+        <p class="mt-6 max-w-[34rem] text-lg text-licht-zacht">Inkorten, innemen, een nieuwe rits of een gaatje dichtmaken. Breng het langs aan de {site.straat}, of laat het ophalen en bezorgen.</p>
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-draad"><Icoon naam="tel" />Bel <span class="num">{site.tel}</span></a>
+          <a href="#langskomen" class="knop knop-rand op-foto">Openingstijden en route</a>
+        </div>
+        <p class="vandaag mt-8 flex items-center gap-3 text-sm text-licht-zacht" data-open="false" hidden>
+          <span class="stip" aria-hidden="true"></span><span class="vandaag-tekst"></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- Diensten als een lijst langs een meetlint, geen kaartjes. -->
+    <section id="diensten" class="py-20 lg:py-28">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <p class="label">Wat we doen</p>
+            <h2 class="mt-4 text-3xl">Wat kunt u brengen?</h2>
+            <p class="mt-5 max-w-sm text-bruin">Van een broek die te lang is tot een jas met een kapotte rits. Twijfelt u of iets te maken is, neem het dan gewoon mee.</p>
+          </div>
+        </div>
+        <div class="min-w-0 lg:col-span-8">
+          <div class="meetlint overflow-hidden rounded-sm" aria-hidden="true">
+            <div class="meetlint-cijfers">{Array.from({ length: 16 }, (_, i) => <span>{i * 10 || ''}</span>)}</div>
+          </div>
+          <ol class="mt-2">
+            {diensten.map((d, i) => (
+              <li class="rijs grid gap-2 border-b border-lijn py-8 sm:grid-cols-[4.5rem_1fr] sm:gap-6" style={`--d:${i * 0.06}s`}>
+                <span class="num font-kop text-xl font-semibold text-draad" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="text-2xl">{d.titel}</h3>
+                  <p class="mt-3 max-w-xl text-bruin">{d.tekst}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het atelier: foto en tekst schuin tegen elkaar in, niet gecentreerd. -->
+    <section id="atelier" class="bg-linnen-2 py-20 lg:py-28">
+      <div class="wrap grid items-center gap-12 lg:grid-cols-12">
+        <div class="relative lg:col-span-5">
+          <img
+            src={foto.garen(1000)}
+            srcset={`${foto.garen(600)} 600w, ${foto.garen(1000)} 1000w`}
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            alt="Klossen garen in veel kleuren"
+            class="aspect-[4/3] w-full rounded-md object-cover text-transparent lg:aspect-[4/5]"
+            loading="lazy"
+            decoding="async"
+            width="1000" height="1250"
+          />
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <p class="label">Het atelier</p>
+          <h2 class="mt-4 text-3xl">Een klein atelier, met aandacht voor uw kleding.</h2>
+          <div class="mt-6 max-w-xl space-y-4 text-lg text-bruin">
+            <p>{site.kort} is een klein naaiatelier aan de {site.straat} in {site.plaats}. Hier wordt kleding gerepareerd en vermaakt. Een rits, knopen of voering vervangen hoort er net zo goed bij.</p>
+            <p>Heeft een kledingstuk voor u een speciale waarde, dan krijgt het extra zorg.</p>
+          </div>
+
+          <div class="mt-12">
+            <div class="naad text-bruin" aria-hidden="true"></div>
+            <p class="mt-6 font-bold">Wat klanten in hun reviews noemen</p>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {genoemd.map((g) => <li class="rounded-sm border border-lijn bg-wit px-3 py-1.5 text-sm font-semibold">{g}</li>)}
+            </ul>
+            <p class="mt-4 text-xs text-bruin">Samengevat uit reviews op telefoonboek.nl en openingstijden.com.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Langskomen: de openingstijden op een hanglabel, met vandaag gemarkeerd. -->
+    <section id="langskomen" class="py-20 lg:py-28">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:gap-10">
+        <div class="lg:col-span-5">
+          <p class="label">Langskomen</p>
+          <h2 class="mt-4 text-3xl">Elke dag open, donderdag tot 21.00.</h2>
+          <div class="hanglabel mt-10 max-w-md py-8 pl-14 pr-6 sm:pr-10">
+            <p class="flex items-center gap-2 font-bold"><Icoon naam="klok" class="h-5 w-5 text-draad" />Openingstijden</p>
+            <table class="num mt-5 w-full text-[1rem]">
+              <caption class="sr-only">Openingstijden per dag</caption>
+              <tbody>
+                {week.map((d) => (
+                  <tr class="dagrij border-b border-lijn last:border-0" data-dag={d.i}>
+                    <th scope="row" class="py-2.5 pr-4 text-left font-semibold">{d.dag}</th>
+                    <td class="py-2.5 text-right">{d.van} tot {d.tot}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p class="mt-5 text-sm text-bruin">Betalen kan contant en met pin.</p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <ul class="grid gap-px overflow-hidden rounded-md border border-lijn bg-lijn">
+            <li class="bg-wit p-6">
+              <p class="text-sm text-bruin">Adres</p>
+              <p class="mt-1 font-kop text-xl font-bold">{site.straat}, {site.plaats}</p>
+              <a href={site.route} class="link mt-3 inline-flex items-center gap-2 font-semibold" rel="noopener" target="_blank"><Icoon naam="route" class="h-4 w-4" />Route plannen</a>
+            </li>
+            <li class="grid gap-px bg-lijn sm:grid-cols-2">
+              <div class="bg-wit p-6">
+                <p class="text-sm text-bruin">Winkel</p>
+                <a href={site.telHref} class="num mt-1 block font-kop text-xl font-bold no-underline hover:text-draad">{site.tel}</a>
+              </div>
+              <div class="bg-wit p-6">
+                <p class="text-sm text-bruin">Mobiel</p>
+                <a href={site.mobielHref} class="num mt-1 block font-kop text-xl font-bold no-underline hover:text-draad">{site.mobiel}</a>
+              </div>
+            </li>
+            <li class="bg-wit p-6">
+              <p class="text-sm text-bruin">E-mail</p>
+              <a href={`mailto:${site.mail}`} class="link mt-1 block break-all font-semibold">{site.mail}</a>
+            </li>
+          </ul>
+
+          <!-- In het voorstel verstuurt het formulier niets: geen submit-knop. -->
+          <form class="mt-12" action="#" onsubmit="return false" aria-describedby="formulier-uitleg">
+            <h3 class="text-2xl">Even iets vragen?</h3>
+            <p id="formulier-uitleg" class="mt-2 text-bruin">Bijvoorbeeld of iets te repareren is, of om ophalen en bezorgen af te spreken.</p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <label class="block"><span class="mb-1.5 block text-sm font-semibold">Naam</span><input class="veld" type="text" name="naam" autocomplete="name" /></label>
+              <label class="block"><span class="mb-1.5 block text-sm font-semibold">Telefoon of e-mail</span><input class="veld" type="text" name="contact" autocomplete="email" /></label>
+              <label class="block sm:col-span-2"><span class="mb-1.5 block text-sm font-semibold">Wat moet er gebeuren?</span><textarea class="veld min-h-32" name="bericht" rows="4"></textarea></label>
+            </div>
+            {site.voorstel ? (
+              <p class="mt-5 rounded-sm border-l-4 border-draad bg-wit p-4 text-sm">Dit is een ontwerpvoorstel, dit formulier verstuurt niets. Bel <a href={site.telHref} class="link num whitespace-nowrap">{site.tel}</a> of mail naar <a href={`mailto:${site.mail}`} class="link break-all">{site.mail}</a>.</p>
+            ) : (
+              <button type="submit" class="knop knop-draad mt-5">Versturen<Icoon naam="pijl" /></button>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Afsluiter met foto, zodat de pagina niet eindigt op een formulier. -->
+    <section class="donker relative isolate overflow-hidden bg-nacht text-licht">
+      <img
+        src={foto.meetlint(1600)}
+        srcset={`${foto.meetlint(800)} 800w, ${foto.meetlint(1600)} 1600w`}
+        sizes="100vw"
+        alt="Wit meetlint en een grijze schaar"
+        class="absolute inset-0 -z-10 h-full w-full object-cover"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="absolute inset-0 -z-10 bg-[#1d1714d9]"></div>
+      <div class="wrap flex flex-col gap-8 py-20 md:flex-row md:items-end md:justify-between lg:py-24">
+        <h2 class="max-w-[16ch] text-3xl">Te lang, te wijd of kapot? Neem het mee.</h2>
+        <div class="flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-draad"><Icoon naam="tel" />Bel <span class="num">{site.tel}</span></a>
+          <a href={site.route} class="knop knop-rand op-foto" rel="noopener" target="_blank"><Icoon naam="route" />Route</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+
+  <!-- Op mobiel altijd bellen of route binnen bereik. -->
+  <nav aria-label="Snel contact" class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-px border-t border-lijn bg-lijn md:hidden">
+    <a href={site.telHref} class="flex h-[4.25rem] items-center justify-center gap-2 bg-draad font-bold text-wit no-underline"><Icoon naam="tel" />Bellen</a>
+    <a href={site.route} class="flex h-[4.25rem] items-center justify-center gap-2 bg-wit font-bold no-underline" rel="noopener" target="_blank"><Icoon naam="route" />Route</a>
+  </nav>
+
+  <script>
+    // Vandaag open of dicht, in Nederlandse tijd. Zonder JavaScript staat de regel er gewoon niet.
+    import { tijden } from '../data/site';
+    const nu = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Amsterdam' }));
+    const dag = nu.getDay();
+    const minuten = (t: string) => { const [u, m] = t.split('.').map(Number); return u * 60 + m; };
+    const nuMin = nu.getHours() * 60 + nu.getMinutes();
+    const v = tijden[dag];
+    let tekst: string;
+    let open = false;
+    if (nuMin < minuten(v.van)) tekst = `Vandaag open van ${v.van} tot ${v.tot}`;
+    else if (nuMin < minuten(v.tot)) { tekst = `Nu open, vandaag tot ${v.tot}`; open = true; }
+    else { const m = tijden[(dag + 1) % 7]; tekst = `Nu gesloten, morgen open vanaf ${m.van}`; }
+    const regel = document.querySelector<HTMLElement>('.vandaag');
+    if (regel) {
+      regel.querySelector('.vandaag-tekst')!.textContent = tekst;
+      regel.dataset.open = String(open);
+      regel.hidden = false;
+    }
+    document.querySelector(`.dagrij[data-dag="${dag}"]`)?.classList.add('vandaag-rij');
+  </script>
+</Base>
+
+<style is:global>
+  .vandaag-rij th, .vandaag-rij td { color: var(--color-draad); font-weight: 800; }
+  .vandaag-rij th::after { content: " · vandaag"; font-weight: 600; font-size: .8125rem; }
+</style>
