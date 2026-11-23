@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Warm papier met diep pruim als inkt. Roest is het ene accent,
+     abrikoos alleen op donkere vlakken waar roest te weinig contrast heeft. */
+  --color-papier: #f5f0e8;
+  --color-zand: #ebe3d6;
+  --color-inkt: #261c2c;
+  --color-pruim: #3d2844;
+  --color-grijs: #5e5462;
+  --color-roest: #a3401c;
+  --color-abrikoos: #f2b27a;
+  --color-wit: #ffffff;
+
+  --font-kop: "Fraunces Variable", Georgia, serif;
+  --font-tekst: "Karla Variable", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
+  --text-3xl: clamp(2.1rem, 1.4rem + 3vw, 3.6rem);
+  --text-4xl: clamp(2.6rem, 1.5rem + 5vw, 5.6rem);
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --radius-full: 999px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    /* Fraunces zacht en vet: rustig maar met karakter, past bij "bewust en met rust". */
+    font-variation-settings: "SOFT" 100;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-roest);
+    outline-offset: 3px;
+  }
+  .donker :focus-visible {
+    outline-color: var(--color-abrikoos);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .wrap { padding-inline: 2.5rem; }
+  }
+  .knop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    transition: background-color 0.2s, color 0.2s;
+  }
+}
+
+/* Rustig infaden, alleen als JS draait en beweging gewenst is. */
+.js .rijs {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .rijs.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .rijs { opacity: 1; transform: none; }
+}

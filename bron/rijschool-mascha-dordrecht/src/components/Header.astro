@@ -1,0 +1,33 @@
+---
+import { site, url } from '../data/site';
+import Icon from './Icon.astro';
+
+// Op de homepage ligt de kop over de foto, op de privacypagina op papier.
+interface Props { overFoto?: boolean }
+const { overFoto = false } = Astro.props;
+const links = [
+  ['Aanpak', '#aanpak'],
+  ['Faalangst', '#faalangst'],
+  ['Slagen', '#slagen'],
+  ['Over Mascha', '#over'],
+  ['Contact', '#contact'],
+];
+---
+<header class:list={['z-20', overFoto ? 'donker absolute inset-x-0 top-0 text-papier' : 'relative text-inkt border-b border-inkt/10']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex items-baseline gap-2 leading-none">
+      <span class="font-kop text-xl font-extrabold tracking-tight" style="font-variation-settings:'SOFT' 100">Rijschool Mascha</span>
+      <span class:list={['hidden text-xs sm:inline', overFoto ? 'text-papier/80' : 'text-grijs']}>Dordrecht</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-7 text-sm font-semibold">
+        {links.map(([label, href]) => (
+          <li><a href={overFoto ? href : url() + href} class="underline-offset-4 hover:underline">{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href={site.telefoonLink} class:list={['knop hidden !min-h-0 !py-2.5 text-sm md:inline-flex', overFoto ? 'bg-papier text-inkt hover:bg-abrikoos' : 'bg-inkt text-papier hover:bg-pruim']}>
+      <Icon naam="telefoon" class="size-4" />{site.telefoon}
+    </a>
+  </div>
+</header>

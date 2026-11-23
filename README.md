@@ -663,3 +663,4 @@ Elke demo staat in een eigen map en is te bekijken via GitHub Pages.
 | Natech, Dordrecht (Dordtse Kil) | https://voorstel.sitefront.nl/natech-dordrecht/ | 7/10: verouderde site, DEMTEC-dealer tuinbouw sinds 1998 (B2B), verkoop 06 53696509; geen reviews. | 2026-11-05 | demo premium |
 | Riemar Montage, Dordrecht | https://voorstel.sitefront.nl/riemar-montage/ | 7/10: geen website, eenmanszaak sinds 2004, badkamers/keukens, 5,0/1, 06 54948189. | 2026-11-05 | demo premium |
 | W&M bouw en onderhoud, Dordrecht (Dordtse Kil) | https://voorstel.sitefront.nl/wm-bouw-en-onderhoud/ | 6/10: site dood, Facebook laatste post 2019 (mogelijk inactief), 06 51403126. | 2026-11-05 | demo premium |
+| Rijschool Mascha, Dordrecht | https://voorstel.sitefront.nl/rijschool-mascha-dordrecht/ | 8/10: Strato-sitebouwer met één foto uit 2015, geen adres en tijden op home, slaagt boven Dordts gemiddelde (47% vs 39%), 06 55130559. | 2026-11-23 | demo premium |
