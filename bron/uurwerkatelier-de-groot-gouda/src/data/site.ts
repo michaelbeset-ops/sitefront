@@ -39,11 +39,10 @@ export const diensten = [
 export const url = (pad = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${pad}`;
 
 // Sfeerbeelden van Unsplash, nooit gepresenteerd als eigen werk of eigen atelier.
+// Controle 23-11: hero 'person fixing time' (photo-1530418244523) is volgens de Unsplash-pagina een Apple Watch-foto
+// en 'watch face with the gears missing' (photo-1633451238042) kan een merknaam op de wijzerplaat tonen. Beide eruit.
 const u = (id: string, w: number) => `https://images.unsplash.com/${id}?fm=jpg&q=60&w=${w}&auto=format&fit=crop&ixlib=rb-4.1.0`;
 export const fotos = {
-  hero: (w = 1600) => u('photo-1530418244523-a44fb8177064', w),
-  uurwerk: (w = 1200) => u('photo-1646724810360-abfa1bb76d6d', w),
-  restauratie: (w = 1200) => u('photo-1633451238042-85d93d267866', w),
+  hero: (w = 1600) => u('photo-1646724810360-abfa1bb76d6d', w),
   binnenkant: (w = 1200) => u('photo-1694023769753-ab40f6aeb52a', w),
-  zakhorloge: (w = 1600) => u('photo-1431499012454-31a9601150c9', w),
 };
