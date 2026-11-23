@@ -1,0 +1,216 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Hanger from '../components/Hanger.astro';
+import { site, tijden, diensten, fotos } from '../data/site';
+
+// Maandag eerst op de bon; tijden[] volgt Date.getDay() met zondag op 0.
+const bonDagen = [1, 2, 3, 4, 5, 6, 0].map((i) => ({ ...tijden[i], i }));
+---
+<Base
+  title="Kledingreparatie & Stomerij Plateau, Spijkenisse"
+  description="Kledingreparatie, wassen en reinigen, dekens en dekbedden en gordijnen op maat in winkelcentrum Plateau, Spijkenisse. Ma t/m vr 9.00 tot 18.00, za 9.00 tot 17.00."
+  hero
+>
+  <div class="relative">
+    <Kop />
+
+    <!-- Hero: altijd volledig foto, tekst linksonder op een donkere verloop zodat het leesbaar blijft. -->
+    <section class="donker relative isolate flex min-h-[92svh] items-end overflow-hidden bg-petrol-2 text-licht">
+      <img
+        src={fotos.hero(1600)}
+        srcset={`${fotos.hero(800)} 800w, ${fotos.hero(1200)} 1200w, ${fotos.hero(1600)} 1600w`}
+        sizes="100vw"
+        alt="Kleding aan houten hangers aan een rek"
+        fetchpriority="high"
+        class="hero-foto absolute inset-0 -z-20 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" class="absolute inset-0 -z-10 bg-[linear-gradient(180deg,#0b2e31b3_0%,#0b2e3140_32%,#0b2e3199_60%,#0b2e31f2_100%)] md:bg-[linear-gradient(90deg,#0b2e31f0_0%,#0b2e31b8_42%,#0b2e3133_78%),linear-gradient(180deg,#0b2e3199_0%,transparent_30%)]"></div>
+
+      <div id="inhoud" class="wrap pb-14 pt-36 md:pb-20">
+        <p class="label">Kledingreparatie en stomerij in Spijkenisse</p>
+        <h1 class="mt-5 max-w-[13ch] text-[length:var(--text-hero)]">Kapot of toe aan een wasbeurt? Breng het langs.</h1>
+        <p class="mt-6 max-w-[36rem] text-lg text-licht-zacht">U vindt ons in winkelcentrum Plateau. Wij repareren uw kleding, reinigen wat schoon moet en maken gordijnen op maat. Betalen doet u pas na de reparatie.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={site.telHref} class="knop knop-geel">
+            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+            Bel <span class="num">{site.tel}</span>
+          </a>
+          <a href={site.wa} class="knop knop-rand">Stuur een WhatsApp</a>
+        </div>
+        <p class="mt-8 flex items-center gap-3 text-sm text-licht-zacht">
+          <span aria-hidden="true" class="h-2.5 w-2.5 rounded-full bg-geel"></span>
+          <span data-vandaag>Ma t/m vr 9.00 tot 18.00, za 9.00 tot 17.00</span>
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <main>
+    <!-- Diensten: kop links vast, de vier diensten rechts als genummerde regels. -->
+    <section id="diensten" class="py-20 md:py-28">
+      <div class="wrap grid gap-12 md:grid-cols-12">
+        <div class="md:col-span-5 lg:col-span-4">
+          <div class="md:sticky md:top-10">
+            <p class="label">Wat u kunt brengen</p>
+            <h2 class="mt-4 text-[length:var(--text-3xl)]">Van uw kleding tot uw gordijnen.</h2>
+            <p class="mt-5 max-w-sm text-grijs">Alles onder één dak, in winkelcentrum Plateau. Loop binnen of vraag het eerst even via WhatsApp.</p>
+          </div>
+        </div>
+        <ol class="md:col-span-7 lg:col-span-7 lg:col-start-6">
+          {diensten.map((d, i) => (
+            <li class="regel grid grid-cols-[3.25rem_1fr] gap-x-4 py-8 sm:grid-cols-[5rem_1fr] md:py-10" data-op>
+              <span aria-hidden="true" class="num font-kop text-3xl font-black leading-none text-petrol sm:text-[2.75rem]">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h3 class="text-[length:var(--text-2xl)]">{d.kop}</h3>
+                <p class="mt-3 max-w-[34rem] text-grijs">{d.tekst}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Belofte: de foto mag het vak vullen, de tekst staat er strak naast. -->
+    <section class="donker grid bg-petrol text-licht md:grid-cols-12">
+      <div class="relative min-h-[18rem] md:col-span-7 md:min-h-[34rem]">
+        <img src={fotos.naaimachine(1200)} srcset={`${fotos.naaimachine(700)} 700w, ${fotos.naaimachine(1200)} 1200w`} sizes="(min-width: 768px) 58vw, 100vw" alt="Naaivoet van een naaimachine met draad op donkere stof" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+      </div>
+      <div class="flex flex-col justify-center px-5 py-14 md:col-span-5 md:px-12 lg:px-16" data-op>
+        <p class="label">Zo werkt het</p>
+        <p class="mt-5 font-kop text-[length:var(--text-3xl)] font-black leading-[.98] tracking-[-0.03em]">Eerst gerepareerd, dan pas betalen.</p>
+        <p class="mt-5 max-w-sm text-licht-zacht">U brengt uw kleding langs en wij gaan aan de slag. Afrekenen doet u als het klaar is en u het weer ophaalt.</p>
+      </div>
+    </section>
+
+    <!-- Gordijnen: een eigen dienst met eigen stappen, daarom een eigen blok. -->
+    <section id="gordijnen" class="py-20 md:py-28">
+      <div class="wrap grid items-center gap-12 md:grid-cols-12">
+        <div class="md:order-2 md:col-span-6 md:col-start-7">
+          <img src={fotos.gordijnen(1200)} srcset={`${fotos.gordijnen(700)} 700w, ${fotos.gordijnen(1200)} 1200w`} sizes="(min-width: 768px) 46vw, 100vw" alt="Lichte gordijnen voor een groot raam in een woonkamer" loading="lazy" class="aspect-[4/5] w-full rounded-sm object-cover" />
+        </div>
+        <div class="md:order-1 md:col-span-6 lg:col-span-5" data-op>
+          <p class="label">Gordijnen op maat</p>
+          <h2 class="mt-4 text-[length:var(--text-3xl)]">U kiest de stof. Wij regelen de rest.</h2>
+          <ol class="mt-10">
+            <li class="regel flex gap-5 py-5">
+              <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-geel font-kop font-black text-inkt">1</span>
+              <p class="pt-1"><strong class="font-kop text-lg font-extrabold">U kiest de stof.</strong><span class="block text-grijs">Het begint bij wat u mooi vindt.</span></p>
+            </li>
+            <li class="regel flex gap-5 py-5">
+              <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-geel font-kop font-black text-inkt">2</span>
+              <p class="pt-1"><strong class="font-kop text-lg font-extrabold">Wij regelen de rest.</strong><span class="block text-grijs">De gordijnen worden op maat gemaakt.</span></p>
+            </li>
+            <li class="regel flex gap-5 border-b border-lijn py-5">
+              <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-geel font-kop font-black text-inkt">3</span>
+              <p class="pt-1"><strong class="font-kop text-lg font-extrabold">Opmeten en ophangen kan ook.</strong><span class="block text-grijs">Vraag ernaar in de winkel of via WhatsApp.</span></p>
+            </li>
+          </ol>
+          <a href={site.wa} class="knop knop-petrol mt-9">Vraag naar gordijnen</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wat klanten zeggen: alleen het cijfer en wat er in de beoordelingen staat, geen verzonnen citaten. -->
+    <section class="bg-vlak py-20 md:py-24">
+      <div class="wrap grid items-end gap-10 md:grid-cols-12">
+        <div class="md:col-span-5" data-op>
+          <p class="label">Wat klanten zeggen</p>
+          <p class="mt-4 flex items-end gap-4">
+            <span class="num font-kop text-[length:var(--text-cijfer)] font-black leading-[.8] tracking-[-0.05em] text-petrol">5,0</span>
+            <span class="pb-2 text-sm leading-snug text-grijs">uit 4 beoordelingen<br />op RepareerSimpel</span>
+          </p>
+        </div>
+        <div class="md:col-span-6 md:col-start-7" data-op>
+          <p class="font-kop text-[length:var(--text-2xl)] font-extrabold leading-tight tracking-[-0.02em]">Klanten noemen de goede service. Ze werden vriendelijk geholpen en vonden het werk netjes afgewerkt.</p>
+          <p class="mt-5"><a href={site.repareersimpel} class="lijn-link font-bold">Lees de beoordelingen op RepareerSimpel</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Langskomen: de openingstijden als stomerijbon, daarnaast adres en contact. -->
+    <section id="langskomen" class="py-20 md:py-28">
+      <div class="wrap grid gap-14 md:grid-cols-12">
+        <div class="md:col-span-5 lg:col-span-4">
+          <div class="bon mx-auto max-w-sm rotate-[-1.5deg] md:mx-0" data-op>
+            <span class="bon-gat" aria-hidden="true"></span>
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="font-kop text-2xl font-black">Openingstijden</h2>
+              <Hanger class="h-7 w-7 shrink-0" />
+            </div>
+            <p class="mt-1 text-sm">{site.straat}, {site.plaats}</p>
+            <div class="bon-scheur mt-5 pt-3">
+              <dl>
+                {bonDagen.map((d) => (
+                  <div class="bon-regel" data-dag={d.i}>
+                    <dt>{d.dag}</dt>
+                    <span class="punt" aria-hidden="true"></span>
+                    <dd class="num">{d.open ? `${d.open} tot ${d.dicht}` : 'gesloten'}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <div class="md:col-span-7 lg:col-span-7 lg:col-start-6">
+          <p class="label">Langskomen</p>
+          <h2 class="mt-4 text-[length:var(--text-3xl)]">U vindt ons in winkelcentrum Plateau.</h2>
+          <div class="mt-10 grid gap-8 sm:grid-cols-2">
+            <div>
+              <p class="font-kop text-lg font-extrabold">Adres</p>
+              <p class="mt-1 text-grijs">{site.straat}<br />{site.postcode} {site.plaats}</p>
+              <p class="mt-3"><a href={site.maps} class="lijn-link font-bold">Route plannen</a></p>
+            </div>
+            <div>
+              <p class="font-kop text-lg font-extrabold">Bellen of appen</p>
+              <p class="mt-1"><a href={site.telHref} class="num text-xl font-bold no-underline hover:underline">{site.tel}</a></p>
+              <p class="mt-3"><a href={site.wa} class="lijn-link font-bold">WhatsApp openen</a></p>
+            </div>
+          </div>
+
+          <form class="mt-14 border-t-2 border-inkt pt-8" aria-describedby="formulier-uit" onsubmit="return false">
+            <h3 class="text-xl">Een vraag stellen</h3>
+            <p id="formulier-uit" class="mt-3 bg-geel px-4 py-3 text-sm text-inkt">Dit is een ontwerpvoorstel. Het formulier verstuurt nog niets. Bel of app gerust naar {site.tel}.</p>
+            <div class="mt-6 grid gap-5 sm:grid-cols-2">
+              <label class="block text-sm font-bold">Uw naam
+                <input class="veld mt-2 font-normal" type="text" name="naam" autocomplete="name" disabled />
+              </label>
+              <label class="block text-sm font-bold">Telefoonnummer
+                <input class="veld mt-2 font-normal" type="tel" name="telefoon" autocomplete="tel" disabled />
+              </label>
+              <label class="block text-sm font-bold sm:col-span-2">Uw vraag
+                <textarea class="veld mt-2 min-h-32 font-normal" name="vraag" rows="4" disabled></textarea>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Voet />
+
+  <script is:inline>
+    // Zet op de bon en in de hero wat er vandaag geldt. Zonder JS blijft de vaste tekst staan.
+    (function () {
+      var t = [['', ''], ['9.00', '18.00'], ['9.00', '18.00'], ['9.00', '18.00'], ['9.00', '18.00'], ['9.00', '18.00'], ['9.00', '17.00']];
+      var nu = new Date();
+      var d = nu.getDay();
+      var rij = document.querySelector('.bon-regel[data-dag="' + d + '"]');
+      if (rij) rij.classList.add('vandaag');
+      var el = document.querySelector('[data-vandaag]');
+      if (!el) return;
+      var m = nu.getHours() * 60 + nu.getMinutes();
+      var mins = function (s) { var p = s.split('.'); return +p[0] * 60 + +p[1]; };
+      if (t[d][0] && m >= mins(t[d][0]) && m < mins(t[d][1])) el.textContent = 'Nu open, vandaag tot ' + t[d][1];
+      else if (t[d][0] && m < mins(t[d][0])) el.textContent = 'Vandaag open van ' + t[d][0] + ' tot ' + t[d][1];
+      else {
+        var n = (d + 1) % 7; while (!t[n][0]) n = (n + 1) % 7;
+        var namen = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+        el.textContent = 'Nu gesloten, ' + (n === (d + 1) % 7 ? 'morgen' : namen[n]) + ' weer open om ' + t[n][0];
+      }
+    })();
+  </script>
+</Base>
