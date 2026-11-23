@@ -26,8 +26,8 @@ export const url = (pad = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}
 // Sfeerbeelden van Unsplash. Nooit gepresenteerd als eigen lesauto of eigen werk.
 const u = (id: string, w: number) => `https://images.unsplash.com/${id}?fm=jpg&q=60&w=${w}&auto=format&fit=crop&ixlib=rb-4.1.0`;
 export const fotos = {
-  hero: (w = 1600) => u('photo-1523564146079-b3fc6d3d2e32', w),
+// Controle 23-11-2026: de auto-foto (photo-1523564146079) en de stuurfoto (photo-1449965408869)
+// zijn weggehaald, een kenteken of merklogo was daarop niet uit te sluiten. Hero is nu de lege polderweg.
+  hero: (w = 1600) => u('photo-1590222336136-cde8d716db71', w),
   pook: (w = 1000) => u('photo-1528307869100-e1bad0b9a1c0', w),
-  stuur: (w = 1000) => u('photo-1449965408869-eaa3f722e40d', w),
-  polder: (w = 1600) => u('photo-1590222336136-cde8d716db71', w),
 };
