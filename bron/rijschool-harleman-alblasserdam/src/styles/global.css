@@ -1,0 +1,132 @@
+@import "tailwindcss";
+@import "@fontsource/barlow-condensed/latin-600.css";
+@import "@fontsource/barlow-condensed/latin-800.css";
+@import "@fontsource-variable/public-sans/wght.css";
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Verkeersbordblauw en wegdek-nacht op koel kalkwit. Geel (knipperlicht)
+     is het enige accent en staat alleen op donker of als knop met nacht erop. */
+  --color-kalk: #f2f3ee;
+  --color-vlak: #e4e7e0;
+  --color-wit: #ffffff;
+  --color-nacht: #0e1a2e;
+  --color-nacht-2: #16253d;
+  --color-bord: #1a4b9c;      /* wit erop 7,9:1 */
+  --color-grijs: #485264;     /* 7,3:1 op kalk */
+  --color-mist: #b9c4d6;      /* 9,6:1 op nacht */
+  --color-geel: #ffc526;      /* nacht erop 12:1 */
+  --color-lijn: #0e1a2e26;
+  --color-lijn-licht: #f2f3ee33;
+
+  --font-kop: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-tekst: "Public Sans Variable", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: clamp(2.5rem, 6vw, 4rem);
+  --text-4xl: clamp(2.5rem, 12.5vw, 8.5rem);
+  --text-cijfer: clamp(5rem, 17vw, 12rem);
+
+  --radius-bord: 0.4rem;
+  --radius-klein: 0.2rem;
+}
+
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    background: var(--color-kalk);
+    color: var(--color-nacht);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  /* Smalle kapitalen lezen als een wegwijzer. Bij smalle letters werkt
+     -0.03em te krap, daarom een lichtere negatieve spatiering. */
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.012em;
+    line-height: 0.92;
+    text-wrap: balance;
+  }
+  :focus-visible { outline: 3px solid var(--color-geel); outline-offset: 3px; }
+  .op-licht :focus-visible { outline-color: var(--color-bord); }
+  ::selection { background: var(--color-geel); color: var(--color-nacht); }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label {
+    font-family: var(--font-kop);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--text-sm);
+  }
+
+  /* Knoppen als bordjes, rechthoekig met een kleine radius. */
+  .knop {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    min-height: 3.25rem; padding: 0.75rem 1.4rem;
+    font-family: var(--font-kop); font-weight: 800; text-transform: uppercase;
+    font-size: 1.2rem; letter-spacing: 0.02em; line-height: 1;
+    border-radius: var(--radius-klein);
+    transition: transform .15s ease, background-color .15s ease;
+  }
+  .knop:hover { transform: translateY(-2px); }
+  .knop-geel { background: var(--color-geel); color: var(--color-nacht); }
+  .knop-rand { border: 2px solid currentColor; }
+
+  /* Straatnaambord, zoals de blauwe borden in Nederlandse straten. */
+  .straatbord {
+    display: inline-block; background: var(--color-bord); color: var(--color-wit);
+    border-radius: var(--radius-bord); padding: 0.3rem;
+  }
+  .straatbord > span {
+    display: block; border: 2px solid var(--color-wit); border-radius: var(--radius-klein);
+    padding: 0.45rem 0.9rem 0.35rem; font-family: var(--font-kop); font-weight: 600;
+    letter-spacing: 0.02em; line-height: 1.1;
+  }
+
+  /* De onderbroken witte streep van een wegmarkering. */
+  .streep {
+    background-image: linear-gradient(90deg, var(--color-kalk) 0 55%, transparent 55% 100%);
+    background-size: 3.5rem 100%;
+  }
+  .streep-v {
+    background-image: linear-gradient(180deg, var(--color-kalk) 0 55%, transparent 55% 100%);
+    background-size: 100% 3.5rem;
+  }
+
+  .veld {
+    width: 100%; background: var(--color-wit); border: 1.5px solid var(--color-lijn);
+    border-radius: var(--radius-klein); padding: 0.8rem 0.9rem; font: inherit; color: inherit;
+  }
+  .veld:disabled { background: var(--color-vlak); cursor: not-allowed; }
+}
+
+/* Een keer zacht binnenkomen, alleen de hero-tekst. */
+@media (prefers-reduced-motion: no-preference) {
+  .binnen { animation: binnen .8s cubic-bezier(.2,.7,.2,1) both; }
+  .binnen-2 { animation-delay: .12s; }
+  @keyframes binnen { from { opacity: 0; transform: translateY(14px); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .knop { transition: none; }
+  .knop:hover { transform: none; }
+}
