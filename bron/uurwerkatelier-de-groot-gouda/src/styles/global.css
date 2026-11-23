@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. */
+@font-face { font-family: "Literata"; font-style: normal; font-display: swap; font-weight: 200 900;
+  src: url("../../node_modules/@fontsource-variable/literata/files/literata-latin-wght-normal.woff2") format("woff2-variations"); }
+@font-face { font-family: "Geist"; font-style: normal; font-display: swap; font-weight: 100 900;
+  src: url("../../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2-variations"); }
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Een ivoren wijzerplaat met wijzers van geblauwd staal. Het staalblauw is het
+     enige accent: op licht als tekst- en knopkleur, op donker de lichte variant. */
+  --color-papier: #f3f0e8;
+  --color-vlak: #e8e3d7;
+  --color-wit: #fbfaf6;
+  --color-inkt: #121726;
+  --color-nacht: #121726;
+  --color-nacht-2: #1a2134;
+  --color-grijs: #4a4f5c;        /* 7,3:1 op papier */
+  --color-licht: #f3f0e8;
+  --color-licht-zacht: #aab0c0;  /* 8,1:1 op nacht */
+  --color-lijn: #12172624;
+  --color-lijn-licht: #f3f0e824;
+  --color-staal: #2446a6;        /* 7,4:1 op papier */
+  --color-staal-licht: #a3b8f0;  /* 9,0:1 op nacht */
+
+  --font-kop: "Literata", Georgia, serif;
+  --font-sans: "Geist", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.4rem;
+  --text-2xl: clamp(1.7rem, 1.1vw + 1.35rem, 2.3rem);
+  --text-3xl: clamp(2.2rem, 2.8vw + 1.3rem, 3.8rem);
+  --text-hero: clamp(2.35rem, 4.6vw + 1.1rem, 5.6rem);
+  --text-romein: clamp(1.75rem, 1.4vw + 1.2rem, 2.4rem);
+
+  --radius-sm: 3px;
+  --radius-full: 999px;
+
+  --ease-zacht: cubic-bezier(.22, .61, .36, 1);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+  body { background: var(--color-papier); color: var(--color-inkt); font-family: var(--font-sans); font-size: var(--text-base); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3 { font-family: var(--font-kop); font-weight: 800; line-height: 1.02; letter-spacing: -0.03em; text-wrap: balance; }
+  h3 { line-height: 1.15; letter-spacing: -0.015em; font-weight: 700; }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-staal); color: var(--color-wit); }
+  :focus-visible { outline: 3px solid var(--color-staal); outline-offset: 3px; }
+  .donker :focus-visible { outline-color: var(--color-staal-licht); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; } }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 76rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Kleine kop boven een sectie, met een streepje als een uurindex. */
+  .label { display: inline-flex; align-items: center; gap: .75rem; font-size: .8125rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--color-staal); }
+  .label::before { content: ""; width: 3px; height: 1.1rem; background: currentColor; }
+  .donker .label { color: var(--color-staal-licht); }
+
+  .knop { display: inline-flex; align-items: center; justify-content: center; gap: .6rem; min-height: 3.25rem; padding: .8rem 1.4rem; font-weight: 600; font-size: 1.0625rem; text-decoration: none; border-radius: var(--radius-sm); transition: transform .2s var(--ease-zacht), background-color .2s; }
+  .knop:active { transform: translateY(1px); }
+  .knop-staal { background: var(--color-staal); color: var(--color-wit); }
+  .knop-staal:hover { background: #1b3784; }
+  .knop-licht { background: var(--color-staal-licht); color: var(--color-inkt); }
+  .knop-licht:hover { background: #c0cff6; }
+  .knop-rand { box-shadow: inset 0 0 0 1.5px currentColor; }
+  .knop-rand:hover { background: #f3f0e814; }
+
+  .link { color: var(--color-staal); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .link:hover { text-decoration-thickness: 2px; }
+  .donker .link { color: var(--color-staal-licht); }
+
+  .veld { display: block; width: 100%; min-height: 3rem; margin-top: .4rem; padding: .7rem .85rem; background: var(--color-wit); border: 1px solid #12172640; border-radius: var(--radius-sm); font: inherit; color: var(--color-inkt); }
+  .veld:disabled { cursor: not-allowed; }
+}
+
+/* Het secondewijzertje in het logo tikt per seconde, net als een echt horloge. */
+@keyframes tik { to { transform: rotate(360deg); } }
+.secondewijzer { transform-origin: 16px 16px; animation: tik 60s steps(60) infinite; }

@@ -1,0 +1,192 @@
+---
+import Base from '../layouts/Base.astro';
+import { site, diensten, omegaModellen, fotos } from '../data/site';
+
+const srcset = (f: (w: number) => string, ws: number[]) => ws.map((w) => `${f(w)} ${w}w`).join(', ');
+---
+<Base
+  title="Uurwerkatelier F.J. de Groot | Horlogemaker en Omega-service in Gouda"
+  description="Horlogemaker Frans de Groot in Gouda. Officieel Omega Certified Service Center voor reparatie en onderhoud, plus restauratie, waterdichtheid testen en horlogebanden."
+  hero
+>
+  <!-- Hero. De foto vult het scherm, de tekst staat links onderin op een donkere verloop. -->
+  <section class="donker relative isolate flex min-h-[calc(100svh-6.5rem)] items-end overflow-hidden bg-nacht text-licht" aria-labelledby="hero-kop">
+    <img
+      src={fotos.hero(1600)}
+      srcset={srcset(fotos.hero, [800, 1200, 1600])}
+      sizes="100vw"
+      alt=""
+      class="absolute inset-0 -z-10 size-full object-cover"
+      fetchpriority="high"
+    />
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,#121726f2_0%,#121726c7_45%,#1217266b_100%)] md:bg-[linear-gradient(to_right,#121726f0_0%,#121726b8_48%,#12172640_100%)]"></div>
+
+    <div class="wrap pb-12 pt-24 md:pb-20">
+      <p class="label">Officieel Omega Certified Service Center</p>
+      <h1 id="hero-kop" class="mt-5 max-w-[13ch] text-hero">Horlogemaker in Gouda</h1>
+      <p class="mt-6 max-w-xl text-lg text-licht/90">Bij Uurwerkatelier F.J. de Groot laat u uw horloge repareren en onderhouden. Van een moderne Omega tot een oud horloge dat weer moet lopen.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={site.telHref} class="knop knop-licht">Bel <span class="num">{site.tel}</span></a>
+        <a href={site.wa} class="knop knop-rand text-licht" rel="noopener">Stuur een WhatsApp</a>
+      </div>
+      <dl class="mt-12 grid max-w-2xl gap-x-10 gap-y-3 border-t border-lijn-licht pt-5 text-sm text-licht-zacht sm:grid-cols-2">
+        <div><dt class="sr-only">Adres</dt><dd>{site.straat}, {site.postcode} {site.plaats}</dd></div>
+        <div><dt class="sr-only">Open</dt><dd>{site.tijden[0].dag} <span class="num">{site.tijden[0].tijd}</span></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Omega. De kern van het atelier, daarom direct na de hero. -->
+  <section id="omega" class="py-20 md:py-28" aria-labelledby="omega-kop">
+    <div class="wrap grid items-center gap-12 md:grid-cols-12 md:gap-10">
+      <div class="md:col-span-6">
+        <p class="label">Omega-service</p>
+        <h2 id="omega-kop" class="mt-4 text-3xl">Uw Omega naar een officieel servicepunt</h2>
+        <p class="mt-6 text-grijs">Het atelier is een officieel Omega Certified Service Center. U kunt hier terecht voor reparatie en onderhoud van alle Omega-modellen.</p>
+        <ul class="mt-8 flex flex-wrap gap-x-5 gap-y-2 font-kop text-lg font-semibold" aria-label="Omega-modellen">
+          {omegaModellen.map((m) => <li class="border-b border-lijn pb-1">{m}</li>)}
+        </ul>
+        <div class="mt-10 grid gap-6 sm:grid-cols-2">
+          <div class="border-l-[3px] border-staal pl-4">
+            <p class="font-kop text-2xl font-extrabold tracking-tight">2 jaar</p>
+            <p class="mt-1 text-sm text-grijs">garantie op een Full Service</p>
+          </div>
+          <div class="border-l-[3px] border-lijn pl-4">
+            <p class="font-kop text-2xl font-extrabold tracking-tight">1 jaar</p>
+            <p class="mt-1 text-sm text-grijs">garantie op een gewone reparatie</p>
+          </div>
+        </div>
+      </div>
+      <figure class="md:col-span-6 lg:col-span-5 lg:col-start-8">
+        <img src={fotos.uurwerk(1200)} srcset={srcset(fotos.uurwerk, [600, 900, 1200])} sizes="(min-width: 768px) 50vw, 100vw" alt="Close-up van een mechanisch horloge-uurwerk" class="aspect-[4/5] w-full object-cover md:aspect-[5/6]" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Diensten als uurindex: romeinse cijfers in plaats van iconen. -->
+  <section id="diensten" class="donker bg-nacht py-20 text-licht md:py-28" aria-labelledby="diensten-kop">
+    <div class="wrap">
+      <div class="grid gap-8 md:grid-cols-12">
+        <div class="md:col-span-5">
+          <p class="label">Diensten</p>
+          <h2 id="diensten-kop" class="mt-4 text-3xl">Wat er op de werkbank komt</h2>
+        </div>
+        <p class="self-end text-licht-zacht md:col-span-6 md:col-start-7">Een vaste prijslijst is er niet. Elk horloge is anders, dus Frans kijkt eerst wat er nodig is. Daarna weet u wat het kost.</p>
+      </div>
+      <ol class="mt-14 grid gap-x-12 sm:grid-cols-2">
+        {diensten.map((d) => (
+          <li class="grid grid-cols-[4.5rem_1fr] gap-4 border-t border-lijn-licht py-7 md:grid-cols-[6rem_1fr]">
+            <span class="font-kop text-romein font-semibold leading-none text-staal-licht" aria-hidden="true">{d.nr}</span>
+            <div>
+              <h3 class="text-xl">{d.kop}</h3>
+              <p class="mt-2 text-licht-zacht">{d.tekst}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Werkwijze en kosten. Dit stond op de oude site diep weggestopt. -->
+  <section id="werkwijze" class="py-20 md:py-28" aria-labelledby="werkwijze-kop">
+    <div class="wrap grid gap-14 md:grid-cols-12 md:gap-10">
+      <figure class="order-last md:order-first md:col-span-5">
+        <img src={fotos.restauratie(1000)} srcset={srcset(fotos.restauratie, [600, 1000])} sizes="(min-width: 768px) 40vw, 100vw" alt="Wijzerplaat van een horloge van dichtbij" class="aspect-[4/3] w-full object-cover md:aspect-[3/4]" loading="lazy" decoding="async" />
+      </figure>
+      <div class="md:col-span-7 md:pl-6">
+        <p class="label">Werkwijze en kosten</p>
+        <h2 id="werkwijze-kop" class="mt-4 text-3xl">Eerst kijken, dan een prijs</h2>
+        <ol class="mt-10 space-y-0">
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-t border-lijn py-6">
+            <span class="font-kop text-2xl font-extrabold text-staal">1</span>
+            <div>
+              <h3 class="text-xl">Onderzoek</h3>
+              <p class="mt-2 text-grijs">Frans opent het horloge en zoekt uit wat er mis is. De onderzoekskosten zijn minimaal 35 euro en maximaal 10 procent van het reparatiebedrag.</p>
+            </div>
+          </li>
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-t border-lijn py-6">
+            <span class="font-kop text-2xl font-extrabold text-staal">2</span>
+            <div>
+              <h3 class="text-xl">Prijsopgave</h3>
+              <p class="mt-2 text-grijs">U krijgt een prijsopgave voor de reparatie. Zo weet u vooraf waar u aan toe bent.</p>
+            </div>
+          </li>
+          <li class="grid grid-cols-[3rem_1fr] gap-4 border-y border-lijn py-6">
+            <span class="font-kop text-2xl font-extrabold text-staal">3</span>
+            <div>
+              <h3 class="text-xl">Reparatie</h3>
+              <p class="mt-2 text-grijs">De levertijd is meestal 3 tot 6 weken. Op een gewone reparatie zit een jaar garantie, op een Full Service twee jaar.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Over het atelier. Klantervaringen staan als verwijzing, niet als citaat. -->
+  <section id="atelier" class="bg-vlak py-20 md:py-28" aria-labelledby="atelier-kop">
+    <div class="wrap grid gap-12 md:grid-cols-12 md:gap-10">
+      <div class="md:col-span-6">
+        <p class="label">Het atelier</p>
+        <h2 id="atelier-kop" class="mt-4 text-3xl">Frans de Groot, horlogemaker</h2>
+        <div class="mt-6 space-y-4 text-grijs">
+          <p>Achter de werkbank zit horlogemaker Frans de Groot.</p>
+          <p>Naast Omega-service is het atelier ook dealer van Hamilton. En het is al sinds 1996 op internet te vinden.</p>
+          <p>Op <a href="https://www.horlogeforum.nl/t/frans-de-groot/509024" class="link" rel="noopener">horlogeforum.nl</a> schrijven klanten over zijn werk aan (neo)vintage horloges. Zoals de volledige service van een Speedmaster uit 1989 en de restauratie van een Omega Polaris.</p>
+        </div>
+      </div>
+      <figure class="md:col-span-5 md:col-start-8">
+        <img src={fotos.binnenkant(1000)} srcset={srcset(fotos.binnenkant, [600, 1000])} sizes="(min-width: 768px) 40vw, 100vw" alt="De binnenkant van een horloge" class="aspect-square w-full object-cover" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Contact. Het formulier is in dit voorstel uitgeschakeld. -->
+  <section id="contact" class="py-20 md:py-28" aria-labelledby="contact-kop">
+    <div class="wrap grid gap-14 md:grid-cols-12 md:gap-10">
+      <div class="md:col-span-5">
+        <p class="label">Contact</p>
+        <h2 id="contact-kop" class="mt-4 text-3xl">Horloge laten maken?</h2>
+        <p class="mt-6 text-grijs">Bel of app Frans met uw vraag. Of kom langs in het atelier.</p>
+        <dl class="mt-10 space-y-6">
+          <div>
+            <dt class="text-sm font-semibold">Telefoon en WhatsApp</dt>
+            <dd class="mt-1"><a href={site.telHref} class="num font-kop text-2xl font-extrabold tracking-tight hover:text-staal">{site.tel}</a></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold">Adres</dt>
+            <dd class="mt-1 text-grijs">{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.maps} class="link" rel="noopener">Route plannen</a></dd>
+          </div>
+          <div>
+            <dt class="text-sm font-semibold">Open</dt>
+            <dd class="mt-1 text-grijs">{site.tijden.map((t) => <span class="block">{t.dag}, <span class="num">{t.tijd}</span></span>)}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <form class="md:col-span-7 md:pl-8" onsubmit="return false" aria-labelledby="formulier-kop" aria-describedby="formulier-noot">
+        <h3 id="formulier-kop" class="text-2xl">Reparatie aanmelden</h3>
+        <p class="mt-2 text-sm text-grijs">Geen formulier meer printen. Vul hier in wat er met uw horloge is.</p>
+        <fieldset disabled class="mt-8 grid gap-5 sm:grid-cols-2">
+          <label class="block">
+            <span class="text-sm font-semibold">Naam</span>
+            <input class="veld" type="text" name="naam" autocomplete="name" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-semibold">Telefoon</span>
+            <input class="veld" type="tel" name="telefoon" autocomplete="tel" />
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="text-sm font-semibold">Merk en model</span>
+            <input class="veld" type="text" name="horloge" placeholder="Bijvoorbeeld Omega Seamaster" />
+          </label>
+          <label class="block sm:col-span-2">
+            <span class="text-sm font-semibold">Wat is er aan de hand?</span>
+            <textarea class="veld min-h-32" name="vraag" rows="4"></textarea>
+          </label>
+        </fieldset>
+        <p id="formulier-noot" class="mt-6 border-l-[3px] border-staal bg-wit px-5 py-4 text-sm text-grijs">Dit formulier is een voorbeeld en verstuurt nog niets. Bel of app naar <a href={site.telHref} class="num font-semibold text-inkt underline">{site.tel}</a>.</p>
+      </form>
+    </div>
+  </section>
+</Base>
