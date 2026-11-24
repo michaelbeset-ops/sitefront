@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, diensten, punten, foto } from '../data/site';
+
+const heroSrcset = [800, 1200, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+// Elke dienst is een staal uit de waaier. Kleur en tekstkleur per staal, zodat het contrast overal klopt.
+const staalKleur: Record<string, string> = {
+  nacht: 'bg-nacht text-kalk',
+  eendenei: 'bg-eendenei text-nacht-diep',
+  zand: 'bg-zand text-nacht-diep',
+  mist: 'bg-mist text-nacht-diep',
+  antraciet: 'bg-antraciet text-kalk',
+};
+const inspring = ['lg:ml-0', 'lg:ml-6', 'lg:ml-12', 'lg:ml-18', 'lg:ml-24'];
+---
+<Base
+  title="Schildersbedrijf Breedveld | Schilder in Nieuw-Lekkerland"
+  description="Schilderwerk, latex spuiten, behangwerk en glaszetten in Nieuw-Lekkerland en omgeving. Bel of app Schildersbedrijf Breedveld op 06-22 24 68 04."
+  heroFoto={foto.hero(1600)}
+  heroSrcset={heroSrcset}
+>
+  <div class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-nacht-diep">
+    <Kop />
+    <img
+      src={foto.hero(1600)}
+      srcset={heroSrcset}
+      sizes="100vw"
+      alt="Schilder met een roller aan een witte muur"
+      class="absolute inset-0 -z-20 h-full w-full object-cover"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <!-- Het verloop houdt de tekst leesbaar, wat de foto ook doet. -->
+    <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(13_25_40/0.94)_0%,rgb(13_25_40/0.72)_38%,rgb(13_25_40/0.25)_70%,rgb(13_25_40/0.45)_100%)] md:bg-[linear-gradient(100deg,rgb(13_25_40/0.92)_0%,rgb(13_25_40/0.7)_42%,rgb(13_25_40/0.1)_78%)]"></div>
+    <!-- Op mobiel extra ruimte onder, anders vallen de knoppen bij binnenkomst achter de vaste belbalk. -->
+    <main id="inhoud" class="op-donker wrap mt-auto pb-28 pt-32 text-kalk md:pb-20">
+      <p class="label text-eendenei">Schildersbedrijf in {site.plaats}</p>
+      <h1 class="mt-5 max-w-[14ch] text-5xl">Schilderwerk, glas en behang uit één hand.</h1>
+      <p class="mt-6 max-w-[34rem] text-lg text-kalk/90">Breedveld schildert, spuit latex, behangt en zet glas, voor {site.plaats} en omgeving.</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href={site.mobielHref} class="knop knop-accent">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.6a1 1 0 0 1-.25 1z" fill="currentColor"/></svg>
+          Bel {site.mobiel}
+        </a>
+        <a href="#contact" class="knop knop-lijn text-kalk">Vraag het per mail</a>
+      </div>
+    </main>
+  </div>
+
+  <section aria-labelledby="intro-kop" class="op-licht wrap grid gap-10 py-20 md:grid-cols-12 md:py-28">
+    <div class="md:col-span-7">
+      <p class="label text-grijs">Zoals we het zelf zeggen</p>
+      <h2 id="intro-kop" class="mt-5 text-4xl">Bij ons bent u verzekerd van kwaliteit en een vakkundige aanpak.</h2>
+    </div>
+    <div class="self-end md:col-span-4 md:col-start-9">
+      <p class="text-lg text-grijs">Breedveld is een schildersbedrijf uit {site.plaats}. Naast het schilderwerk spuit het bedrijf latex, hangt het behang en zet het glas. Zo regelt u de hele klus met één bedrijf en één telefoonnummer.</p>
+    </div>
+  </section>
+
+  <section id="diensten" aria-labelledby="diensten-kop" class="op-licht border-t border-lijn bg-wit py-20 md:py-28">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-10">
+          <p class="label text-grijs">Wat we doen</p>
+          <h2 id="diensten-kop" class="mt-5 text-3xl">Vijf vakken, één waaier.</h2>
+          <p class="mt-5 max-w-sm text-grijs">Kies wat er moet gebeuren. Is het een combinatie, bijvoorbeeld eerst glasweefsel en dan latex, dan kan dat in één keer.</p>
+          <img
+            src={foto.rollers(900)}
+            srcset={`${foto.rollers(600)} 600w, ${foto.rollers(900)} 900w`}
+            sizes="(min-width: 1024px) 30vw, 100vw"
+            alt="Vier verfrollers in verschillende kleuren"
+            width="900" height="675"
+            loading="lazy" decoding="async"
+            class="mt-10 hidden aspect-[4/3] w-full bg-mist object-cover lg:block"
+          />
+        </div>
+      </div>
+      <ol class="grid gap-3 lg:col-span-8">
+        {diensten.map((d, i) => (
+          <li class:list={['staal relative flex min-h-36 flex-col justify-between gap-6 py-6 pl-16 pr-6 sm:flex-row sm:items-end sm:pl-20', staalKleur[d.kleur], inspring[i]]} style={`transition-delay:${i * 70}ms`}>
+            <!-- Het gaatje links verwijst naar de pen waar een verfwaaier om draait. -->
+            <span aria-hidden="true" class="absolute left-5 top-6 h-5 w-5 rounded-full bg-kalk sm:left-7 sm:top-1/2 sm:-translate-y-1/2"></span>
+            <div>
+              <p class="text-xs font-semibold tracking-[0.12em] opacity-75">0{i + 1}</p>
+              <h3 class="mt-2 text-2xl">{d.naam}</h3>
+            </div>
+            <p class="max-w-[22rem] text-sm leading-relaxed opacity-90 sm:text-right">{d.regel}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section id="aanpak" aria-labelledby="aanpak-kop" class="op-donker bg-nacht text-kalk">
+    <div class="grid lg:grid-cols-2">
+      <img
+        src={foto.raam(1200)}
+        srcset={`${foto.raam(700)} 700w, ${foto.raam(1200)} 1200w`}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        alt="Schilder op een ladder bij een raamkozijn"
+        width="1200" height="900"
+        loading="lazy" decoding="async"
+        class="aspect-[4/3] h-full w-full bg-antraciet object-cover lg:aspect-auto"
+      />
+      <div class="px-5 py-20 md:px-10 lg:px-16 lg:py-28">
+        <p class="label text-eendenei">Aanpak</p>
+        <h2 id="aanpak-kop" class="mt-5 text-3xl">Waar u op kunt rekenen.</h2>
+        <ul class="mt-10 border-t border-kalk/20">
+          {punten.map((p) => (
+            <li class="flex items-center gap-5 border-b border-kalk/20 py-5">
+              <svg width="26" height="18" viewBox="0 0 26 18" aria-hidden="true" class="shrink-0 text-eendenei"><path d="M2 10.5c2.6 1.4 4.8 3.4 6.7 5.6C12.8 9.6 18 4.5 24 1.8" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="font-kop text-xl font-bold tracking-[-0.02em]">{p}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-8 max-w-md text-kalk/85">Vertel wat er moet gebeuren. Dan denken we met u mee over de beste aanpak.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="werkgebied" aria-labelledby="werkgebied-kop" class="op-licht wrap grid gap-10 py-20 md:grid-cols-12 md:py-28">
+    <div class="md:col-span-8">
+      <p class="label text-grijs">Werkgebied</p>
+      <h2 id="werkgebied-kop" class="mt-5 text-4xl">{site.plaats} en omgeving.</h2>
+    </div>
+    <div class="self-end border-l-4 border-eendenei pl-6 md:col-span-4">
+      <p class="font-semibold">{site.naam}</p>
+      <p class="mt-1 text-grijs">{site.straat}<br />{site.postcode} {site.plaats}</p>
+      <a href={site.route} class="mt-4 inline-flex min-h-11 items-center gap-2 font-semibold underline decoration-eendenei decoration-2 underline-offset-6 hover:decoration-nacht">
+        Bekijk op de kaart
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 11 11 3M5 3h6v6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-kop" class="op-licht border-t border-lijn bg-wit py-20 md:py-28">
+    <div class="wrap grid gap-14 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <p class="label text-grijs">Contact</p>
+        <h2 id="contact-kop" class="mt-5 text-3xl">Vertel wat er geschilderd, gezet of gespoten moet worden.</h2>
+        <ul class="mt-10 border-t border-lijn">
+          <li><a href={site.mobielHref} class="flex min-h-16 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn py-4 hover:bg-kalk"><span class="text-grijs">Bellen</span><span class="font-kop text-xl font-bold">{site.mobiel}</span></a></li>
+          <li><a href={site.whatsapp} class="flex min-h-16 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn py-4 hover:bg-kalk"><span class="text-grijs">WhatsApp</span><span class="font-kop text-xl font-bold">Stuur een bericht</span></a></li>
+          <li><a href={`mailto:${site.mail}`} class="flex min-h-16 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-lijn py-4 hover:bg-kalk"><span class="text-grijs">Mailen</span><span class="break-all font-semibold">{site.mail}</span></a></li>
+        </ul>
+        <p class="mt-6 text-sm text-grijs">{site.straat}, {site.postcode} {site.plaats}. KvK {site.kvk}.</p>
+      </div>
+      <form class="grid content-start gap-5 bg-kalk p-6 sm:p-10 lg:col-span-6 lg:col-start-7" onsubmit="return false" aria-describedby="formulier-noot">
+        <p class="font-kop text-xl font-bold">Uw vraag in het kort</p>
+        <div class="grid gap-5 sm:grid-cols-2">
+          <label class="grid min-w-0 gap-2 text-sm font-medium">Naam<input name="naam" type="text" autocomplete="name" class="min-h-12 w-full min-w-0 border border-lijn bg-wit px-3 text-base" /></label>
+          <label class="grid min-w-0 gap-2 text-sm font-medium">Telefoon of e-mail<input name="contact" type="text" autocomplete="email" class="min-h-12 w-full min-w-0 border border-lijn bg-wit px-3 text-base" /></label>
+        </div>
+        <label class="grid min-w-0 gap-2 text-sm font-medium">Plaats<input name="plaats" type="text" autocomplete="address-level2" class="min-h-12 w-full min-w-0 border border-lijn bg-wit px-3 text-base" /></label>
+        <label class="grid min-w-0 gap-2 text-sm font-medium">Wat moet er gebeuren?<textarea name="vraag" rows="4" class="w-full min-w-0 border border-lijn bg-wit px-3 py-3 text-base"></textarea></label>
+        <p id="formulier-noot" class="border-l-4 border-nacht bg-wit p-4 text-sm text-grijs">
+          {site.voorstel ? 'Dit is een ontwerpvoorstel, het formulier verstuurt niets. Bel, app of mail Breedveld rechtstreeks.' : 'Bel, app of mail Breedveld rechtstreeks.'}
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <Voet />
+</Base>
