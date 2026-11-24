@@ -17,13 +17,13 @@ export const site = {
   voorstel: import.meta.env.PUBLIC_VOORSTEL === '1',
 };
 
-// De vijf vakken van de eigen site. De korte regel eronder beschrijft het vak zelf, geen belofte over het bedrijf.
+// De vijf vakken van de eigen site, alleen de namen. Kim (controle 24-11) haalde de korte regels eronder weg, die stonden niet in de bronnen.
 export const diensten = [
-  { naam: 'Schilderwerk', regel: 'Met kwast en roller, op hout, muren en plafonds.', kleur: 'nacht' },
-  { naam: 'Latex spuiten', regel: 'Muren en plafonds in de latex, gespoten in plaats van gerold.', kleur: 'eendenei' },
-  { naam: 'Behangwerk', regel: 'Nieuw behang op de wand, baan voor baan.', kleur: 'zand' },
-  { naam: 'Glaszetten', regel: 'Nieuw glas in uw kozijnen en deuren.', kleur: 'mist' },
-  { naam: 'Glasweefsel plakken', regel: 'Een stevige, egale ondergrond op wand of plafond, klaar voor de verf.', kleur: 'antraciet' },
+  { naam: 'Schilderwerk', kleur: 'nacht' },
+  { naam: 'Latex spuiten', kleur: 'eendenei' },
+  { naam: 'Behangwerk', kleur: 'zand' },
+  { naam: 'Glaszetten', kleur: 'mist' },
+  { naam: 'Glasweefsel plakken', kleur: 'antraciet' },
 ];
 
 // Letterlijk de punten van de huidige site, in dezelfde volgorde.
