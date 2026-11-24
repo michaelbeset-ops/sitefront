@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("@fontsource-variable/newsreader/files/newsreader-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("@fontsource-variable/newsreader/files/newsreader-latin-wght-italic.woff2") format("woff2-variations");
+  font-weight: 200 800; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Rethink Sans";
+  src: url("@fontsource-variable/rethink-sans/files/rethink-sans-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 400 800; font-style: normal; font-display: swap;
+}
+
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  --color-linnen: #f1ebe1;
+  --color-zand: #e6ddcf;
+  --color-wit: #fbf8f3;
+  --color-bos: #1d2a23;
+  --color-mos: #2c3f34;
+  --color-varen: #4b5d52;   /* lopende tekst op linnen, contrast 6,4:1 */
+  --color-kurkuma: #e0a54a;
+  --color-kurkuma-licht: #f0c98a;
+  --color-lijn: #cfc4b2;
+
+  --font-kop: "Newsreader", "Georgia", serif;
+  --font-tekst: "Rethink Sans", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: clamp(2.1rem, 1.5rem + 2.6vw, 3.3rem);
+  --text-4xl: clamp(2.7rem, 1.6rem + 5vw, 5.6rem);
+
+  --radius-sm: 3px;
+  --radius-pil: 999px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-linnen text-bos font-tekst text-base leading-relaxed antialiased; }
+  h1, h2, h3 { @apply font-kop; font-weight: 500; letter-spacing: -0.025em; line-height: 1.05; text-wrap: balance; }
+  h3 { letter-spacing: -0.015em; line-height: 1.15; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-kurkuma); outline-offset: 3px; }
+  ::selection { background: var(--color-kurkuma-licht); color: var(--color-bos); }
+  [id] { scroll-margin-top: 5rem; }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-[78rem] px-5 sm:px-8 lg:px-12; }
+  /* Het balanspunt: een lijn met een stip, het motto "Evenwicht in Beweging" als vorm. */
+  .merk { @apply flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-varen; }
+  .merk::before {
+    content: ""; width: 3rem; height: 9px; flex: none;
+    background: radial-gradient(circle at 62% 50%, var(--color-kurkuma) 3.5px, transparent 4px),
+                linear-gradient(currentColor, currentColor) center / 100% 1px no-repeat;
+  }
+  .link { @apply underline decoration-kurkuma decoration-2 underline-offset-4 hover:decoration-bos; }
+}
+
+@utility knop { @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-pil px-6 text-sm font-semibold transition-colors duration-200; }
+@utility knop-vol { @apply knop bg-kurkuma text-bos hover:bg-kurkuma-licht; }
+@utility knop-lijn { @apply knop border border-current hover:bg-bos hover:text-linnen; }
+@utility knop-licht { @apply knop border border-linnen/70 text-linnen hover:bg-linnen hover:text-bos; }
+
+/* Rustig binnenkomen bij scrollen, alleen als JS draait en beweging gewenst is. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .rijs { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+  .js .rijs.in { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

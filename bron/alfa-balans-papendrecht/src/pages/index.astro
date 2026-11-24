@@ -1,0 +1,247 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, tijden, lessen, bijzonder, team, foto } from '../data/site';
+
+const heroSrcset = [800, 1200, 1600, 2000].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+---
+<Base
+  title="Alfa Balans Yoga & Pilates | Yoga en pilates in Papendrecht"
+  description="Yin, Hatha, Vinyasa, Restorative en pilates in Sportcentrum Papendrecht. Ruim twintig lessen per week en privé yogatherapie bij Claire Faber."
+  heroFoto={foto.hero(1600)}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: de foto vult het hele scherm, de tekst staat links onderin waar het rustig is. -->
+    <section class="relative isolate flex min-h-[100svh] items-end overflow-hidden bg-mos text-linnen">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt=""
+        fetchpriority="high"
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(20_30_25/0.92)_0%,rgb(20_30_25/0.6)_45%,rgb(20_30_25/0.25)_75%,rgb(20_30_25/0.45)_100%)]"></div>
+      <div class="wrap pb-14 pt-36 sm:pb-20 lg:pb-24">
+        <p class="merk text-linnen/85">Yoga &amp; pilates in Papendrecht</p>
+        <h1 class="mt-6 max-w-[14ch] text-4xl text-linnen">Evenwicht <em class="font-normal italic text-kurkuma-licht">in</em> beweging.</h1>
+        <div class="mt-8 grid gap-8 md:grid-cols-[minmax(0,34rem)_auto] md:items-end md:justify-between">
+          <p class="max-w-[34rem] text-lg leading-relaxed text-linnen/90">Ruim twintig lessen per week, van Yin en Restorative tot pilates. In de studio van Claire Faber, boven in Sportcentrum Papendrecht.</p>
+          <div class="flex flex-wrap gap-3">
+            <a href={site.boeken} class="knop-vol">Rooster en boeken</a>
+            <a href={site.mobielHref} class="knop-licht">Bel {site.mobiel}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Claire en de studio. Indirecte rede uit het interview, geen letterlijk citaat zonder akkoord. -->
+    <section class="wrap grid gap-12 py-20 lg:grid-cols-12 lg:gap-8 lg:py-32">
+      <div class="rijs lg:col-span-7">
+        <p class="merk">Sinds 1 juli 2017</p>
+        <h2 class="mt-6 text-3xl">Claire wil dat je net zo verliefd wordt op yoga als zij&nbsp;is.</h2>
+        <div class="mt-8 grid max-w-2xl gap-5 text-varen">
+          <p>Claire Faber begon Alfa Balans in 2017. Ze geeft Hatha, Vinyasa, Yin Yang, Yin en Restorative yoga, is pilatesdocent en yogatherapeut. Haar doel is mensen helpen om balans, innerlijke kracht en loslaten te vinden.</p>
+          <p>Ze kijkt holistisch naar klachten en vindt persoonlijk contact essentieel. In de studio is ruimte voor zestien matten.</p>
+        </div>
+      </div>
+      <dl class="rijs grid content-end gap-0 self-end border-t border-bos lg:col-span-4 lg:col-start-9">
+        <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-4"><dt class="text-sm text-varen">Lessen per week</dt><dd class="font-kop text-2xl">ruim 20</dd></div>
+        <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-4"><dt class="text-sm text-varen">Dagen per week</dt><dd class="font-kop text-2xl">6</dd></div>
+        <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-4"><dt class="text-sm text-varen">Een yogales</dt><dd class="font-kop text-2xl">75 min</dd></div>
+        <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-4"><dt class="text-sm text-varen">Een pilatesles</dt><dd class="font-kop text-2xl">60 min</dd></div>
+        <div class="flex items-baseline justify-between gap-6 border-b border-lijn py-4"><dt class="text-sm text-varen">Matten in de studio</dt><dd class="font-kop text-2xl">16</dd></div>
+      </dl>
+    </section>
+
+    <!-- Lessen als rustige rijen in plaats van kaartjes. Elke rij: stijl, wie, en wat er bekend is. -->
+    <section id="lessen" class="bg-wit py-20 lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="merk">Lessen</p>
+            <h2 class="mt-6 text-3xl">Van Yin en Restorative tot een Hatha-les in het Engels op&nbsp;zondag.</h2>
+          </div>
+          <p class="text-varen lg:col-span-4 lg:col-start-9">Het actuele rooster staat in de boekingsmodule. Daar zie je wat er deze week is en boek je meteen je plek.</p>
+        </div>
+
+        <ul class="mt-14 border-t border-bos">
+          {lessen.map((l) => (
+            <li class="rijs grid gap-3 border-b border-lijn py-7 md:grid-cols-12 md:gap-8">
+              <div class="flex items-baseline justify-between gap-4 md:col-span-4 md:block">
+                <h3 class="text-2xl">{l.stijl}</h3>
+                <p class="text-sm text-varen md:mt-1">{l.duur}</p>
+              </div>
+              <p class="text-sm text-varen md:col-span-3">Bij {l.docenten}</p>
+              <ul class="grid gap-1.5 md:col-span-5">
+                {l.momenten.length
+                  ? l.momenten.map((m) => <li class="flex gap-3"><span aria-hidden="true" class="mt-[0.7em] h-px w-4 flex-none bg-kurkuma"></span>{m}</li>)
+                  : <li class="flex gap-3"><span aria-hidden="true" class="mt-[0.7em] h-px w-4 flex-none bg-kurkuma"></span>Zie het rooster voor dag en tijd</li>}
+              </ul>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-16 grid gap-10 lg:grid-cols-12">
+          <div class="relative overflow-hidden lg:col-span-5">
+            <img src={foto.les(1000)} alt="Mensen rekken uit op yogamatten in een studio (sfeerbeeld)" loading="lazy" width="1000" height="1250" class="aspect-[4/5] h-full w-full object-cover" />
+          </div>
+          <div class="lg:col-span-6 lg:col-start-7 lg:self-center">
+            <h3 class="text-2xl">Ook bij Alfa Balans</h3>
+            <dl class="mt-6 grid gap-6 sm:grid-cols-2">
+              {bijzonder.map((b) => (
+                <div class="border-t border-lijn pt-4">
+                  <dt class="font-kop text-xl">{b.titel}</dt>
+                  <dd class="mt-1 text-varen">{b.tekst}</dd>
+                </div>
+              ))}
+            </dl>
+            <a href={site.boeken} class="knop-vol mt-10">Bekijk het rooster</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Yogatherapie: het donkere vlak breekt het ritme en laat zien dat dit iets anders is dan een groepsles. -->
+    <section id="therapie" class="bg-bos text-linnen">
+      <div class="grid lg:grid-cols-2">
+        <div class="relative min-h-[22rem] lg:order-2 lg:min-h-full">
+          <img src={foto.blokken(1200)} alt="Yogamat met twee blokken (sfeerbeeld)" loading="lazy" class="absolute inset-0 h-full w-full object-cover" />
+        </div>
+        <div class="px-5 py-20 sm:px-8 lg:py-32 lg:pl-[max(3rem,calc((100vw-78rem)/2+3rem))] lg:pr-16">
+          <p class="merk text-linnen/75">Privé yogatherapie</p>
+          <h2 class="mt-6 max-w-[16ch] text-3xl">Een les die helemaal om jouw klacht&nbsp;draait.</h2>
+          <p class="mt-8 max-w-xl text-linnen/85">Claire is yogatherapeut. In een privé sessie werkt ze met je aan chronische klachten en blessures, zoals astma, rugpijn, hoge bloeddruk en spijsverteringsklachten.</p>
+          <p class="mt-4 max-w-xl text-linnen/85">Bel of mail Claire om te overleggen of yogatherapie bij jou past.</p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href={site.mobielHref} class="knop-vol">Bel {site.mobiel}</a>
+            <a href={`mailto:${site.mail}`} class="knop-licht">Mail Claire</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Docenten: geen foto's van gezichten, alleen namen en wat ze geven. -->
+    <section id="docenten" class="wrap py-20 lg:py-32">
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <p class="merk">Docenten</p>
+          <h2 class="mt-6 text-3xl">Een team met elk een eigen&nbsp;stijl.</h2>
+          <div class="mt-10 border-l-2 border-kurkuma pl-5">
+            <p class="font-kop text-2xl">Claire</p>
+            <p class="mt-1 text-sm font-semibold uppercase tracking-[0.12em] text-varen">Oprichter en eigenaar</p>
+            <p class="mt-3 text-varen">Hatha, Vinyasa, Yin Yang, Yin en Restorative yoga. Pilatesdocent en yogatherapeut.</p>
+          </div>
+        </div>
+        <ul class="grid gap-x-10 sm:grid-cols-2 lg:col-span-7 lg:col-start-6">
+          {team.map((t) => (
+            <li class="rijs border-t border-lijn py-6">
+              <h3 class="text-2xl">{t.naam}</h3>
+              <p class="mt-2 text-varen">{t.wat}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Zo begin je: genummerde rij, de boekingsmodule is de enige echte stap. -->
+    <section id="beginnen" class="bg-zand py-20 lg:py-28">
+      <div class="wrap">
+        <p class="merk">Beginnen</p>
+        <h2 class="mt-6 max-w-[20ch] text-3xl">Eerst proberen? Boek gewoon één&nbsp;les.</h2>
+        <ol class="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+          <li class="rijs">
+            <p class="font-kop text-4xl leading-none text-mos">1</p>
+            <h3 class="mt-4 text-xl">Een proefles</h3>
+            <p class="mt-2 text-varen">Een proefles is een losse les. Die koop en boek je in de boekingsmodule.</p>
+          </li>
+          <li class="rijs md:mt-10">
+            <p class="font-kop text-4xl leading-none text-mos">2</p>
+            <h3 class="mt-4 text-xl">Leskaart of maandabonnement</h3>
+            <p class="mt-2 text-varen">Bevalt het, kies dan een leskaart of een maandabonnement. Het abonnement loopt via automatische incasso.</p>
+          </li>
+          <li class="rijs md:mt-20">
+            <p class="font-kop text-4xl leading-none text-mos">3</p>
+            <h3 class="mt-4 text-xl">Je factuur zelf downloaden</h3>
+            <p class="mt-2 text-varen">Een factuur download je zelf. Wil je weten wat een les of abonnement kost, vraag het Claire.</p>
+          </li>
+        </ol>
+        <div class="mt-14 flex flex-wrap gap-3">
+          <a href={site.boeken} class="knop-vol">Naar de boekingsmodule</a>
+          <a href={`mailto:${site.mail}`} class="knop-lijn">Vraag het Claire</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het winkeltje: klein en eerlijk, alleen wat er echt verkocht wordt. -->
+    <section class="wrap grid gap-10 py-20 md:grid-cols-12 md:items-center lg:py-28">
+      <div class="md:col-span-5">
+        <img src={foto.mand(900)} alt="Opgerolde yogamatten in een rieten mand met planten (sfeerbeeld)" loading="lazy" width="900" height="900" class="aspect-square w-full object-cover" />
+      </div>
+      <div class="md:col-span-6 md:col-start-7">
+        <p class="merk">Winkel</p>
+        <h2 class="mt-6 text-3xl">Een eigen mat kun je ook bij Alfa Balans&nbsp;kopen.</h2>
+        <p class="mt-6 max-w-lg text-varen">Alfa Balans verkoopt yogamatten, yogatassen, mala's en tongschrapers. Vraag Claire wat er is.</p>
+      </div>
+    </section>
+
+    <!-- Contact en route. De weg naar binnen staat er letterlijk bij, want de studio zit boven in het sportcentrum. -->
+    <section id="contact" class="border-t border-lijn bg-wit py-20 lg:py-32">
+      <div class="wrap grid grid-cols-1 gap-14 lg:grid-cols-12">
+        <div class="min-w-0 lg:col-span-5">
+          <p class="merk">Contact en route</p>
+          <h2 class="mt-6 text-3xl">Boven in Sportcentrum Papendrecht.</h2>
+          <address class="mt-8 not-italic text-lg">
+            {site.straat}<br />{site.postcode} {site.plaats}
+          </address>
+          <ol class="mt-6 grid gap-2 text-varen">
+            <li class="flex gap-3"><span class="font-kop text-mos">1</span>Neem de linker voordeur van het sportcentrum.</li>
+            <li class="flex gap-3"><span class="font-kop text-mos">2</span>Ga rechtdoor de trap op.</li>
+            <li class="flex gap-3"><span class="font-kop text-mos">3</span>De studio is links.</li>
+          </ol>
+          <a href={site.route} class="link mt-6 inline-block font-semibold">Route in Google Maps</a>
+
+          <div class="mt-12 grid gap-2 [overflow-wrap:anywhere]">
+            <a href={site.mobielHref} class="font-kop text-2xl hover:text-varen">{site.mobiel}</a>
+            <a href={`mailto:${site.mail}`} class="link w-fit">{site.mail}</a>
+            <a href={`mailto:${site.mailInfo}`} class="link w-fit">{site.mailInfo}</a>
+            <a href={`https://www.instagram.com/${site.instagram}/`} class="link w-fit">Instagram @{site.instagram}</a>
+          </div>
+        </div>
+
+        <div class="min-w-0 lg:col-span-6 lg:col-start-7">
+          <h3 class="text-2xl">Openingstijden</h3>
+          <table class="mt-5 w-full text-left">
+            <caption class="sr-only">Openingstijden van de studio</caption>
+            <tbody>
+              {tijden.map((t) => (
+                <tr class="border-b border-lijn">
+                  <th scope="row" class="py-3 font-medium">{t.dag}</th>
+                  <td class:list={['py-3 text-right tabular-nums', t.tijd === 'gesloten' ? 'text-varen' : '']}>{t.tijd}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <!-- In het voorstel verstuurt het formulier niets: geen submit-knop, wel een eerlijke melding. -->
+          <form class="mt-14 grid grid-cols-1 gap-4 border border-lijn bg-linnen p-5 sm:p-8" onsubmit="return false" aria-describedby="formulier-uit">
+            <h3 class="text-2xl">Stel je vraag</h3>
+            <label class="grid gap-1.5 text-sm font-medium">Naam
+              <input type="text" name="naam" autocomplete="name" class="min-h-12 w-full min-w-0 border border-lijn bg-wit px-3 text-base" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-medium">E-mail of telefoon
+              <input type="text" name="contact" autocomplete="email" class="min-h-12 w-full min-w-0 border border-lijn bg-wit px-3 text-base" />
+            </label>
+            <label class="grid gap-1.5 text-sm font-medium">Je vraag
+              <textarea name="vraag" rows="4" class="w-full min-w-0 border border-lijn bg-wit px-3 py-2 text-base"></textarea>
+            </label>
+            <p id="formulier-uit" class="text-sm text-varen">Dit is een ontwerpvoorstel, het formulier verstuurt nog niets. Bel of mail Claire rechtstreeks via {site.mobiel} of {site.mail}.</p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
