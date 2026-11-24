@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Kalkwit als vloer, warm zwart als inkt. Vermiljoen is het ene accent,
+     als een spot op het podium. Roze (balletgordijn) alleen als vlak of op donker. */
+  --color-kalk: #f6f2ec;
+  --color-krijt: #ece4d9;
+  --color-inkt: #191613;
+  --color-grijs: #5b544c;
+  --color-vermiljoen: #c23a1b;
+  --color-roze: #f4c6c0;
+  --color-wit: #ffffff;
+
+  --font-kop: "Bricolage Grotesque Variable", "Arial Narrow", sans-serif;
+  --font-tekst: "Rethink Sans Variable", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: clamp(1.7rem, 1.25rem + 1.8vw, 2.4rem);
+  --text-3xl: clamp(2.3rem, 1.4rem + 3.6vw, 4.2rem);
+  --text-4xl: clamp(3.4rem, 1rem + 10vw, 9rem);
+
+  --radius-sm: 3px;
+  --radius-full: 999px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-kalk);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    /* Smal en vet, als een affiche voor een voorstelling. Smal houdt grote koppen ook op 320 binnen de regel. */
+    font-stretch: 78%;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-vermiljoen);
+    outline-offset: 3px;
+  }
+  .donker :focus-visible {
+    outline-color: var(--color-roze);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .wrap { padding-inline: 2.5rem; }
+  }
+  .knop {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: var(--radius-full);
+    font-weight: 700;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .label {
+    font-size: var(--text-sm);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Rustig infaden, alleen als JS draait en beweging gewenst is. */
+.js .op {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.js .op.in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .js .op { opacity: 1; transform: none; }
+}

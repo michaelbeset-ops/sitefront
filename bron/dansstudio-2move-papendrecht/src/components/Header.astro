@@ -1,0 +1,32 @@
+---
+import { site, url } from '../data/site';
+
+// Op de homepage ligt de kop over de foto, op de privacypagina op kalk.
+interface Props { overFoto?: boolean }
+const { overFoto = false } = Astro.props;
+const links = [
+  ['Lessen', '#lessen'],
+  ['Pilates', '#pilates'],
+  ['Docenten', '#docenten'],
+  ['Lesgeld', '#lesgeld'],
+  ['Contact', '#contact'],
+];
+---
+<header class:list={['z-20', overFoto ? 'donker absolute inset-x-0 top-0 text-kalk' : 'relative border-b border-inkt/10 text-inkt']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex items-center gap-3 leading-none">
+      <span class="font-kop text-[1.9rem] font-extrabold tracking-[-0.04em]" style="font-stretch:78%">2<span class:list={[overFoto ? 'text-roze' : 'text-vermiljoen']}>MOVE</span></span>
+      <span class:list={['hidden border-l pl-3 text-xs leading-tight sm:block', overFoto ? 'border-kalk/40 text-kalk/85' : 'border-inkt/20 text-grijs']}>Dans- en ontspanningsstudio<br />Papendrecht</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-7 text-sm font-semibold">
+        {links.map(([label, href]) => (
+          <li><a href={overFoto ? href : url() + href} class="underline-offset-4 hover:underline">{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href={site.inschrijven} class:list={['knop hidden !min-h-0 !py-2.5 text-sm md:inline-flex', overFoto ? 'bg-kalk text-inkt hover:bg-roze' : 'bg-inkt text-kalk hover:bg-vermiljoen']} rel="noopener">
+      Gratis proefles
+    </a>
+  </div>
+</header>
