@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts.
+   Anybody "standard" bevat de gewicht- en breedte-as, zodat de koppen smal en zwaar kunnen. */
+@font-face {
+  font-family: "Anybody Variable";
+  src: url("@fontsource-variable/anybody/files/anybody-latin-standard-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-stretch: 50% 150%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Libre Franklin Variable";
+  src: url("@fontsource-variable/libre-franklin/files/libre-franklin-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Kalkpleister als papier, betongrijs voor de donkere vlakken, oker als enige accent.
+     Oker staat alleen op donker of als lijn, nooit als tekst op kalk. */
+  --color-kalk: #ebe6de;
+  --color-gips: #f6f3ee;
+  --color-inkt: #1d1c1a;
+  --color-beton: #2a2926;
+  --color-grijs: #57524b;     /* 6,4:1 op kalk */
+  --color-lijn: #1d1c1a2b;
+  --color-oker: #d9a441;      /* 6,6:1 op beton, inkt erop 7,7:1 */
+
+  --font-kop: "Anybody Variable", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-tekst: "Libre Franklin Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-4xl: clamp(2.4rem, 1.5rem + 3.8vw, 4.5rem);
+  --text-5xl: clamp(2.7rem, 1.5rem + 5.6vw, 6.5rem);
+
+  --radius-sm: 2px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-kalk);
+    /* Heel lichte korrel, zodat het papier aanvoelt als een gepleisterde muur in plaats van een egaal scherm. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .09 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23k)'/%3E%3C/svg%3E");
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    font-stretch: 72%;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-inkt); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-oker); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label {
+    font-family: var(--font-tekst);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.4rem;
+    font-weight: 700; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-oker { background: var(--color-oker); color: var(--color-inkt); }
+  .knop-oker:hover { background: var(--color-gips); }
+  .knop-inkt { background: var(--color-inkt); color: var(--color-gips); }
+  .knop-inkt:hover { background: var(--color-beton); }
+  .knop-lijn { border: 2px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* De spaan: een korte okerkleurige streep, als een veeg pleister, boven elke sectiekop. */
+  .veeg { display: block; width: 3.5rem; height: 0.35rem; background: var(--color-oker); border-radius: 0 999px 999px 0; }
+
+  /* Eén beweging op de site: de dienstregels schuiven zacht in beeld, alleen als JS aan staat. */
+  .js .rij { opacity: 0; transform: translateY(0.75rem); transition: opacity .6s ease, transform .6s ease; }
+  .js .rij.in { opacity: 1; transform: none; }
+}
