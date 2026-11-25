@@ -1,0 +1,53 @@
+---
+import { site, url } from '../data/site';
+interface Props { overHero?: boolean }
+const { overHero = false } = Astro.props;
+const nav = [
+  { href: url('#hooischuur'), tekst: 'Voor kinderen' },
+  { href: url('#plaatsen'), tekst: 'Plaatsen' },
+  { href: url('#gasten'), tekst: 'Gasten' },
+  { href: url('#route'), tekst: 'Route' },
+  { href: url('#contact'), tekst: 'Contact' },
+];
+// Op de homepage ligt de kop zonder achtergrond over de foto, direct onder de
+// voorstelbalk. Op de privacypagina staat hij op het schuurrood.
+---
+<header class:list={['rood z-30 text-melk', overHero ? 'absolute inset-x-0' : 'relative bg-schuur']}>
+  <div class="wrap flex h-20 items-center justify-between gap-4">
+    <a href={url()} class="flex items-center gap-3 no-underline">
+      <svg viewBox="0 0 36 32" class="h-8 w-9 shrink-0" aria-hidden="true">
+        <path d="M3 14 18 3l15 11v15H3z" fill="#8c2b1e" stroke="#fbf6ee" stroke-width="2" stroke-linejoin="round" />
+        <path d="M12 29V18h12v11M12 18l12 11M24 18 12 29" fill="none" stroke="#fbf6ee" stroke-width="1.8" stroke-linejoin="round" />
+        <path d="M15 11h6" stroke="#f0dca8" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span class="leading-none">
+        <span class="block whitespace-nowrap font-kop text-xl font-extrabold tracking-tight sm:text-2xl">De Heemshoeve</span>
+        <span class="mt-1 block text-xs opacity-90">Minicamping in Moerstraten</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-7 text-sm font-semibold">
+        {nav.map((n) => <li><a href={n.href} class="no-underline hover:underline hover:underline-offset-4">{n.tekst}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href={site.mobielHref} class="knop knop-melk hidden min-h-11 px-4 sm:inline-flex">Bel {site.gastvrouw}</a>
+      <details class="menu relative lg:hidden">
+        <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 px-2 font-semibold">
+          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          <span class="max-[379px]:sr-only">Menu</span>
+        </summary>
+        <div class="absolute right-0 top-full mt-2 w-64 bg-schuur p-5 text-melk">
+          <ul class="space-y-1 font-kop text-xl font-bold">
+            {nav.map((n) => <li><a href={n.href} class="block py-2 no-underline">{n.tekst}</a></li>)}
+          </ul>
+          <a href={site.mobielHref} class="knop knop-melk mt-4 w-full">Bel {site.gastvrouw}</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .menu summary::-webkit-details-marker { display: none; }
+</style>
