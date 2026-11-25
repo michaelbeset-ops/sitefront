@@ -1,0 +1,49 @@
+---
+import '../styles/global.css';
+import kopFont from '@fontsource-variable/petrona/files/petrona-latin-wght-normal.woff2?url';
+import sansFont from '@fontsource-variable/mulish/files/mulish-latin-wght-normal.woff2?url';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, url, fotos } from '../data/site';
+
+interface Props { title: string; description: string; hero?: boolean }
+const { title, description, hero = false } = Astro.props;
+---
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {site.voorstel && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="theme-color" content="#16302a" />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="preload" as="font" type="font/woff2" href={kopFont} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sansFont} crossorigin />
+    {hero && <link rel="preconnect" href="https://images.unsplash.com" />}
+    {hero && <link rel="preload" as="image" href={fotos.hero(1600)} imagesrcset={`${fotos.hero(800)} 800w, ${fotos.hero(1200)} 1200w, ${fotos.hero(1600)} 1600w`} imagesizes="100vw" fetchpriority="high" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(url('og.jpg'), Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={site.naam} />
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body class="min-h-dvh">
+    {site.voorstel && (
+      <div class="bg-kano-licht text-kreek">
+        <p class="wrap py-2 text-xs leading-snug">Ontwerpvoorstel van Sitefront voor {site.naam}. Dit is niet de officiële website. <a href="https://www.sitefront.nl" class="font-extrabold underline underline-offset-2">sitefront.nl</a></p>
+      </div>
+    )}
+    <a href="#inhoud" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-wit focus:px-4 focus:py-2">Naar de inhoud</a>
+    <Kop overHero={hero} />
+    <main id="inhoud">
+      <slot />
+    </main>
+    <Voet />
+  </body>
+</html>

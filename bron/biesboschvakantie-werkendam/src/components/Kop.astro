@@ -1,0 +1,53 @@
+---
+import { site, url } from '../data/site';
+interface Props { overHero?: boolean }
+const { overHero = false } = Astro.props;
+const nav = [
+  { href: url('#kreek'), tekst: 'Aan de kreek' },
+  { href: url('#terreinen'), tekst: 'Terreinen' },
+  { href: url('#tarieven'), tekst: 'Tarieven 2026' },
+  { href: url('#goed-om-te-weten'), tekst: 'Goed om te weten' },
+  { href: url('#contact'), tekst: 'Contact' },
+];
+// Op de homepage ligt de kop zonder achtergrond over de foto (top blijft auto, dus hij
+// staat direct onder de voorstelbalk). Op de privacypagina is hij gewoon donkergroen.
+---
+<header class:list={['donker z-30 text-licht', overHero ? 'absolute inset-x-0' : 'relative bg-kreek']}>
+  <div class="wrap flex h-20 items-center justify-between gap-4">
+    <a href={url()} class="flex items-center gap-3 no-underline">
+      <svg viewBox="0 0 32 32" class="size-8 shrink-0 sm:size-9" aria-hidden="true">
+        <path d="M5 22c3.6-2.4 7.4-2.4 11 0s7.4 2.4 11 0" fill="none" stroke="#eea47f" stroke-width="2.2" stroke-linecap="round" />
+        <path d="M10 18V7M16 17V4M22 18V9" stroke="#efe9da" stroke-width="2" stroke-linecap="round" />
+        <path d="M16 4c1.8 1 2.4 2.6 2 4.6M10 7c-1.5.6-2 1.9-1.8 3.4" fill="none" stroke="#efe9da" stroke-width="1.4" stroke-linecap="round" />
+      </svg>
+      <span class="leading-tight">
+        <span class="block whitespace-nowrap font-kop text-lg font-extrabold tracking-tight sm:text-xl">Biesbosch Vakantie</span>
+        <span class="hidden text-xs text-licht-zacht sm:block">De Witboom en De Knotwilg, Werkendam</span><span class="block text-xs text-licht-zacht sm:hidden">Werkendam</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden xl:block">
+      <ul class="flex items-center gap-7 text-sm font-bold">
+        {nav.map((n) => <li><a href={n.href} class="no-underline hover:text-kano-licht">{n.tekst}</a></li>)}
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href={site.boeken} class="knop knop-licht hidden min-h-11 px-4 text-base sm:inline-flex">Online boeken</a>
+      <details class="menu relative xl:hidden">
+        <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 px-2 font-bold">
+          <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+          <span class="max-[379px]:sr-only">Menu</span>
+        </summary>
+        <div class="absolute right-0 top-full mt-2 w-64 bg-kreek p-5 text-licht">
+          <ul class="space-y-1 text-lg font-bold">
+            {nav.map((n) => <li><a href={n.href} class="block py-2 no-underline hover:text-kano-licht">{n.tekst}</a></li>)}
+          </ul>
+          <a href={site.boeken} class="knop knop-licht mt-4 w-full">Online boeken</a>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .menu summary::-webkit-details-marker { display: none; }
+</style>
