@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, menu, ook, tijden, reviews, foto } from '../data/site';
+
+const heroSrcset = [640, 1024, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+const veld = 'min-h-12 rounded-sm border border-inkt/40 bg-room px-3 text-base font-normal';
+---
+<Base
+  title="Bella by Nella | Nagels, wenkbrauwen en gezichtsbehandelingen in Dordrecht"
+  description="Beautystudio aan huis in Dordrecht. Buildergel, gellak, wenkbrauwen, make-up en gezichtsbehandelingen bij Nella. 5,0 uit 113 reviews op Treatwell. Online boeken."
+  heroFoto={foto.hero(1600)}
+  heroSrcset={heroSrcset}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: schermvullende foto, tekst linksonder, het reviewcijfer rechts als tegenwicht. -->
+    <section class="op-donker relative isolate flex min-h-[100svh] items-end overflow-hidden bg-pruim text-room">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt="Een nagelstyliste lakt lange nagels"
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(42_23_32/0.93)_0%,rgb(42_23_32/0.62)_45%,rgb(42_23_32/0.3)_100%)]"></div>
+      <div class="wrap grid gap-12 pb-14 pt-32 md:pb-20 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <p class="label text-roze">Beautystudio aan huis in {site.plaats}</p>
+          <h1 class="mt-5 text-5xl">Mooie nagels en een uur voor jezelf</h1>
+          <p class="mt-6 max-w-xl text-lg text-room/90">Bij Nella thuis, in een rustige woonwijk. Buildergel, gellak, wenkbrauwen, make-up en gezichtsbehandelingen, met ruim zes jaar ervaring.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.boeken} class="knop knop-room">Boek online</a>
+            <a href={site.whatsapp} class="knop knop-lijn">App Nella</a>
+          </div>
+        </div>
+        <a href="#reviews" class="group block border-t border-roze pt-4 lg:col-span-3 lg:col-start-10">
+          <span class="block font-kop text-[clamp(3.75rem,3rem+3vw,5.5rem)] leading-none">5,0</span>
+          <span class="mt-2 block text-sm text-room/85 group-hover:underline">uit 113 reviews op Treatwell</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Behandelingen: een prijskaart met stippellijnen, de foto staat smal en hoog ernaast. -->
+    <section id="behandelingen" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <span class="lint text-bes" aria-hidden="true"></span>
+          <h2 class="mt-6 text-4xl">Menu en prijzen</h2>
+          <p class="mt-6 max-w-sm text-mauve">De vaste prijzen zoals ze op Treatwell staan. In de online agenda zie je welke tijden nog vrij zijn.</p>
+          <img
+            src={foto.nagels(800)}
+            alt="Hand met roze gelakte nagels van dichtbij"
+            width="800" height="1000" loading="lazy" decoding="async"
+            class="mt-10 hidden aspect-[4/5] w-full max-w-sm rounded-sm object-cover lg:block"
+          />
+        </div>
+        <div class="lg:col-span-8">
+          <div class="grid gap-x-14 gap-y-12 md:grid-cols-2">
+            {menu.map((g) => (
+              <div class="rij">
+                <h3 class="border-b border-inkt pb-3 text-2xl">{g.groep}</h3>
+                <ul>
+                  {g.items.map((i) => (
+                    <li class="border-b border-lijn py-4">
+                      <div class="flex items-baseline gap-3">
+                        <span class="font-medium">{i.naam}</span>
+                        <span class="stip" aria-hidden="true"></span>
+                        <span class="whitespace-nowrap font-kop text-xl tabular-nums">€ {i.prijs}</span>
+                      </div>
+                      {(i.duur || i.extra) && <p class="mt-0.5 text-sm text-mauve">{i.duur ?? i.extra}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div class="rij mt-14 grid gap-6 bg-room p-6 sm:grid-cols-[1fr_auto] sm:items-center sm:p-8">
+            <div>
+              <h3 class="text-2xl">Ook bij Nella</h3>
+              <ul class="mt-3 grid gap-1 text-mauve">
+                {ook.map((o) => <li class="flex items-baseline gap-3"><span class="h-1.5 w-1.5 shrink-0 translate-y-[-0.15em] rounded-full bg-bes" aria-hidden="true"></span>{o}</li>)}
+              </ul>
+            </div>
+            <a href={site.whatsapp} class="knop knop-lijn text-bes">Vraag het via WhatsApp</a>
+          </div>
+          <p class="mt-10"><a href={site.boeken} class="knop knop-bes">Kies een behandeling en een tijd</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews: het sterkste citaat groot, de rest versprongen in twee kolommen. -->
+    <section id="reviews" class="op-donker scroll-mt-4 bg-pruim py-20 text-room lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-12 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-4">
+            <p class="label text-roze">Treatwell</p>
+            <p class="mt-3 font-kop leading-[0.85] tracking-[-0.04em] text-roze text-[clamp(6.5rem,4.5rem+10vw,12rem)]">5,0</p>
+            <p class="mt-5 max-w-xs text-room/85">Gemiddeld uit 113 reviews. Op Google staat Bella by Nella ook op een 5,0.</p>
+          </div>
+          <figure class="lg:col-span-8">
+            <blockquote class="font-kop text-4xl">“Ze overtreft zichzelf keer op keer op keer met prachtige nagels.”</blockquote>
+            <figcaption class="mt-5 text-sm text-room/75">Chearitee, via Google</figcaption>
+          </figure>
+        </div>
+
+        <div class="mt-20 grid gap-x-14 md:grid-cols-2">
+          {reviews.map((r, i) => (
+            <figure class:list={['border-t border-room/25 py-8', i % 2 === 1 && 'md:translate-y-16']}>
+              <blockquote class="font-kop text-2xl leading-snug">“{r.tekst}”</blockquote>
+              <figcaption class="mt-4 text-sm text-room/75">{r.naam}, via {r.waar}</figcaption>
+            </figure>
+          ))}
+        </div>
+        <p class="mt-14 md:mt-24"><a href={site.treatwell} class="knop knop-lijn">Alle reviews op Treatwell</a></p>
+      </div>
+    </section>
+
+    <!-- Over Nella: tekst links, foto rechts, wat klanten noemen als korte regels. -->
+    <section id="nella" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-6">
+          <span class="lint text-bes" aria-hidden="true"></span>
+          <h2 class="mt-6 text-4xl">Nella neemt de tijd voor je</h2>
+          <div class="mt-6 grid max-w-xl gap-4 text-mauve">
+            <p>Achter Bella by Nella zit Richenella, die iedereen Nella noemt. Ze heeft ruim zes jaar ervaring in beauty en is gespecialiseerd in make-up, wenkbrauwen, nagels en pedicure.</p>
+            <p>De studio is bij haar thuis. Ze werkt met producten die je huid en nagels gezond houden, en selfcare staat voorop.</p>
+          </div>
+          <h3 class="mt-10 text-2xl">Wat klanten noemen</h3>
+          <ul class="mt-4 grid max-w-xl border-t border-inkt sm:grid-cols-2">
+            {['De gezellige sfeer', 'Persoonlijke aandacht', 'Goed advies', 'Mooie nagels'].map((t) => (
+              <li class="border-b border-lijn py-3 font-medium">{t}</li>
+            ))}
+          </ul>
+        </div>
+        <img
+          src={foto.gezicht(1000)}
+          alt="Met een kwastje wordt een witte crème op een gezicht aangebracht"
+          width="1000" height="1100" loading="lazy" decoding="async"
+          class="aspect-[4/3] w-full rounded-sm object-cover lg:col-span-5 lg:col-start-8 lg:aspect-[10/11]"
+        />
+      </div>
+    </section>
+
+    <!-- Langskomen: tijden en route links, een vraag stellen rechts. -->
+    <section id="langskomen" class="scroll-mt-4 border-t border-lijn bg-room py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <span class="lint text-bes" aria-hidden="true"></span>
+          <h2 class="mt-6 text-4xl">Langskomen</h2>
+          <p class="mt-6 max-w-md text-mauve">Je komt altijd op afspraak. Boek online of stuur Nella een appje.</p>
+
+          <h3 class="mt-10 text-2xl">Openingstijden</h3>
+          <dl class="mt-4 border-t border-inkt">
+            {tijden.map((t) => (
+              <div class="flex justify-between gap-6 border-b border-lijn py-2.5">
+                <dt>{t.dag}</dt>
+                <dd class:list={['tabular-nums', t.tijd === 'Gesloten' ? 'text-mauve' : 'font-medium']}>{t.tijd}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="mt-3 text-sm text-mauve">Vrijdag en zaterdag kun je tot 21:00 terecht.</p>
+
+          <dl class="mt-10 grid gap-6">
+            <div>
+              <dt class="label text-mauve">Adres</dt>
+              <dd class="mt-1 text-lg">{site.straat}, {site.postcode} {site.plaats}<br /><a href={site.route} class="text-sm font-semibold underline underline-offset-4">Route in Google Maps</a></dd>
+            </div>
+            <div>
+              <dt class="label text-mauve">Bereikbaar</dt>
+              <dd class="mt-1">Bus 4, halte Staart. Gratis parkeren in de buurt.</dd>
+            </div>
+            <div>
+              <dt class="label text-mauve">Telefoon en WhatsApp</dt>
+              <dd class="mt-1 text-xl font-semibold"><a href={site.mobielHref} class="underline-offset-4 hover:underline">{site.mobiel}</a></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <img
+            src={foto.voeten(1000)}
+            alt="Voeten met rood gelakte teennagels"
+            width="1000" height="600" loading="lazy" decoding="async"
+            class="aspect-[5/3] w-full rounded-sm object-cover"
+          />
+          <form class="mt-10 grid content-start gap-5" onsubmit="return false" aria-describedby="formulier-noot">
+            <h3 class="text-2xl">Een vraag voor Nella?</h3>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label class="grid gap-2 text-sm font-semibold">Naam
+                <input type="text" name="naam" autocomplete="name" class={veld} />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold">Telefoon
+                <input type="tel" name="telefoon" autocomplete="tel" class={veld} />
+              </label>
+            </div>
+            <label class="grid gap-2 text-sm font-semibold">Je vraag
+              <textarea name="bericht" rows="4" class={`${veld} py-2`}></textarea>
+            </label>
+            {site.voorstel ? (
+              <p id="formulier-noot" class="border-l-4 border-bes bg-poeder px-4 py-3 text-sm text-mauve">Dit is een ontwerpvoorstel, het formulier verstuurt nog niets. Bel of app <a href={site.mobielHref} class="whitespace-nowrap font-semibold text-inkt underline">{site.mobiel}</a> of boek direct <a href={site.boeken} class="font-semibold text-inkt underline">online</a>.</p>
+            ) : (
+              <p id="formulier-noot" class="text-sm text-mauve">Je krijgt zo snel mogelijk antwoord.</p>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>

@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts. */
+@font-face {
+  font-family: "Young Serif";
+  src: url("@fontsource/young-serif/files/young-serif-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Outfit Variable";
+  src: url("@fontsource-variable/outfit/files/outfit-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Poederroze papier, pruim voor de donkere vlakken, besrood als enige accent.
+     Contrast gemeten: bes op poeder 5,8:1, mauve op poeder 5,7:1, roze op pruim 8,4:1. */
+  --color-poeder: #f3e7e1;
+  --color-room: #fbf6f2;
+  --color-inkt: #2a1720;
+  --color-pruim: #3b2130;
+  --color-mauve: #6e5260;
+  --color-bes: #9e2f4c;
+  --color-roze: #e9b8c2;
+  --color-lijn: #2a172026;
+
+  --font-kop: "Young Serif", "Georgia", "Times New Roman", serif;
+  --font-tekst: "Outfit Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem);
+  --text-4xl: clamp(2.2rem, 1.5rem + 3.2vw, 4rem);
+  --text-5xl: clamp(2.6rem, 1.6rem + 4.8vw, 5.75rem);
+
+  --radius-sm: 3px;
+  --radius-full: 999px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-poeder);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    font-weight: 380;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-bes); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-roze); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.5rem;
+    font-weight: 600; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-full);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-bes { background: var(--color-bes); color: var(--color-room); }
+  .knop-bes:hover { background: var(--color-inkt); }
+  .knop-room { background: var(--color-room); color: var(--color-inkt); }
+  .knop-room:hover { background: var(--color-roze); }
+  .knop-lijn { border: 1.5px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* Het teken van de studio: een dun lint dat eindigt in een stip, als een penseel met een druppel gellak. */
+  .lint { display: flex; align-items: center; width: 4.5rem; }
+  .lint::before { content: ""; flex: 1; height: 1.5px; background: currentColor; }
+  .lint::after { content: ""; width: 0.55rem; height: 0.55rem; border-radius: 999px; background: currentColor; }
+
+  /* Stippellijn tussen behandeling en prijs, zoals op een prijskaart in een salon. */
+  .stip { flex: 1; min-width: 1.5rem; border-bottom: 1.5px dotted color-mix(in srgb, var(--color-inkt) 35%, transparent); transform: translateY(-0.35em); }
+
+  /* Eén beweging op de site: de menuregels komen zacht in beeld, alleen als JS aan staat. */
+  .js .rij { opacity: 0; transform: translateY(0.6rem); transition: opacity .6s ease, transform .6s ease; }
+  .js .rij.in { opacity: 1; transform: none; }
+}
