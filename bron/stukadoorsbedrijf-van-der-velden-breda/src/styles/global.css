@@ -1,0 +1,119 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts. */
+@font-face {
+  font-family: "Alegreya Variable";
+  src: url("@fontsource-variable/alegreya/files/alegreya-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 400 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Alegreya Variable";
+  src: url("@fontsource-variable/alegreya/files/alegreya-latin-wght-italic.woff2") format("woff2-variations");
+  font-weight: 400 900; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Source Sans 3 Variable";
+  src: url("@fontsource-variable/source-sans-3/files/source-sans-3-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 200 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Gebroken gipswit als papier, diep flessengroen voor de donkere vlakken (oude Bredase herenhuizen),
+     baksteenrood als enige accent. Op groen wordt het accent de lichte tint, anders haalt het geen 4,5:1. */
+  --color-papier: #f3eee5;
+  --color-gips: #fbf8f3;
+  --color-inkt: #1a1c1a;
+  --color-groen: #1c2b25;
+  --color-mos: #26392f;
+  --color-grijs: #5a5b55;     /* 5,9:1 op papier */
+  --color-lijn: #1a1c1a26;
+  --color-steen: #a8442a;     /* 5,2:1 op papier, papier erop 5,2:1 */
+  --color-roze: #e0a58e;      /* 7,0:1 op groen */
+
+  --font-kop: "Alegreya Variable", "Iowan Old Style", Georgia, serif;
+  --font-tekst: "Source Sans 3 Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  --text-4xl: clamp(2.35rem, 1.6rem + 3.4vw, 4.5rem);
+  --text-5xl: clamp(2.6rem, 1.6rem + 4.6vw, 6rem);
+
+  --radius-sm: 2px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-papier);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Alegreya is een boekletter: zwaar (800) voor gezag, maar met minder krappe spatiëring dan een schreefloze,
+     anders lopen de schreven in elkaar. Bewuste afwijking van de -0.03em-regel, past bij restauratiewerk. */
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-steen); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-roze); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 78rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label {
+    font-family: var(--font-tekst);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.4rem;
+    font-weight: 700; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-steen { background: var(--color-steen); color: var(--color-gips); }
+  .knop-steen:hover { background: var(--color-inkt); }
+  .knop-gips { background: var(--color-gips); color: var(--color-groen); }
+  .knop-gips:hover { background: var(--color-roze); }
+  .knop-lijn { border: 2px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* De sierlijst: drie lijnen van verschillende dikte, zoals een gipslijst in doorsnede op de muur.
+     Staat boven elke sectiekop en is het enige ornament op de site. */
+  .lijst { display: block; width: 4.5rem; height: 11px;
+    background:
+      linear-gradient(currentColor, currentColor) 0 0 / 100% 4px no-repeat,
+      linear-gradient(currentColor, currentColor) 0 7px / 72% 1.5px no-repeat,
+      linear-gradient(currentColor, currentColor) 0 10px / 40% 1px no-repeat; }
+
+  /* Eén beweging op de site: regels schuiven zacht in beeld, alleen als JS aan staat. */
+  .js .rij { opacity: 0; transform: translateY(0.75rem); transition: opacity .7s ease, transform .7s ease; }
+  .js .rij.in { opacity: 1; transform: none; }
+}

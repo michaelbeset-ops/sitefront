@@ -1,0 +1,220 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, groepen, reviews, openingstijden, foto, srcset, url } from '../data/site';
+
+const heroSet = srcset(foto.hero, [640, 960, 1280, 1600]);
+const [romy, bo, ...overige] = reviews;
+---
+<Base
+  title="Stukadoor in Breda | Stukadoorsbedrijf P. van der Velden"
+  description="Pascal van der Velden uit Breda doet pleisterwerk, schuurwerk, sierlijsten, restauratie, gevelstucwerk en schilderwerk. Gemiddeld een 9,8 op Google. Bel 06-52446043."
+  heroFoto={foto.hero(1280)}
+  heroSrcset={heroSet}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: schermvullend plafond met ornamenten, tekst links onderin, de review die alles zegt rechts. -->
+    <section class="op-donker relative isolate flex min-h-[100svh] items-end overflow-hidden bg-groen text-gips">
+      <img
+        src={foto.hero(1280)}
+        srcset={heroSet}
+        sizes="100vw"
+        alt=""
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgb(28_43_37/0.94)_0%,rgb(28_43_37/0.78)_42%,rgb(28_43_37/0.35)_100%)]"></div>
+      <div class="wrap grid gap-12 pb-14 pt-28 md:pb-20 md:pt-36 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <span class="lijst text-roze" aria-hidden="true"></span>
+          <p class="label mt-5 text-roze">Pascal van der Velden, stukadoor in {site.plaats} sinds 2004</p>
+          <h1 class="mt-4 text-5xl">Strakke muren voor nieuwe huizen. Geduld voor oude.</h1>
+          <p class="mt-6 max-w-xl text-lg text-gips/90">Pleisterwerk, schuurwerk en spackspuitwerk. Sierlijsten, ornamenten en restauratie. Buiten de gevel, en daarna ook het schilderwerk.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.mobielHref} class="knop knop-gips">Bel {site.mobiel}</a>
+            <a href="#werk" class="knop knop-lijn">Wat Pascal doet</a>
+          </div>
+        </div>
+        <figure class="border-l-2 border-roze pl-5 lg:col-span-3 lg:col-start-10">
+          <blockquote class="font-kop text-xl italic leading-snug sm:text-2xl">“{bo.tekst}”</blockquote>
+          <figcaption class="mt-3 text-sm text-gips/85">{bo.naam} op Google, {bo.datum}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Redder in nood: het verhaal dat klanten zelf vertellen, met de bouwval als beeld. -->
+    <section class="py-20 lg:py-32" aria-labelledby="nood-kop">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-6 lg:order-2 lg:col-start-7">
+          <span class="lijst text-steen" aria-hidden="true"></span>
+          <h2 id="nood-kop" class="mt-6 text-4xl">Als de verbouwing anders liep dan gepland</h2>
+          <figure class="mt-10">
+            <blockquote class="font-kop text-[clamp(1.6rem,1.2rem+1.6vw,2.4rem)] font-semibold italic leading-[1.2] text-steen">“{romy.tekst}”</blockquote>
+            <figcaption class="mt-4 text-grijs">{romy.naam} op Google, {romy.datum}</figcaption>
+          </figure>
+          <p class="mt-10 max-w-lg text-grijs">Een plafond dat niet meer recht is, een muur vol scheuren, of stucwerk dat iemand anders half liet liggen. Pascal kijkt wat er nodig is en maakt het af.</p>
+        </div>
+        <div class="lg:col-span-5 lg:order-1">
+          <img
+            src={foto.bouwval(900)}
+            srcset={srcset(foto.bouwval, [480, 720, 900, 1200])}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            alt="Een kamer midden in een verbouwing, met kale muren en een raam"
+            class="aspect-[4/5] w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+          <p class="mt-3 text-xs text-grijs">Sfeerbeeld</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Wat Pascal doet: drie groepen als een werkbeschrijving, met de oude panden in het midden en een beeld ernaast. -->
+    <section id="werk" class="scroll-mt-4 border-t border-lijn bg-gips py-20 lg:py-32" aria-labelledby="werk-kop">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <span class="lijst text-steen" aria-hidden="true"></span>
+            <h2 id="werk-kop" class="mt-6 text-4xl">Wat Pascal voor u doet</h2>
+          </div>
+          <p class="max-w-md text-grijs lg:col-span-4 lg:col-start-9">Binnen en buiten, van een nieuwe zolder tot een oud herenhuis. U belt met de man die het werk ook zelf doet.</p>
+        </div>
+
+        <div class="mt-16 grid gap-x-12 gap-y-16 lg:grid-cols-12">
+          {groepen.map((g, i) => (
+            <div class:list={['rij', i === 1 ? 'lg:col-span-5 lg:row-span-2' : 'lg:col-span-7']}>
+              <h3 class="border-b-2 border-inkt pb-3 text-2xl">{g.titel}</h3>
+              <dl class="divide-y divide-lijn">
+                {g.diensten.map((d) => (
+                  <div class="grid gap-1 py-5 sm:grid-cols-[13rem_1fr] sm:gap-6">
+                    <dt class="font-semibold">{d.naam}</dt>
+                    <dd class="text-grijs">{d.uitleg}</dd>
+                  </div>
+                ))}
+              </dl>
+              {i === 1 && (
+                <figure class="mt-8">
+                  <img
+                    src={foto.ornament(900)}
+                    srcset={srcset(foto.ornament, [480, 720, 900])}
+                    sizes="(min-width: 1024px) 34vw, 100vw"
+                    alt="Rond plafond met ornamenten in een historisch gebouw"
+                    class="aspect-square w-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <figcaption class="mt-3 text-xs text-grijs">Sfeerbeeld</figcaption>
+                </figure>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews: het cijfer klein en eerlijk, de woorden van klanten groot. -->
+    <section id="reviews" class="op-donker scroll-mt-4 bg-groen py-20 text-gips lg:py-32" aria-labelledby="reviews-kop">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <span class="lijst text-roze" aria-hidden="true"></span>
+          <h2 id="reviews-kop" class="mt-6 text-4xl">Wat klanten over Pascal schrijven</h2>
+          <p class="mt-8 flex items-baseline gap-3">
+            <span class="font-kop text-[clamp(3.5rem,2.8rem+2.5vw,5rem)] font-extrabold leading-none text-roze">{site.score}</span>
+            <span class="text-gips/85">gemiddeld op Google,<br />uit {site.aantalReviews} reviews</span>
+          </p>
+          <a href={site.reviewsBron} class="mt-6 inline-block text-sm font-semibold underline underline-offset-4">Meer reviews op Stukadoorgids</a>
+        </div>
+        <ul class="grid gap-0 lg:col-span-7 lg:col-start-6">
+          {overige.map((r) => (
+            <li class="rij border-t border-gips/20 py-8 first:border-t-0 first:pt-0 lg:first:pt-2">
+              <blockquote class="font-kop text-xl italic leading-snug sm:text-2xl">“{r.tekst}”</blockquote>
+              <p class="mt-3 text-sm text-gips/80">{r.naam}, {r.datum}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Over: wie Pascal is, met de feiten die vaststaan. -->
+    <section id="over" class="scroll-mt-4 py-20 lg:py-32" aria-labelledby="over-kop">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-start">
+        <div class="lg:col-span-6">
+          <span class="lijst text-steen" aria-hidden="true"></span>
+          <h2 id="over-kop" class="mt-6 text-4xl">Eén vakman, sinds 2004</h2>
+          <div class="mt-8 grid max-w-xl gap-5 text-lg">
+            <p>Pascal van der Velden begon zijn stukadoorsbedrijf op {site.opgericht} in Breda. Hij heeft jarenlange ervaring in het stukadoors- en het schildersvak.</p>
+            <p class="text-grijs">Het is een eenmanszaak. Wie belt, krijgt Pascal zelf aan de lijn en ziet hem ook op de steiger. Kwaliteit en een goede prijs voor wat u krijgt, daar draait het bij hem om.</p>
+          </div>
+          <dl class="mt-12 grid max-w-xl grid-cols-2 gap-x-8 gap-y-8 border-t border-inkt pt-8">
+            <div><dt class="text-sm text-grijs">Opgericht</dt><dd class="mt-1 font-kop text-3xl font-extrabold">2004</dd></div>
+            <div><dt class="text-sm text-grijs">Google</dt><dd class="mt-1 font-kop text-3xl font-extrabold">{site.score} <span class="font-tekst text-base font-normal text-grijs">uit {site.aantalReviews}</span></dd></div>
+          </dl>
+        </div>
+        <div class="lg:col-span-5 lg:col-start-8">
+          <img
+            src={foto.strak(900)}
+            srcset={srcset(foto.strak, [480, 720, 900, 1200])}
+            sizes="(min-width: 1024px) 38vw, 100vw"
+            alt="Een strak afgewerkte witte wand met een witte plank"
+            class="aspect-[3/4] w-full object-cover lg:mt-24"
+            loading="lazy"
+            decoding="async"
+          />
+          <p class="mt-3 text-xs text-grijs">Sfeerbeeld</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact: gegevens en tijden links, formulier rechts. -->
+    <section id="contact" class="scroll-mt-4 border-t border-lijn bg-gips py-20 lg:py-32" aria-labelledby="contact-kop">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <span class="lijst text-steen" aria-hidden="true"></span>
+          <h2 id="contact-kop" class="mt-6 text-4xl">Vertel Pascal wat er moet gebeuren</h2>
+          <p class="mt-6 max-w-md text-grijs">Bel of mail, en vertel wat er aan de muur, het plafond of de gevel moet gebeuren.</p>
+          <div class="mt-10 grid gap-8">
+            <div>
+              <p class="text-sm text-grijs">Bellen</p>
+              <a href={site.mobielHref} class="mt-1 block font-kop text-3xl font-extrabold text-steen underline-offset-4 hover:underline">{site.mobiel}</a>
+            </div>
+            <div>
+              <p class="text-sm text-grijs">Mailen</p>
+              <a href={`mailto:${site.mail}`} class="mt-1 block break-all font-semibold underline underline-offset-4">{site.mail}</a>
+            </div>
+            <div>
+              <p class="text-sm text-grijs">Adres</p>
+              <p class="mt-1">{site.straat}<br />{site.postcode} {site.plaats}</p>
+              <a href={site.route} class="mt-2 inline-block text-sm font-semibold underline underline-offset-4">Route in Google Maps</a>
+            </div>
+            <div>
+              <p class="text-sm text-grijs">Bereikbaar</p>
+              <dl class="mt-1">
+                {openingstijden.map((o) => (
+                  <div class="flex flex-wrap justify-between gap-x-6 border-b border-lijn py-2"><dt>{o.dag}</dt><dd class="font-semibold">{o.tijd}</dd></div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        <form class="grid content-start gap-5 lg:col-span-6 lg:col-start-7" onsubmit="return false" aria-describedby="formulier-noot">
+          <div class="grid gap-5 sm:grid-cols-2">
+            <label class="grid gap-2 text-sm font-semibold">Naam<input name="naam" autocomplete="name" class="min-h-12 border border-inkt/40 bg-papier px-3 text-base font-normal" /></label>
+            <label class="grid gap-2 text-sm font-semibold">Telefoon<input name="telefoon" type="tel" autocomplete="tel" class="min-h-12 border border-inkt/40 bg-papier px-3 text-base font-normal" /></label>
+          </div>
+          <label class="grid gap-2 text-sm font-semibold">E-mail<input name="email" type="email" autocomplete="email" class="min-h-12 border border-inkt/40 bg-papier px-3 text-base font-normal" /></label>
+          <label class="grid gap-2 text-sm font-semibold">Wat moet er gebeuren?<textarea name="bericht" rows="5" class="border border-inkt/40 bg-papier px-3 py-2 text-base font-normal" placeholder="Bijvoorbeeld een plafond in de woonkamer, ongeveer 30 m²"></textarea></label>
+          {site.voorstel ? (
+            <p id="formulier-noot" class="border-l-4 border-steen bg-papier px-4 py-3 text-sm text-grijs">Dit is een ontwerpvoorstel, het formulier verstuurt nog niets. Bel <a href={site.mobielHref} class="whitespace-nowrap font-semibold text-inkt underline">{site.mobiel}</a> of mail naar <a href={`mailto:${site.mail}`} class="break-all font-semibold text-inkt underline">{site.mail}</a>.</p>
+          ) : (
+            <p id="formulier-noot" class="text-sm text-grijs">U krijgt zo snel mogelijk antwoord.</p>
+          )}
+        </form>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
