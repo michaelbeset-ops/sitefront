@@ -1,0 +1,35 @@
+---
+import { site, url } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+// Op de homepage ankers, op andere pagina's terug naar de homepage met anker.
+const a = (id: string) => (thuis ? `#${id}` : `${url()}#${id}`);
+const menu = [
+  ['krullen', 'Krullen'],
+  ['behandelingen', 'Behandelingen'],
+  ['reviews', 'Reviews'],
+  ['aischa', 'Over Aïscha'],
+  ['contact', 'Contact'],
+];
+---
+<header class:list={['z-30 w-full', thuis ? 'absolute text-kalk' : 'relative border-b border-lijn text-diep']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex flex-col leading-none">
+      <span class="font-kop text-lg font-bold tracking-[-0.04em] sm:text-xl">Hairstyle Creations</span>
+      <span class="mt-1.5 text-xs font-medium uppercase tracking-[0.18em] opacity-85">{site.plaats}</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden items-center gap-7 text-sm font-medium lg:flex">
+      {menu.map(([id, naam]) => <a href={a(id)} class="opacity-90 hover:opacity-100 hover:underline hover:decoration-koper hover:decoration-2 hover:underline-offset-8">{naam}</a>)}
+      <a href={site.boeken} class="knop-vol min-h-11 px-5">Afspraak maken</a>
+    </nav>
+    <details class="relative lg:hidden">
+      <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+        <svg width="22" height="12" viewBox="0 0 22 12" aria-hidden="true"><path d="M1 1h20M8 11h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Menu
+      </summary>
+      <div class="absolute right-0 top-full mt-2 w-60 border border-lijn bg-wit p-2 text-diep">
+        {menu.map(([id, naam]) => <a href={a(id)} class="block px-3 py-3 text-base hover:bg-mist">{naam}</a>)}
+      </div>
+    </details>
+  </div>
+</header>
