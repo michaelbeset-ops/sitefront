@@ -1,0 +1,239 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Boog from '../components/Boog.astro';
+import { site, genoemd, traject, prijzen, merken, foto } from '../data/site';
+
+const heroSrcset = [640, 1024, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+const veld = 'min-h-12 w-full rounded-sm border border-inkt/40 bg-kalk px-3 text-base font-normal disabled:cursor-not-allowed';
+---
+<Base
+  title="PMU BeautyCare Barendrecht | Powder brows, permanente make-up en wimpers"
+  description="Powder brows, eyeliner, lips PMU en wimpers bij Gwendolyn van Looijen, GGD-erkend. Salon aan huis in Barendrecht. 5,0 uit 186 reviews op Treatwell. Gratis adviesgesprek."
+  heroFoto={foto.hero(1600)}
+  heroSrcset={heroSrcset}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: schermvullende foto, de tekst rechtsonder zodat het beeld links ademt. De kop komt uit wat klanten in hun reviews schrijven. -->
+    <section class="op-donker relative isolate flex min-h-[100svh] items-end overflow-hidden bg-cacao text-ivoor">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt="Een vrouw krijgt haar wenkbrauwen behandeld door een visagiste"
+        class="absolute inset-0 -z-20 h-full w-full object-cover object-[35%_center]"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(28_23_20/0.94)_0%,rgb(28_23_20/0.7)_48%,rgb(28_23_20/0.25)_100%)] lg:bg-[linear-gradient(to_left,rgb(28_23_20/0.94)_0%,rgb(28_23_20/0.78)_42%,rgb(28_23_20/0.1)_75%)]"></div>
+      <div class="wrap grid pb-14 pt-36 md:pb-20 lg:grid-cols-12">
+        <div class="lg:col-span-7 lg:col-start-6">
+          <p class="label text-zand">Permanente make-up in {site.plaats}</p>
+          <h1 class="mt-5 text-5xl lg:text-[clamp(3.5rem,1rem+4.2vw,5.4rem)]">Niet meer elke ochtend je wenkbrauwen tekenen</h1>
+          <p class="mt-6 max-w-lg text-lg text-ivoor/90">Powder brows, eyeliner, lips en wimpers bij {site.eigenaar}, GGD-erkend. In haar rustige salon aan huis, met eerlijk advies vooraf.</p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={site.boeken} class="knop knop-ivoor">Plan een gratis adviesgesprek</a>
+            <a href={site.whatsapp} class="knop knop-lijn">App {site.voornaam}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blikvanger: het aantal reviews groot, met wat klanten er telkens in noemen. -->
+    <section id="reviews" class="op-donker scroll-mt-4 bg-cacao py-20 text-ivoor lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="label text-zand">Reviews op Treatwell</p>
+          <p class="mt-4 font-kop font-extrabold leading-[0.8] tracking-[-0.05em] text-[clamp(7rem,4rem+14vw,15rem)]">186</p>
+          <p class="mt-6 max-w-sm text-lg text-ivoor/90">reviews van echte afspraken, gemiddeld een <span class="font-kop text-2xl font-extrabold italic text-zand">5,0</span>.</p>
+          <a href={site.treatwell} class="knop knop-lijn mt-10">Lees ze op Treatwell</a>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h2 class="text-3xl">Wat klanten erin noemen</h2>
+          <ol class="mt-8 border-t border-ivoor/25">
+            {genoemd.map((g, i) => (
+              <li class:list={['grid grid-cols-[2.5rem_1fr] items-baseline gap-4 border-b border-ivoor/25 py-4', i === 0 && 'py-6']}>
+                <span class="font-kop text-sm italic text-zand tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+                <span class:list={[i === 0 ? 'font-kop text-2xl font-extrabold tracking-[-0.02em] text-zand md:text-3xl' : 'text-lg']}>{g}</span>
+              </li>
+            ))}
+          </ol>
+          <p class="mt-5 text-sm text-mist">Samengevat uit de nieuwste reviews.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het traject van powder brows: vier stappen op een lijn, met de echte prijzen. Precies de uitleg die online nu nergens staat. -->
+    <section id="traject" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-6">
+            <Boog />
+            <h2 class="mt-6 text-4xl">Powder brows, van gesprek tot touch up</h2>
+          </div>
+          <p class="max-w-md text-taupe lg:col-span-5 lg:col-start-8">Zachte, gepoederde wenkbrauwen die blijven zitten. Zo ziet het traject eruit, met de prijzen zoals ze in de online agenda staan.</p>
+        </div>
+
+        <div class="tijdlijn relative mt-16">
+          <div class="tijdlijn-lijn absolute left-0 right-0 top-[0.55rem] hidden h-px bg-inkt lg:block" aria-hidden="true"></div>
+          <ol class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+            {traject.map((t, i) => (
+              <li class="relative border-l border-inkt pl-6 lg:border-l-0 lg:pl-0">
+                <span class="absolute -left-[0.4rem] top-1 h-3 w-3 rounded-full bg-henna lg:static lg:block" aria-hidden="true"></span>
+                <p class="label text-henna lg:mt-7">{i + 1}. {t.wanneer}</p>
+                <h3 class="mt-3 text-2xl">{t.stap}</h3>
+                <p class="mt-3 text-taupe">{t.tekst}</p>
+                <dl class="mt-5 grid gap-1 border-t border-lijn pt-4">
+                  {t.duur && <div class="flex justify-between gap-4"><dt class="text-taupe">Duur</dt><dd>{t.duur}</dd></div>}
+                  {t.prijs && <div class="flex justify-between gap-4"><dt class="text-taupe">Prijs</dt><dd class="font-kop text-xl font-extrabold">{t.prijs}</dd></div>}
+                  {t.extra?.map((e) => <div class="flex justify-between gap-4"><dt class="text-taupe">{e.naam}</dt><dd class="font-kop text-xl font-extrabold">{e.prijs}</dd></div>)}
+                </dl>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="mt-20 grid gap-10 lg:grid-cols-12 lg:items-center">
+          <img
+            src={foto.brauw(1200)}
+            alt="Handen brengen een wenkbrauw in model met een borsteltje"
+            width="1200" height="800" loading="lazy" decoding="async"
+            class="aspect-[3/2] w-full rounded-sm object-cover lg:col-span-7"
+          />
+          <div class="lg:col-span-5 lg:col-start-8 lg:pl-6">
+            <p class="font-kop text-3xl font-extrabold italic leading-tight">Twijfel je nog? Het adviesgesprek is gratis.</p>
+            <p class="mt-4 text-taupe">Een half uur om kennis te maken en je vragen te stellen, voordat je iets beslist.</p>
+            <a href={site.boeken} class="knop knop-henna mt-8">Plan het adviesgesprek</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prijzen: een rustige tabel in twee kolommen, de foto van het wimperwerk ernaast. -->
+    <section id="prijzen" class="scroll-mt-4 border-t border-lijn bg-kalk py-20 lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <Boog />
+            <h2 class="mt-6 text-4xl">Prijzen per behandeling</h2>
+          </div>
+          <p class="max-w-md text-taupe lg:col-span-4 lg:col-start-9">Naast powder brows. Alle prijzen zoals op Treatwell. In de online agenda zie je welke tijden vrij zijn.</p>
+        </div>
+      </div>
+      <div class="wrap mt-14 grid gap-14 lg:grid-cols-12">
+        <div class="hidden lg:col-span-4 lg:block">
+          <img
+            src={foto.wimpers(800)}
+            alt="Een pincet ligt op een bakje met losse wimpers"
+            width="800" height="1000" loading="lazy" decoding="async"
+            class="aspect-[4/5] w-full rounded-sm object-cover"
+          />
+        </div>
+        <div class="min-w-0 lg:col-span-8">
+          <div class="grid gap-x-12 gap-y-14 md:grid-cols-2">
+            {prijzen.map((g) => (
+              <div class="min-w-0">
+                <h3 class="border-b-2 border-inkt pb-3 text-2xl">{g.groep}</h3>
+                <table class="w-full">
+                  <caption class="sr-only">{g.groep}, behandeling en prijs</caption>
+                  <tbody>
+                    {g.items.map((i) => (
+                      <tr class="border-b border-lijn align-baseline">
+                        <th scope="row" class="py-4 pr-4 text-left font-medium hyphens-auto [overflow-wrap:anywhere]">
+                          {i.naam}
+                          {i.extra && <span class="mt-0.5 block text-sm font-normal text-taupe">{i.extra}</span>}
+                        </th>
+                        <td class="whitespace-nowrap py-4 text-right font-kop text-lg font-bold italic">{i.prijs}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+          <div class="mt-14 grid gap-6 border-l-2 border-henna pl-6 sm:grid-cols-[1fr_auto] sm:items-center">
+            <div>
+              <h3 class="text-xl">Werkt met</h3>
+              <p class="mt-2 text-taupe">{merken.join(', ').replace(/, ([^,]*)$/, ' en $1')}.</p>
+            </div>
+            <a href={site.boeken} class="knop knop-henna">Kies een behandeling</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over Gwendolyn: foto links, tekst rechts, de feiten als een korte rij. -->
+    <section id="gwendolyn" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12 lg:items-center">
+        <img
+          src={foto.oog(1000)}
+          alt="Close-up van een oog met lange wimpers"
+          width="1000" height="1100" loading="lazy" decoding="async"
+          class="aspect-[4/3] w-full rounded-sm object-cover lg:col-span-5 lg:aspect-[10/11]"
+        />
+        <div class="lg:col-span-6 lg:col-start-7">
+          <Boog />
+          <h2 class="mt-6 text-4xl">Alles door {site.voornaam} zelf</h2>
+          <div class="mt-6 grid max-w-xl gap-4 text-taupe">
+            <p>{site.eigenaar} is PMU- en wimperartist en de enige behandelaar in de salon. Ze komt uit de visagie en de wimperstyling en heeft haar PMU-diploma's behaald.</p>
+            <p>De salon is bij haar aan huis, aan het Markermeer in {site.plaats}. Een warme, rustige plek, met persoonlijke aandacht en eerlijk advies. Ze werkt voor een natuurlijk en langdurig resultaat.</p>
+          </div>
+          <dl class="mt-10 grid max-w-xl border-t-2 border-inkt sm:grid-cols-3">
+            <div class="border-b border-lijn py-4 sm:border-b-0 sm:pr-4"><dt class="label text-henna">Erkend</dt><dd class="mt-1 font-medium">GGD-erkend</dd></div>
+            <div class="border-b border-lijn py-4 sm:border-b-0 sm:px-4"><dt class="label text-henna">Achtergrond</dt><dd class="mt-1 font-medium">Visagie en wimpers</dd></div>
+            <div class="py-4 sm:pl-4"><dt class="label text-henna">Salon</dt><dd class="mt-1 font-medium">Aan huis</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- Langskomen en contact: adres en route links, het (uitgeschakelde) formulier rechts. -->
+    <section id="contact" class="scroll-mt-4 border-t border-lijn bg-kalk py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <Boog />
+          <h2 class="mt-6 text-4xl">Langskomen in {site.plaats}</h2>
+          <address class="mt-8 not-italic">
+            <p class="font-kop text-2xl font-extrabold tracking-[-0.02em]">{site.straat}</p>
+            <p class="text-lg">{site.postcode} {site.plaats}</p>
+          </address>
+          <ul class="mt-8 grid gap-3 border-t border-lijn pt-6 text-taupe">
+            <li><strong class="font-semibold text-inkt">Op afspraak.</strong> Kies een vrije tijd in de online agenda, of app of bel {site.voornaam}.</li>
+            <li><strong class="font-semibold text-inkt">Parkeren</strong> is gratis, voor de deur.</li>
+            <li><strong class="font-semibold text-inkt">Met de bus</strong> stap je uit bij Barendrecht Centrum, op ongeveer 5 minuten lopen.</li>
+          </ul>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href={site.route} class="knop knop-lijn">Route plannen</a>
+            <a href={site.boeken} class="knop knop-henna">Online agenda</a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h2 class="text-3xl">Een vraag stellen</h2>
+          <p class="mt-4 text-taupe">Bel of app <a href={site.mobielHref} class="font-semibold text-inkt underline underline-offset-2">{site.mobiel}</a>, of mail naar <a href={`mailto:${site.email}`} class="font-semibold text-inkt underline underline-offset-2 [overflow-wrap:anywhere]">{site.email}</a>.</p>
+          <form class="mt-8 grid gap-5" onsubmit="return false" aria-describedby="formulier-uit">
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label class="grid gap-1.5 text-sm font-semibold">Naam<input class={veld} name="naam" autocomplete="name" disabled={site.voorstel} /></label>
+              <label class="grid gap-1.5 text-sm font-semibold">Telefoon of e-mail<input class={veld} name="contact" autocomplete="email" disabled={site.voorstel} /></label>
+            </div>
+            <label class="grid gap-1.5 text-sm font-semibold">Waar gaat het over?
+              <select class={veld} name="onderwerp" disabled={site.voorstel}>
+                <option>Gratis adviesgesprek</option>
+                <option>Powder brows</option>
+                <option>Eyeliner of lips PMU</option>
+                <option>Wimpers of wenkbrauwen</option>
+                <option>Iets anders</option>
+              </select>
+            </label>
+            <label class="grid gap-1.5 text-sm font-semibold">Je vraag<textarea class={`${veld} min-h-32 py-2`} name="vraag" rows="4" disabled={site.voorstel}></textarea></label>
+            {site.voorstel
+              ? <p id="formulier-uit" class="border-l-2 border-henna bg-ivoor px-4 py-3 text-sm text-taupe">In dit ontwerpvoorstel verstuurt het formulier niets. Bel, app of mail {site.voornaam} rechtstreeks.</p>
+              : <button type="submit" class="knop knop-henna justify-self-start">Versturen</button>}
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>
