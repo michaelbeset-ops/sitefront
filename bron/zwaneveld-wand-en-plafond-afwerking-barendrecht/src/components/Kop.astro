@@ -1,0 +1,23 @@
+---
+import { site, url } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+// Op de homepage ligt de kop over de foto; op andere pagina's staat hij op gips.
+const h = (anker: string) => (thuis ? `#${anker}` : url(`#${anker}`));
+---
+<header class:list={[thuis ? 'op-donker absolute inset-x-0 z-30 text-wit' : 'border-b border-lijn text-inkt']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex items-center gap-3 leading-none" aria-label={`${site.naam}, naar de homepage`}>
+      <span class="font-kop text-[1.55rem] font-extrabold tracking-[-0.035em]">Zwaneveld</span>
+      <span class="hidden border-l border-current pl-3 text-xs font-medium leading-tight opacity-85 sm:block">Wand &amp; plafond<br />afwerking</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden items-center gap-7 text-[0.95rem] font-medium md:flex">
+      <a href={h('werk')} class="underline-offset-[6px] hover:underline">Wat Rodney doet</a>
+      <a href={h('reviews')} class="underline-offset-[6px] hover:underline">Reviews</a>
+      <a href={h('over')} class="underline-offset-[6px] hover:underline">Over</a>
+      <a href={h('contact')} class="underline-offset-[6px] hover:underline">Contact</a>
+      <a href={site.mobielHref} class="knop knop-laser min-h-11 px-4">{site.mobiel}</a>
+    </nav>
+    <a href={h('contact')} class="text-sm font-semibold underline underline-offset-4 md:hidden">Contact</a>
+  </div>
+</header>

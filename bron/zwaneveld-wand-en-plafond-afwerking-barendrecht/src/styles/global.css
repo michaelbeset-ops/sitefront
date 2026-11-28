@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts. */
+@font-face {
+  font-family: "Schibsted Grotesk Variable";
+  src: url("@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 400 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Onest Variable";
+  src: url("@fontsource-variable/onest/files/onest-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Koel gipswit zoals een vers gestuukte muur die nog moet drogen, blauwzwart als inkt en voor de donkere vlakken,
+     en laserrood als enige accent: de rode lijn van een kruislijnlaser, waarmee je kaarsrecht werkt.
+     Op donker wordt het accent de lichte tint, anders haalt het geen 4,5:1. */
+  --color-gips: #f1f2ef;
+  --color-wand: #e3e6e2;
+  --color-wit: #fafbf9;
+  --color-inkt: #111923;
+  --color-nacht: #17212c;
+  --color-grijs: #4d5762;     /* 6,5:1 op gips */
+  --color-mist: #a9b3bd;      /* 7,6:1 op nacht */
+  --color-lijn: #11192322;
+  --color-lijn-licht: #f1f2ef26;
+  --color-laser: #c62a1c;     /* 5,0:1 op gips, gips erop 5,0:1 */
+  --color-laser-licht: #ff7b6b; /* 6,4:1 op nacht */
+
+  --font-kop: "Schibsted Grotesk Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-tekst: "Onest Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: clamp(1.9rem, 1.45rem + 2vw, 3rem);
+  --text-4xl: clamp(2.2rem, 1.5rem + 3.2vw, 4.25rem);
+  --text-5xl: clamp(2.5rem, 1.4rem + 5vw, 6.25rem);
+
+  --radius-sm: 1px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-gips);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-laser); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-laser-licht); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.4rem;
+    font-weight: 650; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-laser { background: var(--color-laser); color: var(--color-wit); }
+  .knop-laser:hover { background: var(--color-inkt); }
+  .op-donker .knop-laser:hover { background: var(--color-wit); color: var(--color-inkt); }
+  .knop-lijn { border: 1.5px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* Het kruis van de laser: een korte horizontale en verticale lijn die elkaar kruisen.
+     Staat voor elk sectielabel en is het enige ornament op de site. */
+  .kruis { position: relative; display: inline-block; width: 15px; height: 15px; flex: none; }
+  .kruis::before, .kruis::after { content: ""; position: absolute; background: currentColor; }
+  .kruis::before { left: 0; right: 0; top: 7px; height: 1.5px; }
+  .kruis::after { top: 0; bottom: 0; left: 7px; width: 1.5px; }
+
+  .label { display: inline-flex; align-items: center; gap: 0.65rem; font-size: var(--text-sm); font-weight: 600; letter-spacing: 0.01em; }
+
+  /* De laserlijn zelf: een strakke rode lijn die tot de rand van het scherm doorloopt. */
+  .laserlijn { height: 2px; background: var(--color-laser-licht); }
+
+  /* Eén beweging op de site: de laserlijn in de hero trekt zich één keer van links naar rechts. */
+  .js .trek { transform-origin: left; animation: trek 1.1s cubic-bezier(.6,.1,.2,1) .25s both; }
+  @keyframes trek { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
