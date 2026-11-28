@@ -88,10 +88,10 @@ export const woorden = [
 // Sfeerbeelden van Unsplash. Nooit als eigen werk van Beauty Lounge Sandra presenteren.
 const u = (id: string, w: number) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=70`;
 export const foto = {
-  hero: (w: number) => u('photo-1674049406179-d7bf2c263e71', w),
+  hero: (w: number) => u('photo-1761718210089-ba3bb5ccb54f', w),
   wimpers: (w: number) => u('photo-1772236617396-2f8460293c07', w),
   gezicht: (w: number) => u('photo-1552693673-1bf958298935', w),
-  pincet: (w: number) => u('photo-1770999086860-143f54adf01b', w),
+  kwasten: (w: number) => u('photo-1596462502278-27bfdc403348', w),
 };
 
 export const url = (p = '') => `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${p.replace(/^\//, '')}`;
