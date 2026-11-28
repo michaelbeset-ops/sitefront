@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts. */
+@font-face {
+  font-family: "Bodoni Moda Variable";
+  src: url("@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-standard-normal.woff2") format("woff2-variations");
+  font-weight: 400 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk Variable";
+  src: url("@fontsource-variable/hanken-grotesk/files/hanken-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Ivoor papier, espresso voor de donkere vlakken, olijf als enige accent.
+     Geen roze: dat zie je bij elke salon. Contrast gemeten in PLAN.md. */
+  --color-ivoor: #f3efe9;
+  --color-licht: #fbf9f5;
+  --color-inkt: #1a1816;
+  --color-espresso: #2a2420;
+  --color-steen: #5c544d;
+  --color-olijf: #4b5833;
+  --color-salie: #c8d2ad;
+  --color-lijn: #1a181624;
+
+  --font-kop: "Bodoni Moda Variable", "Didot", "Bodoni 72", "Times New Roman", serif;
+  --font-tekst: "Hanken Grotesk Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.625rem;
+  --text-3xl: clamp(1.9rem, 1.4rem + 2.2vw, 2.9rem);
+  --text-4xl: clamp(2.2rem, 1.5rem + 3.2vw, 4.1rem);
+  --text-5xl: clamp(2.5rem, 1.5rem + 4.9vw, 6rem);
+
+  --radius-sm: 2px;
+  --radius-full: 999px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-ivoor);
+    color: var(--color-inkt);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    font-weight: 400;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Bodoni met hoog contrast: de dunne lijnen in de letters passen bij werk met haarfijne streepjes.
+     Daarom geen 800 of 900 maar 600, zwaarder breekt de haarlijnen dicht. */
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    text-wrap: balance;
+    /* Vaste optische grootte: bij de grootste stand worden streepjes en haarlijnen onzichtbaar dun. */
+    font-variation-settings: "opsz" 11;
+  }
+  .font-kop { font-variation-settings: "opsz" 11; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-olijf); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-salie); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label {
+    font-size: var(--text-xs);
+    font-weight: 650;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.6rem;
+    font-weight: 600; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-olijf { background: var(--color-olijf); color: var(--color-licht); }
+  .knop-olijf:hover { background: var(--color-inkt); }
+  .knop-licht { background: var(--color-licht); color: var(--color-inkt); }
+  .knop-licht:hover { background: var(--color-salie); }
+  .knop-lijn { border: 1.5px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* Het teken van de salon: vijf schuine haarlijntjes, zoals een wenkbrauw met de hairstroke-techniek wordt opgebouwd. */
+  .streek { display: block; width: 4.25rem; height: 1.1rem; color: currentColor; }
+
+  /* Prijsregel met een fijne stippellijn tot aan de prijs. */
+  .stip { flex: 1; min-width: 1.25rem; border-bottom: 1px dotted color-mix(in srgb, var(--color-inkt) 40%, transparent); transform: translateY(-0.3em); }
+
+  /* De enige beweging: de balkjes bij de reviewwoorden groeien naar hun lengte, alleen als JS aan staat. */
+  .js .balk > span { transform: scaleX(0); transform-origin: left; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+  .js .balk.in > span { transform: scaleX(1); }
+}

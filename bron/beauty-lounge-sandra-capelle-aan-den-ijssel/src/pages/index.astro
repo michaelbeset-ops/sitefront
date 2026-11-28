@@ -1,0 +1,283 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import Streek from '../components/Streek.astro';
+import { site, menu, tijden, woorden, foto } from '../data/site';
+
+const heroSrcset = [640, 1024, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+const veld = 'min-h-12 rounded-sm border border-inkt/40 bg-licht px-3 text-base font-normal';
+const meest = Math.max(...woorden.map((w) => w.keer));
+
+// Schets van een wenkbrauw uit losse haartjes. Aan de neuskant staan ze bijna rechtop,
+// naar de staart toe gaan ze steeds platter liggen. Zo wordt een hairstroke-wenkbrauw opgebouwd.
+// Vaste pseudo-toeval, zodat de schets bij elke build hetzelfde is.
+const ruis = (n: number) => { const s = Math.sin(n * 127.1) * 43758.5453; return s - Math.floor(s); };
+const midden = (t: number) => 160 - (t < 0.66 ? Math.sin((t / 0.66) * (Math.PI / 2)) * 92 : 92 - Math.pow((t - 0.66) / 0.34, 1.6) * 62);
+const dikte = (t: number) => (t < 0.66 ? 64 - t * 26 : (64 - 0.66 * 26) * Math.max(0.22, 1 - ((t - 0.66) / 0.34) * 0.85));
+const haren: string[] = [];
+const rijen = [
+  { n: 60, start: 0.5, lengte: 1.0 },
+  { n: 50, start: 0.18, lengte: 0.75 },
+  { n: 34, start: -0.15, lengte: 0.5 },
+];
+rijen.forEach((rij, r) => {
+  for (let i = 0; i < rij.n; i++) {
+    const t = Math.min(1, (i + (r ? 0.5 : 0) + (ruis(i + r * 100) - 0.5) * 0.6) / (rij.n - 1));
+    const x = 40 + t * 520;
+    const h = dikte(t);
+    const y = midden(t) + h * rij.start + (ruis(i * 3 + r) - 0.5) * 4;
+    // hoek van bijna rechtop bij de neus naar licht dalend in de staart
+    const graden = (t < 0.5 ? 82 - t * 90 : 37 - (t - 0.5) * 104) + (ruis(i * 7 + r) - 0.5) * 8;
+    const a = (graden * Math.PI) / 180;
+    const l = Math.max(7, h * rij.lengte * (0.85 + ruis(i * 11 + r) * 0.3));
+    const x2 = x + Math.cos(a) * l;
+    const y2 = y - Math.sin(a) * l;
+    const buig = 3.5 * Math.min(1, l / 30);
+    const cx = (x + x2) / 2 + Math.sin(a) * buig;
+    const cy = (y + y2) / 2 + Math.cos(a) * buig;
+    haren.push(`M${x.toFixed(1)} ${y.toFixed(1)} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`);
+  }
+});
+---
+<Base
+  title="Beauty Lounge Sandra | Permanente make-up en huidbehandelingen in Capelle aan den IJssel"
+  description="Schoonheidssalon van Sandra aan de Fluiterlaan in Capelle aan den IJssel. Permanente make-up, 3D hairstroke-wenkbrauwen, huidverbetering, wimperextensions, harsen en IPL. Sinds 1999 in het vak."
+  heroFoto={foto.hero(1600)}
+  heroSrcset={heroSrcset}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: schermvullende foto, tekst linksonder, het jaartal rechts als tegenwicht. -->
+    <section class="op-donker relative isolate flex min-h-[100svh] items-end overflow-hidden bg-espresso text-licht">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt="Een schoonheidsspecialiste werkt aan de wenkbrauwen van een klant"
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(26_24_22/0.94)_0%,rgb(26_24_22/0.66)_45%,rgb(26_24_22/0.32)_100%)]"></div>
+      <div class="wrap grid gap-12 pb-14 pt-32 md:pb-20 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <p class="label text-salie">Schoonheidssalon in {site.plaats}</p>
+          <h1 class="mt-5 text-5xl">Wenkbrauwen, huid en wimpers in ervaren handen</h1>
+          <p class="mt-6 max-w-xl text-lg text-licht/90">Sandra heeft sinds 2015 haar eigen salon aan de Fluiterlaan en is gespecialiseerd in permanente make-up. Ook voor huidverbetering, wimpers, harsen en IPL kun je bij haar terecht.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.boeken} class="knop knop-licht">Afspraak maken</a>
+            <a href={site.mobielHref} class="knop knop-lijn">Bel {site.mobiel}</a>
+          </div>
+        </div>
+        <a href="#sandra" class="group block border-t border-salie pt-4 lg:col-span-3 lg:col-start-10">
+          <span class="block font-kop text-[clamp(3.75rem,3rem+3vw,5.75rem)] font-medium leading-none tracking-[-0.03em]">1999</span>
+          <span class="mt-2 block text-sm text-licht/85 group-hover:underline">Zo lang werkt Sandra al in het vak</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Het specialisme: de getekende wenkbrauw als blikvanger, de uitleg en de vanaf-prijzen ernaast. -->
+    <section id="permanent" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-5">
+          <Streek class="text-olijf" />
+          <p class="label mt-6 text-olijf">Haar specialisme</p>
+          <h2 class="mt-4 text-4xl">Permanente make-up en 3D hairstroke-wenkbrauwen</h2>
+          <div class="mt-6 grid max-w-lg gap-4 text-steen">
+            <p>Sandra is gespecialiseerd in permanente make-up. Wenkbrauwen zet ze met de 3D hairstroke-techniek, met nanonaalden.</p>
+            <p>Wil je van ongewenst haar af, dan kan dat met IPL voor permanente ontharing.</p>
+          </div>
+          <dl class="mt-10 grid max-w-lg grid-cols-2 border-t border-inkt">
+            <div class="border-b border-lijn py-4 pr-4">
+              <dt class="text-sm text-steen">Permanente make-up</dt>
+              <dd class="mt-1 whitespace-nowrap font-kop text-3xl font-medium"><span class="mr-1.5 font-tekst text-sm font-normal text-steen">vanaf</span>€ 75</dd>
+            </div>
+            <div class="border-b border-lijn py-4 pl-4">
+              <dt class="text-sm text-steen">Laser ontharen</dt>
+              <dd class="mt-1 whitespace-nowrap font-kop text-3xl font-medium"><span class="mr-1.5 font-tekst text-sm font-normal text-steen">vanaf</span>€ 30</dd>
+            </div>
+          </dl>
+          <p class="mt-8 max-w-lg text-steen">Wat het bij jou wordt hangt af van wat je wilt. Vraag het Sandra gerust.</p>
+          <p class="mt-5"><a href={site.whatsapp} class="knop knop-olijf">Stel je vraag via WhatsApp</a></p>
+        </div>
+
+        <figure class="lg:col-span-6 lg:col-start-7">
+          <div class="bg-licht px-5 py-10 sm:px-10 sm:py-14">
+            <svg viewBox="0 0 640 220" class="h-auto w-full text-inkt" role="img" aria-labelledby="schets-titel">
+              <title id="schets-titel">Schets van een wenkbrauw die uit losse haartjes is opgebouwd</title>
+              <g fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" opacity="0.9">
+                {haren.map((d) => <path d={d} />)}
+              </g>
+            </svg>
+            <div class="mt-8 grid grid-cols-3 border-t border-lijn pt-4 text-xs text-steen">
+              <span>Begin, bijna rechtop</span>
+              <span class="text-center">Boog</span>
+              <span class="text-right">Staart, plat</span>
+            </div>
+          </div>
+          <figcaption class="mt-4 max-w-md text-sm text-steen">Een schets van het idee achter hairstroke. De wenkbrauw is opgebouwd uit losse haartjes.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Prijzen: een prijslijst met stippellijnen in twee kolommen, de foto smal en hoog ernaast. -->
+    <section id="prijzen" class="scroll-mt-4 border-t border-lijn bg-licht py-20 lg:py-32">
+      <div class="wrap grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-4">
+          <h2 class="text-4xl">Behandelingen en prijzen</h2>
+          <p class="mt-6 max-w-sm text-steen">De prijzen zoals ze op Treatwell staan. Sandra werkt onder meer met producten van Dr. Belter.</p>
+          <img
+            src={foto.gezicht(800)}
+            alt="Een vrouw ligt ontspannen tijdens een gezichtsbehandeling"
+            width="800" height="1000" loading="lazy" decoding="async"
+            class="mt-10 hidden aspect-[4/5] w-full max-w-sm rounded-sm object-cover lg:block"
+          />
+          <p class="mt-10 hidden lg:block"><a href={site.boeken} class="knop knop-olijf">Kies een tijd op Treatwell</a></p>
+        </div>
+        <div class="grid gap-x-14 gap-y-14 md:grid-cols-2 lg:col-span-8">
+          {menu.map((g) => (
+            <div>
+              <h3 class="border-b border-inkt pb-3 text-2xl">{g.groep}</h3>
+              {g.noot && <p class="mt-3 text-sm text-olijf">{g.noot}</p>}
+              <ul class="mt-1">
+                {g.items.map((i) => (
+                  <li class="border-b border-lijn py-3.5">
+                    <div class="flex items-baseline gap-3">
+                      <span class="font-medium">{i.naam}</span>
+                      <span class="stip" aria-hidden="true"></span>
+                      <span class="whitespace-nowrap font-kop text-xl font-medium tabular-nums">{i.vanaf && <span class="mr-1 font-tekst text-xs font-normal text-steen">vanaf</span>}€ {i.prijs}</span>
+                    </div>
+                    {i.duur && <p class="mt-0.5 text-sm text-steen">{i.duur}</p>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p class="md:col-span-2 lg:hidden"><a href={site.boeken} class="knop knop-olijf">Kies een tijd op Treatwell</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews: het cijfer van Sandra groot, daarnaast welke woorden klanten het vaakst gebruiken. -->
+    <section id="reviews" class="op-donker scroll-mt-4 bg-espresso py-20 text-licht lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-5">
+          <p class="label text-salie">Reviews op Treatwell</p>
+          <p class="mt-3 font-kop font-medium leading-[0.85] tracking-[-0.04em] text-salie text-[clamp(6.5rem,4.5rem+10vw,12.5rem)]">4,9</p>
+          <p class="mt-6 max-w-sm text-licht/85">Voor Sandra zelf, uit 174 reviews. De salon als geheel staat op een 4,8 uit 286 reviews.</p>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <h2 class="text-4xl">Klanten noemen haar vooral deskundig</h2>
+          <ul class="mt-10 grid gap-5">
+            {woorden.map((w) => (
+              <li>
+                <div class="flex items-baseline justify-between gap-4">
+                  <span class="text-lg font-medium">{w.woord}</span>
+                  <span class="text-sm text-licht/75 tabular-nums">{w.keer} keer genoemd</span>
+                </div>
+                <div class="balk mt-2 h-[3px] bg-licht/15"><span class="block h-full bg-salie" style={`width:${(w.keer / meest) * 100}%`}></span></div>
+              </li>
+            ))}
+          </ul>
+          <p class="mt-10 max-w-xl text-licht/85">In de reviews lees je dat Sandra goed luistert naar wat je wilt en meedenkt over de beste verzorging voor je huid. Klanten schrijven dat ze zich meteen op hun gemak voelen en noemen de sfeer gezellig.</p>
+          <p class="mt-8"><a href={site.treatwell} class="knop knop-lijn">Lees de reviews op Treatwell</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Over Sandra: korte tijdlijn links, foto rechts. -->
+    <section id="sandra" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12 lg:items-center">
+        <div class="lg:col-span-6">
+          <Streek class="text-olijf" />
+          <h2 class="mt-6 text-4xl">Ruim 25 jaar in het vak</h2>
+          <p class="mt-6 max-w-xl text-steen">Bij Beauty Lounge Sandra aan de Fluiterlaan ben je in ervaren handen. Sandra begon in 1999 en opende in 2015 haar eigen salon in {site.plaats}.</p>
+          <ol class="mt-10 max-w-xl border-t border-inkt">
+            <li class="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-lijn py-5">
+              <span class="font-kop text-2xl font-medium">1999</span>
+              <span>Sandra begint in het vak</span>
+            </li>
+            <li class="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-lijn py-5">
+              <span class="font-kop text-2xl font-medium">2015</span>
+              <span>Haar eigen salon aan de Fluiterlaan</span>
+            </li>
+            <li class="grid grid-cols-[5.5rem_1fr] gap-4 border-b border-lijn py-5">
+              <span class="font-kop text-2xl font-medium">Nu</span>
+              <span>Gespecialiseerd in permanente make-up, met een 4,9 uit 174 reviews</span>
+            </li>
+          </ol>
+        </div>
+        <img
+          src={foto.pincet(1000)}
+          alt="Een pincet ligt op een plankje met losse wimpers"
+          width="1000" height="1100" loading="lazy" decoding="async"
+          class="aspect-[4/3] w-full rounded-sm object-cover lg:col-span-5 lg:col-start-8 lg:aspect-[10/11]"
+        />
+      </div>
+    </section>
+
+    <!-- Langskomen: tijden en adres links, contact en het formulier rechts. -->
+    <section id="langskomen" class="scroll-mt-4 border-t border-lijn bg-licht py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <h2 class="text-4xl">Langskomen</h2>
+          <p class="mt-6 max-w-md text-steen">Maak een afspraak op Treatwell, of bel of app Sandra.</p>
+
+          <h3 class="mt-10 text-2xl">Openingstijden</h3>
+          <dl class="mt-4 border-t border-inkt">
+            {tijden.map((t) => (
+              <div class="flex justify-between gap-6 border-b border-lijn py-2.5">
+                <dt>{t.dag}</dt>
+                <dd class:list={['tabular-nums', t.tijd === 'Gesloten' ? 'text-steen' : 'font-medium']}>{t.tijd}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <dl class="mt-10 grid gap-6">
+            <div>
+              <dt class="label text-steen">Adres</dt>
+              <dd class="mt-1 text-lg">{site.straat}<br />{site.postcode} {site.plaats}<br /><a href={site.route} class="text-sm font-semibold underline underline-offset-4">Route in Google Maps</a></dd>
+            </div>
+            <div>
+              <dt class="label text-steen">Telefoon en WhatsApp</dt>
+              <dd class="mt-1 text-xl font-semibold"><a href={site.mobielHref} class="underline-offset-4 hover:underline">{site.mobiel}</a></dd>
+            </div>
+            <div>
+              <dt class="label text-steen">E-mail</dt>
+              <dd class="mt-1 [overflow-wrap:anywhere]"><a href={`mailto:${site.email}`} class="underline underline-offset-4">{site.email}</a></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <img
+            src={foto.wimpers(1000)}
+            alt="Een schoonheidsspecialiste zet wimperextensions bij een klant"
+            width="1000" height="600" loading="lazy" decoding="async"
+            class="aspect-[5/3] w-full rounded-sm object-cover"
+          />
+          <form class="mt-10 grid content-start gap-5" onsubmit="return false" aria-describedby="formulier-noot">
+            <h3 class="text-2xl">Een vraag voor Sandra?</h3>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label class="grid gap-2 text-sm font-semibold">Naam
+                <input type="text" name="naam" autocomplete="name" class={veld} />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold">Telefoon
+                <input type="tel" name="telefoon" autocomplete="tel" class={veld} />
+              </label>
+            </div>
+            <label class="grid gap-2 text-sm font-semibold">Waar gaat het om?
+              <textarea name="bericht" rows="4" class={`${veld} py-2`}></textarea>
+            </label>
+            {site.voorstel ? (
+              <p id="formulier-noot" class="border-l-4 border-olijf bg-ivoor px-4 py-3 text-sm text-steen">Dit is een ontwerpvoorstel, het formulier verstuurt nog niets. Bel of app <a href={site.mobielHref} class="whitespace-nowrap font-semibold text-inkt underline">{site.mobiel}</a> of maak direct een afspraak op <a href={site.boeken} class="font-semibold text-inkt underline">Treatwell</a>.</p>
+            ) : (
+              <p id="formulier-noot" class="text-sm text-steen">Je krijgt zo snel mogelijk antwoord.</p>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>

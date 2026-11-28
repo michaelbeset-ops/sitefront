@@ -1,0 +1,26 @@
+---
+import Streek from './Streek.astro';
+import { site, url } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+// Op de homepage ligt de kop over de foto heen; op andere pagina's staat hij op ivoor.
+const h = (anker: string) => (thuis ? `#${anker}` : url(`#${anker}`));
+---
+<header class:list={[thuis ? 'op-donker absolute inset-x-0 z-30 text-licht' : 'border-b border-lijn text-inkt']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex items-center gap-3 leading-none">
+      <Streek class:list={['hidden w-10 sm:block', thuis ? 'text-salie' : 'text-olijf']} />
+      <span>
+        <span class="block whitespace-nowrap font-kop text-lg font-semibold tracking-[-0.02em] sm:text-xl">Beauty Lounge Sandra</span>
+      </span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden items-center gap-7 text-sm font-medium lg:flex">
+      <a href={h('permanent')} class="underline-offset-[6px] hover:underline">Permanente make-up</a>
+      <a href={h('prijzen')} class="underline-offset-[6px] hover:underline">Prijzen</a>
+      <a href={h('sandra')} class="underline-offset-[6px] hover:underline">Over Sandra</a>
+      <a href={h('langskomen')} class="underline-offset-[6px] hover:underline">Langskomen</a>
+      <a href={site.boeken} class:list={['knop min-h-11 px-5', thuis ? 'knop-licht' : 'knop-olijf']}>Afspraak maken</a>
+    </nav>
+    <a href={h('langskomen')} class="whitespace-nowrap text-sm font-medium underline underline-offset-4 lg:hidden"><span class="min-[400px]:hidden">Tijden</span><span class="hidden min-[400px]:inline">Adres en tijden</span></a>
+  </div>
+</header>
