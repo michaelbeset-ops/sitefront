@@ -1,0 +1,209 @@
+---
+import Base from '../layouts/Base.astro';
+import Kop from '../components/Kop.astro';
+import Voet from '../components/Voet.astro';
+import { site, verhaal, behandelingen, tijden, klanten, foto } from '../data/site';
+
+const heroSrcset = [640, 1024, 1600].map((w) => `${foto.hero(w)} ${w}w`).join(', ');
+const veld = 'min-h-12 rounded-sm border border-inkt/40 bg-kalk px-3 text-base font-normal';
+---
+<Base
+  title="LOTT. Beautysalon | Nagels, wenkbrauwen en wimpers aan de Voorstraat in Dordrecht"
+  description="Beautysalon van Charlotte aan de Voorstraat 339 in Dordrecht. BIAB, gellak, nail art, wenkbrauwen en lash extensions. Online een afspraak maken of bel 06 14163775."
+  heroFoto={foto.hero(1600)}
+  heroSrcset={heroSrcset}
+>
+  <Kop />
+  <main id="inhoud">
+    <!-- Hero: schermvullende foto, de kop groot linksonder, adres en telefoon rechts als een visitekaartje. -->
+    <section class="op-donker relative isolate flex min-h-[100svh] items-end overflow-hidden bg-cacao text-kalk">
+      <img
+        src={foto.hero(1600)}
+        srcset={heroSrcset}
+        sizes="100vw"
+        alt="Een vrouw laat haar nagels doen in een nagelsalon"
+        class="absolute inset-0 -z-20 h-full w-full object-cover"
+        fetchpriority="high"
+      />
+      <div class="absolute inset-0 -z-10 bg-[linear-gradient(to_top,rgb(42_29_24/0.94)_0%,rgb(42_29_24/0.6)_48%,rgb(42_29_24/0.28)_100%)]"></div>
+      <div class="wrap grid gap-10 pb-14 pt-32 md:pb-20 lg:grid-cols-12 lg:items-end">
+        <div class="lg:col-span-8">
+          <p class="label text-ijs">Beautysalon in hartje {site.plaats}</p>
+          <h1 class="mt-5 text-5xl">Nagels, brows en wimpers aan de Voorstraat<span class="punt">.</span></h1>
+          <p class="mt-6 max-w-xl text-lg text-kalk/90">De salon van Charlotte, die begon als Nails by Lott. Eerst een gesprek over wat je wilt, daarna persoonlijke aandacht van een team dat echt de tijd neemt.</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href={site.boeken} class="knop knop-kalk">Online een afspraak maken</a>
+            <a href={site.mobielHref} class="knop knop-lijn">Bel {site.mobiel}</a>
+          </div>
+        </div>
+        <div class="border-t-2 border-ijs pt-5 text-sm lg:col-span-3 lg:col-start-10">
+          <p class="font-kop text-2xl font-extrabold tracking-[-0.02em]">{site.straat}</p>
+          <p class="mt-1 text-kalk/85">{site.postcode} {site.plaats}</p>
+          <p class="mt-4 text-kalk/85">Elke dag open, donderdag tot 20:00.</p>
+          <a href="#langskomen" class="mt-2 inline-block font-semibold underline underline-offset-4">Alle openingstijden</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Het verhaal van Charlotte is de blikvanger: drie plekken op een lijn, van woonkamer naar Voorstraat. -->
+    <section id="verhaal" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="label text-kobalt">Over Charlotte</p>
+            <h2 class="mt-5 text-4xl">Van de woonkamer naar de Voorstraat<span class="punt">.</span></h2>
+          </div>
+          <p class="max-w-md text-taupe lg:col-span-4 lg:col-start-9">Charlotte woont in Dordrecht en werkt sinds 2018 in de beauty. Nagels zijn haar specialisme. Ze volgt de trends en blijft zich bijscholen.</p>
+        </div>
+
+        <ol class="relative mt-16 grid gap-10 md:grid-cols-3 md:gap-8">
+          <!-- De doorlopende lijn verbindt de drie plekken, zoals een route. -->
+          <span class="absolute left-[0.4rem] top-2 bottom-2 w-0.5 bg-kobalt/25 md:left-0 md:right-0 md:top-[0.4rem] md:bottom-auto md:h-0.5 md:w-auto" aria-hidden="true"></span>
+          {verhaal.map((v, i) => (
+            <li class="stap relative pl-10 md:pl-0 md:pt-12">
+              <span class:list={['absolute left-0 top-1 h-3.5 w-3.5 rounded-full md:top-0', i === 2 ? 'bg-kobalt' : 'border-2 border-kobalt bg-creme']} aria-hidden="true"></span>
+              <p class="font-kop text-sm font-bold tabular-nums text-kobalt">0{i + 1}</p>
+              <h3 class="mt-2 text-3xl">{v.plek}</h3>
+              <p class="mt-3 max-w-xs text-taupe">{v.tekst}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-20 grid gap-10 lg:grid-cols-12 lg:items-center">
+          <img
+            src={foto.tafel(1200)}
+            alt="Manicurespullen klaargelegd op een witte handdoek"
+            width="1200" height="800" loading="lazy" decoding="async"
+            class="aspect-[3/2] w-full rounded-sm bg-lijn object-cover lg:col-span-7"
+          />
+          <div class="lg:col-span-4 lg:col-start-9">
+            <h3 class="text-2xl">Eerst even praten</h3>
+            <p class="mt-4 text-taupe">Elke behandeling begint met een gesprek over wat je wilt en wat bij je past. Pas dan gaat Charlotte aan de slag. Persoonlijke aandacht en een gezellige sfeer staan voorop.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Behandelingen: per groep een brede rij, de foto wisselt van kant zodat het ritme niet steeds gelijk is. -->
+    <section id="behandelingen" class="scroll-mt-4 border-t border-lijn bg-kalk py-20 lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-6 lg:grid-cols-12 lg:items-end">
+          <div class="lg:col-span-7">
+            <p class="label text-kobalt">Behandelingen</p>
+            <h2 class="mt-5 text-4xl">Wat je bij LOTT. kunt laten doen<span class="punt">.</span></h2>
+          </div>
+          <p class="max-w-md text-taupe lg:col-span-4 lg:col-start-9">Prijzen en vrije plekken zie je direct in de online agenda. Twijfel je wat je moet kiezen, bel dan even.</p>
+        </div>
+
+        <div class="mt-16 grid gap-20 lg:gap-28">
+          {behandelingen.map((b, i) => (
+            <article class="grid gap-8 lg:grid-cols-12 lg:items-center">
+              <img
+                src={foto[b.foto](1000)}
+                alt={b.alt}
+                width="1000" height="750" loading="lazy" decoding="async"
+                class:list={['aspect-[4/3] w-full rounded-sm bg-lijn object-cover lg:col-span-5', i % 2 === 1 && 'lg:order-2 lg:col-start-8']}
+              />
+              <div class:list={['lg:col-span-6', i % 2 === 1 ? 'lg:order-1 lg:col-start-1' : 'lg:col-start-7']}>
+                <h3 class="text-4xl">{b.groep}<span class="punt">.</span></h3>
+                <p class="mt-3 text-taupe">{b.intro}</p>
+                <ul class="mt-6 border-t border-inkt">
+                  {b.items.map((it) => (
+                    <li class="border-b border-lijn py-4">
+                      <p class="text-lg font-semibold">{it.naam}</p>
+                      {it.uitleg && <p class="mt-0.5 text-sm text-taupe">{it.uitleg}</p>}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="mt-16"><a href={site.boeken} class="knop knop-kobalt">Kies een behandeling en een tijd</a></p>
+      </div>
+    </section>
+
+    <!-- Wat klanten noemen: de kern groot, de vier klanten eronder in een versprongen raster. -->
+    <section id="klanten" class="op-donker scroll-mt-4 bg-cacao py-20 text-kalk lg:py-32">
+      <div class="wrap">
+        <div class="grid gap-10 lg:grid-cols-12">
+          <p class="label text-ijs lg:col-span-3">Uit de Google-reviews</p>
+          <h2 class="text-4xl lg:col-span-9">Huiselijk, gezellig, en ze nemen echt de tijd<span class="punt">.</span></h2>
+        </div>
+        <ul class="mt-16 grid gap-x-12 md:grid-cols-2 lg:ml-[25%]">
+          {klanten.map((k, i) => (
+            <li class:list={['border-t border-kalk/25 py-8', i % 2 === 1 && 'md:translate-y-14']}>
+              <p class="text-lg leading-relaxed"><span class="font-kop text-xl font-extrabold tracking-[-0.02em] text-ijs">{k.naam}</span> {k.tekst}</p>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-10 text-sm text-kalk/70 md:mt-20 lg:ml-[25%]">In eigen woorden samengevat uit reviews op Google.</p>
+      </div>
+    </section>
+
+    <!-- Langskomen: tijden en adres links, foto en een vraag stellen rechts. -->
+    <section id="langskomen" class="scroll-mt-4 py-20 lg:py-32">
+      <div class="wrap grid gap-14 lg:grid-cols-12">
+        <div class="lg:col-span-5">
+          <p class="label text-kobalt">Langskomen</p>
+          <h2 class="mt-5 text-4xl">Voorstraat 339<span class="punt">.</span></h2>
+          <p class="mt-6 max-w-md text-taupe">In het centrum van Dordrecht. Maak online een afspraak of bel even.</p>
+
+          <h3 class="mt-10 text-2xl">Openingstijden</h3>
+          <dl class="mt-4 border-t border-inkt">
+            {tijden.map((t) => (
+              <div class="flex justify-between gap-6 border-b border-lijn py-2.5">
+                <dt>{t.dag}</dt>
+                <dd class="font-medium tabular-nums">{t.tijd}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <dl class="mt-10 grid gap-6">
+            <div>
+              <dt class="label text-taupe">Adres</dt>
+              <dd class="mt-1 text-lg">{site.straat}, {site.postcode} {site.plaats}<br /><a href={site.route} class="text-sm font-semibold underline underline-offset-4">Route in Google Maps</a></dd>
+            </div>
+            <div>
+              <dt class="label text-taupe">Telefoon</dt>
+              <dd class="mt-1 text-xl font-semibold"><a href={site.mobielHref} class="underline-offset-4 hover:underline">{site.mobiel}</a></dd>
+            </div>
+            <div>
+              <dt class="label text-taupe">Online</dt>
+              <dd class="mt-1"><a href={site.boeken} class="font-semibold underline underline-offset-4">Afspraak maken in de agenda</a></dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <img
+            src={foto.nagels(1000)}
+            alt="Hand met een French manicure en glitter"
+            width="1000" height="600" loading="lazy" decoding="async"
+            class="hidden aspect-[5/3] w-full rounded-sm bg-lijn object-cover lg:block"
+          />
+          <form class="grid content-start gap-5 lg:mt-10" onsubmit="return false" aria-describedby="formulier-noot">
+            <h3 class="text-2xl">Een vraag voor Charlotte?</h3>
+            <div class="grid gap-5 sm:grid-cols-2">
+              <label class="grid gap-2 text-sm font-semibold">Naam
+                <input type="text" name="naam" autocomplete="name" class={veld} />
+              </label>
+              <label class="grid gap-2 text-sm font-semibold">Telefoon
+                <input type="tel" name="telefoon" autocomplete="tel" class={veld} />
+              </label>
+            </div>
+            <label class="grid gap-2 text-sm font-semibold">Je vraag
+              <textarea name="bericht" rows="4" class={`${veld} py-2`}></textarea>
+            </label>
+            {site.voorstel ? (
+              <p id="formulier-noot" class="border-l-4 border-kobalt bg-kalk px-4 py-3 text-sm text-taupe">Dit is een ontwerpvoorstel, het formulier verstuurt nog niets. Bel <a href={site.mobielHref} class="whitespace-nowrap font-semibold text-inkt underline">{site.mobiel}</a> of maak direct <a href={site.boeken} class="font-semibold text-inkt underline">online een afspraak</a>.</p>
+            ) : (
+              <p id="formulier-noot" class="text-sm text-taupe">Je krijgt zo snel mogelijk antwoord.</p>
+            )}
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Voet />
+</Base>

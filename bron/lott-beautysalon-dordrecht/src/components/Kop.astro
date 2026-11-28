@@ -1,0 +1,24 @@
+---
+import Logo from './Logo.astro';
+import { site, url } from '../data/site';
+interface Props { thuis?: boolean }
+const { thuis = true } = Astro.props;
+// Op de homepage ligt de kop over de foto heen; op andere pagina's staat hij op crème.
+const h = (anker: string) => (thuis ? `#${anker}` : url(`#${anker}`));
+---
+<header class:list={[thuis ? 'op-donker absolute inset-x-0 z-30 text-kalk' : 'border-b border-lijn text-inkt']}>
+  <div class="wrap flex items-center justify-between gap-6 py-5">
+    <a href={url()} class="flex items-baseline gap-2.5" aria-label="LOTT. Beautysalon, naar de homepage">
+      <Logo class="text-3xl" />
+      <span class="hidden text-xs font-semibold uppercase tracking-[0.16em] opacity-85 sm:inline">Beautysalon</span>
+    </a>
+    <nav aria-label="Hoofdmenu" class="hidden items-center gap-7 text-sm font-medium md:flex">
+      <a href={h('verhaal')} class="underline-offset-[6px] hover:underline">Over Charlotte</a>
+      <a href={h('behandelingen')} class="underline-offset-[6px] hover:underline">Behandelingen</a>
+      <a href={h('klanten')} class="underline-offset-[6px] hover:underline">Klanten</a>
+      <a href={h('langskomen')} class="underline-offset-[6px] hover:underline">Langskomen</a>
+      <a href={site.boeken} class:list={['knop min-h-11 px-5', thuis ? 'knop-kalk' : 'knop-kobalt']}>Afspraak maken</a>
+    </nav>
+    <a href={h('langskomen')} class="text-sm font-medium underline underline-offset-4 md:hidden">Adres en tijden</a>
+  </div>
+</header>
