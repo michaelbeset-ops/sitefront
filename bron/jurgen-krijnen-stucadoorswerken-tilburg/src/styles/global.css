@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts.
+   Bricolage in de "standard"-versie omdat we de breedte-as gebruiken voor iets smallere koppen. */
+@font-face {
+  font-family: "Bricolage Grotesque Variable";
+  src: url("@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-standard-normal.woff2") format("woff2-variations");
+  font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Public Sans Variable";
+  src: url("@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Kalkwit als papier, grafiet voor tekst en donkere vlakken, okergeel als enige accent.
+     Oker haalt op kalk geen 4,5:1, daarom is er een donkere oker voor tekst op licht. */
+  --color-kalk: #efebe3;
+  --color-gips: #faf8f3;
+  --color-grafiet: #202427;
+  --color-lood: #2c3236;
+  --color-leisteen: #4d5459;  /* 6,5:1 op kalk */
+  --color-oker: #d9a03a;      /* 6,7:1 met grafiet, alleen op donker of als vlak */
+  --color-okerdonker: #8c5a0f;/* 4,9:1 op kalk */
+  --color-lijn: #20242726;
+
+  --font-kop: "Bricolage Grotesque Variable", "Arial Narrow", system-ui, sans-serif;
+  --font-tekst: "Public Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  --text-4xl: clamp(2.3rem, 1.6rem + 3.2vw, 4.4rem);
+  --text-5xl: clamp(2.7rem, 1.5rem + 5vw, 6.4rem);
+
+  --radius-sm: 1px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-kalk);
+    color: var(--color-grafiet);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    font-stretch: 88%;
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-okerdonker); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-oker); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .label { font-size: var(--text-sm); font-weight: 650; letter-spacing: 0.01em; }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.4rem;
+    font-weight: 700; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s;
+  }
+  .knop-oker { background: var(--color-oker); color: var(--color-grafiet); }
+  .knop-oker:hover { background: var(--color-gips); }
+  .knop-grafiet { background: var(--color-grafiet); color: var(--color-gips); }
+  .knop-grafiet:hover { background: var(--color-okerdonker); }
+  .knop-lijn { border: 2px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* De liniaal: maatstreepjes zoals op de rei of de duimstok van een stukadoor, elke vijfde streep langer.
+     Staat boven elke sectiekop en is het enige ornament op de site. */
+  .liniaal { display: block; width: 7.5rem; height: 12px; color: inherit;
+    background:
+      repeating-linear-gradient(90deg, currentColor 0 1.5px, transparent 1.5px 30px) 0 0 / 100% 12px no-repeat,
+      repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 6px) 0 100% / 100% 6px no-repeat;
+    border-bottom: 1.5px solid currentColor; }
+
+  /* Eén beweging op de site: blokken schuiven zacht in beeld, alleen als JS aan staat. */
+  .js .rij { opacity: 0; transform: translateY(0.75rem); transition: opacity .7s ease, transform .7s ease; }
+  .js .rij.in { opacity: 1; transform: none; }
+}
