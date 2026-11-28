@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* Alleen het latin-subset, zelf gehost. Geen verzoek naar Google Fonts.
+   Het "standard"-bestand van Archivo heeft zowel de gewicht- als de breedte-as, zodat koppen smal kunnen. */
+@font-face {
+  font-family: "Archivo Variable";
+  src: url("@fontsource-variable/archivo/files/archivo-latin-standard-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Public Sans Variable";
+  src: url("@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+
+@theme {
+  /* Standaardpalet en -schalen weg, zodat alleen de eigen tokens bestaan. */
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+
+  /* Natte pleister als papier, bitumen voor de donkere vlakken, oker als enige accent.
+     Oker is te licht voor tekst op papier, daarom een donkere tint (klei) voor accenttekst op licht. */
+  --color-pleister: #ebe5de;
+  --color-kalk: #f7f4ef;
+  --color-bitumen: #1d1a17;
+  --color-teer: #2a2622;
+  --color-grijs: #5b544e;     /* 5,9:1 op pleister */
+  --color-lijn: #1d1a1726;
+  --color-oker: #e0a526;      /* bitumen erop 7,9:1, als tekst op bitumen 7,9:1 */
+  --color-klei: #7a5200;      /* 5,5:1 op pleister */
+
+  --font-kop: "Archivo Variable", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-tekst: "Public Sans Variable", "Segoe UI", system-ui, sans-serif;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  --text-4xl: clamp(2.4rem, 1.6rem + 3.6vw, 4.75rem);
+  --text-5xl: clamp(2.9rem, 1.4rem + 6.4vw, 7.5rem);
+
+  --radius-sm: 2px;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-pleister);
+    color: var(--color-bitumen);
+    font-family: var(--font-tekst);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Smal en zwaar, zoals de letters op een bouwbord of een busje. Smal gezet zodat de grote koppen
+     op 320 breed niet in vijf regels breken. */
+  h1, h2, h3 {
+    font-family: var(--font-kop);
+    font-weight: 800;
+    font-stretch: 72%;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid var(--color-klei); outline-offset: 3px; }
+  .op-donker :focus-visible { outline-color: var(--color-oker); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+}
+
+@layer components {
+  .wrap { width: 100%; max-width: 80rem; margin-inline: auto; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2.5rem; } }
+
+  .smal { font-family: var(--font-kop); font-stretch: 72%; }
+  .label { font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.01em; }
+
+  .knop {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+    min-height: 3.25rem; padding-inline: 1.4rem;
+    font-weight: 700; font-size: var(--text-base); line-height: 1.1;
+    border-radius: var(--radius-sm);
+    transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .knop-oker { background: var(--color-oker); color: var(--color-bitumen); }
+  .knop-oker:hover { background: var(--color-kalk); }
+  .knop-zwart { background: var(--color-bitumen); color: var(--color-kalk); }
+  .knop-zwart:hover { background: var(--color-klei); }
+  .knop-lijn { border: 2px solid currentColor; }
+  .knop-lijn:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+
+  /* De rei: de rechte lat waarmee een stukadoor de pleister afreit, met een schuine kop.
+     Het enige ornament op de site, boven elke sectiekop. */
+  .rei { display: block; width: 5.5rem; height: 0.7rem; background: var(--color-oker);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 0.7rem) 100%, 0 100%); }
+
+  /* Werkbon: gelinieerde velden, zoals het briefje dat op de bouw wordt ingevuld. */
+  .werkbon-veld { display: grid; gap: 0.25rem; border-bottom: 1.5px solid var(--color-bitumen); padding-block: 0.6rem 0.2rem; }
+  .werkbon-veld span { font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-grijs); }
+  .werkbon-veld input, .werkbon-veld textarea { background: transparent; border: 0; min-height: 2.75rem; font-size: var(--text-base); color: var(--color-bitumen); }
+  .werkbon-veld input:focus-visible, .werkbon-veld textarea:focus-visible { outline-offset: 2px; }
+  .werkbon-veld textarea { resize: vertical;
+    background-image: repeating-linear-gradient(transparent 0 2.15rem, var(--color-lijn) 2.15rem calc(2.15rem + 1px));
+    line-height: 2.2rem; }
+
+  /* Eén beweging op de site: blokken schuiven zacht in beeld, alleen als JS aan staat. */
+  .js .rij { opacity: 0; transform: translateY(0.75rem); transition: opacity .7s ease, transform .7s ease; }
+  .js .rij.in { opacity: 1; transform: none; }
+}
